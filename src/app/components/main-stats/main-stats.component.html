@@ -1,0 +1,36 @@
+<ng-container *ngIf="selectedNetwork">
+  <h1>{{'MAIN_STATS_TITLE' | translate}}</h1>
+
+  <hr>
+
+  <h3>{{'MAIN_STATS_GRAPH_INFO_TITLE' | translate}} "{{selectedNetwork.networkInformation.name}}"</h3>
+
+  <div class="row mt-3">
+    <div class="col-3">
+      <h6>{{'MAIN_STATS_GRAPH_INFO_NODES' | translate}}: {{selectedNetwork.nodeCount}}</h6>
+      <h6>{{'MAIN_STATS_GRAPH_INFO_EDGES' | translate}}: {{selectedNetwork.edgeCount}}</h6>
+      <h6>{{'MAIN_STATS_GRAPH_INFO_CLASSES' | translate}}: {{selectedNetwork.cssClassCount}}</h6>
+    </div>
+    <div class="col-9 card">
+      <div class="card-body">
+        <p *ngIf="selectedNetwork.networkInformation.rightsholder">
+          <b [innerHTML]="">{{'MAIN_STATS_GRAPH_INFO_NW_RIGHTSHOLDER' | translate}}:</b>&nbsp;
+          <span [innerHTML]="selectedNetwork.networkInformation.rightsholder"></span>
+        </p>
+        <p *ngIf="selectedNetwork.networkInformation.networkType">
+          <b>{{'MAIN_STATS_GRAPH_INFO_NW_TYPE' | translate}}:</b>&nbsp;<span [innerHTML]="selectedNetwork.networkInformation.networkType"></span>
+        </p>
+        <p *ngIf="selectedNetwork.networkInformation.organism">
+          <b>{{'MAIN_STATS_GRAPH_INFO_NW_ORGANISM' | translate}}:</b>&nbsp;<span [innerHTML]="selectedNetwork.networkInformation.organism"></span>
+        </p>
+        <p *ngIf="selectedNetwork.networkInformation.description">
+          <b>{{'MAIN_STATS_GRAPH_INFO_NW_DESCRIPTION' | translate}}:</b>&nbsp;<span [innerHTML]="selectedNetwork.networkInformation.description"></span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+</ng-container>
+
+<app-main-info></app-main-info>

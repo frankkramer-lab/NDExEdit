@@ -1,0 +1,193 @@
+[
+  {
+    "ndex": [
+      "NODE_FILL_COLOR"
+    ],
+    "cytoscape": [
+      "background-color"
+    ]
+  },
+  {
+    "ndex": [
+      "NODE_LABEL_FONT_FACE"
+    ],
+    "cytoscape": [
+      "font-family"
+    ],
+    "conversionType": "split",
+    "splitRules": {
+      "splitAt": ",",
+      "evalIndex": [
+        "0"
+      ]
+    },
+    "matchRules": {
+      "SansSerif": [
+        "sans-serif"
+      ],
+      "Dialog": [
+        "sans-serif"
+      ]
+    }
+  },
+  {
+    "ndex": [
+      "COMPOUND_NODE_SHAPE",
+      "NODE_SHAPE"
+    ],
+    "cytoscape": [
+      "shape"
+    ],
+    "conversionType": "method",
+    "conversion": [
+      {
+        "ndex": "up",
+        "cytoscape": "low"
+      },
+      {
+        "ndex": "_",
+        "cytoscape": "-"
+      }
+    ]
+  },
+  {
+    "ndex": [
+      "NODE_BORDER_WIDTH"
+    ],
+    "cytoscape": [
+      "border-width"
+    ]
+  },
+  {
+    "ndex": [
+      "NODE_BORDER_STROKE"
+    ],
+    "cytoscape": [
+      "border-style"
+    ],
+    "conversionType": "method",
+    "conversion": [
+      {
+        "ndex": "up",
+        "cytoscape": "low"
+      }
+    ]
+  },
+  {
+    "ndex": [
+      "NODE_LABEL_COLOR"
+    ],
+    "cytoscape": [
+      "color"
+    ]
+  },
+  {
+    "ndex": [
+      "NODE_BORDER_TRANSPARENCY"
+    ],
+    "cytoscape": [
+      "border-opacity"
+    ],
+    "conversionType": "method",
+    "conversion": [
+      {
+        "ndex": "norm1to255",
+        "cytoscape": "norm255to1"
+      }
+    ]
+  },
+  {
+    "ndex": [
+      "NODE_TRANSPARENCY"
+    ],
+    "cytoscape": [
+      "opacity"
+    ],
+    "conversionType": "method",
+    "conversion": [
+      {
+        "ndex": "norm1to255",
+        "cytoscape": "norm255to1"
+      }
+    ]
+  },
+  {
+    "ndex": [
+      "NODE_LABEL_FONT_SIZE"
+    ],
+    "cytoscape": [
+      "font-size"
+    ]
+  },
+  {
+    "ndex": [
+      "NODE_WIDTH"
+    ],
+    "cytoscape": [
+      "width"
+    ]
+  },
+  {
+    "ndex": [
+      "NODE_HEIGHT"
+    ],
+    "cytoscape": [
+      "height"
+    ]
+  },
+  {
+    "ndex": [
+      "NODE_BORDER_PAINT"
+    ],
+    "cytoscape": [
+      "border-color"
+    ]
+  },
+  {
+    "ndex": [
+      "NODE_SELECTED_PAINT"
+    ],
+    "cytoscape": [
+      "background-color"
+    ],
+    "selector": ":selected"
+  },
+  {
+    "ndex": [
+      "EDGE_WIDTH"
+    ],
+    "cytoscape": [
+      "width"
+    ]
+  },
+  {
+    "ndex": [
+      "NODE_LABEL_POSITION"
+    ],
+    "cytoscape": [
+      "text-valign",
+      "text-halign"
+    ],
+    "conversionType": "split",
+    "splitRules": {
+      "splitAt": "c",
+      "evalIndex": [
+        "0"
+      ]
+    },
+    "matchRules": {
+      "SW,SE,": [
+        "bottom",
+        "center"
+      ],
+      "SE,SW,": [
+        "bottom",
+        "center"
+      ],
+      "C,C,": [
+        "middle",
+        "center"
+      ]
+    }
+  }
+]

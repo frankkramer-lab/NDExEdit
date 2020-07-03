@@ -1,0 +1,3149 @@
+[
+  {
+    "numberVerification": [
+      {
+        "longNumber": 281474976710655
+      }
+    ]
+  },
+  {
+    "metaData": [
+      {
+        "name": "nodeAttributes",
+        "elementCount": 154,
+        "version": "1.0",
+        "properties": []
+      },
+      {
+        "name": "cyHiddenAttributes",
+        "elementCount": 2,
+        "version": "1.0",
+        "properties": []
+      },
+      {
+        "name": "nodes",
+        "elementCount": 61,
+        "idCounter": 650,
+        "version": "1.0",
+        "properties": []
+      },
+      {
+        "name": "networkAttributes",
+        "elementCount": 11,
+        "version": "1.0",
+        "properties": []
+      },
+      {
+        "name": "cyTableColumn",
+        "elementCount": 26,
+        "version": "1.0",
+        "properties": []
+      },
+      {
+        "name": "cartesianLayout",
+        "elementCount": 61,
+        "version": "1.0",
+        "properties": []
+      },
+      {
+        "name": "edgeAttributes",
+        "elementCount": 161,
+        "version": "1.0",
+        "properties": []
+      },
+      {
+        "name": "edges",
+        "elementCount": 49,
+        "idCounter": 700,
+        "version": "1.0",
+        "properties": []
+      },
+      {
+        "name": "cyVisualProperties",
+        "elementCount": 14,
+        "version": "1.0",
+        "properties": []
+      }
+    ]
+  },
+  {
+    "nodeAttributes": [
+      {
+        "po": 639,
+        "n": "Smiles",
+        "v": "CC(C)N1N=C(C2=CC3=C(OC(=N3)N)C=C2)C4=C(N)N=CN=C14"
+      },
+      {
+        "po": 639,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 639,
+        "n": "Drug Status",
+        "v": "Clinical Trial"
+      },
+      {
+        "po": 638,
+        "n": "type",
+        "v": "protein"
+      },
+      {
+        "po": 638,
+        "n": "class",
+        "v": "prey"
+      },
+      {
+        "po": 637,
+        "n": "Smiles",
+        "v": "CCC@H1CC@@H(C@@2(C@H(C@H(C@H(C@@H(O2)CC@@H(C@@H(C)CC/C=C/C=C(\\C)/C@@H3C/C=C/C=C/C@@H(C@@H(C@H(C@H(C(=O)NC@H(C(=O)NC@H(C(=O)N4CCCC@H(N4)C(=O)O3)CC5=CC(=CC=C5)O)C(C)C)CCC(=O)C)O)C)O)O)C)O)C)NC1=O)C"
+      },
+      {
+        "po": 637,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 637,
+        "n": "Drug Status",
+        "v": "Pre-clinical"
+      },
+      {
+        "po": 636,
+        "n": "type",
+        "v": "protein"
+      },
+      {
+        "po": 636,
+        "n": "class",
+        "v": "prey"
+      },
+      {
+        "po": 635,
+        "n": "Smiles",
+        "v": "COC1CC(CCC1O)CC(C)C2CC(=O)C(C)\\C=C(/C)C(O)C(OC)C(=O)C(C)CC(C)/C=C/C=C/C=C(C)/C(CC3CCC(C)C(O)(O3)C(=O)C(=O)N4CCCCC4C(=O)O2)OC"
+      },
+      {
+        "po": 635,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 635,
+        "n": "Drug Status",
+        "v": "Approved (Organ rejection)"
+      },
+      {
+        "po": 634,
+        "n": "Smiles",
+        "v": "CC(C)CC@@H1NC(=O)C@@H(CCC"
+      },
+      {
+        "po": 634,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 634,
+        "n": "Drug Status",
+        "v": "Pre-clinical"
+      },
+      {
+        "po": 633,
+        "n": "type",
+        "v": "protein"
+      },
+      {
+        "po": 633,
+        "n": "class",
+        "v": "prey"
+      },
+      {
+        "po": 632,
+        "n": "Smiles",
+        "v": "OC@@H(C1)C@H(COS(=O)(N)=O)CC@H1N(C2=NC=N3)C=CC2=C3NC@@H4C5=CC=CC=C5CC4"
+      },
+      {
+        "po": 632,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 632,
+        "n": "Drug Status",
+        "v": "Clinical Trial"
+      },
+      {
+        "po": 631,
+        "n": "Smiles",
+        "v": "C1=CC(=CC=C1C(=O)OC2=CC3=C(C=C2)C=C(C=C3)C(=N)N)N=C(N)N"
+      },
+      {
+        "po": 631,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 631,
+        "n": "Drug Status",
+        "v": "Approved (Anticoagulant)"
+      },
+      {
+        "po": 630,
+        "n": "Smiles",
+        "v": "CC1=C(C2=C(N3C(C)=NN=C3C@@H(N=C2C4=CC=C(C=C4)Cl)CC(NCCOCCOCCOCC(NC@@H(C(C)(C)C)C(N5CC@@H(CC@H5C(NCC6=CC=C(C7=C(N=CS7)C)C=C6)=O)O)=O)=O)=O)S1)C"
+      },
+      {
+        "po": 630,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 630,
+        "n": "Drug Status",
+        "v": "Pre-clinical"
+      },
+      {
+        "po": 629,
+        "n": "Smiles",
+        "v": "NC1=NC2=C(C=CC=C2)N1C3=NC4=C(OC)C=CC=C4C(NCC5=CC=CC=C5)=N3"
+      },
+      {
+        "po": 629,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 629,
+        "n": "Drug Status",
+        "v": "Pre-clinical"
+      },
+      {
+        "po": 628,
+        "n": "type",
+        "v": "protein"
+      },
+      {
+        "po": 628,
+        "n": "class",
+        "v": "prey"
+      },
+      {
+        "po": 627,
+        "n": "Smiles",
+        "v": "Nc1cc(nc(N)n+1O-)N2CCCCC2"
+      },
+      {
+        "po": 627,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 627,
+        "n": "Drug Status",
+        "v": "Approved (Hair loss)"
+      },
+      {
+        "po": 626,
+        "n": "Smiles",
+        "v": "NCCCCC@H(NC@@H(CCc1ccccc1)C(=O)O)C(=O)N1CCCC@H1C(=O)O"
+      },
+      {
+        "po": 626,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 626,
+        "n": "Drug Status",
+        "v": "Approved (Hypertension)"
+      },
+      {
+        "po": 625,
+        "n": "Smiles",
+        "v": "CC(=O)NCC@H1CN(c2ccc(N3CCOCC3)c(F)c2)C(=O)O1"
+      },
+      {
+        "po": 625,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 625,
+        "n": "Drug Status",
+        "v": "Approved (Bacterial infection)"
+      },
+      {
+        "po": 624,
+        "n": "type",
+        "v": "GO term"
+      },
+      {
+        "po": 624,
+        "n": "class",
+        "v": "prey"
+      },
+      {
+        "po": 623,
+        "n": "Smiles",
+        "v": "OC@H1C@H(O)C@@H(O)CN(CCCCCCN(C2CCCCC2)C(NC(C)(C)C)=O)C@@H1CO"
+      },
+      {
+        "po": 623,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 623,
+        "n": "Drug Status",
+        "v": "Clinical Trial"
+      },
+      {
+        "po": 622,
+        "n": "Smiles",
+        "v": "CC1=C(C)C2=C(S1)N3C(=NN=C3C(CC(=O)NCCCCCCCCNC(=O)COC4=CC=CC5=C4C(=O)N(C6CCC"
+      },
+      {
+        "po": 622,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 622,
+        "n": "Drug Status",
+        "v": "Pre-clinical"
+      },
+      {
+        "po": 621,
+        "n": "Smiles",
+        "v": "C(NC1=NC2=CC=CC=C2C(=N1)NCC3=CC=CC=C3)C4=CC=CC=C4"
+      },
+      {
+        "po": 621,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 621,
+        "n": "Drug Status",
+        "v": "Pre-clinical"
+      },
+      {
+        "po": 620,
+        "n": "type",
+        "v": "protein"
+      },
+      {
+        "po": 620,
+        "n": "class",
+        "v": "prey"
+      },
+      {
+        "po": 619,
+        "n": "Smiles",
+        "v": "CC(C)(C1=NC(C2=C(F)C(NS(=O)(C3=C(F)C=CC=C3F)=O)=CC=C2)=C(C4=NC(N)=NC=C4)S1)C"
+      },
+      {
+        "po": 619,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 619,
+        "n": "Drug Status",
+        "v": "Approved (Cancer)"
+      },
+      {
+        "po": 618,
+        "n": "Smiles",
+        "v": "CC1=NOC2=C1C3=CC=CC=C3C(=NC@H2CC(=O)N)C4=CC=C(C=C4)Cl"
+      },
+      {
+        "po": 618,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 618,
+        "n": "Drug Status",
+        "v": "Clinical Trial"
+      },
+      {
+        "po": 617,
+        "n": "Smiles",
+        "v": "O=C(C@@H1CCCN(C(C@H(C)NC(C@H(C(C)C)N2)=O)=O)N1)OC@H(CCNC(OC(C)(C)C)=O)C3=CC=CC(/C=C/CCC@@H(OC)C@@H(C)C2=O)=C3"
+      },
+      {
+        "po": 617,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 617,
+        "n": "Drug Status",
+        "v": "Pre-clinical"
+      },
+      {
+        "po": 616,
+        "n": "type",
+        "v": "GO term"
+      },
+      {
+        "po": 616,
+        "n": "class",
+        "v": "prey"
+      },
+      {
+        "po": 615,
+        "n": "Smiles",
+        "v": "CC1=C(SC(NC(C(C)(C)C)=O)=N1)C2=CC=C(OC)C(S(NC3=CC=C(O)C=C3)(=O)=O)=C2"
+      },
+      {
+        "po": 615,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 615,
+        "n": "Drug Status",
+        "v": "Pre-clinical"
+      },
+      {
+        "po": 614,
+        "n": "type",
+        "v": "protein"
+      },
+      {
+        "po": 614,
+        "n": "class",
+        "v": "prey"
+      },
+      {
+        "po": 613,
+        "n": "Smiles",
+        "v": "CCN(CC)CCCC@H(C)Nc1ccnc2cc(Cl)ccc12"
+      },
+      {
+        "po": 613,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 613,
+        "n": "Drug Status",
+        "v": "Approved (Malaria)"
+      },
+      {
+        "po": 612,
+        "n": "type",
+        "v": "GO term"
+      },
+      {
+        "po": 612,
+        "n": "class",
+        "v": "prey"
+      },
+      {
+        "po": 611,
+        "n": "Smiles",
+        "v": "C1=CC(=CC=C1C@H(C@@H(CO)NC(=O)C(Cl)Cl)O)N+(=O)O-"
+      },
+      {
+        "po": 611,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 611,
+        "n": "Drug Status",
+        "v": "Approved (Bacterial infection)"
+      },
+      {
+        "po": 610,
+        "n": "type",
+        "v": "protein"
+      },
+      {
+        "po": 610,
+        "n": "class",
+        "v": "prey"
+      },
+      {
+        "po": 609,
+        "n": "Smiles",
+        "v": "CC1=CC2=C(C=CC=C2C(N)=O)N1C3=NC4=C(COCC4)C(=N3)NCC5=CC=CC=C5"
+      },
+      {
+        "po": 609,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 609,
+        "n": "Drug Status",
+        "v": "Clinical Trial"
+      },
+      {
+        "po": 608,
+        "n": "Smiles",
+        "v": "O=C(O)C@H1N(C(=O)C@H(C)CS)CCC1"
+      },
+      {
+        "po": 608,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 608,
+        "n": "Drug Status",
+        "v": "Approved (Hypertension)"
+      },
+      {
+        "po": 607,
+        "n": "type",
+        "v": "GO term"
+      },
+      {
+        "po": 607,
+        "n": "class",
+        "v": "prey"
+      },
+      {
+        "po": 606,
+        "n": "Smiles",
+        "v": "CN(C)C(=O)COC(=O)Cc1ccc(OC(=O)c2ccc(N=C(N)N)cc2)cc1"
+      },
+      {
+        "po": 606,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 606,
+        "n": "Drug Status",
+        "v": "Approved (Pancreatitis)"
+      },
+      {
+        "po": 605,
+        "n": "type",
+        "v": "protein"
+      },
+      {
+        "po": 605,
+        "n": "class",
+        "v": "prey"
+      },
+      {
+        "po": 604,
+        "n": "Smiles",
+        "v": "CCNC(=O)C1=CC2=C(NH1)C(=O)N(C)C=C2C3=C(OC4=C(C)C=C(F)C=C4C)C=CC(=C3)C(C)(C)O"
+      },
+      {
+        "po": 604,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 604,
+        "n": "Drug Status",
+        "v": "Clinical Trial"
+      },
+      {
+        "po": 603,
+        "n": "type",
+        "v": "GO term"
+      },
+      {
+        "po": 603,
+        "n": "class",
+        "v": "prey"
+      },
+      {
+        "po": 602,
+        "n": "Smiles",
+        "v": "O=C(O)C1=CC(C2=CC=C(/C=C(SC(N3CC4=CC=CC=C4)=S)/C3=O)O2)=CC=C1Cl"
+      },
+      {
+        "po": 602,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 602,
+        "n": "Drug Status",
+        "v": "Pre-clinical"
+      },
+      {
+        "po": 601,
+        "n": "type",
+        "v": "Viral protein"
+      },
+      {
+        "po": 601,
+        "n": "class",
+        "v": "bait"
+      },
+      {
+        "po": 600,
+        "n": "type",
+        "v": "Viral protein"
+      },
+      {
+        "po": 600,
+        "n": "class",
+        "v": "bait"
+      },
+      {
+        "po": 599,
+        "n": "type",
+        "v": "Viral protein"
+      },
+      {
+        "po": 599,
+        "n": "class",
+        "v": "bait"
+      },
+      {
+        "po": 598,
+        "n": "type",
+        "v": "Viral protein"
+      },
+      {
+        "po": 598,
+        "n": "class",
+        "v": "bait"
+      },
+      {
+        "po": 597,
+        "n": "type",
+        "v": "Viral protein"
+      },
+      {
+        "po": 597,
+        "n": "class",
+        "v": "bait"
+      },
+      {
+        "po": 596,
+        "n": "type",
+        "v": "Viral protein"
+      },
+      {
+        "po": 596,
+        "n": "class",
+        "v": "bait"
+      },
+      {
+        "po": 595,
+        "n": "type",
+        "v": "Viral protein"
+      },
+      {
+        "po": 595,
+        "n": "class",
+        "v": "bait"
+      },
+      {
+        "po": 594,
+        "n": "type",
+        "v": "Viral protein"
+      },
+      {
+        "po": 594,
+        "n": "class",
+        "v": "bait"
+      },
+      {
+        "po": 593,
+        "n": "type",
+        "v": "Viral protein"
+      },
+      {
+        "po": 593,
+        "n": "class",
+        "v": "bait"
+      },
+      {
+        "po": 592,
+        "n": "type",
+        "v": "Viral protein"
+      },
+      {
+        "po": 592,
+        "n": "class",
+        "v": "bait"
+      },
+      {
+        "po": 591,
+        "n": "type",
+        "v": "Viral protein"
+      },
+      {
+        "po": 591,
+        "n": "class",
+        "v": "bait"
+      },
+      {
+        "po": 590,
+        "n": "type",
+        "v": "protein"
+      },
+      {
+        "po": 590,
+        "n": "class",
+        "v": "prey"
+      },
+      {
+        "po": 650,
+        "n": "type",
+        "v": "protein"
+      },
+      {
+        "po": 650,
+        "n": "class",
+        "v": "prey"
+      },
+      {
+        "po": 649,
+        "n": "Smiles",
+        "v": "N"
+      },
+      {
+        "po": 649,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 649,
+        "n": "Drug Status",
+        "v": "Clinical Trial"
+      },
+      {
+        "po": 648,
+        "n": "type",
+        "v": "protein"
+      },
+      {
+        "po": 648,
+        "n": "class",
+        "v": "prey"
+      },
+      {
+        "po": 647,
+        "n": "Smiles",
+        "v": "O=C(C@1(H)CCCCN1C2=O)OC@@H(/C=C/C/C=C/CC@@H(C)C@H(O)C@@H(C)C@@3(H)OC@(C2=O)(O)C@H(C)CC3)C@H(CC)CC4=CC=CC=C4"
+      },
+      {
+        "po": 647,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 647,
+        "n": "Drug Status",
+        "v": "Clinical Trial"
+      },
+      {
+        "po": 646,
+        "n": "Smiles",
+        "v": "C1=CC=NC(=C1)NNC(=O)/C=C\\N2C=NC(=N2)C3=CC(=CC(=C3)C(F)(F)F)C(F)(F)F"
+      },
+      {
+        "po": 646,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 646,
+        "n": "Drug Status",
+        "v": "Clinical Trial"
+      },
+      {
+        "po": 645,
+        "n": "Smiles",
+        "v": "CC1=C2N(C(=O)C(=C1)NC3=NC=NC(=C3)N)C4(CCCCC4)NC2=O"
+      },
+      {
+        "po": 645,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 645,
+        "n": "Drug Status",
+        "v": "Clinical Trial"
+      },
+      {
+        "po": 644,
+        "n": "Smiles",
+        "v": "CC(C)(C)NCC(=O)NC1=CC(=C2CC@H3CC@H4C@@H(C(=O)C(=C(C@4(C(=O)C3=C(C2=C1O)O)O)O)C(=O)N)N(C)C)N(C)C"
+      },
+      {
+        "po": 644,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 644,
+        "n": "Drug Status",
+        "v": "Approved (Bacterial infection)"
+      },
+      {
+        "po": 643,
+        "n": "Smiles",
+        "v": "O=C(C@H(CC(C)C)N(C(C@@H(N(C(C@H(NC(C@H(NC(C@H1CCCCN1C(C@H(C)N2C)=O)=O)C@@H(C(C)C)O)=O)C@@H(C)CC)=O)C)C)=O)C)NC@@H(CC@@H(C)C=C)C2=O"
+      },
+      {
+        "po": 643,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 643,
+        "n": "Drug Status",
+        "v": "Pre-clinical"
+      },
+      {
+        "po": 642,
+        "n": "type",
+        "v": "protein"
+      },
+      {
+        "po": 642,
+        "n": "class",
+        "v": "prey"
+      },
+      {
+        "po": 641,
+        "n": "Smiles",
+        "v": "CC@@H1CC@@H(C@@H2C@H(CC@H(C@@(O2)(C(=O)C(=O)N3CCCCC@H3C(=O)OC@@H(C@@H(C@H(CC(=O)C@@H(/C=C(/C1)\\C)CC=C)O)C)/C(=C/C@@H4CCC@H(C@@H(C4)OC)O)/C)O)C)OC)OC"
+      },
+      {
+        "po": 641,
+        "n": "type",
+        "v": "drug"
+      },
+      {
+        "po": 641,
+        "n": "Drug Status",
+        "v": "Approved (Organ rejection)"
+      },
+      {
+        "po": 640,
+        "n": "type",
+        "v": "protein"
+      },
+      {
+        "po": 640,
+        "n": "class",
+        "v": "prey"
+      }
+    ]
+  },
+  {
+    "cyHiddenAttributes": [
+      {
+        "n": "NDEx UUID",
+        "v": "9ee12f90-6fd0-11ea-bfdc-0ac135e8bacf"
+      },
+      {
+        "n": "layoutAlgorithm",
+        "v": "Prefuse Force Directed Layout"
+      }
+    ]
+  },
+  {
+    "nodes": [
+      {
+        "@id": 639,
+        "n": "Sapanisertib (INK128/MlN128)",
+        "r": "zinc:ZINC73069271"
+      },
+      {
+        "@id": 638,
+        "n": "IMPDH2",
+        "r": "hgnc.symbol:IMPDH2"
+      },
+      {
+        "@id": 637,
+        "n": "Sanglifehrin A",
+        "r": "Sanglifehrin A"
+      },
+      {
+        "@id": 636,
+        "n": "LARP1\nFKBP15\nFKBP7/10",
+        "r": "LARP1\nFKBP15\nFKBP7/10"
+      },
+      {
+        "@id": 635,
+        "n": "Rapamycin (Sirolimus)",
+        "r": "zinc:ZINC169289388"
+      },
+      {
+        "@id": 634,
+        "n": "PS3061",
+        "r": "PS3061"
+      },
+      {
+        "@id": 633,
+        "n": "CUL2",
+        "r": "hgnc.symbol:CUL2"
+      },
+      {
+        "@id": 632,
+        "n": "Pevonedistat",
+        "r": "zinc:ZINC58660702"
+      },
+      {
+        "@id": 631,
+        "n": "Nafamostat",
+        "r": "zinc:ZINC3874467"
+      },
+      {
+        "@id": 630,
+        "n": "MZ1",
+        "r": "MZ1"
+      },
+      {
+        "@id": 629,
+        "n": "ML240",
+        "r": "zinc:ZINC96021026"
+      },
+      {
+        "@id": 628,
+        "n": "PLOD1/2",
+        "r": "hgnc.symbol:PLOD1/2"
+      },
+      {
+        "@id": 627,
+        "n": "Minoxidil",
+        "r": "zinc:ZINC1735"
+      },
+      {
+        "@id": 626,
+        "n": "Lisinopril",
+        "r": "zinc:ZINC3812863"
+      },
+      {
+        "@id": 625,
+        "n": "Linezolid",
+        "r": "zinc:ZINC2008866"
+      },
+      {
+        "@id": 624,
+        "n": "ER Protein Processing",
+        "r": "ER Protein Processing"
+      },
+      {
+        "@id": 623,
+        "n": "IHVR-19029",
+        "r": "IHVR-19029"
+      },
+      {
+        "@id": 622,
+        "n": "dBET6",
+        "r": "dBET6"
+      },
+      {
+        "@id": 621,
+        "n": "DBeQ",
+        "r": "zinc:ZINC39389"
+      },
+      {
+        "@id": 620,
+        "n": "NEK9",
+        "r": "hgnc.symbol:NEK9"
+      },
+      {
+        "@id": 619,
+        "n": "Dabrafenib",
+        "r": "zinc:ZINC68153186"
+      },
+      {
+        "@id": 618,
+        "n": "CPI-0610",
+        "r": "zinc:ZINC200480149"
+      },
+      {
+        "@id": 617,
+        "n": "Compound 2",
+        "r": "Compound 2"
+      },
+      {
+        "@id": 616,
+        "n": "Viral Transcription",
+        "r": "GO:0019083"
+      },
+      {
+        "@id": 615,
+        "n": "Compound 10",
+        "r": "Compound 10"
+      },
+      {
+        "@id": 614,
+        "n": "SIGMAR1",
+        "r": "hgnc.symbol:SIGMAR1"
+      },
+      {
+        "@id": 613,
+        "n": "Chloroquine",
+        "r": "zinc:ZINC19144231"
+      },
+      {
+        "@id": 612,
+        "n": "Mitochondrial Ribosome",
+        "r": "GO:0005761"
+      },
+      {
+        "@id": 611,
+        "n": "Chloramphenicol",
+        "r": "zinc:ZINC113382"
+      },
+      {
+        "@id": 610,
+        "n": "VCP",
+        "r": "hgnc.symbol:VCP"
+      },
+      {
+        "@id": 609,
+        "n": "CB5083",
+        "r": "zinc:ZINC208076131"
+      },
+      {
+        "@id": 608,
+        "n": "Captopril",
+        "r": "zinc:ZINC57001"
+      },
+      {
+        "@id": 607,
+        "n": "Cell Entry",
+        "r": "Cell Entry"
+      },
+      {
+        "@id": 606,
+        "n": "Camostat",
+        "r": "zinc:ZINC3871842"
+      },
+      {
+        "@id": 605,
+        "n": "BRD2/4",
+        "r": "BRD2/4"
+      },
+      {
+        "@id": 604,
+        "n": "ABBV-744",
+        "r": "zinc:ZINC1250228389"
+      },
+      {
+        "@id": 603,
+        "n": "Translation",
+        "r": "GO:0006412"
+      },
+      {
+        "@id": 602,
+        "n": "4E2RCat",
+        "r": "zinc:ZINC7018722"
+      },
+      {
+        "@id": 601,
+        "n": "Orf10",
+        "r": "Orf10"
+      },
+      {
+        "@id": 600,
+        "n": "Nsp6",
+        "r": "Nsp6"
+      },
+      {
+        "@id": 599,
+        "n": "Orf6",
+        "r": "Orf6"
+      },
+      {
+        "@id": 598,
+        "n": "Nsp9",
+        "r": "Nsp9"
+      },
+      {
+        "@id": 597,
+        "n": "Nsp4",
+        "r": "Nsp4"
+      },
+      {
+        "@id": 596,
+        "n": "Nsp14",
+        "r": "Nsp14"
+      },
+      {
+        "@id": 595,
+        "n": "Nsp13",
+        "r": "Nsp13"
+      },
+      {
+        "@id": 594,
+        "n": "Orf8",
+        "r": "Orf8"
+      },
+      {
+        "@id": 593,
+        "n": "Nsp2",
+        "r": "Nsp2"
+      },
+      {
+        "@id": 592,
+        "n": "N",
+        "r": "N"
+      },
+      {
+        "@id": 591,
+        "n": "E",
+        "r": "E"
+      },
+      {
+        "@id": 590,
+        "n": "NUPs/RAE1",
+        "r": "NUPs/RAE1"
+      },
+      {
+        "@id": 650,
+        "n": "EIF4E2/H",
+        "r": "EIF4E2/H"
+      },
+      {
+        "@id": 649,
+        "n": "Zotatifin (eFT226)",
+        "r": "Zotatifin (eFT226)"
+      },
+      {
+        "@id": 648,
+        "n": "CEP250",
+        "r": "hgnc.symbol:CEP250"
+      },
+      {
+        "@id": 647,
+        "n": "WDB002",
+        "r": "WDB002"
+      },
+      {
+        "@id": 646,
+        "n": "Verdinexor",
+        "r": "zinc:ZINC205957597"
+      },
+      {
+        "@id": 645,
+        "n": "Tomivosertib (eFT-508)",
+        "r": "zinc:ZINC575623807"
+      },
+      {
+        "@id": 644,
+        "n": "Tigecycline",
+        "r": "zinc:ZINC14879972"
+      },
+      {
+        "@id": 643,
+        "n": "Ternatin 4 (DA3)",
+        "r": "Ternatin 4 (DA3)"
+      },
+      {
+        "@id": 642,
+        "n": "FKBP7/10",
+        "r": "FKBP7/10"
+      },
+      {
+        "@id": 641,
+        "n": "FK-506 (Tacrolimus)",
+        "r": "zinc:ZINC85537027"
+      },
+      {
+        "@id": 640,
+        "n": "LARP1    ",
+        "r": "hgnc.symbol:LARP1    "
+      }
+    ]
+  },
+  {
+    "networkAttributes": [
+      {
+        "n": "rightsHolder",
+        "v": "Nevan Krogan"
+      },
+      {
+        "n": "disease",
+        "v": "COVID-19"
+      },
+      {
+        "n": "organism",
+        "v": "Human, 9606, H.sapiens, SARS-CoV-2, NCBI:txid2697049"
+      },
+      {
+        "n": "author",
+        "v": "Rudolf T. Pillich"
+      },
+      {
+        "n": "description",
+        "v": "<p>Supplementary Table 4 - Drug-target associations for human protein interactors of SARS-Co-V2 and reagents and drugs that modulate them; drawn from expert knowledge and not readily available from the chemoinformatically-searchable literature.</p><p>The colored border for drug nodes indicates their development status:<br/>Green border = Approved<br/>Orange border = Clinical trial<br/>Red border = Pre-clinical</p><p>Thicker Dark Blue edges represent host-pathogen protein-protein interactions.</p>"
+      },
+      {
+        "n": "tissue",
+        "v": "HEK-293T"
+      },
+      {
+        "n": "version",
+        "v": "MAR-2020"
+      },
+      {
+        "n": "@context",
+        "v": "{\"hgnc.symbol\":\"https://identifiers.org/hgnc.symbol/\",\"zinc\":\"http://identifiers.org/zinc:\",\"pubmed\":\"https://identifiers.org/pubmed/\",\"doi\":\"https://doi.org/\"}"
+      },
+      {
+        "n": "labels",
+        "v": "coronavirus, SARS-CoV-2, SARS-nCov, COVID-19"
+      },
+      {
+        "n": "reference",
+        "v": "<p>bioRxiv - doi: <a href=\"https://doi.org/10.1101/2020.03.22.002386\">10.1101/2020.03.22.002386</a></p>"
+      },
+      {
+        "n": "name",
+        "v": "Expert-identified drugs and reagents that modulate SARS-CoV-2 interactors (ST4)"
+      }
+    ]
+  },
+  {
+    "cyTableColumn": [
+      {
+        "applies_to": "node_table",
+        "n": "shared name"
+      },
+      {
+        "applies_to": "node_table",
+        "n": "name"
+      },
+      {
+        "applies_to": "node_table",
+        "n": "Drug Status"
+      },
+      {
+        "applies_to": "node_table",
+        "n": "Smiles"
+      },
+      {
+        "applies_to": "node_table",
+        "n": "class"
+      },
+      {
+        "applies_to": "node_table",
+        "n": "type"
+      },
+      {
+        "applies_to": "edge_table",
+        "n": "shared name"
+      },
+      {
+        "applies_to": "edge_table",
+        "n": "shared interaction"
+      },
+      {
+        "applies_to": "edge_table",
+        "n": "name"
+      },
+      {
+        "applies_to": "edge_table",
+        "n": "interaction"
+      },
+      {
+        "applies_to": "edge_table",
+        "n": "Activity (nM)"
+      },
+      {
+        "applies_to": "edge_table",
+        "n": "Activity Type"
+      },
+      {
+        "applies_to": "edge_table",
+        "n": "citation",
+        "d": "list_of_string"
+      },
+      {
+        "applies_to": "network_table",
+        "n": "shared name"
+      },
+      {
+        "applies_to": "network_table",
+        "n": "name"
+      },
+      {
+        "applies_to": "network_table",
+        "n": "__Annotations",
+        "d": "list_of_string"
+      },
+      {
+        "applies_to": "network_table",
+        "n": "description"
+      },
+      {
+        "applies_to": "network_table",
+        "n": "version"
+      },
+      {
+        "applies_to": "network_table",
+        "n": "author"
+      },
+      {
+        "applies_to": "network_table",
+        "n": "disease"
+      },
+      {
+        "applies_to": "network_table",
+        "n": "labels"
+      },
+      {
+        "applies_to": "network_table",
+        "n": "organism"
+      },
+      {
+        "applies_to": "network_table",
+        "n": "rightsHolder"
+      },
+      {
+        "applies_to": "network_table",
+        "n": "tissue"
+      },
+      {
+        "applies_to": "network_table",
+        "n": "reference"
+      },
+      {
+        "applies_to": "network_table",
+        "n": "@context"
+      }
+    ]
+  },
+  {
+    "cartesianLayout": [
+      {
+        "node": 643,
+        "x": 191.06871389057707,
+        "y": -260.4396092124706
+      },
+      {
+        "node": 614,
+        "x": -435.0043797037908,
+        "y": 355.71032140110674
+      },
+      {
+        "node": 644,
+        "x": 62.47989833163578,
+        "y": 423.25726343208976
+      },
+      {
+        "node": 615,
+        "x": 239.46157631531827,
+        "y": 110.37580138269851
+      },
+      {
+        "node": 645,
+        "x": 361.1285181733645,
+        "y": -255.78644839290925
+      },
+      {
+        "node": 616,
+        "x": 255.86494355701282,
+        "y": -5.740915362358432
+      },
+      {
+        "node": 646,
+        "x": 653.9333091808812,
+        "y": -202.1025003901946
+      },
+      {
+        "node": 617,
+        "x": 359.1752395838413,
+        "y": 108.11984211657031
+      },
+      {
+        "node": 647,
+        "x": -244.33691759358723,
+        "y": 428.6328846957301
+      },
+      {
+        "node": 618,
+        "x": -433.6067429106154,
+        "y": -357.29284466639325
+      },
+      {
+        "node": 648,
+        "x": -295.01023780143413,
+        "y": 339.34471175896425
+      },
+      {
+        "node": 619,
+        "x": 676.5607595900976,
+        "y": -379.6825919596526
+      },
+      {
+        "node": 649,
+        "x": -430.5483861932868,
+        "y": -78.09158765351276
+      },
+      {
+        "node": 620,
+        "x": 698.7540669181078,
+        "y": -444.9110650533506
+      },
+      {
+        "node": 650,
+        "x": -340.1473709016643,
+        "y": -133.85208723799485
+      },
+      {
+        "node": 621,
+        "x": 501.95568429159243,
+        "y": 423.02089984985565
+      },
+      {
+        "node": 590,
+        "x": 636.4353691957597,
+        "y": -284.9252397661312
+      },
+      {
+        "node": 622,
+        "x": -248.87696986058558,
+        "y": -370.72678018806545
+      },
+      {
+        "node": 591,
+        "x": -365.2196532945795,
+        "y": -472.0246175145193
+      },
+      {
+        "node": 623,
+        "x": 645.4547550535387,
+        "y": 110.5282491557376
+      },
+      {
+        "node": 592,
+        "x": -370.40537615590813,
+        "y": -4.698290169430198
+      },
+      {
+        "node": 624,
+        "x": 541.0662187068772,
+        "y": -9.57404765991729
+      },
+      {
+        "node": 593,
+        "x": -269.4414789469338,
+        "y": -71.81459858650354
+      },
+      {
+        "node": 625,
+        "x": 162.11728735710923,
+        "y": 393.1208921350418
+      },
+      {
+        "node": 594,
+        "x": -119.94254686410468,
+        "y": -78.65224474837241
+      },
+      {
+        "node": 626,
+        "x": 17.315779172994944,
+        "y": -255.1337583104082
+      },
+      {
+        "node": 595,
+        "x": -222.5589772436941,
+        "y": 269.24193195652276
+      },
+      {
+        "node": 627,
+        "x": -77.56984847554227,
+        "y": 102.67765871402744
+      },
+      {
+        "node": 596,
+        "x": 648.9539265307327,
+        "y": 290.61915531283813
+      },
+      {
+        "node": 628,
+        "x": -76.74392253132574,
+        "y": 19.062279998788
+      },
+      {
+        "node": 597,
+        "x": 561.9073361429358,
+        "y": -333.9354257549952
+      },
+      {
+        "node": 629,
+        "x": 571.7511323910869,
+        "y": 395.4775661384875
+      },
+      {
+        "node": 598,
+        "x": 592.9687030964137,
+        "y": -437.7599946143215
+      },
+      {
+        "node": 630,
+        "x": -277.845133124257,
+        "y": -309.95485071007494
+      },
+      {
+        "node": 599,
+        "x": 755.8050247263056,
+        "y": -332.42226632587193
+      },
+      {
+        "node": 631,
+        "x": 74.28788056269471,
+        "y": -292.33847440810155
+      },
+      {
+        "node": 600,
+        "x": -487.5073708465696,
+        "y": 265.00515910455675
+      },
+      {
+        "node": 632,
+        "x": 318.04784038862704,
+        "y": 433.87325485733953
+      },
+      {
+        "node": 601,
+        "x": 408.67472565278104,
+        "y": 286.5806850601221
+      },
+      {
+        "node": 633,
+        "x": 342.05885901369425,
+        "y": 352.9450640392494
+      },
+      {
+        "node": 602,
+        "x": 276.6721084640354,
+        "y": -282.36624672871926
+      },
+      {
+        "node": 634,
+        "x": 532.166057859824,
+        "y": 109.60282079282237
+      },
+      {
+        "node": 603,
+        "x": 256.3080785200132,
+        "y": -374.5939268955663
+      },
+      {
+        "node": 635,
+        "x": -239.72767557018315,
+        "y": 103.35077095116887
+      },
+      {
+        "node": 604,
+        "x": -377.48212735649145,
+        "y": -292.46831921856335
+      },
+      {
+        "node": 636,
+        "x": -206.55763161277144,
+        "y": 38.95467571850996
+      },
+      {
+        "node": 605,
+        "x": -327.5427473297445,
+        "y": -388.7770294895692
+      },
+      {
+        "node": 637,
+        "x": 728.1229738322144,
+        "y": 415.61958443375863
+      },
+      {
+        "node": 606,
+        "x": -108.94392819150215,
+        "y": -280.2507890857969
+      },
+      {
+        "node": 638,
+        "x": 751.4405465433425,
+        "y": 346.98901853421
+      },
+      {
+        "node": 607,
+        "x": -20.63682286258848,
+        "y": -368.0628479664365
+      },
+      {
+        "node": 639,
+        "x": -451.8718575028473,
+        "y": 125.95122124848274
+      },
+      {
+        "node": 608,
+        "x": -51.82405097182178,
+        "y": -243.6026983525104
+      },
+      {
+        "node": 609,
+        "x": 421.1168340238073,
+        "y": 417.3158291111111
+      },
+      {
+        "node": 610,
+        "x": 481.20102894012956,
+        "y": 349.2150060243777
+      },
+      {
+        "node": 640,
+        "x": -393.75908585148227,
+        "y": 79.21255996941224
+      },
+      {
+        "node": 611,
+        "x": -43.08931700455608,
+        "y": 410.9540456168414
+      },
+      {
+        "node": 641,
+        "x": 54.32549288844962,
+        "y": 64.74639205557654
+      },
+      {
+        "node": 612,
+        "x": 62.17183613887741,
+        "y": 311.55059766667995
+      },
+      {
+        "node": 642,
+        "x": 11.954719949573217,
+        "y": -32.61132432457894
+      },
+      {
+        "node": 613,
+        "x": -462.12862119729147,
+        "y": 428.5908098248465
+      }
+    ]
+  },
+  {
+    "edgeAttributes": [
+      {
+        "po": 690,
+        "n": "Activity (nM)",
+        "v": "IC50 = 1"
+      },
+      {
+        "po": 690,
+        "n": "citation",
+        "v": [
+          "pubmed:21651476"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 690,
+        "n": "name",
+        "v": "Sapanisertib (INK128/MlN128) (modulates) LARP1    "
+      },
+      {
+        "po": 690,
+        "n": "Activity Type",
+        "v": "mTOR inhibitor"
+      },
+      {
+        "po": 689,
+        "n": "Activity (nM)",
+        "v": "PPIA Kd = 0.2 IPDH2 Binding EC50 = 11.5 (with PPIA)"
+      },
+      {
+        "po": 689,
+        "n": "citation",
+        "v": [
+          "pubmed:28076787"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 689,
+        "n": "name",
+        "v": "Sanglifehrin A (modulates) IMPDH2"
+      },
+      {
+        "po": 689,
+        "n": "Activity Type",
+        "v": "PPIA-IMPDH2 modulator"
+      },
+      {
+        "po": 688,
+        "n": "citation",
+        "v": [
+          ""
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 688,
+        "n": "name",
+        "v": "LARP1\nFKBP15\nFKBP7/10 (interacts with) Nsp2"
+      },
+      {
+        "po": 687,
+        "n": "citation",
+        "v": [
+          ""
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 687,
+        "n": "name",
+        "v": "LARP1\nFKBP15\nFKBP7/10 (interacts with) Orf8"
+      },
+      {
+        "po": 686,
+        "n": "citation",
+        "v": [
+          ""
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 686,
+        "n": "name",
+        "v": "LARP1\nFKBP15\nFKBP7/10 (interacts with) N"
+      },
+      {
+        "po": 685,
+        "n": "Activity (nM)",
+        "v": "IC50 =2.0"
+      },
+      {
+        "po": 685,
+        "n": "citation",
+        "v": [
+          "pubmed:15896331"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 685,
+        "n": "name",
+        "v": "Rapamycin (Sirolimus) (modulates) LARP1\nFKBP15\nFKBP7/10"
+      },
+      {
+        "po": 685,
+        "n": "Activity Type",
+        "v": "mTOR inhibitor"
+      },
+      {
+        "po": 684,
+        "n": "Activity (nM)",
+        "v": "IC50 = 20-500"
+      },
+      {
+        "po": 684,
+        "n": "citation",
+        "v": [
+          "pubmed:30550790"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 684,
+        "n": "name",
+        "v": "PS3061 (modulates) ER Protein Processing"
+      },
+      {
+        "po": 684,
+        "n": "Activity Type",
+        "v": "Sec61 inhibitor"
+      },
+      {
+        "po": 683,
+        "n": "Activity (nM)",
+        "v": "IC50 = 4.7"
+      },
+      {
+        "po": 683,
+        "n": "citation",
+        "v": [
+          "pubmed:19360080"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 683,
+        "n": "name",
+        "v": "Pevonedistat (modulates) CUL2"
+      },
+      {
+        "po": 683,
+        "n": "Activity Type",
+        "v": "NEDD8-activating enzyme inhibitor "
+      },
+      {
+        "po": 682,
+        "n": "Activity (nM)",
+        "v": "IC50 = 100"
+      },
+      {
+        "po": 682,
+        "n": "citation",
+        "v": [
+          "doi:10.1101/2020.01.31.929042",
+          "doi:10.1128/AAC.01043-16"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 682,
+        "n": "name",
+        "v": "Nafamostat (modulates) Cell Entry"
+      },
+      {
+        "po": 682,
+        "n": "Activity Type",
+        "v": "Serine protease 1 inhibitor"
+      },
+      {
+        "po": 681,
+        "n": "Activity (nM)",
+        "v": "Kd = 120-228"
+      },
+      {
+        "po": 681,
+        "n": "citation",
+        "v": [
+          "pubmed:26035625"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 681,
+        "n": "name",
+        "v": "MZ1 (modulates) BRD2/4"
+      },
+      {
+        "po": 681,
+        "n": "Activity Type",
+        "v": "Degrades BRD proteins"
+      },
+      {
+        "po": 680,
+        "n": "Activity (nM)",
+        "v": "IC50 = 100"
+      },
+      {
+        "po": 680,
+        "n": "citation",
+        "v": [
+          "pubmed:23316025"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 680,
+        "n": "name",
+        "v": "ML240 (modulates) VCP"
+      },
+      {
+        "po": 680,
+        "n": "Activity Type",
+        "v": "p97 inhibitor"
+      },
+      {
+        "po": 679,
+        "n": "Activity (nM)",
+        "v": "indirect mechanism "
+      },
+      {
+        "po": 679,
+        "n": "citation",
+        "v": [
+          "pubmed:30481795"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 679,
+        "n": "name",
+        "v": "Minoxidil (modulates) PLOD1/2"
+      },
+      {
+        "po": 679,
+        "n": "Activity Type",
+        "v": "PLOD inhibitor "
+      },
+      {
+        "po": 678,
+        "n": "Activity (nM)",
+        "v": "Ki = 0.27"
+      },
+      {
+        "po": 678,
+        "n": "citation",
+        "v": [
+          "pubmed:12540854"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 678,
+        "n": "name",
+        "v": "Lisinopril (modulates) Cell Entry"
+      },
+      {
+        "po": 678,
+        "n": "Activity Type",
+        "v": "ACE inhibitor"
+      },
+      {
+        "po": 677,
+        "n": "Activity (nM)",
+        "v": "IC50 = 16000"
+      },
+      {
+        "po": 677,
+        "n": "citation",
+        "v": [
+          "pubmed:16127068"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 677,
+        "n": "name",
+        "v": "Linezolid (modulates) Mitochondrial Ribosome"
+      },
+      {
+        "po": 677,
+        "n": "Activity Type",
+        "v": "mitochondrial ribosome inhibitor"
+      },
+      {
+        "po": 676,
+        "n": "Activity (nM)",
+        "v": "IC50 = 1200"
+      },
+      {
+        "po": 676,
+        "n": "citation",
+        "v": [
+          "pubmed:29253498",
+          "pubmed:28197304"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 676,
+        "n": "name",
+        "v": "IHVR-19029 (modulates) ER Protein Processing"
+      },
+      {
+        "po": 676,
+        "n": "Activity Type",
+        "v": "antiviral activity "
+      },
+      {
+        "po": 675,
+        "n": "Activity (nM)",
+        "v": "IC50 < 10000"
+      },
+      {
+        "po": 675,
+        "n": "citation",
+        "v": [
+          "pubmed:29764999"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 675,
+        "n": "name",
+        "v": "dBET6 (modulates) BRD2/4"
+      },
+      {
+        "po": 675,
+        "n": "Activity Type",
+        "v": "Degrades BRD proteins"
+      },
+      {
+        "po": 674,
+        "n": "Activity (nM)",
+        "v": "Ki = 3200"
+      },
+      {
+        "po": 674,
+        "n": "citation",
+        "v": [
+          "pubmed:21383145"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 674,
+        "n": "name",
+        "v": "DBeQ (modulates) VCP"
+      },
+      {
+        "po": 674,
+        "n": "Activity Type",
+        "v": "p97 inhibitor"
+      },
+      {
+        "po": 673,
+        "n": "citation",
+        "v": [
+          ""
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 673,
+        "n": "name",
+        "v": "NEK9 (interacts with) Nsp9"
+      },
+      {
+        "po": 672,
+        "n": "Activity (nM)",
+        "v": "IC50 = 1"
+      },
+      {
+        "po": 672,
+        "n": "citation",
+        "v": [
+          "pubmed:29112787"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 672,
+        "n": "name",
+        "v": "Dabrafenib (modulates) NEK9"
+      },
+      {
+        "po": 672,
+        "n": "Activity Type",
+        "v": "NEK9 nhibitor "
+      },
+      {
+        "po": 671,
+        "n": "Activity (nM)",
+        "v": "BRD2 IC50 = 25 BRD4 IC50 = 18"
+      },
+      {
+        "po": 671,
+        "n": "citation",
+        "v": [
+          "pubmed:26815195"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 671,
+        "n": "name",
+        "v": "CPI-0610 (modulates) BRD2/4"
+      },
+      {
+        "po": 671,
+        "n": "Activity Type",
+        "v": "BRD inhibitor"
+      },
+      {
+        "po": 670,
+        "n": "Activity (nM)",
+        "v": "Kd = 24"
+      },
+      {
+        "po": 670,
+        "n": "citation",
+        "v": [
+          "pubmed:30074795"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 670,
+        "n": "name",
+        "v": "Compound 2 (modulates) Viral Transcription"
+      },
+      {
+        "po": 670,
+        "n": "Activity Type",
+        "v": "Cyclophilin inhibitor"
+      },
+      {
+        "po": 669,
+        "n": "Activity (nM)",
+        "v": "IC50 = 3.4"
+      },
+      {
+        "po": 669,
+        "n": "citation",
+        "v": [
+          "pubmed:26885694"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 669,
+        "n": "name",
+        "v": "Compound 10 (modulates) Viral Transcription"
+      },
+      {
+        "po": 669,
+        "n": "Activity Type",
+        "v": "PI4K-III inhibitor"
+      },
+      {
+        "po": 668,
+        "n": "Activity (nM)",
+        "v": "Ki = 100"
+      },
+      {
+        "po": 668,
+        "n": "citation",
+        "v": [
+          "pubmed:30042674"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 668,
+        "n": "name",
+        "v": "Chloroquine (modulates) SIGMAR1"
+      },
+      {
+        "po": 668,
+        "n": "Activity Type",
+        "v": "Sigma 1 binder"
+      },
+      {
+        "po": 667,
+        "n": "Activity (nM)",
+        "v": "IC50 = 7400"
+      },
+      {
+        "po": 667,
+        "n": "citation",
+        "v": [
+          "pubmed:23148581"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 667,
+        "n": "name",
+        "v": "Chloramphenicol (modulates) Mitochondrial Ribosome"
+      },
+      {
+        "po": 667,
+        "n": "Activity Type",
+        "v": "mitochondrial ribosome inhibitor"
+      },
+      {
+        "po": 666,
+        "n": "Activity (nM)",
+        "v": "IC50 = 11"
+      },
+      {
+        "po": 666,
+        "n": "citation",
+        "v": [
+          "pubmed:26565666"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 666,
+        "n": "name",
+        "v": "CB5083 (modulates) VCP"
+      },
+      {
+        "po": 666,
+        "n": "Activity Type",
+        "v": "p97 inhibitor"
+      },
+      {
+        "po": 665,
+        "n": "Activity (nM)",
+        "v": "Ki = 3"
+      },
+      {
+        "po": 665,
+        "n": "citation",
+        "v": [
+          "pubmed:9187274"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 665,
+        "n": "name",
+        "v": "Captopril (modulates) Cell Entry"
+      },
+      {
+        "po": 665,
+        "n": "Activity Type",
+        "v": "ACE inhibitor"
+      },
+      {
+        "po": 664,
+        "n": "Activity (nM)",
+        "v": "IC50 < 1000"
+      },
+      {
+        "po": 664,
+        "n": "citation",
+        "v": [
+          "doi:10.1101/2020.01.31.929042",
+          "pubmed:22496216"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 664,
+        "n": "name",
+        "v": "Camostat (modulates) Cell Entry"
+      },
+      {
+        "po": 664,
+        "n": "Activity Type",
+        "v": "Serine protease 1 inhibitor"
+      },
+      {
+        "po": 663,
+        "n": "Activity (nM)",
+        "v": "Kd = 2.1"
+      },
+      {
+        "po": 663,
+        "n": "citation",
+        "v": [
+          "pubmed:31969702"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 663,
+        "n": "name",
+        "v": "ABBV-744 (modulates) BRD2/4"
+      },
+      {
+        "po": 663,
+        "n": "Activity Type",
+        "v": "BRD inhibitor"
+      },
+      {
+        "po": 662,
+        "n": "Activity (nM)",
+        "v": "IC50 = 13500"
+      },
+      {
+        "po": 662,
+        "n": "citation",
+        "v": [
+          "pubmed:21507972"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 662,
+        "n": "name",
+        "v": "4E2RCat (modulates) Translation"
+      },
+      {
+        "po": 662,
+        "n": "Activity Type",
+        "v": "eIF4E/G PPI inhibitor"
+      },
+      {
+        "po": 661,
+        "n": "citation",
+        "v": [
+          ""
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 661,
+        "n": "name",
+        "v": "Orf10 (interacts with) VCP"
+      },
+      {
+        "po": 660,
+        "n": "citation",
+        "v": [
+          ""
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 660,
+        "n": "name",
+        "v": "Orf10 (interacts with) CUL2"
+      },
+      {
+        "po": 659,
+        "n": "citation",
+        "v": [
+          ""
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 659,
+        "n": "name",
+        "v": "Nsp6 (interacts with) SIGMAR1"
+      },
+      {
+        "po": 658,
+        "n": "citation",
+        "v": [
+          ""
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 658,
+        "n": "name",
+        "v": "Orf6 (interacts with) NUPs/RAE1"
+      },
+      {
+        "po": 657,
+        "n": "citation",
+        "v": [
+          ""
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 657,
+        "n": "name",
+        "v": "Nsp9 (interacts with) NUPs/RAE1"
+      },
+      {
+        "po": 656,
+        "n": "citation",
+        "v": [
+          ""
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 656,
+        "n": "name",
+        "v": "Nsp4 (interacts with) NUPs/RAE1"
+      },
+      {
+        "po": 655,
+        "n": "citation",
+        "v": [
+          ""
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 655,
+        "n": "name",
+        "v": "Nsp14 (interacts with) IMPDH2"
+      },
+      {
+        "po": 654,
+        "n": "citation",
+        "v": [
+          ""
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 654,
+        "n": "name",
+        "v": "Orf8 (interacts with) PLOD1/2"
+      },
+      {
+        "po": 653,
+        "n": "citation",
+        "v": [
+          ""
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 653,
+        "n": "name",
+        "v": "Orf8 (interacts with) FKBP7/10"
+      },
+      {
+        "po": 652,
+        "n": "citation",
+        "v": [
+          ""
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 652,
+        "n": "name",
+        "v": "Nsp2 (interacts with) EIF4E2/H"
+      },
+      {
+        "po": 651,
+        "n": "citation",
+        "v": [
+          ""
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 651,
+        "n": "name",
+        "v": "E (interacts with) BRD2/4"
+      },
+      {
+        "po": 700,
+        "n": "Activity (nM)",
+        "v": "IC50 = 1.5 "
+      },
+      {
+        "po": 700,
+        "n": "citation",
+        "v": [
+          "doi:10.1158/1538-7445.AM2019-2698"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 700,
+        "n": "name",
+        "v": "Zotatifin (eFT226) (modulates) EIF4E2/H"
+      },
+      {
+        "po": 700,
+        "n": "Activity Type",
+        "v": "EIF4a inhibitor"
+      },
+      {
+        "po": 699,
+        "n": "citation",
+        "v": [
+          ""
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 699,
+        "n": "name",
+        "v": "CEP250 (interacts with) Nsp13"
+      },
+      {
+        "po": 698,
+        "n": "Activity (nM)",
+        "v": "Kd = 0.29"
+      },
+      {
+        "po": 698,
+        "n": "citation",
+        "v": [
+          "US patent US20170097359A1"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 698,
+        "n": "name",
+        "v": "WDB002 (modulates) CEP250"
+      },
+      {
+        "po": 698,
+        "n": "Activity Type",
+        "v": "CEP250 inhibitor (with FKBP)"
+      },
+      {
+        "po": 697,
+        "n": "Activity (nM)",
+        "v": "IC50 = 960"
+      },
+      {
+        "po": 697,
+        "n": "citation",
+        "v": [
+          ""
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 697,
+        "n": "name",
+        "v": "Verdinexor (modulates)  RAE1"
+      },
+      {
+        "po": 697,
+        "n": "Activity Type",
+        "v": "XPO1/nuclear export inhibitor"
+      },
+      {
+        "po": 695,
+        "n": "Activity (nM)",
+        "v": "IC50 = 2.4"
+      },
+      {
+        "po": 695,
+        "n": "citation",
+        "v": [
+          "pubmed:29526098",
+          "pubmed:30643286"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 695,
+        "n": "name",
+        "v": "Tomivosertib (eFT-508) (modulates) Translation"
+      },
+      {
+        "po": 695,
+        "n": "Activity Type",
+        "v": "MNK1/2 inhibitor"
+      },
+      {
+        "po": 694,
+        "n": "Activity (nM)",
+        "v": "IC50 = 3300"
+      },
+      {
+        "po": 694,
+        "n": "citation",
+        "v": [
+          "pubmed:28700943"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 694,
+        "n": "name",
+        "v": "Tigecycline (modulates) Mitochondrial Ribosome"
+      },
+      {
+        "po": 694,
+        "n": "Activity Type",
+        "v": "mitochondrial ribosome inhibitor"
+      },
+      {
+        "po": 693,
+        "n": "Activity (nM)",
+        "v": "IC50 = 71"
+      },
+      {
+        "po": 693,
+        "n": "citation",
+        "v": [
+          "pubmed:26651998"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 693,
+        "n": "name",
+        "v": "Ternatin 4 (DA3) (modulates) Translation"
+      },
+      {
+        "po": 693,
+        "n": "Activity Type",
+        "v": "eEF1A inhibitor"
+      },
+      {
+        "po": 692,
+        "n": "citation",
+        "v": [
+          "pubmed:9806833"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 692,
+        "n": "name",
+        "v": "FK-506 (Tacrolimus) (modulates) FKBP7/10"
+      },
+      {
+        "po": 692,
+        "n": "Activity Type",
+        "v": "FKBP inhibitor"
+      },
+      {
+        "po": 691,
+        "n": "citation",
+        "v": [
+          ""
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 691,
+        "n": "name",
+        "v": "LARP1     (interacts with) N"
+      }
+    ]
+  },
+  {
+    "edges": [
+      {
+        "@id": 690,
+        "s": 639,
+        "t": 640,
+        "i": "modulates"
+      },
+      {
+        "@id": 689,
+        "s": 637,
+        "t": 638,
+        "i": "modulates"
+      },
+      {
+        "@id": 688,
+        "s": 636,
+        "t": 593,
+        "i": "interacts with"
+      },
+      {
+        "@id": 687,
+        "s": 636,
+        "t": 594,
+        "i": "interacts with"
+      },
+      {
+        "@id": 686,
+        "s": 636,
+        "t": 592,
+        "i": "interacts with"
+      },
+      {
+        "@id": 685,
+        "s": 635,
+        "t": 636,
+        "i": "modulates"
+      },
+      {
+        "@id": 684,
+        "s": 634,
+        "t": 624,
+        "i": "modulates"
+      },
+      {
+        "@id": 683,
+        "s": 632,
+        "t": 633,
+        "i": "modulates"
+      },
+      {
+        "@id": 682,
+        "s": 631,
+        "t": 607,
+        "i": "modulates"
+      },
+      {
+        "@id": 681,
+        "s": 630,
+        "t": 605,
+        "i": "modulates"
+      },
+      {
+        "@id": 680,
+        "s": 629,
+        "t": 610,
+        "i": "modulates"
+      },
+      {
+        "@id": 679,
+        "s": 627,
+        "t": 628,
+        "i": "modulates"
+      },
+      {
+        "@id": 678,
+        "s": 626,
+        "t": 607,
+        "i": "modulates"
+      },
+      {
+        "@id": 677,
+        "s": 625,
+        "t": 612,
+        "i": "modulates"
+      },
+      {
+        "@id": 676,
+        "s": 623,
+        "t": 624,
+        "i": "modulates"
+      },
+      {
+        "@id": 675,
+        "s": 622,
+        "t": 605,
+        "i": "modulates"
+      },
+      {
+        "@id": 674,
+        "s": 621,
+        "t": 610,
+        "i": "modulates"
+      },
+      {
+        "@id": 673,
+        "s": 620,
+        "t": 598,
+        "i": "interacts with"
+      },
+      {
+        "@id": 672,
+        "s": 619,
+        "t": 620,
+        "i": "modulates"
+      },
+      {
+        "@id": 671,
+        "s": 618,
+        "t": 605,
+        "i": "modulates"
+      },
+      {
+        "@id": 670,
+        "s": 617,
+        "t": 616,
+        "i": "modulates"
+      },
+      {
+        "@id": 669,
+        "s": 615,
+        "t": 616,
+        "i": "modulates"
+      },
+      {
+        "@id": 668,
+        "s": 613,
+        "t": 614,
+        "i": "modulates"
+      },
+      {
+        "@id": 667,
+        "s": 611,
+        "t": 612,
+        "i": "modulates"
+      },
+      {
+        "@id": 666,
+        "s": 609,
+        "t": 610,
+        "i": "modulates"
+      },
+      {
+        "@id": 665,
+        "s": 608,
+        "t": 607,
+        "i": "modulates"
+      },
+      {
+        "@id": 664,
+        "s": 606,
+        "t": 607,
+        "i": "modulates"
+      },
+      {
+        "@id": 663,
+        "s": 604,
+        "t": 605,
+        "i": "modulates"
+      },
+      {
+        "@id": 662,
+        "s": 602,
+        "t": 603,
+        "i": "modulates"
+      },
+      {
+        "@id": 661,
+        "s": 601,
+        "t": 610,
+        "i": "interacts with"
+      },
+      {
+        "@id": 660,
+        "s": 601,
+        "t": 633,
+        "i": "interacts with"
+      },
+      {
+        "@id": 659,
+        "s": 600,
+        "t": 614,
+        "i": "interacts with"
+      },
+      {
+        "@id": 658,
+        "s": 599,
+        "t": 590,
+        "i": "interacts with"
+      },
+      {
+        "@id": 657,
+        "s": 598,
+        "t": 590,
+        "i": "interacts with"
+      },
+      {
+        "@id": 656,
+        "s": 597,
+        "t": 590,
+        "i": "interacts with"
+      },
+      {
+        "@id": 655,
+        "s": 596,
+        "t": 638,
+        "i": "interacts with"
+      },
+      {
+        "@id": 654,
+        "s": 594,
+        "t": 628,
+        "i": "interacts with"
+      },
+      {
+        "@id": 653,
+        "s": 594,
+        "t": 642,
+        "i": "interacts with"
+      },
+      {
+        "@id": 652,
+        "s": 593,
+        "t": 650,
+        "i": "interacts with"
+      },
+      {
+        "@id": 651,
+        "s": 591,
+        "t": 605,
+        "i": "interacts with"
+      },
+      {
+        "@id": 700,
+        "s": 649,
+        "t": 650,
+        "i": "modulates"
+      },
+      {
+        "@id": 699,
+        "s": 648,
+        "t": 595,
+        "i": "interacts with"
+      },
+      {
+        "@id": 698,
+        "s": 647,
+        "t": 648,
+        "i": "modulates"
+      },
+      {
+        "@id": 697,
+        "s": 646,
+        "t": 590,
+        "i": "modulates"
+      },
+      {
+        "@id": 695,
+        "s": 645,
+        "t": 603,
+        "i": "modulates"
+      },
+      {
+        "@id": 694,
+        "s": 644,
+        "t": 612,
+        "i": "modulates"
+      },
+      {
+        "@id": 693,
+        "s": 643,
+        "t": 603,
+        "i": "modulates"
+      },
+      {
+        "@id": 692,
+        "s": 641,
+        "t": 642,
+        "i": "modulates"
+      },
+      {
+        "@id": 691,
+        "s": 640,
+        "t": 592,
+        "i": "interacts with"
+      }
+    ]
+  },
+  {
+    "cyVisualProperties": [
+      {
+        "properties_of": "network",
+        "properties": {
+          "NETWORK_ANNOTATION_SELECTION": "false",
+          "NETWORK_BACKGROUND_PAINT": "#FFFFFF",
+          "NETWORK_CENTER_X_LOCATION": "87.96890218062683",
+          "NETWORK_CENTER_Y_LOCATION": "-277.1538920479404",
+          "NETWORK_CENTER_Z_LOCATION": "0.0",
+          "NETWORK_DEPTH": "0.0",
+          "NETWORK_EDGE_SELECTION": "true",
+          "NETWORK_FORCE_HIGH_DETAIL": "false",
+          "NETWORK_HEIGHT": "47.0",
+          "NETWORK_NODE_LABEL_SELECTION": "true",
+          "NETWORK_NODE_SELECTION": "true",
+          "NETWORK_SCALE_FACTOR": "0.5794115087868689",
+          "NETWORK_SIZE": "550.0",
+          "NETWORK_WIDTH": "961.0"
+        }
+      },
+      {
+        "properties_of": "nodes:default",
+        "properties": {
+          "COMPOUND_NODE_PADDING": "10.0",
+          "COMPOUND_NODE_SHAPE": "ROUND_RECTANGLE",
+          "NODE_BORDER_PAINT": "#FFFFFF",
+          "NODE_BORDER_STROKE": "SOLID",
+          "NODE_BORDER_TRANSPARENCY": "255",
+          "NODE_BORDER_WIDTH": "5.0",
+          "NODE_CUSTOMGRAPHICS_1": "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],",
+          "NODE_CUSTOMGRAPHICS_2": "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],",
+          "NODE_CUSTOMGRAPHICS_3": "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],",
+          "NODE_CUSTOMGRAPHICS_4": "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],",
+          "NODE_CUSTOMGRAPHICS_5": "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],",
+          "NODE_CUSTOMGRAPHICS_6": "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],",
+          "NODE_CUSTOMGRAPHICS_7": "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],",
+          "NODE_CUSTOMGRAPHICS_8": "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],",
+          "NODE_CUSTOMGRAPHICS_9": "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],",
+          "NODE_CUSTOMGRAPHICS_POSITION_1": "C,C,c,0.00,0.00",
+          "NODE_CUSTOMGRAPHICS_POSITION_2": "C,C,c,0.00,0.00",
+          "NODE_CUSTOMGRAPHICS_POSITION_3": "C,C,c,0.00,0.00",
+          "NODE_CUSTOMGRAPHICS_POSITION_4": "C,C,c,0.00,0.00",
+          "NODE_CUSTOMGRAPHICS_POSITION_5": "C,C,c,0.00,0.00",
+          "NODE_CUSTOMGRAPHICS_POSITION_6": "C,C,c,0.00,0.00",
+          "NODE_CUSTOMGRAPHICS_POSITION_7": "C,C,c,0.00,0.00",
+          "NODE_CUSTOMGRAPHICS_POSITION_8": "C,C,c,0.00,0.00",
+          "NODE_CUSTOMGRAPHICS_POSITION_9": "C,C,c,0.00,0.00",
+          "NODE_CUSTOMGRAPHICS_SIZE_1": "50.0",
+          "NODE_CUSTOMGRAPHICS_SIZE_2": "50.0",
+          "NODE_CUSTOMGRAPHICS_SIZE_3": "50.0",
+          "NODE_CUSTOMGRAPHICS_SIZE_4": "50.0",
+          "NODE_CUSTOMGRAPHICS_SIZE_5": "50.0",
+          "NODE_CUSTOMGRAPHICS_SIZE_6": "50.0",
+          "NODE_CUSTOMGRAPHICS_SIZE_7": "50.0",
+          "NODE_CUSTOMGRAPHICS_SIZE_8": "50.0",
+          "NODE_CUSTOMGRAPHICS_SIZE_9": "50.0",
+          "NODE_CUSTOMPAINT_1": "DefaultVisualizableVisualProperty(id=NODE_CUSTOMPAINT_1, name=Node Custom Paint 1)",
+          "NODE_CUSTOMPAINT_2": "DefaultVisualizableVisualProperty(id=NODE_CUSTOMPAINT_2, name=Node Custom Paint 2)",
+          "NODE_CUSTOMPAINT_3": "DefaultVisualizableVisualProperty(id=NODE_CUSTOMPAINT_3, name=Node Custom Paint 3)",
+          "NODE_CUSTOMPAINT_4": "DefaultVisualizableVisualProperty(id=NODE_CUSTOMPAINT_4, name=Node Custom Paint 4)",
+          "NODE_CUSTOMPAINT_5": "DefaultVisualizableVisualProperty(id=NODE_CUSTOMPAINT_5, name=Node Custom Paint 5)",
+          "NODE_CUSTOMPAINT_6": "DefaultVisualizableVisualProperty(id=NODE_CUSTOMPAINT_6, name=Node Custom Paint 6)",
+          "NODE_CUSTOMPAINT_7": "DefaultVisualizableVisualProperty(id=NODE_CUSTOMPAINT_7, name=Node Custom Paint 7)",
+          "NODE_CUSTOMPAINT_8": "DefaultVisualizableVisualProperty(id=NODE_CUSTOMPAINT_8, name=Node Custom Paint 8)",
+          "NODE_CUSTOMPAINT_9": "DefaultVisualizableVisualProperty(id=NODE_CUSTOMPAINT_9, name=Node Custom Paint 9)",
+          "NODE_DEPTH": "0.0",
+          "NODE_FILL_COLOR": "#FF0000",
+          "NODE_HEIGHT": "35.0",
+          "NODE_LABEL_COLOR": "#000000",
+          "NODE_LABEL_FONT_FACE": "SansSerif,plain,12",
+          "NODE_LABEL_FONT_SIZE": "22",
+          "NODE_LABEL_POSITION": "SW,SE,c,0.00,0.00",
+          "NODE_LABEL_TRANSPARENCY": "255",
+          "NODE_LABEL_WIDTH": "200.0",
+          "NODE_NESTED_NETWORK_IMAGE_VISIBLE": "true",
+          "NODE_PAINT": "#1E90FF",
+          "NODE_SELECTED": "false",
+          "NODE_SELECTED_PAINT": "#FFFF00",
+          "NODE_SHAPE": "ROUND_RECTANGLE",
+          "NODE_SIZE": "60.0",
+          "NODE_TRANSPARENCY": "255",
+          "NODE_VISIBLE": "true",
+          "NODE_WIDTH": "75.0",
+          "NODE_X_LOCATION": "0.0",
+          "NODE_Y_LOCATION": "0.0",
+          "NODE_Z_LOCATION": "0.0"
+        },
+        "dependencies": {
+          "nodeCustomGraphicsSizeSync": "true",
+          "nodeSizeLocked": "true"
+        },
+        "mappings": {
+          "NODE_BORDER_PAINT": {
+            "type": "DISCRETE",
+            "definition": "COL=Drug Status,T=string,K=0=Approved (Hypertension),V=0=#009900,K=1=Pre-clinical,V=1=#CC3300,K=2=Approved (Bacterial infection),V=2=#009900,K=3=Approved (Hair loss),V=3=#009900,K=4=Clinical Trial,V=4=#FF9900,K=5=Approved (Cancer),V=5=#009900,K=6=Approved (Pancreatitis),V=6=#009900,K=7=Approved (Anticoagulant),V=7=#009900,K=8=Approved (Malaria),V=8=#009900,K=9=Approved (Organ rejection),V=9=#009900"
+          },
+          "NODE_BORDER_WIDTH": {
+            "type": "DISCRETE",
+            "definition": "COL=Drug Status,T=string"
+          },
+          "NODE_FILL_COLOR": {
+            "type": "DISCRETE",
+            "definition": "COL=type,T=string,K=0=GO term,V=0=#99CCFF,K=1=protein,V=1=#666666,K=2=drug,V=2=#CCCC00"
+          },
+          "NODE_LABEL": {
+            "type": "PASSTHROUGH",
+            "definition": "COL=name,T=string"
+          },
+          "NODE_LABEL_FONT_SIZE": {
+            "type": "DISCRETE",
+            "definition": "COL=type,T=string,K=0=GO term,V=0=16,K=1=protein,V=1=15,K=2=drug,V=2=12"
+          },
+          "NODE_LABEL_POSITION": {
+            "type": "DISCRETE",
+            "definition": "COL=type,T=string,K=0=GO term,V=0=C,,C,,c,,0.00,,0.00,K=1=protein,V=1=SE,,SW,,c,,0.00,,0.00,K=2=drug,V=2=S,,N,,c,,0.00,,0.00"
+          },
+          "NODE_LABEL_WIDTH": {
+            "type": "DISCRETE",
+            "definition": "COL=type,T=string,K=0=GO term,V=0=90.0"
+          },
+          "NODE_SHAPE": {
+            "type": "DISCRETE",
+            "definition": "COL=class,T=string,K=0=prey,V=0=ELLIPSE,K=1=bait,V=1=DIAMOND"
+          },
+          "NODE_SIZE": {
+            "type": "DISCRETE",
+            "definition": "COL=type,T=string,K=0=GO term,V=0=120.0,K=1=protein,V=1=30.0,K=2=drug,V=2=20.0"
+          }
+        }
+      },
+      {
+        "properties_of": "edges:default",
+        "properties": {
+          "EDGE_CURVED": "true",
+          "EDGE_LABEL_COLOR": "#000000",
+          "EDGE_LABEL_FONT_FACE": "Dialog,plain,10",
+          "EDGE_LABEL_FONT_SIZE": "10",
+          "EDGE_LABEL_TRANSPARENCY": "255",
+          "EDGE_LABEL_WIDTH": "200.0",
+          "EDGE_LINE_TYPE": "SOLID",
+          "EDGE_PAINT": "#323232",
+          "EDGE_SELECTED": "false",
+          "EDGE_SELECTED_PAINT": "#FF0000",
+          "EDGE_SOURCE_ARROW_SELECTED_PAINT": "#FFFF00",
+          "EDGE_SOURCE_ARROW_SHAPE": "NONE",
+          "EDGE_SOURCE_ARROW_SIZE": "6.0",
+          "EDGE_SOURCE_ARROW_UNSELECTED_PAINT": "#000000",
+          "EDGE_STROKE_SELECTED_PAINT": "#FF0000",
+          "EDGE_STROKE_UNSELECTED_PAINT": "#666666",
+          "EDGE_TARGET_ARROW_SELECTED_PAINT": "#FFFF00",
+          "EDGE_TARGET_ARROW_SHAPE": "NONE",
+          "EDGE_TARGET_ARROW_SIZE": "6.0",
+          "EDGE_TARGET_ARROW_UNSELECTED_PAINT": "#000000",
+          "EDGE_TRANSPARENCY": "255",
+          "EDGE_UNSELECTED_PAINT": "#404040",
+          "EDGE_VISIBLE": "true",
+          "EDGE_WIDTH": "2.0"
+        },
+        "dependencies": {
+          "arrowColorMatchesEdge": "false"
+        },
+        "mappings": {
+          "EDGE_STROKE_UNSELECTED_PAINT": {
+            "type": "DISCRETE",
+            "definition": "COL=interaction,T=string,K=0=interacts with,V=0=#006699"
+          },
+          "EDGE_WIDTH": {
+            "type": "DISCRETE",
+            "definition": "COL=interaction,T=string,K=0=interacts with,V=0=5.0"
+          }
+        }
+      },
+      {
+        "properties_of": "nodes",
+        "applies_to": 616,
+        "properties": {
+          "NODE_LABEL_POSITION": "C,C,c,1.84,-1.84"
+        }
+      },
+      {
+        "properties_of": "nodes",
+        "applies_to": 650,
+        "properties": {
+          "NODE_LABEL_POSITION": "SE,SW,c,3.68,-7.37"
+        }
+      },
+      {
+        "properties_of": "nodes",
+        "applies_to": 593,
+        "properties": {
+          "NODE_LABEL_POSITION": "SW,SE,c,104.96,-28.55"
+        }
+      },
+      {
+        "properties_of": "nodes",
+        "applies_to": 594,
+        "properties": {
+          "NODE_LABEL_POSITION": "SW,SE,c,99.32,-28.43"
+        }
+      },
+      {
+        "properties_of": "nodes",
+        "applies_to": 595,
+        "properties": {
+          "NODE_LABEL_POSITION": "SW,SE,c,125.22,1.84"
+        }
+      },
+      {
+        "properties_of": "nodes",
+        "applies_to": 596,
+        "properties": {
+          "NODE_LABEL_POSITION": "SW,SE,c,111.53,-36.60"
+        }
+      },
+      {
+        "properties_of": "nodes",
+        "applies_to": 599,
+        "properties": {
+          "NODE_LABEL_POSITION": "SW,SE,c,89.43,-24.29"
+        }
+      },
+      {
+        "properties_of": "nodes",
+        "applies_to": 601,
+        "properties": {
+          "NODE_LABEL_POSITION": "SW,SE,c,16.00,-35.10"
+        }
+      },
+      {
+        "properties_of": "nodes",
+        "applies_to": 636,
+        "properties": {
+          "NODE_LABEL_POSITION": "SE,SW,c,0.00,11.05"
+        }
+      },
+      {
+        "properties_of": "nodes",
+        "applies_to": 605,
+        "properties": {
+          "NODE_LABEL_POSITION": "SE,SW,c,-7.50,-20.94"
+        }
+      },
+      {
+        "properties_of": "nodes",
+        "applies_to": 610,
+        "properties": {
+          "NODE_LABEL_POSITION": "SE,SW,c,-4.42,-13.99"
+        }
+      }
+    ]
+  },
+  {
+    "status": [
+      {
+        "error": "",
+        "success": true
+      }
+    ]
+  }
+]

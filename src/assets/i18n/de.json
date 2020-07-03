@@ -1,0 +1,40 @@
+{
+  "NAV_MANAGE": "Verwalten",
+  "NAV_EDIT": "Bearbeiten",
+  "NAV_COMPARE": "Vergleichen",
+
+  "MAIN_INFO_TITLE": "Allgemeine Infos & Erste Schritte",
+  "MAIN_INFO_DOCUMENTATION_TITLE": "Dokumentation",
+  "MAIN_INFO_DOCUMENTATION_DESCRIPTION": "Der Befehl <code>npm run compodoc</code> baut die Dokumentation zum Code. Erreichbar ist er über <code>localhost:8080</code>.",
+  "MAIN_INFO_STEPS_TITLE": "Erste Schritte",
+  "MAIN_INFO_STEPS_DESCRIPTION": "Wenn Du NdexEdit noch nie verwendet hast, hier ein paar Tipps:",
+  "MAIN_INFO_STEPS_STEP_1": "Suche auf der NDExBIO Website ein Netzwerk, was du optisch anpassen möchtest",
+  "MAIN_INFO_STEPS_STEP_2": "Kopiere die URL zum Netzwerk ins Textfeld im Bereich \"Verwalten\"",
+  "MAIN_INFO_STEPS_STEP_3": "Klicke auf das (i) neben dem Netzwerknamen und lass dir alle Informationen zum Netzwerk anzeigen",
+  "MAIN_INFO_STEPS_STEP_4": "Mit Klick auf \"Bearbeiten\" kannst du anpassen, wie der Graph aussieht",
+  "MAIN_INFO_STEPS_STEP_5": "Deine Änderungen kannst du auf einer privaten NDEx-Instanz sichern",
+
+  "MAIN_STATS_TITLE": "Daten",
+  "MAIN_STATS_GRAPH_INFO_TITLE": "Über Graph",
+  "MAIN_STATS_GRAPH_INFO_NODES": "(#) Knoten",
+  "MAIN_STATS_GRAPH_INFO_EDGES": "(#) Kanten",
+  "MAIN_STATS_GRAPH_INFO_CLASSES": "(#) Graph-Gestaltung",
+  "MAIN_STATS_GRAPH_INFO_NW_RIGHTSHOLDER": "Rechtsinhaber",
+  "MAIN_STATS_GRAPH_INFO_NW_TYPE": "Netzwerktyp",
+  "MAIN_STATS_GRAPH_INFO_NW_ORGANISM": "Organismus",
+  "MAIN_STATS_GRAPH_INFO_NW_DESCRIPTION": "Beschreibung",
+
+  "MAIN_GRAPH_TITLE": "Graph",
+
+  "SIDEBAR_MANAGE_TITLE": "Verfügbare Netzwerke",
+  "SIDEBAR_MANAGE_NW_NAME": "Netzwerkname",
+  "SIDEBAR_MANAGE_TT_INFO": "Info über dieses Netzwerk",
+  "SIDEBAR_MANAGE_TT_EDIT": "Dieses Netzwerk rendern und bearbeiten",
+  "SIDEBAR_MANAGE_HELP": "Brauchst du Hilfe?",
+  "SIDEBAR_MANAGE_LOCAL_FILE_LABEL": "Lokale Dateien",
+  "SIDEBAR_MANAGE_LOCAL_FILE_BTN": "Hochladen",
+  "SIDEBAR_MANAGE_REMOTE_FILE_LABEL": "Datei von NDEx laden",
+  "SIDEBAR_MANAGE_REMOTE_FILE_TIP": "Lade ein Netzwerk über seine NDEx-URL",
+  "SIDEBAR_MANAGE_REMOTE_FILE_BTN": "Laden",
+  "SIDEBAR_MANAGE_REMOTE_FILE_EXAMPLE": "z.B. https://ndexbio.org/#/network/36f7d8fd-23dc-11e8-b939-0ac135e8bacf"
+}

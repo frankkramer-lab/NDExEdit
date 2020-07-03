@@ -1,0 +1,45 @@
+<h5>{{'SIDEBAR_MANAGE_TITLE' | translate}}</h5>
+
+<table class="mb-3 table table-borderless">
+  <tr *ngFor="let network of dataService.networksParsed">
+    <td class="border-bottom">{{network.networkInformation.name}}</td>
+    <td class="border-bottom text-nowrap">
+      <a class="btn btn-sm btn-outline-secondary mr-1" role="button" data-toggle="tooltip"
+         data-placement="bottom" title="{{'SIDEBAR_MANAGE_TT_INFO'|translate}}"
+         [routerLink]="['', { outlets: {primary: ['stats', network.id]} }]">
+        <fa-icon [icon]="faInfo"></fa-icon>
+      </a>
+      <a class="btn btn-sm btn-outline-success" role="button" data-toggle="tooltip"
+         data-placement="bottom" title="{{'SIDEBAR_MANAGE_TT_EDIT'|translate}}"
+         [routerLink]="['', { outlets: {primary: ['graph', network.id]} }]">
+        <fa-icon [icon]="faPaintBrush"></fa-icon>
+      </a>
+    </td>
+  </tr>
+</table>
+
+<h5>{{'SIDEBAR_MANAGE_REMOTE_FILE_LABEL'|translate}}</h5>
+<div class="row mb-3">
+  <div class="col-9 form-group mb-2">
+    <input type="text" class="form-control" id="remoteNetworkFile" aria-describedby="remoteNetworkHelp" placeholder="{{'SIDEBAR_MANAGE_REMOTE_FILE_EXAMPLE'|translate}}">
+    <small id="remoteNetworkHelp" class="form-text text-muted">{{'SIDEBAR_MANAGE_REMOTE_FILE_TIP'|translate}}</small>
+  </div>
+  <div class="col-3">
+    <button class="btn btn-block btn-outline-success" type="button">{{'SIDEBAR_MANAGE_REMOTE_FILE_BTN'|translate}} [TODO]</button>
+  </div>
+</div>
+
+<h5>{{'SIDEBAR_MANAGE_LOCAL_FILE_LABEL'|translate}}</h5>
+<div class="input-group mb-3">
+  <div class="custom-file">
+    <input type="file" class="custom-file-input" id="localNetworkFile">
+    <label for="localNetworkFile" class="custom-file-label">{{'SIDEBAR_MANAGE_LOCAL_FILE_LABEL'|translate}}</label>
+  </div>
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary" type="button">{{'SIDEBAR_MANAGE_LOCAL_FILE_BTN'|translate}} [TODO]</button>
+  </div>
+</div>
+
+<a class="mb-3 btn btn-block btn-outline-danger" role="button" [routerLink]="['', { outlets: {primary: ['info']} }]">
+  {{'SIDEBAR_MANAGE_HELP'|translate}}
+</a>

@@ -1,0 +1,42 @@
+{
+  "NAV_MANAGE": "Manage",
+  "NAV_EDIT": "Edit",
+  "NAV_COMPARE": "Compare",
+
+  "MAIN_INFO_TITLE": "General info & First Steps",
+  "MAIN_INFO_DOCUMENTATION_TITLE": "Documentation",
+  "MAIN_INFO_DOCUMENTATION_DESCRIPTION": "Run the command <code>npm run compodoc</code> to build the documentation and access it via <code>localhost:8080</code>.",
+  "MAIN_INFO_STEPS_TITLE": "First steps",
+  "MAIN_INFO_STEPS_DESCRIPTION": "If you never worked with NdexEdit before, here are a few first steps you might want to try out:",
+  "MAIN_INFO_STEPS_STEP_1": "Visit the NDExBIO Website and select a network you would like to edit visually",
+  "MAIN_INFO_STEPS_STEP_2": "Enter this network's URL into the downloader under \"Manage\"",
+  "MAIN_INFO_STEPS_STEP_3": "Inspect the information displayed to this specific network by clicking on the i-Icon right next to the networks name",
+  "MAIN_INFO_STEPS_STEP_4": "Click on \"Edit\" to manipulate how the graph is displayed",
+  "MAIN_INFO_STEPS_STEP_5": "You can save your changes to a private NDEx instance",
+
+  "MAIN_STATS_TITLE": "Statistics",
+  "MAIN_STATS_GRAPH_INFO_TITLE": "Info about",
+  "MAIN_STATS_GRAPH_INFO_NODES": "(#) Nodes",
+  "MAIN_STATS_GRAPH_INFO_EDGES": "(#) Edges",
+  "MAIN_STATS_GRAPH_INFO_CLASSES": "(#) Graph stylings",
+  "MAIN_STATS_GRAPH_INFO_NW_RIGHTSHOLDER": "Rightsholder",
+  "MAIN_STATS_GRAPH_INFO_NW_TYPE": "Network type",
+  "MAIN_STATS_GRAPH_INFO_NW_ORGANISM": "Organism",
+  "MAIN_STATS_GRAPH_INFO_NW_DESCRIPTION": "Description",
+
+  "MAIN_GRAPH_TITLE": "Graph",
+
+  "SIDEBAR_MANAGE_TITLE": "Available networks",
+  "SIDEBAR_MANAGE_NW_NAME": "Network name",
+  "SIDEBAR_MANAGE_TT_INFO": "Info about this network",
+  "SIDEBAR_MANAGE_TT_EDIT": "Render and edit this network",
+  "SIDEBAR_MANAGE_HELP": "Are you lost?",
+  "SIDEBAR_MANAGE_LOCAL_FILE_LABEL": "Browse local files",
+  "SIDEBAR_MANAGE_LOCAL_FILE_BTN": "Upload",
+  "SIDEBAR_MANAGE_REMOTE_FILE_LABEL": "Load file from NDEx",
+  "SIDEBAR_MANAGE_REMOTE_FILE_TIP": "You need the network's URL to load the file from NDEx",
+  "SIDEBAR_MANAGE_REMOTE_FILE_BTN": "Load",
+  "SIDEBAR_MANAGE_REMOTE_FILE_EXAMPLE": "e.g. https://ndexbio.org/#/network/36f7d8fd-23dc-11e8-b939-0ac135e8bacf"
+
+
+}
