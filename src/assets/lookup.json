@@ -189,5 +189,14 @@
         "center"
       ]
     }
+  },
+  {
+    "ndex": [
+      "EDGE_UNSELECTED_PAINT",
+      "EDGE_STROKE_UNSELECTED_PAINT"
+    ],
+    "cytoscape": [
+      "line-color"
+    ]
   }
 ]

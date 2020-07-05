@@ -1,6 +1,6 @@
 export interface NeElementAttribute {
   reference: string;
   key: string;
-  value: string | string[];
+  value: string;
   datatype?: string;
 }

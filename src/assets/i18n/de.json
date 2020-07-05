@@ -5,7 +5,7 @@
 
   "MAIN_INFO_TITLE": "Allgemeine Infos & Erste Schritte",
   "MAIN_INFO_DOCUMENTATION_TITLE": "Dokumentation",
-  "MAIN_INFO_DOCUMENTATION_DESCRIPTION": "Der Befehl <code>npm run compodoc</code> baut die Dokumentation zum Code. Erreichbar ist er über <code>localhost:8080</code>.",
+  "MAIN_INFO_DOCUMENTATION_DESCRIPTION": "Der Befehl <code>npm run compodoc</code> baut die Dokumentation zum Code. Erreichbar ist sie über <code>localhost:8080</code>.",
   "MAIN_INFO_STEPS_TITLE": "Erste Schritte",
   "MAIN_INFO_STEPS_DESCRIPTION": "Wenn Du NdexEdit noch nie verwendet hast, hier ein paar Tipps:",
   "MAIN_INFO_STEPS_STEP_1": "Suche auf der NDExBIO Website ein Netzwerk, was du optisch anpassen möchtest",
