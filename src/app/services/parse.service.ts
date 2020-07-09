@@ -213,6 +213,19 @@ export class ParseService {
   }
 
   /**
+   * Method to fill up any string with leading zeros
+   *
+   * @param s input string
+   * @param targetLength length to be filled up on
+   */
+  private static utilLeadingZeros(s: string, targetLength: number): string {
+    while (s.length < targetLength) {
+      s = '0'.concat(s);
+    }
+    return s;
+  }
+
+  /**
    * Parses a file from .cx to cytoscape.js interpretable data
    *
    * @param filedata data of the .cx file
@@ -342,6 +355,7 @@ export class ParseService {
           }
         }
       }
+
     }
 
     // adding discrete mappings to matching edges
@@ -361,11 +375,20 @@ export class ParseService {
     for (const edgeMapping of parsedMappingsEdgesDefault.continuous) {
       const id: string = edgeMapping.selector.substring(6);
       const classSelector = edgeMapping.selector.substring(1);
-
       const edge: NeEdge = parsedEdgeData.find(x => x.id === id);
 
       if (edge && !edge.classes.includes(classSelector)) {
         edge.classes.push(classSelector);
+      }
+    }
+
+    for (const nodeMapping of parsedMappingsNodesDefault.continuous) {
+      const id: string = nodeMapping.selector.substring(6);
+      const classSelector = nodeMapping.selector.substring(1);
+      const node: NeNode = parsedNodeData.find(x => x.id === id);
+
+      if (node && !node.classes.includes(classSelector)) {
+        node.classes.push(classSelector);
       }
     }
 
@@ -401,7 +424,6 @@ export class ParseService {
     for (const s of globalStyle) {
       for (const pd of parsedData) {
         const className = s.selector.substring(1);
-
         if ((pd.classes.includes(className))
           || (pd.group === 'edges' && s.selector === 'edge')
           || (pd.group === 'nodes' && s.selector === 'node')) {
@@ -483,7 +505,7 @@ export class ParseService {
             key: propKey,
             value: properties[propKey]
           };
-          const lookup = this.lookup(tmp, '.'.concat(elementType.concat(entry.applies_to)));
+          const lookup = this.lookup(tmp, '.'.concat(elementType.concat('_'.concat(entry.applies_to))));
           style = style.concat(lookup);
         }
       }
@@ -562,14 +584,21 @@ export class ParseService {
 
     let styleCollection: NeStyleComponent[];
 
+    let builtSelector = selector;
+    if (selector !== 'node' && selector !== 'edge' && lookupMap && lookupMap.selector) {
+      builtSelector = selector.concat(lookupMap.selector);
+    } else if (lookupMap && lookupMap.selector) {
+      builtSelector = lookupMap.selector;
+    }
+
     // case 1: simply applicable
-    if (lookupMap && !lookupMap.conversion && lookupMap[to].length === 1) {
+    if (lookupMap && !lookupMap.conversionType && lookupMap[to].length === 1) {
       return [{
-        selector: lookupMap[selector] || selector,
+        selector: builtSelector,
         cssKey: lookupMap[to][0],
         cssValue: property.value
       }];
-    } else if (lookupMap && lookupMap.conversion) {
+    } else if (lookupMap && lookupMap.conversionType) {
       switch (lookupMap.conversionType) {
 
         // case 2: conversion by method
@@ -604,7 +633,7 @@ export class ParseService {
 
           for (const key of lookupMap[to]) {
             const obj: NeStyleComponent = {
-              selector: lookupMap.selector || selector,
+              selector: builtSelector,
               cssKey: key,
               cssValue,
             };
@@ -623,7 +652,7 @@ export class ParseService {
 
           for (const index of lookupMap.splitRules.evalIndex) {
             const initialValue = splitted[index];
-            const matchedValue: string[] = lookupMap.rules[initialValue];
+            const matchedValue: string[] = lookupMap.matchRules[initialValue];
 
             for (const key of lookupMap[to]) {
 
@@ -633,7 +662,7 @@ export class ParseService {
               }
 
               const obj: NeStyleComponent = {
-                selector: lookupMap.selector || selector,
+                selector: builtSelector,
                 cssKey: key,
                 cssValue: matchedValue[indexOfKey],
               };
@@ -850,6 +879,11 @@ export class ParseService {
   }
 
   private calculateRelativeValue(inputMap: NeContinuousMap): string {
+
+    // if (inputMap.lower.includes('#')) {
+    //   console.log(inputMap);
+    // }
+
     let returnValue;
     const xDiff = Number(inputMap.greaterThreshold) - Number(inputMap.lowerThreshold);
     const xDiffRequired = Number(inputMap.inputValue) - Number(inputMap.lowerThreshold);
@@ -892,9 +926,9 @@ export class ParseService {
         b: ((xDiffRequired * slopeCoefficientMap.b) + hexLowerMap.b) & 0xff
       };
 
-      const resultR = this.utilLeadingZeros(resultMap.r.toString(16), 2);
-      const resultG = this.utilLeadingZeros(resultMap.g.toString(16), 2);
-      const resultB = this.utilLeadingZeros(resultMap.b.toString(16), 2);
+      const resultR = ParseService.utilLeadingZeros(resultMap.r.toString(16), 2);
+      const resultG = ParseService.utilLeadingZeros(resultMap.g.toString(16), 2);
+      const resultB = ParseService.utilLeadingZeros(resultMap.b.toString(16), 2);
 
       returnValue = '#'.concat(resultR.concat(resultG.concat(resultB)));
 
@@ -907,12 +941,5 @@ export class ParseService {
     }
 
     return returnValue;
-  }
-
-  private utilLeadingZeros(s: string, targetLength: number): string {
-    while (s.length < targetLength) {
-      s = '0'.concat(s);
-    }
-    return s;
   }
 }

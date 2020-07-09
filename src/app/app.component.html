@@ -1,7 +1,7 @@
 <div class="container-fluid p-o">
   <div class="row">
 
-    <div class="col-7 border-right p-4">
+    <div class="col-7 p-4">
       <router-outlet></router-outlet>
     </div>
 
@@ -14,17 +14,20 @@
              routerLinkActive="active">{{'NAV_MANAGE'|translate}}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-black-50" [routerLink]="['', { outlets: {sidebar: ['edit']} }]"
-             routerLinkActive="active">{{'NAV_EDIT'|translate}}</a>
+          <a class="nav-link text-black-50 disabled" [routerLink]="['', { outlets: {sidebar: ['edit']} }]"
+             routerLinkActive="active" data-toggle="tooltip" data-placement="bottom"
+             title="{{'NAV_EDIT_TT_INFO' | translate}}">
+            {{'NAV_EDIT'|translate}}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-black-50" [routerLink]="['', { outlets: {sidebar: ['compare']} }]"
-             routerLinkActive="active">{{'NAV_COMPARE'|translate}}</a>
+          <a class="nav-link text-black-50 disabled" [routerLink]="['', { outlets: {sidebar: ['compare']} }]"
+             routerLinkActive="active" data-toggle="tooltip" data-placement="bottom"
+             title="{{'NAV_COMPARE_TT_INFO' | translate}}">{{'NAV_COMPARE'|translate}}</a>
         </li>
 
       </ul>
 
-      <div class="vh-100 bg-white p-2">
+      <div class="vh-100 bg-white p-2 border-left">
         <router-outlet name="sidebar"></router-outlet>
       </div>
 

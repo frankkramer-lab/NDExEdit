@@ -11,7 +11,7 @@
       </a>
       <a class="btn btn-sm btn-outline-success" role="button" data-toggle="tooltip"
          data-placement="bottom" title="{{'SIDEBAR_MANAGE_TT_EDIT'|translate}}"
-         [routerLink]="['', { outlets: {primary: ['graph', network.id]} }]">
+         [routerLink]="['', { outlets: {primary: ['graph', network.id], sidebar: ['edit', network.id]} }]">
         <fa-icon [icon]="faPaintBrush"></fa-icon>
       </a>
     </td>

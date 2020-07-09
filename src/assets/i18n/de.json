@@ -2,6 +2,8 @@
   "NAV_MANAGE": "Verwalten",
   "NAV_EDIT": "Bearbeiten",
   "NAV_COMPARE": "Vergleichen",
+  "NAV_COMPARE_TT_INFO": "Dazu muss ein Netzwerk ausgewählt werden",
+  "NAV_EDIT_TT_INFO": "Dazu muss ein Netzwerk ausgewählt werden",
 
   "MAIN_INFO_TITLE": "Allgemeine Infos & Erste Schritte",
   "MAIN_INFO_DOCUMENTATION_TITLE": "Dokumentation",
@@ -23,6 +25,8 @@
   "MAIN_STATS_GRAPH_INFO_NW_TYPE": "Netzwerktyp",
   "MAIN_STATS_GRAPH_INFO_NW_ORGANISM": "Organismus",
   "MAIN_STATS_GRAPH_INFO_NW_DESCRIPTION": "Beschreibung",
+  "MAIN_STATS_BTN_RENDER": "Rendern und bearbeiten",
+  "MAIN_STATS_BTN_COMPARE": "Vergleichen",
 
   "MAIN_GRAPH_TITLE": "Graph",
 
@@ -36,5 +40,14 @@
   "SIDEBAR_MANAGE_REMOTE_FILE_LABEL": "Datei von NDEx laden",
   "SIDEBAR_MANAGE_REMOTE_FILE_TIP": "Lade ein Netzwerk über seine NDEx-URL",
   "SIDEBAR_MANAGE_REMOTE_FILE_BTN": "Laden",
-  "SIDEBAR_MANAGE_REMOTE_FILE_EXAMPLE": "z.B. https://ndexbio.org/#/network/36f7d8fd-23dc-11e8-b939-0ac135e8bacf"
+  "SIDEBAR_MANAGE_REMOTE_FILE_EXAMPLE": "z.B. https://ndexbio.org/#/network/36f7d8fd-23dc-11e8-b939-0ac135e8bacf",
+
+  "SIDEBAR_EDIT_DESCRIPTION_TITLE": "Beschreibung",
+  "SIDEBAR_EDIT_EDITING_TITLE": "Visuelle Anpassungen",
+  "SIDEBAR_EDIT_TH_CLASSNAME": "Klassenname",
+  "SIDEBAR_EDIT_TH_CSS_KEY": "CSS-Key",
+  "SIDEBAR_EDIT_TH_CSS_VALUE": "CSS-Value",
+  "SIDEBAR_EDIT_TH_HIGHLIGHT": "Elemente",
+  "SIDEBAR_EDIT_TT_SELECTOR": "Markiere Elemente mit Klasse"
+
 }

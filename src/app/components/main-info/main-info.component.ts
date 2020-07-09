@@ -5,6 +5,10 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './main-info.component.html',
   styleUrls: ['./main-info.component.scss']
 })
+
+/**
+ * Component responsible for FAQ display
+ */
 export class MainInfoComponent implements OnInit {
 
   constructor() { }

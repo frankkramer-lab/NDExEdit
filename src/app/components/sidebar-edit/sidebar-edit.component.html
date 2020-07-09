@@ -1,1 +1,35 @@
-<p>sidebar-edit works!</p>
+<h5>{{'SIDEBAR_EDIT_DESCRIPTION_TITLE' | translate}}</h5>
+
+<div *ngIf="selectedNetwork.networkInformation.description">
+  <p [innerHTML]="selectedNetwork.networkInformation.description"></p>
+</div>
+
+<h5>{{'SIDEBAR_EDIT_EDITING_TITLE' | translate}}</h5>
+
+<div class="p-2">
+  <div class="row border-bottom">
+    <div class="col">
+      {{'SIDEBAR_EDIT_TH_CLASSNAME' | translate}}
+    </div>
+    <div class="col">
+      <b>{{'SIDEBAR_EDIT_TH_CSS_KEY' | translate}}</b>: {{'SIDEBAR_EDIT_TH_CSS_VALUE' | translate}}
+    </div>
+  </div>
+  <div class="row border-bottom" *ngFor="let s of selectedNetwork.style">
+    <div class="col">
+      <a role="button" (click)="graphService.highlightBySelector(selectedNetwork, s)"
+         data-toggle="tooltip" data-placement="bottom"
+         title="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{s.selector}}">{{s.selector}}</a>
+    </div>
+    <div class="col">
+      <span *ngFor="let css of s.style|keyvalue">
+            <b>{{css.key}}</b>: {{css.value}}
+        <span *ngIf="css.value.toString().indexOf('#') === 0" class="badge badge-pill"
+              [ngStyle]="{'background-color': css.value, 'border-color': 'lightgray'}">&nbsp;
+        </span>
+        <br>
+      </span>
+    </div>
+  </div>
+</div>
+

@@ -44,14 +44,26 @@ const routes: Routes = [
     outlet: 'sidebar'
   },
   {
-    path: 'edit',
+    path: 'edit/:id',
     component: SidebarEditComponent,
-    outlet: 'sidebar'
+    outlet: 'sidebar',
+    children: [
+      {
+        path: '',
+        component: SidebarManageComponent
+      }
+    ]
   },
   {
-    path: 'compare',
+    path: 'compare/:id',
     component: SidebarCompareComponent,
-    outlet: 'sidebar'
+    outlet: 'sidebar',
+    children: [
+      {
+        path: '',
+        component: SidebarManageComponent
+      }
+    ]
   }
 ];
 

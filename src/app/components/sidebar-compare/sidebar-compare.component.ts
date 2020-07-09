@@ -5,6 +5,10 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './sidebar-compare.component.html',
   styleUrls: ['./sidebar-compare.component.scss']
 })
+
+/**
+ * Component responsible for graph comparison
+ */
 export class SidebarCompareComponent implements OnInit {
 
   constructor() { }

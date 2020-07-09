@@ -10,6 +10,10 @@ import {ActivatedRoute} from '@angular/router';
   templateUrl: './main-graph.component.html',
   styleUrls: ['./main-graph.component.scss']
 })
+
+/**
+ * Component responsible for graph rendering and manipulation
+ */
 export class MainGraphComponent implements AfterViewInit, OnDestroy {
   selectedNetwork: NeNetwork;
   cyContainer: any;

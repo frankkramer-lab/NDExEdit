@@ -27,6 +27,9 @@
       ],
       "Dialog": [
         "sans-serif"
+      ],
+      "SansSerif.plain": [
+        "sans-serif"
       ]
     }
   },
@@ -185,7 +188,7 @@
         "center"
       ],
       "C,C,": [
-        "middle",
+        "center",
         "center"
       ]
     }
@@ -198,5 +201,10 @@
     "cytoscape": [
       "line-color"
     ]
+  },
+  {
+    "ndex": ["EDGE_SELECTED_PAINT"],
+    "cytoscape": ["line-color"],
+    "selector": ":selected"
   }
 ]
