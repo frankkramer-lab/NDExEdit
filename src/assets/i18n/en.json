@@ -43,12 +43,21 @@
   "SIDEBAR_MANAGE_REMOTE_FILE_EXAMPLE": "e.g. https://ndexbio.org/#/network/36f7d8fd-23dc-11e8-b939-0ac135e8bacf",
 
   "SIDEBAR_EDIT_DESCRIPTION_TITLE": "Description",
-  "SIDEBAR_EDIT_EDITING_TITLE": "Visual editing",
+  "SIDEBAR_EDIT_EDITING_TITLE": "Highlight nodes and edges",
   "SIDEBAR_EDIT_TH_CLASSNAME": "Class name",
   "SIDEBAR_EDIT_TH_CSS_KEY": "CSS key",
   "SIDEBAR_EDIT_TH_CSS_VALUE": "CSS value",
   "SIDEBAR_EDIT_TH_HIGHLIGHT": "Elements",
-  "SIDEBAR_EDIT_TT_SELECTOR": "Highlight elements with class"
+  "SIDEBAR_EDIT_TT_SELECTOR": "Highlight elements with class",
+  "SIDEBAR_EDIT_LABEL_HEX_NODE": "Nodes highlighting (hex color codes as such #FF00FF)",
+  "SIDEBAR_EDIT_LABEL_HEX_EDGE": "Edges highlighting (hex color codes as such #FF00FF)",
+  "SIDEBAR_EDIT_LABEL_DURATION": "Duration (in ms)",
+  "SIDEBAR_EDIT_BTN_SUBMIT": "Apply",
+  "SIDEBAR_EDIT_TOAST_UPDATE": "Highlight color & duration",
+  "SIDEBAR_EDIT_TOAST_NODES": "Nodes",
+  "SIDEBAR_EDIT_TOAST_EDGES": "Edges",
+  "SIDEBAR_EDIT_TOAST_DURATION": "Duration"
+
 
 
 }

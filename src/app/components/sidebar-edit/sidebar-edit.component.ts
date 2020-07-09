@@ -4,6 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import {NeNetwork} from '../../models/ne-network';
 import {Subscription} from 'rxjs';
 import {GraphService} from '../../services/graph.service';
+import {faPalette} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-sidebar-edit',
@@ -15,8 +16,16 @@ import {GraphService} from '../../services/graph.service';
  * Component responsible for graph editing functionality
  */
 export class SidebarEditComponent implements AfterViewInit, OnDestroy {
+
+  faPalette = faPalette;
+
   selectedNetwork: NeNetwork;
   isInitialized = false;
+
+  highlightNodes = '#ffff00';
+  highlightEdges = '#ffff00';
+  highlightDuration = 2000;
+
   private readonly subscription: Subscription;
 
   constructor(public dataService: DataService,

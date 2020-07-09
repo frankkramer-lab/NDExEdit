@@ -6,9 +6,37 @@
 
 <h5>{{'SIDEBAR_EDIT_EDITING_TITLE' | translate}}</h5>
 
+<div class="alert alert-success" role="alert" id="test">
+  <fa-icon class="mr-2" [icon]="faPalette"></fa-icon><b>{{'SIDEBAR_EDIT_TOAST_UPDATE' | translate}}</b>
+  <hr>
+  <b>{{'SIDEBAR_EDIT_TOAST_NODES' | translate}}</b> {{highlightNodes}}<br>
+  <b>{{'SIDEBAR_EDIT_TOAST_EDGES' | translate}}</b> {{highlightEdges}}<br>
+  <b>{{'SIDEBAR_EDIT_TOAST_DURATION' | translate}}</b> {{highlightDuration}}<br>
+</div>
 
 
 <div class="p-2">
+
+  <div class="form-row">
+
+    <label for="highlightNodesHex">{{'SIDEBAR_EDIT_LABEL_HEX_NODE' | translate}}</label>
+    <input type="text" class="form-control mb-2" id="highlightNodesHex" name="highlightNodesHex"
+           placeholder="#0000ff" [(ngModel)]="highlightNodes">
+
+    <label for="highlightEdgesHex">{{'SIDEBAR_EDIT_LABEL_HEX_EDGE' | translate}}</label>
+    <input type="text" class="form-control mb-2" id="highlightEdgesHex" name="highlightEdgesHex"
+           placeholder="#ff00ff" [(ngModel)]="highlightEdges">
+
+    <label for="highlightDuration">{{'SIDEBAR_EDIT_LABEL_DURATION' | translate}}</label>
+    <input type="number" min="0" step="1" class="form-control mb-2" id="highlightDuration" name="highlightDuration"
+           placeholder="4000" [(ngModel)]="highlightDuration">
+
+    <button type="button" class="btn btn-outline-success btn-block mb-3"
+            (click)="graphService.setHighlightColorAndDuration(highlightNodes, highlightEdges, highlightDuration)">
+      {{'SIDEBAR_EDIT_BTN_SUBMIT' | translate}}</button>
+
+  </div>
+
   <div class="row border-bottom">
     <div class="col">
       {{'SIDEBAR_EDIT_TH_CLASSNAME' | translate}}
@@ -34,4 +62,5 @@
     </div>
   </div>
 </div>
+
 

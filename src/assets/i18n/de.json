@@ -43,11 +43,19 @@
   "SIDEBAR_MANAGE_REMOTE_FILE_EXAMPLE": "z.B. https://ndexbio.org/#/network/36f7d8fd-23dc-11e8-b939-0ac135e8bacf",
 
   "SIDEBAR_EDIT_DESCRIPTION_TITLE": "Beschreibung",
-  "SIDEBAR_EDIT_EDITING_TITLE": "Visuelle Anpassungen",
+  "SIDEBAR_EDIT_EDITING_TITLE": "Knoten und Kanten highlighten",
   "SIDEBAR_EDIT_TH_CLASSNAME": "Klassenname",
   "SIDEBAR_EDIT_TH_CSS_KEY": "CSS-Key",
   "SIDEBAR_EDIT_TH_CSS_VALUE": "CSS-Value",
   "SIDEBAR_EDIT_TH_HIGHLIGHT": "Elemente",
-  "SIDEBAR_EDIT_TT_SELECTOR": "Markiere Elemente mit Klasse"
+  "SIDEBAR_EDIT_TT_SELECTOR": "Markiere Elemente mit Klasse",
+  "SIDEBAR_EDIT_LABEL_HEX_NODE": "Knoten hervorheben (Farbcodes im Format #FF00FF)",
+  "SIDEBAR_EDIT_LABEL_HEX_EDGE": "Kanten hervorheben (Farbcodes im Format #FF00FF)",
+  "SIDEBAR_EDIT_LABEL_DURATION": "Dauer (in ms)",
+  "SIDEBAR_EDIT_BTN_SUBMIT": "Anwenden",
+  "SIDEBAR_EDIT_TOAST_UPDATE": "Highlight-Farbe & -Dauer",
+  "SIDEBAR_EDIT_TOAST_NODES": "Knoten",
+  "SIDEBAR_EDIT_TOAST_EDGES": "Kanten",
+  "SIDEBAR_EDIT_TOAST_DURATION": "Dauer"
 
 }
