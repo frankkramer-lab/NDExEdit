@@ -348,6 +348,7 @@ export class ParseService {
       for (const nodeAttribute of node.attributes) {
         for (const nodeMapping of parsedMappingsNodesDefault.discrete) {
           const classSelector = nodeMapping.selector.substring(1);
+
           if (nodeAttribute.key === nodeMapping.col
             && nodeAttribute.value === nodeMapping.is
             && !node.classes.includes(classSelector)) {
@@ -355,7 +356,14 @@ export class ParseService {
           }
         }
       }
-
+      for (const nodeStyle of parsedStyleNodes) {
+        const id = nodeStyle.selector.substring(6);
+        const classSelector = nodeStyle.selector.substring(1);
+        if (node.id === id && !node.classes.includes(classSelector)) {
+          node.classes.push(classSelector);
+        }
+      }
+      node.classes.push('custom_highlight_color');
     }
 
     // adding discrete mappings to matching edges
@@ -363,6 +371,7 @@ export class ParseService {
       for (const edgeAttribute of edge.attributes) {
         for (const edgeMapping of parsedMappingsEdgesDefault.discrete) {
           const classSelector = edgeMapping.selector.substring(1);
+
           if (edgeAttribute.key === edgeMapping.col
             && edgeAttribute.value === edgeMapping.is
             && !edge.classes.includes(classSelector)) {
@@ -370,12 +379,22 @@ export class ParseService {
           }
         }
       }
+
+      for (const edgeStyle of parsedStyleEdges) {
+        const id = edgeStyle.selector.substring(6);
+        const classSelector = edgeStyle.selector.substring(1);
+        if (edge.id === id && !edge.classes.includes(classSelector)) {
+          edge.classes.push(classSelector);
+        }
+      }
+
+      edge.classes.push('custom_highlight_color');
     }
 
     for (const edgeMapping of parsedMappingsEdgesDefault.continuous) {
       const id: string = edgeMapping.selector.substring(6);
       const classSelector = edgeMapping.selector.substring(1);
-      const edge: NeEdge = parsedEdgeData.find(x => x.id === id);
+      const edge: NeEdge = parsedEdgeData.find(x => String(x.id) === id);
 
       if (edge && !edge.classes.includes(classSelector)) {
         edge.classes.push(classSelector);
@@ -385,7 +404,7 @@ export class ParseService {
     for (const nodeMapping of parsedMappingsNodesDefault.continuous) {
       const id: string = nodeMapping.selector.substring(6);
       const classSelector = nodeMapping.selector.substring(1);
-      const node: NeNode = parsedNodeData.find(x => x.id === id);
+      const node: NeNode = parsedNodeData.find(x => String(x.id) === id);
 
       if (node && !node.classes.includes(classSelector)) {
         node.classes.push(classSelector);
@@ -411,7 +430,6 @@ export class ParseService {
     for (const pd of parsedData) {
 
       const joinedClasses = pd.classes.join(' ');
-
       const tmp: ElementDefinition = {
         data: pd,
         classes: joinedClasses,
@@ -428,9 +446,18 @@ export class ParseService {
           || (pd.group === 'edges' && s.selector === 'edge')
           || (pd.group === 'nodes' && s.selector === 'node')) {
           s.appliedTo.push(pd);
+
         }
       }
     }
+
+    globalStyle.push({
+      selector: '.custom_highlight_color',
+      style: {
+        'background-color': '#ffff00',
+        'line-color': '#ffff00'
+      }
+    });
 
     const currentId = this.id;
     this.id++;

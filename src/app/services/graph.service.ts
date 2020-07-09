@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {NeNetwork} from '../models/ne-network';
 import * as cytoscape from 'cytoscape';
-import {CytoscapeOptions, ElementDefinition} from 'cytoscape';
+import {CytoscapeOptions} from 'cytoscape';
 import {NeCyGraphSettings} from '../models/ne-cy-graph-settings';
 import {NeStyle} from '../models/ne-style';
 
@@ -17,6 +17,7 @@ export class GraphService {
 
   render(container: HTMLElement, network: NeNetwork): cytoscape.Core {
     this.core = cytoscape(this.interpretAsCytoscape(container, network));
+    this.core.elements('.custom_highlight_color').toggleClass('custom_highlight_color', false);
     return this.core;
   }
 
@@ -31,17 +32,12 @@ export class GraphService {
     };
   }
 
-  highlightBySelector(selectedNetwork: NeNetwork, style: NeStyle): void {
-    // const subset: ElementDefinition[] = [];
-    // for (const element of style.appliedTo) {
-    //   subset.push(selectedNetwork.elements.find(x => String(x.data.id) === element.id));
-    // }
-    // console.log(subset);
-
-    // this.core.elements(style.selector).toggleClass('select_custom_color');
-
-    // console.log(this.core);
-    // this.core.elements(style.selector).toggleClass(style.selector);
-    // console.log(this.core);
+  highlightBySelector(selector: string): void {
+    this.core.elements(selector).flashClass('custom_highlight_color', 2000);
   }
+
+  // setHighlightColorAndDuration(hexColorNodes: string, hexColorEdges: string, duration: number): void {
+  //
+  // }
+
 }

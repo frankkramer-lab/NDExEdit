@@ -6,6 +6,8 @@
 
 <h5>{{'SIDEBAR_EDIT_EDITING_TITLE' | translate}}</h5>
 
+
+
 <div class="p-2">
   <div class="row border-bottom">
     <div class="col">
@@ -17,7 +19,7 @@
   </div>
   <div class="row border-bottom" *ngFor="let s of selectedNetwork.style">
     <div class="col">
-      <a role="button" (click)="graphService.highlightBySelector(selectedNetwork, s)"
+      <a role="button" (click)="graphService.highlightBySelector(s.selector)"
          data-toggle="tooltip" data-placement="bottom"
          title="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{s.selector}}">{{s.selector}}</a>
     </div>
