@@ -6,8 +6,8 @@ export interface NeEdge extends NeElement {
   id: string;
   group: string;
   name: string;
-  source: NeNode;
-  target: NeNode;
+  source: string;
+  target: string;
   attributes?: NeElementAttribute[];
   classes?: string[];
 }

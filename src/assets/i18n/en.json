@@ -44,6 +44,8 @@
 
   "SIDEBAR_EDIT_DESCRIPTION_TITLE": "Description",
   "SIDEBAR_EDIT_EDITING_TITLE": "Highlight nodes and edges",
+  "SIDEBAR_EDIT_STYLE_TITLE": "Applied styles",
+  "SIDEBAR_EDIT_ATTRIBUTES_TITLE": "Aspects",
   "SIDEBAR_EDIT_TH_CLASSNAME": "Class name",
   "SIDEBAR_EDIT_TH_CSS_KEY": "CSS key",
   "SIDEBAR_EDIT_TH_CSS_VALUE": "CSS value",

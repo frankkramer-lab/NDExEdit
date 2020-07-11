@@ -13,7 +13,7 @@ export class GraphService {
   private core: cytoscape.Core;
   private flashDuration = 2000;
 
-  constructor(private parseService: ParseService) {
+  constructor() {
   }
 
   render(container: HTMLElement, network: NeNetwork): cytoscape.Core {

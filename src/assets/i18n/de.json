@@ -44,6 +44,8 @@
 
   "SIDEBAR_EDIT_DESCRIPTION_TITLE": "Beschreibung",
   "SIDEBAR_EDIT_EDITING_TITLE": "Knoten und Kanten highlighten",
+  "SIDEBAR_EDIT_STYLE_TITLE": "Angewandte Styles",
+  "SIDEBAR_EDIT_ATTRIBUTES_TITLE": "Aspekte",
   "SIDEBAR_EDIT_TH_CLASSNAME": "Klassenname",
   "SIDEBAR_EDIT_TH_CSS_KEY": "CSS-Key",
   "SIDEBAR_EDIT_TH_CSS_VALUE": "CSS-Value",

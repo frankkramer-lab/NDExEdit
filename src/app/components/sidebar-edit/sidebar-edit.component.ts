@@ -33,6 +33,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
               public graphService: GraphService) {
     this.subscription = this.route.paramMap.subscribe(params => {
       this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
+      console.log(this.selectedNetwork);
     });
   }
 

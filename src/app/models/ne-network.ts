@@ -2,6 +2,8 @@ import {NeNetworkInformation} from './ne-network-information';
 import * as cytoscape from 'cytoscape';
 import {ElementDefinition, Stylesheet} from 'cytoscape';
 import {NeElement} from './ne-element';
+import {NeElementAttribute} from './ne-element-attribute';
+import {NeAspect} from './ne-aspect';
 
 export interface NeNetwork {
   id?: number;
@@ -12,4 +14,6 @@ export interface NeNetwork {
   edgeCount?: number;
   cssClassCount?: number;
   graph?: cytoscape.Core;
+  aspects?: NeElementAttribute[];
+  aspectKeyValues?: NeAspect[];
 }

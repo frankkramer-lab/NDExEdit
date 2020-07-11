@@ -2,6 +2,6 @@ import {NeElement} from './ne-element';
 
 export interface NeStyle {
   selector: string;
-  style: any;
+  style?: any;
   appliedTo?: NeElement[];
 }

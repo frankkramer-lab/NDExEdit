@@ -17,6 +17,7 @@ import {NeNetwork} from '../models/ne-network';
 import {NeElement} from '../models/ne-element';
 import {NeContinuousMap} from '../models/ne-continuous-map';
 import {NeGlobalMappings} from '../models/ne-global-mappings';
+import {NeAspect} from '../models/ne-aspect';
 
 @Injectable({
   providedIn: 'root'
@@ -106,7 +107,9 @@ export class ParseService {
       const obj: NeElementAttribute = {
         reference: String(entry.po),
         key: ParseService.utilCleanString(entry.n),
+        keyHR: entry.n,
         value: ParseService.utilCleanString(entry.v),
+        valueHR: entry.v,
         datatype: entry.d || null
       };
       nodeAttributeData.push(obj);
@@ -123,11 +126,11 @@ export class ParseService {
 
     for (const entry of readData) {
       const obj: NeEdge = {
-        id: String(entry['@id']),
+        id: 'e'.concat(String(entry['@id'])),
         group: 'edges',
         name: entry.i,
-        source: entry.s,
-        target: entry.t,
+        source: String(entry.s),
+        target: String(entry.t),
         classes: []
       };
       edgeData.push(obj);
@@ -144,9 +147,11 @@ export class ParseService {
 
     for (const entry of readData) {
       const obj: NeElementAttribute = {
-        reference: String(entry.po),
+        reference: 'e'.concat(String(entry.po)),
         key: entry.n,
+        keyHR: entry.n,
         value: entry.v,
+        valueHR: entry.v,
         datatype: entry.d || null
       };
       edgeAttributeData.push(obj);
@@ -391,6 +396,7 @@ export class ParseService {
       edge.classes.push('custom_highlight_color');
     }
 
+
     for (const edgeMapping of parsedMappingsEdgesDefault.continuous) {
       const id: string = edgeMapping.selector.substring(6);
       const classSelector = edgeMapping.selector.substring(1);
@@ -462,6 +468,36 @@ export class ParseService {
     const currentId = this.id;
     this.id++;
 
+    const aspectKeyValues: NeAspect[] = [];
+
+    for (const element of parsedData) {
+      for (const attribute of element.attributes) {
+
+        const aspect: NeAspect = {
+          name: attribute.keyHR,
+          values: [],
+          appliedTo: []
+        };
+
+        let found = false;
+
+        for (const akv of aspectKeyValues) {
+          if (akv.name === attribute.keyHR) {
+            if (!akv.values.includes(attribute.valueHR)) {
+              akv.values.push(attribute.valueHR);
+            }
+            found = true;
+          }
+        }
+
+        if (!found) {
+          aspect.values.push(attribute.valueHR);
+          aspectKeyValues.push(aspect);
+        }
+
+      }
+    }
+
     return {
       id: currentId,
       networkInformation,
@@ -470,6 +506,7 @@ export class ParseService {
       nodeCount: parsedData.filter(x => x.group === 'nodes').length,
       edgeCount: parsedData.filter(x => x.group === 'edges').length,
       cssClassCount: globalStyle.length,
+      aspectKeyValues,
     };
   }
 
