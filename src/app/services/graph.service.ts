@@ -52,8 +52,6 @@ export class GraphService {
     this.flashDuration = duration;
     this.core.style(styleJson);
 
-    document.getElementById('test').className = 'alert alert-success alert-dismissible visible';
-
   }
 
   toggleLabels(show: boolean): void {

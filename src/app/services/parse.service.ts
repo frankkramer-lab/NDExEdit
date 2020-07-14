@@ -625,8 +625,10 @@ export class ParseService {
             key: propKey,
             value: properties[propKey]
           };
+
           const lookup = this.lookup(tmp, '.'.concat(elementType.concat('_'.concat(entry.applies_to))));
           style = style.concat(lookup);
+
         }
       }
     }
