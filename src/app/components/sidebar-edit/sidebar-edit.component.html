@@ -76,6 +76,7 @@
         <b>{{'SIDEBAR_EDIT_TH_CSS_KEY' | translate}}</b>: {{'SIDEBAR_EDIT_TH_CSS_VALUE' | translate}}
       </div>
     </div>
+    <!-- todo fix up to make more intuitive -->
     <div class="row border-bottom" *ngFor="let s of selectedNetwork.style">
       <div class="col">
         <a role="button" (click)="graphService.highlightBySelector(s.selector)"
@@ -85,8 +86,8 @@
       <div class="col">
             <span *ngFor="let css of s.style|keyvalue">
               <b>{{css.key}}</b>: {{css.value}}
-              <span *ngIf="css.value.toString().indexOf('#') === 0" class="badge badge-pill"
-                    [ngStyle]="{'background-color': css.value, 'border-color': 'lightgray'}">&nbsp;
+              <span *ngIf="css.value.toString().indexOf('#') === 0" class="badge badge-pill border"
+                    [ngStyle]="{'background-color': css.value}">&nbsp;
               </span>
               <br>
             </span>

@@ -519,14 +519,52 @@ export class ParseService {
     let styleNodesDefault: NeStyleComponent[] = [];
     const properties: any[] = readData.properties;
 
+    let useSize = true;
+
     if (properties) {
+
       for (const propKey of Object.keys(properties)) {
-        const tmp = {
-          key: propKey,
-          value: properties[propKey]
-        };
-        const lookup = this.lookup(tmp);
-        styleNodesDefault = styleNodesDefault.concat(lookup);
+        if (propKey === 'NODE_SIZE' && properties[propKey] !== '35.0') {
+          useSize = true;
+        }
+      }
+
+      for (const propKey of Object.keys(properties)) {
+
+        if (propKey === 'NODE_SIZE' && !useSize) {
+          continue;
+        } else if ((propKey === 'NODE_WIDTH' || propKey === 'NODE_HEIGHT') && useSize) {
+          continue;
+
+        } else {
+
+          if (propKey === 'NODE_SIZE') {
+            const tmpWidth = {
+              key: 'NODE_WIDTH',
+              value: properties[propKey]
+            };
+            const tmpHeight = {
+              key: 'NODE_HEIGHT',
+              value: properties[propKey]
+            };
+            const lookupWidth = this.lookup(tmpWidth);
+            const lookupHeight = this.lookup(tmpHeight);
+
+            styleNodesDefault = styleNodesDefault.concat(lookupWidth);
+            styleNodesDefault = styleNodesDefault.concat(lookupHeight);
+
+          } else {
+
+            const tmp = {
+              key: propKey,
+              value: properties[propKey]
+            };
+
+            const lookup = this.lookup(tmp);
+            styleNodesDefault = styleNodesDefault.concat(lookup);
+          }
+        }
+
       }
     }
     return styleNodesDefault;
@@ -619,6 +657,8 @@ export class ParseService {
       }
 
     }
+
+    console.log(mappingsElementsDefault);
 
     return {
       discrete: mappingsElementsDefault,
@@ -803,7 +843,27 @@ export class ParseService {
       const tmpSelector = '.'.concat(elementType.concat('_'.concat(tmpObj.col.concat('_'.concat(tmpObj.is)))));
       tmpObj.selector = tmpSelector;
 
-      const lookup = this.lookup(lookupProperty, tmpSelector);
+      let lookup: NeStyleComponent[] = [];
+
+      if (lookupProperty.key === 'NODE_SIZE') {
+        const lookupWidth = this.lookup({
+          key: 'NODE_WIDTH',
+          value: lookupProperty.value
+        });
+        const lookupHeight = this.lookup({
+          key: 'NODE_HEIGHT',
+          value: lookupProperty.value
+        });
+
+        for (const lw of lookupWidth) {
+          lookup.push(lw);
+        }
+        for (const lh of lookupHeight) {
+          lookup.push(lh);
+        }
+      } else {
+        lookup = this.lookup(lookupProperty, tmpSelector);
+      }
 
       for (const lookupStyle of lookup) {
 
