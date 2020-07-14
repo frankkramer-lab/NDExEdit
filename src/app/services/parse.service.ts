@@ -99,8 +99,9 @@ export class ParseService {
   /**
    * Method for parsing node attribute data. See {@link NeElementAttribute|NeElementAttribute} for further info on format
    * @param readData input data
+   * @param nodeData raw node data
    */
-  private static parseNodeAttributeData(readData: any): NeElementAttribute[] {
+  private static parseNodeAttributeData(readData: any, nodeData: any): NeElementAttribute[] {
     const nodeAttributeData: NeElementAttribute[] = [];
 
     for (const entry of readData) {
@@ -141,8 +142,9 @@ export class ParseService {
   /**
    * Method for parsing edge attribute data. See {@link NeElementAttribute|NeElementAttribute} for further info on format
    * @param readData input data
+   * @param edgeData raw edge data
    */
-  private static parseEdgeAttributeData(readData: any): NeElementAttribute[] {
+  private static parseEdgeAttributeData(readData: any, edgeData: any): NeElementAttribute[] {
     const edgeAttributeData: NeElementAttribute[] = [];
 
     for (const entry of readData) {
@@ -322,7 +324,7 @@ export class ParseService {
     }
 
     const parsedNodeData = ParseService.parseNodeData(nodeData || []);
-    const parsedNodeAttributeData = ParseService.parseNodeAttributeData(nodeAttributeData || []);
+    const parsedNodeAttributeData = ParseService.parseNodeAttributeData(nodeAttributeData || [], nodeData || []);
     const parsedLayoutData = ParseService.parseLayoutData(layoutData || []);
 
     for (const node of parsedNodeData) {
@@ -331,7 +333,7 @@ export class ParseService {
     }
 
     const parsedEdgeData = ParseService.parseEdgeData(edgeData || []);
-    const parsedEdgeAttributeData = ParseService.parseEdgeAttributeData(edgeAttributeData || []);
+    const parsedEdgeAttributeData = ParseService.parseEdgeAttributeData(edgeAttributeData || [], edgeData || []);
     for (const edge of parsedEdgeData) {
       edge.attributes = parsedEdgeAttributeData.filter(x => x.reference === edge.id);
     }
@@ -347,6 +349,8 @@ export class ParseService {
 
     const parsedMappingsEdgesDefault = this.parseMappingsElementsDefault((styleEdgesDefault || []),
       'edge', parsedEdgeData);
+
+    console.log(parsedMappingsEdgesDefault);
 
     // adding discrete mappings to matching nodes
     for (const node of parsedNodeData) {
@@ -421,14 +425,16 @@ export class ParseService {
 
     const parsedData = parsedNodeData.concat(parsedEdgeData);
     const parsedStyles = parsedStyleNetwork.concat(
-      parsedStyleNodes,
       parsedStyleNodesDefault, // contains label reference on data(name), also hidden
       parsedStyleEdgesDefault, // contains label reference on data(name), also hidden
-      parsedStyleEdges,
+      parsedMappingsEdgesDefault.discrete,
+      parsedMappingsNodesDefault.discrete,
       parsedMappingsEdgesDefault.continuous,
       parsedMappingsNodesDefault.continuous,
-      parsedMappingsEdgesDefault.discrete,
-      parsedMappingsNodesDefault.discrete);
+      parsedStyleNodes,
+      parsedStyleEdges
+    );
+
 
     const globalStyle: NeStyle[] = [];
 
@@ -471,6 +477,8 @@ export class ParseService {
       selector: '.hide_label',
       style: {
         label: '',
+        'text-wrap': 'wrap',
+        'text-max-width': '10'
       }
     });
 
@@ -518,7 +526,6 @@ export class ParseService {
       aspectKeyValues,
     };
   }
-
 
   /**
    * Method for parsing default nodes style data. See {@link NeStyleComponent|NeStyleComponent} for further info on format
@@ -848,7 +855,7 @@ export class ParseService {
           tmpCollection.tmpK.splice(Number(equalSplit[1]), 0, ParseService.utilCleanString(equalSplit[2]));
           break;
         case 'V':
-          tmpCollection.tmpV.splice(Number(equalSplit[1]), 0, ParseService.utilCleanString(equalSplit[2]));
+          tmpCollection.tmpV.splice(Number(equalSplit[1]), 0, equalSplit[2]);
           break;
       }
     }

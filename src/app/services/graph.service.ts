@@ -35,6 +35,7 @@ export class GraphService {
 
   highlightBySelector(selector: string): void {
     this.core.elements(selector).flashClass('custom_highlight_color', this.flashDuration);
+    console.log(this.core.elements('.edge_interaction_interactswith'));
   }
 
   setHighlightColorAndDuration(hexColorNodes: string, hexColorEdges: string, duration: number): void {
