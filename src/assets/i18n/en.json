@@ -58,7 +58,8 @@
   "SIDEBAR_EDIT_TOAST_UPDATE": "Highlight color & duration",
   "SIDEBAR_EDIT_TOAST_NODES": "Nodes",
   "SIDEBAR_EDIT_TOAST_EDGES": "Edges",
-  "SIDEBAR_EDIT_TOAST_DURATION": "Duration"
+  "SIDEBAR_EDIT_TOAST_DURATION": "Duration",
+  "SIDEBAR_EDIT_CB_LABELS": "Show labels"
 
 
 

@@ -56,4 +56,7 @@ export class GraphService {
 
   }
 
+  toggleLabels(show: boolean): void {
+    this.core.elements().toggleClass('hide_label', !show);
+  }
 }

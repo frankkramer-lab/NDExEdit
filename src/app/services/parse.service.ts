@@ -369,6 +369,7 @@ export class ParseService {
         }
       }
       node.classes.push('custom_highlight_color');
+      node.classes.push('hide_label');
     }
 
     // adding discrete mappings to matching edges
@@ -394,6 +395,7 @@ export class ParseService {
       }
 
       edge.classes.push('custom_highlight_color');
+      edge.classes.push('hide_label');
     }
 
 
@@ -420,8 +422,8 @@ export class ParseService {
     const parsedData = parsedNodeData.concat(parsedEdgeData);
     const parsedStyles = parsedStyleNetwork.concat(
       parsedStyleNodes,
-      parsedStyleNodesDefault,
-      parsedStyleEdgesDefault,
+      parsedStyleNodesDefault, // contains label reference on data(name), also hidden
+      parsedStyleEdgesDefault, // contains label reference on data(name), also hidden
       parsedStyleEdges,
       parsedMappingsEdgesDefault.continuous,
       parsedMappingsNodesDefault.continuous,
@@ -462,6 +464,13 @@ export class ParseService {
       style: {
         'background-color': '#ffff00',
         'line-color': '#ffff00'
+      }
+    });
+
+    globalStyle.push({
+      selector: '.hide_label',
+      style: {
+        label: '',
       }
     });
 
@@ -519,24 +528,27 @@ export class ParseService {
     let styleNodesDefault: NeStyleComponent[] = [];
     const properties: any[] = readData.properties;
 
-    let useSize = true;
+    let useSize = false;
+    let useWidth = false;
+    let useHeight = false;
 
     if (properties) {
 
       for (const propKey of Object.keys(properties)) {
         if (propKey === 'NODE_SIZE' && properties[propKey] !== '35.0') {
           useSize = true;
+        } else if (propKey === 'NODE_WIDTH' && properties[propKey] !== '75.0') {
+          useWidth = true;
+        } else if (propKey === 'NODE_HEIGHT' && properties[propKey] !== '35.0') {
+          useHeight = true;
         }
       }
 
       for (const propKey of Object.keys(properties)) {
 
-        if (propKey === 'NODE_SIZE' && !useSize) {
-          continue;
-        } else if ((propKey === 'NODE_WIDTH' || propKey === 'NODE_HEIGHT') && useSize) {
-          continue;
-
-        } else {
+        if (!((propKey === 'NODE_SIZE' && !useSize)
+          || (propKey === 'NODE_WIDTH' && !useWidth)
+          || (propKey === 'NODE_HEIGHT' && !useHeight))) {
 
           if (propKey === 'NODE_SIZE') {
             const tmpWidth = {
@@ -567,7 +579,13 @@ export class ParseService {
 
       }
     }
-    return styleNodesDefault;
+    const labelData: NeStyleComponent = {
+      selector: 'node',
+      cssKey: 'label',
+      cssValue: 'data(name)'
+    };
+
+    return styleNodesDefault.concat(labelData);
   }
 
 
@@ -655,10 +673,7 @@ export class ParseService {
           mappingsElementsSpecific = mappingsElementsSpecific.concat(this.parseMappingContinuous(currentEntry, elementType, data));
           break;
       }
-
     }
-
-    console.log(mappingsElementsDefault);
 
     return {
       discrete: mappingsElementsDefault,
@@ -849,11 +864,11 @@ export class ParseService {
         const lookupWidth = this.lookup({
           key: 'NODE_WIDTH',
           value: lookupProperty.value
-        });
+        }, tmpSelector);
         const lookupHeight = this.lookup({
           key: 'NODE_HEIGHT',
           value: lookupProperty.value
-        });
+        }, tmpSelector);
 
         for (const lw of lookupWidth) {
           lookup.push(lw);
@@ -881,7 +896,6 @@ export class ParseService {
           };
 
           mappingsElementsDefault.push(element);
-          break;
         }
       }
     }

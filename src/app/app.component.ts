@@ -39,9 +39,9 @@ export class AppComponent {
     private http: HttpClient) {
     this.initializeTranslation();
 
-    // this.initDemoNetwork('01.cx');
-    this.initDemoNetwork('02.cx');
-    // this.initDemoNetwork('03.cx');
+    this.initDemoNetwork('01.cx');
+    // this.initDemoNetwork('02.cx');
+    this.initDemoNetwork('03.cx');
     // this.initDemoNetwork('04.cx');
 
   }

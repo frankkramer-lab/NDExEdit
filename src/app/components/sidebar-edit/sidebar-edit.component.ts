@@ -26,6 +26,8 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   highlightEdges = '#ffff00';
   highlightDuration = 2000;
 
+  showLabels = false;
+
   private readonly subscription: Subscription;
 
   constructor(public dataService: DataService,
@@ -33,7 +35,6 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
               public graphService: GraphService) {
     this.subscription = this.route.paramMap.subscribe(params => {
       this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
-      console.log(this.selectedNetwork);
     });
   }
 
@@ -46,5 +47,11 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
       this.subscription.unsubscribe();
     }
   }
+
+  toggleLabels(show: boolean): void {
+    this.graphService.toggleLabels(show);
+    this.showLabels = show;
+  }
+
 
 }

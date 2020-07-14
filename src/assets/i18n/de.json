@@ -58,6 +58,7 @@
   "SIDEBAR_EDIT_TOAST_UPDATE": "Highlight-Farbe & -Dauer",
   "SIDEBAR_EDIT_TOAST_NODES": "Knoten",
   "SIDEBAR_EDIT_TOAST_EDGES": "Kanten",
-  "SIDEBAR_EDIT_TOAST_DURATION": "Dauer"
+  "SIDEBAR_EDIT_TOAST_DURATION": "Dauer",
+  "SIDEBAR_EDIT_CB_LABELS": "Beschriftungen anzeigen"
 
 }

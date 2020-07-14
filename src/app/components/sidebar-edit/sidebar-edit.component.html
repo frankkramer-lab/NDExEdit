@@ -4,6 +4,13 @@
   <p [innerHTML]="selectedNetwork.networkInformation.description"></p>
 </div>
 
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="{{showLabels}}" id="showLabels" (click)="toggleLabels(!showLabels)">
+  <label class="form-check-label" for="showLabels">
+    {{'SIDEBAR_EDIT_CB_LABELS' | translate}}
+  </label>
+</div>
+
 <div class="nav nav-pills mb-3 flex-row" id="editsNav" role="tablist" aria-orientation="horizontal">
   <a class="nav-link active" id="editsNavHighlights" data-toggle="pill" href="#editsNavHighlightsContent" role="tab"
      aria-controls="editsNavHighlights" aria-selected="true">{{'SIDEBAR_EDIT_EDITING_TITLE' | translate}}</a>
