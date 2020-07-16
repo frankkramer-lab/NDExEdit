@@ -192,15 +192,7 @@
         "bottom",
         "center"
       ],
-      "SW%SE%": [
-        "bottom",
-        "center"
-      ],
       "SE,SW,": [
-        "bottom",
-        "center"
-      ],
-      "SE%SW%": [
         "bottom",
         "center"
       ],
@@ -208,15 +200,7 @@
         "center",
         "center"
       ],
-      "C%C%": [
-        "center",
-        "center"
-      ],
       "S,N,": [
-        "center",
-        "center"
-      ],
-      "S%N%": [
         "center",
         "center"
       ]

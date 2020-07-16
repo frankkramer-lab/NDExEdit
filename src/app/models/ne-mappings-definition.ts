@@ -4,4 +4,5 @@ export interface NeMappingsDefinition {
   selector: string;
   cssKey?: string;
   cssValue?: string;
+  priority: number;
 }

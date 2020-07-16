@@ -232,6 +232,30 @@ export class ParseService {
     return s;
   }
 
+  private static orderStyles(parsedStyles: NeStyleComponent[]): NeStyleComponent[] {
+    return parsedStyles.sort((a, b) => (a.priority < b.priority) ? -1 : 1);
+  }
+
+  private static findPriorityBySelector(selector: string): number {
+    let priority = -1;
+
+    if (selector === 'node' || selector === 'edge') {
+      // selectors: default
+      priority = 0;
+    } else if (selector.startsWith('.') && selector.match(/[0-9]/g) === null) {
+      // selectors: aspect specific
+      priority = 1;
+    } else if (selector.match(/[0-9]/g) !== null) {
+      // selectors: element specific
+      priority = 2;
+    } else if (selector.includes(':')) {
+      // selectors: special
+      priority = 3;
+    }
+
+    return priority;
+  }
+
   /**
    * Parses a file from .cx to cytoscape.js interpretable data
    *
@@ -350,8 +374,6 @@ export class ParseService {
     const parsedMappingsEdgesDefault = this.parseMappingsElementsDefault((styleEdgesDefault || []),
       'edge', parsedEdgeData);
 
-    console.log(parsedMappingsEdgesDefault);
-
     // adding discrete mappings to matching nodes
     for (const node of parsedNodeData) {
       for (const nodeAttribute of node.attributes) {
@@ -424,7 +446,7 @@ export class ParseService {
     }
 
     const parsedData = parsedNodeData.concat(parsedEdgeData);
-    const parsedStyles = parsedStyleNetwork.concat(
+    let parsedStyles = parsedStyleNetwork.concat(
       parsedStyleNodesDefault, // contains label reference on data(name), also hidden
       parsedStyleEdgesDefault, // contains label reference on data(name), also hidden
       parsedMappingsEdgesDefault.discrete,
@@ -435,6 +457,8 @@ export class ParseService {
       parsedStyleEdges
     );
 
+    parsedStyles = ParseService.orderStyles(parsedStyles);
+    console.log(parsedStyles);
 
     const globalStyle: NeStyle[] = [];
 
@@ -589,7 +613,8 @@ export class ParseService {
     const labelData: NeStyleComponent = {
       selector: 'node',
       cssKey: 'label',
-      cssValue: 'data(name)'
+      cssValue: 'data(name)',
+      priority: 0
     };
 
     return styleNodesDefault.concat(labelData);
@@ -719,12 +744,15 @@ export class ParseService {
       builtSelector = lookupMap.selector;
     }
 
+    const priority = ParseService.findPriorityBySelector(builtSelector);
+
     // case 1: simply applicable
     if (lookupMap && !lookupMap.conversionType && lookupMap[to].length === 1) {
       return [{
         selector: builtSelector,
         cssKey: lookupMap[to][0],
-        cssValue: property.value
+        cssValue: property.value,
+        priority
       }];
     } else if (lookupMap && lookupMap.conversionType) {
       switch (lookupMap.conversionType) {
@@ -764,6 +792,7 @@ export class ParseService {
               selector: builtSelector,
               cssKey: key,
               cssValue,
+              priority
             };
 
             if (!styleCollection.includes(obj)) {
@@ -793,6 +822,7 @@ export class ParseService {
                 selector: builtSelector,
                 cssKey: key,
                 cssValue: matchedValue[indexOfKey],
+                priority
               };
               styleCollection.push(obj);
             }
@@ -826,6 +856,7 @@ export class ParseService {
       selector: null,
       cssKey: null,
       cssValue: null,
+      priority: -1
     };
 
     const tmpCollection: NeMappingsCollection = {
@@ -865,6 +896,7 @@ export class ParseService {
       tmpObj.is = ParseService.utilCleanString(k);
 
       const tmpSelector = '.'.concat(elementType.concat('_'.concat(tmpObj.col.concat('_'.concat(tmpObj.is)))));
+      const priority = ParseService.findPriorityBySelector(tmpSelector);
       tmpObj.selector = tmpSelector;
 
       let lookup: NeStyleComponent[] = [];
@@ -885,6 +917,12 @@ export class ParseService {
         for (const lh of lookupHeight) {
           lookup.push(lh);
         }
+      } else if (lookupProperty.key === 'NODE_LABEL_POSITION') {
+        const tmpProperty = {
+          key: lookupProperty.key,
+          value: lookupProperty.value.replace(/%/g, ',')
+        };
+        lookup = this.lookup(tmpProperty, tmpSelector);
       } else {
         lookup = this.lookup(lookupProperty, tmpSelector);
       }
@@ -901,7 +939,8 @@ export class ParseService {
             cssValue: tmpObj.cssValue,
             cssKey: tmpObj.cssKey,
             is: tmpObj.is,
-            col: tmpObj.col
+            col: tmpObj.col,
+            priority
           };
 
           mappingsElementsDefault.push(element);
@@ -968,6 +1007,9 @@ export class ParseService {
           let intervalPointer = -1;
           let valuePointer = -1;
 
+          const finalSelector = '.'.concat(elementType.concat('_'.concat(element.id)));
+          const priority = ParseService.findPriorityBySelector(finalSelector);
+
           for (let i = 0; i < (thresholds.length); i++) {
 
             if (Number(elementAttribute.value) < Number(thresholds[i])) {
@@ -989,10 +1031,12 @@ export class ParseService {
               }
 
               for (const lu of lookup) {
+
                 buildClasses.push({
-                  selector: '.'.concat(elementType.concat('_'.concat(element.id))),
+                  selector: finalSelector,
                   cssKey: lu,
-                  cssValue
+                  cssValue,
+                  priority
                 });
               }
               continue outer;
@@ -1002,9 +1046,10 @@ export class ParseService {
 
               for (const lu of lookup) {
                 buildClasses.push({
-                  selector: '.'.concat(elementType.concat('_'.concat(element.id))),
+                  selector: finalSelector,
                   cssKey: lu,
                   cssValue: equals[i],
+                  priority
                 });
               }
               continue outer;
@@ -1016,6 +1061,7 @@ export class ParseService {
               selector: '.'.concat(elementType.concat('_'.concat(element.id))),
               cssKey: lu,
               cssValue: greaters[greaters.length - 1],
+              priority
             });
           }
           continue outer;
