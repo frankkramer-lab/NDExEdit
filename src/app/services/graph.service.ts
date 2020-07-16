@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {NeNetwork} from '../models/ne-network';
 import * as cytoscape from 'cytoscape';
-import {CytoscapeOptions} from 'cytoscape';
+import {CytoscapeOptions, EventObject} from 'cytoscape';
 import {NeCyGraphSettings} from '../models/ne-cy-graph-settings';
-import {ParseService} from './parse.service';
+import {NeNode} from '../models/ne-node';
+import {NeEdge} from '../models/ne-edge';
 
 @Injectable({
   providedIn: 'root'
@@ -13,14 +14,25 @@ export class GraphService {
   private core: cytoscape.Core;
   private flashDuration = 2000;
 
+  private selectedNodes: NeNode[] = [];
+  private selectedEdges: NeEdge[] = [];
+
+  public selectedElements = {
+    nodes: this.selectedNodes,
+    edges: this.selectedEdges
+  };
+
   constructor() {
   }
 
   render(container: HTMLElement, network: NeNetwork): cytoscape.Core {
+    this.unsubscribeFromCoreEvents();
     this.core = cytoscape(this.interpretAsCytoscape(container, network));
     this.core.elements('.custom_highlight_color').toggleClass('custom_highlight_color', false);
+    this.subscribeToCoreEvents();
     return this.core;
   }
+
 
   interpretAsCytoscape(container: HTMLElement, network: NeNetwork, overrideSettings: NeCyGraphSettings = {}): CytoscapeOptions {
     return {
@@ -35,7 +47,6 @@ export class GraphService {
 
   highlightBySelector(selector: string): void {
     this.core.elements(selector).flashClass('custom_highlight_color', this.flashDuration);
-    console.log(this.core.elements('.edge_interaction_interactswith'));
   }
 
   setHighlightColorAndDuration(hexColorNodes: string, hexColorEdges: string, duration: number): void {
@@ -58,4 +69,26 @@ export class GraphService {
   toggleLabels(show: boolean): void {
     this.core.elements().toggleClass('hide_label', !show);
   }
+
+  private subscribeToCoreEvents(): void {
+    if (this.core) {
+      this.core.ready(() => {
+        // todo define all events here
+        this.core.on('click', event => {
+          this.handleEvent(event);
+        });
+      });
+    }
+  }
+
+  private handleEvent(event: EventObject): void {
+    console.log(event);
+  }
+
+  private unsubscribeFromCoreEvents(): void {
+    if (this.core) {
+      this.core.removeListener('click');
+    }
+  }
+
 }

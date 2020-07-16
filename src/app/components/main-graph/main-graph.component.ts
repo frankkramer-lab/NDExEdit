@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, Renderer2} from '@angular/core';
+import {AfterViewInit, Component, DoCheck, OnDestroy, Renderer2} from '@angular/core';
 import {NeNetwork} from '../../models/ne-network';
 import {DataService} from '../../services/data.service';
 import {GraphService} from '../../services/graph.service';
@@ -51,4 +51,14 @@ export class MainGraphComponent implements AfterViewInit, OnDestroy {
     this.cyContainer = this.renderer.selectRootElement('#cy');
     this.graphService.render(this.cyContainer, this.selectedNetwork);
   }
+
+  // ngDoCheck(): void {
+  //   let core = this.graphService.getCore();
+  //   if (core) {
+  //     core.on('select', function() {
+  //       console.log()
+  //     })
+  //   }
+  //
+  // }
 }
