@@ -396,6 +396,7 @@ export class ParseService {
       }
       node.classes.push('custom_highlight_color');
       node.classes.push('hide_label');
+      node.classes.push('text-wrap');
     }
 
     // adding discrete mappings to matching edges
@@ -422,6 +423,7 @@ export class ParseService {
 
       edge.classes.push('custom_highlight_color');
       edge.classes.push('hide_label');
+      edge.classes.push('text-wrap');
     }
 
 
@@ -494,6 +496,13 @@ export class ParseService {
       style: {
         'background-color': '#ffff00',
         'line-color': '#ffff00'
+      }
+    });
+
+    globalStyle.push({
+      selector: '.text-wrap',
+      style: {
+        'text-wrap': 'wrap',
       }
     });
 
