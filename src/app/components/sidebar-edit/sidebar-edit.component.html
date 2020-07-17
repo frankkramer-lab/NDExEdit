@@ -11,20 +11,6 @@
   </label>
 </div>
 
-<div>
-  NODES
-  <ul>
-    <li *ngFor="let node of graphService.selectedElements.nodes">
-      {{node.id}}
-    </li>
-  </ul>
-  EDGES
-  <ul>
-    <li *ngFor="let edge of graphService.selectedElements.edges">
-      {{edge.id}}
-    </li>
-  </ul>
-</div>
 
 <div class="nav nav-pills mb-3 flex-row" id="editsNav" role="tablist" aria-orientation="horizontal">
   <a class="nav-link active" id="editsNavHighlights" data-toggle="pill" href="#editsNavHighlightsContent" role="tab"

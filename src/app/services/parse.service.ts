@@ -458,7 +458,6 @@ export class ParseService {
     );
 
     parsedStyles = ParseService.orderStyles(parsedStyles);
-    console.log(parsedStyles);
 
     const globalStyle: NeStyle[] = [];
 
@@ -479,6 +478,7 @@ export class ParseService {
 
     for (const s of globalStyle) {
       for (const pd of parsedData) {
+
         const className = s.selector.substring(1);
         if ((pd.classes.includes(className))
           || (pd.group === 'edges' && s.selector === 'edge')
@@ -501,7 +501,6 @@ export class ParseService {
       selector: '.hide_label',
       style: {
         label: '',
-        'text-wrap': 'wrap',
         'text-max-width': '10'
       }
     });
@@ -527,12 +526,15 @@ export class ParseService {
             if (!akv.values.includes(attribute.valueHR)) {
               akv.values.push(attribute.valueHR);
             }
+            akv.appliedTo.push(element);
             found = true;
           }
         }
 
+
         if (!found) {
           aspect.values.push(attribute.valueHR);
+          aspect.appliedTo.push(element);
           aspectKeyValues.push(aspect);
         }
 

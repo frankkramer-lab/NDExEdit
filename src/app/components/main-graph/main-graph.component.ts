@@ -28,6 +28,7 @@ export class MainGraphComponent implements AfterViewInit, OnDestroy {
 
     this.subscription = this.route.paramMap.subscribe(params => {
       this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
+      console.log(this.selectedNetwork);
 
       if (this.isInitialized) {
         this.renderGraph();
