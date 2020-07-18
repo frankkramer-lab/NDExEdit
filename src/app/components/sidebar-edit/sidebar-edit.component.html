@@ -43,7 +43,17 @@
                    data-toggle="tooltip" data-placement="bottom"
                    title="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{nodeMap.selectors[i]}}">{{value}}</a>
                 </td>
-              <td *ngFor="let style of nodeMap.styleMap">{{style.cssValues[i]}}</td>
+              <td *ngFor="let style of nodeMap.styleMap">
+                <span *ngIf="style.cssValues.length > i">
+
+                  {{style.cssValues[i]}}
+                  <span *ngIf="style.cssValues && style.cssValues[i].toString().indexOf('#') === 0" class="badge badge-pill border"
+                        [ngStyle]="{'background-color': style.cssValues[i]}">
+                    &nbsp;
+                  </span>
+
+                </span>
+              </td>
             </tr>
           </table>
         </td>

@@ -1190,7 +1190,9 @@ export class ParseService {
               if (!style.selectors.includes(map.selector)) {
                 style.cssValues.push(map.cssValue);
                 style.selectors.push(map.selector);
-                gm.selectors.push(map.selector);
+                if (!gm.selectors.includes(map.selector)) {
+                  gm.selectors.push(map.selector);
+                }
               }
 
             }
@@ -1198,7 +1200,10 @@ export class ParseService {
 
           if (!found) {
             gm.th.push(map.cssKey);
-            gm.selectors.push(map.selector);
+
+            if (!gm.selectors.includes(map.selector)) {
+              gm.selectors.push(map.selector);
+            }
             gm.styleMap.push({
               cssKey: map.cssKey,
               cssValues: [map.cssValue],
