@@ -4,7 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import {NeNetwork} from '../../models/ne-network';
 import {Subscription} from 'rxjs';
 import {GraphService} from '../../services/graph.service';
-import {faPalette} from '@fortawesome/free-solid-svg-icons';
+import {faPalette, faLightbulb} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-sidebar-edit',
@@ -18,12 +18,13 @@ import {faPalette} from '@fortawesome/free-solid-svg-icons';
 export class SidebarEditComponent implements AfterViewInit, OnDestroy {
 
   faPalette = faPalette;
+  faLightbulb = faLightbulb;
 
   selectedNetwork: NeNetwork;
   isInitialized = false;
 
-  highlightNodes = '#ffff00';
-  highlightEdges = '#ffff00';
+  highlightNodes = '#0000ff';
+  highlightEdges = '#0000ff';
   highlightDuration = 2000;
 
   showLabels = false;

@@ -494,8 +494,8 @@ export class ParseService {
     globalStyle.push({
       selector: '.custom_highlight_color',
       style: {
-        'background-color': '#ffff00',
-        'line-color': '#ffff00'
+        'background-color': '#0000ff',
+        'line-color': '#0000ff'
       }
     });
 
@@ -1096,10 +1096,6 @@ export class ParseService {
 
   private calculateRelativeValue(inputMap: NeContinuousMap): string {
 
-    // if (inputMap.lower.includes('#')) {
-    //   console.log(inputMap);
-    // }
-
     let returnValue;
     const xDiff = Number(inputMap.greaterThreshold) - Number(inputMap.lowerThreshold);
     const xDiffRequired = Number(inputMap.inputValue) - Number(inputMap.lowerThreshold);
@@ -1194,7 +1190,6 @@ export class ParseService {
                   gm.selectors.push(map.selector);
                 }
               }
-
             }
           }
 
@@ -1217,9 +1212,6 @@ export class ParseService {
         }
       }
     }
-
-    console.log(mappings);
-    console.log(groupedMappings);
 
     return groupedMappings;
   }

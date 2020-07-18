@@ -46,7 +46,9 @@ export class GraphService {
   }
 
   highlightBySelector(selector: string): void {
-    this.core.elements(selector).flashClass('custom_highlight_color', this.flashDuration);
+    if (selector !== undefined) {
+      this.core.elements(selector).flashClass('custom_highlight_color', this.flashDuration);
+    }
   }
 
   setHighlightColorAndDuration(hexColorNodes: string, hexColorEdges: string, duration: number): void {
