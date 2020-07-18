@@ -4,5 +4,7 @@ import {NeStyleMap} from './ne-style-map';
 export interface NeGroupedMappingsDiscrete {
   classifier: string;
   values: string[];
-  css: NeStyleMap[];
+  styleMap: NeStyleMap[];
+  th: string[];
+  selectors: string[];
 }

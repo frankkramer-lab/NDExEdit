@@ -1172,7 +1172,9 @@ export class ParseService {
       groupedMappings.push({
         classifier: map.colHR,
         values: [],
-        css: [],
+        styleMap: [],
+        th: [],
+        selectors: []
       });
     }
 
@@ -1182,19 +1184,22 @@ export class ParseService {
         if (gm.classifier === map.colHR) {
 
           let found = false;
-          for (const style of gm.css) {
+          for (const style of gm.styleMap) {
             if (style.cssKey === map.cssKey) {
               found = true;
               if (!style.selectors.includes(map.selector)) {
                 style.cssValues.push(map.cssValue);
                 style.selectors.push(map.selector);
+                gm.selectors.push(map.selector);
               }
 
             }
           }
 
           if (!found) {
-            gm.css.push({
+            gm.th.push(map.cssKey);
+            gm.selectors.push(map.selector);
+            gm.styleMap.push({
               cssKey: map.cssKey,
               cssValues: [map.cssValue],
               selectors: [map.selector]

@@ -5,7 +5,8 @@
 </div>
 
 <div class="form-check">
-  <input class="form-check-input" type="checkbox" value="{{showLabels}}" id="showLabels" (click)="toggleLabels(!showLabels)">
+  <input class="form-check-input" type="checkbox" value="{{showLabels}}" id="showLabels"
+         (click)="toggleLabels(!showLabels)">
   <label class="form-check-label" for="showLabels">
     {{'SIDEBAR_EDIT_CB_LABELS' | translate}}
   </label>
@@ -28,17 +29,30 @@
   <div class="tab-pane fade show active" id="editsNavAspectsContent" role="tabpanel" aria-labelledby="editsNavAspects">
 
     <table class="table table-bordered">
-      <tr *ngFor="let discreteNode of selectedNetwork.mappings.nodes.discrete">
-        <td>{{discreteNode.colHR}}</td>
-        <td>{{discreteNode.isHR}}</td>
-        <td>{{discreteNode.cssKey}}</td>
-        <td>{{discreteNode.cssValue}}</td>
+      <tr *ngFor="let nodeMap of selectedNetwork.mappings.nodes">
+        <td><b>{{nodeMap.classifier}}</b></td>
+        <td>
+          <table class="table table-borderless">
+            <tr>
+              <td colspan="1">&nbsp;</td>
+              <td *ngFor="let styleProp of nodeMap.th">{{styleProp}}</td>
+            </tr>
+            <tr *ngFor="let value of nodeMap.values; let i = index">
+              <td>
+                <a role="button" (click)="graphService.highlightBySelector(nodeMap.selectors[i])"
+                   data-toggle="tooltip" data-placement="bottom"
+                   title="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{nodeMap.selectors[i]}}">{{value}}</a>
+                </td>
+              <td *ngFor="let style of nodeMap.styleMap">{{style.cssValues[i]}}</td>
+            </tr>
+          </table>
+        </td>
       </tr>
     </table>
 
   </div>
 
-    <!-- Edit: Styles -->
+  <!-- Edit: Styles -->
   <div class="tab-pane fade" id="editsNavStylesContent" role="tabpanel" aria-labelledby="editsNavStyles">
 
     <div class="row border-bottom">
