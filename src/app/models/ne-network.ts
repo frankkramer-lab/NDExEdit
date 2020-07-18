@@ -4,6 +4,7 @@ import {ElementDefinition, Stylesheet} from 'cytoscape';
 import {NeElement} from './ne-element';
 import {NeElementAttribute} from './ne-element-attribute';
 import {NeAspect} from './ne-aspect';
+import {NeGlobalMappings} from './ne-global-mappings';
 
 export interface NeNetwork {
   id?: number;
@@ -16,4 +17,5 @@ export interface NeNetwork {
   graph?: cytoscape.Core;
   aspects?: NeElementAttribute[];
   aspectKeyValues?: NeAspect[];
+  mappings?: any;
 }

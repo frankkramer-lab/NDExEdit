@@ -13,18 +13,63 @@
 
 
 <div class="nav nav-pills mb-3 flex-row" id="editsNav" role="tablist" aria-orientation="horizontal">
-  <a class="nav-link active" id="editsNavHighlights" data-toggle="pill" href="#editsNavHighlightsContent" role="tab"
-     aria-controls="editsNavHighlights" aria-selected="true">{{'SIDEBAR_EDIT_EDITING_TITLE' | translate}}</a>
-  <a class="nav-link" id="editsNavAspects" data-toggle="pill" href="#editsNavAspectsContent" role="tab"
+  <a class="nav-link active" id="editsNavAspects" data-toggle="pill" href="#editsNavAspectsContent" role="tab"
      aria-controls="editsNavAspects" aria-selected="false">{{'SIDEBAR_EDIT_ATTRIBUTES_TITLE' | translate}}</a>
   <a class="nav-link" id="editsNavStyles" data-toggle="pill" href="#editsNavStylesContent" role="tab"
      aria-controls="editsNavStyles" aria-selected="false">{{'SIDEBAR_EDIT_STYLE_TITLE' | translate}}</a>
+  <a class="nav-link" id="editsNavHighlights" data-toggle="pill" href="#editsNavHighlightsContent" role="tab"
+     aria-controls="editsNavHighlights" aria-selected="true">{{'SIDEBAR_EDIT_EDITING_TITLE' | translate}}</a>
+
 </div>
 
 <div class="tab-content p-2" id="editsNavContent">
 
+  <!-- Edit: Aspects -->
+  <div class="tab-pane fade show active" id="editsNavAspectsContent" role="tabpanel" aria-labelledby="editsNavAspects">
+
+    <table class="table table-bordered">
+      <tr *ngFor="let discreteNode of selectedNetwork.mappings.nodes.discrete">
+        <td>{{discreteNode.colHR}}</td>
+        <td>{{discreteNode.isHR}}</td>
+        <td>{{discreteNode.cssKey}}</td>
+        <td>{{discreteNode.cssValue}}</td>
+      </tr>
+    </table>
+
+  </div>
+
+    <!-- Edit: Styles -->
+  <div class="tab-pane fade" id="editsNavStylesContent" role="tabpanel" aria-labelledby="editsNavStyles">
+
+    <div class="row border-bottom">
+      <div class="col">
+        {{'SIDEBAR_EDIT_TH_CLASSNAME' | translate}}
+      </div>
+      <div class="col">
+        <b>{{'SIDEBAR_EDIT_TH_CSS_KEY' | translate}}</b>: {{'SIDEBAR_EDIT_TH_CSS_VALUE' | translate}}
+      </div>
+    </div>
+    <!-- todo fix up to make more intuitive -->
+    <div class="row border-bottom" *ngFor="let s of selectedNetwork.style">
+      <div class="col">
+        <a role="button" (click)="graphService.highlightBySelector(s.selector)"
+           data-toggle="tooltip" data-placement="bottom"
+           title="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{s.selector}}">{{s.selector}}</a>
+      </div>
+      <div class="col">
+            <span *ngFor="let css of s.style|keyvalue">
+              <b>{{css.key}}</b>: {{css.value}}
+              <span *ngIf="css.value.toString().indexOf('#') === 0" class="badge badge-pill border"
+                    [ngStyle]="{'background-color': css.value}">&nbsp;
+              </span>
+              <br>
+            </span>
+      </div>
+    </div>
+  </div>
+
   <!-- Edit: Highlight color -->
-  <div class="tab-pane fade show active" id="editsNavHighlightsContent" role="tabpanel"
+  <div class="tab-pane fade" id="editsNavHighlightsContent" role="tabpanel"
        aria-labelledby="editsNavHighlights">
 
     <div class="alert alert-success" role="alert" id="test">
@@ -56,52 +101,6 @@
         {{'SIDEBAR_EDIT_BTN_SUBMIT' | translate}}</button>
 
     </div>
-  </div>
-
-  <!-- Edit: Aspects -->
-  <div class="tab-pane fade" id="editsNavAspectsContent" role="tabpanel" aria-labelledby="editsNavAspects">
-
-    <div *ngFor="let aspect of selectedNetwork.aspectKeyValues" class="dropdown mb-2">
-      <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="aspectToggle" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-        {{aspect.name}}
-      </button>
-      <div class="dropdown-menu" aria-labelledby="aspectToggle">
-        <a *ngFor="let aspectValue of aspect.values" class="dropdown-item">{{aspectValue}}</a>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Edit: Styles -->
-  <div class="tab-pane fade" id="editsNavStylesContent" role="tabpanel" aria-labelledby="editsNavStyles">
-
-    <div class="row border-bottom">
-      <div class="col">
-        {{'SIDEBAR_EDIT_TH_CLASSNAME' | translate}}
-      </div>
-      <div class="col">
-        <b>{{'SIDEBAR_EDIT_TH_CSS_KEY' | translate}}</b>: {{'SIDEBAR_EDIT_TH_CSS_VALUE' | translate}}
-      </div>
-    </div>
-    <!-- todo fix up to make more intuitive -->
-    <div class="row border-bottom" *ngFor="let s of selectedNetwork.style">
-      <div class="col">
-        <a role="button" (click)="graphService.highlightBySelector(s.selector)"
-           data-toggle="tooltip" data-placement="bottom"
-           title="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{s.selector}}">{{s.selector}}</a>
-      </div>
-      <div class="col">
-            <span *ngFor="let css of s.style|keyvalue">
-              <b>{{css.key}}</b>: {{css.value}}
-              <span *ngIf="css.value.toString().indexOf('#') === 0" class="badge badge-pill border"
-                    [ngStyle]="{'background-color': css.value}">&nbsp;
-              </span>
-              <br>
-            </span>
-      </div>
-    </div>
-
   </div>
 
 </div>

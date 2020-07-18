@@ -18,6 +18,8 @@ import {NeElement} from '../models/ne-element';
 import {NeContinuousMap} from '../models/ne-continuous-map';
 import {NeGlobalMappings} from '../models/ne-global-mappings';
 import {NeAspect} from '../models/ne-aspect';
+import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete';
+import {NeStyleMap} from '../models/ne-style-map';
 
 @Injectable({
   providedIn: 'root'
@@ -420,12 +422,10 @@ export class ParseService {
           edge.classes.push(classSelector);
         }
       }
-
       edge.classes.push('custom_highlight_color');
       edge.classes.push('hide_label');
       edge.classes.push('text-wrap');
     }
-
 
     for (const edgeMapping of parsedMappingsEdgesDefault.continuous) {
       const id: string = edgeMapping.selector.substring(6);
@@ -449,8 +449,8 @@ export class ParseService {
 
     const parsedData = parsedNodeData.concat(parsedEdgeData);
     let parsedStyles = parsedStyleNetwork.concat(
-      parsedStyleNodesDefault, // contains label reference on data(name), also hidden
-      parsedStyleEdgesDefault, // contains label reference on data(name), also hidden
+      parsedStyleNodesDefault,
+      parsedStyleEdgesDefault,
       parsedMappingsEdgesDefault.discrete,
       parsedMappingsNodesDefault.discrete,
       parsedMappingsEdgesDefault.continuous,
@@ -510,7 +510,6 @@ export class ParseService {
       selector: '.hide_label',
       style: {
         label: '',
-        'text-max-width': '10'
       }
     });
 
@@ -540,25 +539,32 @@ export class ParseService {
           }
         }
 
-
         if (!found) {
           aspect.values.push(attribute.valueHR);
           aspect.appliedTo.push(element);
           aspectKeyValues.push(aspect);
         }
-
       }
     }
+
+    const groupedMappingsNodes = this.groupDiscreteMappings(parsedMappingsNodesDefault.discrete);
+    const groupedMappingsEdges = this.groupDiscreteMappings(parsedMappingsEdgesDefault.discrete);
+
+    // todo continuous mappings
 
     return {
       id: currentId,
       networkInformation,
       elements: cyParsedData,
       style: globalStyle,
-      nodeCount: parsedData.filter(x => x.group === 'nodes').length,
-      edgeCount: parsedData.filter(x => x.group === 'edges').length,
-      cssClassCount: globalStyle.length,
-      aspectKeyValues,
+      nodeCount: parsedData.filter(x => x.group === 'nodes').length, // rework to access KPI by given properties
+      edgeCount: parsedData.filter(x => x.group === 'edges').length, // rework to access KPI by given properties
+      cssClassCount: globalStyle.length, // rework to access KPI by given properties
+      aspectKeyValues, // submit these as possible mappings todo add interaction, if given
+      mappings: {
+        nodes: groupedMappingsNodes,
+        edges: groupedMappingsEdges,
+      }
     };
   }
 
@@ -863,7 +869,9 @@ export class ParseService {
 
     const tmpObj: NeMappingsDefinition = {
       col: null,
+      colHR: null,
       is: null,
+      isHR: null,
       selector: null,
       cssKey: null,
       cssValue: null,
@@ -883,6 +891,7 @@ export class ParseService {
 
     const definition = mapping.definition.replace(/,,/g, '%');
     const commaSplit = definition.split(',');
+    let originalCol;
 
     for (const cs of commaSplit) {
 
@@ -890,11 +899,12 @@ export class ParseService {
       switch (equalSplit[0]) {
         case 'COL':
           tmpObj.col = ParseService.utilCleanString(equalSplit[1]);
+          originalCol = equalSplit[1];
           break;
         case 'T':
           break;
         case 'K':
-          tmpCollection.tmpK.splice(Number(equalSplit[1]), 0, ParseService.utilCleanString(equalSplit[2]));
+          tmpCollection.tmpK.splice(Number(equalSplit[1]), 0, equalSplit[2]);
           break;
         case 'V':
           tmpCollection.tmpV.splice(Number(equalSplit[1]), 0, equalSplit[2]);
@@ -950,7 +960,9 @@ export class ParseService {
             cssValue: tmpObj.cssValue,
             cssKey: tmpObj.cssKey,
             is: tmpObj.is,
+            isHR: k,
             col: tmpObj.col,
+            colHR: originalCol,
             priority
           };
 
@@ -1145,5 +1157,60 @@ export class ParseService {
     }
 
     return returnValue;
+  }
+
+  private groupDiscreteMappings(mappings: NeMappingsDefinition[]): any {
+
+    const groupedMappings: NeGroupedMappingsDiscrete[] = [];
+
+    outer: for (const map of mappings) {
+      for (const gm of groupedMappings) {
+        if (gm.classifier === map.colHR) {
+          continue outer;
+        }
+      }
+      groupedMappings.push({
+        classifier: map.colHR,
+        values: [],
+        css: [],
+      });
+    }
+
+    for (const map of mappings) {
+      for (const gm of groupedMappings) {
+
+        if (gm.classifier === map.colHR) {
+
+          let found = false;
+          for (const style of gm.css) {
+            if (style.cssKey === map.cssKey) {
+              found = true;
+              if (!style.selectors.includes(map.selector)) {
+                style.cssValues.push(map.cssValue);
+                style.selectors.push(map.selector);
+              }
+
+            }
+          }
+
+          if (!found) {
+            gm.css.push({
+              cssKey: map.cssKey,
+              cssValues: [map.cssValue],
+              selectors: [map.selector]
+            });
+          }
+
+          if (!gm.values.includes(map.isHR)) {
+            gm.values.push(map.isHR);
+          }
+        }
+      }
+    }
+
+    console.log(mappings);
+    console.log(groupedMappings);
+
+    return groupedMappings;
   }
 }
