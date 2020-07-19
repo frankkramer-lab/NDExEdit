@@ -7,6 +7,7 @@ import {GraphService} from '../../services/graph.service';
 import {faLightbulb, faPalette} from '@fortawesome/free-solid-svg-icons';
 import {ChartDataSets} from 'chart.js';
 import {Color, Label} from 'ng2-charts';
+import {NeColorGradient} from '../../models/ne-color-gradient';
 
 @Component({
   selector: 'app-sidebar-edit',
@@ -89,10 +90,11 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     this.showLabels = show;
   }
 
-  displayMapping(displayChart: any, map: any): void {
-    if (displayChart) {
-      this.lineChartData = map.chart.lineChartData;
-      this.lineChartLabels = map.chart.lineChartLabels;
+  displayMapping(chart: any = null, colorGradient: NeColorGradient[] = []): void {
+
+    if (chart !== null) {
+      this.lineChartData = chart.lineChartData;
+      this.lineChartLabels = chart.lineChartLabels;
       this.lineChartColors = [{
         backgroundColor: 'rgba(255,0,0,0.3)',
         borderColor: 'red',
@@ -101,23 +103,23 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
         pointHoverBackgroundColor: '#fff',
         pointHoverBorderColor: 'rgba(148,159,177,0.8)'
       }];
-      this.lineChartOptions = map.chart.lineChartOptions;
+      this.lineChartOptions = chart.lineChartOptions;
       this.showColorGradient = false;
       this.showChart = true;
 
-    } else {
+    } else if (colorGradient.length > 0) {
 
       let color = 'linear-gradient(90deg, ';
       const tmp = [];
 
-      for (const gradient of map.colorGradient) {
+      for (const gradient of colorGradient) {
         tmp.push(gradient.color.concat(' '.concat(gradient.offset)));
       }
 
       color = color.concat(tmp.join(', '));
       color = color.concat(')');
 
-      this.gradientBackground = map.colorGradient[0].color + ' ' + color;
+      this.gradientBackground = colorGradient[0].color + ' ' + color;
 
       this.showChart = false;
       this.showColorGradient = true;

@@ -7,4 +7,6 @@ export interface NeContinuousCollection {
   values: NeStyleComponent[];
   displayChart: boolean;
   colorGradient?: NeColorGradient[];
+  chartValid?: boolean;
+  gradientValid?: boolean;
 }

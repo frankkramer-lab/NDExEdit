@@ -1192,7 +1192,7 @@
         "v": "MAR-2020"
       },
       {
-        "n": "@context",
+        "n": "@contxt",
         "v": "{\"hgnc.symbol\":\"https://identifiers.org/hgnc.symbol/\",\"zinc\":\"http://identifiers.org/zinc:\",\"pubmed\":\"https://identifiers.org/pubmed/\",\"doi\":\"https://doi.org/\"}"
       },
       {

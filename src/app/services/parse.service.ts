@@ -573,8 +573,6 @@ export class ParseService {
     const groupedMappingsNodes = this.groupDiscreteMappings(parsedMappingsNodesDefault.discrete);
     const groupedMappingsEdges = this.groupDiscreteMappings(parsedMappingsEdgesDefault.discrete);
 
-    console.log(parsedMappingsEdgesDefault);
-
     return {
       id: currentId,
       networkInformation,
@@ -585,8 +583,8 @@ export class ParseService {
       cssClassCount: globalStyle.length, // rework to access KPI by given properties
       aspectKeyValues, // submit these as possible mappings todo add interaction, if given
       mappings: {
-        nodes: groupedMappingsNodes,
-        edges: groupedMappingsEdges,
+        nodesDiscrete: groupedMappingsNodes,
+        edgesDiscrete: groupedMappingsEdges,
         nodesContinuous: parsedMappingsNodesDefault.continuous,
         edgesContinuous: parsedMappingsEdgesDefault.continuous
       }
@@ -747,17 +745,11 @@ export class ParseService {
           break;
         case 'CONTINUOUS':
           const continuous = this.parseMappingContinuous(currentEntry, elementType, data);
-
           mappingsElementsSpecific = mappingsElementsSpecific.concat(continuous);
 
           break;
       }
     }
-
-    console.log({
-      discrete: mappingsElementsDefault,
-      continuous: mappingsElementsSpecific,
-    });
 
     return {
       discrete: mappingsElementsDefault,
@@ -1147,9 +1139,15 @@ export class ParseService {
         }
       }
     }
+
+    const gradientObject = this.buildColorGradient(thresholds, lowers, equals, greaters);
+    const chartObject = this.buildChartData(thresholds, lowers, equals, greaters, lookup, attribute);
+
     contiuousCollection.values = buildClasses;
-    contiuousCollection.chart = this.buildChartData(thresholds, lowers, equals, greaters, lookup, attribute);
-    contiuousCollection.colorGradient = this.buildColorGradient(thresholds, lowers, equals, greaters);
+    contiuousCollection.chart = chartObject;
+    contiuousCollection.colorGradient = gradientObject;
+    contiuousCollection.chartValid = (displayChart && (chartObject !== null));
+    contiuousCollection.gradientValid = (!displayChart && (gradientObject.length > 0));
     contiuousCollection.displayChart = displayChart;
 
     return contiuousCollection;
@@ -1161,6 +1159,9 @@ export class ParseService {
     }
     const colorGradientCollection: NeColorGradient[] = [];
     const range: number = Number(thresholds[thresholds.length - 1]) - Number(thresholds[0]);
+    if (range === 0) {
+      return [];
+    }
     for (const th of thresholds) {
       const offset = ((Number(th) - Number(thresholds[0])) * 100 / range).toFixed(0);
       const gradient: NeColorGradient = {
@@ -1202,7 +1203,9 @@ export class ParseService {
           line: {
             tension: 0
           }
-        }
+        },
+        responsive: true,
+        maintainAspectRatio: false
       }
     };
 
