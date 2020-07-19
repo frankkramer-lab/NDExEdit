@@ -23,10 +23,8 @@
           [options]="lineChartOptions"></canvas>
 </div>
 
-<div *ngIf="showColorGradient" [ngStyle]="{'width.%': 100, 'height.px': 300, display: 'block'}">
-
+<div *ngIf="showColorGradient" [style.width.%]="100" [style.height.px]="300" [style.background]="gradientBackground">
 </div>
-
 
 <div class="nav nav-pills mb-3 flex-row" id="editsNav" role="tablist" aria-orientation="horizontal">
   <a class="nav-link active" id="editsNavAspects" data-toggle="pill" href="#editsNavAspectsContent" role="tab"
@@ -80,9 +78,11 @@
 
 
     <ul class="list-group">
-      <li class="list-group-item" *ngFor="let edgeMap of selectedNetwork.mappings.edgesContinuous" (click)="displayMapping(edgeMap.displayChart, edgeMap.chart)">
+      <li class="list-group-item" *ngFor="let edgeMap of selectedNetwork.mappings.edgesContinuous"
+          (click)="displayMapping(edgeMap.displayChart, edgeMap)">
         <button class="btn btn-block btn-outline-danger">
-          <b>{{edgeMap.chart.lineChartOptions.title.text[0]}}</b> {{edgeMap.chart.lineChartOptions.title.text[1] | translate}} <b>{{edgeMap.chart.lineChartOptions.title.text[2]}}</b>
+          <b>{{edgeMap.chart.lineChartOptions.title.text[0]}}</b> {{edgeMap.chart.lineChartOptions.title.text[1] | translate}}
+          <b>{{edgeMap.chart.lineChartOptions.title.text[2]}}</b>
         </button>
       </li>
     </ul>

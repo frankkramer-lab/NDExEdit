@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, Renderer2} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy} from '@angular/core';
 import {DataService} from '../../services/data.service';
 import {ActivatedRoute} from '@angular/router';
 import {NeNetwork} from '../../models/ne-network';
@@ -27,7 +27,8 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
 
   showChart = false;
   showColorGradient = false;
-  chartCanvas: any;
+  gradientBackground = '';
+
   public lineChartData: ChartDataSets[] = [
     {data: [0], label: 'no data found'}
   ];
@@ -66,21 +67,15 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
 
   constructor(public dataService: DataService,
               private route: ActivatedRoute,
-              public graphService: GraphService,
-              private renderer: Renderer2) {
+              public graphService: GraphService) {
     this.subscription = this.route.paramMap.subscribe(params => {
       this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
     });
-
-    if (this.isInitialized) {
-      // this.renderChart();
-    }
 
   }
 
   ngAfterViewInit(): void {
     this.isInitialized = true;
-    // this.renderChart();
   }
 
   ngOnDestroy(): void {
@@ -94,28 +89,10 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     this.showLabels = show;
   }
 
-  private renderChart(): void {
-
-    if (this.selectedNetwork) {
-      const chartDetails = this.selectedNetwork.mappings.edgesContinuous;
-      this.lineChartData = chartDetails.lineChartData;
-      this.lineChartLabels = chartDetails.lineChartLabels;
-      this.lineChartColors = chartDetails.lineChartColors;
-      this.lineChartOptions = chartDetails.lineChartOptions;
-      this.chartCanvas = this.renderer.selectRootElement('#mappingsChart');
-
-    }
-
-  }
-
-  displayMapping(displayChart: any, chart: any): void {
+  displayMapping(displayChart: any, map: any): void {
     if (displayChart) {
-      const randR = Math.random() % 255;
-      const randG = Math.random() % 255;
-      const randB = Math.random() % 255;
-
-      this.lineChartData = chart.lineChartData;
-      this.lineChartLabels = chart.lineChartLabels;
+      this.lineChartData = map.chart.lineChartData;
+      this.lineChartLabels = map.chart.lineChartLabels;
       this.lineChartColors = [{
         backgroundColor: 'rgba(255,0,0,0.3)',
         borderColor: 'red',
@@ -124,11 +101,24 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
         pointHoverBackgroundColor: '#fff',
         pointHoverBorderColor: 'rgba(148,159,177,0.8)'
       }];
-      this.lineChartOptions = chart.lineChartOptions;
+      this.lineChartOptions = map.chart.lineChartOptions;
       this.showColorGradient = false;
       this.showChart = true;
+
     } else {
-      // todo
+
+      let color = 'linear-gradient(90deg, ';
+      const tmp = [];
+
+      for (const gradient of map.colorGradient) {
+        tmp.push(gradient.color.concat(' '.concat(gradient.offset)));
+      }
+
+      color = color.concat(tmp.join(', '));
+      color = color.concat(')');
+
+      this.gradientBackground = map.colorGradient[0].color + ' ' + color;
+
       this.showChart = false;
       this.showColorGradient = true;
     }

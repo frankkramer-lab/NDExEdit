@@ -20,6 +20,7 @@ import {NeGlobalMappings} from '../models/ne-global-mappings';
 import {NeAspect} from '../models/ne-aspect';
 import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete';
 import {NeContinuousCollection} from '../models/ne-continuous-collection';
+import {NeColorGradient} from '../models/ne-color-gradient';
 
 @Injectable({
   providedIn: 'root'
@@ -1016,6 +1017,7 @@ export class ParseService {
       chart: null,
       values: [],
       displayChart: true,
+      colorGradient: [],
     };
 
     let datatype;
@@ -1026,44 +1028,6 @@ export class ParseService {
     const equals = [];
     const greaters = [];
 
-    const randR = Math.random() % 255;
-    const randG = Math.random() % 255;
-    const randB = Math.random() % 255;
-
-    const chartMappingObject: any = {
-      lineChartData: [],
-      lineChartLabels: [],
-      // lineChartColors: [{
-      //   'background-color': 'rgba(randR, randG, randB, 0.6)'
-      // }],
-      lineChartOptions: {
-        scales: {
-          yAxes: [
-            {
-              type: 'linear',
-              display: true,
-              position: 'left',
-              id: 'y-axis-1',
-            },
-            {
-              type: 'linear',
-              display: true,
-              position: 'right',
-              id: 'y-axis-2',
-            }
-          ]
-        },
-        title: {
-          display: false,
-          text: []
-        },
-        elements: {
-          line: {
-            tension: 0
-          }
-        }
-      }
-    };
 
     for (const cs of commaSplit) {
 
@@ -1097,6 +1061,151 @@ export class ParseService {
       }
     }
 
+    const buildClasses: NeStyleComponent[] = [];
+
+    outer: for (const element of data) {
+
+      for (const elementAttribute of element.attributes) {
+
+        if (elementAttribute.key === attribute) {
+
+          let intervalPointer = -1;
+
+          const finalSelector = '.'.concat(elementType.concat('_'.concat(element.id)));
+          const priority = ParseService.findPriorityBySelector(finalSelector);
+
+          for (let i = 0; i < (thresholds.length); i++) {
+
+            if (Number(elementAttribute.value) < Number(thresholds[i])) {
+
+              intervalPointer = i;
+              let cssValue = '';
+
+              if (intervalPointer === 0) {
+                cssValue = lowers[intervalPointer];
+                if (cssValue.startsWith('#') && displayChart) {
+                  displayChart = false;
+                }
+              } else {
+                const calculationMap: NeContinuousMap = {
+                  inputValue: elementAttribute.value,
+                  lower: greaters[intervalPointer - 1],
+                  lowerThreshold: thresholds[intervalPointer - 1],
+                  greater: lowers[intervalPointer],
+                  greaterThreshold: thresholds[intervalPointer],
+                };
+                cssValue = this.calculateRelativeValue(calculationMap);
+                if (cssValue.startsWith('#') && displayChart) {
+                  displayChart = false;
+
+                }
+              }
+
+              for (const lu of lookup) {
+
+                buildClasses.push({
+                  selector: finalSelector,
+                  cssKey: lu,
+                  cssValue,
+                  priority
+                });
+
+              }
+              continue outer;
+            } else if (Number(elementAttribute.value) === Number(thresholds[i])) {
+
+              for (const lu of lookup) {
+                buildClasses.push({
+                  selector: finalSelector,
+                  cssKey: lu,
+                  cssValue: equals[i],
+                  priority
+                });
+                if (equals[i].startsWith('#') && displayChart) {
+                  displayChart = false;
+
+                }
+
+              }
+              continue outer;
+            }
+          }
+
+          for (const lu of lookup) {
+            buildClasses.push({
+              selector: '.'.concat(elementType.concat('_'.concat(element.id))),
+              cssKey: lu,
+              cssValue: greaters[greaters.length - 1],
+              priority
+            });
+            if (greaters[greaters.length - 1].startsWith('#') && displayChart) {
+              displayChart = false;
+
+            }
+          }
+          continue outer;
+        }
+      }
+    }
+    contiuousCollection.values = buildClasses;
+    contiuousCollection.chart = this.buildChartData(thresholds, lowers, equals, greaters, lookup, attribute);
+    contiuousCollection.colorGradient = this.buildColorGradient(thresholds, lowers, equals, greaters);
+    contiuousCollection.displayChart = displayChart;
+
+    return contiuousCollection;
+  }
+
+  private buildColorGradient(thresholds: string[], lowers: string[], equals: string[], greaters: string[]): NeColorGradient[] {
+    if (!lowers[0].startsWith('#')) {
+      return [];
+    }
+    const colorGradientCollection: NeColorGradient[] = [];
+    const range: number = Number(thresholds[thresholds.length - 1]) - Number(thresholds[0]);
+    for (const th of thresholds) {
+      const offset = ((Number(th) - Number(thresholds[0])) * 100 / range).toFixed(0);
+      const gradient: NeColorGradient = {
+        color: equals[thresholds.indexOf(th)],
+        offset: String(offset).concat('%')
+      };
+      colorGradientCollection.push(gradient);
+    }
+    return colorGradientCollection;
+  }
+
+  private buildChartData(
+    thresholds: string[],
+    lowers: string[],
+    equals: string[],
+    greaters: string[],
+    lookup: string[],
+    attribute: any): any {
+
+    const chartMappingObject: any = {
+      lineChartData: [],
+      lineChartLabels: [],
+      lineChartOptions: {
+        scales: {
+          yAxes: [
+            {
+              type: 'linear',
+              display: true,
+              position: 'left',
+              id: 'y-axis-1',
+            }
+          ]
+        },
+        title: {
+          display: false,
+          text: []
+        },
+        elements: {
+          line: {
+            tension: 0
+          }
+        }
+      }
+    };
+
     chartMappingObject.lineChartLabels.push('');
 
     for (const th of thresholds) {
@@ -1121,95 +1230,7 @@ export class ParseService {
     chartMappingObject.lineChartData[0].data.splice(0, 0, lowers[0]);
     chartMappingObject.lineChartData[0].data.push(greaters[greaters.length - 1]);
 
-
-    const buildClasses: NeStyleComponent[] = [];
-
-    outer: for (const element of data) {
-
-      for (const elementAttribute of element.attributes) {
-
-        if (elementAttribute.key === attribute) {
-
-          let intervalPointer = -1;
-
-          const finalSelector = '.'.concat(elementType.concat('_'.concat(element.id)));
-          const priority = ParseService.findPriorityBySelector(finalSelector);
-
-          for (let i = 0; i < (thresholds.length); i++) {
-
-            if (Number(elementAttribute.value) < Number(thresholds[i])) {
-
-              intervalPointer = i;
-              let cssValue = '';
-
-              if (intervalPointer === 0) {
-                cssValue = lowers[intervalPointer];
-                if (cssValue.startsWith('#')) {
-                  displayChart = false;
-                }
-              } else {
-                const calculationMap: NeContinuousMap = {
-                  inputValue: elementAttribute.value,
-                  lower: greaters[intervalPointer - 1],
-                  lowerThreshold: thresholds[intervalPointer - 1],
-                  greater: lowers[intervalPointer],
-                  greaterThreshold: thresholds[intervalPointer],
-                };
-                cssValue = this.calculateRelativeValue(calculationMap);
-                if (cssValue.startsWith('#')) {
-                  displayChart = false;
-                }
-              }
-
-              for (const lu of lookup) {
-
-                buildClasses.push({
-                  selector: finalSelector,
-                  cssKey: lu,
-                  cssValue,
-                  priority
-                });
-
-              }
-              continue outer;
-            } else if (Number(elementAttribute.value) === Number(thresholds[i])) {
-
-              for (const lu of lookup) {
-                buildClasses.push({
-                  selector: finalSelector,
-                  cssKey: lu,
-                  cssValue: equals[i],
-                  priority
-                });
-                if (equals[i].startsWith('#')) {
-                  displayChart = false;
-                }
-
-              }
-              continue outer;
-            }
-          }
-
-          for (const lu of lookup) {
-            buildClasses.push({
-              selector: '.'.concat(elementType.concat('_'.concat(element.id))),
-              cssKey: lu,
-              cssValue: greaters[greaters.length - 1],
-              priority
-            });
-            if (greaters[greaters.length - 1].startsWith('#')) {
-              displayChart = false;
-            }
-          }
-          continue outer;
-        }
-      }
-    }
-    contiuousCollection.values = buildClasses;
-    contiuousCollection.chart = chartMappingObject;
-    contiuousCollection.displayChart = displayChart;
-
-    return contiuousCollection;
+    return chartMappingObject;
   }
 
   private calculateRelativeValue(inputMap: NeContinuousMap): string {
