@@ -19,7 +19,7 @@ import {NeContinuousMap} from '../models/ne-continuous-map';
 import {NeGlobalMappings} from '../models/ne-global-mappings';
 import {NeAspect} from '../models/ne-aspect';
 import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete';
-import {NeStyleMap} from '../models/ne-style-map';
+import {NeContinuousCollection} from '../models/ne-continuous-collection';
 
 @Injectable({
   providedIn: 'root'
@@ -427,23 +427,36 @@ export class ParseService {
       edge.classes.push('text-wrap');
     }
 
-    for (const edgeMapping of parsedMappingsEdgesDefault.continuous) {
-      const id: string = edgeMapping.selector.substring(6);
-      const classSelector = edgeMapping.selector.substring(1);
-      const edge: NeEdge = parsedEdgeData.find(x => String(x.id) === id);
+    if (parsedMappingsEdgesDefault.continuous) {
+      for (const edgeMapping of parsedMappingsEdgesDefault.continuous) {
 
-      if (edge && !edge.classes.includes(classSelector)) {
-        edge.classes.push(classSelector);
+        for (const value of edgeMapping.values) {
+
+          const id: string = value.selector.substring(6);
+          const classSelector = value.selector.substring(1);
+          const edge: NeEdge = parsedEdgeData.find(x => String(x.id) === id);
+
+          if (edge && !edge.classes.includes(classSelector)) {
+            edge.classes.push(classSelector);
+          }
+
+        }
       }
     }
 
-    for (const nodeMapping of parsedMappingsNodesDefault.continuous) {
-      const id: string = nodeMapping.selector.substring(6);
-      const classSelector = nodeMapping.selector.substring(1);
-      const node: NeNode = parsedNodeData.find(x => String(x.id) === id);
+    if (parsedMappingsNodesDefault.continuous) {
+      for (const nodeMapping of parsedMappingsNodesDefault.continuous) {
+        for (const value of nodeMapping.values) {
 
-      if (node && !node.classes.includes(classSelector)) {
-        node.classes.push(classSelector);
+          const id: string = value.selector.substring(6);
+          const classSelector = value.selector.substring(1);
+          const node: NeNode = parsedNodeData.find(x => String(x.id) === id);
+
+          if (node && !node.classes.includes(classSelector)) {
+            node.classes.push(classSelector);
+          }
+
+        }
       }
     }
 
@@ -453,11 +466,21 @@ export class ParseService {
       parsedStyleEdgesDefault,
       parsedMappingsEdgesDefault.discrete,
       parsedMappingsNodesDefault.discrete,
-      parsedMappingsEdgesDefault.continuous,
-      parsedMappingsNodesDefault.continuous,
       parsedStyleNodes,
       parsedStyleEdges
     );
+
+    if (parsedMappingsEdgesDefault.continuous) {
+      for (const edgeMapping of parsedMappingsEdgesDefault.continuous) {
+        parsedStyles = parsedStyles.concat(edgeMapping.values);
+      }
+    }
+
+    if (parsedMappingsNodesDefault.continuous) {
+      for (const nodeMapping of parsedMappingsNodesDefault.continuous) {
+        parsedStyles = parsedStyles.concat(nodeMapping.values);
+      }
+    }
 
     parsedStyles = ParseService.orderStyles(parsedStyles);
 
@@ -480,7 +503,6 @@ export class ParseService {
 
     for (const s of globalStyle) {
       for (const pd of parsedData) {
-
         const className = s.selector.substring(1);
         if ((pd.classes.includes(className))
           || (pd.group === 'edges' && s.selector === 'edge')
@@ -550,7 +572,7 @@ export class ParseService {
     const groupedMappingsNodes = this.groupDiscreteMappings(parsedMappingsNodesDefault.discrete);
     const groupedMappingsEdges = this.groupDiscreteMappings(parsedMappingsEdgesDefault.discrete);
 
-    // todo continuous mappings
+    console.log(parsedMappingsEdgesDefault);
 
     return {
       id: currentId,
@@ -564,6 +586,8 @@ export class ParseService {
       mappings: {
         nodes: groupedMappingsNodes,
         edges: groupedMappingsEdges,
+        nodesContinuous: parsedMappingsNodesDefault.continuous,
+        edgesContinuous: parsedMappingsEdgesDefault.continuous
       }
     };
   }
@@ -696,7 +720,7 @@ export class ParseService {
                                        elementType: string,
                                        data: NeElement[]): NeGlobalMappings {
     let mappingsElementsDefault: NeMappingsDefinition[] = [];
-    let mappingsElementsSpecific: NeStyleComponent[] = [];
+    let mappingsElementsSpecific: NeContinuousCollection[] = [];
 
     if (!readData.mappings) {
       return {};
@@ -721,10 +745,18 @@ export class ParseService {
           // todo
           break;
         case 'CONTINUOUS':
-          mappingsElementsSpecific = mappingsElementsSpecific.concat(this.parseMappingContinuous(currentEntry, elementType, data));
+          const continuous = this.parseMappingContinuous(currentEntry, elementType, data);
+
+          mappingsElementsSpecific = mappingsElementsSpecific.concat(continuous);
+
           break;
       }
     }
+
+    console.log({
+      discrete: mappingsElementsDefault,
+      continuous: mappingsElementsSpecific,
+    });
 
     return {
       discrete: mappingsElementsDefault,
@@ -975,17 +1007,63 @@ export class ParseService {
 
   private parseMappingContinuous(mapping: NeMappings,
                                  elementType: string,
-                                 data: NeElement[]): NeStyleComponent[] {
+                                 data: NeElement[]): NeContinuousCollection {
 
     const lookup: string[] = this.lookupKey([mapping.key]);
     const commaSplit = mapping.definition.split(',');
 
+    const contiuousCollection: NeContinuousCollection = {
+      chart: null,
+      values: [],
+      displayChart: true,
+    };
+
     let datatype;
     let attribute;
+    let displayChart = true;
     const thresholds = [];
     const lowers = [];
     const equals = [];
     const greaters = [];
+
+    const randR = Math.random() % 255;
+    const randG = Math.random() % 255;
+    const randB = Math.random() % 255;
+
+    const chartMappingObject: any = {
+      lineChartData: [],
+      lineChartLabels: [],
+      // lineChartColors: [{
+      //   'background-color': 'rgba(randR, randG, randB, 0.6)'
+      // }],
+      lineChartOptions: {
+        scales: {
+          yAxes: [
+            {
+              type: 'linear',
+              display: true,
+              position: 'left',
+              id: 'y-axis-1',
+            },
+            {
+              type: 'linear',
+              display: true,
+              position: 'right',
+              id: 'y-axis-2',
+            }
+          ]
+        },
+        title: {
+          display: false,
+          text: []
+        },
+        elements: {
+          line: {
+            tension: 0
+          }
+        }
+      }
+    };
 
     for (const cs of commaSplit) {
 
@@ -1019,6 +1097,31 @@ export class ParseService {
       }
     }
 
+    chartMappingObject.lineChartLabels.push('');
+
+    for (const th of thresholds) {
+      chartMappingObject.lineChartLabels.push(th);
+    }
+
+    chartMappingObject.lineChartLabels.push('');
+    chartMappingObject.lineChartOptions.title.text.push(lookup);
+    chartMappingObject.lineChartOptions.title.text.push('SIDEBAR_EDIT_MAPPED_BY');
+    chartMappingObject.lineChartOptions.title.text.push(attribute);
+
+    for (const lu of lookup) {
+      const tmp = {
+        label: lu,
+        data: equals
+      };
+      if (!chartMappingObject.lineChartData.includes(tmp)) {
+        chartMappingObject.lineChartData.push(tmp);
+      }
+    }
+
+    chartMappingObject.lineChartData[0].data.splice(0, 0, lowers[0]);
+    chartMappingObject.lineChartData[0].data.push(greaters[greaters.length - 1]);
+
+
     const buildClasses: NeStyleComponent[] = [];
 
     outer: for (const element of data) {
@@ -1028,7 +1131,6 @@ export class ParseService {
         if (elementAttribute.key === attribute) {
 
           let intervalPointer = -1;
-          let valuePointer = -1;
 
           const finalSelector = '.'.concat(elementType.concat('_'.concat(element.id)));
           const priority = ParseService.findPriorityBySelector(finalSelector);
@@ -1042,6 +1144,9 @@ export class ParseService {
 
               if (intervalPointer === 0) {
                 cssValue = lowers[intervalPointer];
+                if (cssValue.startsWith('#')) {
+                  displayChart = false;
+                }
               } else {
                 const calculationMap: NeContinuousMap = {
                   inputValue: elementAttribute.value,
@@ -1051,6 +1156,9 @@ export class ParseService {
                   greaterThreshold: thresholds[intervalPointer],
                 };
                 cssValue = this.calculateRelativeValue(calculationMap);
+                if (cssValue.startsWith('#')) {
+                  displayChart = false;
+                }
               }
 
               for (const lu of lookup) {
@@ -1061,11 +1169,10 @@ export class ParseService {
                   cssValue,
                   priority
                 });
+
               }
               continue outer;
             } else if (Number(elementAttribute.value) === Number(thresholds[i])) {
-
-              valuePointer = i;
 
               for (const lu of lookup) {
                 buildClasses.push({
@@ -1074,6 +1181,10 @@ export class ParseService {
                   cssValue: equals[i],
                   priority
                 });
+                if (equals[i].startsWith('#')) {
+                  displayChart = false;
+                }
+
               }
               continue outer;
             }
@@ -1086,12 +1197,19 @@ export class ParseService {
               cssValue: greaters[greaters.length - 1],
               priority
             });
+            if (greaters[greaters.length - 1].startsWith('#')) {
+              displayChart = false;
+            }
           }
           continue outer;
         }
       }
     }
-    return buildClasses;
+    contiuousCollection.values = buildClasses;
+    contiuousCollection.chart = chartMappingObject;
+    contiuousCollection.displayChart = displayChart;
+
+    return contiuousCollection;
   }
 
   private calculateRelativeValue(inputMap: NeContinuousMap): string {

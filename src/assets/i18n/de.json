@@ -61,5 +61,7 @@
   "SIDEBAR_EDIT_TOAST_DURATION": "Dauer",
   "SIDEBAR_EDIT_CB_LABELS": "Beschriftungen anzeigen",
   "SIDEBAR_EDIT_ASPECTS_NODES": "Knoten",
-  "SIDEBAR_EDIT_ASPECTS_EDGES": "Kanten"
+  "SIDEBAR_EDIT_ASPECTS_EDGES": "Kanten",
+  "SIDEBAR_EDIT_MAPPED_BY": "verändert in Abhängigkeit von"
+
 }
