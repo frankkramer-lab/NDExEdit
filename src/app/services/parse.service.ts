@@ -135,9 +135,23 @@ export class ParseService {
         name: entry.i,
         source: String(entry.s),
         target: String(entry.t),
-        classes: []
+        classes: [],
+        attributes: []
       };
+
+      if (entry.i) {
+        obj.attributes.push({
+          reference: obj.id,
+          key: 'interaction',
+          keyHR: 'interaction',
+          value: this.utilCleanString(entry.i),
+          valueHR: entry.i,
+          datatype: 'string'
+        });
+      }
+      console.log(obj);
       edgeData.push(obj);
+
     }
     return edgeData;
   }
@@ -161,6 +175,7 @@ export class ParseService {
       };
       edgeAttributeData.push(obj);
     }
+
     return edgeAttributeData;
   }
 
@@ -362,7 +377,7 @@ export class ParseService {
     const parsedEdgeData = ParseService.parseEdgeData(edgeData || []);
     const parsedEdgeAttributeData = ParseService.parseEdgeAttributeData(edgeAttributeData || [], edgeData || []);
     for (const edge of parsedEdgeData) {
-      edge.attributes = parsedEdgeAttributeData.filter(x => x.reference === edge.id);
+      edge.attributes = edge.attributes.concat(parsedEdgeAttributeData.filter(x => x.reference === edge.id));
     }
 
     const parsedStyleNetwork = ParseService.parseStyleNetwork(styleNetwork || []); // todo
