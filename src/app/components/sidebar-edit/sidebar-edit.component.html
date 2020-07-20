@@ -1,79 +1,83 @@
-<h5>{{'SIDEBAR_EDIT_DESCRIPTION_TITLE' | translate}}</h5>
+<div class="p-2">
 
-<div *ngIf="selectedNetwork.networkInformation.description">
-  <p [innerHTML]="selectedNetwork.networkInformation.description"></p>
-</div>
+  <h5>{{'SIDEBAR_EDIT_DESCRIPTION_TITLE' | translate}}</h5>
 
-<div class="form-check mb-2 ml-1">
-  <input class="form-check-input" type="checkbox" value="{{showLabels}}" id="showLabels"
-         (click)="toggleLabels(!showLabels)">
-  <label class="form-check-label" for="showLabels">
-    {{'SIDEBAR_EDIT_CB_LABELS' | translate}}
-  </label>
-</div>
+  <div *ngIf="selectedNetwork.networkInformation.description">
+    <p [innerHTML]="selectedNetwork.networkInformation.description"></p>
+  </div>
 
-<!-- chart for continuous mappings -->
-<div *ngIf="showChart">
-  <h5>
-    <a [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, index]} }]" role="button">
-      <b>{{lookup}}</b>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" value="{{showLabels}}" id="showLabels"
+           (click)="toggleLabels(!showLabels)">
+    <label class="form-check-label" for="showLabels">
+      {{'SIDEBAR_EDIT_CB_LABELS' | translate}}
+    </label>
+  </div>
+
+  <!-- chart for continuous mappings -->
+  <div *ngIf="showChart">
+    <h5>
+      <a [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, index]} }]" role="button">
+        <b>{{lookup}}</b>
+        {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
+        <b>{{attribute}}</b>
+      </a>
+    </h5>
+    <canvas id="mappingsChart" baseChart [ngStyle]="{'width.%': 100, 'height.px': 300}"
+            [chartType]="'line'"
+            [legend]="true"
+            [datasets]="lineChartData"
+            [labels]="lineChartLabels"
+            [colors]="lineChartColors"
+            [options]="lineChartOptions"></canvas>
+  </div>
+
+  <!-- color gradient for continuous mappings -->
+  <div *ngIf="showColorGradient">
+    <h5><b>
+      {{lookup}}</b>
       {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
       <b>{{attribute}}</b>
-    </a>
-  </h5>
-  <canvas id="mappingsChart" baseChart [ngStyle]="{'width.%': 100, 'height.px': 300}"
-          [chartType]="'line'"
-          [legend]="true"
-          [datasets]="lineChartData"
-          [labels]="lineChartLabels"
-          [colors]="lineChartColors"
-          [options]="lineChartOptions"></canvas>
-</div>
-
-<!-- color gradient for continuous mappings -->
-<div *ngIf="showColorGradient">
-  <h5><b>
-    {{lookup}}</b>
-    {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
-    <b>{{attribute}}</b>
-  </h5>
-  <div [style.width.%]="100" [style.height.px]="300" [style.background]="gradientBackground" class="mb-3">
+    </h5>
+    <div [style.width.%]="100" [style.height.px]="300" [style.background]="gradientBackground" class="mb-3">
+    </div>
   </div>
-</div>
 
-<div class="nav nav-pills mb-3 flex-row" id="editsNav" role="tablist" aria-orientation="horizontal">
-  <a class="nav-link active" id="editsNavAspects" data-toggle="pill" href="#editsNavAspectsContent" role="tab"
-     aria-controls="editsNavAspects" aria-selected="false">{{'SIDEBAR_EDIT_ATTRIBUTES_TITLE' | translate}}</a>
-  <a class="nav-link" id="editsNavStyles" data-toggle="pill" href="#editsNavStylesContent" role="tab"
-     aria-controls="editsNavStyles" aria-selected="false">{{'SIDEBAR_EDIT_STYLE_TITLE' | translate}}</a>
-  <a class="nav-link" id="editsNavHighlights" data-toggle="pill" href="#editsNavHighlightsContent" role="tab"
-     aria-controls="editsNavHighlights" aria-selected="true">{{'SIDEBAR_EDIT_EDITING_TITLE' | translate}}</a>
+  <div class="nav nav-pills flex-row" id="editsNav" role="tablist" aria-orientation="horizontal">
+    <a class="nav-link active" id="editsNavAspects" data-toggle="pill" href="#editsNavAspectsContent" role="tab"
+       aria-controls="editsNavAspects" aria-selected="false">{{'SIDEBAR_EDIT_ATTRIBUTES_TITLE' | translate}}</a>
+    <a class="nav-link" id="editsNavStyles" data-toggle="pill" href="#editsNavStylesContent" role="tab"
+       aria-controls="editsNavStyles" aria-selected="false">{{'SIDEBAR_EDIT_STYLE_TITLE' | translate}}</a>
+    <a class="nav-link" id="editsNavHighlights" data-toggle="pill" href="#editsNavHighlightsContent" role="tab"
+       aria-controls="editsNavHighlights" aria-selected="true">{{'SIDEBAR_EDIT_EDITING_TITLE' | translate}}</a>
 
-</div>
+  </div>
 
-<div class="tab-content p-2" id="editsNavContent">
+  <div class="tab-content p-2" id="editsNavContent">
 
-  <!-- Edit: Aspects -->
-  <div class="tab-pane fade show active" id="editsNavAspectsContent" role="tabpanel" aria-labelledby="editsNavAspects">
+    <!-- Edit: Aspects -->
+    <div class="tab-pane fade show active" id="editsNavAspectsContent" role="tabpanel"
+         aria-labelledby="editsNavAspects">
 
-    <h5 *ngIf="selectedNetwork.mappings.nodesDiscrete.length > 0 || selectedNetwork.mappings.nodesContinuous.length > 0">{{'SIDEBAR_EDIT_ASPECTS_NODES' | translate}}</h5>
+      <h5
+        *ngIf="selectedNetwork.mappings.nodesDiscrete.length > 0 || selectedNetwork.mappings.nodesContinuous.length > 0">{{'SIDEBAR_EDIT_ASPECTS_NODES' | translate}}</h5>
 
-    <table class="table table-bordered" *ngIf="selectedNetwork.mappings.nodesDiscrete.length > 0">
-      <tr *ngFor="let nodeMap of selectedNetwork.mappings.nodesDiscrete">
-        <td><b>{{nodeMap.classifier}}</b></td>
-        <td>
-          <table class="table table-borderless">
-            <tr class="border-bottom">
-              <td colspan="1">&nbsp;</td>
-              <td *ngFor="let styleProp of nodeMap.th"><b>{{styleProp}}</b></td>
-            </tr>
-            <tr *ngFor="let value of nodeMap.values; let i = index">
-              <td class="border-right">
-                <a role="button" (click)="graphService.highlightBySelector(nodeMap.selectors[i])"
-                   data-toggle="tooltip" data-placement="bottom"
-                   title="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{nodeMap.selectors[i]}}"><b>{{value}}</b></a>
-              </td>
-              <td *ngFor="let style of nodeMap.styleMap">
+      <table class="table table-bordered" *ngIf="selectedNetwork.mappings.nodesDiscrete.length > 0">
+        <tr *ngFor="let nodeMap of selectedNetwork.mappings.nodesDiscrete">
+          <td><b>{{nodeMap.classifier}}</b></td>
+          <td>
+            <table class="table table-borderless">
+              <tr class="border-bottom">
+                <td colspan="1">&nbsp;</td>
+                <td *ngFor="let styleProp of nodeMap.th"><b>{{styleProp}}</b></td>
+              </tr>
+              <tr *ngFor="let value of nodeMap.values; let i = index">
+                <td class="border-right">
+                  <a role="button" (click)="graphService.highlightBySelector(nodeMap.selectors[i])"
+                     data-toggle="tooltip" data-placement="bottom"
+                     title="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{nodeMap.selectors[i]}}"><b>{{value}}</b></a>
+                </td>
+                <td *ngFor="let style of nodeMap.styleMap">
                     <span *ngIf="style.cssValues.length > i">
 
                       {{style.cssValues[i]}}
@@ -83,14 +87,14 @@
                       </span>
 
                     </span>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
 
-    <ul class="list-group" *ngIf="selectedNetwork.mappings.nodesContinuous.length > 0">
+      <ul class="list-group" *ngIf="selectedNetwork.mappings.nodesContinuous.length > 0">
       <span *ngFor="let nodeMap of selectedNetwork.mappings.nodesContinuous; let index = index">
         <li class="list-group-item" *ngIf="nodeMap.chartValid">
           <button class="btn btn-block btn-outline-danger" (click)="displayMapping(nodeMap.chart, [], 'nc' + index)">
@@ -100,33 +104,35 @@
           </button>
         </li>
         <li class="list-group-item" *ngIf="nodeMap.gradientValid">
-          <button class="btn btn-block btn-outline-danger" (click)="displayMapping(null, nodeMap.colorGradient, 'nc' + index)">
+          <button class="btn btn-block btn-outline-danger"
+                  (click)="displayMapping(null, nodeMap.colorGradient, 'nc' + index)">
             <b>{{nodeMap.title[0]}}</b>
             {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
             <b> {{nodeMap.title[1]}}</b>
           </button>
         </li>
       </span>
-    </ul>
+      </ul>
 
-    <h5 *ngIf="selectedNetwork.mappings.edgesDiscrete.length > 0 || selectedNetwork.mappings.edgesContinuous.length > 0">{{'SIDEBAR_EDIT_ASPECTS_EDGES' | translate}}</h5>
+      <h5
+        *ngIf="selectedNetwork.mappings.edgesDiscrete.length > 0 || selectedNetwork.mappings.edgesContinuous.length > 0">{{'SIDEBAR_EDIT_ASPECTS_EDGES' | translate}}</h5>
 
-    <table class="table table-bordered" *ngIf="selectedNetwork.mappings.edgesDiscrete.length > 0">
-      <tr *ngFor="let edgeMap of selectedNetwork.mappings.edgesDiscrete">
-        <td><b>{{edgeMap.classifier}}</b></td>
-        <td>
-          <table class="table table-borderless">
-            <tr class="border-bottom">
-              <td colspan="1">&nbsp;</td>
-              <td *ngFor="let styleProp of edgeMap.th"><b>{{styleProp}}</b></td>
-            </tr>
-            <tr *ngFor="let value of edgeMap.values; let i = index">
-              <td class="border-right">
-                <a role="button" (click)="graphService.highlightBySelector(edgeMap.selectors[i])"
-                   data-toggle="tooltip" data-placement="bottom"
-                   title="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{edgeMap.selectors[i]}}"><b>{{value}}</b></a>
-              </td>
-              <td *ngFor="let style of edgeMap.styleMap">
+      <table class="table table-bordered" *ngIf="selectedNetwork.mappings.edgesDiscrete.length > 0">
+        <tr *ngFor="let edgeMap of selectedNetwork.mappings.edgesDiscrete">
+          <td><b>{{edgeMap.classifier}}</b></td>
+          <td>
+            <table class="table table-borderless">
+              <tr class="border-bottom">
+                <td colspan="1">&nbsp;</td>
+                <td *ngFor="let styleProp of edgeMap.th"><b>{{styleProp}}</b></td>
+              </tr>
+              <tr *ngFor="let value of edgeMap.values; let i = index">
+                <td class="border-right">
+                  <a role="button" (click)="graphService.highlightBySelector(edgeMap.selectors[i])"
+                     data-toggle="tooltip" data-placement="bottom"
+                     title="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{edgeMap.selectors[i]}}"><b>{{value}}</b></a>
+                </td>
+                <td *ngFor="let style of edgeMap.styleMap">
                 <span *ngIf="style.cssValues.length > i">
 
                   {{style.cssValues[i]}}
@@ -136,14 +142,14 @@
                   </span>
 
                 </span>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
 
-    <ul class="list-group" *ngIf="selectedNetwork.mappings.edgesContinuous.length > 0">
+      <ul class="list-group" *ngIf="selectedNetwork.mappings.edgesContinuous.length > 0">
       <span *ngFor="let edgeMap of selectedNetwork.mappings.edgesContinuous; let index = index">
         <li class="list-group-item" *ngIf="edgeMap.chartValid">
           <button class="btn btn-block btn-outline-danger" (click)="displayMapping(edgeMap.chart, [], 'ec' + index)">
@@ -153,7 +159,8 @@
           </button>
         </li>
         <li class="list-group-item" *ngIf="edgeMap.gradientValid">
-          <button class="btn btn-block btn-outline-danger" (click)="displayMapping(null, edgeMap.colorGradient, 'ec' + index)">
+          <button class="btn btn-block btn-outline-danger"
+                  (click)="displayMapping(null, edgeMap.colorGradient, 'ec' + index)">
             <b>{{edgeMap.title[0]}}</b>
             {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
             <b>{{edgeMap.title[1]}}</b>
@@ -161,28 +168,28 @@
         </li>
 
       </span>
-    </ul>
+      </ul>
 
-  </div>
-
-  <!-- Edit: Styles -->
-  <div class="tab-pane fade" id="editsNavStylesContent" role="tabpanel" aria-labelledby="editsNavStyles">
-
-    <div class="row border-bottom">
-      <div class="col">
-        {{'SIDEBAR_EDIT_TH_CLASSNAME' | translate}}
-      </div>
-      <div class="col">
-        <b>{{'SIDEBAR_EDIT_TH_CSS_KEY' | translate}}</b>: {{'SIDEBAR_EDIT_TH_CSS_VALUE' | translate}}
-      </div>
     </div>
-    <div class="row border-bottom" *ngFor="let s of selectedNetwork.style">
-      <div class="col">
-        <a role="button" (click)="graphService.highlightBySelector(s.selector)"
-           data-toggle="tooltip" data-placement="bottom"
-           title="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{s.selector}}">{{s.selector}}</a>
+
+    <!-- Edit: Styles -->
+    <div class="tab-pane fade" id="editsNavStylesContent" role="tabpanel" aria-labelledby="editsNavStyles">
+
+      <div class="row border-bottom">
+        <div class="col">
+          {{'SIDEBAR_EDIT_TH_CLASSNAME' | translate}}
+        </div>
+        <div class="col">
+          <b>{{'SIDEBAR_EDIT_TH_CSS_KEY' | translate}}</b>: {{'SIDEBAR_EDIT_TH_CSS_VALUE' | translate}}
+        </div>
       </div>
-      <div class="col">
+      <div class="row border-bottom" *ngFor="let s of selectedNetwork.style">
+        <div class="col">
+          <a role="button" (click)="graphService.highlightBySelector(s.selector)"
+             data-toggle="tooltip" data-placement="bottom"
+             title="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{s.selector}}">{{s.selector}}</a>
+        </div>
+        <div class="col">
             <span *ngFor="let css of s.style|keyvalue">
               <b>{{css.key}}</b>: {{css.value}}
               <span *ngIf="css.value.toString().indexOf('#') === 0" class="badge badge-pill border"
@@ -190,47 +197,47 @@
               </span>
               <br>
             </span>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Edit: Highlight color -->
-  <div class="tab-pane fade" id="editsNavHighlightsContent" role="tabpanel"
-       aria-labelledby="editsNavHighlights">
+    <!-- Edit: Highlight color -->
+    <div class="tab-pane fade" id="editsNavHighlightsContent" role="tabpanel"
+         aria-labelledby="editsNavHighlights">
 
-    <div class="alert alert-success" role="alert" id="test">
-      <fa-icon class="mr-2" [icon]="faPalette"></fa-icon>
-      <b>{{'SIDEBAR_EDIT_TOAST_UPDATE' | translate}}</b>
-      <hr>
-      <b>{{'SIDEBAR_EDIT_TOAST_NODES' | translate}}</b> {{highlightNodes}}<br>
-      <b>{{'SIDEBAR_EDIT_TOAST_EDGES' | translate}}</b> {{highlightEdges}}<br>
-      <b>{{'SIDEBAR_EDIT_TOAST_DURATION' | translate}}</b> {{highlightDuration}}<br>
+      <div class="alert alert-success" role="alert" id="test">
+        <fa-icon class="mr-2" [icon]="faPalette"></fa-icon>
+        <b>{{'SIDEBAR_EDIT_TOAST_UPDATE' | translate}}</b>
+        <hr>
+        <b>{{'SIDEBAR_EDIT_TOAST_NODES' | translate}}</b> {{highlightNodes}}<br>
+        <b>{{'SIDEBAR_EDIT_TOAST_EDGES' | translate}}</b> {{highlightEdges}}<br>
+        <b>{{'SIDEBAR_EDIT_TOAST_DURATION' | translate}}</b> {{highlightDuration}}<br>
+      </div>
+
+      <div class="form-row">
+
+        <label for="highlightNodesHex">{{'SIDEBAR_EDIT_LABEL_HEX_NODE' | translate}}</label>
+        <input type="text" class="form-control mb-2" id="highlightNodesHex" name="highlightNodesHex"
+               placeholder="#0000ff" [(ngModel)]="highlightNodes">
+
+        <label for="highlightEdgesHex">{{'SIDEBAR_EDIT_LABEL_HEX_EDGE' | translate}}</label>
+        <input type="text" class="form-control mb-2" id="highlightEdgesHex" name="highlightEdgesHex"
+               placeholder="#ff00ff" [(ngModel)]="highlightEdges">
+
+        <label for="highlightDuration">{{'SIDEBAR_EDIT_LABEL_DURATION' | translate}}</label>
+        <input type="number" min="0" step="1" class="form-control mb-2" id="highlightDuration"
+               name="highlightDuration"
+               placeholder="4000" [(ngModel)]="highlightDuration">
+
+        <button type="button" class="btn btn-outline-success btn-block mb-3"
+                (click)="graphService.setHighlightColorAndDuration(highlightNodes, highlightEdges, highlightDuration)">
+          {{'SIDEBAR_EDIT_BTN_SUBMIT' | translate}}</button>
+
+      </div>
     </div>
 
-    <div class="form-row">
-
-      <label for="highlightNodesHex">{{'SIDEBAR_EDIT_LABEL_HEX_NODE' | translate}}</label>
-      <input type="text" class="form-control mb-2" id="highlightNodesHex" name="highlightNodesHex"
-             placeholder="#0000ff" [(ngModel)]="highlightNodes">
-
-      <label for="highlightEdgesHex">{{'SIDEBAR_EDIT_LABEL_HEX_EDGE' | translate}}</label>
-      <input type="text" class="form-control mb-2" id="highlightEdgesHex" name="highlightEdgesHex"
-             placeholder="#ff00ff" [(ngModel)]="highlightEdges">
-
-      <label for="highlightDuration">{{'SIDEBAR_EDIT_LABEL_DURATION' | translate}}</label>
-      <input type="number" min="0" step="1" class="form-control mb-2" id="highlightDuration"
-             name="highlightDuration"
-             placeholder="4000" [(ngModel)]="highlightDuration">
-
-      <button type="button" class="btn btn-outline-success btn-block mb-3"
-              (click)="graphService.setHighlightColorAndDuration(highlightNodes, highlightEdges, highlightDuration)">
-        {{'SIDEBAR_EDIT_BTN_SUBMIT' | translate}}</button>
-
-    </div>
   </div>
 
 </div>
-
-
 
 

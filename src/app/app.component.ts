@@ -98,9 +98,9 @@ export class AppComponent {
 
 
   handleClickEvent(e: MouseEvent, direction: string): void {
-
     if (e.ctrlKey) {
       this.resetPageLayout();
+      return;
     }
 
     e.preventDefault();
@@ -112,19 +112,16 @@ export class AppComponent {
       tmpSidebar -= 10;
       this.widthMain = 'width-' + tmpMain;
       this.widthSidebar = 'width-' + tmpSidebar;
-      // this.graphService.fitGraph();
     } else if (direction === 'left' && tmpMain > 20) {
       tmpMain -= 10;
       tmpSidebar += 10;
       this.widthMain = 'width-' + tmpMain;
       this.widthSidebar = 'width-' + tmpSidebar;
-      // this.graphService.fitGraph();
     }
   }
 
   resetPageLayout(): void {
     this.widthSidebar = 'width-39';
     this.widthMain = 'width-60';
-    // this.graphService.fitGraph();
   }
 }
