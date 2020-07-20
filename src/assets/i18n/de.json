@@ -15,6 +15,11 @@
   "MAIN_INFO_STEPS_STEP_3": "Klicke auf das (i) neben dem Netzwerknamen und lass dir alle Informationen zum Netzwerk anzeigen",
   "MAIN_INFO_STEPS_STEP_4": "Mit Klick auf \"Bearbeiten\" kannst du anpassen, wie der Graph aussieht",
   "MAIN_INFO_STEPS_STEP_5": "Deine Änderungen kannst du auf einer privaten NDEx-Instanz sichern",
+  "MAIN_INFO_LAYOUT_TITLE": "Seitenverhältnis",
+  "MAIN_INFO_LAYOUT_DESCRIPTION": "Um das Seitenverhältnis der Anwendung zu manipulieren, auf den vertikalen Balken zwischen Haupt- und Zweitansicht klicken:",
+  "MAIN_INFO_LAYOUT_STEP_1": "<code>Linksklick</code> vergrößert die rechte Seite",
+  "MAIN_INFO_LAYOUT_STEP_2": "<code>Rechtsklick</code> vergrößert die Hauptansicht",
+  "MAIN_INFO_LAYOUT_STEP_3": "<code>Strg</code> + <code>Linksklick</code> setzt das Verhältnis zurück auf das Standardverhältnis",
 
   "MAIN_STATS_TITLE": "Daten",
   "MAIN_STATS_GRAPH_INFO_TITLE": "Über Graph",

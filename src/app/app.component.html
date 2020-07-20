@@ -1,11 +1,13 @@
 <div class="container-fluid p-o">
   <div class="row">
 
-    <div class="col-7 p-4">
+    <div class="p-4" [ngClass]="widthMain">
       <router-outlet></router-outlet>
     </div>
 
-    <div class="col-5 vh-100 pt-3 pl-0 pr-0" [ngStyle]="{'background-color': '#d0d0d0'}">
+    <div class="drag-bar" [ngStyle]="{'width.%': 1}" (click)="handleClickEvent($event, 'left')" (contextmenu)="handleClickEvent($event, 'right')"></div>
+
+    <div class="vh-100 pt-3 pl-0 pr-0" [ngStyle]="{'background-color': '#d0d0d0'}" [ngClass]="widthSidebar">
 
       <ul class="nav nav-tabs">
 

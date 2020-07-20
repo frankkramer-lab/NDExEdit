@@ -17,6 +17,9 @@ import {HttpClient} from '@angular/common/http';
 export class AppComponent {
   title = 'ndex-edit';
 
+  widthMain = 'width-60';
+  widthSidebar = 'width-39';
+
   /**
    * Path to mock-ups
    */
@@ -91,4 +94,31 @@ export class AppComponent {
       .catch(error => console.log(error));
   }
 
+  handleClickEvent(e: MouseEvent, direction: string): void {
+
+    if (e.ctrlKey) {
+      this.resetPageLayout();
+    }
+
+    let tmpMain = Number(this.widthMain.split('-')[1]);
+    let tmpSidebar = Number(this.widthSidebar.split('-')[1]);
+
+    if (direction === 'right' && tmpSidebar > 19) {
+      e.preventDefault();
+      tmpMain += 10;
+      tmpSidebar -= 10;
+      this.widthMain = 'width-' + tmpMain;
+      this.widthSidebar = 'width-' + tmpSidebar;
+    } else if (direction === 'left' && tmpMain > 20) {
+      tmpMain -= 10;
+      tmpSidebar += 10;
+      this.widthMain = 'width-' + tmpMain;
+      this.widthSidebar = 'width-' + tmpSidebar;
+    }
+  }
+
+  resetPageLayout(): void {
+    this.widthSidebar = 'width-39';
+    this.widthMain = 'width-60';
+  }
 }

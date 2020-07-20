@@ -15,6 +15,11 @@
   "MAIN_INFO_STEPS_STEP_3": "Inspect the information displayed to this specific network by clicking on the i-Icon right next to the networks name",
   "MAIN_INFO_STEPS_STEP_4": "Click on \"Edit\" to manipulate how the graph is displayed",
   "MAIN_INFO_STEPS_STEP_5": "You can save your changes to a private NDEx instance",
+  "MAIN_INFO_LAYOUT_TITLE": "Page layout",
+  "MAIN_INFO_LAYOUT_DESCRIPTION": "To modify the proportion of main view and sidebar click the bar between the two:",
+  "MAIN_INFO_LAYOUT_STEP_1": "<code>Left click</code> increases the sidebar",
+  "MAIN_INFO_LAYOUT_STEP_2": "<code>Right click</code> increases the main view",
+  "MAIN_INFO_LAYOUT_STEP_3": "<code>Ctrl</code> + <code>Left click</code> resets the proportion to default",
 
   "MAIN_STATS_TITLE": "Statistics",
   "MAIN_STATS_GRAPH_INFO_TITLE": "Info about",
