@@ -6,6 +6,7 @@ import {MainGraphComponent} from './components/main-graph/main-graph.component';
 import {SidebarEditComponent} from './components/sidebar-edit/sidebar-edit.component';
 import {MainStatsComponent} from './components/main-stats/main-stats.component';
 import {SidebarCompareComponent} from './components/sidebar-compare/sidebar-compare.component';
+import {MainMappingsComponent} from './components/main-mappings/main-mappings.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,16 @@ const routes: Routes = [
   {
     path: 'stats/:id',
     component: MainStatsComponent,
+    children: [
+      {
+        path: '',
+        component: MainInfoComponent
+      }
+    ]
+  },
+  {
+    path: 'mappings/:id/:map',
+    component: MainMappingsComponent,
     children: [
       {
         path: '',

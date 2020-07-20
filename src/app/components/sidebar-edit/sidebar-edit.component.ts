@@ -31,6 +31,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   showChart = false;
   showColorGradient = false;
   gradientBackground = '';
+  index = '';
 
   public lineChartData: ChartDataSets[] = [
     {data: [0], label: 'no data found'}
@@ -75,8 +76,9 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     this.showLabels = show;
   }
 
-  displayMapping(chart: any = null, colorGradient: NeColorGradient[] = []): void {
-
+  displayMapping(chart: any = null, colorGradient: NeColorGradient[] = [], index: string): void {
+    this.index = index;
+    console.log(index);
     if (chart !== null) {
       this.attribute = chart.lineChartOptions.title.text[0];
       this.lookup = chart.lineChartOptions.title.text[1];

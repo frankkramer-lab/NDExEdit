@@ -1221,7 +1221,7 @@ export class ParseService {
           }
         },
         responsive: true,
-        maintainAspectRatio: false
+        maintainAspectRatio: true
       }
     };
 

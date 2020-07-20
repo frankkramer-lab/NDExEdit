@@ -15,6 +15,7 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
 import {ChartsModule} from 'ng2-charts';
+import { MainMappingsComponent } from './components/main-mappings/main-mappings.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http);
@@ -28,7 +29,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     MainStatsComponent,
     SidebarManageComponent,
     SidebarEditComponent,
-    SidebarCompareComponent
+    SidebarCompareComponent,
+    MainMappingsComponent
   ],
   imports: [
     BrowserModule,
