@@ -7,7 +7,6 @@ import {SidebarEditComponent} from './components/sidebar-edit/sidebar-edit.compo
 import {MainStatsComponent} from './components/main-stats/main-stats.component';
 import {SidebarCompareComponent} from './components/sidebar-compare/sidebar-compare.component';
 
-
 const routes: Routes = [
   {
     path: '',
@@ -16,7 +15,7 @@ const routes: Routes = [
   },
   {
     path: 'info',
-    component: MainInfoComponent
+    component: MainInfoComponent,
   },
   {
     path: 'graph/:id',

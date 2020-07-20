@@ -4,6 +4,7 @@ import {ParseService} from './services/parse.service';
 import {NeNetwork} from './models/ne-network';
 import {DataService} from './services/data.service';
 import {HttpClient} from '@angular/common/http';
+import {GraphService} from './services/graph.service';
 
 @Component({
   selector: 'app-root',
@@ -39,7 +40,8 @@ export class AppComponent {
     public translateService: TranslateService,
     private parseService: ParseService,
     public dataService: DataService,
-    private http: HttpClient) {
+    private http: HttpClient,
+    private graphService: GraphService) {
     this.initializeTranslation();
 
     this.initDemoNetwork('01.cx');
@@ -94,31 +96,35 @@ export class AppComponent {
       .catch(error => console.log(error));
   }
 
+
   handleClickEvent(e: MouseEvent, direction: string): void {
 
     if (e.ctrlKey) {
       this.resetPageLayout();
     }
 
+    e.preventDefault();
     let tmpMain = Number(this.widthMain.split('-')[1]);
     let tmpSidebar = Number(this.widthSidebar.split('-')[1]);
 
     if (direction === 'right' && tmpSidebar > 19) {
-      e.preventDefault();
       tmpMain += 10;
       tmpSidebar -= 10;
       this.widthMain = 'width-' + tmpMain;
       this.widthSidebar = 'width-' + tmpSidebar;
+      // this.graphService.fitGraph();
     } else if (direction === 'left' && tmpMain > 20) {
       tmpMain -= 10;
       tmpSidebar += 10;
       this.widthMain = 'width-' + tmpMain;
       this.widthSidebar = 'width-' + tmpSidebar;
+      // this.graphService.fitGraph();
     }
   }
 
   resetPageLayout(): void {
     this.widthSidebar = 'width-39';
     this.widthMain = 'width-60';
+    // this.graphService.fitGraph();
   }
 }

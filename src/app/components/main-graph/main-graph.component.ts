@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, DoCheck, OnDestroy, Renderer2} from '@angular/core';
+import {AfterViewInit, Component, DoCheck, Input, OnDestroy, Renderer2} from '@angular/core';
 import {NeNetwork} from '../../models/ne-network';
 import {DataService} from '../../services/data.service';
 import {GraphService} from '../../services/graph.service';
@@ -8,7 +8,7 @@ import {ActivatedRoute} from '@angular/router';
 @Component({
   selector: 'app-main-graph',
   templateUrl: './main-graph.component.html',
-  styleUrls: ['./main-graph.component.scss']
+  styleUrls: ['./../../app.component.scss', './main-graph.component.scss']
 })
 
 /**
@@ -19,6 +19,7 @@ export class MainGraphComponent implements AfterViewInit, OnDestroy {
   cyContainer: any;
   private readonly subscription: Subscription;
   private isInitialized = false;
+  public width: string;
 
   constructor(
     public dataService: DataService,
@@ -53,13 +54,7 @@ export class MainGraphComponent implements AfterViewInit, OnDestroy {
     this.graphService.render(this.cyContainer, this.selectedNetwork);
   }
 
-  // ngDoCheck(): void {
-  //   let core = this.graphService.getCore();
-  //   if (core) {
-  //     core.on('select', function() {
-  //       console.log()
-  //     })
-  //   }
-  //
-  // }
+  fit(): void {
+    this.graphService.fitGraph();
+  }
 }

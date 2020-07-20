@@ -93,4 +93,8 @@ export class GraphService {
     }
   }
 
+  fitGraph(): void {
+    this.core.fit();
+  }
+
 }
