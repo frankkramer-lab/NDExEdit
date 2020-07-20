@@ -26,6 +26,8 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   selectedNetwork: NeNetwork;
   isInitialized = false;
 
+  lookup: string;
+  attribute: string;
   showChart = false;
   showColorGradient = false;
   gradientBackground = '';
@@ -39,24 +41,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
       backgroundColor: 'rgba(255,0,0,0.4)',
     }
   ];
-  public lineChartOptions = {
-    scales: {
-      yAxes: [
-        {
-          type: 'linear',
-          display: true,
-          position: 'left',
-          id: 'y-axis-1',
-        },
-        {
-          type: 'linear',
-          display: true,
-          position: 'right',
-          id: 'y-axis-2',
-        }
-      ]
-    }
-  };
+  public lineChartOptions;
 
   highlightNodes = '#0000ff';
   highlightEdges = '#0000ff';
@@ -93,6 +78,8 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   displayMapping(chart: any = null, colorGradient: NeColorGradient[] = []): void {
 
     if (chart !== null) {
+      this.attribute = chart.lineChartOptions.title.text[0];
+      this.lookup = chart.lineChartOptions.title.text[1];
       this.lineChartData = chart.lineChartData;
       this.lineChartLabels = chart.lineChartLabels;
       this.lineChartColors = [{
@@ -109,6 +96,8 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
 
     } else if (colorGradient.length > 0) {
 
+      this.lookup = colorGradient[0].title[0];
+      this.attribute = colorGradient[0].title[1];
       let color = 'linear-gradient(90deg, ';
       const tmp = [];
 

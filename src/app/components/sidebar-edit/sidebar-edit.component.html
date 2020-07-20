@@ -12,8 +12,13 @@
   </label>
 </div>
 
-
+<!-- chart for continuous mappings -->
 <div *ngIf="showChart" style="display: block">
+  <h5><b>
+    {{lookup}}</b>
+    {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
+    <b>{{attribute}}</b>
+  </h5>
   <canvas id="mappingsChart" baseChart [ngStyle]="{'width.%': 100, 'height.px': 300}"
           [chartType]="'line'"
           [legend]="true"
@@ -23,7 +28,15 @@
           [options]="lineChartOptions"></canvas>
 </div>
 
-<div *ngIf="showColorGradient" [style.width.%]="100" [style.height.px]="300" [style.background]="gradientBackground" class="mb-3">
+<!-- color gradient for continuous mappings -->
+<div *ngIf="showColorGradient">
+  <h5><b>
+    {{lookup}}</b>
+    {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
+    <b>{{attribute}}</b>
+  </h5>
+  <div [style.width.%]="100" [style.height.px]="300" [style.background]="gradientBackground" class="mb-3">
+  </div>
 </div>
 
 <div class="nav nav-pills mb-3 flex-row" id="editsNav" role="tablist" aria-orientation="horizontal">
@@ -64,8 +77,7 @@
                       {{style.cssValues[i]}}
                       <span *ngIf="style.cssValues && style.cssValues[i].toString().indexOf('#') === 0"
                             class="badge badge-pill border"
-                            [ngStyle]="{'background-color': style.cssValues[i]}">
-                        &nbsp;
+                            [ngStyle]="{'background-color': style.cssValues[i]}">&nbsp;
                       </span>
 
                     </span>
@@ -80,16 +92,16 @@
       <span *ngFor="let nodeMap of selectedNetwork.mappings.nodesContinuous">
         <li class="list-group-item" *ngIf="nodeMap.chartValid">
           <button class="btn btn-block btn-outline-danger" (click)="displayMapping(nodeMap.chart, [])">
-            <b>{{nodeMap.chart.lineChartOptions.title.text[0]}}</b>
-            {{nodeMap.chart.lineChartOptions.title.text[1] | translate}}
-            <b>{{nodeMap.chart.lineChartOptions.title.text[2]}}</b>
+            <b>{{nodeMap.title[0]}}</b>
+            {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
+            <b> {{nodeMap.title[1]}}</b>
           </button>
         </li>
         <li class="list-group-item" *ngIf="nodeMap.gradientValid">
           <button class="btn btn-block btn-outline-danger" (click)="displayMapping(null, nodeMap.colorGradient)">
-            <b>{{nodeMap.chart.lineChartOptions.title.text[0]}}</b>
-            {{nodeMap.chart.lineChartOptions.title.text[1] | translate}}
-            <b>{{nodeMap.chart.lineChartOptions.title.text[2]}}</b>
+            <b>{{nodeMap.title[0]}}</b>
+            {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
+            <b> {{nodeMap.title[1]}}</b>
           </button>
         </li>
       </span>
@@ -118,8 +130,7 @@
                   {{style.cssValues[i]}}
                   <span *ngIf="style.cssValues && style.cssValues[i].toString().indexOf('#') === 0"
                         class="badge badge-pill border"
-                        [ngStyle]="{'background-color': style.cssValues[i]}">
-                    &nbsp;
+                        [ngStyle]="{'background-color': style.cssValues[i]}">&nbsp;
                   </span>
 
                 </span>
@@ -134,16 +145,16 @@
       <span *ngFor="let edgeMap of selectedNetwork.mappings.edgesContinuous">
         <li class="list-group-item" *ngIf="edgeMap.chartValid">
           <button class="btn btn-block btn-outline-danger" (click)="displayMapping(edgeMap.chart, [])">
-            <b>{{edgeMap.chart.lineChartOptions.title.text[0]}}</b>
-            {{edgeMap.chart.lineChartOptions.title.text[1] | translate}}
-            <b>{{edgeMap.chart.lineChartOptions.title.text[2]}}</b>
+            <b>{{edgeMap.title[0]}}</b>
+            {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
+            <b>{{edgeMap.title[1]}}</b>
           </button>
         </li>
         <li class="list-group-item" *ngIf="edgeMap.gradientValid">
           <button class="btn btn-block btn-outline-danger" (click)="displayMapping(null, edgeMap.colorGradient)">
-            <b>{{edgeMap.chart.lineChartOptions.title.text[0]}}</b>
-            {{edgeMap.chart.lineChartOptions.title.text[1] | translate}}
-            <b>{{edgeMap.chart.lineChartOptions.title.text[2]}}</b>
+            <b>{{edgeMap.title[0]}}</b>
+            {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
+            <b>{{edgeMap.title[1]}}</b>
           </button>
         </li>
 
@@ -163,7 +174,6 @@
         <b>{{'SIDEBAR_EDIT_TH_CSS_KEY' | translate}}</b>: {{'SIDEBAR_EDIT_TH_CSS_VALUE' | translate}}
       </div>
     </div>
-    <!-- todo fix up to make more intuitive -->
     <div class="row border-bottom" *ngFor="let s of selectedNetwork.style">
       <div class="col">
         <a role="button" (click)="graphService.highlightBySelector(s.selector)"

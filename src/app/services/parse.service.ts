@@ -149,7 +149,6 @@ export class ParseService {
           datatype: 'string'
         });
       }
-      console.log(obj);
       edgeData.push(obj);
 
     }
@@ -1020,11 +1019,12 @@ export class ParseService {
     const lookup: string[] = this.lookupKey([mapping.key]);
     const commaSplit = mapping.definition.split(',');
 
-    const contiuousCollection: NeContinuousCollection = {
+    const continuousCollection: NeContinuousCollection = {
       chart: null,
       values: [],
       displayChart: true,
       colorGradient: [],
+      title: [],
     };
 
     let datatype;
@@ -1155,20 +1155,20 @@ export class ParseService {
       }
     }
 
-    const gradientObject = this.buildColorGradient(thresholds, lowers, equals, greaters);
+    const gradientObject = this.buildColorGradient(thresholds, lowers, equals, lookup, attribute);
     const chartObject = this.buildChartData(thresholds, lowers, equals, greaters, lookup, attribute);
 
-    contiuousCollection.values = buildClasses;
-    contiuousCollection.chart = chartObject;
-    contiuousCollection.colorGradient = gradientObject;
-    contiuousCollection.chartValid = (displayChart && (chartObject !== null));
-    contiuousCollection.gradientValid = (!displayChart && (gradientObject.length > 0));
-    contiuousCollection.displayChart = displayChart;
-
-    return contiuousCollection;
+    continuousCollection.values = buildClasses;
+    continuousCollection.chart = chartObject;
+    continuousCollection.colorGradient = gradientObject;
+    continuousCollection.chartValid = (displayChart && (chartObject !== null));
+    continuousCollection.gradientValid = (!displayChart && (gradientObject.length > 0));
+    continuousCollection.displayChart = displayChart;
+    continuousCollection.title = [lookup, attribute];
+    return continuousCollection;
   }
 
-  private buildColorGradient(thresholds: string[], lowers: string[], equals: string[], greaters: string[]): NeColorGradient[] {
+  private buildColorGradient(thresholds: string[], lowers: string[], equals: string[], lookup: string[], attribute: string): NeColorGradient[] {
     if (!lowers[0].startsWith('#')) {
       return [];
     }
@@ -1181,7 +1181,8 @@ export class ParseService {
       const offset = ((Number(th) - Number(thresholds[0])) * 100 / range).toFixed(0);
       const gradient: NeColorGradient = {
         color: equals[thresholds.indexOf(th)],
-        offset: String(offset).concat('%')
+        offset: String(offset).concat('%'),
+        title: lookup.concat([attribute])
       };
       colorGradientCollection.push(gradient);
     }
@@ -1212,7 +1213,7 @@ export class ParseService {
         },
         title: {
           display: false,
-          text: []
+          text: [attribute, lookup]
         },
         elements: {
           line: {
@@ -1231,9 +1232,6 @@ export class ParseService {
     }
 
     chartMappingObject.lineChartLabels.push('');
-    chartMappingObject.lineChartOptions.title.text.push(lookup);
-    chartMappingObject.lineChartOptions.title.text.push('SIDEBAR_EDIT_MAPPED_BY');
-    chartMappingObject.lineChartOptions.title.text.push(attribute);
 
     for (const lu of lookup) {
       const tmp = {

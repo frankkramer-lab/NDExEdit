@@ -9,4 +9,5 @@ export interface NeContinuousCollection {
   colorGradient?: NeColorGradient[];
   chartValid?: boolean;
   gradientValid?: boolean;
+  title?: string[];
 }
