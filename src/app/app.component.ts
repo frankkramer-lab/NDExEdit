@@ -19,7 +19,7 @@ export class AppComponent {
   title = 'ndex-edit';
 
   widthMain = 'width-60';
-  widthSidebar = 'width-39';
+  widthSidebar = 'width-38';
 
   /**
    * Path to mock-ups
@@ -107,7 +107,7 @@ export class AppComponent {
     let tmpMain = Number(this.widthMain.split('-')[1]);
     let tmpSidebar = Number(this.widthSidebar.split('-')[1]);
 
-    if (direction === 'right' && tmpSidebar > 19) {
+    if (direction === 'right' && tmpSidebar > 18) {
       tmpMain += 10;
       tmpSidebar -= 10;
       this.widthMain = 'width-' + tmpMain;
@@ -121,7 +121,7 @@ export class AppComponent {
   }
 
   resetPageLayout(): void {
-    this.widthSidebar = 'width-39';
+    this.widthSidebar = 'width-38';
     this.widthMain = 'width-60';
   }
 }

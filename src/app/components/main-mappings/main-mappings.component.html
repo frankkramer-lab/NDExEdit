@@ -7,5 +7,21 @@
 <!--  todo display continuous mappings in graph or color gradient -->
 <!--  todo and corresponding data in table layout -->
 
+  <table *ngIf="selectedMapping.chartValid" class="table table-bordered">
+    <thead>
+    <tr>
+      <th>{{selectedMapping.title[1]}}</th>
+      <th>{{selectedMapping.title[0]}}</th>
+    </tr>
+    </thead>
+    <tr *ngFor="let entry of selectedMapping.chart.lineChartData[0].data; let i = index">
+      <td *ngIf="i === 0">&lt;</td>
+      <td *ngIf="i === selectedMapping.chart.lineChartLabels.length - 1">&gt;</td>
+      <td *ngIf="i > 0 && i < selectedMapping.chart.lineChartLabels.length - 1">{{selectedMapping.chart.lineChartLabels[i]}}</td>
+      <td>{{entry}}</td>
+    </tr>
+  </table>
+
+
 
 </ng-container>

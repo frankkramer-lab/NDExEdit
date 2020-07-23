@@ -60,7 +60,9 @@
          aria-labelledby="editsNavAspects">
 
       <h5
-        *ngIf="selectedNetwork.mappings.nodesDiscrete.length > 0 || selectedNetwork.mappings.nodesContinuous.length > 0">{{'SIDEBAR_EDIT_ASPECTS_NODES' | translate}}</h5>
+        *ngIf="selectedNetwork.mappings.nodesDiscrete.length > 0 || selectedNetwork.mappings.nodesContinuous.length > 0">
+        {{'SIDEBAR_EDIT_ASPECTS_NODES' | translate}}
+      </h5>
 
       <table class="table table-bordered" *ngIf="selectedNetwork.mappings.nodesDiscrete.length > 0">
         <tr *ngFor="let nodeMap of selectedNetwork.mappings.nodesDiscrete">
@@ -75,18 +77,22 @@
                 <td class="border-right">
                   <a role="button" (click)="graphService.highlightBySelector(nodeMap.selectors[i])"
                      data-toggle="tooltip" data-placement="bottom"
-                     title="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{nodeMap.selectors[i]}}"><b>{{value}}</b></a>
+                     title="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{nodeMap.selectors[i]}}"><b>{{value}}</b>
+                  </a>
                 </td>
-                <td *ngFor="let style of nodeMap.styleMap">
-                    <span *ngIf="style.cssValues.length > i">
-
-                      {{style.cssValues[i]}}
-                      <span *ngIf="style.cssValues && style.cssValues[i].toString().indexOf('#') === 0"
-                            class="badge badge-pill border"
-                            [ngStyle]="{'background-color': style.cssValues[i]}">&nbsp;
+                <td *ngFor="let style of nodeMap.styleMap; let j = index">
+                  <span>
+                    <span *ngFor="let cssValue of style.cssValues; let k = index">
+                      <span *ngIf="style.selectors[k] == nodeMap.selectors[i]">
+                        {{cssValue}}
+                        <span *ngIf="cssValue.toString().indexOf('#') === 0"
+                              class="badge badge-pill border"
+                              [ngStyle]="{'background-color': cssValue}">&nbsp;
+                        </span>
                       </span>
-
                     </span>
+
+                  </span>
                 </td>
               </tr>
             </table>
@@ -97,19 +103,18 @@
       <ul class="list-group" *ngIf="selectedNetwork.mappings.nodesContinuous.length > 0">
       <span *ngFor="let nodeMap of selectedNetwork.mappings.nodesContinuous; let index = index">
         <li class="list-group-item" *ngIf="nodeMap.chartValid">
-          <button class="btn btn-block btn-outline-danger" (click)="displayMapping(nodeMap.chart, [], 'nc' + index)">
+          <a role="button" (click)="displayMapping(nodeMap.chart, [], 'nc' + index)">
             <b>{{nodeMap.title[0]}}</b>
             {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
             <b> {{nodeMap.title[1]}}</b>
-          </button>
+          </a>
         </li>
         <li class="list-group-item" *ngIf="nodeMap.gradientValid">
-          <button class="btn btn-block btn-outline-danger"
-                  (click)="displayMapping(null, nodeMap.colorGradient, 'nc' + index)">
+          <a role="button" (click)="displayMapping(null, nodeMap.colorGradient, 'nc' + index)">
             <b>{{nodeMap.title[0]}}</b>
             {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
             <b> {{nodeMap.title[1]}}</b>
-          </button>
+          </a>
         </li>
       </span>
       </ul>
@@ -152,19 +157,18 @@
       <ul class="list-group" *ngIf="selectedNetwork.mappings.edgesContinuous.length > 0">
       <span *ngFor="let edgeMap of selectedNetwork.mappings.edgesContinuous; let index = index">
         <li class="list-group-item" *ngIf="edgeMap.chartValid">
-          <button class="btn btn-block btn-outline-danger" (click)="displayMapping(edgeMap.chart, [], 'ec' + index)">
+          <a role="button" (click)="displayMapping(edgeMap.chart, [], 'ec' + index)">
             <b>{{edgeMap.title[0]}}</b>
             {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
             <b>{{edgeMap.title[1]}}</b>
-          </button>
+          </a>
         </li>
         <li class="list-group-item" *ngIf="edgeMap.gradientValid">
-          <button class="btn btn-block btn-outline-danger"
-                  (click)="displayMapping(null, edgeMap.colorGradient, 'ec' + index)">
+          <a role="button" (click)="displayMapping(null, edgeMap.colorGradient, 'ec' + index)">
             <b>{{edgeMap.title[0]}}</b>
             {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
             <b>{{edgeMap.title[1]}}</b>
-          </button>
+          </a>
         </li>
 
       </span>
