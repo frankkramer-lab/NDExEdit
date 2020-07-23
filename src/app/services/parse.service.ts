@@ -75,7 +75,7 @@ export class ParseService {
       return '';
     }
     input = String(input);
-    return input.replace(/\s*\(*\)*/g, '').toLowerCase();
+    return input.replace(/\s*\(*\)*\.*/g, '').toLowerCase();
   }
 
   /**
@@ -214,24 +214,26 @@ export class ParseService {
    */
   private static addStyles(parsedStyles: NeStyleComponent[], globalStyle: NeStyle[]): void {
     outerLoop: for (const ps of parsedStyles) {
-      let found = false;
 
-      for (const styleObj of globalStyle) {
-        if (styleObj.selector === ps.selector) {
-          found = true;
-          styleObj.style[ps.cssKey] = ps.cssValue;
-          continue outerLoop;
+      if (ps) {
+        let found = false;
+        for (const styleObj of globalStyle) {
+          if (ps && styleObj.selector === ps.selector) {
+            found = true;
+            styleObj.style[ps.cssKey] = ps.cssValue;
+            continue outerLoop;
+          }
         }
-      }
 
-      if (!found) {
-        const tmp: NeStyle = {
-          selector: ps.selector,
-          style: {},
-          appliedTo: []
-        };
-        tmp.style[ps.cssKey] = ps.cssValue;
-        globalStyle.push(tmp);
+        if (!found) {
+          const tmp: NeStyle = {
+            selector: ps.selector,
+            style: {},
+            appliedTo: []
+          };
+          tmp.style[ps.cssKey] = ps.cssValue;
+          globalStyle.push(tmp);
+        }
       }
     }
   }
@@ -394,54 +396,59 @@ export class ParseService {
     const arrowColorAsEdgeColor: boolean = this.evalEdgeStyleDependencies(styleEdgesDefault || []);
 
     // adding discrete mappings to matching nodes
-    for (const node of parsedNodeData) {
-      for (const nodeAttribute of node.attributes) {
-        for (const nodeMapping of parsedMappingsNodesDefault.discrete) {
-          const classSelector = nodeMapping.selector.substring(1);
+    if (parsedMappingsNodesDefault.discrete) {
+      for (const node of parsedNodeData) {
+        for (const nodeAttribute of node.attributes) {
+          for (const nodeMapping of parsedMappingsNodesDefault.discrete) {
+            const classSelector = nodeMapping.selector.substring(1);
 
-          if (nodeAttribute.key === nodeMapping.col
-            && nodeAttribute.value === nodeMapping.is
-            && !node.classes.includes(classSelector)) {
+            if (nodeAttribute.key === nodeMapping.col
+              && nodeAttribute.value === nodeMapping.is
+              && !node.classes.includes(classSelector)) {
+              node.classes.push(classSelector);
+            }
+          }
+        }
+        for (const nodeStyle of parsedStyleNodes) {
+          const id = nodeStyle.selector.substring(6);
+          const classSelector = nodeStyle.selector.substring(1);
+          if (node.id === id && !node.classes.includes(classSelector)) {
             node.classes.push(classSelector);
           }
         }
+        node.classes.push('custom_highlight_color');
+        node.classes.push('hide_label');
+        node.classes.push('text-wrap');
       }
-      for (const nodeStyle of parsedStyleNodes) {
-        const id = nodeStyle.selector.substring(6);
-        const classSelector = nodeStyle.selector.substring(1);
-        if (node.id === id && !node.classes.includes(classSelector)) {
-          node.classes.push(classSelector);
-        }
-      }
-      node.classes.push('custom_highlight_color');
-      node.classes.push('hide_label');
-      node.classes.push('text-wrap');
     }
 
     // adding discrete mappings to matching edges
-    for (const edge of parsedEdgeData) {
-      for (const edgeAttribute of edge.attributes) {
-        for (const edgeMapping of parsedMappingsEdgesDefault.discrete) {
-          const classSelector = edgeMapping.selector.substring(1);
+    if (parsedMappingsEdgesDefault.discrete) {
+      for (const edge of parsedEdgeData) {
+        for (const edgeAttribute of edge.attributes) {
+          // todo
+          for (const edgeMapping of parsedMappingsEdgesDefault.discrete) {
+            const classSelector = edgeMapping.selector.substring(1);
 
-          if (edgeAttribute.key === edgeMapping.col
-            && edgeAttribute.value === edgeMapping.is
-            && !edge.classes.includes(classSelector)) {
+            if (edgeAttribute.key === edgeMapping.col
+              && edgeAttribute.value === edgeMapping.is
+              && !edge.classes.includes(classSelector)) {
+              edge.classes.push(classSelector);
+            }
+          }
+        }
+
+        for (const edgeStyle of parsedStyleEdges) {
+          const id = edgeStyle.selector.substring(6);
+          const classSelector = edgeStyle.selector.substring(1);
+          if (edge.id === id && !edge.classes.includes(classSelector)) {
             edge.classes.push(classSelector);
           }
         }
+        edge.classes.push('custom_highlight_color');
+        edge.classes.push('hide_label');
+        edge.classes.push('text-wrap');
       }
-
-      for (const edgeStyle of parsedStyleEdges) {
-        const id = edgeStyle.selector.substring(6);
-        const classSelector = edgeStyle.selector.substring(1);
-        if (edge.id === id && !edge.classes.includes(classSelector)) {
-          edge.classes.push(classSelector);
-        }
-      }
-      edge.classes.push('custom_highlight_color');
-      edge.classes.push('hide_label');
-      edge.classes.push('text-wrap');
     }
 
     if (parsedMappingsEdgesDefault.continuous) {
@@ -741,7 +748,10 @@ export class ParseService {
     let mappingsElementsSpecific: NeContinuousCollection[] = [];
 
     if (!readData.mappings) {
-      return {};
+      return {
+        discrete: [],
+        continuous: []
+      };
     }
 
     const mappings = readData.mappings;
@@ -1335,6 +1345,10 @@ export class ParseService {
 
     const groupedMappings: NeGroupedMappingsDiscrete[] = [];
 
+    if (!mappings) {
+      return groupedMappings;
+    }
+
     outer: for (const map of mappings) {
       for (const gm of groupedMappings) {
         if (gm.classifier === map.colHR) {
@@ -1399,7 +1413,7 @@ export class ParseService {
 
   private addArrowColor(parsedStyles: NeStyleComponent[], arrowColorAsEdgeColor: boolean): NeStyleComponent[] {
     for (const style of parsedStyles) {
-      if (style.cssKey === 'line-color' && arrowColorAsEdgeColor) {
+      if (style && style.cssKey === 'line-color' && arrowColorAsEdgeColor) {
         const objTarget: NeStyleComponent = {
           selector: style.selector,
           cssKey: 'target-arrow-color',
@@ -1414,7 +1428,7 @@ export class ParseService {
           priority: style.priority
         };
         parsedStyles.push(objSource);
-      } else if (style.cssKey === 'line-color') {
+      } else if (style && style.cssKey === 'line-color') {
         const objTarget: NeStyleComponent = {
           selector: style.selector,
           cssKey: 'target-arrow-color',

@@ -44,10 +44,13 @@ export class AppComponent {
     this.initializeTranslation();
 
     // this.initDemoNetwork('01.cx');
-    // this.initDemoNetwork('02.cx');
+    this.initDemoNetwork('02.cx');
     // this.initDemoNetwork('03.cx');
-    this.initDemoNetwork('05.cx');
+    // this.initDemoNetwork('05.cx'); // example with arrows
     // this.initDemoNetwork('04.cx'); // this is a terribly built network and a negative example on how to manage a .cx file
+    // this.initDemoNetwork('06.cx'); // also not very nice to display
+    // this.initDemoNetwork('07.cx'); // 37MB are not very nice
+    // this.initDemoNetwork('08.cx'); // 20MB are not very nice
 
 
   }

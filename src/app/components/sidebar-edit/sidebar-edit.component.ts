@@ -8,6 +8,8 @@ import {faLightbulb, faPalette} from '@fortawesome/free-solid-svg-icons';
 import {ChartDataSets} from 'chart.js';
 import {Color, Label} from 'ng2-charts';
 import {NeColorGradient} from '../../models/ne-color-gradient';
+import {NeElement} from '../../models/ne-element';
+import {NeNode} from '../../models/ne-node';
 
 @Component({
   selector: 'app-sidebar-edit',
@@ -28,6 +30,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
 
   lookup: string;
   attribute: string;
+  showComparison = false;
   showChart = false;
   showColorGradient = false;
   gradientBackground = '';
@@ -55,10 +58,10 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   constructor(public dataService: DataService,
               private route: ActivatedRoute,
               public graphService: GraphService) {
+
     this.subscription = this.route.paramMap.subscribe(params => {
       this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
     });
-
   }
 
   ngAfterViewInit(): void {
@@ -93,6 +96,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
       }];
       this.lineChartOptions = chart.lineChartOptions;
       this.showColorGradient = false;
+      this.showComparison = false;
       this.showChart = true;
 
     } else if (colorGradient.length > 0) {
@@ -113,6 +117,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
 
       this.gradientBackground = colorGradient[0].color + ' ' + color;
 
+      this.showComparison = false;
       this.showChart = false;
       this.showColorGradient = true;
     }

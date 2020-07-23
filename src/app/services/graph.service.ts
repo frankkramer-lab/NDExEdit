@@ -1,8 +1,9 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable, Output} from '@angular/core';
 import {NeNetwork} from '../models/ne-network';
 import * as cytoscape from 'cytoscape';
 import {CytoscapeOptions, EventObject} from 'cytoscape';
 import {NeCyGraphSettings} from '../models/ne-cy-graph-settings';
+import {NeElement} from '../models/ne-element';
 import {NeNode} from '../models/ne-node';
 import {NeEdge} from '../models/ne-edge';
 
@@ -14,12 +15,9 @@ export class GraphService {
   private core: cytoscape.Core;
   private flashDuration = 2000;
 
-  private selectedNodes: NeNode[] = [];
-  private selectedEdges: NeEdge[] = [];
-
-  public selectedElements = {
-    nodes: this.selectedNodes,
-    edges: this.selectedEdges
+  public selectedElements: any = {
+    nodes: [],
+    edges: []
   };
 
   constructor() {
@@ -77,8 +75,7 @@ export class GraphService {
   private subscribeToCoreEvents(): void {
     if (this.core) {
       this.core.ready(() => {
-        // todo define all events here
-        this.core.on('click', event => {
+        this.core.on('select unselect', event => {
           this.handleEvent(event);
         });
       });
@@ -86,7 +83,22 @@ export class GraphService {
   }
 
   private handleEvent(event: EventObject): void {
-    console.log(event);
+    switch (event.type as string) {
+      case 'select':
+        if (event.target.isNode()) {
+          this.selectedElements.nodes.push(event.target.data() as NeNode);
+        } else if (event.target.isEdge()) {
+          this.selectedElements.edges.push(event.target.data() as NeEdge);
+        }
+        break;
+      case 'unselect':
+        if (event.target.isNode()) {
+          this.selectedElements = this.selectedElements.nodes.filter(x => x.id !== event.target.data().id);
+        } else if (event.target.isEdge()) {
+          this.selectedElements = this.selectedElements.edges.filter(x => x.id !== event.target.data().id);
+        }
+        break;
+    }
   }
 
   private unsubscribeFromCoreEvents(): void {

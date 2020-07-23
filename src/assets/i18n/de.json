@@ -36,7 +36,6 @@
   "MAIN_GRAPH_TITLE": "Graph",
   "MAIN_GRAPH_BTN_FIT": "Größe anpassen",
 
-
   "SIDEBAR_MANAGE_TITLE": "Verfügbare Netzwerke",
   "SIDEBAR_MANAGE_NW_NAME": "Netzwerkname",
   "SIDEBAR_MANAGE_TT_INFO": "Info über dieses Netzwerk",
@@ -69,6 +68,13 @@
   "SIDEBAR_EDIT_CB_LABELS": "Beschriftungen anzeigen",
   "SIDEBAR_EDIT_ASPECTS_NODES": "Knoten",
   "SIDEBAR_EDIT_ASPECTS_EDGES": "Kanten",
-  "SIDEBAR_EDIT_MAPPED_BY": "verändert in Abhängigkeit von"
+  "SIDEBAR_EDIT_MAPPED_BY": "verändert in Abhängigkeit von",
+  "SIDEBAR_EDIT_COMPARISON_NODES": "Knoten",
+  "SIDEBAR_EDIT_COMPARISON_NODE_NAME": "Knotenname",
+  "SIDEBAR_EDIT_COMPARISON_NODE_ATTRIBUTES": "Knotenattribute",
+  "SIDEBAR_EDIT_COMPARISON_EDGES": "Kanten",
+  "SIDEBAR_EDIT_COMPARISON_EDGE_NAME": "Kantenname",
+  "SIDEBAR_EDIT_COMPARISON_EDGE_ATTRIBUTES": "Kantenattribute"
+
 
 }

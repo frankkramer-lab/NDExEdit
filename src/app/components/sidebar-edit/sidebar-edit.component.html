@@ -45,6 +45,36 @@
     </div>
   </div>
 
+  <div *ngIf="graphService.selectedElements.nodes.length > 0 || graphService.selectedElements.edges.length > 0">
+    <h5 *ngIf="graphService.selectedElements.nodes.length > 0" class="mt-2">{{'SIDEBAR_EDIT_COMPARISON_NODES' | translate}}</h5>
+    <table *ngIf="graphService.selectedElements.nodes.length > 0">
+      <thead>
+        <th>{{'SIDEBAR_EDIT_COMPARISON_NODE_NAME' | translate}}</th>
+        <th>{{'SIDEBAR_EDIT_COMPARISON_NODE_ATTRIBUTES' | translate}}</th>
+      </thead>
+      <tr *ngFor="let node of graphService.selectedElements.nodes">
+        <td>{{node.name}}</td>
+        <td *ngFor="let attribute of node.attributes">
+          <b>{{attribute.keyHR}}</b>: {{attribute.valueHR}}
+        </td>
+      </tr>
+    </table>
+
+    <h5 *ngIf="graphService.selectedElements.edges.length > 0" class="mt-2">{{'SIDEBAR_EDIT_COMPARISON_EDGES' | translate}}</h5>
+    <table *ngIf="graphService.selectedElements.edges.length > 0">
+      <thead>
+      <th>{{'SIDEBAR_EDIT_COMPARISON_EDGE_NAME' | translate}}</th>
+      <th>{{'SIDEBAR_EDIT_COMPARISON_EDGE_ATTRIBUTES' | translate}}</th>
+      </thead>
+      <tr *ngFor="let edge of graphService.selectedElements.edges">
+        <td>{{edge.name}}</td>
+        <td *ngFor="let attribute of edge.attributes">
+          <b>{{attribute.keyHR}}</b>: {{attribute.valueHR}}
+        </td>
+      </tr>
+    </table>
+  </div>
+
   <div class="nav nav-pills flex-row" id="editsNav" role="tablist" aria-orientation="horizontal">
     <a class="nav-link active" id="editsNavAspects" data-toggle="pill" href="#editsNavAspectsContent" role="tab"
        aria-controls="editsNavAspects" aria-selected="false">{{'SIDEBAR_EDIT_ATTRIBUTES_TITLE' | translate}}</a>
@@ -62,11 +92,11 @@
          aria-labelledby="editsNavAspects">
 
       <h5
-        *ngIf="selectedNetwork.mappings.nodesDiscrete.length > 0 || selectedNetwork.mappings.nodesContinuous.length > 0">
+        *ngIf="selectedNetwork.mappings && (selectedNetwork.mappings.nodesDiscrete.length > 0 || selectedNetwork.mappings.nodesContinuous.length > 0)">
         {{'SIDEBAR_EDIT_ASPECTS_NODES' | translate}}
       </h5>
 
-      <table class="table table-bordered" *ngIf="selectedNetwork.mappings.nodesDiscrete.length > 0">
+      <table class="table table-bordered" *ngIf="selectedNetwork.mappings && selectedNetwork.mappings.nodesDiscrete.length > 0">
         <tr *ngFor="let nodeMap of selectedNetwork.mappings.nodesDiscrete">
           <td><b>{{nodeMap.classifier}}</b></td>
           <td>
@@ -102,7 +132,7 @@
         </tr>
       </table>
 
-      <ul class="list-group" *ngIf="selectedNetwork.mappings.nodesContinuous.length > 0">
+      <ul class="list-group" *ngIf="selectedNetwork.mappings && selectedNetwork.mappings.nodesContinuous.length > 0">
       <span *ngFor="let nodeMap of selectedNetwork.mappings.nodesContinuous; let index = index">
         <li class="list-group-item" *ngIf="nodeMap.chartValid">
           <a role="button" (click)="displayMapping(nodeMap.chart, [], 'nc' + index)">
@@ -122,9 +152,9 @@
       </ul>
 
       <h5
-        *ngIf="selectedNetwork.mappings.edgesDiscrete.length > 0 || selectedNetwork.mappings.edgesContinuous.length > 0">{{'SIDEBAR_EDIT_ASPECTS_EDGES' | translate}}</h5>
+        *ngIf="selectedNetwork.mappings && (selectedNetwork.mappings.edgesDiscrete.length > 0 || selectedNetwork.mappings.edgesContinuous.length > 0)">{{'SIDEBAR_EDIT_ASPECTS_EDGES' | translate}}</h5>
 
-      <table class="table table-bordered" *ngIf="selectedNetwork.mappings.edgesDiscrete.length > 0">
+      <table class="table table-bordered" *ngIf="selectedNetwork.mappings && selectedNetwork.mappings.edgesDiscrete.length > 0">
         <tr *ngFor="let edgeMap of selectedNetwork.mappings.edgesDiscrete">
           <td><b>{{edgeMap.classifier}}</b></td>
           <td>
@@ -156,7 +186,7 @@
         </tr>
       </table>
 
-      <ul class="list-group" *ngIf="selectedNetwork.mappings.edgesContinuous.length > 0">
+      <ul class="list-group" *ngIf="selectedNetwork.mappings && selectedNetwork.mappings.edgesContinuous.length > 0">
       <span *ngFor="let edgeMap of selectedNetwork.mappings.edgesContinuous; let index = index">
         <li class="list-group-item" *ngIf="edgeMap.chartValid">
           <a role="button" (click)="displayMapping(edgeMap.chart, [], 'ec' + index)">
