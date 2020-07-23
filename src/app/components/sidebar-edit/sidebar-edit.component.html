@@ -23,7 +23,7 @@
         <b>{{attribute}}</b>
       </a>
     </h5>
-    <canvas id="mappingsChart" baseChart [ngStyle]="{'width.%': 100, 'height.px': 300}"
+    <canvas id="mappingsChart" baseChart [ngStyle]="{'width.%': 100}"
             [chartType]="'line'"
             [legend]="true"
             [datasets]="lineChartData"
@@ -34,12 +34,14 @@
 
   <!-- color gradient for continuous mappings -->
   <div *ngIf="showColorGradient">
-    <h5><b>
-      {{lookup}}</b>
-      {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
-      <b>{{attribute}}</b>
+    <h5>
+      <a [routerLink]="['', {outlets: {primary: ['mappings', selectedNetwork.id, index]} }]" role="button">
+        <b>{{lookup}}</b>
+        {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
+        <b>{{attribute}}</b>
+      </a>
     </h5>
-    <div [style.width.%]="100" [style.height.px]="300" [style.background]="gradientBackground" class="mb-3">
+    <div [style.width.%]="100" [style.height.px]="200" [style.background]="gradientBackground" class="mb-3">
     </div>
   </div>
 

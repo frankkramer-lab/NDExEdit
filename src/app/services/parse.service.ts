@@ -1155,7 +1155,7 @@ export class ParseService {
       }
     }
 
-    const gradientObject = this.buildColorGradient(thresholds, lowers, equals, lookup, attribute);
+    const gradientObject = this.buildColorGradient(thresholds, lowers, equals, greaters, lookup, attribute);
     const chartObject = this.buildChartData(thresholds, lowers, equals, greaters, lookup, attribute);
 
     continuousCollection.values = buildClasses;
@@ -1168,7 +1168,7 @@ export class ParseService {
     return continuousCollection;
   }
 
-  private buildColorGradient(thresholds: string[], lowers: string[], equals: string[], lookup: string[], attribute: string): NeColorGradient[] {
+  private buildColorGradient(thresholds: string[], lowers: string[], equals: string[], greaters: string[], lookup: string[], attribute: string): NeColorGradient[] {
     if (!lowers[0].startsWith('#')) {
       return [];
     }
@@ -1177,15 +1177,28 @@ export class ParseService {
     if (range === 0) {
       return [];
     }
+    colorGradientCollection.push({
+      color: lowers[0],
+      offset: '-1',
+      numericThreshold: '-1',
+      title: lookup.concat([attribute])
+    });
     for (const th of thresholds) {
       const offset = ((Number(th) - Number(thresholds[0])) * 100 / range).toFixed(0);
       const gradient: NeColorGradient = {
         color: equals[thresholds.indexOf(th)],
         offset: String(offset).concat('%'),
+        numericThreshold: th,
         title: lookup.concat([attribute])
       };
       colorGradientCollection.push(gradient);
     }
+    colorGradientCollection.push({
+      color: greaters[greaters.length - 1],
+      offset: '101',
+      numericThreshold: '101',
+      title: lookup.concat([attribute])
+    });
     return colorGradientCollection;
   }
 

@@ -103,7 +103,9 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
       const tmp = [];
 
       for (const gradient of colorGradient) {
-        tmp.push(gradient.color.concat(' '.concat(gradient.offset)));
+        if (gradient.offset !== '-1' && gradient.offset !== '101') {
+          tmp.push(gradient.color.concat(' '.concat(gradient.offset)));
+        }
       }
 
       color = color.concat(tmp.join(', '));
