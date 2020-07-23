@@ -216,8 +216,82 @@
     ]
   },
   {
-    "ndex": ["EDGE_SELECTED_PAINT"],
-    "cytoscape": ["line-color"],
+    "ndex": [
+      "EDGE_SELECTED_PAINT"
+    ],
+    "cytoscape": [
+      "line-color"
+    ],
     "selector": ":selected"
+  },
+  {
+    "ndex": [
+      "EDGE_SOURCE_ARROW_SHAPE"
+    ],
+    "cytoscape": [
+      "source-arrow-shape"
+    ],
+    "conversionType": "split",
+    "splitRules": {
+      "splitAt": "%",
+      "evalIndex": [
+        "0"
+      ]
+    },
+    "matchRules": {
+      "ARROW": [
+        "triangle"
+      ],
+      "NONE": [
+        "none"
+      ]
+    }
+  },
+  {
+    "ndex": [
+      "EDGE_TARGET_ARROW_SHAPE"
+    ],
+    "cytoscape": [
+      "target-arrow-shape"
+    ],
+    "conversionType": "split",
+    "splitRules": {
+      "splitAt": "%",
+      "evalIndex": [
+        "0"
+      ]
+    },
+    "matchRules": {
+      "ARROW": [
+        "triangle"
+      ],
+      "NONE": [
+        "none"
+      ]
+    }
+  },
+  {
+    "ndex": ["EDGE_TARGET_ARROW_UNSELECTED_PAINT"],
+    "cytoscape": ["target-arrow-color"]
+  },
+  {
+    "ndex": ["EDGE_SOURCE_ARROW_UNSELECTED_PAINT"],
+    "cytoscape": ["source-arrow-color"]
+  },
+  {
+    "ndex": ["EDGE_CURVED"],
+    "cytoscape": ["curve-style"],
+    "conversionType": "split",
+    "splitRules": {
+      "splitAt": "%",
+      "evalIndex": [
+        "0"
+      ]
+    },
+    "matchRules": {
+      "true": [
+        "bezier"
+      ]
+    }
   }
 ]

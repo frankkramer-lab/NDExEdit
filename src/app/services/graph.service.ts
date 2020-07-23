@@ -58,7 +58,9 @@ export class GraphService {
       if (style.selector === '.custom_highlight_color') {
         style.style = {
           'background-color': hexColorNodes,
-          'line-color': hexColorEdges
+          'line-color': hexColorEdges,
+          'target-arrow-color': hexColorEdges,
+          'source-arrow-color': hexColorEdges
         };
       }
     }

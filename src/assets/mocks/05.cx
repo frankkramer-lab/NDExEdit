@@ -1,0 +1,2638 @@
+[
+  {
+    "numberVerification": [
+      {
+        "longNumber": 281474976710655
+      }
+    ]
+  },
+  {
+    "metaData": [
+      {
+        "consistencyGroup": 1,
+        "elementCount": 1,
+        "lastUpdate": 1499377428256,
+        "name": "ndexStatus",
+        "properties": [],
+        "version": "1.0"
+      },
+      {
+        "consistencyGroup": 1,
+        "elementCount": 1,
+        "lastUpdate": 1499377428270,
+        "name": "provenanceHistory",
+        "properties": [],
+        "version": "1.0"
+      },
+      {
+        "consistencyGroup": 1,
+        "elementCount": 1,
+        "name": "@context",
+        "properties": [],
+        "version": "1.0"
+      },
+      {
+        "consistencyGroup": 1,
+        "elementCount": 49,
+        "idCounter": 49,
+        "name": "nodes",
+        "properties": [],
+        "version": "1.0"
+      },
+      {
+        "consistencyGroup": 1,
+        "elementCount": 98,
+        "idCounter": 98,
+        "name": "edges",
+        "properties": [],
+        "version": "1.0"
+      },
+      {
+        "consistencyGroup": 1,
+        "elementCount": 4,
+        "name": "networkAttributes",
+        "properties": [],
+        "version": "1.0"
+      },
+      {
+        "consistencyGroup": 1,
+        "elementCount": 98,
+        "name": "nodeAttributes",
+        "properties": [],
+        "version": "1.0"
+      },
+      {
+        "consistencyGroup": 1,
+        "elementCount": 72,
+        "name": "edgeAttributes",
+        "properties": [],
+        "version": "1.0"
+      },
+      {
+        "consistencyGroup": 1,
+        "elementCount": 49,
+        "name": "cartesianLayout",
+        "properties": [],
+        "version": "1.0"
+      },
+      {
+        "consistencyGroup": 1,
+        "elementCount": 3,
+        "name": "cyVisualProperties",
+        "properties": []
+      }
+    ]
+  },
+  {
+    "ndexStatus": [
+      {
+        "externalId": "f4fdf675-03e0-11e5-ac0f-000c29cb28fb",
+        "creationTime": 1432670042251,
+        "modificationTime": 1499377428256,
+        "visibility": "PUBLIC",
+        "published": false,
+        "nodeCount": 49,
+        "edgeCount": 98,
+        "owner": "lipidmaps",
+        "ndexServerURI": "http://public.ndexbio.org",
+        "readOnly": false
+      }
+    ]
+  },
+  {
+    "provenanceHistory": [
+      {
+        "entity": {
+          "uri": "http://public.ndexbio.org/v2/network/f4fdf675-03e0-11e5-ac0f-000c29cb28fb/summary",
+          "creationEvent": {
+            "inputs": [
+              {
+                "uri": "http://public.ndexbio.org/v2/network/f4fdf675-03e0-11e5-ac0f-000c29cb28fb/summary",
+                "creationEvent": {
+                  "inputs": [
+                    {
+                      "uri": "http://public.ndexbio.org/v2/network/f4fdf675-03e0-11e5-ac0f-000c29cb28fb/summary",
+                      "creationEvent": {
+                        "inputs": [
+                          {
+                            "uri": "http://www.ndexbio.org/network/f4fdf675-03e0-11e5-ac0f-000c29cb28fb",
+                            "creationEvent": {
+                              "inputs": [
+                                {
+                                  "uri": "http://www.ndexbio.org/network/f4fdf675-03e0-11e5-ac0f-000c29cb28fb",
+                                  "creationEvent": {
+                                    "inputs": null,
+                                    "startedAtTime": 1432670042251,
+                                    "endedAtTime": 1432670042251,
+                                    "eventType": "File Upload",
+                                    "properties": [
+                                      {
+                                        "name": "user",
+                                        "value": "LIPID MAPS"
+                                      },
+                                      {
+                                        "name": "account name",
+                                        "value": "lipidmaps"
+                                      },
+                                      {
+                                        "name": "filename",
+                                        "value": "lipidmaps/Biosynthesis of sterols.owl"
+                                      }
+                                    ]
+                                  },
+                                  "properties": [
+                                    {
+                                      "name": "edge count",
+                                      "value": "382"
+                                    },
+                                    {
+                                      "name": "node count",
+                                      "value": "267"
+                                    },
+                                    {
+                                      "name": "dc:title",
+                                      "value": "Biosynthesis of sterols"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "startedAtTime": 1432670722592,
+                              "endedAtTime": 1432670722592,
+                              "eventType": "Update Network Profile",
+                              "properties": [
+                                {
+                                  "name": "user",
+                                  "value": "LIPID MAPS"
+                                },
+                                {
+                                  "name": "account name",
+                                  "value": "lipidmaps"
+                                }
+                              ]
+                            },
+                            "properties": [
+                              {
+                                "name": "edge count",
+                                "value": "382"
+                              },
+                              {
+                                "name": "node count",
+                                "value": "267"
+                              },
+                              {
+                                "name": "dc:title",
+                                "value": "Biosynthesis of sterols"
+                              },
+                              {
+                                "name": "description",
+                                "value": ""
+                              }
+                            ]
+                          }
+                        ],
+                        "startedAtTime": 1499376226758,
+                        "endedAtTime": 1499376226758,
+                        "eventType": "CX network update",
+                        "properties": [
+                          {
+                            "name": "user",
+                            "value": "LIPID MAPS Database"
+                          },
+                          {
+                            "name": "user name",
+                            "value": "lipidmaps"
+                          }
+                        ]
+                      },
+                      "properties": [
+                        {
+                          "name": "edge count",
+                          "value": "98"
+                        },
+                        {
+                          "name": "node count",
+                          "value": "49"
+                        },
+                        {
+                          "name": "dc:title",
+                          "value": "Biosynthesis of sterols"
+                        }
+                      ]
+                    }
+                  ],
+                  "startedAtTime": 1499376401223,
+                  "endedAtTime": 1499376401223,
+                  "eventType": "CX network update",
+                  "properties": [
+                    {
+                      "name": "user",
+                      "value": "LIPID MAPS Database"
+                    },
+                    {
+                      "name": "user name",
+                      "value": "lipidmaps"
+                    }
+                  ]
+                },
+                "properties": [
+                  {
+                    "name": "edge count",
+                    "value": "98"
+                  },
+                  {
+                    "name": "node count",
+                    "value": "49"
+                  },
+                  {
+                    "name": "dc:title",
+                    "value": "Biosynthesis of sterols"
+                  }
+                ]
+              }
+            ],
+            "startedAtTime": 1499377428257,
+            "endedAtTime": 1499377428257,
+            "eventType": "CX network update",
+            "properties": [
+              {
+                "name": "user",
+                "value": "LIPID MAPS Database"
+              },
+              {
+                "name": "user name",
+                "value": "lipidmaps"
+              }
+            ]
+          },
+          "properties": [
+            {
+              "name": "edge count",
+              "value": "98"
+            },
+            {
+              "name": "node count",
+              "value": "49"
+            },
+            {
+              "name": "dc:title",
+              "value": "Biosynthesis of sterols"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "@context": [
+      {
+        "cas": "http://identifiers.org/cas/",
+        "Mouse Genome Database": "http://www.informatics.jax.org/accession/",
+        "HPRD": "http://identifiers.org/hprd/",
+        "pmid": "https://www.ncbi.nlm.nih.gov/pubmed/",
+        "KEGG Compound": "http://identifiers.org/kegg.compound/",
+        "KEGG Pathway": "http://identifiers.org/kegg.pathway/",
+        "LIPID MAPS": "http://www.lipidmaps.org/data/LMSDRecord.php?LMID="
+      }
+    ]
+  },
+  {
+    "nodes": [
+      {
+        "@id": 1,
+        "n": "Ch25h"
+      },
+      {
+        "@id": 2,
+        "n": "Zymosterol"
+      },
+      {
+        "@id": 3,
+        "n": "14-demethyl-lanosterol"
+      },
+      {
+        "@id": 4,
+        "n": "Cyp51/Tm7sf2"
+      },
+      {
+        "@id": 5,
+        "n": "Dimethylallyl-PP"
+      },
+      {
+        "@id": 6,
+        "n": "Soat1/Soat2"
+      },
+      {
+        "@id": 7,
+        "n": "Fdft1"
+      },
+      {
+        "@id": 8,
+        "n": "7-oxo-cholesterol"
+      },
+      {
+        "@id": 9,
+        "n": "Hmgcs1"
+      },
+      {
+        "@id": 10,
+        "n": "Sc5d"
+      },
+      {
+        "@id": 11,
+        "n": "25-hydroxy-cholesterol"
+      },
+      {
+        "@id": 12,
+        "n": "Squalene"
+      },
+      {
+        "@id": 13,
+        "n": "Cholestadienol"
+      },
+      {
+        "@id": 14,
+        "n": "7alpha-hydroxy-cholestero"
+      },
+      {
+        "@id": 15,
+        "n": "Hsd17b7/Nsdhl/Sc4mol"
+      },
+      {
+        "@id": 16,
+        "n": "Lathosterol"
+      },
+      {
+        "@id": 17,
+        "n": "Lss"
+      },
+      {
+        "@id": 18,
+        "n": "Cholesterol esters"
+      },
+      {
+        "@id": 19,
+        "n": "Pmvk"
+      },
+      {
+        "@id": 20,
+        "n": "Mvd"
+      },
+      {
+        "@id": 21,
+        "n": "SQUALENE-2"
+      },
+      {
+        "@id": 22,
+        "n": "7-dehydro-cholesterol"
+      },
+      {
+        "@id": 23,
+        "n": "Idi1"
+      },
+      {
+        "@id": 24,
+        "n": "Mvk"
+      },
+      {
+        "@id": 25,
+        "n": "Desmosterol"
+      },
+      {
+        "@id": 26,
+        "n": "4beta-hydroxy-cholesterol"
+      },
+      {
+        "@id": 27,
+        "n": "Geranyl-PP"
+      },
+      {
+        "@id": 28,
+        "n": "Sqle"
+      },
+      {
+        "@id": 29,
+        "n": "Farnesyl-PP"
+      },
+      {
+        "@id": 30,
+        "n": "Ebp"
+      },
+      {
+        "@id": 31,
+        "n": "Mevalonic acid"
+      },
+      {
+        "@id": 32,
+        "n": "Mevalonate-5-P"
+      },
+      {
+        "@id": 33,
+        "n": "24"
+      },
+      {
+        "@id": 34,
+        "n": "Acetoacetyl-CoA"
+      },
+      {
+        "@id": 35,
+        "n": "Lanosterol"
+      },
+      {
+        "@id": 36,
+        "n": "Dhcr24"
+      },
+      {
+        "@id": 37,
+        "n": "Diepoxy-squalene"
+      },
+      {
+        "@id": 38,
+        "n": "HMG-CoA"
+      },
+      {
+        "@id": 39,
+        "n": "Acetyl-CoA"
+      },
+      {
+        "@id": 40,
+        "n": "Dhcr7"
+      },
+      {
+        "@id": 41,
+        "n": "27-hydroxy-cholesterol"
+      },
+      {
+        "@id": 42,
+        "n": "Fdps/Ggps1"
+      },
+      {
+        "@id": 43,
+        "n": "Cholesterol"
+      },
+      {
+        "@id": 44,
+        "n": "Ggps1/Fdps"
+      },
+      {
+        "@id": 45,
+        "n": "Isopentenyl-PP"
+      },
+      {
+        "@id": 46,
+        "n": "Cholestenone"
+      },
+      {
+        "@id": 47,
+        "n": "Hmgcr"
+      },
+      {
+        "@id": 48,
+        "n": "7-dehydro-desmosterol"
+      },
+      {
+        "@id": 49,
+        "n": "Mevalonate-5-PP"
+      }
+    ]
+  },
+  {
+    "edges": [
+      {
+        "@id": 12,
+        "s": 1,
+        "t": 11,
+        "i": "controls-production-of"
+      },
+      {
+        "@id": 97,
+        "s": 2,
+        "t": 13,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 98,
+        "s": 2,
+        "t": 30,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 2,
+        "s": 3,
+        "t": 2,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 1,
+        "s": 3,
+        "t": 15,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 23,
+        "s": 4,
+        "t": 3,
+        "i": "controls-production-of"
+      },
+      {
+        "@id": 24,
+        "s": 4,
+        "t": 15,
+        "i": "catalysis-precedes"
+      },
+      {
+        "@id": 34,
+        "s": 5,
+        "t": 27,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 35,
+        "s": 5,
+        "t": 44,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 36,
+        "s": 5,
+        "t": 45,
+        "i": "reacts-with"
+      },
+      {
+        "@id": 87,
+        "s": 6,
+        "t": 18,
+        "i": "controls-production-of"
+      },
+      {
+        "@id": 41,
+        "s": 7,
+        "t": 12,
+        "i": "controls-production-of"
+      },
+      {
+        "@id": 40,
+        "s": 7,
+        "t": 28,
+        "i": "catalysis-precedes"
+      },
+      {
+        "@id": 53,
+        "s": 9,
+        "t": 38,
+        "i": "controls-production-of"
+      },
+      {
+        "@id": 54,
+        "s": 9,
+        "t": 47,
+        "i": "catalysis-precedes"
+      },
+      {
+        "@id": 86,
+        "s": 10,
+        "t": 40,
+        "i": "catalysis-precedes"
+      },
+      {
+        "@id": 85,
+        "s": 10,
+        "t": 22,
+        "i": "controls-production-of"
+      },
+      {
+        "@id": 95,
+        "s": 12,
+        "t": 28,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 96,
+        "s": 12,
+        "t": 21,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 13,
+        "s": 13,
+        "t": 48,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 14,
+        "s": 13,
+        "t": 16,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 6,
+        "s": 14,
+        "t": 8,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 56,
+        "s": 15,
+        "t": 2,
+        "i": "controls-production-of"
+      },
+      {
+        "@id": 55,
+        "s": 15,
+        "t": 30,
+        "i": "catalysis-precedes"
+      },
+      {
+        "@id": 68,
+        "s": 16,
+        "t": 10,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 67,
+        "s": 16,
+        "t": 22,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 70,
+        "s": 17,
+        "t": 35,
+        "i": "controls-production-of"
+      },
+      {
+        "@id": 69,
+        "s": 17,
+        "t": 4,
+        "i": "catalysis-precedes"
+      },
+      {
+        "@id": 83,
+        "s": 19,
+        "t": 49,
+        "i": "controls-production-of"
+      },
+      {
+        "@id": 84,
+        "s": 19,
+        "t": 20,
+        "i": "catalysis-precedes"
+      },
+      {
+        "@id": 77,
+        "s": 20,
+        "t": 42,
+        "i": "catalysis-precedes"
+      },
+      {
+        "@id": 78,
+        "s": 20,
+        "t": 44,
+        "i": "catalysis-precedes"
+      },
+      {
+        "@id": 80,
+        "s": 20,
+        "t": 45,
+        "i": "controls-production-of"
+      },
+      {
+        "@id": 79,
+        "s": 20,
+        "t": 23,
+        "i": "catalysis-precedes"
+      },
+      {
+        "@id": 93,
+        "s": 21,
+        "t": 17,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 92,
+        "s": 21,
+        "t": 35,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 94,
+        "s": 21,
+        "t": 28,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 91,
+        "s": 21,
+        "t": 37,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 4,
+        "s": 22,
+        "t": 40,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 3,
+        "s": 22,
+        "t": 43,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 58,
+        "s": 23,
+        "t": 44,
+        "i": "catalysis-precedes"
+      },
+      {
+        "@id": 57,
+        "s": 23,
+        "t": 5,
+        "i": "controls-production-of"
+      },
+      {
+        "@id": 81,
+        "s": 24,
+        "t": 32,
+        "i": "controls-production-of"
+      },
+      {
+        "@id": 82,
+        "s": 24,
+        "t": 19,
+        "i": "catalysis-precedes"
+      },
+      {
+        "@id": 25,
+        "s": 25,
+        "t": 43,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 26,
+        "s": 25,
+        "t": 36,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 45,
+        "s": 27,
+        "t": 42,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 44,
+        "s": 27,
+        "t": 29,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 46,
+        "s": 27,
+        "t": 45,
+        "i": "reacts-with"
+      },
+      {
+        "@id": 89,
+        "s": 28,
+        "t": 17,
+        "i": "catalysis-precedes"
+      },
+      {
+        "@id": 88,
+        "s": 28,
+        "t": 37,
+        "i": "controls-production-of"
+      },
+      {
+        "@id": 90,
+        "s": 28,
+        "t": 21,
+        "i": "controls-production-of"
+      },
+      {
+        "@id": 39,
+        "s": 29,
+        "t": 12,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 38,
+        "s": 29,
+        "t": 7,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 37,
+        "s": 30,
+        "t": 13,
+        "i": "controls-production-of"
+      },
+      {
+        "@id": 75,
+        "s": 31,
+        "t": 32,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 76,
+        "s": 31,
+        "t": 24,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 71,
+        "s": 32,
+        "t": 49,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 74,
+        "s": 32,
+        "t": 19,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 9,
+        "s": 34,
+        "t": 9,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 8,
+        "s": 34,
+        "t": 38,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 7,
+        "s": 34,
+        "t": 39,
+        "i": "reacts-with"
+      },
+      {
+        "@id": 65,
+        "s": 35,
+        "t": 3,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 66,
+        "s": 35,
+        "t": 4,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 27,
+        "s": 36,
+        "t": 1,
+        "i": "catalysis-precedes"
+      },
+      {
+        "@id": 28,
+        "s": 36,
+        "t": 43,
+        "i": "controls-production-of"
+      },
+      {
+        "@id": 29,
+        "s": 36,
+        "t": 6,
+        "i": "catalysis-precedes"
+      },
+      {
+        "@id": 33,
+        "s": 37,
+        "t": 33,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 50,
+        "s": 38,
+        "t": 31,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 49,
+        "s": 38,
+        "t": 47,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 11,
+        "s": 39,
+        "t": 9,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 10,
+        "s": 39,
+        "t": 38,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 30,
+        "s": 40,
+        "t": 1,
+        "i": "catalysis-precedes"
+      },
+      {
+        "@id": 31,
+        "s": 40,
+        "t": 43,
+        "i": "controls-production-of"
+      },
+      {
+        "@id": 32,
+        "s": 40,
+        "t": 6,
+        "i": "catalysis-precedes"
+      },
+      {
+        "@id": 42,
+        "s": 42,
+        "t": 29,
+        "i": "controls-production-of"
+      },
+      {
+        "@id": 43,
+        "s": 42,
+        "t": 7,
+        "i": "catalysis-precedes"
+      },
+      {
+        "@id": 19,
+        "s": 43,
+        "t": 1,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 22,
+        "s": 43,
+        "t": 6,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 16,
+        "s": 43,
+        "t": 41,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 15,
+        "s": 43,
+        "t": 11,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 20,
+        "s": 43,
+        "t": 46,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 21,
+        "s": 43,
+        "t": 18,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 18,
+        "s": 43,
+        "t": 14,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 17,
+        "s": 43,
+        "t": 26,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 47,
+        "s": 44,
+        "t": 42,
+        "i": "catalysis-precedes"
+      },
+      {
+        "@id": 48,
+        "s": 44,
+        "t": 27,
+        "i": "controls-production-of"
+      },
+      {
+        "@id": 59,
+        "s": 45,
+        "t": 5,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 61,
+        "s": 45,
+        "t": 42,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 63,
+        "s": 45,
+        "t": 44,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 64,
+        "s": 45,
+        "t": 23,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 62,
+        "s": 45,
+        "t": 27,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 60,
+        "s": 45,
+        "t": 29,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 52,
+        "s": 47,
+        "t": 24,
+        "i": "catalysis-precedes"
+      },
+      {
+        "@id": 51,
+        "s": 47,
+        "t": 31,
+        "i": "controls-production-of"
+      },
+      {
+        "@id": 5,
+        "s": 48,
+        "t": 25,
+        "i": "used-to-produce"
+      },
+      {
+        "@id": 73,
+        "s": 49,
+        "t": 20,
+        "i": "consumption-controlled-by"
+      },
+      {
+        "@id": 72,
+        "s": 49,
+        "t": 45,
+        "i": "used-to-produce"
+      }
+    ]
+  },
+  {
+    "networkAttributes": [
+      {
+        "n": "version",
+        "v": ""
+      },
+      {
+        "n": "name",
+        "v": "Biosynthesis of sterols"
+      },
+      {
+        "n": "reference",
+        "v": ""
+      },
+      {
+        "n": "description",
+        "v": ""
+      }
+    ]
+  },
+  {
+    "nodeAttributes": [
+      {
+        "po": 1,
+        "n": "alias",
+        "v": [
+          "Mouse Genome Database:MGI:1333869"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 1,
+        "n": "type",
+        "v": "Protein"
+      },
+      {
+        "po": 2,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C05437",
+          "LIPID MAPS:LMST01010066"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 2,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 3,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C05108",
+          "LIPID MAPS:LMST01010176"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 3,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 4,
+        "n": "alias",
+        "v": [
+          "Mouse Genome Database:MGI:106040",
+          "Mouse Genome Database:MGI:1920416"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 4,
+        "n": "type",
+        "v": "Protein"
+      },
+      {
+        "po": 5,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C00235",
+          "LIPID MAPS:LMPR01010001"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 5,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 6,
+        "n": "alias",
+        "v": [
+          "Mouse Genome Database:MGI:104665",
+          "Mouse Genome Database:MGI:1332226"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 6,
+        "n": "type",
+        "v": "Protein"
+      },
+      {
+        "po": 7,
+        "n": "alias",
+        "v": [
+          "Mouse Genome Database:MGI:102706"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 7,
+        "n": "type",
+        "v": "Protein"
+      },
+      {
+        "po": 8,
+        "n": "alias",
+        "v": [
+          "LIPID MAPS:LMST01010049"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 8,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 9,
+        "n": "alias",
+        "v": [
+          "Mouse Genome Database:MGI:107592"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 9,
+        "n": "type",
+        "v": "Protein"
+      },
+      {
+        "po": 10,
+        "n": "alias",
+        "v": [
+          "Mouse Genome Database:MGI:1353611"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 10,
+        "n": "type",
+        "v": "Protein"
+      },
+      {
+        "po": 11,
+        "n": "alias",
+        "v": [
+          "LIPID MAPS:LMST01010018"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 11,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 12,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C00751",
+          "LIPID MAPS:LMPR0106010002"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 12,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 13,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C05439",
+          "LIPID MAPS:LMST01010206"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 13,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 14,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C03594",
+          "LIPID MAPS:LMST01010013"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 14,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 15,
+        "n": "alias",
+        "v": [
+          "Mouse Genome Database:MGI:1099438",
+          "Mouse Genome Database:MGI:1330808",
+          "Mouse Genome Database:MGI:1913484"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 15,
+        "n": "type",
+        "v": "Protein"
+      },
+      {
+        "po": 16,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C01189",
+          "LIPID MAPS:LMST01010089"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 16,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 17,
+        "n": "alias",
+        "v": [
+          "Mouse Genome Database:MGI:1336155"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 17,
+        "n": "type",
+        "v": "Protein"
+      },
+      {
+        "po": 18,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C01982"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 18,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 19,
+        "n": "alias",
+        "v": [
+          "Mouse Genome Database:MGI:1915853"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 19,
+        "n": "type",
+        "v": "Protein"
+      },
+      {
+        "po": 20,
+        "n": "alias",
+        "v": [
+          "Mouse Genome Database:MGI:2179327"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 20,
+        "n": "type",
+        "v": "Protein"
+      },
+      {
+        "po": 21,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C01054",
+          "LIPID MAPS:LMPR0106010010"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 21,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 22,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C01017"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 22,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 23,
+        "n": "alias",
+        "v": [
+          "Mouse Genome Database:MGI:2442264"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 23,
+        "n": "type",
+        "v": "Protein"
+      },
+      {
+        "po": 24,
+        "n": "alias",
+        "v": [
+          "Mouse Genome Database:MGI:107624"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 24,
+        "n": "type",
+        "v": "Protein"
+      },
+      {
+        "po": 25,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C01802",
+          "LIPID MAPS:LMST01010016",
+          "LIPID MAPS:LMST01010090"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 25,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 26,
+        "n": "alias",
+        "v": [
+          "LIPID MAPS:LMST01010014"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 26,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 27,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C00341",
+          "LIPID MAPS:LMPR0102010001"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 27,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 28,
+        "n": "alias",
+        "v": [
+          "Mouse Genome Database:MGI:109296"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 28,
+        "n": "type",
+        "v": "Protein"
+      },
+      {
+        "po": 29,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C00448",
+          "LIPID MAPS:LMPR0103010002"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 29,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 30,
+        "n": "alias",
+        "v": [
+          "Mouse Genome Database:MGI:107822"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 30,
+        "n": "type",
+        "v": "Protein"
+      },
+      {
+        "po": 31,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C00418",
+          "LIPID MAPS:LMFA01050352"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 31,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 32,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C01107"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 32,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 33,
+        "n": "alias",
+        "v": [
+          "LIPID MAPS:LMST01010012"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 33,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 34,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C00356"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 34,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 35,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C01724",
+          "LIPID MAPS:LMST01010017"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 35,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 36,
+        "n": "alias",
+        "v": [
+          "Mouse Genome Database:MGI:1922004"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 36,
+        "n": "type",
+        "v": "Protein"
+      },
+      {
+        "po": 37,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C00921"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 37,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 38,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C00356"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 38,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 39,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C00154",
+          "LIPID MAPS:LMFA07050002"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 39,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 40,
+        "n": "alias",
+        "v": [
+          "Mouse Genome Database:MGI:1298378"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 40,
+        "n": "type",
+        "v": "Protein"
+      },
+      {
+        "po": 41,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C06340",
+          "LIPID MAPS:LMST01010057"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 41,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 42,
+        "n": "alias",
+        "v": [
+          "Mouse Genome Database:MGI:104888",
+          "Mouse Genome Database:MGI:1341724"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 42,
+        "n": "type",
+        "v": "Protein"
+      },
+      {
+        "po": 43,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C00187",
+          "LIPID MAPS:LMST01010001",
+          "LIPID MAPS:LMST01010081",
+          "LIPID MAPS:LMST01010093"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 43,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 44,
+        "n": "alias",
+        "v": [
+          "Mouse Genome Database:MGI:104888",
+          "Mouse Genome Database:MGI:1341724"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 44,
+        "n": "type",
+        "v": "Protein"
+      },
+      {
+        "po": 45,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C00129",
+          "LIPID MAPS:LMPR01010008"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 45,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 46,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C00599",
+          "LIPID MAPS:LMST01010015"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 46,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 47,
+        "n": "alias",
+        "v": [
+          "Mouse Genome Database:MGI:96159"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 47,
+        "n": "type",
+        "v": "Protein"
+      },
+      {
+        "po": 48,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C05107",
+          "LIPID MAPS:LMST01010121"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 48,
+        "n": "type",
+        "v": "SmallMolecule"
+      },
+      {
+        "po": 49,
+        "n": "alias",
+        "v": [
+          "KEGG Compound:C01143"
+        ],
+        "d": "list_of_string"
+      },
+      {
+        "po": 49,
+        "n": "type",
+        "v": "SmallMolecule"
+      }
+    ]
+  },
+  {
+    "edgeAttributes": [
+      {
+        "po": 12,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 97,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 2,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 23,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 24,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 34,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 87,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 41,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 40,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 53,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 54,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 86,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 85,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 96,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 13,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 14,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 6,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 56,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 55,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 67,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 70,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 69,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 83,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 84,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 77,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 78,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 80,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 79,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 92,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 91,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 3,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 58,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 57,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 81,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 82,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 25,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 44,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 89,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 88,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 90,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 39,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 37,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 75,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 71,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 8,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 65,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 27,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 28,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 29,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 33,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 50,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 10,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 30,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 31,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 32,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 42,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 43,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 16,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 15,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 20,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 21,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 18,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 17,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 47,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 48,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 59,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 62,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 60,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 52,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 51,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 5,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      },
+      {
+        "po": 72,
+        "n": "directed",
+        "v": "true",
+        "d": "boolean"
+      }
+    ]
+  },
+  {
+    "cartesianLayout": [
+      {
+        "node": 1,
+        "x": 1025.95347124284,
+        "y": 260.99384512616876
+      },
+      {
+        "node": 2,
+        "x": 349.36424145691143,
+        "y": 318.25517241893925
+      },
+      {
+        "node": 3,
+        "x": 146.86551812202384,
+        "y": 292.5388916196372
+      },
+      {
+        "node": 4,
+        "x": 40.97775181859353,
+        "y": 335.0896747439371
+      },
+      {
+        "node": 5,
+        "x": -950.4640044369605,
+        "y": 963.6888605152691
+      },
+      {
+        "node": 6,
+        "x": 976.8935213776535,
+        "y": 209.5629174981509
+      },
+      {
+        "node": 7,
+        "x": -436.63991553476205,
+        "y": 883.7669130900263
+      },
+      {
+        "node": 8,
+        "x": 865.2856154285366,
+        "y": 366.42277131676343
+      },
+      {
+        "node": 9,
+        "x": -373.90083239784417,
+        "y": 18.479720431668877
+      },
+      {
+        "node": 10,
+        "x": 553.6857435367185,
+        "y": 578.856259712217
+      },
+      {
+        "node": 11,
+        "x": 871.412733699208,
+        "y": 299.7015792510531
+      },
+      {
+        "node": 12,
+        "x": -304.40532920232647,
+        "y": 843.9285915014265
+      },
+      {
+        "node": 13,
+        "x": 566.7892273861377,
+        "y": 478.77067458528404
+      },
+      {
+        "node": 14,
+        "x": 1093.0377281616434,
+        "y": 397.8155091578893
+      },
+      {
+        "node": 15,
+        "x": 248.02513286424954,
+        "y": 216.391279491305
+      },
+      {
+        "node": 16,
+        "x": 678.3625908086008,
+        "y": 648.8241934529359
+      },
+      {
+        "node": 17,
+        "x": -98.18804001826769,
+        "y": 537.8632535329643
+      },
+      {
+        "node": 18,
+        "x": 821.3675837728649,
+        "y": 273.6728443270284
+      },
+      {
+        "node": 19,
+        "x": -783.8224689594624,
+        "y": 253.43864900186335
+      },
+      {
+        "node": 20,
+        "x": -879.7619404448315,
+        "y": 560.926010924751
+      },
+      {
+        "node": 21,
+        "x": -79.70298064405023,
+        "y": 662.4563823583568
+      },
+      {
+        "node": 22,
+        "x": 862.199004373969,
+        "y": 604.2136325174483
+      },
+      {
+        "node": 23,
+        "x": -949.2735672293406,
+        "y": 806.4258446512504
+      },
+      {
+        "node": 24,
+        "x": -709.8720302161684,
+        "y": -20.699082412067277
+      },
+      {
+        "node": 25,
+        "x": 865.3218541467367,
+        "y": 477.6390787712327
+      },
+      {
+        "node": 26,
+        "x": 767.230882837302,
+        "y": 376.7998430727502
+      },
+      {
+        "node": 27,
+        "x": -836.4359396233879,
+        "y": 1095.8340975265687
+      },
+      {
+        "node": 28,
+        "x": -147.16114701507206,
+        "y": 747.3224300613333
+      },
+      {
+        "node": 29,
+        "x": -539.3349018272618,
+        "y": 971.6193134467138
+      },
+      {
+        "node": 30,
+        "x": 429.69732916166464,
+        "y": 276.4087489629975
+      },
+      {
+        "node": 31,
+        "x": -724.0215083744282,
+        "y": -150.4918247205076
+      },
+      {
+        "node": 32,
+        "x": -732.8008322397104,
+        "y": 106.10932093388462
+      },
+      {
+        "node": 33,
+        "x": 504.5576750695878,
+        "y": 406.8943499470633
+      },
+      {
+        "node": 34,
+        "x": -228.55646333605654,
+        "y": 87.91369955411733
+      },
+      {
+        "node": 35,
+        "x": -12.721305255310893,
+        "y": 450.97699487250765
+      },
+      {
+        "node": 36,
+        "x": 710.0283041793458,
+        "y": 262.9593458678516
+      },
+      {
+        "node": 37,
+        "x": 151.88009463572095,
+        "y": 610.9232804740152
+      },
+      {
+        "node": 38,
+        "x": -532.1464611156126,
+        "y": -214.59273769793376
+      },
+      {
+        "node": 39,
+        "x": -306.1853954026823,
+        "y": 168.2393216159946
+      },
+      {
+        "node": 40,
+        "x": 1036.3216648364132,
+        "y": 431.46936915425994
+      },
+      {
+        "node": 41,
+        "x": 766.5621095400614,
+        "y": 327.80448361939716
+      },
+      {
+        "node": 42,
+        "x": -714.3660183135582,
+        "y": 926.5139243776991
+      },
+      {
+        "node": 43,
+        "x": 933.5344074351042,
+        "y": 374.59693156669226
+      },
+      {
+        "node": 44,
+        "x": -1060.0367838115344,
+        "y": 911.4923378296961
+      },
+      {
+        "node": 45,
+        "x": -878.7731803743376,
+        "y": 744.8411154390099
+      },
+      {
+        "node": 46,
+        "x": 715.9849238795747,
+        "y": 350.2073592401085
+      },
+      {
+        "node": 47,
+        "x": -575.3925353487431,
+        "y": -150.71019608662246
+      },
+      {
+        "node": 48,
+        "x": 751.861660667113,
+        "y": 570.9768121446746
+      },
+      {
+        "node": 49,
+        "x": -816.9877865002651,
+        "y": 412.5883090546956
+      }
+    ]
+  },
+  {
+    "cyVisualProperties": [
+      {
+        "properties_of": "network",
+        "properties": {
+          "NETWORK_DEPTH": "0.0",
+          "NETWORK_WIDTH": "550.0",
+          "NETWORK_EDGE_SELECTION": "true",
+          "NETWORK_BACKGROUND_PAINT": "#FFFFFF",
+          "NETWORK_CENTER_X_LOCATION": "0.0",
+          "NETWORK_HEIGHT": "400.0",
+          "NETWORK_CENTER_Z_LOCATION": "0.0",
+          "NETWORK_SCALE_FACTOR": "1.0",
+          "NETWORK_CENTER_Y_LOCATION": "0.0",
+          "NETWORK_NODE_SELECTION": "true",
+          "NETWORK_SIZE": "550.0"
+        }
+      },
+      {
+        "properties_of": "nodes:default",
+        "dependencies": {
+          "nodeCustomGraphicsSizeSync": "true",
+          "nodeSizeLocked": "false"
+        },
+        "properties": {
+          "NODE_FILL_COLOR": "#FFFFFF",
+          "NODE_NESTED_NETWORK_IMAGE_VISIBLE": "true",
+          "NODE_LABEL_TRANSPARENCY": "255",
+          "NODE_CUSTOMPAINT_1": "DefaultVisualizableVisualProperty(id=NODE_CUSTOMPAINT_1, name=Node Custom Paint 1)",
+          "NODE_BORDER_WIDTH": "2.0",
+          "NODE_CUSTOMPAINT_3": "DefaultVisualizableVisualProperty(id=NODE_CUSTOMPAINT_3, name=Node Custom Paint 3)",
+          "NODE_CUSTOMPAINT_2": "DefaultVisualizableVisualProperty(id=NODE_CUSTOMPAINT_2, name=Node Custom Paint 2)",
+          "NODE_CUSTOMPAINT_5": "DefaultVisualizableVisualProperty(id=NODE_CUSTOMPAINT_5, name=Node Custom Paint 5)",
+          "NODE_CUSTOMPAINT_4": "DefaultVisualizableVisualProperty(id=NODE_CUSTOMPAINT_4, name=Node Custom Paint 4)",
+          "NODE_CUSTOMPAINT_7": "DefaultVisualizableVisualProperty(id=NODE_CUSTOMPAINT_7, name=Node Custom Paint 7)",
+          "NODE_CUSTOMPAINT_6": "DefaultVisualizableVisualProperty(id=NODE_CUSTOMPAINT_6, name=Node Custom Paint 6)",
+          "NODE_CUSTOMPAINT_9": "DefaultVisualizableVisualProperty(id=NODE_CUSTOMPAINT_9, name=Node Custom Paint 9)",
+          "NODE_CUSTOMPAINT_8": "DefaultVisualizableVisualProperty(id=NODE_CUSTOMPAINT_8, name=Node Custom Paint 8)",
+          "NODE_CUSTOMGRAPHICS_2": "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],",
+          "COMPOUND_NODE_SHAPE": "ROUND_RECTANGLE",
+          "NODE_SELECTED": "false",
+          "NODE_CUSTOMGRAPHICS_POSITION_9": "C,C,c,0.00,0.00",
+          "NODE_SHAPE": "ELLIPSE",
+          "NODE_CUSTOMGRAPHICS_SIZE_9": "0.0",
+          "NODE_BORDER_TRANSPARENCY": "255",
+          "NODE_CUSTOMGRAPHICS_SIZE_8": "0.0",
+          "NODE_SIZE": "35.0",
+          "NODE_SELECTED_PAINT": "#FFFF00",
+          "NODE_CUSTOMGRAPHICS_SIZE_1": "0.0",
+          "NODE_CUSTOMGRAPHICS_SIZE_2": "0.0",
+          "NODE_CUSTOMGRAPHICS_SIZE_3": "0.0",
+          "NODE_CUSTOMGRAPHICS_SIZE_4": "0.0",
+          "NODE_CUSTOMGRAPHICS_SIZE_5": "0.0",
+          "NODE_CUSTOMGRAPHICS_SIZE_6": "0.0",
+          "NODE_CUSTOMGRAPHICS_SIZE_7": "0.0",
+          "COMPOUND_NODE_PADDING": "10.0",
+          "NODE_BORDER_PAINT": "#000000",
+          "NODE_LABEL_FONT_FACE": "SansSerif.plain,plain,12",
+          "NODE_CUSTOMGRAPHICS_POSITION_2": "C,C,c,0.00,0.00",
+          "NODE_CUSTOMGRAPHICS_POSITION_3": "C,C,c,0.00,0.00",
+          "NODE_CUSTOMGRAPHICS_POSITION_1": "C,C,c,0.00,0.00",
+          "NODE_LABEL_POSITION": "C,C,c,0.00,0.00",
+          "NODE_CUSTOMGRAPHICS_POSITION_7": "C,C,c,0.00,0.00",
+          "NODE_CUSTOMGRAPHICS_POSITION_4": "C,C,c,0.00,0.00",
+          "NODE_CUSTOMGRAPHICS_POSITION_5": "C,C,c,0.00,0.00",
+          "NODE_CUSTOMGRAPHICS_POSITION_8": "C,C,c,0.00,0.00",
+          "NODE_WIDTH": "60.0",
+          "NODE_X_LOCATION": "0.0",
+          "NODE_CUSTOMGRAPHICS_8": "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],",
+          "NODE_DEPTH": "0.0",
+          "NODE_LABEL_WIDTH": "200.0",
+          "NODE_LABEL_FONT_SIZE": "12",
+          "NODE_CUSTOMGRAPHICS_9": "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],",
+          "NODE_Y_LOCATION": "0.0",
+          "NODE_CUSTOMGRAPHICS_5": "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],",
+          "NODE_CUSTOMGRAPHICS_4": "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],",
+          "NODE_BORDER_STROKE": "SOLID",
+          "NODE_CUSTOMGRAPHICS_6": "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],",
+          "NODE_CUSTOMGRAPHICS_1": "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],",
+          "NODE_CUSTOMGRAPHICS_3": "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],",
+          "NODE_LABEL_COLOR": "#000000",
+          "NODE_HEIGHT": "40.0",
+          "NODE_Z_LOCATION": "0.0",
+          "NODE_PAINT": "#1E90FF",
+          "NODE_TRANSPARENCY": "255",
+          "NODE_CUSTOMGRAPHICS_POSITION_6": "C,C,c,0.00,0.00",
+          "NODE_CUSTOMGRAPHICS_7": "org.cytoscape.ding.customgraphics.NullCustomGraphics,0,[ Remove Graphics ],",
+          "NODE_VISIBLE": "true"
+        },
+        "mappings": {
+          "NODE_LABEL": {
+            "definition": "COL=name,T=string",
+            "type": "PASSTHROUGH"
+          },
+          "NODE_FILL_COLOR": {
+            "definition": "COL=type,T=string,K=0=SmallMolecule,V=0=#FFCC66,K=1=Protein,V=1=#C6F2F1",
+            "type": "DISCRETE"
+          },
+          "NODE_SHAPE": {
+            "definition": "COL=type,T=string,K=0=SmallMolecule,V=0=DIAMOND,K=1=Protein,V=1=ELLIPSE",
+            "type": "DISCRETE"
+          },
+          "NODE_BORDER_STROKE": {
+            "definition": "COL=type,T=string,K=0=SmallMolecule,V=0=EQUAL_DASH,K=1=Protein,V=1=PARALLEL_LINES",
+            "type": "DISCRETE"
+          },
+          "NODE_HEIGHT": {
+            "definition": "COL=type,T=string,K=0=SmallMolecule,V=0=50.0,K=1=Protein,V=1=40.0",
+            "type": "DISCRETE"
+          },
+          "NODE_LABEL_FONT_SIZE": {
+            "definition": "COL=type,T=string,K=0=Protein,V=0=16",
+            "type": "DISCRETE"
+          },
+          "NODE_WIDTH": {
+            "definition": "COL=type,T=string,K=0=SmallMolecule,V=0=120.0,K=1=Protein,V=1=160.0",
+            "type": "DISCRETE"
+          }
+        }
+      },
+      {
+        "properties_of": "edges:default",
+        "dependencies": {
+          "arrowColorMatchesEdge": "true"
+        },
+        "properties": {
+          "EDGE_PAINT": "#323232",
+          "EDGE_TARGET_ARROW_UNSELECTED_PAINT": "#000000",
+          "EDGE_CURVED": "true",
+          "EDGE_TARGET_ARROW_SELECTED_PAINT": "#FFFF00",
+          "EDGE_STROKE_SELECTED_PAINT": "#FFFF00",
+          "EDGE_LABEL_FONT_FACE": "SansSerif.plain,plain,10",
+          "EDGE_LINE_TYPE": "SOLID",
+          "EDGE_TARGET_ARROW_SHAPE": "NONE",
+          "EDGE_LABEL_COLOR": "#000000",
+          "EDGE_SELECTED": "false",
+          "EDGE_SELECTED_PAINT": "#FFFF00",
+          "EDGE_VISIBLE": "true",
+          "EDGE_LABEL_FONT_SIZE": "10",
+          "EDGE_SOURCE_ARROW_SHAPE": "NONE",
+          "EDGE_WIDTH": "2.5",
+          "EDGE_STROKE_UNSELECTED_PAINT": "#000000",
+          "EDGE_LABEL_TRANSPARENCY": "255",
+          "EDGE_LABEL_WIDTH": "200.0",
+          "EDGE_UNSELECTED_PAINT": "#000000",
+          "EDGE_SOURCE_ARROW_UNSELECTED_PAINT": "#000000",
+          "EDGE_TRANSPARENCY": "255",
+          "EDGE_SOURCE_ARROW_SELECTED_PAINT": "#FFFF00"
+        },
+        "mappings": {
+          "EDGE_UNSELECTED_PAINT": {
+            "definition": "COL=shared interaction,T=string,K=0=consumption-controlled-by,V=0=#FF0033,K=1=used-to-produce,V=1=#0066FF,K=2=controls-production-of,V=2=#00CC00,K=3=reacts-with,V=3=#00CC99,K=4=catalysis-precedes,V=4=#990099,K=5=neighbor-of,V=5=#666666",
+            "type": "DISCRETE"
+          },
+          "EDGE_TARGET_ARROW_SHAPE": {
+            "definition": "COL=directed,T=boolean,K=0=true,V=0=ARROW",
+            "type": "DISCRETE"
+          },
+          "EDGE_LINE_TYPE": {
+            "definition": "COL=shared interaction,T=string,K=0=neighbor-of,V=0=EQUAL_DASH",
+            "type": "DISCRETE"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "status": [
+      {
+        "error": "",
+        "success": true
+      }
+    ]
+  }
+]

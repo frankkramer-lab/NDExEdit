@@ -40,14 +40,15 @@ export class AppComponent {
     public translateService: TranslateService,
     private parseService: ParseService,
     public dataService: DataService,
-    private http: HttpClient,
-    private graphService: GraphService) {
+    private http: HttpClient) {
     this.initializeTranslation();
 
-    this.initDemoNetwork('01.cx');
-    this.initDemoNetwork('02.cx');
-    this.initDemoNetwork('03.cx');
-    this.initDemoNetwork('04.cx');
+    // this.initDemoNetwork('01.cx');
+    // this.initDemoNetwork('02.cx');
+    // this.initDemoNetwork('03.cx');
+    this.initDemoNetwork('05.cx');
+    // this.initDemoNetwork('04.cx'); // this is a terribly built network and a negative example on how to manage a .cx file
+
 
   }
 

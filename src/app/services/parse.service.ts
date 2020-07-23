@@ -391,6 +391,8 @@ export class ParseService {
     const parsedMappingsEdgesDefault = this.parseMappingsElementsDefault((styleEdgesDefault || []),
       'edge', parsedEdgeData);
 
+    const arrowColorAsEdgeColor: boolean = this.evalEdgeStyleDependencies(styleEdgesDefault || []);
+
     // adding discrete mappings to matching nodes
     for (const node of parsedNodeData) {
       for (const nodeAttribute of node.attributes) {
@@ -497,6 +499,7 @@ export class ParseService {
       }
     }
 
+    parsedStyles = this.addArrowColor(parsedStyles, arrowColorAsEdgeColor);
     parsedStyles = ParseService.orderStyles(parsedStyles);
 
     const globalStyle: NeStyle[] = [];
@@ -532,7 +535,9 @@ export class ParseService {
       selector: '.custom_highlight_color',
       style: {
         'background-color': '#0000ff',
-        'line-color': '#0000ff'
+        'line-color': '#0000ff',
+        'target-arrow-color': '#0000ff',
+        'source-arrow-color': '#0000ff'
       }
     });
 
@@ -862,7 +867,6 @@ export class ParseService {
         case 'split':
           const splitted = property.value.split(lookupMap.splitRules.splitAt);
           styleCollection = [];
-
           for (const index of lookupMap.splitRules.evalIndex) {
             const initialValue = splitted[index];
             const matchedValue: string[] = lookupMap.matchRules[initialValue];
@@ -955,6 +959,11 @@ export class ParseService {
       lookupProperty.value = tmpCollection.tmpV[tmpCollection.tmpK.indexOf(k)];
       tmpObj.is = ParseService.utilCleanString(k);
 
+      if (tmpObj.col === 'sharedinteraction') {
+        tmpObj.col = 'interaction';
+        originalCol = 'interaction';
+      }
+
       const tmpSelector = '.'.concat(elementType.concat('_'.concat(tmpObj.col.concat('_'.concat(tmpObj.is)))));
       const priority = ParseService.findPriorityBySelector(tmpSelector);
       tmpObj.selector = tmpSelector;
@@ -986,7 +995,6 @@ export class ParseService {
       } else {
         lookup = this.lookup(lookupProperty, tmpSelector);
       }
-
       for (const lookupStyle of lookup) {
 
         tmpObj.cssKey = lookupStyle.cssKey;
@@ -1346,7 +1354,6 @@ export class ParseService {
       for (const gm of groupedMappings) {
 
         if (gm.classifier === map.colHR) {
-
           let found = false;
           for (const style of gm.styleMap) {
             if (style.cssKey === map.cssKey) {
@@ -1382,5 +1389,48 @@ export class ParseService {
     }
 
     return groupedMappings;
+  }
+
+  private evalEdgeStyleDependencies(styleEdgesDefault: any): boolean {
+    if (styleEdgesDefault.dependencies) {
+      return styleEdgesDefault.dependencies.arrowColorMatchesEdge || false;
+    }
+  }
+
+  private addArrowColor(parsedStyles: NeStyleComponent[], arrowColorAsEdgeColor: boolean): NeStyleComponent[] {
+    for (const style of parsedStyles) {
+      if (style.cssKey === 'line-color' && arrowColorAsEdgeColor) {
+        const objTarget: NeStyleComponent = {
+          selector: style.selector,
+          cssKey: 'target-arrow-color',
+          cssValue: style.cssValue,
+          priority: style.priority
+        };
+        parsedStyles.push(objTarget);
+        const objSource: NeStyleComponent = {
+          selector: style.selector,
+          cssKey: 'source-arrow-color',
+          cssValue: style.cssValue,
+          priority: style.priority
+        };
+        parsedStyles.push(objSource);
+      } else if (style.cssKey === 'line-color') {
+        const objTarget: NeStyleComponent = {
+          selector: style.selector,
+          cssKey: 'target-arrow-color',
+          cssValue: '#000000',
+          priority: style.priority
+        };
+        parsedStyles.push(objTarget);
+        const objSource: NeStyleComponent = {
+          selector: style.selector,
+          cssKey: 'source-arrow-color',
+          cssValue: '#000000',
+          priority: style.priority
+        };
+        parsedStyles.push(objSource);
+      }
+    }
+    return parsedStyles;
   }
 }
