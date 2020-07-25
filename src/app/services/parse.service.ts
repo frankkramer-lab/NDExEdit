@@ -510,6 +510,11 @@ export class ParseService {
     parsedStyles = ParseService.orderStyles(parsedStyles);
 
     const globalStyle: NeStyle[] = [];
+    const styleConstants: any = {};
+
+    if (arrowColorAsEdgeColor) {
+      styleConstants['arrow-as-edge'] = true;
+    }
 
     ParseService.addStyles(parsedStyles, globalStyle);
     const cyParsedData: ElementDefinition[] = [];
@@ -613,7 +618,8 @@ export class ParseService {
         edgesDiscrete: groupedMappingsEdges,
         nodesContinuous: parsedMappingsNodesDefault.continuous,
         edgesContinuous: parsedMappingsEdgesDefault.continuous
-      }
+      },
+      styleConstants
     };
   }
 

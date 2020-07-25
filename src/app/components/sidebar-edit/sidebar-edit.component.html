@@ -35,7 +35,7 @@
   <!-- color gradient for continuous mappings -->
   <div *ngIf="showColorGradient">
     <h5>
-      <a [routerLink]="['', {outlets: {primary: ['mappings', selectedNetwork.id, index]} }]" role="button">
+      <a [routerLink]="['', {outlets: {primary: ['mappings', selectedNetwork.id, index]} }]" (click)="hidePreviews()" role="button">
         <b>{{lookup}}</b>
         {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
         <b>{{attribute}}</b>
@@ -47,10 +47,12 @@
 
   <div *ngIf="graphService.selectedElements.nodes.length > 0 || graphService.selectedElements.edges.length > 0">
 
+    <hr>
+
     <!-- Display selected nodes -->
     <h5 *ngIf="graphService.selectedElements.nodes.length > 0">{{'SIDEBAR_EDIT_COMPARISON_NODES' | translate}}</h5>
 
-    <div class="form-check">
+    <div *ngIf="graphService.selectedElements.nodes.length > 0" class="form-check">
       <input class="form-check-input" type="checkbox" value="{{showAllForNodes}}" id="showNodesAttributes"
              (click)="showAllNodesAttributes(!showAllForNodes)">
       <label class="form-check-label" for="showNodesAttributes">
@@ -91,9 +93,9 @@
     <hr>
 
     <!-- Display selected edges -->
-    <h5 *ngIf="graphService.selectedElements.nodes.length > 0">{{'SIDEBAR_EDIT_COMPARISON_EDGES' | translate}}</h5>
+    <h5 *ngIf="graphService.selectedElements.edges.length > 0">{{'SIDEBAR_EDIT_COMPARISON_EDGES' | translate}}</h5>
 
-    <div class="form-check">
+    <div *ngIf="graphService.selectedElements.edges.length > 0" class="form-check">
       <input class="form-check-input" type="checkbox" value="{{showAllForEdges}}" id="showEdgesAttributes"
              (click)="showAllEdgesAttributes(!showAllForEdges)">
       <label class="form-check-label" for="showEdgesAttributes">

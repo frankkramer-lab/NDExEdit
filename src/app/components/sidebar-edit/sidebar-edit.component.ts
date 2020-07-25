@@ -136,4 +136,9 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   showAllEdgesAttributes(show: boolean): void {
     this.showAllForEdges = show;
   }
+
+  hidePreviews(): void {
+    this.showColorGradient = false;
+    this.showChart = false;
+  }
 }

@@ -10,7 +10,7 @@
 
   <hr>
 
-  <h3>{{'MAIN_MAPPINGS_DETAILS' | translate}}</h3>
+  <h3 *ngIf="selectedMapping.classifier || selectedMapping.chartValid || selectedMapping.gradientValid">{{'MAIN_MAPPINGS_DETAILS' | translate}}</h3>
 
   <table *ngIf="selectedMapping.chartValid" class="table table-bordered">
     <thead>
@@ -67,7 +67,7 @@
     </tbody>
   </table>
 
-  <div class="row">
+  <div class="row" *ngIf="selectedMapping.classifier || selectedMapping.chartValid || selectedMapping.gradientValid">
     <div class="col-6">
       <button class="btn btn-block btn-outline-warning">
         <fa-icon [icon]="faEdit"></fa-icon>
@@ -75,92 +75,116 @@
       </button>
     </div>
     <div class="col-6">
-      <button class="btn btn-block btn-outline-danger">
-        <fa-icon [icon]="faEdit"></fa-icon>
+      <button class="btn btn-block btn-outline-danger" (click)="removeDialogue(showList)">
+        <fa-icon [icon]="faTrash"></fa-icon>
         {{'MAIN_MAPPINGS_DELETE' | translate}}
       </button>
     </div>
   </div>
 
-
   <hr>
 
-  <h3>{{'MAIN_MAPPINGS_TITLE_LIST' | translate}}</h3>
-  <div class="row">
-    <div class="col-6">
-<!--      Nodes Mappings -->
-      <h5>{{'MAIN_MAPPINGS_TITLE_NODES_DISCRETE' | translate}}</h5>
-      <ul class="list-group">
-        <li class="list-group-item" *ngFor="let nd of selectedNetwork.mappings.nodesDiscrete">
-          <a role="button">
-            {{nd.classifier}}
-          </a>
-        </li>
-        <li class="list-group-item list-group-item-success">
-          <a role="button">
-            <fa-icon [icon]="faPlus"></fa-icon>
-            {{'MAIN_MAPPINGS_NEW' | translate}}
-          </a>
-        </li>
-      </ul>
+  <div *ngIf="showList">
 
-      <hr>
+    <h3>{{'MAIN_MAPPINGS_TITLE_LIST' | translate}}</h3>
+    <div class="row">
 
-      <h5>{{'MAIN_MAPPINGS_TITLE_NODES_CONTINUOUS' | translate}}</h5>
-      <ul class="list-group">
-        <li class="list-group-item" *ngFor="let nc of selectedNetwork.mappings.nodesContinuous">
-          <a role="button">
-            {{nc.title[0]}} {{'MAIN_MAPPINGS_MAPPED_BY' | translate}} {{nc.title[1]}}
-          </a>
-        </li>
-        <li class="list-group-item list-group-item-success">
-          <a role="button">
-            <fa-icon [icon]="faPlus"></fa-icon>
-            {{'MAIN_MAPPINGS_NEW' | translate}}
-          </a>
-        </li>
+      <div class="col-6">
+        <h5>{{'MAIN_MAPPINGS_TITLE_NODES_DISCRETE' | translate}}</h5>
 
-      </ul>
-    </div>
-    <div class="col-6">
-<!--      Edges Mappings -->
-      <h5>{{'MAIN_MAPPINGS_TITLE_EDGES_DISCRETE' | translate}}</h5>
-      <ul class="list-group">
-        <li class="list-group-item" *ngFor="let ed of selectedNetwork.mappings.edgesDiscrete">
-          <a role="button">
-            {{ed.classifier}}
-          </a>
-        </li>
-        <li class="list-group-item list-group-item-success">
-          <a role="button">
-            <fa-icon [icon]="faPlus"></fa-icon>
-            {{'MAIN_MAPPINGS_NEW' | translate}}
-          </a>
-        </li>
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let nd of selectedNetwork.mappings.nodesDiscrete">
+            <a role="button" [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nd' + selectedNetwork.mappings.nodesDiscrete.indexOf(nd)]} }]">
+              {{nd.classifier}}
+            </a>
+          </li>
+          <li class="list-group-item list-group-item-success">
+            <a role="button">
+              <fa-icon [icon]="faPlus"></fa-icon>
+              {{'MAIN_MAPPINGS_NEW' | translate}}
+            </a>
+          </li>
+        </ul>
 
-      </ul>
+        <hr>
 
-      <hr>
+        <h5>{{'MAIN_MAPPINGS_TITLE_NODES_CONTINUOUS' | translate}}</h5>
 
-      <h5>{{'MAIN_MAPPINGS_TITLE_EDGES_CONTINUOUS' | translate}}</h5>
-      <ul class="list-group">
-        <li class="list-group-item" *ngFor="let ec of selectedNetwork.mappings.edgesContinuous">
-          <a role="button">
-            {{ec.title[0]}} {{'MAIN_MAPPINGS_MAPPED_BY' | translate}} {{ec.title[1]}}
-          </a>
-        </li>
-        <li class="list-group-item list-group-item-success">
-          <a role="button">
-            <fa-icon [icon]="faPlus"></fa-icon>
-            {{'MAIN_MAPPINGS_NEW' | translate}}
-          </a>
-        </li>
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let nc of selectedNetwork.mappings.nodesContinuous">
+            <a role="button" [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nc' + selectedNetwork.mappings.nodesContinuous.indexOf(nc)]} }]">
+              {{nc.title[0]}} {{'MAIN_MAPPINGS_MAPPED_BY' | translate}} {{nc.title[1]}}
+            </a>
+          </li>
+          <li class="list-group-item list-group-item-success">
+            <a role="button">
+              <fa-icon [icon]="faPlus"></fa-icon>
+              {{'MAIN_MAPPINGS_NEW' | translate}}
+            </a>
+          </li>
+        </ul>
+      </div>
 
-      </ul>
+      <div class="col-6">
+        <h5>{{'MAIN_MAPPINGS_TITLE_EDGES_DISCRETE' | translate}}</h5>
+
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let ed of selectedNetwork.mappings.edgesDiscrete">
+            <a role="button" [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ed' + selectedNetwork.mappings.edgesDiscrete.indexOf(ed)]} }]">
+              {{ed.classifier}}
+            </a>
+          </li>
+          <li class="list-group-item list-group-item-success">
+            <a role="button">
+              <fa-icon [icon]="faPlus"></fa-icon>
+              {{'MAIN_MAPPINGS_NEW' | translate}}
+            </a>
+          </li>
+        </ul>
+
+        <hr>
+
+        <h5>{{'MAIN_MAPPINGS_TITLE_EDGES_CONTINUOUS' | translate}}</h5>
+
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let ec of selectedNetwork.mappings.edgesContinuous">
+            <a role="button" [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ec' + selectedNetwork.mappings.edgesContinuous.indexOf(ec)]} }]">
+              {{ec.title[0]}} {{'MAIN_MAPPINGS_MAPPED_BY' | translate}} {{ec.title[1]}}
+            </a>
+          </li>
+          <li class="list-group-item list-group-item-success">
+            <a role="button">
+              <fa-icon [icon]="faPlus"></fa-icon>
+              {{'MAIN_MAPPINGS_NEW' | translate}}
+            </a>
+          </li>
+        </ul>
+
+      </div>
     </div>
   </div>
 
+  <div *ngIf="!showList">
+    <div class="alert alert-danger" role="alert">
+      {{'MAIN_MAPPINGS_CONFIRM_DELETION' | translate}}
+    </div>
 
+    <div class="row">
+      <div class="col-6">
+        <button class="btn btn-block btn-outline-success" (click)="removeDialogue(showList)">
+          <fa-icon [icon]="faTimes"></fa-icon>
+          {{'MAIN_MAPPINGS_CONFIRM_DELETION_NO' | translate}}
+        </button>
+      </div>
+      <div class="col-6">
+        <button class="btn btn-block btn-outline-danger" (click)="removeAffirmation(selectedNetwork.id, currentMappingId)">
+          <fa-icon [icon]="faCheck"></fa-icon>
+          {{'MAIN_MAPPINGS_CONFIRM_DELETION_YES' | translate}}
+        </button>
+      </div>
+    </div>
+
+  </div>
 
 
 </ng-container>

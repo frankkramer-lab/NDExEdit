@@ -90,5 +90,8 @@
   "MAIN_MAPPINGS_TITLE_LIST": "Existing mappings",
   "MAIN_MAPPINGS_DETAILS": "Details",
   "MAIN_MAPPINGS_EDIT": "Edit this mapping",
-  "MAIN_MAPPINGS_DELETE": "Delete this mapping"
+  "MAIN_MAPPINGS_DELETE": "Delete this mapping",
+  "MAIN_MAPPINGS_CONFIRM_DELETION": "Are you really sure you want to delete the mapping above?",
+  "MAIN_MAPPINGS_CONFIRM_DELETION_YES": "I'm pretty sure, delete this",
+  "MAIN_MAPPINGS_CONFIRM_DELETION_NO": "Never mind"
 }

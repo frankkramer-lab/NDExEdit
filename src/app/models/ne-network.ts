@@ -19,4 +19,5 @@ export interface NeNetwork {
   aspects?: NeElementAttribute[];
   aspectKeyValues?: NeAspect[];
   mappings?: NeMappingsMap;
+  styleConstants?: any;
 }
