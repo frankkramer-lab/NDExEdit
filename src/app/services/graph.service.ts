@@ -3,7 +3,6 @@ import {NeNetwork} from '../models/ne-network';
 import * as cytoscape from 'cytoscape';
 import {CytoscapeOptions, EventObject} from 'cytoscape';
 import {NeCyGraphSettings} from '../models/ne-cy-graph-settings';
-import {NeElement} from '../models/ne-element';
 import {NeNode} from '../models/ne-node';
 import {NeEdge} from '../models/ne-edge';
 import {NeSelection} from '../models/ne-selection';

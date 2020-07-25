@@ -157,7 +157,11 @@
 
       <table class="table table-bordered" *ngIf="selectedNetwork.mappings && selectedNetwork.mappings.nodesDiscrete.length > 0">
         <tr *ngFor="let nodeMap of selectedNetwork.mappings.nodesDiscrete">
-          <td><b>{{nodeMap.classifier}}</b></td>
+          <td>
+            <a role="button" [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nd' + selectedNetwork.mappings.nodesDiscrete.indexOf(nodeMap)]} }]">
+              <b>{{nodeMap.classifier}}</b>
+            </a>
+          </td>
           <td>
             <table class="table table-borderless">
               <tr class="border-bottom">
@@ -215,7 +219,11 @@
 
       <table class="table table-bordered" *ngIf="selectedNetwork.mappings && selectedNetwork.mappings.edgesDiscrete.length > 0">
         <tr *ngFor="let edgeMap of selectedNetwork.mappings.edgesDiscrete">
-          <td><b>{{edgeMap.classifier}}</b></td>
+          <td>
+            <a role="button" [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, selectedNetwork.mappings.edgesDiscrete.indexOf(edgeMap)]} }]">
+              <b>{{edgeMap.classifier}}</b>
+            </a>
+          </td>
           <td>
             <table class="table table-borderless">
               <tr class="border-bottom">

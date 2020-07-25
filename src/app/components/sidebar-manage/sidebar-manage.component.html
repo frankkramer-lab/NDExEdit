@@ -3,9 +3,9 @@
   <h5>{{'SIDEBAR_MANAGE_TITLE' | translate}}</h5>
 
   <table class="mb-3 table table-borderless">
-    <tr *ngFor="let network of dataService.networksParsed">
-      <td class="border-bottom">{{network.networkInformation.name}}</td>
-      <td class="border-bottom text-nowrap">
+    <tr *ngFor="let network of dataService.networksParsed" class="border-bottom">
+      <td class="float-left">{{network.networkInformation.name}}</td>
+      <td class="text-nowrap float-right">
         <a class="btn btn-sm btn-outline-secondary mr-1" role="button" data-toggle="tooltip"
            data-placement="bottom" title="{{'SIDEBAR_MANAGE_TT_INFO'|translate}}"
            [routerLink]="['', { outlets: {primary: ['stats', network.id]} }]">

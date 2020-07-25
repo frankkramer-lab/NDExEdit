@@ -77,7 +77,19 @@
   "SIDEBAR_EDIT_COMPARISON_NODE_ATTRIBUTES": "Knotenattribute",
   "SIDEBAR_EDIT_COMPARISON_EDGES": "Kanten",
   "SIDEBAR_EDIT_COMPARISON_EDGE_NAME": "Kantenname",
-  "SIDEBAR_EDIT_COMPARISON_EDGE_ATTRIBUTES": "Kantenattribute"
+  "SIDEBAR_EDIT_COMPARISON_EDGE_ATTRIBUTES": "Kantenattribute",
+
+  "MAIN_MAPPINGS_GRAPH": "Zurück zum Graph",
+  "MAIN_MAPPINGS_TITLE_NODES_DISCRETE": "Diskrete Knotenmappings",
+  "MAIN_MAPPINGS_TITLE_NODES_CONTINUOUS": "Kontinuierliche Knotenmappings",
+  "MAIN_MAPPINGS_TITLE_EDGES_DISCRETE": "Discrete Kantenmappings",
+  "MAIN_MAPPINGS_TITLE_EDGES_CONTINUOUS": "Kontinuierliche Kantenmappings",
+  "MAIN_MAPPINGS_MAPPED_BY": "verändert in Abhängigkeit von",
+  "MAIN_MAPPINGS_NEW": "Neu",
+  "MAIN_MAPPINGS_TITLE_LIST": "Liste aller Mappings",
+  "MAIN_MAPPINGS_DETAILS": "Details",
+  "MAIN_MAPPINGS_EDIT": "Mapping bearbeiten",
+  "MAIN_MAPPINGS_DELETE": "Mapping entfernen"
 
 
 }

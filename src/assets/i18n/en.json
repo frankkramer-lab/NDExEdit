@@ -78,7 +78,17 @@
   "SIDEBAR_EDIT_COMPARISON_NODE_ATTRIBUTES": "Node attributes",
   "SIDEBAR_EDIT_COMPARISON_EDGES": "Edges",
   "SIDEBAR_EDIT_COMPARISON_EDGE_NAME": "Edge name",
-  "SIDEBAR_EDIT_COMPARISON_EDGE_ATTRIBUTES": "Edge attributes"
+  "SIDEBAR_EDIT_COMPARISON_EDGE_ATTRIBUTES": "Edge attributes",
 
-
+  "MAIN_MAPPINGS_GRAPH": "Return to graph",
+  "MAIN_MAPPINGS_TITLE_NODES_DISCRETE": "Discrete node mappings",
+  "MAIN_MAPPINGS_TITLE_NODES_CONTINUOUS": "Continuous node mappings",
+  "MAIN_MAPPINGS_TITLE_EDGES_DISCRETE": "Discrete edge mappings",
+  "MAIN_MAPPINGS_TITLE_EDGES_CONTINUOUS": "Continuous edge mappings",
+  "MAIN_MAPPINGS_MAPPED_BY": "mapped by",
+  "MAIN_MAPPINGS_NEW": "New",
+  "MAIN_MAPPINGS_TITLE_LIST": "Existing mappings",
+  "MAIN_MAPPINGS_DETAILS": "Details",
+  "MAIN_MAPPINGS_EDIT": "Edit this mapping",
+  "MAIN_MAPPINGS_DELETE": "Delete this mapping"
 }
