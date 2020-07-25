@@ -6,6 +6,7 @@ import {NeCyGraphSettings} from '../models/ne-cy-graph-settings';
 import {NeElement} from '../models/ne-element';
 import {NeNode} from '../models/ne-node';
 import {NeEdge} from '../models/ne-edge';
+import {NeSelection} from '../models/ne-selection';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class GraphService {
   private core: cytoscape.Core;
   private flashDuration = 2000;
 
-  public selectedElements: any = {
+  public selectedElements: NeSelection = {
     nodes: [],
     edges: []
   };
@@ -93,9 +94,9 @@ export class GraphService {
         break;
       case 'unselect':
         if (event.target.isNode()) {
-          this.selectedElements = this.selectedElements.nodes.filter(x => x.id !== event.target.data().id);
+          this.selectedElements.nodes = this.selectedElements.nodes.filter(x => x.id !== event.target.data().id);
         } else if (event.target.isEdge()) {
-          this.selectedElements = this.selectedElements.edges.filter(x => x.id !== event.target.data().id);
+          this.selectedElements.edges = this.selectedElements.edges.filter(x => x.id !== event.target.data().id);
         }
         break;
     }

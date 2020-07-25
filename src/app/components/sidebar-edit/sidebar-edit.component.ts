@@ -8,8 +8,6 @@ import {faLightbulb, faPalette} from '@fortawesome/free-solid-svg-icons';
 import {ChartDataSets} from 'chart.js';
 import {Color, Label} from 'ng2-charts';
 import {NeColorGradient} from '../../models/ne-color-gradient';
-import {NeElement} from '../../models/ne-element';
-import {NeNode} from '../../models/ne-node';
 
 @Component({
   selector: 'app-sidebar-edit',
@@ -30,6 +28,10 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
 
   lookup: string;
   attribute: string;
+
+  showAllForNodes = false;
+  showAllForEdges = false;
+  showAttributesFor = '-1';
   showComparison = false;
   showChart = false;
   showColorGradient = false;
@@ -121,5 +123,17 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
       this.showChart = false;
       this.showColorGradient = true;
     }
+  }
+
+  showAttributesForId(id: string): void {
+    this.showAttributesFor = id;
+  }
+
+  showAllNodesAttributes(show: boolean): void {
+    this.showAllForNodes = show;
+  }
+
+  showAllEdgesAttributes(show: boolean): void {
+    this.showAllForEdges = show;
   }
 }
