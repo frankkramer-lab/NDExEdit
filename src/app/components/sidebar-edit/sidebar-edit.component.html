@@ -60,11 +60,19 @@
 
     <table *ngIf="graphService.selectedElements.nodes.length > 0" class="table table-bordered">
       <thead>
+        <th>&nbsp;</th>
         <th>{{'SIDEBAR_EDIT_COMPARISON_NODE_NAME' | translate}}</th>
         <th>{{'SIDEBAR_EDIT_COMPARISON_NODE_ATTRIBUTES' | translate}}</th>
       </thead>
       <tbody>
         <tr *ngFor="let node of graphService.selectedElements.nodes">
+          <td>
+            <button class="btn btn-outline-success" (click)="graphService.highlightByElementId(node.id)"
+                    data-toggle="tooltip" data-placement="bottom"
+                    title="{{'SIDEBAR_EDIT_TT_ID' | translate}} {{node.id}}">
+              <fa-icon [icon]="faLightbulb" (click)="graphService.highlightByElementId(node.id)"></fa-icon>
+            </button>
+          </td>
           <td>
             <a role="button" (click)="showAttributesForId(node.id)">{{node.name}}</a>
           </td>
@@ -85,7 +93,7 @@
     <!-- Display selected edges -->
     <h5 *ngIf="graphService.selectedElements.nodes.length > 0">{{'SIDEBAR_EDIT_COMPARISON_EDGES' | translate}}</h5>
 
-    <div class="form-check form-inline">
+    <div class="form-check">
       <input class="form-check-input" type="checkbox" value="{{showAllForEdges}}" id="showEdgesAttributes"
              (click)="showAllEdgesAttributes(!showAllForEdges)">
       <label class="form-check-label" for="showEdgesAttributes">
@@ -95,13 +103,21 @@
 
     <table *ngIf="graphService.selectedElements.edges.length > 0" class="table table-bordered">
       <thead>
+        <th>&nbsp;</th>
         <th>{{'SIDEBAR_EDIT_COMPARISON_EDGE_NAME' | translate}}</th>
         <th>{{'SIDEBAR_EDIT_COMPARISON_EDGE_ATTRIBUTES' | translate}}</th>
       </thead>
       <tbody>
         <tr *ngFor="let edge of graphService.selectedElements.edges">
           <td>
-            <a role="button" (click)="showAttributesForId(edge.id)">{{edge.id}}</a>
+            <button class="btn btn-outline-success" (click)="graphService.highlightByElementId(edge.id)"
+                    data-toggle="tooltip" data-placement="bottom"
+                    title="{{'SIDEBAR_EDIT_TT_ID' | translate}} {{edge.id}}">
+              <fa-icon [icon]="faLightbulb" (click)="graphService.highlightByElementId(edge.id)"></fa-icon>
+            </button>
+          </td>
+          <td>
+            <a role="button" (click)="showAttributesForId(edge.id)">{{edge.name}}</a>
           </td>
           <td *ngIf="showAttributesFor === edge.id || showAllForEdges">
             <table class="table table-borderless">

@@ -58,6 +58,7 @@
   "SIDEBAR_EDIT_TH_CSS_VALUE": "CSS value",
   "SIDEBAR_EDIT_TH_HIGHLIGHT": "Elements",
   "SIDEBAR_EDIT_TT_SELECTOR": "Highlight elements with class",
+  "SIDEBAR_EDIT_TT_ID": "Highlight element with ID",
   "SIDEBAR_EDIT_LABEL_HEX_NODE": "Nodes highlighting (hex color codes as such #FF00FF)",
   "SIDEBAR_EDIT_LABEL_HEX_EDGE": "Edges highlighting (hex color codes as such #FF00FF)",
   "SIDEBAR_EDIT_LABEL_DURATION": "Duration (in ms)",

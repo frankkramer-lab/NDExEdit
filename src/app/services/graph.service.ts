@@ -50,6 +50,12 @@ export class GraphService {
     }
   }
 
+  highlightByElementId(id: string): void {
+    if (id !== undefined) {
+      this.core.getElementById(id).flashClass('custom_highlight_color', this.flashDuration);
+    }
+  }
+
   setHighlightColorAndDuration(hexColorNodes: string, hexColorEdges: string, duration: number): void {
     const styleJson = this.core.style().json();
 
