@@ -90,8 +90,6 @@
       </tbody>
     </table>
 
-    <hr>
-
     <!-- Display selected edges -->
     <h5 *ngIf="graphService.selectedElements.edges.length > 0">{{'SIDEBAR_EDIT_COMPARISON_EDGES' | translate}}</h5>
 
@@ -132,6 +130,8 @@
         </tr>
       </tbody>
     </table>
+
+    <hr *ngIf="graphService.selectedElements.edges.length > 0">
 
   </div>
 
