@@ -177,7 +177,7 @@
                      title="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{nodeMap.selectors[i]}}"><b>{{value}}</b>
                   </a>
                 </td>
-                <td *ngFor="let style of nodeMap.styleMap; let j = index">
+                <td *ngFor="let style of nodeMap.styleMap">
                   <span>
                     <span *ngFor="let cssValue of style.cssValues; let k = index">
                       <span *ngIf="style.selectors[k] == nodeMap.selectors[i]">

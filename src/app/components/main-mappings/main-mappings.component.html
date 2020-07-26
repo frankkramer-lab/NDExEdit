@@ -51,23 +51,35 @@
     </tbody>
   </table>
 
-  <table *ngIf="selectedMapping.classifier" class="table table-bordered">
-    <thead>
-      <th colspan="2">{{selectedMapping.classifier}}</th>
-    </thead>
-    <tbody>
-      <tr *ngFor="let style of selectedMapping.styleMap">
-        <td><b>{{style.cssKey}}</b></td>
-        <td *ngFor="let value of style.cssValues">
-          {{value}}
-          <span *ngIf="value.indexOf('#') > -1" class="badge badge-pill border"
-                [ngStyle]="{'background-color': value}">&nbsp;</span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-responsive">
+    <table *ngIf="selectedMapping.classifier" class="table table-bordered">
+      <thead>
+        <th colspan="1">{{selectedMapping.classifier}}</th>
+        <th *ngFor="let value of selectedMapping.values">{{value}}</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let style of selectedMapping.styleMap">
 
-  <div class="row" *ngIf="selectedMapping.classifier || selectedMapping.chartValid || selectedMapping.gradientValid">
+          <td><b>{{style.cssKey}}</b></td>
+
+          <td *ngFor="let value of selectedMapping.values; let i = index">
+
+            <span *ngFor="let styleValue of style.cssValues; let j = index">
+              <span *ngIf="selectedMapping.selectors[i] === style.selectors[j]">
+                  {{styleValue}}
+                  <span *ngIf="styleValue.indexOf('#') > -1" class="badge badge-pill border"
+                        [ngStyle]="{'background-color': styleValue}">&nbsp;</span>
+                </span>
+              </span>
+
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="row mt-3" *ngIf="selectedMapping.classifier || selectedMapping.chartValid || selectedMapping.gradientValid">
     <div class="col-6">
       <button class="btn btn-block btn-outline-warning">
         <fa-icon [icon]="faEdit"></fa-icon>
