@@ -29,9 +29,6 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   lookup: string;
   attribute: string;
 
-  showAllForNodes = false;
-  showAllForEdges = false;
-  showAttributesFor = '-1';
   showComparison = false;
   showChart = false;
   showColorGradient = false;
@@ -74,6 +71,13 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+    this.showComparison = false;
+    this.showChart = false;
+    this.showColorGradient = false;
+    this.gradientBackground = '';
+    this.index = '';
+    this.graphService.selectedElements.nodes = [];
+    this.graphService.selectedElements.edges = [];
   }
 
   toggleLabels(show: boolean): void {
@@ -125,20 +129,4 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  showAttributesForId(id: string): void {
-    this.showAttributesFor = id;
-  }
-
-  showAllNodesAttributes(show: boolean): void {
-    this.showAllForNodes = show;
-  }
-
-  showAllEdgesAttributes(show: boolean): void {
-    this.showAllForEdges = show;
-  }
-
-  hidePreviews(): void {
-    this.showColorGradient = false;
-    this.showChart = false;
-  }
 }

@@ -43,14 +43,14 @@ export class AppComponent {
     private http: HttpClient) {
     this.initializeTranslation();
 
-    this.initDemoNetwork('01.cx');
-    this.initDemoNetwork('02.cx');
-    this.initDemoNetwork('03.cx');
-    // this.initDemoNetwork('05.cx'); // example with arrows
+    this.initDemoNetwork('01.cx'); // good example for discrete mappings
+    this.initDemoNetwork('02.cx'); // good example for continuous mappings
+    this.initDemoNetwork('03.cx'); // good for many many many edges
+    this.initDemoNetwork('05.cx'); // example with arrows
     // this.initDemoNetwork('04.cx'); // this is a terribly built network and a negative example on how to manage a .cx file
     // this.initDemoNetwork('06.cx'); // also not very nice to display
-    // this.initDemoNetwork('07.cx'); // 37MB are not very nice
-    // this.initDemoNetwork('08.cx'); // 20MB are not very nice
+    // this.initDemoNetwork('07.cx'); // 37MB are not very nice => ndex does show a fallback graph in these cases (or only first n nodes)
+    // this.initDemoNetwork('08.cx'); // 20MB are not very nice => ndex does show a fallback graph in these cases (or only first n nodes)
 
 
   }

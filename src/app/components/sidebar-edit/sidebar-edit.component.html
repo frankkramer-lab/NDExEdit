@@ -52,84 +52,52 @@
     <!-- Display selected nodes -->
     <h5 *ngIf="graphService.selectedElements.nodes.length > 0">{{'SIDEBAR_EDIT_COMPARISON_NODES' | translate}}</h5>
 
-    <div *ngIf="graphService.selectedElements.nodes.length > 0" class="form-check">
-      <input class="form-check-input" type="checkbox" value="{{showAllForNodes}}" id="showNodesAttributes"
-             (click)="showAllNodesAttributes(!showAllForNodes)">
-      <label class="form-check-label" for="showNodesAttributes">
-        {{'SIDEBAR_EDIT_CB_NODES_ATTRIBUTES' | translate}}
-      </label>
-    </div>
-
-    <table *ngIf="graphService.selectedElements.nodes.length > 0" class="table table-bordered">
-      <thead>
-        <th>&nbsp;</th>
-        <th>{{'SIDEBAR_EDIT_COMPARISON_NODE_NAME' | translate}}</th>
-        <th>{{'SIDEBAR_EDIT_COMPARISON_NODE_ATTRIBUTES' | translate}}</th>
-      </thead>
-      <tbody>
-        <tr *ngFor="let node of graphService.selectedElements.nodes">
-          <td>
-            <button class="btn btn-outline-success" (click)="graphService.highlightByElementId(node.id)"
-                    data-toggle="tooltip" data-placement="bottom"
-                    title="{{'SIDEBAR_EDIT_TT_ID' | translate}} {{node.id}}">
-              <fa-icon [icon]="faLightbulb" (click)="graphService.highlightByElementId(node.id)"></fa-icon>
-            </button>
-          </td>
-          <td>
-            <a role="button" (click)="showAttributesForId(node.id)">{{node.name}}</a>
-          </td>
-          <td *ngIf="showAttributesFor === node.id || showAllForNodes">
-            <table class="table table-borderless">
-              <tr *ngFor="let attribute of node.attributes">
-                <td><b>{{attribute.keyHR}}</b></td>
-                <td>{{attribute.valueHR}}</td>
-              </tr>
-            </table>
+    <div class="table-responsive" *ngIf="graphService.selectedElements.nodes.length > 0">
+      <table class="table table-bordered">
+        <tr>
+          <td>&nbsp;</td>
+          <td *ngFor="let node of graphService.selectedElements.nodes">
+            <a role="button" (click)="graphService.highlightByElementId(node.id)"
+            data-toggle="tooltip" data-placement="bottom" title="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_NODE' | translate}} {{node.id}}">
+              <b>{{node.name}} ({{node.id}})</b>
+            </a>
           </td>
         </tr>
-      </tbody>
-    </table>
+        <tr *ngFor="let akvn of selectedNetwork.aspectKeyValuesNodes">
+          <td><b>{{akvn.name}}</b></td>
+          <td *ngFor="let node of graphService.selectedElements.nodes">
+            <span *ngFor="let attribute of node.attributes">
+              <span *ngIf="attribute.keyHR === akvn.name">{{attribute.valueHR}}</span>
+            </span>
+          </td>
+        </tr>
+      </table>
+    </div>
 
     <!-- Display selected edges -->
     <h5 *ngIf="graphService.selectedElements.edges.length > 0">{{'SIDEBAR_EDIT_COMPARISON_EDGES' | translate}}</h5>
 
-    <div *ngIf="graphService.selectedElements.edges.length > 0" class="form-check">
-      <input class="form-check-input" type="checkbox" value="{{showAllForEdges}}" id="showEdgesAttributes"
-             (click)="showAllEdgesAttributes(!showAllForEdges)">
-      <label class="form-check-label" for="showEdgesAttributes">
-        {{'SIDEBAR_EDIT_CB_EDGES_ATTRIBUTES' | translate}}
-      </label>
-    </div>
-
-    <table *ngIf="graphService.selectedElements.edges.length > 0" class="table table-bordered">
-      <thead>
-        <th>&nbsp;</th>
-        <th>{{'SIDEBAR_EDIT_COMPARISON_EDGE_NAME' | translate}}</th>
-        <th>{{'SIDEBAR_EDIT_COMPARISON_EDGE_ATTRIBUTES' | translate}}</th>
-      </thead>
-      <tbody>
-        <tr *ngFor="let edge of graphService.selectedElements.edges">
-          <td>
-            <button class="btn btn-outline-success" (click)="graphService.highlightByElementId(edge.id)"
-                    data-toggle="tooltip" data-placement="bottom"
-                    title="{{'SIDEBAR_EDIT_TT_ID' | translate}} {{edge.id}}">
-              <fa-icon [icon]="faLightbulb" (click)="graphService.highlightByElementId(edge.id)"></fa-icon>
-            </button>
-          </td>
-          <td>
-            <a role="button" (click)="showAttributesForId(edge.id)">{{edge.name}}</a>
-          </td>
-          <td *ngIf="showAttributesFor === edge.id || showAllForEdges">
-            <table class="table table-borderless">
-              <tr *ngFor="let attribute of edge.attributes">
-                <td><b>{{attribute.keyHR}}</b></td>
-                <td>{{attribute.valueHR}}</td>
-              </tr>
-            </table>
+    <div class="table-responsive" *ngIf="graphService.selectedElements.edges.length > 0">
+      <table class="table table-bordered">
+        <tr>
+          <td>&nbsp;</td>
+          <td *ngFor="let edge of graphService.selectedElements.edges">
+            <a role="button" (click)="graphService.highlightByElementId(edge.id)"
+                    data-toggle="tooltip" data-placement="bottom" title="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_EDGE' | translate}} {{edge.id}}">
+              <b>{{edge.name}} ({{edge.id}})</b>
+            </a>
           </td>
         </tr>
-      </tbody>
-    </table>
+        <tr *ngFor="let akve of selectedNetwork.aspectKeyValuesEdges">
+          <td><b>{{akve.name}}</b></td>
+          <td *ngFor="let edge of graphService.selectedElements.edges">
+            <span *ngFor="let attribute of edge.attributes">
+              <span *ngIf="attribute.keyHR === akve.name">{{attribute.valueHR}}</span>
+            </span>
+          </td>
+        </tr>
+      </table>
+    </div>
 
     <hr *ngIf="graphService.selectedElements.edges.length > 0">
 
@@ -222,7 +190,7 @@
       <table class="table table-bordered" *ngIf="selectedNetwork.mappings && selectedNetwork.mappings.edgesDiscrete.length > 0">
         <tr *ngFor="let edgeMap of selectedNetwork.mappings.edgesDiscrete">
           <td>
-            <a role="button" [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, selectedNetwork.mappings.edgesDiscrete.indexOf(edgeMap)]} }]">
+            <a role="button" [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ed' + selectedNetwork.mappings.edgesDiscrete.indexOf(edgeMap)]} }]">
               <b>{{edgeMap.classifier}}</b>
             </a>
           </td>
