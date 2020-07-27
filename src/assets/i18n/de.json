@@ -32,6 +32,8 @@
   "MAIN_STATS_GRAPH_INFO_NW_DESCRIPTION": "Beschreibung",
   "MAIN_STATS_BTN_RENDER": "Rendern und bearbeiten",
   "MAIN_STATS_BTN_COMPARE": "Vergleichen",
+  "MAIN_STATS_GRAPH_ATTRIBUTES_EDGES_TITLE": "Vorhandene Kantenattribute",
+  "MAIN_STATS_GRAPH_ATTRIBUTES_NODES_TITLE": "Vorhandene Knotenattribute",
 
   "MAIN_GRAPH_TITLE": "Graph",
   "MAIN_GRAPH_BTN_FIT": "Größe anpassen",

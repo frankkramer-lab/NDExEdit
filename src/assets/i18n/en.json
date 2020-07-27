@@ -32,10 +32,11 @@
   "MAIN_STATS_GRAPH_INFO_NW_DESCRIPTION": "Description",
   "MAIN_STATS_BTN_RENDER": "Render and edit",
   "MAIN_STATS_BTN_COMPARE": "Compare",
+  "MAIN_STATS_GRAPH_ATTRIBUTES_EDGES_TITLE": "Attributes for edges",
+  "MAIN_STATS_GRAPH_ATTRIBUTES_NODES_TITLE": "Attributes for nodes",
 
   "MAIN_GRAPH_TITLE": "Graph",
   "MAIN_GRAPH_BTN_FIT": "Fit graph",
-
 
   "SIDEBAR_MANAGE_TITLE": "Available networks",
   "SIDEBAR_MANAGE_NW_NAME": "Network name",
