@@ -88,11 +88,22 @@
   "MAIN_MAPPINGS_NEW": "Neu",
   "MAIN_MAPPINGS_TITLE_LIST": "Liste aller Mappings",
   "MAIN_MAPPINGS_DETAILS": "Details",
-  "MAIN_MAPPINGS_EDIT": "Mapping bearbeiten",
-  "MAIN_MAPPINGS_DELETE": "Mapping entfernen",
+  "MAIN_MAPPINGS_TT_EDIT": "Mapping bearbeiten",
+  "MAIN_MAPPINGS_DELETE": "Alle auf dieses Attribut gemappte Styles entfernen",
   "MAIN_MAPPINGS_CONFIRM_DELETION": "Möchtest du das oben dargestellte Mapping wirklich löschen?",
   "MAIN_MAPPINGS_CONFIRM_DELETION_YES": "Ja, lösch' es endlich",
-  "MAIN_MAPPINGS_CONFIRM_DELETION_NO": "Hab' mich geirrt"
+  "MAIN_MAPPINGS_CONFIRM_DELETION_NO": "Hab' mich geirrt",
+  "MAIN_MAPPINGS_TT_MAP_DETAILS": "Details in obiger Tabelle anzeigen",
+
+  "MAIN_MAPPINGS_NEW_ND": "Neues Mapping: Knoten diskret",
+  "MAIN_MAPPINGS_NEW_NC": "Neues Mapping: Knoten kontinuierlich",
+  "MAIN_MAPPINGS_NEW_ED": "Neues Mapping: Kanten diskret",
+  "MAIN_MAPPINGS_NEW_EC": "Neues Mapping: Kanten kontinuierlich",
+  "MAIN_MAPPINGS_NEW_TYPE_ND": "Knoten - diskret",
+  "MAIN_MAPPINGS_NEW_TYPE_NC": "Knoten - kontinuierlich",
+  "MAIN_MAPPINGS_NEW_TYPE_ED": "Kanten - diskret",
+  "MAIN_MAPPINGS_NEW_TYPE_EC": "Kanten - kontinuierlich",
+  "MAIN_MAPPINGS_NEW_PLACEHOLDER": "Neuer Wert"
 
 
 }

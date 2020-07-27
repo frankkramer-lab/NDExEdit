@@ -426,7 +426,6 @@ export class ParseService {
     if (parsedMappingsEdgesDefault.discrete) {
       for (const edge of parsedEdgeData) {
         for (const edgeAttribute of edge.attributes) {
-          // todo
           for (const edgeMapping of parsedMappingsEdgesDefault.discrete) {
             const classSelector = edgeMapping.selector.substring(1);
 
@@ -570,33 +569,57 @@ export class ParseService {
     const currentId = this.id;
     this.id++;
 
-    const aspectKeyValues: NeAspect[] = [];
+    const aspectKeyValuesNodes: NeAspect[] = [];
+    const aspectKeyValuesEdges: NeAspect[] = [];
 
     for (const element of parsedData) {
+      const elementType = element.group;
+
       for (const attribute of element.attributes) {
 
         const aspect: NeAspect = {
           name: attribute.keyHR,
           values: [],
-          appliedTo: []
+          appliedTo: [],
+          datatype: attribute.datatype,
         };
 
-        let found = false;
+        if (elementType === 'nodes') {
+          let found = false;
 
-        for (const akv of aspectKeyValues) {
-          if (akv.name === attribute.keyHR) {
-            if (!akv.values.includes(attribute.valueHR)) {
-              akv.values.push(attribute.valueHR);
+          for (const akv of aspectKeyValuesNodes) {
+            if (akv.name === attribute.keyHR) {
+              if (!akv.values.includes(attribute.valueHR)) {
+                akv.values.push(attribute.valueHR);
+              }
+              akv.appliedTo.push(element);
+              found = true;
             }
-            akv.appliedTo.push(element);
-            found = true;
           }
-        }
 
-        if (!found) {
-          aspect.values.push(attribute.valueHR);
-          aspect.appliedTo.push(element);
-          aspectKeyValues.push(aspect);
+          if (!found) {
+            aspect.values.push(attribute.valueHR);
+            aspect.appliedTo.push(element);
+            aspectKeyValuesNodes.push(aspect);
+          }
+        } else {
+          let found = false;
+
+          for (const akv of aspectKeyValuesEdges) {
+            if (akv.name === attribute.keyHR) {
+              if (!akv.values.includes(attribute.valueHR)) {
+                akv.values.push(attribute.valueHR);
+              }
+              akv.appliedTo.push(element);
+              found = true;
+            }
+          }
+
+          if (!found) {
+            aspect.values.push(attribute.valueHR);
+            aspect.appliedTo.push(element);
+            aspectKeyValuesEdges.push(aspect);
+          }
         }
       }
     }
@@ -612,7 +635,8 @@ export class ParseService {
       nodeCount: parsedData.filter(x => x.group === 'nodes').length, // rework to access KPI by given properties
       edgeCount: parsedData.filter(x => x.group === 'edges').length, // rework to access KPI by given properties
       cssClassCount: globalStyle.length, // rework to access KPI by given properties
-      aspectKeyValues, // submit these as possible mappings todo add interaction, if given
+      aspectKeyValuesNodes, // submit these as possible mappings todo add interaction, if given
+      aspectKeyValuesEdges,
       mappings: {
         nodesDiscrete: groupedMappingsNodes,
         edgesDiscrete: groupedMappingsEdges,
@@ -934,7 +958,8 @@ export class ParseService {
       selector: null,
       cssKey: null,
       cssValue: null,
-      priority: -1
+      priority: -1,
+      datatype: null,
     };
 
     const tmpCollection: NeMappingsCollection = {
@@ -961,6 +986,7 @@ export class ParseService {
           originalCol = equalSplit[1];
           break;
         case 'T':
+          tmpObj.datatype = equalSplit[1];
           break;
         case 'K':
           tmpCollection.tmpK.splice(Number(equalSplit[1]), 0, equalSplit[2]);
@@ -1026,7 +1052,8 @@ export class ParseService {
             isHR: k,
             col: tmpObj.col,
             colHR: originalCol,
-            priority
+            priority,
+            datatype: tmpObj.datatype
           };
 
           mappingsElementsDefault.push(element);
@@ -1192,7 +1219,12 @@ export class ParseService {
     return continuousCollection;
   }
 
-  private buildColorGradient(thresholds: string[], lowers: string[], equals: string[], greaters: string[], lookup: string[], attribute: string): NeColorGradient[] {
+  private buildColorGradient(thresholds: string[],
+                             lowers: string[],
+                             equals: string[],
+                             greaters: string[],
+                             lookup: string[],
+                             attribute: string): NeColorGradient[] {
     if (!lowers[0].startsWith('#')) {
       return [];
     }

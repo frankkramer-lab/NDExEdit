@@ -7,4 +7,5 @@ export interface NeMappingsDefinition {
   cssKey?: string;
   cssValue?: string;
   priority: number;
+  datatype?: string;
 }

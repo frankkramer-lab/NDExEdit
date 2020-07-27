@@ -35,7 +35,7 @@
   <!-- color gradient for continuous mappings -->
   <div *ngIf="showColorGradient">
     <h5>
-      <a [routerLink]="['', {outlets: {primary: ['mappings', selectedNetwork.id, index]} }]" (click)="hidePreviews()" role="button">
+      <a [routerLink]="['', {outlets: {primary: ['mappings', selectedNetwork.id, index]} }]" role="button">
         <b>{{lookup}}</b>
         {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
         <b>{{attribute}}</b>

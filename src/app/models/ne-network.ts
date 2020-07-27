@@ -17,7 +17,8 @@ export interface NeNetwork {
   cssClassCount?: number;
   graph?: cytoscape.Core;
   aspects?: NeElementAttribute[];
-  aspectKeyValues?: NeAspect[];
+  aspectKeyValuesNodes?: NeAspect[];
+  aspectKeyValuesEdges?: NeAspect[];
   mappings?: NeMappingsMap;
   styleConstants?: any;
 }

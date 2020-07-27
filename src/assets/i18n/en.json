@@ -89,9 +89,22 @@
   "MAIN_MAPPINGS_NEW": "New",
   "MAIN_MAPPINGS_TITLE_LIST": "Existing mappings",
   "MAIN_MAPPINGS_DETAILS": "Details",
-  "MAIN_MAPPINGS_EDIT": "Edit this mapping",
-  "MAIN_MAPPINGS_DELETE": "Delete this mapping",
+  "MAIN_MAPPINGS_TT_EDIT": "Edit this mapping",
+  "MAIN_MAPPINGS_DELETE": "Delete all style properties mapped by this attribute",
   "MAIN_MAPPINGS_CONFIRM_DELETION": "Are you really sure you want to delete the mapping above?",
   "MAIN_MAPPINGS_CONFIRM_DELETION_YES": "I'm pretty sure, delete this",
-  "MAIN_MAPPINGS_CONFIRM_DELETION_NO": "Never mind"
+  "MAIN_MAPPINGS_CONFIRM_DELETION_NO": "Never mind",
+  "MAIN_MAPPINGS_TT_MAP_DETAILS": "Show details in table above",
+
+  "MAIN_MAPPINGS_NEW_ND": "New Mapping: Nodes discrete",
+  "MAIN_MAPPINGS_NEW_NC": "New Mapping: Nodes continuous",
+  "MAIN_MAPPINGS_NEW_ED": "New Mapping: Edges discrete",
+  "MAIN_MAPPINGS_NEW_EC": "New Mapping: Edges continuous",
+  "MAIN_MAPPINGS_NEW_TYPE_ND": "Nodes - discrete",
+  "MAIN_MAPPINGS_NEW_TYPE_NC": "Nodes - continuous",
+  "MAIN_MAPPINGS_NEW_TYPE_ED": "Edges - discrete",
+  "MAIN_MAPPINGS_NEW_TYPE_EC": "Edges - continuous",
+  "MAIN_MAPPINGS_NEW_PLACEHOLDER": "New value"
+
+
 }

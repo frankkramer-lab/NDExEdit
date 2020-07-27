@@ -5,4 +5,5 @@ export interface NeAspect {
   name: string;
   values: string[];
   appliedTo?: NeElement[];
+  datatype?: string;
 }

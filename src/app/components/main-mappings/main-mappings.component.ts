@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
 import {NeNetwork} from '../../models/ne-network';
-import {faEdit, faPlus, faTrash, faTimes, faCheck} from '@fortawesome/free-solid-svg-icons';
+import {faEdit, faPlus, faTrash, faTimes, faCheck, faSearch, faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-main-mappings',
@@ -15,6 +15,8 @@ export class MainMappingsComponent implements OnInit {
   faTrash = faTrash;
   faTimes = faTimes;
   faCheck = faCheck;
+  faSearch = faSearch;
+  faArrowLeft = faArrowLeft;
 
   showList = true;
 
