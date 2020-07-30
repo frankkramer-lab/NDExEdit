@@ -6,4 +6,6 @@ export interface NeAspect {
   values: string[];
   appliedTo?: NeElement[];
   datatype?: string;
+  mapPointerC?: number[];
+  mapPointerD?: number[];
 }

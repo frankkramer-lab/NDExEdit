@@ -93,6 +93,7 @@
   "MAIN_MAPPINGS_TITLE_LIST": "Liste aller Mappings",
   "MAIN_MAPPINGS_DETAILS": "Details",
   "MAIN_MAPPINGS_TT_EDIT": "Mapping bearbeiten",
+  "MAIN_MAPPINGS_TT_NEW": "Neues Mapping anlegen",
   "MAIN_MAPPINGS_DELETE": "Alle auf dieses Attribut gemappte Styles entfernen",
   "MAIN_MAPPINGS_CONFIRM_DELETION": "Möchtest du das oben dargestellte Mapping wirklich löschen?",
   "MAIN_MAPPINGS_CONFIRM_DELETION_YES": "Ja, lösch' es endlich",

@@ -582,6 +582,8 @@ export class ParseService {
           values: [],
           appliedTo: [],
           datatype: attribute.datatype,
+          mapPointerD: [],
+          mapPointerC: []
         };
 
         if (elementType === 'nodes') {
@@ -626,6 +628,37 @@ export class ParseService {
 
     const groupedMappingsNodes = this.groupDiscreteMappings(parsedMappingsNodesDefault.discrete);
     const groupedMappingsEdges = this.groupDiscreteMappings(parsedMappingsEdgesDefault.discrete);
+
+
+    for (const akv of aspectKeyValuesNodes) {
+      for (const nodeMap of groupedMappingsNodes) {
+        if (akv.name === nodeMap.classifier) {
+          akv.mapPointerD.push(groupedMappingsNodes.indexOf(nodeMap));
+        }
+      }
+
+      for (const contNodeMap of parsedMappingsNodesDefault.continuous) {
+        if (akv.name === contNodeMap.title[1]) {
+          akv.mapPointerC.push(parsedMappingsNodesDefault.continuous.indexOf(contNodeMap));
+        }
+      }
+    }
+
+    for (const akv of aspectKeyValuesEdges) {
+      for (const edgeMap of groupedMappingsEdges) {
+        if (akv.name === edgeMap.classifier) {
+          akv.mapPointerD.push(groupedMappingsEdges.indexOf(edgeMap));
+        }
+      }
+
+      for (const contEdgeMap of parsedMappingsEdgesDefault.continuous) {
+        if (akv.name === contEdgeMap.title[1]) {
+          akv.mapPointerC.push(parsedMappingsEdgesDefault.continuous.indexOf(contEdgeMap));
+        }
+      }
+    }
+
+
 
     return {
       id: currentId,

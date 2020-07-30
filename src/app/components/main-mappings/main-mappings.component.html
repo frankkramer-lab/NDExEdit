@@ -65,12 +65,12 @@
 
         <td><b>{{style.cssKey}}</b></td>
         <td>
-          <button class="btn btn-block btn-outline-warning" data-toggle="tooltip" data-placement="bottom" title="{{'MAIN_MAPPINGS_TT_EDIT' | translate}}">
+          <button type="button" class="btn btn-block btn-outline-warning" data-toggle="tooltip" data-placement="bottom" title="{{'MAIN_MAPPINGS_TT_EDIT' | translate}}">
             <fa-icon [icon]="faEdit"></fa-icon>
           </button>
         </td>
         <td>
-          <button class="btn btn-block btn-outline-danger">
+          <button type="button" class="btn btn-block btn-outline-danger">
             <fa-icon [icon]="faTrash"></fa-icon>
           </button>
         </td>
@@ -120,19 +120,27 @@
               {{akv.name}}
             </td>
             <td *ngIf="akv.values.length !== akv.appliedTo.length" class="float-right">
-              <button class="btn btn-outline-success mr-2" [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'nd']} }]"
+
+              <!-- mapping exists -->
+              <button type="button" class="btn btn-outline-warning mr-2" *ngIf="akv.mapPointerD.length === 1"
+                      data-toggle="tooltip" data-placement="bottom" title="{{'MAIN_MAPPINGS_TT_EDIT' | translate}}">
+                <fa-icon [icon]="faEdit"></fa-icon>
+              </button>
+              <button type="button" class="btn btn-outline-secondary" *ngIf="akv.mapPointerD.length === 1"
+                      [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nd' + akv.mapPointerD[0]]} }]"
                       data-toggle="tooltip" data-placement="bottom"
-                      title="{{'MAIN_MAPPINGS_NEW_ND' | translate}}">
+                      title="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}">
+                <fa-icon [icon]="faSearch"></fa-icon>
+              </button>
+
+              <!-- no mapping exists -->
+              <button type="button" class="btn btn-outline-success" *ngIf="akv.mapPointerD.length === 0"
+                      [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'nd']} }]"
+                      data-toggle="tooltip" data-placement="bottom"
+                      title="{{'MAIN_MAPPINGS_TT_NEW' | translate}}">
                 <fa-icon [icon]="faPlus"></fa-icon>
               </button>
-              <span *ngFor="let ndMap of selectedNetwork.mappings.nodesDiscrete">
-                <button class="btn btn-outline-secondary" *ngIf="akv.values.length !== akv.appliedTo.length && ndMap.classifier === akv.name"
-                        [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nd' + selectedNetwork.mappings.nodesDiscrete.indexOf(ndMap)]} }]"
-                        data-toggle="tooltip" data-placement="bottom"
-                        title="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}">
-                  <fa-icon [icon]="faSearch"></fa-icon>
-                </button>
-              </span>
+
             </td>
           </tr>
           </tbody>
@@ -152,19 +160,27 @@
               {{akv.name}}
             </td>
             <td *ngIf="akv.values.length !== akv.appliedTo.length" class="float-right">
-              <button class="btn btn-outline-success mr-2" [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'ed']} }]"
+
+              <!-- mapping exists -->
+              <button type="button" class="btn btn-outline-warning mr-2" *ngIf="akv.mapPointerD.length === 1"
+                      data-toggle="tooltip" data-placement="bottom" title="{{'MAIN_MAPPINGS_TT_EDIT' | translate}}">
+                <fa-icon [icon]="faEdit"></fa-icon>
+              </button>
+              <button type="button" class="btn btn-outline-secondary" *ngIf="akv.mapPointerD.length === 1"
+                      [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ed' + akv.mapPointerD[0]]} }]"
                       data-toggle="tooltip" data-placement="bottom"
-                      title="{{'MAIN_MAPPINGS_NEW_ED' | translate}}">
+                      title="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}">
+                <fa-icon [icon]="faSearch"></fa-icon>
+              </button>
+
+              <!-- no mapping exists -->
+              <button type="button" class="btn btn-outline-success" *ngIf="akv.mapPointerD.length === 0"
+                      [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'ed']} }]"
+                      data-toggle="tooltip" data-placement="bottom"
+                      title="{{'MAIN_MAPPINGS_TT_NEW' | translate}}">
                 <fa-icon [icon]="faPlus"></fa-icon>
               </button>
-              <span *ngFor="let edMap of selectedNetwork.mappings.edgesDiscrete">
-                <button class="btn btn-outline-secondary" *ngIf="akv.values.length !== akv.appliedTo.length && edMap.classifier === akv.name"
-                        [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ed' + selectedNetwork.mappings.edgesDiscrete.indexOf(edMap)]} }]"
-                        data-toggle="tooltip" data-placement="bottom"
-                        title="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}">
-                  <fa-icon [icon]="faSearch" ></fa-icon>
-                </button>
-              </span>
+
             </td>
           </tr>
           </tbody>
@@ -186,19 +202,27 @@
               {{akv.name}}
             </td>
             <td *ngIf="akv.datatype === 'double'" class="float-right">
-              <button class="btn btn-outline-success mr-2" [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'nc']} }]"
+
+              <!-- mapping exists -->
+              <button type="button" class="btn btn-outline-warning mr-2" *ngIf="akv.mapPointerC.length === 1"
+                      data-toggle="tooltip" data-placement="bottom" title="{{'MAIN_MAPPINGS_TT_EDIT' | translate}}">
+                <fa-icon [icon]="faEdit"></fa-icon>
+              </button>
+              <button type="button" class="btn btn-outline-secondary" *ngIf="akv.mapPointerC.length === 1"
+                      [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nc' + akv.mapPointerC[0]]} }]"
                       data-toggle="tooltip" data-placement="bottom"
-                      title="{{'MAIN_MAPPINGS_NEW_NC' | translate}}">
+                      title="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}">
+                <fa-icon [icon]="faSearch"></fa-icon>
+              </button>
+
+              <!-- no mapping exists -->
+              <button type="button" class="btn btn-outline-success" *ngIf="akv.mapPointerC.length === 0"
+                      [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'nc']} }]"
+                      data-toggle="tooltip" data-placement="bottom"
+                      title="{{'MAIN_MAPPINGS_TT_NEW' | translate}}">
                 <fa-icon [icon]="faPlus"></fa-icon>
               </button>
-              <span *ngFor="let ncMap of selectedNetwork.mappings.nodesContinuous">
-                <button class="btn btn-outline-secondary" *ngIf="akv.datatype === 'double' && ncMap.classifier === akv.name"
-                        [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nc' + selectedNetwork.mappings.nodesDiscrete.indexOf(ncMap)]} }]"
-                        data-toggle="tooltip" data-placement="bottom"
-                        title="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}">
-                  <fa-icon [icon]="faSearch"></fa-icon>
-                </button>
-              </span>
+
             </td>
           </tr>
           </tbody>
@@ -218,19 +242,27 @@
               {{akv.name}}
             </td>
             <td *ngIf="akv.datatype === 'double'" class="float-right">
-              <button class="btn btn-outline-success mr-2" [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'ec']} }]"
+
+              <!-- mapping exists -->
+              <button type="button" class="btn btn-outline-warning mr-2" *ngIf="akv.mapPointerC.length === 1"
+                      data-toggle="tooltip" data-placement="bottom" title="{{'MAIN_MAPPINGS_TT_EDIT' | translate}}">
+                <fa-icon [icon]="faEdit"></fa-icon>
+              </button>
+              <button type="button" class="btn btn-outline-secondary" *ngIf="akv.mapPointerC.length === 1"
+                      [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ec' + akv.mapPointerC[0]]} }]"
                       data-toggle="tooltip" data-placement="bottom"
-                      title="{{'MAIN_MAPPINGS_NEW_EC' | translate}}">
+                      title="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}">
+                <fa-icon [icon]="faSearch"></fa-icon>
+              </button>
+
+              <!-- no mapping exists -->
+              <button type="button" class="btn btn-outline-success" *ngIf="akv.mapPointerC.length === 0"
+                      [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'ec']} }]"
+                      data-toggle="tooltip" data-placement="bottom"
+                      title="{{'MAIN_MAPPINGS_TT_NEW' | translate}}">
                 <fa-icon [icon]="faPlus"></fa-icon>
               </button>
-              <span *ngFor="let ecMap of selectedNetwork.mappings.edgesContinuous">
-                <button class="btn btn-outline-secondary" *ngIf="akv.datatype === 'double' && ecMap.classifier === akv.name"
-                        [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ec' + selectedNetwork.mappings.nodesDiscrete.indexOf(ecMap)]} }]"
-                        data-toggle="tooltip" data-placement="bottom"
-                        title="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}">
-                  <fa-icon [icon]="faSearch"></fa-icon>
-                </button>
-              </span>
+
             </td>
           </tr>
           </tbody>
