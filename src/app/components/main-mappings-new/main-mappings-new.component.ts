@@ -2,7 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {NeNetwork} from '../../models/ne-network';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
-import {faArrowRight, faPalette, faUndo, faCheck} from '@fortawesome/free-solid-svg-icons';
+import {faArrowRight, faArrowLeft, faPalette, faUndo, faCheck} from '@fortawesome/free-solid-svg-icons';
+import {NeMappingsDefinition} from '../../models/ne-mappings-definition';
+import {NeAspect} from '../../models/ne-aspect';
 
 @Component({
   selector: 'app-main-mappings-new',
@@ -11,11 +13,13 @@ import {faArrowRight, faPalette, faUndo, faCheck} from '@fortawesome/free-solid-
 })
 export class MainMappingsNewComponent implements OnInit {
   faArrowRight = faArrowRight;
+  faArrowLeft = faArrowLeft;
   faPalette = faPalette;
   faUndo = faUndo;
   faCheck = faCheck;
 
-  mappedProperty: string;
+  propertyToMap: NeAspect;
+  styleProperty: string;
 
   selectedNetwork: NeNetwork;
   selectedAspect: any;
@@ -28,38 +32,46 @@ export class MainMappingsNewComponent implements OnInit {
   nodesColorProperties: string[] = ['background-color', 'border-color'];
   edgesColorProperties: string[] = ['line-color', 'target-arrow-color', 'source-arrow-color'];
 
+  discreteMapping: NeMappingsDefinition[];
+
   constructor(private route: ActivatedRoute,
               public dataService: DataService) {
 
     this.route.paramMap.subscribe(params => {
       this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
+      const propertyPointer = params.get('property');
       switch (params.get('map')) {
         case 'nd':
           this.mappingsType.nd = true;
           this.mappingsType.nc = false;
           this.mappingsType.ed = false;
           this.mappingsType.ec = false;
+          this.propertyToMap = this.selectedNetwork.aspectKeyValuesNodes[propertyPointer];
           break;
         case 'nc':
           this.mappingsType.nc = true;
           this.mappingsType.nd = false;
           this.mappingsType.ed = false;
           this.mappingsType.ec = false;
+          this.propertyToMap = this.selectedNetwork.aspectKeyValuesNodes[propertyPointer];
           break;
         case 'ed':
           this.mappingsType.ed = true;
           this.mappingsType.nc = false;
           this.mappingsType.nd = false;
           this.mappingsType.ec = false;
+          this.propertyToMap = this.selectedNetwork.aspectKeyValuesEdges[propertyPointer];
           break;
         case 'ec':
           this.mappingsType.ec = true;
           this.mappingsType.nc = false;
           this.mappingsType.nd = false;
           this.mappingsType.ed = false;
+          this.propertyToMap = this.selectedNetwork.aspectKeyValuesEdges[propertyPointer];
           break;
 
       }
+      this.discreteMapping = [];
     });
 
   }

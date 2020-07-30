@@ -15,16 +15,15 @@ export class DataService {
     return this.networksParsed.find(x => x.id === id);
   }
 
-  removeMapping(networkId: number, mapId: string): void {
-    const network = this.networksParsed.find(x => x.id === networkId);
-    const mappingType = mapId.substring(0, 2);
-    const mappingId = mapId.substring(2);
+  // todo update aspectKeyValues -> pointers to corresponding mappings after deletion
+  removeMapping(map: any): void {
 
-    switch (mappingType) {
+    const network = this.getNetworkById(map.network);
+
+    switch (map.type) {
       case 'nd':
-
-        const ndSelectors = network.mappings.nodesDiscrete[mappingId].selectors;
-        network.mappings.nodesDiscrete.splice(mappingId, 1);
+        const ndSelectors = network.mappings.nodesDiscrete[map.mappingId].selectors;
+        network.mappings.nodesDiscrete.splice(map.mappingId, 1);
 
         let ndNewStyle = [];
         for (const selector of ndSelectors) {
@@ -41,23 +40,24 @@ export class DataService {
         }
 
         network.style = ndNewStyle;
-
+        network.aspectKeyValuesNodes[map.akvIndex].mapPointerD = network.aspectKeyValuesNodes[map.akvIndex].mapPointerD.filter(x => x !== map.mappingId);
         break;
       case 'nc':
 
-        network.mappings.nodesContinuous.splice(mappingId, 1);
+        network.mappings.nodesContinuous.splice(map.mappingId, 1);
 
-        for (const value of network.mappings.nodesContinuous[mappingId].values) {
+        for (const value of network.mappings.nodesContinuous[map.mappingId].values) {
           const correspondingStyle = network.style.find(x => x.selector === value.selector);
           delete correspondingStyle.style[value.cssKey];
         }
 
-        network.mappings.nodesContinuous.splice(mappingId, 1);
-
+        network.mappings.nodesContinuous.splice(map.mappingId, 1);
+        network.aspectKeyValuesNodes[map.akvIndex].mapPointerC = network.aspectKeyValuesNodes[map.akvIndex].mapPointerC.filter(x => x !== map.mappingId);
         break;
       case 'ed':
-        const edSelectors = network.mappings.edgesDiscrete[mappingId].selectors;
-        network.mappings.edgesDiscrete.splice(mappingId, 1);
+
+        const edSelectors = network.mappings.edgesDiscrete[map.mappingId].selectors;
+        network.mappings.edgesDiscrete.splice(map.mappingId, 1);
 
         let edNewStyle = [];
         for (const selector of edSelectors) {
@@ -72,13 +72,12 @@ export class DataService {
             }
           }
         }
-
+        network.aspectKeyValuesEdges[map.akvIndex].mapPointerD = network.aspectKeyValuesEdges[map.akvIndex].mapPointerD.filter(x => x !== map.mappingId);
         network.style = edNewStyle;
-
         break;
       case 'ec':
 
-        for (const value of network.mappings.edgesContinuous[mappingId].values) {
+        for (const value of network.mappings.edgesContinuous[map.mappingId].values) {
 
           const correspondingStyle = network.style.find(x => x.selector === value.selector);
 
@@ -91,10 +90,10 @@ export class DataService {
             delete correspondingStyle.style[value.cssKey];
           }
         }
-
-        network.mappings.edgesContinuous.splice(mappingId, 1);
-
+        network.aspectKeyValuesEdges[map.akvIndex].mapPointerC = network.aspectKeyValuesEdges[map.akvIndex].mapPointerC.filter(x => x !== map.mappingId);
+        network.mappings.edgesContinuous.splice(map.mappingId, 1);
         break;
     }
   }
+
 }

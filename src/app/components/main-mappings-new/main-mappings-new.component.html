@@ -4,8 +4,9 @@
     <a role="button" [routerLink]="['', { outlets: {primary: ['graph', selectedNetwork.id]} }]"
        data-toggle="tooltip" data-placement="bottom"
        title="{{'MAIN_MAPPINGS_GRAPH' | translate}}">
-      {{selectedNetwork.networkInformation.name}}
+      <fa-icon [icon]="faArrowLeft"></fa-icon>
     </a>
+    {{selectedNetwork.networkInformation.name}}
   </h1>
 
   <hr>
@@ -35,73 +36,42 @@
 
   <div class="tab-content p-2">
 
+    <!-- NEW: NodesDiscrete -->
     <div class="tab-pane fade show" id="newNdForm" role="tabpanel" aria-labelledby="newNd"
          [ngClass]="{active: mappingsType.nd}">
       <h3>{{'MAIN_MAPPINGS_NEW_ND' | translate}}</h3>
 
-      <div class="row mt-2">
-        <div class="col-2">
-          <button class="btn btn-block btn-outline-danger">
-            <fa-icon [icon]="faUndo"></fa-icon>
-          </button>
-        </div>
-        <div class="col-2">
-          <button class="btn btn-block btn-outline-success">
-            <fa-icon [icon]="faCheck"></fa-icon>
-          </button>
+      <form>
 
+        <div class="form-group row" *ngFor="let value of propertyToMap.values">
+          <label for="" class="col-3 col-form-label">{{value}}</label>
+          <div>
+            <input type="text" class="col-9 form-control-plaintext" id="" value="">
+          </div>
         </div>
-        <div class="col-7">
-          <label for="mappedProperty"></label>
-          <input id="mappedProperty" class="form-control" type="text" placeholder="background-color"
-                 [(ngModel)]="mappedProperty">
-        </div>
-        <div class="col-1">
-          <button class="btn btn-block btn-outline-secondary" *ngIf="nodesColorProperties.includes(mappedProperty)">
-            <fa-icon [icon]="faPalette"></fa-icon>
-          </button>
-        </div>
-      </div>
 
-      <div class="row">
-        <div class="col-4 border-right">
-          <ul class="list-group" *ngIf="selectedNetwork.aspectKeyValuesNodes.length > 0">
-            <span *ngFor="let akv of selectedNetwork.aspectKeyValuesNodes">
-              <li type="button" class="list-group-item"
-                  [ngClass]="{active: selectedAspect === akv}"
-                  (click)="selectedAspect = akv" *ngIf="akv.values.length !== akv.appliedTo.length">
-                {{akv.name}}
-                <fa-icon [icon]="faArrowRight"></fa-icon>
-              </li>
-            </span>
-          </ul>
-        </div>
-        <div class="col-8">
-          <ul class="list-group" *ngIf="selectedAspect">
-            <li class="list-group-item" *ngFor="let value of selectedAspect.values; let i = index">
-              <form class="form-inline">
-                <label for="{{selectedAspect.name}}_{{i}}" class="mr-3">{{value}}</label>
-                <input id="{{selectedAspect.name}}_{{i}}" class="form-control form-control-sm" type="text"
-                       placeholder="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
-              </form>
-            </li>
-          </ul>
-        </div>
-      </div>
+      </form>
+
 
     </div>
+
+    <!-- NEW: NodesContinuous -->
     <div class="tab-pane fade show" id="newNcForm" role="tabpanel" aria-labelledby="newNc"
          [ngClass]="{active: mappingsType.nc}">
       <h3>{{'MAIN_MAPPINGS_NEW_NC' | translate}}</h3>
 
 
     </div>
+
+    <!-- NEW: EdgesDiscrete -->
     <div class="tab-pane fade show" id="newEdForm" role="tabpanel" aria-labelledby="newEd"
          [ngClass]="{active: mappingsType.ed}">
       <h3>{{'MAIN_MAPPINGS_NEW_ED' | translate}}</h3>
 
 
     </div>
+
+    <!-- NEW: EdgesContinuous -->
     <div class="tab-pane fade show" id="newEcForm" role="tabpanel" aria-labelledby="newEc"
          [ngClass]="{active: mappingsType.ec}">
       <h3>{{'MAIN_MAPPINGS_NEW_EC' | translate}}</h3>
