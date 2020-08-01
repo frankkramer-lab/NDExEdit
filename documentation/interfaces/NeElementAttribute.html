@@ -64,6 +64,13 @@
             <code>src/app/models/ne-element-attribute.ts</code>
         </p>
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Type for an element&#39;s attributes</p>
+
+            </p>
 
 
         <section>
@@ -145,6 +152,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>datatype of the attribute&#39;s value, as specified by <a href="https://home.ndexbio.org/data-model/">CX data model</a></p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -179,6 +192,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>cleaned name of the attribute</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -213,6 +232,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>human readable name of the attribute</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -247,6 +272,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Id of the corresponding element</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -281,6 +312,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>cleaned value of the attribute</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -315,6 +352,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>humand readable value of the attribute</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
             </section>
@@ -323,11 +366,35 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export interface NeElementAttribute {
+
+  /**
+   * Id of the corresponding element
+   */
   reference?: string;
+
+  /**
+   * cleaned name of the attribute
+   */
   key?: string;
+
+  /**
+   * human readable name of the attribute
+   */
   keyHR?: string;
+
+  /**
+   * cleaned value of the attribute
+   */
   value?: string;
+
+  /**
+   * humand readable value of the attribute
+   */
   valueHR?: string;
+
+  /**
+   * datatype of the attribute&#x27;s value, as specified by {@link https://home.ndexbio.org/data-model/|CX data model}
+   */
   datatype?: string;
 }
 </code></pre>

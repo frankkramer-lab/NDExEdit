@@ -4,7 +4,6 @@ import {ParseService} from './services/parse.service';
 import {NeNetwork} from './models/ne-network';
 import {DataService} from './services/data.service';
 import {HttpClient} from '@angular/common/http';
-import {GraphService} from './services/graph.service';
 
 @Component({
   selector: 'app-root',
@@ -16,9 +15,20 @@ import {GraphService} from './services/graph.service';
  * Root component of the application
  */
 export class AppComponent {
+
+  /**
+   * Title of the application is ndex-edit
+   */
   title = 'ndex-edit';
 
+  /**
+   * Main: default page layout is 60%
+   */
   widthMain = 'width-60';
+
+  /**
+   * Sidebar: default page layout is 38%
+   */
   widthSidebar = 'width-38';
 
   /**
@@ -36,6 +46,14 @@ export class AppComponent {
    */
   private readonly defaultLanguage = 'en';
 
+  /**
+   * Initializes translation and renders the desired mock-ups
+   *
+   * @param translateService Service to manage languages
+   * @param parseService Service to handle parsing of mock-ups
+   * @param dataService Service to read and write globally accessible data
+   * @param http Service to handle HTTP requests and file inputs
+   */
   constructor(
     public translateService: TranslateService,
     private parseService: ParseService,
@@ -100,7 +118,16 @@ export class AppComponent {
       .catch(error => console.log(error));
   }
 
-
+  /**
+   * Simple implementation to adjust the page layout:
+   * <ul>
+   *   <li><b>left-click</b>: main view decreases, sidebar increases</li>
+   *   <li><b>right-click</b>: main view increases, sidebar decreases</li>
+   *   <li><b>Ctrl + left-click</b></li>: resets widths, see {@link AppComponent#resetPageLayout}
+   * </ul>
+   * @param e event to fetch all pressed keys
+   * @param direction can be right or left
+   */
   handleClickEvent(e: MouseEvent, direction: string): void {
     if (e.ctrlKey) {
       this.resetPageLayout();
@@ -124,6 +151,9 @@ export class AppComponent {
     }
   }
 
+  /**
+   * Resets page layout to {@link AppComponent#widthMain} and {@link AppComponent#widthSidebar}
+   */
   resetPageLayout(): void {
     this.widthSidebar = 'width-38';
     this.widthMain = 'width-60';

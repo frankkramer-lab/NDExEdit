@@ -1,10 +1,8 @@
 import {NeNetworkInformation} from './ne-network-information';
 import * as cytoscape from 'cytoscape';
 import {ElementDefinition, Stylesheet} from 'cytoscape';
-import {NeElement} from './ne-element';
 import {NeElementAttribute} from './ne-element-attribute';
 import {NeAspect} from './ne-aspect';
-import {NeGlobalMappings} from './ne-global-mappings';
 import {NeMappingsMap} from './ne-mappings-map';
 
 export interface NeNetwork {

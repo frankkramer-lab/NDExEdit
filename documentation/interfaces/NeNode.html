@@ -64,6 +64,13 @@
             <code>src/app/models/ne-node.ts</code>
         </p>
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Type based on <a href="../interfaces/NeElement.html">NeElement</a> describing nodes</p>
+
+            </p>
 
             <p class="comment">
                 <h3>Extends</h3>
@@ -152,6 +159,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>{@inheritdoc}</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -186,6 +199,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>{@inheritdoc}</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -215,6 +234,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>{@inheritdoc}</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -244,6 +269,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>{@inheritdoc}</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -273,6 +304,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>{@inheritdoc}</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -307,6 +344,13 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Coordinates specified within a
+<a href="http://www.cut-the-knot.org/Curriculum/Calculus/Coordinates.shtml">cartesian layout</a></p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -341,6 +385,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>{@inheritdoc}</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
             </section>
@@ -352,13 +402,45 @@
 import {NeElementAttribute} from &#x27;./ne-element-attribute&#x27;;
 import {NePosition} from &#x27;./ne-position&#x27;;
 
+/**
+ * Type based on {@link NeElement} describing nodes
+ */
 export interface NeNode extends NeElement {
+
+  /**
+   * {@inheritdoc}
+   */
   id: string;
+
+  /**
+   * {@inheritdoc}
+   */
   group: string;
+
+  /**
+   * {@inheritdoc}
+   */
   name: string;
+
+  /**
+   * {@inheritdoc}
+   */
   reference?: string;
+
+  /**
+   * {@inheritdoc}
+   */
   attributes?: NeElementAttribute[];
+
+  /**
+   * Coordinates specified within a
+   * {@link http://www.cut-the-knot.org/Curriculum/Calculus/Coordinates.shtml|cartesian layout}
+   */
   position?: NePosition;
+
+  /**
+   * {@inheritdoc}
+   */
   classes?: string[];
 }
 </code></pre>
