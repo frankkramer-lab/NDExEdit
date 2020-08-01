@@ -9,21 +9,77 @@ import {faEdit, faPlus, faTrash, faTimes, faCheck, faSearch, faArrowLeft} from '
   templateUrl: './main-mappings.component.html',
   styleUrls: ['./main-mappings.component.scss']
 })
-export class MainMappingsComponent implements OnInit {
+
+/**
+ * Component responsible for displaying existing mappings
+ */
+export class MainMappingsComponent {
+
+  /**
+   * Icon: faPlus
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faPlus = faPlus;
+
+  /**
+   * Icon: faEdit
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faEdit = faEdit;
+
+  /**
+   * Icon: faTrash
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faTrash = faTrash;
+
+  /**
+   * Icon: faTimes
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faTimes = faTimes;
+
+  /**
+   * Icon: faCheck
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faCheck = faCheck;
+
+  /**
+   * Icon: faSearch
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faSearch = faSearch;
+
+  /**
+   * Icon: faArrowLeft
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faArrowLeft = faArrowLeft;
 
+  /**
+   * Used as a switch to toggle between list of all currently existing mappings and confirmation dialogue to delete a mapping
+   */
   showList = true;
 
+  /**
+   * Selected network of type {@link NeNetwork|NeNetwork}
+   */
   selectedNetwork: NeNetwork;
+
+  /**
+   * Selected mapping which is displayed in the table at the top of the view
+   */
   selectedMapping: any[];
+
+  /**
+   * Id of the currently selected mapping
+   */
   currentMappingId: string[];
 
+  /**
+   * Mapping to be removed which is overridden as soon as the user selects a mapping to delete
+   */
   mappingToRemove = {
     map: null,
     type: '',
@@ -32,8 +88,25 @@ export class MainMappingsComponent implements OnInit {
     akvIndex: -1,
   };
 
+  /**
+   * Can be one of the following types:
+   * <ul>
+   *   <li><b>nd</b>: discrete node mapping</li>
+   *   <li><b>nc</b>: continuous node mapping</li>
+   *   <li><b>ed</b>: discrete edge mapping</li>
+   *   <li><b>ec</b>: continuous edge mapping</li>
+   * </ul>
+   */
   givenMapType: string;
 
+  /**
+   * The URL rendering this view contains both the specified graph and a mapping whose details are displayed.
+   * Thus within the constructor both {@link MainMappingsComponent#selectedNetwork} and
+   * {@link MainMappingsComponent#selectedMapping} are set
+   *
+   * @param route Service to read URL
+   * @param dataService Service to read and write to globally accessible data
+   */
   constructor(
     private route: ActivatedRoute,
     public dataService: DataService) {
@@ -72,9 +145,13 @@ export class MainMappingsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-  }
-
+  /**
+   * Toggles the dialogue to confirm deletion of an existing mapping. Selects the mapping to be deleted by
+   * overriding {@link MainMappingsComponent#mappingToRemove}
+   *
+   * @param map Single mapping which is to be deleted
+   * @param type As specified by {@link MainMappingsComponent#givenMapType}
+   */
   toggleRemoveDialogue(map: any = null, type: string = ''): void {
     switch (type) {
       case 'nd':
@@ -122,6 +199,13 @@ export class MainMappingsComponent implements OnInit {
 
   }
 
+  /**
+   * On confirmation the deletion of the mapping is executed and instead of the confirmation dialogue the list of
+   * existing mappings reappears.
+   * When not confirming the deletion merely the dialogue is hidden again.
+   *
+   * @param confirmation Determines if the deletion is executed or not
+   */
   confirmDeletion(confirmation: boolean): void {
     if (confirmation) {
       console.log(this.mappingToRemove);

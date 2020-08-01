@@ -11,6 +11,10 @@ import {NeAspect} from '../../models/ne-aspect';
   templateUrl: './main-mappings-new.component.html',
   styleUrls: ['./main-mappings-new.component.scss']
 })
+
+/**
+ * Component responsible for creating new mappings
+ */
 export class MainMappingsNewComponent implements OnInit {
   faArrowRight = faArrowRight;
   faArrowLeft = faArrowLeft;

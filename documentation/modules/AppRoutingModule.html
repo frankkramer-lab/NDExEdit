@@ -78,7 +78,8 @@ import {MainGraphComponent} from &#x27;./components/main-graph/main-graph.compon
 import {SidebarEditComponent} from &#x27;./components/sidebar-edit/sidebar-edit.component&#x27;;
 import {MainStatsComponent} from &#x27;./components/main-stats/main-stats.component&#x27;;
 import {SidebarCompareComponent} from &#x27;./components/sidebar-compare/sidebar-compare.component&#x27;;
-
+import {MainMappingsComponent} from &#x27;./components/main-mappings/main-mappings.component&#x27;;
+import {MainMappingsNewComponent} from &#x27;./components/main-mappings-new/main-mappings-new.component&#x27;;
 
 const routes: Routes &#x3D; [
   {
@@ -88,7 +89,7 @@ const routes: Routes &#x3D; [
   },
   {
     path: &#x27;info&#x27;,
-    component: MainInfoComponent
+    component: MainInfoComponent,
   },
   {
     path: &#x27;graph/:id&#x27;,
@@ -111,19 +112,51 @@ const routes: Routes &#x3D; [
     ]
   },
   {
+    path: &#x27;mappings/:id/:map&#x27;,
+    component: MainMappingsComponent,
+    children: [
+      {
+        path: &#x27;&#x27;,
+        component: MainInfoComponent
+      }
+    ]
+  },
+  {
+    path: &#x27;new/:id/:map/:property&#x27;,
+    component: MainMappingsNewComponent,
+    children: [
+      {
+        path: &#x27;&#x27;,
+        component: MainInfoComponent
+      }
+    ]
+  },
+  {
     path: &#x27;manage&#x27;,
     component: SidebarManageComponent,
     outlet: &#x27;sidebar&#x27;
   },
   {
-    path: &#x27;edit&#x27;,
+    path: &#x27;edit/:id&#x27;,
     component: SidebarEditComponent,
-    outlet: &#x27;sidebar&#x27;
+    outlet: &#x27;sidebar&#x27;,
+    children: [
+      {
+        path: &#x27;&#x27;,
+        component: SidebarManageComponent
+      }
+    ]
   },
   {
-    path: &#x27;compare&#x27;,
+    path: &#x27;compare/:id&#x27;,
     component: SidebarCompareComponent,
-    outlet: &#x27;sidebar&#x27;
+    outlet: &#x27;sidebar&#x27;,
+    children: [
+      {
+        path: &#x27;&#x27;,
+        component: SidebarManageComponent
+      }
+    ]
   }
 ];
 

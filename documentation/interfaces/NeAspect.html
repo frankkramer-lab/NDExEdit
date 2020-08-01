@@ -43,7 +43,7 @@
 
 <ol class="breadcrumb">
   <li>Interfaces</li>
-  <li>NeEdge</li>
+  <li>NeAspect</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -61,16 +61,10 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/app/models/ne-edge.ts</code>
+            <code>src/app/models/ne-aspect.ts</code>
         </p>
 
 
-            <p class="comment">
-                <h3>Extends</h3>
-            </p>
-            <p class="comment">
-                        <code><a href="../interfaces/NeElement.html" target="_self" >NeElement</a></code>
-            </p>
 
         <section>
             <h3 id="index">Index</h3>
@@ -86,26 +80,25 @@
                             <ul class="index-list">
                                 <li>
                                             <span class="modifier">Optional</span>
-                                        <a href="#attributes">attributes</a>
+                                        <a href="#appliedTo">appliedTo</a>
                                 </li>
                                 <li>
                                             <span class="modifier">Optional</span>
-                                        <a href="#classes">classes</a>
+                                        <a href="#datatype">datatype</a>
                                 </li>
                                 <li>
-                                        <a href="#group">group</a>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#mapPointerC">mapPointerC</a>
                                 </li>
                                 <li>
-                                        <a href="#id">id</a>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#mapPointerD">mapPointerD</a>
                                 </li>
                                 <li>
                                         <a href="#name">name</a>
                                 </li>
                                 <li>
-                                        <a href="#source">source</a>
-                                </li>
-                                <li>
-                                        <a href="#target">target</a>
+                                        <a href="#values">values</a>
                                 </li>
                             </ul>
                         </td>
@@ -122,13 +115,13 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="attributes"></a>
-                                        <span class="name"><b>attributes</b><a href="#attributes"><span class="icon ion-ios-link"></span></a></span>
+                                        <a name="appliedTo"></a>
+                                        <span class="name"><b>appliedTo</b><a href="#appliedTo"><span class="icon ion-ios-link"></span></a></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>attributes:     <code>NeElementAttribute[]</code>
+                                        <code>appliedTo:         <code><a href="../interfaces/NeElement.html" target="_self" >NeElement[]</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -136,7 +129,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>    <code>NeElementAttribute[]</code>
+                                            <i>Type : </i>        <code><a href="../interfaces/NeElement.html" target="_self" >NeElement[]</a></code>
 
                                         </td>
                                     </tr>
@@ -156,13 +149,13 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="classes"></a>
-                                        <span class="name"><b>classes</b><a href="#classes"><span class="icon ion-ios-link"></span></a></span>
+                                        <a name="datatype"></a>
+                                        <span class="name"><b>datatype</b><a href="#datatype"><span class="icon ion-ios-link"></span></a></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>classes:     <code>string[]</code>
+                                        <code>datatype:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -170,7 +163,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>    <code>string[]</code>
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
                                         </td>
                                     </tr>
@@ -190,13 +183,13 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="group"></a>
-                                        <span class="name"><b>group</b><a href="#group"><span class="icon ion-ios-link"></span></a></span>
+                                        <a name="mapPointerC"></a>
+                                        <span class="name"><b>mapPointerC</b><a href="#mapPointerC"><span class="icon ion-ios-link"></span></a></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>group:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>mapPointerC:     <code>number[]</code>
 </code>
                                     </td>
                                 </tr>
@@ -204,11 +197,16 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            <i>Type : </i>    <code>number[]</code>
 
                                         </td>
                                     </tr>
 
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
 
 
 
@@ -219,13 +217,13 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="id"></a>
-                                        <span class="name"><b>id</b><a href="#id"><span class="icon ion-ios-link"></span></a></span>
+                                        <a name="mapPointerD"></a>
+                                        <span class="name"><b>mapPointerD</b><a href="#mapPointerD"><span class="icon ion-ios-link"></span></a></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>id:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>mapPointerD:     <code>number[]</code>
 </code>
                                     </td>
                                 </tr>
@@ -233,11 +231,16 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            <i>Type : </i>    <code>number[]</code>
 
                                         </td>
                                     </tr>
 
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
 
 
 
@@ -277,13 +280,13 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="source"></a>
-                                        <span class="name"><b>source</b><a href="#source"><span class="icon ion-ios-link"></span></a></span>
+                                        <a name="values"></a>
+                                        <span class="name"><b>values</b><a href="#values"><span class="icon ion-ios-link"></span></a></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>source:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>values:     <code>string[]</code>
 </code>
                                     </td>
                                 </tr>
@@ -291,36 +294,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="target"></a>
-                                        <span class="name"><b>target</b><a href="#target"><span class="icon ion-ios-link"></span></a></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>target:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            <i>Type : </i>    <code>string[]</code>
 
                                         </td>
                                     </tr>
@@ -337,17 +311,15 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {NeElement} from &#x27;./ne-element&#x27;;
-import {NeNode} from &#x27;./ne-node&#x27;;
 import {NeElementAttribute} from &#x27;./ne-element-attribute&#x27;;
 
-export interface NeEdge extends NeElement {
-  id: string;
-  group: string;
+export interface NeAspect {
   name: string;
-  source: string;
-  target: string;
-  attributes?: NeElementAttribute[];
-  classes?: string[];
+  values: string[];
+  appliedTo?: NeElement[];
+  datatype?: string;
+  mapPointerC?: number[];
+  mapPointerD?: number[];
 }
 </code></pre>
     </div>
@@ -376,7 +348,7 @@ export interface NeEdge extends NeElement {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'NeEdge.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'NeAspect.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

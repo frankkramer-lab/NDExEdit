@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {DataService} from '../../services/data.service';
 import {faInfo, faPaintBrush} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -13,10 +12,19 @@ import {faInfo, faPaintBrush} from '@fortawesome/free-solid-svg-icons';
  */
 export class SidebarManageComponent {
 
+  /**
+   * Icon: faPaintBrush
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faPaintBrush = faPaintBrush;
+
+  /**
+   * Icon: faInfo
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faInfo = faInfo;
 
-  constructor(public dataService: DataService) {
+  constructor() {
   }
 
 }

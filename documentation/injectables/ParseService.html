@@ -110,12 +110,37 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Private</span>
+                                <a href="#addArrowColor">addArrowColor</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
                                     <span class="modifier">Static</span>
                                 <a href="#addStyles">addStyles</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
+                                <a href="#buildChartData">buildChartData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#buildColorGradient">buildColorGradient</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
                                 <a href="#calculateRelativeValue">calculateRelativeValue</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#evalEdgeStyleDependencies">evalEdgeStyleDependencies</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Static</span>
+                                <a href="#findPriorityBySelector">findPriorityBySelector</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#groupDiscreteMappings">groupDiscreteMappings</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
@@ -127,6 +152,11 @@
                             </li>
                             <li>
                                 <a href="#mockedFiles">mockedFiles</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Static</span>
+                                <a href="#orderStyles">orderStyles</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
@@ -215,7 +245,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/services/parse.service.ts:28</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/services/parse.service.ts:32</a></div>
                             </td>
                         </tr>
 
@@ -262,6 +292,90 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="addArrowColor"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            addArrowColor
+                        </b>
+                        <a href="#addArrowColor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>addArrowColor(parsedStyles: NeStyleComponent[], arrowColorAsEdgeColor: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="1485"
+                            class="link-to-prism">src/app/services/parse.service.ts:1485</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>parsedStyles</td>
+                                    <td>
+                                            <code>NeStyleComponent[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>arrowColorAsEdgeColor</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>NeStyleComponent[]</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="addStyles"></a>
                     <span class="name">
                         <b>
@@ -283,8 +397,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="191"
-                            class="link-to-prism">src/app/services/parse.service.ts:191</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="215"
+                            class="link-to-prism">src/app/services/parse.service.ts:215</a></div>
                 </td>
             </tr>
 
@@ -359,6 +473,270 @@ or for which a new selector has to be created</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="buildChartData"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            buildChartData
+                        </b>
+                        <a href="#buildChartData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>buildChartData(thresholds: string[], lowers: string[], equals: string[], greaters: string[], lookup: string[], attribute: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="1294"
+                            class="link-to-prism">src/app/services/parse.service.ts:1294</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>thresholds</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>lowers</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>equals</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>greaters</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>lookup</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>attribute</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="buildColorGradient"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            buildColorGradient
+                        </b>
+                        <a href="#buildColorGradient"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>buildColorGradient(thresholds: string[], lowers: string[], equals: string[], greaters: string[], lookup: string[], attribute: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="1255"
+                            class="link-to-prism">src/app/services/parse.service.ts:1255</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>thresholds</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>lowers</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>equals</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>greaters</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>lookup</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>attribute</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/NeColorGradient.html" target="_self" >NeColorGradient[]</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="calculateRelativeValue"></a>
                     <span class="name">
                         <b>
@@ -379,8 +757,8 @@ or for which a new selector has to be created</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="865"
-                            class="link-to-prism">src/app/services/parse.service.ts:865</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1354"
+                            class="link-to-prism">src/app/services/parse.service.ts:1354</a></div>
                 </td>
             </tr>
 
@@ -431,6 +809,223 @@ or for which a new selector has to be created</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="evalEdgeStyleDependencies"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            evalEdgeStyleDependencies
+                        </b>
+                        <a href="#evalEdgeStyleDependencies"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>evalEdgeStyleDependencies(styleEdgesDefault: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="1479"
+                            class="link-to-prism">src/app/services/parse.service.ts:1479</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>styleEdgesDefault</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findPriorityBySelector"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Static</span>
+                            findPriorityBySelector
+                        </b>
+                        <a href="#findPriorityBySelector"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findPriorityBySelector(selector: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="258"
+                            class="link-to-prism">src/app/services/parse.service.ts:258</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>selector</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="groupDiscreteMappings"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            groupDiscreteMappings
+                        </b>
+                        <a href="#groupDiscreteMappings"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>groupDiscreteMappings(mappings: NeMappingsDefinition[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="1415"
+                            class="link-to-prism">src/app/services/parse.service.ts:1415</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>mappings</td>
+                                    <td>
+                                            <code>NeMappingsDefinition[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="lookup"></a>
                     <span class="name">
                         <b>
@@ -451,8 +1046,8 @@ or for which a new selector has to be created</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="565"
-                            class="link-to-prism">src/app/services/parse.service.ts:565</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="861"
+                            class="link-to-prism">src/app/services/parse.service.ts:861</a></div>
                 </td>
             </tr>
 
@@ -591,8 +1186,8 @@ or for which a new selector has to be created</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="662"
-                            class="link-to-prism">src/app/services/parse.service.ts:662</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="969"
+                            class="link-to-prism">src/app/services/parse.service.ts:969</a></div>
                 </td>
             </tr>
 
@@ -694,8 +1289,8 @@ or for which a new selector has to be created</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="233"
-                            class="link-to-prism">src/app/services/parse.service.ts:233</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="283"
+                            class="link-to-prism">src/app/services/parse.service.ts:283</a></div>
                 </td>
             </tr>
 
@@ -753,6 +1348,79 @@ or for which a new selector has to be created</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="orderStyles"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Static</span>
+                            orderStyles
+                        </b>
+                        <a href="#orderStyles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>orderStyles(parsedStyles: NeStyleComponent[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="254"
+                            class="link-to-prism">src/app/services/parse.service.ts:254</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>parsedStyles</td>
+                                    <td>
+                                            <code>NeStyleComponent[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>NeStyleComponent[]</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="parseEdgeAttributeData"></a>
                     <span class="name">
                         <b>
@@ -767,15 +1435,15 @@ or for which a new selector has to be created</p>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>parseEdgeAttributeData(readData: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                    <code>parseEdgeAttributeData(readData: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, edgeData: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="142"
-                            class="link-to-prism">src/app/services/parse.service.ts:142</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="163"
+                            class="link-to-prism">src/app/services/parse.service.ts:163</a></div>
                 </td>
             </tr>
 
@@ -810,6 +1478,22 @@ or for which a new selector has to be created</p>
 
                                     <td>
                                         <p>input data</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>edgeData</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>raw edge data</p>
 
                                     </td>
                                 </tr>
@@ -854,8 +1538,8 @@ or for which a new selector has to be created</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="121"
-                            class="link-to-prism">src/app/services/parse.service.ts:121</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="128"
+                            class="link-to-prism">src/app/services/parse.service.ts:128</a></div>
                 </td>
             </tr>
 
@@ -934,8 +1618,8 @@ or for which a new selector has to be created</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="161"
-                            class="link-to-prism">src/app/services/parse.service.ts:161</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="185"
+                            class="link-to-prism">src/app/services/parse.service.ts:185</a></div>
                 </td>
             </tr>
 
@@ -1013,8 +1697,8 @@ or for which a new selector has to be created</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="751"
-                            class="link-to-prism">src/app/services/parse.service.ts:751</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1099"
+                            class="link-to-prism">src/app/services/parse.service.ts:1099</a></div>
                 </td>
             </tr>
 
@@ -1075,7 +1759,7 @@ or for which a new selector has to be created</p>
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>NeStyleComponent[]</code>
+                        <b>Returns : </b>        <code><a href="../interfaces/NeContinuousCollection.html" target="_self" >NeContinuousCollection</a></code>
 
                     </div>
                     <div class="io-description">
@@ -1109,8 +1793,8 @@ or for which a new selector has to be created</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="676"
-                            class="link-to-prism">src/app/services/parse.service.ts:676</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="983"
+                            class="link-to-prism">src/app/services/parse.service.ts:983</a></div>
                 </td>
             </tr>
 
@@ -1193,8 +1877,8 @@ or for which a new selector has to be created</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="515"
-                            class="link-to-prism">src/app/services/parse.service.ts:515</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="807"
+                            class="link-to-prism">src/app/services/parse.service.ts:807</a></div>
                 </td>
             </tr>
 
@@ -1300,15 +1984,15 @@ See {</p>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>parseNodeAttributeData(readData: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                    <code>parseNodeAttributeData(readData: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, nodeData: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="102"
-                            class="link-to-prism">src/app/services/parse.service.ts:102</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="107"
+                            class="link-to-prism">src/app/services/parse.service.ts:107</a></div>
                 </td>
             </tr>
 
@@ -1343,6 +2027,22 @@ See {</p>
 
                                     <td>
                                         <p>input data</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>nodeData</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>raw node data</p>
 
                                     </td>
                                 </tr>
@@ -1387,8 +2087,8 @@ See {</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="81"
-                            class="link-to-prism">src/app/services/parse.service.ts:81</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="85"
+                            class="link-to-prism">src/app/services/parse.service.ts:85</a></div>
                 </td>
             </tr>
 
@@ -1466,8 +2166,8 @@ See {</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="467"
-                            class="link-to-prism">src/app/services/parse.service.ts:467</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="757"
+                            class="link-to-prism">src/app/services/parse.service.ts:757</a></div>
                 </td>
             </tr>
 
@@ -1545,8 +2245,8 @@ See {</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="489"
-                            class="link-to-prism">src/app/services/parse.service.ts:489</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="779"
+                            class="link-to-prism">src/app/services/parse.service.ts:779</a></div>
                 </td>
             </tr>
 
@@ -1641,8 +2341,8 @@ See {</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="180"
-                            class="link-to-prism">src/app/services/parse.service.ts:180</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="204"
+                            class="link-to-prism">src/app/services/parse.service.ts:204</a></div>
                 </td>
             </tr>
 
@@ -1718,8 +2418,8 @@ See {</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="445"
-                            class="link-to-prism">src/app/services/parse.service.ts:445</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="687"
+                            class="link-to-prism">src/app/services/parse.service.ts:687</a></div>
                 </td>
             </tr>
 
@@ -1798,8 +2498,8 @@ See {</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="69"
-                            class="link-to-prism">src/app/services/parse.service.ts:69</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="73"
+                            class="link-to-prism">src/app/services/parse.service.ts:73</a></div>
                 </td>
             </tr>
 
@@ -1879,8 +2579,8 @@ See {</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="221"
-                            class="link-to-prism">src/app/services/parse.service.ts:221</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="247"
+                            class="link-to-prism">src/app/services/parse.service.ts:247</a></div>
                 </td>
             </tr>
 
@@ -1977,7 +2677,7 @@ See {</p>
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/services/parse.service.ts:30</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/services/parse.service.ts:34</a></div>
                             </td>
                         </tr>
 
@@ -2010,7 +2710,7 @@ See {</p>
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/services/parse.service.ts:43</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/services/parse.service.ts:47</a></div>
                             </td>
                         </tr>
 
@@ -2044,7 +2744,7 @@ See {</p>
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/services/parse.service.ts:61</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/app/services/parse.service.ts:65</a></div>
                             </td>
                         </tr>
 
@@ -2084,7 +2784,7 @@ See {</p>
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/services/parse.service.ts:55</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/services/parse.service.ts:59</a></div>
                             </td>
                         </tr>
 
@@ -2124,7 +2824,7 @@ See {</p>
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/services/parse.service.ts:49</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/services/parse.service.ts:53</a></div>
                             </td>
                         </tr>
 
@@ -2162,6 +2862,10 @@ import {NeNetwork} from &#x27;../models/ne-network&#x27;;
 import {NeElement} from &#x27;../models/ne-element&#x27;;
 import {NeContinuousMap} from &#x27;../models/ne-continuous-map&#x27;;
 import {NeGlobalMappings} from &#x27;../models/ne-global-mappings&#x27;;
+import {NeAspect} from &#x27;../models/ne-aspect&#x27;;
+import {NeGroupedMappingsDiscrete} from &#x27;../models/ne-grouped-mappings-discrete&#x27;;
+import {NeContinuousCollection} from &#x27;../models/ne-continuous-collection&#x27;;
+import {NeColorGradient} from &#x27;../models/ne-color-gradient&#x27;;
 
 @Injectable({
   providedIn: &#x27;root&#x27;
@@ -2216,7 +2920,7 @@ export class ParseService {
       return &#x27;&#x27;;
     }
     input &#x3D; String(input);
-    return input.replace(/\s*\(*\)*/g, &#x27;&#x27;).toLowerCase();
+    return input.replace(/\s*\(*\)*\.*/g, &#x27;&#x27;).toLowerCase();
   }
 
   /**
@@ -2243,15 +2947,18 @@ export class ParseService {
   /**
    * Method for parsing node attribute data. See {@link NeElementAttribute|NeElementAttribute} for further info on format
    * @param readData input data
+   * @param nodeData raw node data
    */
-  private static parseNodeAttributeData(readData: any): NeElementAttribute[] {
+  private static parseNodeAttributeData(readData: any, nodeData: any): NeElementAttribute[] {
     const nodeAttributeData: NeElementAttribute[] &#x3D; [];
 
     for (const entry of readData) {
       const obj: NeElementAttribute &#x3D; {
         reference: String(entry.po),
         key: ParseService.utilCleanString(entry.n),
+        keyHR: entry.n,
         value: ParseService.utilCleanString(entry.v),
+        valueHR: entry.v,
         datatype: entry.d || null
       };
       nodeAttributeData.push(obj);
@@ -2268,14 +2975,27 @@ export class ParseService {
 
     for (const entry of readData) {
       const obj: NeEdge &#x3D; {
-        id: String(entry[&#x27;@id&#x27;]),
+        id: &#x27;e&#x27;.concat(String(entry[&#x27;@id&#x27;])),
         group: &#x27;edges&#x27;,
         name: entry.i,
-        source: entry.s,
-        target: entry.t,
-        classes: []
+        source: String(entry.s),
+        target: String(entry.t),
+        classes: [],
+        attributes: []
       };
+
+      if (entry.i) {
+        obj.attributes.push({
+          reference: obj.id,
+          key: &#x27;interaction&#x27;,
+          keyHR: &#x27;interaction&#x27;,
+          value: this.utilCleanString(entry.i),
+          valueHR: entry.i,
+          datatype: &#x27;string&#x27;
+        });
+      }
       edgeData.push(obj);
+
     }
     return edgeData;
   }
@@ -2283,19 +3003,23 @@ export class ParseService {
   /**
    * Method for parsing edge attribute data. See {@link NeElementAttribute|NeElementAttribute} for further info on format
    * @param readData input data
+   * @param edgeData raw edge data
    */
-  private static parseEdgeAttributeData(readData: any): NeElementAttribute[] {
+  private static parseEdgeAttributeData(readData: any, edgeData: any): NeElementAttribute[] {
     const edgeAttributeData: NeElementAttribute[] &#x3D; [];
 
     for (const entry of readData) {
       const obj: NeElementAttribute &#x3D; {
-        reference: String(entry.po),
+        reference: &#x27;e&#x27;.concat(String(entry.po)),
         key: entry.n,
+        keyHR: entry.n,
         value: entry.v,
+        valueHR: entry.v,
         datatype: entry.d || null
       };
       edgeAttributeData.push(obj);
     }
+
     return edgeAttributeData;
   }
 
@@ -2335,24 +3059,26 @@ export class ParseService {
    */
   private static addStyles(parsedStyles: NeStyleComponent[], globalStyle: NeStyle[]): void {
     outerLoop: for (const ps of parsedStyles) {
-      let found &#x3D; false;
 
-      for (const styleObj of globalStyle) {
-        if (styleObj.selector &#x3D;&#x3D;&#x3D; ps.selector) {
-          found &#x3D; true;
-          styleObj.style[ps.cssKey] &#x3D; ps.cssValue;
-          continue outerLoop;
+      if (ps) {
+        let found &#x3D; false;
+        for (const styleObj of globalStyle) {
+          if (ps &amp;&amp; styleObj.selector &#x3D;&#x3D;&#x3D; ps.selector) {
+            found &#x3D; true;
+            styleObj.style[ps.cssKey] &#x3D; ps.cssValue;
+            continue outerLoop;
+          }
         }
-      }
 
-      if (!found) {
-        const tmp: NeStyle &#x3D; {
-          selector: ps.selector,
-          style: {},
-          appliedTo: []
-        };
-        tmp.style[ps.cssKey] &#x3D; ps.cssValue;
-        globalStyle.push(tmp);
+        if (!found) {
+          const tmp: NeStyle &#x3D; {
+            selector: ps.selector,
+            style: {},
+            appliedTo: []
+          };
+          tmp.style[ps.cssKey] &#x3D; ps.cssValue;
+          globalStyle.push(tmp);
+        }
       }
     }
   }
@@ -2368,6 +3094,30 @@ export class ParseService {
       s &#x3D; &#x27;0&#x27;.concat(s);
     }
     return s;
+  }
+
+  private static orderStyles(parsedStyles: NeStyleComponent[]): NeStyleComponent[] {
+    return parsedStyles.sort((a, b) &#x3D;&gt; (a.priority &lt; b.priority) ? -1 : 1);
+  }
+
+  private static findPriorityBySelector(selector: string): number {
+    let priority &#x3D; -1;
+
+    if (selector &#x3D;&#x3D;&#x3D; &#x27;node&#x27; || selector &#x3D;&#x3D;&#x3D; &#x27;edge&#x27;) {
+      // selectors: default
+      priority &#x3D; 0;
+    } else if (selector.startsWith(&#x27;.&#x27;) &amp;&amp; selector.match(/[0-9]/g) &#x3D;&#x3D;&#x3D; null) {
+      // selectors: aspect specific
+      priority &#x3D; 1;
+    } else if (selector.match(/[0-9]/g) !&#x3D;&#x3D; null) {
+      // selectors: element specific
+      priority &#x3D; 2;
+    } else if (selector.includes(&#x27;:&#x27;)) {
+      // selectors: special
+      priority &#x3D; 3;
+    }
+
+    return priority;
   }
 
   /**
@@ -2462,7 +3212,7 @@ export class ParseService {
     }
 
     const parsedNodeData &#x3D; ParseService.parseNodeData(nodeData || []);
-    const parsedNodeAttributeData &#x3D; ParseService.parseNodeAttributeData(nodeAttributeData || []);
+    const parsedNodeAttributeData &#x3D; ParseService.parseNodeAttributeData(nodeAttributeData || [], nodeData || []);
     const parsedLayoutData &#x3D; ParseService.parseLayoutData(layoutData || []);
 
     for (const node of parsedNodeData) {
@@ -2471,9 +3221,9 @@ export class ParseService {
     }
 
     const parsedEdgeData &#x3D; ParseService.parseEdgeData(edgeData || []);
-    const parsedEdgeAttributeData &#x3D; ParseService.parseEdgeAttributeData(edgeAttributeData || []);
+    const parsedEdgeAttributeData &#x3D; ParseService.parseEdgeAttributeData(edgeAttributeData || [], edgeData || []);
     for (const edge of parsedEdgeData) {
-      edge.attributes &#x3D; parsedEdgeAttributeData.filter(x &#x3D;&gt; x.reference &#x3D;&#x3D;&#x3D; edge.id);
+      edge.attributes &#x3D; edge.attributes.concat(parsedEdgeAttributeData.filter(x &#x3D;&gt; x.reference &#x3D;&#x3D;&#x3D; edge.id));
     }
 
     const parsedStyleNetwork &#x3D; ParseService.parseStyleNetwork(styleNetwork || []); // todo
@@ -2488,57 +3238,127 @@ export class ParseService {
     const parsedMappingsEdgesDefault &#x3D; this.parseMappingsElementsDefault((styleEdgesDefault || []),
       &#x27;edge&#x27;, parsedEdgeData);
 
+    const arrowColorAsEdgeColor: boolean &#x3D; this.evalEdgeStyleDependencies(styleEdgesDefault || []);
+
     // adding discrete mappings to matching nodes
-    for (const node of parsedNodeData) {
-      for (const nodeAttribute of node.attributes) {
-        for (const nodeMapping of parsedMappingsNodesDefault.discrete) {
-          const classSelector &#x3D; nodeMapping.selector.substring(1);
-          if (nodeAttribute.key &#x3D;&#x3D;&#x3D; nodeMapping.col
-            &amp;&amp; nodeAttribute.value &#x3D;&#x3D;&#x3D; nodeMapping.is
-            &amp;&amp; !node.classes.includes(classSelector)) {
+    if (parsedMappingsNodesDefault.discrete) {
+      for (const node of parsedNodeData) {
+        for (const nodeAttribute of node.attributes) {
+          for (const nodeMapping of parsedMappingsNodesDefault.discrete) {
+            const classSelector &#x3D; nodeMapping.selector.substring(1);
+
+            if (nodeAttribute.key &#x3D;&#x3D;&#x3D; nodeMapping.col
+              &amp;&amp; nodeAttribute.value &#x3D;&#x3D;&#x3D; nodeMapping.is
+              &amp;&amp; !node.classes.includes(classSelector)) {
+              node.classes.push(classSelector);
+            }
+          }
+        }
+        for (const nodeStyle of parsedStyleNodes) {
+          const id &#x3D; nodeStyle.selector.substring(6);
+          const classSelector &#x3D; nodeStyle.selector.substring(1);
+          if (node.id &#x3D;&#x3D;&#x3D; id &amp;&amp; !node.classes.includes(classSelector)) {
             node.classes.push(classSelector);
           }
         }
+        node.classes.push(&#x27;custom_highlight_color&#x27;);
+        node.classes.push(&#x27;hide_label&#x27;);
+        node.classes.push(&#x27;text-wrap&#x27;);
       }
     }
 
     // adding discrete mappings to matching edges
-    for (const edge of parsedEdgeData) {
-      for (const edgeAttribute of edge.attributes) {
-        for (const edgeMapping of parsedMappingsEdgesDefault.discrete) {
-          const classSelector &#x3D; edgeMapping.selector.substring(1);
-          if (edgeAttribute.key &#x3D;&#x3D;&#x3D; edgeMapping.col
-            &amp;&amp; edgeAttribute.value &#x3D;&#x3D;&#x3D; edgeMapping.is
-            &amp;&amp; !edge.classes.includes(classSelector)) {
+    if (parsedMappingsEdgesDefault.discrete) {
+      for (const edge of parsedEdgeData) {
+        for (const edgeAttribute of edge.attributes) {
+          for (const edgeMapping of parsedMappingsEdgesDefault.discrete) {
+            const classSelector &#x3D; edgeMapping.selector.substring(1);
+
+            if (edgeAttribute.key &#x3D;&#x3D;&#x3D; edgeMapping.col
+              &amp;&amp; edgeAttribute.value &#x3D;&#x3D;&#x3D; edgeMapping.is
+              &amp;&amp; !edge.classes.includes(classSelector)) {
+              edge.classes.push(classSelector);
+            }
+          }
+        }
+
+        for (const edgeStyle of parsedStyleEdges) {
+          const id &#x3D; edgeStyle.selector.substring(6);
+          const classSelector &#x3D; edgeStyle.selector.substring(1);
+          if (edge.id &#x3D;&#x3D;&#x3D; id &amp;&amp; !edge.classes.includes(classSelector)) {
             edge.classes.push(classSelector);
           }
+        }
+        edge.classes.push(&#x27;custom_highlight_color&#x27;);
+        edge.classes.push(&#x27;hide_label&#x27;);
+        edge.classes.push(&#x27;text-wrap&#x27;);
+      }
+    }
+
+    if (parsedMappingsEdgesDefault.continuous) {
+      for (const edgeMapping of parsedMappingsEdgesDefault.continuous) {
+
+        for (const value of edgeMapping.values) {
+
+          const id: string &#x3D; value.selector.substring(6);
+          const classSelector &#x3D; value.selector.substring(1);
+          const edge: NeEdge &#x3D; parsedEdgeData.find(x &#x3D;&gt; String(x.id) &#x3D;&#x3D;&#x3D; id);
+
+          if (edge &amp;&amp; !edge.classes.includes(classSelector)) {
+            edge.classes.push(classSelector);
+          }
+
         }
       }
     }
 
-    for (const edgeMapping of parsedMappingsEdgesDefault.continuous) {
-      const id: string &#x3D; edgeMapping.selector.substring(6);
-      const classSelector &#x3D; edgeMapping.selector.substring(1);
+    if (parsedMappingsNodesDefault.continuous) {
+      for (const nodeMapping of parsedMappingsNodesDefault.continuous) {
+        for (const value of nodeMapping.values) {
 
-      const edge: NeEdge &#x3D; parsedEdgeData.find(x &#x3D;&gt; x.id &#x3D;&#x3D;&#x3D; id);
+          const id: string &#x3D; value.selector.substring(6);
+          const classSelector &#x3D; value.selector.substring(1);
+          const node: NeNode &#x3D; parsedNodeData.find(x &#x3D;&gt; String(x.id) &#x3D;&#x3D;&#x3D; id);
 
-      if (edge &amp;&amp; !edge.classes.includes(classSelector)) {
-        edge.classes.push(classSelector);
+          if (node &amp;&amp; !node.classes.includes(classSelector)) {
+            node.classes.push(classSelector);
+          }
+
+        }
       }
     }
 
     const parsedData &#x3D; parsedNodeData.concat(parsedEdgeData);
-    const parsedStyles &#x3D; parsedStyleNetwork.concat(
-      parsedStyleNodes,
+    let parsedStyles &#x3D; parsedStyleNetwork.concat(
       parsedStyleNodesDefault,
       parsedStyleEdgesDefault,
-      parsedStyleEdges,
-      parsedMappingsEdgesDefault.continuous,
-      parsedMappingsNodesDefault.continuous,
       parsedMappingsEdgesDefault.discrete,
-      parsedMappingsNodesDefault.discrete);
+      parsedMappingsNodesDefault.discrete,
+      parsedStyleNodes,
+      parsedStyleEdges
+    );
+
+    if (parsedMappingsEdgesDefault.continuous) {
+      for (const edgeMapping of parsedMappingsEdgesDefault.continuous) {
+        parsedStyles &#x3D; parsedStyles.concat(edgeMapping.values);
+      }
+    }
+
+    if (parsedMappingsNodesDefault.continuous) {
+      for (const nodeMapping of parsedMappingsNodesDefault.continuous) {
+        parsedStyles &#x3D; parsedStyles.concat(nodeMapping.values);
+      }
+    }
+
+    parsedStyles &#x3D; this.addArrowColor(parsedStyles, arrowColorAsEdgeColor);
+    parsedStyles &#x3D; ParseService.orderStyles(parsedStyles);
 
     const globalStyle: NeStyle[] &#x3D; [];
+    const styleConstants: any &#x3D; {};
+
+    if (arrowColorAsEdgeColor) {
+      styleConstants[&#x27;arrow-as-edge&#x27;] &#x3D; true;
+    }
 
     ParseService.addStyles(parsedStyles, globalStyle);
     const cyParsedData: ElementDefinition[] &#x3D; [];
@@ -2546,7 +3366,6 @@ export class ParseService {
     for (const pd of parsedData) {
 
       const joinedClasses &#x3D; pd.classes.join(&#x27; &#x27;);
-
       const tmp: ElementDefinition &#x3D; {
         data: pd,
         classes: joinedClasses,
@@ -2559,29 +3378,152 @@ export class ParseService {
     for (const s of globalStyle) {
       for (const pd of parsedData) {
         const className &#x3D; s.selector.substring(1);
-
         if ((pd.classes.includes(className))
           || (pd.group &#x3D;&#x3D;&#x3D; &#x27;edges&#x27; &amp;&amp; s.selector &#x3D;&#x3D;&#x3D; &#x27;edge&#x27;)
           || (pd.group &#x3D;&#x3D;&#x3D; &#x27;nodes&#x27; &amp;&amp; s.selector &#x3D;&#x3D;&#x3D; &#x27;node&#x27;)) {
           s.appliedTo.push(pd);
+
         }
       }
     }
 
+    globalStyle.push({
+      selector: &#x27;.custom_highlight_color&#x27;,
+      style: {
+        &#x27;background-color&#x27;: &#x27;#0000ff&#x27;,
+        &#x27;line-color&#x27;: &#x27;#0000ff&#x27;,
+        &#x27;target-arrow-color&#x27;: &#x27;#0000ff&#x27;,
+        &#x27;source-arrow-color&#x27;: &#x27;#0000ff&#x27;
+      }
+    });
+
+    globalStyle.push({
+      selector: &#x27;.text-wrap&#x27;,
+      style: {
+        &#x27;text-wrap&#x27;: &#x27;wrap&#x27;,
+      }
+    });
+
+    globalStyle.push({
+      selector: &#x27;.hide_label&#x27;,
+      style: {
+        label: &#x27;&#x27;,
+      }
+    });
+
     const currentId &#x3D; this.id;
     this.id++;
+
+    const aspectKeyValuesNodes: NeAspect[] &#x3D; [];
+    const aspectKeyValuesEdges: NeAspect[] &#x3D; [];
+
+    for (const element of parsedData) {
+      const elementType &#x3D; element.group;
+
+      for (const attribute of element.attributes) {
+
+        const aspect: NeAspect &#x3D; {
+          name: attribute.keyHR,
+          values: [],
+          appliedTo: [],
+          datatype: attribute.datatype,
+          mapPointerD: [],
+          mapPointerC: []
+        };
+
+        if (elementType &#x3D;&#x3D;&#x3D; &#x27;nodes&#x27;) {
+          let found &#x3D; false;
+
+          for (const akv of aspectKeyValuesNodes) {
+            if (akv.name &#x3D;&#x3D;&#x3D; attribute.keyHR) {
+              if (!akv.values.includes(attribute.valueHR)) {
+                akv.values.push(attribute.valueHR);
+              }
+              akv.appliedTo.push(element);
+              found &#x3D; true;
+            }
+          }
+
+          if (!found) {
+            aspect.values.push(attribute.valueHR);
+            aspect.appliedTo.push(element);
+            aspectKeyValuesNodes.push(aspect);
+          }
+        } else {
+          let found &#x3D; false;
+
+          for (const akv of aspectKeyValuesEdges) {
+            if (akv.name &#x3D;&#x3D;&#x3D; attribute.keyHR) {
+              if (!akv.values.includes(attribute.valueHR)) {
+                akv.values.push(attribute.valueHR);
+              }
+              akv.appliedTo.push(element);
+              found &#x3D; true;
+            }
+          }
+
+          if (!found) {
+            aspect.values.push(attribute.valueHR);
+            aspect.appliedTo.push(element);
+            aspectKeyValuesEdges.push(aspect);
+          }
+        }
+      }
+    }
+
+    const groupedMappingsNodes &#x3D; this.groupDiscreteMappings(parsedMappingsNodesDefault.discrete);
+    const groupedMappingsEdges &#x3D; this.groupDiscreteMappings(parsedMappingsEdgesDefault.discrete);
+
+
+    for (const akv of aspectKeyValuesNodes) {
+      for (const nodeMap of groupedMappingsNodes) {
+        if (akv.name &#x3D;&#x3D;&#x3D; nodeMap.classifier) {
+          akv.mapPointerD.push(groupedMappingsNodes.indexOf(nodeMap));
+        }
+      }
+
+      for (const contNodeMap of parsedMappingsNodesDefault.continuous) {
+        if (akv.name &#x3D;&#x3D;&#x3D; contNodeMap.title[1]) {
+          akv.mapPointerC.push(parsedMappingsNodesDefault.continuous.indexOf(contNodeMap));
+        }
+      }
+    }
+
+    for (const akv of aspectKeyValuesEdges) {
+      for (const edgeMap of groupedMappingsEdges) {
+        if (akv.name &#x3D;&#x3D;&#x3D; edgeMap.classifier) {
+          akv.mapPointerD.push(groupedMappingsEdges.indexOf(edgeMap));
+        }
+      }
+
+      for (const contEdgeMap of parsedMappingsEdgesDefault.continuous) {
+        if (akv.name &#x3D;&#x3D;&#x3D; contEdgeMap.title[1]) {
+          akv.mapPointerC.push(parsedMappingsEdgesDefault.continuous.indexOf(contEdgeMap));
+        }
+      }
+    }
+
+
 
     return {
       id: currentId,
       networkInformation,
       elements: cyParsedData,
       style: globalStyle,
-      nodeCount: parsedData.filter(x &#x3D;&gt; x.group &#x3D;&#x3D;&#x3D; &#x27;nodes&#x27;).length,
-      edgeCount: parsedData.filter(x &#x3D;&gt; x.group &#x3D;&#x3D;&#x3D; &#x27;edges&#x27;).length,
-      cssClassCount: globalStyle.length,
+      nodeCount: parsedData.filter(x &#x3D;&gt; x.group &#x3D;&#x3D;&#x3D; &#x27;nodes&#x27;).length, // rework to access KPI by given properties
+      edgeCount: parsedData.filter(x &#x3D;&gt; x.group &#x3D;&#x3D;&#x3D; &#x27;edges&#x27;).length, // rework to access KPI by given properties
+      cssClassCount: globalStyle.length, // rework to access KPI by given properties
+      aspectKeyValuesNodes, // submit these as possible mappings todo add interaction, if given
+      aspectKeyValuesEdges,
+      mappings: {
+        nodesDiscrete: groupedMappingsNodes,
+        edgesDiscrete: groupedMappingsEdges,
+        nodesContinuous: parsedMappingsNodesDefault.continuous,
+        edgesContinuous: parsedMappingsEdgesDefault.continuous
+      },
+      styleConstants
     };
   }
-
 
   /**
    * Method for parsing default nodes style data. See {@link NeStyleComponent|NeStyleComponent} for further info on format
@@ -2591,17 +3533,65 @@ export class ParseService {
     let styleNodesDefault: NeStyleComponent[] &#x3D; [];
     const properties: any[] &#x3D; readData.properties;
 
+    let useSize &#x3D; false;
+    let useWidth &#x3D; false;
+    let useHeight &#x3D; false;
+
     if (properties) {
+
       for (const propKey of Object.keys(properties)) {
-        const tmp &#x3D; {
-          key: propKey,
-          value: properties[propKey]
-        };
-        const lookup &#x3D; this.lookup(tmp);
-        styleNodesDefault &#x3D; styleNodesDefault.concat(lookup);
+        if (propKey &#x3D;&#x3D;&#x3D; &#x27;NODE_SIZE&#x27; &amp;&amp; properties[propKey] !&#x3D;&#x3D; &#x27;35.0&#x27;) {
+          useSize &#x3D; true;
+        } else if (propKey &#x3D;&#x3D;&#x3D; &#x27;NODE_WIDTH&#x27; &amp;&amp; properties[propKey] !&#x3D;&#x3D; &#x27;75.0&#x27;) {
+          useWidth &#x3D; true;
+        } else if (propKey &#x3D;&#x3D;&#x3D; &#x27;NODE_HEIGHT&#x27; &amp;&amp; properties[propKey] !&#x3D;&#x3D; &#x27;35.0&#x27;) {
+          useHeight &#x3D; true;
+        }
+      }
+
+      for (const propKey of Object.keys(properties)) {
+
+        if (!((propKey &#x3D;&#x3D;&#x3D; &#x27;NODE_SIZE&#x27; &amp;&amp; !useSize)
+          || (propKey &#x3D;&#x3D;&#x3D; &#x27;NODE_WIDTH&#x27; &amp;&amp; !useWidth)
+          || (propKey &#x3D;&#x3D;&#x3D; &#x27;NODE_HEIGHT&#x27; &amp;&amp; !useHeight))) {
+
+          if (propKey &#x3D;&#x3D;&#x3D; &#x27;NODE_SIZE&#x27;) {
+            const tmpWidth &#x3D; {
+              key: &#x27;NODE_WIDTH&#x27;,
+              value: properties[propKey]
+            };
+            const tmpHeight &#x3D; {
+              key: &#x27;NODE_HEIGHT&#x27;,
+              value: properties[propKey]
+            };
+            const lookupWidth &#x3D; this.lookup(tmpWidth);
+            const lookupHeight &#x3D; this.lookup(tmpHeight);
+
+            styleNodesDefault &#x3D; styleNodesDefault.concat(lookupWidth);
+            styleNodesDefault &#x3D; styleNodesDefault.concat(lookupHeight);
+
+          } else {
+
+            const tmp &#x3D; {
+              key: propKey,
+              value: properties[propKey]
+            };
+
+            const lookup &#x3D; this.lookup(tmp);
+            styleNodesDefault &#x3D; styleNodesDefault.concat(lookup);
+          }
+        }
+
       }
     }
-    return styleNodesDefault;
+    const labelData: NeStyleComponent &#x3D; {
+      selector: &#x27;node&#x27;,
+      cssKey: &#x27;label&#x27;,
+      cssValue: &#x27;data(name)&#x27;,
+      priority: 0
+    };
+
+    return styleNodesDefault.concat(labelData);
   }
 
 
@@ -2641,8 +3631,10 @@ export class ParseService {
             key: propKey,
             value: properties[propKey]
           };
-          const lookup &#x3D; this.lookup(tmp, &#x27;.&#x27;.concat(elementType.concat(entry.applies_to)));
+
+          const lookup &#x3D; this.lookup(tmp, &#x27;.&#x27;.concat(elementType.concat(&#x27;_&#x27;.concat(entry.applies_to))));
           style &#x3D; style.concat(lookup);
+
         }
       }
     }
@@ -2661,10 +3653,13 @@ export class ParseService {
                                        elementType: string,
                                        data: NeElement[]): NeGlobalMappings {
     let mappingsElementsDefault: NeMappingsDefinition[] &#x3D; [];
-    let mappingsElementsSpecific: NeStyleComponent[] &#x3D; [];
+    let mappingsElementsSpecific: NeContinuousCollection[] &#x3D; [];
 
     if (!readData.mappings) {
-      return {};
+      return {
+        discrete: [],
+        continuous: []
+      };
     }
 
     const mappings &#x3D; readData.mappings;
@@ -2686,10 +3681,11 @@ export class ParseService {
           // todo
           break;
         case &#x27;CONTINUOUS&#x27;:
-          mappingsElementsSpecific &#x3D; mappingsElementsSpecific.concat(this.parseMappingContinuous(currentEntry, elementType, data));
+          const continuous &#x3D; this.parseMappingContinuous(currentEntry, elementType, data);
+          mappingsElementsSpecific &#x3D; mappingsElementsSpecific.concat(continuous);
+
           break;
       }
-
     }
 
     return {
@@ -2720,14 +3716,24 @@ export class ParseService {
 
     let styleCollection: NeStyleComponent[];
 
+    let builtSelector &#x3D; selector;
+    if (selector !&#x3D;&#x3D; &#x27;node&#x27; &amp;&amp; selector !&#x3D;&#x3D; &#x27;edge&#x27; &amp;&amp; lookupMap &amp;&amp; lookupMap.selector) {
+      builtSelector &#x3D; selector.concat(lookupMap.selector);
+    } else if (lookupMap &amp;&amp; lookupMap.selector) {
+      builtSelector &#x3D; lookupMap.selector;
+    }
+
+    const priority &#x3D; ParseService.findPriorityBySelector(builtSelector);
+
     // case 1: simply applicable
-    if (lookupMap &amp;&amp; !lookupMap.conversion &amp;&amp; lookupMap[to].length &#x3D;&#x3D;&#x3D; 1) {
+    if (lookupMap &amp;&amp; !lookupMap.conversionType &amp;&amp; lookupMap[to].length &#x3D;&#x3D;&#x3D; 1) {
       return [{
-        selector: lookupMap[selector] || selector,
+        selector: builtSelector,
         cssKey: lookupMap[to][0],
-        cssValue: property.value
+        cssValue: property.value,
+        priority
       }];
-    } else if (lookupMap &amp;&amp; lookupMap.conversion) {
+    } else if (lookupMap &amp;&amp; lookupMap.conversionType) {
       switch (lookupMap.conversionType) {
 
         // case 2: conversion by method
@@ -2762,9 +3768,10 @@ export class ParseService {
 
           for (const key of lookupMap[to]) {
             const obj: NeStyleComponent &#x3D; {
-              selector: lookupMap.selector || selector,
+              selector: builtSelector,
               cssKey: key,
               cssValue,
+              priority
             };
 
             if (!styleCollection.includes(obj)) {
@@ -2778,10 +3785,9 @@ export class ParseService {
         case &#x27;split&#x27;:
           const splitted &#x3D; property.value.split(lookupMap.splitRules.splitAt);
           styleCollection &#x3D; [];
-
           for (const index of lookupMap.splitRules.evalIndex) {
             const initialValue &#x3D; splitted[index];
-            const matchedValue: string[] &#x3D; lookupMap.rules[initialValue];
+            const matchedValue: string[] &#x3D; lookupMap.matchRules[initialValue];
 
             for (const key of lookupMap[to]) {
 
@@ -2791,9 +3797,10 @@ export class ParseService {
               }
 
               const obj: NeStyleComponent &#x3D; {
-                selector: lookupMap.selector || selector,
+                selector: builtSelector,
                 cssKey: key,
                 cssValue: matchedValue[indexOfKey],
+                priority
               };
               styleCollection.push(obj);
             }
@@ -2823,10 +3830,14 @@ export class ParseService {
 
     const tmpObj: NeMappingsDefinition &#x3D; {
       col: null,
+      colHR: null,
       is: null,
+      isHR: null,
       selector: null,
       cssKey: null,
       cssValue: null,
+      priority: -1,
+      datatype: null,
     };
 
     const tmpCollection: NeMappingsCollection &#x3D; {
@@ -2842,6 +3853,7 @@ export class ParseService {
 
     const definition &#x3D; mapping.definition.replace(/,,/g, &#x27;%&#x27;);
     const commaSplit &#x3D; definition.split(&#x27;,&#x27;);
+    let originalCol;
 
     for (const cs of commaSplit) {
 
@@ -2849,14 +3861,16 @@ export class ParseService {
       switch (equalSplit[0]) {
         case &#x27;COL&#x27;:
           tmpObj.col &#x3D; ParseService.utilCleanString(equalSplit[1]);
+          originalCol &#x3D; equalSplit[1];
           break;
         case &#x27;T&#x27;:
+          tmpObj.datatype &#x3D; equalSplit[1];
           break;
         case &#x27;K&#x27;:
-          tmpCollection.tmpK.splice(Number(equalSplit[1]), 0, ParseService.utilCleanString(equalSplit[2]));
+          tmpCollection.tmpK.splice(Number(equalSplit[1]), 0, equalSplit[2]);
           break;
         case &#x27;V&#x27;:
-          tmpCollection.tmpV.splice(Number(equalSplit[1]), 0, ParseService.utilCleanString(equalSplit[2]));
+          tmpCollection.tmpV.splice(Number(equalSplit[1]), 0, equalSplit[2]);
           break;
       }
     }
@@ -2865,11 +3879,42 @@ export class ParseService {
       lookupProperty.value &#x3D; tmpCollection.tmpV[tmpCollection.tmpK.indexOf(k)];
       tmpObj.is &#x3D; ParseService.utilCleanString(k);
 
+      if (tmpObj.col &#x3D;&#x3D;&#x3D; &#x27;sharedinteraction&#x27;) {
+        tmpObj.col &#x3D; &#x27;interaction&#x27;;
+        originalCol &#x3D; &#x27;interaction&#x27;;
+      }
+
       const tmpSelector &#x3D; &#x27;.&#x27;.concat(elementType.concat(&#x27;_&#x27;.concat(tmpObj.col.concat(&#x27;_&#x27;.concat(tmpObj.is)))));
+      const priority &#x3D; ParseService.findPriorityBySelector(tmpSelector);
       tmpObj.selector &#x3D; tmpSelector;
 
-      const lookup &#x3D; this.lookup(lookupProperty, tmpSelector);
+      let lookup: NeStyleComponent[] &#x3D; [];
 
+      if (lookupProperty.key &#x3D;&#x3D;&#x3D; &#x27;NODE_SIZE&#x27;) {
+        const lookupWidth &#x3D; this.lookup({
+          key: &#x27;NODE_WIDTH&#x27;,
+          value: lookupProperty.value
+        }, tmpSelector);
+        const lookupHeight &#x3D; this.lookup({
+          key: &#x27;NODE_HEIGHT&#x27;,
+          value: lookupProperty.value
+        }, tmpSelector);
+
+        for (const lw of lookupWidth) {
+          lookup.push(lw);
+        }
+        for (const lh of lookupHeight) {
+          lookup.push(lh);
+        }
+      } else if (lookupProperty.key &#x3D;&#x3D;&#x3D; &#x27;NODE_LABEL_POSITION&#x27;) {
+        const tmpProperty &#x3D; {
+          key: lookupProperty.key,
+          value: lookupProperty.value.replace(/%/g, &#x27;,&#x27;)
+        };
+        lookup &#x3D; this.lookup(tmpProperty, tmpSelector);
+      } else {
+        lookup &#x3D; this.lookup(lookupProperty, tmpSelector);
+      }
       for (const lookupStyle of lookup) {
 
         tmpObj.cssKey &#x3D; lookupStyle.cssKey;
@@ -2882,11 +3927,14 @@ export class ParseService {
             cssValue: tmpObj.cssValue,
             cssKey: tmpObj.cssKey,
             is: tmpObj.is,
-            col: tmpObj.col
+            isHR: k,
+            col: tmpObj.col,
+            colHR: originalCol,
+            priority,
+            datatype: tmpObj.datatype
           };
 
           mappingsElementsDefault.push(element);
-          break;
         }
       }
     }
@@ -2895,17 +3943,27 @@ export class ParseService {
 
   private parseMappingContinuous(mapping: NeMappings,
                                  elementType: string,
-                                 data: NeElement[]): NeStyleComponent[] {
+                                 data: NeElement[]): NeContinuousCollection {
 
     const lookup: string[] &#x3D; this.lookupKey([mapping.key]);
     const commaSplit &#x3D; mapping.definition.split(&#x27;,&#x27;);
 
+    const continuousCollection: NeContinuousCollection &#x3D; {
+      chart: null,
+      values: [],
+      displayChart: true,
+      colorGradient: [],
+      title: [],
+    };
+
     let datatype;
     let attribute;
+    let displayChart &#x3D; true;
     const thresholds &#x3D; [];
     const lowers &#x3D; [];
     const equals &#x3D; [];
     const greaters &#x3D; [];
+
 
     for (const cs of commaSplit) {
 
@@ -2948,7 +4006,9 @@ export class ParseService {
         if (elementAttribute.key &#x3D;&#x3D;&#x3D; attribute) {
 
           let intervalPointer &#x3D; -1;
-          let valuePointer &#x3D; -1;
+
+          const finalSelector &#x3D; &#x27;.&#x27;.concat(elementType.concat(&#x27;_&#x27;.concat(element.id)));
+          const priority &#x3D; ParseService.findPriorityBySelector(finalSelector);
 
           for (let i &#x3D; 0; i &lt; (thresholds.length); i++) {
 
@@ -2959,6 +4019,9 @@ export class ParseService {
 
               if (intervalPointer &#x3D;&#x3D;&#x3D; 0) {
                 cssValue &#x3D; lowers[intervalPointer];
+                if (cssValue.startsWith(&#x27;#&#x27;) &amp;&amp; displayChart) {
+                  displayChart &#x3D; false;
+                }
               } else {
                 const calculationMap: NeContinuousMap &#x3D; {
                   inputValue: elementAttribute.value,
@@ -2968,26 +4031,37 @@ export class ParseService {
                   greaterThreshold: thresholds[intervalPointer],
                 };
                 cssValue &#x3D; this.calculateRelativeValue(calculationMap);
+                if (cssValue.startsWith(&#x27;#&#x27;) &amp;&amp; displayChart) {
+                  displayChart &#x3D; false;
+
+                }
               }
 
               for (const lu of lookup) {
+
                 buildClasses.push({
-                  selector: &#x27;.&#x27;.concat(elementType.concat(&#x27;_&#x27;.concat(element.id))),
+                  selector: finalSelector,
                   cssKey: lu,
-                  cssValue
+                  cssValue,
+                  priority
                 });
+
               }
               continue outer;
             } else if (Number(elementAttribute.value) &#x3D;&#x3D;&#x3D; Number(thresholds[i])) {
 
-              valuePointer &#x3D; i;
-
               for (const lu of lookup) {
                 buildClasses.push({
-                  selector: &#x27;.&#x27;.concat(elementType.concat(&#x27;_&#x27;.concat(element.id))),
+                  selector: finalSelector,
                   cssKey: lu,
                   cssValue: equals[i],
+                  priority
                 });
+                if (equals[i].startsWith(&#x27;#&#x27;) &amp;&amp; displayChart) {
+                  displayChart &#x3D; false;
+
+                }
+
               }
               continue outer;
             }
@@ -2998,16 +4072,132 @@ export class ParseService {
               selector: &#x27;.&#x27;.concat(elementType.concat(&#x27;_&#x27;.concat(element.id))),
               cssKey: lu,
               cssValue: greaters[greaters.length - 1],
+              priority
             });
+            if (greaters[greaters.length - 1].startsWith(&#x27;#&#x27;) &amp;&amp; displayChart) {
+              displayChart &#x3D; false;
+
+            }
           }
           continue outer;
         }
       }
     }
-    return buildClasses;
+
+    const gradientObject &#x3D; this.buildColorGradient(thresholds, lowers, equals, greaters, lookup, attribute);
+    const chartObject &#x3D; this.buildChartData(thresholds, lowers, equals, greaters, lookup, attribute);
+
+    continuousCollection.values &#x3D; buildClasses;
+    continuousCollection.chart &#x3D; chartObject;
+    continuousCollection.colorGradient &#x3D; gradientObject;
+    continuousCollection.chartValid &#x3D; (displayChart &amp;&amp; (chartObject !&#x3D;&#x3D; null));
+    continuousCollection.gradientValid &#x3D; (!displayChart &amp;&amp; (gradientObject.length &gt; 0));
+    continuousCollection.displayChart &#x3D; displayChart;
+    continuousCollection.title &#x3D; [lookup, attribute];
+    return continuousCollection;
+  }
+
+  private buildColorGradient(thresholds: string[],
+                             lowers: string[],
+                             equals: string[],
+                             greaters: string[],
+                             lookup: string[],
+                             attribute: string): NeColorGradient[] {
+    if (!lowers[0].startsWith(&#x27;#&#x27;)) {
+      return [];
+    }
+    const colorGradientCollection: NeColorGradient[] &#x3D; [];
+    const range: number &#x3D; Number(thresholds[thresholds.length - 1]) - Number(thresholds[0]);
+    if (range &#x3D;&#x3D;&#x3D; 0) {
+      return [];
+    }
+    colorGradientCollection.push({
+      color: lowers[0],
+      offset: &#x27;-1&#x27;,
+      numericThreshold: &#x27;-1&#x27;,
+      title: lookup.concat([attribute])
+    });
+    for (const th of thresholds) {
+      const offset &#x3D; ((Number(th) - Number(thresholds[0])) * 100 / range).toFixed(0);
+      const gradient: NeColorGradient &#x3D; {
+        color: equals[thresholds.indexOf(th)],
+        offset: String(offset).concat(&#x27;%&#x27;),
+        numericThreshold: th,
+        title: lookup.concat([attribute])
+      };
+      colorGradientCollection.push(gradient);
+    }
+    colorGradientCollection.push({
+      color: greaters[greaters.length - 1],
+      offset: &#x27;101&#x27;,
+      numericThreshold: &#x27;101&#x27;,
+      title: lookup.concat([attribute])
+    });
+    return colorGradientCollection;
+  }
+
+  private buildChartData(
+    thresholds: string[],
+    lowers: string[],
+    equals: string[],
+    greaters: string[],
+    lookup: string[],
+    attribute: any): any {
+
+    const chartMappingObject: any &#x3D; {
+      lineChartData: [],
+      lineChartLabels: [],
+      lineChartOptions: {
+        scales: {
+          yAxes: [
+            {
+              type: &#x27;linear&#x27;,
+              display: true,
+              position: &#x27;left&#x27;,
+              id: &#x27;y-axis-1&#x27;,
+            }
+          ]
+        },
+        title: {
+          display: false,
+          text: [attribute, lookup]
+        },
+        elements: {
+          line: {
+            tension: 0
+          }
+        },
+        responsive: true,
+        maintainAspectRatio: true
+      }
+    };
+
+    chartMappingObject.lineChartLabels.push(&#x27;&#x27;);
+
+    for (const th of thresholds) {
+      chartMappingObject.lineChartLabels.push(th);
+    }
+
+    chartMappingObject.lineChartLabels.push(&#x27;&#x27;);
+
+    for (const lu of lookup) {
+      const tmp &#x3D; {
+        label: lu,
+        data: equals
+      };
+      if (!chartMappingObject.lineChartData.includes(tmp)) {
+        chartMappingObject.lineChartData.push(tmp);
+      }
+    }
+
+    chartMappingObject.lineChartData[0].data.splice(0, 0, lowers[0]);
+    chartMappingObject.lineChartData[0].data.push(greaters[greaters.length - 1]);
+
+    return chartMappingObject;
   }
 
   private calculateRelativeValue(inputMap: NeContinuousMap): string {
+
     let returnValue;
     const xDiff &#x3D; Number(inputMap.greaterThreshold) - Number(inputMap.lowerThreshold);
     const xDiffRequired &#x3D; Number(inputMap.inputValue) - Number(inputMap.lowerThreshold);
@@ -3065,6 +4255,113 @@ export class ParseService {
     }
 
     return returnValue;
+  }
+
+  private groupDiscreteMappings(mappings: NeMappingsDefinition[]): any {
+
+    const groupedMappings: NeGroupedMappingsDiscrete[] &#x3D; [];
+
+    if (!mappings) {
+      return groupedMappings;
+    }
+
+    outer: for (const map of mappings) {
+      for (const gm of groupedMappings) {
+        if (gm.classifier &#x3D;&#x3D;&#x3D; map.colHR) {
+          continue outer;
+        }
+      }
+      groupedMappings.push({
+        classifier: map.colHR,
+        values: [],
+        styleMap: [],
+        th: [],
+        selectors: []
+      });
+    }
+
+    for (const map of mappings) {
+      for (const gm of groupedMappings) {
+
+        if (gm.classifier &#x3D;&#x3D;&#x3D; map.colHR) {
+          let found &#x3D; false;
+          for (const style of gm.styleMap) {
+            if (style.cssKey &#x3D;&#x3D;&#x3D; map.cssKey) {
+              found &#x3D; true;
+              if (!style.selectors.includes(map.selector)) {
+                style.cssValues.push(map.cssValue);
+                style.selectors.push(map.selector);
+                if (!gm.selectors.includes(map.selector)) {
+                  gm.selectors.push(map.selector);
+                }
+              }
+            }
+          }
+
+          if (!found) {
+            gm.th.push(map.cssKey);
+
+            if (!gm.selectors.includes(map.selector)) {
+              gm.selectors.push(map.selector);
+            }
+            gm.styleMap.push({
+              cssKey: map.cssKey,
+              cssValues: [map.cssValue],
+              selectors: [map.selector]
+            });
+          }
+
+          if (!gm.values.includes(map.isHR)) {
+            gm.values.push(map.isHR);
+          }
+        }
+      }
+    }
+
+    return groupedMappings;
+  }
+
+  private evalEdgeStyleDependencies(styleEdgesDefault: any): boolean {
+    if (styleEdgesDefault.dependencies) {
+      return styleEdgesDefault.dependencies.arrowColorMatchesEdge || false;
+    }
+  }
+
+  private addArrowColor(parsedStyles: NeStyleComponent[], arrowColorAsEdgeColor: boolean): NeStyleComponent[] {
+    for (const style of parsedStyles) {
+      if (style &amp;&amp; style.cssKey &#x3D;&#x3D;&#x3D; &#x27;line-color&#x27; &amp;&amp; arrowColorAsEdgeColor) {
+        const objTarget: NeStyleComponent &#x3D; {
+          selector: style.selector,
+          cssKey: &#x27;target-arrow-color&#x27;,
+          cssValue: style.cssValue,
+          priority: style.priority
+        };
+        parsedStyles.push(objTarget);
+        const objSource: NeStyleComponent &#x3D; {
+          selector: style.selector,
+          cssKey: &#x27;source-arrow-color&#x27;,
+          cssValue: style.cssValue,
+          priority: style.priority
+        };
+        parsedStyles.push(objSource);
+      } else if (style &amp;&amp; style.cssKey &#x3D;&#x3D;&#x3D; &#x27;line-color&#x27;) {
+        const objTarget: NeStyleComponent &#x3D; {
+          selector: style.selector,
+          cssKey: &#x27;target-arrow-color&#x27;,
+          cssValue: &#x27;#000000&#x27;,
+          priority: style.priority
+        };
+        parsedStyles.push(objTarget);
+        const objSource: NeStyleComponent &#x3D; {
+          selector: style.selector,
+          cssKey: &#x27;source-arrow-color&#x27;,
+          cssValue: &#x27;#000000&#x27;,
+          priority: style.priority
+        };
+        parsedStyles.push(objSource);
+      }
+    }
+    return parsedStyles;
   }
 }
 </code></pre>

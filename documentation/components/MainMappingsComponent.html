@@ -1,0 +1,1659 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>ndex-edit documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">ndex-edit documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>MainMappingsComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/components/main-mappings/main-mappings.component.ts</code>
+</p>
+
+
+
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-main-mappings</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./main-mappings.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./main-mappings.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#currentMappingId">currentMappingId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#dataService">dataService</a>
+                            </li>
+                            <li>
+                                <a href="#faArrowLeft">faArrowLeft</a>
+                            </li>
+                            <li>
+                                <a href="#faCheck">faCheck</a>
+                            </li>
+                            <li>
+                                <a href="#faEdit">faEdit</a>
+                            </li>
+                            <li>
+                                <a href="#faPlus">faPlus</a>
+                            </li>
+                            <li>
+                                <a href="#faSearch">faSearch</a>
+                            </li>
+                            <li>
+                                <a href="#faTimes">faTimes</a>
+                            </li>
+                            <li>
+                                <a href="#faTrash">faTrash</a>
+                            </li>
+                            <li>
+                                <a href="#givenMapType">givenMapType</a>
+                            </li>
+                            <li>
+                                <a href="#mappingToRemove">mappingToRemove</a>
+                            </li>
+                            <li>
+                                <a href="#selectedMapping">selectedMapping</a>
+                            </li>
+                            <li>
+                                <a href="#selectedNetwork">selectedNetwork</a>
+                            </li>
+                            <li>
+                                <a href="#showList">showList</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#confirmDeletion">confirmDeletion</a>
+                            </li>
+                            <li>
+                                <a href="#toggleRemoveDialogue">toggleRemoveDialogue</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(route: <a href="https://angular.io/api/router/ActivatedRoute" target="_blank">ActivatedRoute</a>, dataService: <a href="../injectables/DataService.html">DataService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/app/components/main-mappings/main-mappings.component.ts:100</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>The URL rendering this view contains both the specified graph and a mapping whose details are displayed.
+Thus within the constructor both <a href="../components/MainMappingsComponent.html#selectedNetwork">MainMappingsComponent</a> and
+<a href="../components/MainMappingsComponent.html#selectedMapping">MainMappingsComponent</a> are set</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>route</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/ActivatedRoute" target="_blank" >ActivatedRoute</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <code><p>Service to read URL</p>
+</code>
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>dataService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/DataService.html" target="_self" >DataService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <code><p>Service to read and write to globally accessible data</p>
+</code>
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confirmDeletion"></a>
+                    <span class="name">
+                        <b>
+                            confirmDeletion
+                        </b>
+                        <a href="#confirmDeletion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>confirmDeletion(confirmation: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="209"
+                            class="link-to-prism">src/app/components/main-mappings/main-mappings.component.ts:209</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>On confirmation the deletion of the mapping is executed and instead of the confirmation dialogue the list of
+existing mappings reappears.
+When not confirming the deletion merely the dialogue is hidden again.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>confirmation</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>Determines if the deletion is executed or not</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleRemoveDialogue"></a>
+                    <span class="name">
+                        <b>
+                            toggleRemoveDialogue
+                        </b>
+                        <a href="#toggleRemoveDialogue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleRemoveDialogue(map: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="155"
+                            class="link-to-prism">src/app/components/main-mappings/main-mappings.component.ts:155</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Toggles the dialogue to confirm deletion of an existing mapping. Selects the mapping to be deleted by
+overriding <a href="../components/MainMappingsComponent.html#mappingToRemove">MainMappingsComponent</a></p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Default value</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>map</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>null</code>
+                                    </td>
+
+                                    <td>
+                                        <p>Single mapping which is to be deleted</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>type</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>&#x27;&#x27;</code>
+                                    </td>
+
+                                    <td>
+                                        <p>As specified by {</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="currentMappingId"></a>
+                        <span class="name">
+                            <b>
+                            currentMappingId</b>
+                            <a href="#currentMappingId"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>string[]</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/app/components/main-mappings/main-mappings.component.ts:78</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Id of the currently selected mapping</p>
+</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="dataService"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            dataService</b>
+                            <a href="#dataService"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../injectables/DataService.html" target="_self" >DataService</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="112" class="link-to-prism">src/app/components/main-mappings/main-mappings.component.ts:112</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description">Service to read and write to globally accessible data</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="faArrowLeft"></a>
+                        <span class="name">
+                            <b>
+                            faArrowLeft</b>
+                            <a href="#faArrowLeft"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>faArrowLeft</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/components/main-mappings/main-mappings.component.ts:58</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Icon: faArrowLeft
+See <a href="https://fontawesome.com/icons?d=gallery">Fontawesome</a> for further infos</p>
+</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="faCheck"></a>
+                        <span class="name">
+                            <b>
+                            faCheck</b>
+                            <a href="#faCheck"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>faCheck</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/components/main-mappings/main-mappings.component.ts:46</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Icon: faCheck
+See <a href="https://fontawesome.com/icons?d=gallery">Fontawesome</a> for further infos</p>
+</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="faEdit"></a>
+                        <span class="name">
+                            <b>
+                            faEdit</b>
+                            <a href="#faEdit"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>faEdit</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/components/main-mappings/main-mappings.component.ts:28</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Icon: faEdit
+See <a href="https://fontawesome.com/icons?d=gallery">Fontawesome</a> for further infos</p>
+</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="faPlus"></a>
+                        <span class="name">
+                            <b>
+                            faPlus</b>
+                            <a href="#faPlus"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>faPlus</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/components/main-mappings/main-mappings.component.ts:22</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Icon: faPlus
+See <a href="https://fontawesome.com/icons?d=gallery">Fontawesome</a> for further infos</p>
+</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="faSearch"></a>
+                        <span class="name">
+                            <b>
+                            faSearch</b>
+                            <a href="#faSearch"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>faSearch</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/components/main-mappings/main-mappings.component.ts:52</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Icon: faSearch
+See <a href="https://fontawesome.com/icons?d=gallery">Fontawesome</a> for further infos</p>
+</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="faTimes"></a>
+                        <span class="name">
+                            <b>
+                            faTimes</b>
+                            <a href="#faTimes"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>faTimes</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/components/main-mappings/main-mappings.component.ts:40</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Icon: faTimes
+See <a href="https://fontawesome.com/icons?d=gallery">Fontawesome</a> for further infos</p>
+</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="faTrash"></a>
+                        <span class="name">
+                            <b>
+                            faTrash</b>
+                            <a href="#faTrash"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>faTrash</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/components/main-mappings/main-mappings.component.ts:34</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Icon: faTrash
+See <a href="https://fontawesome.com/icons?d=gallery">Fontawesome</a> for further infos</p>
+</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="givenMapType"></a>
+                        <span class="name">
+                            <b>
+                            givenMapType</b>
+                            <a href="#givenMapType"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/app/components/main-mappings/main-mappings.component.ts:100</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Can be one of the following types:</p>
+<ul>
+   <li><b>nd</b>: discrete node mapping</li>
+   <li><b>nc</b>: continuous node mapping</li>
+   <li><b>ed</b>: discrete edge mapping</li>
+   <li><b>ec</b>: continuous edge mapping</li>
+</ul></div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="mappingToRemove"></a>
+                        <span class="name">
+                            <b>
+                            mappingToRemove</b>
+                            <a href="#mappingToRemove"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>{
+    map: null,
+    type: &#x27;&#x27;,
+    network: -1,
+    mappingId: -1,
+    akvIndex: -1,
+  }</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">src/app/components/main-mappings/main-mappings.component.ts:83</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Mapping to be removed which is overridden as soon as the user selects a mapping to delete</p>
+</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedMapping"></a>
+                        <span class="name">
+                            <b>
+                            selectedMapping</b>
+                            <a href="#selectedMapping"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>any[]</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/app/components/main-mappings/main-mappings.component.ts:73</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Selected mapping which is displayed in the table at the top of the view</p>
+</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedNetwork"></a>
+                        <span class="name">
+                            <b>
+                            selectedNetwork</b>
+                            <a href="#selectedNetwork"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../interfaces/NeNetwork.html" target="_self" >NeNetwork</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/app/components/main-mappings/main-mappings.component.ts:68</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Selected network of type <a href="../interfaces/NeNetwork.html">NeNetwork</a></p>
+</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showList"></a>
+                        <span class="name">
+                            <b>
+                            showList</b>
+                            <a href="#showList"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>true</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/app/components/main-mappings/main-mappings.component.ts:63</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Used as a switch to toggle between list of all currently existing mappings and confirmation dialogue to delete a mapping</p>
+</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {Component, OnInit} from &#x27;@angular/core&#x27;;
+import {ActivatedRoute} from &#x27;@angular/router&#x27;;
+import {DataService} from &#x27;../../services/data.service&#x27;;
+import {NeNetwork} from &#x27;../../models/ne-network&#x27;;
+import {faEdit, faPlus, faTrash, faTimes, faCheck, faSearch, faArrowLeft} from &#x27;@fortawesome/free-solid-svg-icons&#x27;;
+
+@Component({
+  selector: &#x27;app-main-mappings&#x27;,
+  templateUrl: &#x27;./main-mappings.component.html&#x27;,
+  styleUrls: [&#x27;./main-mappings.component.scss&#x27;]
+})
+
+/**
+ * Component responsible for displaying existing mappings
+ */
+export class MainMappingsComponent {
+
+  /**
+   * Icon: faPlus
+   * See {@link https://fontawesome.com/icons?d&#x3D;gallery|Fontawesome} for further infos
+   */
+  faPlus &#x3D; faPlus;
+
+  /**
+   * Icon: faEdit
+   * See {@link https://fontawesome.com/icons?d&#x3D;gallery|Fontawesome} for further infos
+   */
+  faEdit &#x3D; faEdit;
+
+  /**
+   * Icon: faTrash
+   * See {@link https://fontawesome.com/icons?d&#x3D;gallery|Fontawesome} for further infos
+   */
+  faTrash &#x3D; faTrash;
+
+  /**
+   * Icon: faTimes
+   * See {@link https://fontawesome.com/icons?d&#x3D;gallery|Fontawesome} for further infos
+   */
+  faTimes &#x3D; faTimes;
+
+  /**
+   * Icon: faCheck
+   * See {@link https://fontawesome.com/icons?d&#x3D;gallery|Fontawesome} for further infos
+   */
+  faCheck &#x3D; faCheck;
+
+  /**
+   * Icon: faSearch
+   * See {@link https://fontawesome.com/icons?d&#x3D;gallery|Fontawesome} for further infos
+   */
+  faSearch &#x3D; faSearch;
+
+  /**
+   * Icon: faArrowLeft
+   * See {@link https://fontawesome.com/icons?d&#x3D;gallery|Fontawesome} for further infos
+   */
+  faArrowLeft &#x3D; faArrowLeft;
+
+  /**
+   * Used as a switch to toggle between list of all currently existing mappings and confirmation dialogue to delete a mapping
+   */
+  showList &#x3D; true;
+
+  /**
+   * Selected network of type {@link NeNetwork|NeNetwork}
+   */
+  selectedNetwork: NeNetwork;
+
+  /**
+   * Selected mapping which is displayed in the table at the top of the view
+   */
+  selectedMapping: any[];
+
+  /**
+   * Id of the currently selected mapping
+   */
+  currentMappingId: string[];
+
+  /**
+   * Mapping to be removed which is overridden as soon as the user selects a mapping to delete
+   */
+  mappingToRemove &#x3D; {
+    map: null,
+    type: &#x27;&#x27;,
+    network: -1,
+    mappingId: -1,
+    akvIndex: -1,
+  };
+
+  /**
+   * Can be one of the following types:
+   * &lt;ul&gt;
+   *   &lt;li&gt;&lt;b&gt;nd&lt;/b&gt;: discrete node mapping&lt;/li&gt;
+   *   &lt;li&gt;&lt;b&gt;nc&lt;/b&gt;: continuous node mapping&lt;/li&gt;
+   *   &lt;li&gt;&lt;b&gt;ed&lt;/b&gt;: discrete edge mapping&lt;/li&gt;
+   *   &lt;li&gt;&lt;b&gt;ec&lt;/b&gt;: continuous edge mapping&lt;/li&gt;
+   * &lt;/ul&gt;
+   */
+  givenMapType: string;
+
+  /**
+   * The URL rendering this view contains both the specified graph and a mapping whose details are displayed.
+   * Thus within the constructor both {@link MainMappingsComponent#selectedNetwork} and
+   * {@link MainMappingsComponent#selectedMapping} are set
+   *
+   * @param route Service to read URL
+   * @param dataService Service to read and write to globally accessible data
+   */
+  constructor(
+    private route: ActivatedRoute,
+    public dataService: DataService) {
+
+    this.route.paramMap.subscribe(params &#x3D;&gt; {
+
+      this.selectedNetwork &#x3D; this.dataService.networksParsed.find(x &#x3D;&gt; x.id &#x3D;&#x3D;&#x3D; Number(params.get(&#x27;id&#x27;)));
+      this.givenMapType &#x3D; params.get(&#x27;map&#x27;).substring(0, 2);
+      this.currentMappingId &#x3D; params.get(&#x27;map&#x27;).substring(2).split(&#x27;-&#x27;);
+      this.selectedMapping &#x3D; [];
+
+      switch (this.givenMapType) {
+        case &#x27;ec&#x27;:
+          for (const mapIndex of this.currentMappingId) {
+            this.selectedMapping.push(this.selectedNetwork.mappings.edgesContinuous[mapIndex]);
+          }
+          break;
+        case &#x27;nc&#x27;:
+          for (const mapIndex of this.currentMappingId) {
+            this.selectedMapping.push(this.selectedNetwork.mappings.nodesContinuous[mapIndex]);
+          }
+          break;
+        case &#x27;ed&#x27;:
+          for (const mapIndex of this.currentMappingId) {
+            this.selectedMapping.push(this.selectedNetwork.mappings.edgesDiscrete[mapIndex]);
+          }
+          break;
+        case &#x27;nd&#x27;:
+          for (const mapIndex of this.currentMappingId) {
+            this.selectedMapping.push(this.selectedNetwork.mappings.nodesDiscrete[mapIndex]);
+          }
+          break;
+        default:
+          break;
+      }
+    });
+  }
+
+  /**
+   * Toggles the dialogue to confirm deletion of an existing mapping. Selects the mapping to be deleted by
+   * overriding {@link MainMappingsComponent#mappingToRemove}
+   *
+   * @param map Single mapping which is to be deleted
+   * @param type As specified by {@link MainMappingsComponent#givenMapType}
+   */
+  toggleRemoveDialogue(map: any &#x3D; null, type: string &#x3D; &#x27;&#x27;): void {
+    switch (type) {
+      case &#x27;nd&#x27;:
+        for (const akv of this.selectedNetwork.aspectKeyValuesNodes) {
+          if (akv.name &#x3D;&#x3D;&#x3D; map.classifier) {
+            this.mappingToRemove.akvIndex &#x3D; this.selectedNetwork.aspectKeyValuesNodes.indexOf(akv);
+            break;
+          }
+        }
+        this.mappingToRemove.mappingId &#x3D; this.selectedNetwork.mappings.nodesDiscrete.indexOf(map);
+        break;
+      case &#x27;nc&#x27;:
+        for (const akv of this.selectedNetwork.aspectKeyValuesNodes) {
+          if (akv.name &#x3D;&#x3D;&#x3D; map.title[1]) {
+            this.mappingToRemove.akvIndex &#x3D; this.selectedNetwork.aspectKeyValuesNodes.indexOf(akv);
+            break;
+          }
+        }
+        this.mappingToRemove.mappingId &#x3D; this.selectedNetwork.mappings.nodesContinuous.indexOf(map);
+        break;
+      case &#x27;ed&#x27;:
+        for (const akv of this.selectedNetwork.aspectKeyValuesEdges) {
+          if (akv.name &#x3D;&#x3D;&#x3D; map.classifier) {
+            this.mappingToRemove.akvIndex &#x3D; this.selectedNetwork.aspectKeyValuesEdges.indexOf(akv);
+            break;
+          }
+        }
+        this.mappingToRemove.mappingId &#x3D; this.selectedNetwork.mappings.edgesDiscrete.indexOf(map);
+        break;
+      case &#x27;ec&#x27;:
+        for (const akv of this.selectedNetwork.aspectKeyValuesEdges) {
+          if (akv.name &#x3D;&#x3D;&#x3D; map.title[1]) {
+            this.mappingToRemove.akvIndex &#x3D; this.selectedNetwork.aspectKeyValuesEdges.indexOf(akv);
+            break;
+          }
+        }
+        this.mappingToRemove.mappingId &#x3D; this.selectedNetwork.mappings.edgesContinuous.indexOf(map);
+        break;
+    }
+    this.showList &#x3D; !this.showList;
+    this.mappingToRemove.map &#x3D; map;
+    this.mappingToRemove.type &#x3D; type;
+    this.mappingToRemove.network &#x3D; this.selectedNetwork.id;
+    console.log(this.mappingToRemove);
+
+  }
+
+  /**
+   * On confirmation the deletion of the mapping is executed and instead of the confirmation dialogue the list of
+   * existing mappings reappears.
+   * When not confirming the deletion merely the dialogue is hidden again.
+   *
+   * @param confirmation Determines if the deletion is executed or not
+   */
+  confirmDeletion(confirmation: boolean): void {
+    if (confirmation) {
+      console.log(this.mappingToRemove);
+      this.dataService.removeMapping(this.mappingToRemove);
+      this.selectedMapping &#x3D; [];
+    }
+    this.toggleRemoveDialogue();
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;ng-container *ngIf&#x3D;&quot;selectedNetwork&quot;&gt;
+
+  &lt;h1&gt;
+    &lt;a role&#x3D;&quot;button&quot; [routerLink]&#x3D;&quot;[&#x27;&#x27;, { outlets: {primary: [&#x27;graph&#x27;, selectedNetwork.id]} }]&quot;
+       data-toggle&#x3D;&quot;tooltip&quot; data-placement&#x3D;&quot;bottom&quot;
+       title&#x3D;&quot;{{&#x27;MAIN_MAPPINGS_GRAPH&#x27; | translate}}&quot;&gt;
+      &lt;fa-icon [icon]&#x3D;&quot;faArrowLeft&quot;&gt;&lt;/fa-icon&gt;
+    &lt;/a&gt;
+    {{selectedNetwork.networkInformation.name}}
+  &lt;/h1&gt;
+
+  &lt;hr&gt;
+
+  &lt;span *ngFor&#x3D;&quot;let map of selectedMapping&quot;&gt;
+
+    &lt;table *ngIf&#x3D;&quot;map.chartValid&quot; class&#x3D;&quot;table table-bordered&quot;&gt;
+      &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;{{map.title[1]}}&lt;/th&gt;
+        &lt;th&gt;{{map.title[0]}}&lt;/th&gt;
+      &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+      &lt;tr *ngFor&#x3D;&quot;let entry of map.chart.lineChartData[0].data; let i &#x3D; index&quot;&gt;
+        &lt;td *ngIf&#x3D;&quot;i &#x3D;&#x3D;&#x3D; 0&quot;&gt;&amp;lt;&lt;/td&gt;
+        &lt;td *ngIf&#x3D;&quot;i &#x3D;&#x3D;&#x3D; map.chart.lineChartLabels.length - 1&quot;&gt;&amp;gt;&lt;/td&gt;
+        &lt;td
+          *ngIf&#x3D;&quot;i &gt; 0 &amp;&amp; i &lt; map.chart.lineChartLabels.length - 1&quot;&gt;{{map.chart.lineChartLabels[i]}}&lt;/td&gt;
+        &lt;td&gt;{{entry}}&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+
+    &lt;table *ngIf&#x3D;&quot;map.gradientValid&quot; class&#x3D;&quot;table table-bordered&quot;&gt;
+      &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;{{map.title[1]}}&lt;/th&gt;
+        &lt;th&gt;{{map.title[0]}}&lt;/th&gt;
+      &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+      &lt;tr *ngFor&#x3D;&quot;let entry of map.colorGradient; let i &#x3D; index&quot;&gt;
+        &lt;td *ngIf&#x3D;&quot;i &#x3D;&#x3D;&#x3D; 0&quot;&gt;&amp;lt;&lt;/td&gt;
+        &lt;td *ngIf&#x3D;&quot;i &#x3D;&#x3D;&#x3D; map.colorGradient.length - 1&quot;&gt;&amp;gt;&lt;/td&gt;
+        &lt;td *ngIf&#x3D;&quot;i &gt; 0 &amp;&amp; i &lt; map.colorGradient.length - 1&quot;&gt;
+          {{entry.numericThreshold}}
+        &lt;/td&gt;
+        &lt;td&gt;
+          {{entry.color}}
+          &lt;span class&#x3D;&quot;badge badge-pill border&quot; [ngStyle]&#x3D;&quot;{&#x27;background-color&#x27;: entry.color}&quot;&gt;&amp;nbsp;&lt;/span&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+
+    &lt;div class&#x3D;&quot;table-responsive&quot;&gt;
+      &lt;table *ngIf&#x3D;&quot;map.classifier&quot; class&#x3D;&quot;table table-bordered&quot;&gt;
+        &lt;thead&gt;
+        &lt;th colspan&#x3D;&quot;3&quot;&gt;{{map.classifier}}&lt;/th&gt;
+        &lt;th *ngFor&#x3D;&quot;let value of map.values&quot;&gt;{{value}}&lt;/th&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+        &lt;tr *ngFor&#x3D;&quot;let style of map.styleMap&quot;&gt;
+
+          &lt;td&gt;&lt;b&gt;{{style.cssKey}}&lt;/b&gt;&lt;/td&gt;
+          &lt;td&gt;
+            &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-block btn-outline-warning&quot; data-toggle&#x3D;&quot;tooltip&quot;
+                    data-placement&#x3D;&quot;bottom&quot; title&#x3D;&quot;{{&#x27;MAIN_MAPPINGS_TT_EDIT&#x27; | translate}}&quot;&gt;
+              &lt;fa-icon [icon]&#x3D;&quot;faEdit&quot;&gt;&lt;/fa-icon&gt;
+            &lt;/button&gt;
+          &lt;/td&gt;
+          &lt;td&gt;
+            &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-block btn-outline-danger&quot;&gt;
+              &lt;fa-icon [icon]&#x3D;&quot;faTrash&quot;&gt;&lt;/fa-icon&gt;
+            &lt;/button&gt;
+          &lt;/td&gt;
+
+          &lt;td *ngFor&#x3D;&quot;let value of map.values; let i &#x3D; index&quot;&gt;
+
+              &lt;span *ngFor&#x3D;&quot;let styleValue of style.cssValues; let j &#x3D; index&quot;&gt;
+                &lt;span *ngIf&#x3D;&quot;map.selectors[i] &#x3D;&#x3D;&#x3D; style.selectors[j]&quot;&gt;
+                    {{styleValue}}
+                  &lt;span *ngIf&#x3D;&quot;styleValue.indexOf(&#x27;#&#x27;) &gt; -1&quot; class&#x3D;&quot;badge badge-pill border&quot;
+                        [ngStyle]&#x3D;&quot;{&#x27;background-color&#x27;: styleValue}&quot;&gt;&amp;nbsp;&lt;/span&gt;
+                  &lt;/span&gt;
+                &lt;/span&gt;
+
+          &lt;/td&gt;
+
+        &lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;mt-3 mb-3&quot; *ngIf&#x3D;&quot;map.classifier || map.chartValid || map.gradientValid&quot;&gt;
+      &lt;div&gt;
+        &lt;button class&#x3D;&quot;btn btn-block btn-outline-danger&quot; (click)&#x3D;&quot;toggleRemoveDialogue(map, givenMapType)&quot;&gt;
+          &lt;fa-icon [icon]&#x3D;&quot;faTrash&quot;&gt;&lt;/fa-icon&gt;
+          {{&#x27;MAIN_MAPPINGS_DELETE&#x27; | translate}}
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+  &lt;/span&gt;
+
+  &lt;hr&gt;
+
+  &lt;div *ngIf&#x3D;&quot;showList&quot;&gt;
+
+    &lt;h3&gt;{{&#x27;MAIN_MAPPINGS_TITLE_LIST&#x27; | translate}}&lt;/h3&gt;
+
+    &lt;div class&#x3D;&quot;row&quot;&gt;
+      &lt;div class&#x3D;&quot;col-6&quot;&gt;
+
+        &lt;table class&#x3D;&quot;table table-borderless&quot; *ngIf&#x3D;&quot;selectedNetwork.aspectKeyValuesNodes.length &gt; 0&quot;&gt;
+          &lt;thead class&#x3D;&quot;border-bottom&quot;&gt;
+          &lt;th colspan&#x3D;&quot;3&quot;&gt;{{&#x27;MAIN_MAPPINGS_TITLE_NODES_DISCRETE&#x27; | translate}}&lt;/th&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+          &lt;tr *ngFor&#x3D;&quot;let akv of selectedNetwork.aspectKeyValuesNodes; let akvIndex &#x3D; index;&quot;&gt;
+            &lt;td *ngIf&#x3D;&quot;akv.values.length !&#x3D;&#x3D; akv.appliedTo.length&quot;&gt;
+              {{akv.name}}
+            &lt;/td&gt;
+            &lt;td *ngIf&#x3D;&quot;akv.values.length !&#x3D;&#x3D; akv.appliedTo.length&quot; class&#x3D;&quot;float-right&quot;&gt;
+
+              &lt;!-- mapping exists --&gt;
+              &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-outline-warning mr-2&quot; *ngIf&#x3D;&quot;akv.mapPointerD.length &gt; 0&quot;
+                      data-toggle&#x3D;&quot;tooltip&quot; data-placement&#x3D;&quot;bottom&quot; title&#x3D;&quot;{{&#x27;MAIN_MAPPINGS_TT_EDIT&#x27; | translate}}&quot;&gt;
+                &lt;fa-icon [icon]&#x3D;&quot;faEdit&quot;&gt;&lt;/fa-icon&gt;
+              &lt;/button&gt;
+
+
+              &lt;span *ngIf&#x3D;&quot;akv.mapPointerD.length &gt; 1&quot;&gt;
+                &lt;div class&#x3D;&quot;btn-group&quot; role&#x3D;&quot;group&quot;&gt;
+                  &lt;div class&#x3D;&quot;btn-group&quot; role&#x3D;&quot;group&quot;&gt;
+                    &lt;button id&#x3D;&quot;ndDetailsGroup&quot; type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-outline-secondary dropdown-toggle&quot;
+                            data-toggle&#x3D;&quot;dropdown&quot; aria-haspopup&#x3D;&quot;true&quot; aria-expanded&#x3D;&quot;false&quot;&gt;
+                      &lt;fa-icon [icon]&#x3D;&quot;faSearch&quot;&gt;&lt;/fa-icon&gt;
+                    &lt;/button&gt;
+                    &lt;div class&#x3D;&quot;dropdown-menu&quot; aria-labelledby&#x3D;&quot;ndDetailsGroup&quot;&gt;
+                      &lt;a *ngFor&#x3D;&quot;let ecDetail of akv.mapPointerD; let i &#x3D; index;&quot;
+                         class&#x3D;&quot;dropdown-item&quot;
+                         [routerLink]&#x3D;&quot;[&#x27;&#x27;, { outlets: {primary: [&#x27;mappings&#x27;, selectedNetwork.id, &#x27;nd&#x27; + akv.mapPointerC[i]]} }]&quot;&gt;{{selectedNetwork.mappings.nodesDiscrete[i].classifier}}&lt;/a&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/span&gt;
+
+              &lt;span *ngIf&#x3D;&quot;akv.mapPointerD.length &#x3D;&#x3D;&#x3D; 1&quot;&gt;
+                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-outline-secondary&quot; *ngIf&#x3D;&quot;akv.mapPointerD.length &gt; 0&quot;
+                        [routerLink]&#x3D;&quot;[&#x27;&#x27;, { outlets: {primary: [&#x27;mappings&#x27;, selectedNetwork.id, &#x27;nd&#x27; + akv.mapPointerD[0]]} }]&quot;
+                        data-toggle&#x3D;&quot;tooltip&quot; data-placement&#x3D;&quot;bottom&quot;
+                        title&#x3D;&quot;{{&#x27;MAIN_MAPPINGS_TT_MAP_DETAILS&#x27; | translate}}&quot;&gt;
+                  &lt;fa-icon [icon]&#x3D;&quot;faSearch&quot;&gt;&lt;/fa-icon&gt;
+                &lt;/button&gt;
+              &lt;/span&gt;
+
+              &lt;!-- no mapping exists --&gt;
+              &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-outline-success&quot; *ngIf&#x3D;&quot;akv.mapPointerD.length &#x3D;&#x3D;&#x3D; 0&quot;
+                      [routerLink]&#x3D;&quot;[&#x27;&#x27;, { outlets: {primary: [&#x27;new&#x27;, selectedNetwork.id, &#x27;nd&#x27;, akvIndex]} }]&quot;
+                      data-toggle&#x3D;&quot;tooltip&quot; data-placement&#x3D;&quot;bottom&quot;
+                      title&#x3D;&quot;{{&#x27;MAIN_MAPPINGS_TT_NEW&#x27; | translate}}&quot;&gt;
+                &lt;fa-icon [icon]&#x3D;&quot;faPlus&quot;&gt;&lt;/fa-icon&gt;
+              &lt;/button&gt;
+
+            &lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;col-6&quot;&gt;
+
+        &lt;table class&#x3D;&quot;table table-borderless&quot; *ngIf&#x3D;&quot;selectedNetwork.aspectKeyValuesEdges.length &gt; 0&quot;&gt;
+          &lt;thead class&#x3D;&quot;border-bottom&quot;&gt;
+          &lt;th colspan&#x3D;&quot;3&quot;&gt;{{&#x27;MAIN_MAPPINGS_TITLE_EDGES_DISCRETE&#x27; | translate}}&lt;/th&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+          &lt;tr *ngFor&#x3D;&quot;let akv of selectedNetwork.aspectKeyValuesEdges; let akvIndex &#x3D; index;&quot;&gt;
+            &lt;td *ngIf&#x3D;&quot;akv.values.length !&#x3D;&#x3D; akv.appliedTo.length&quot;&gt;
+              {{akv.name}}
+            &lt;/td&gt;
+            &lt;td *ngIf&#x3D;&quot;akv.values.length !&#x3D;&#x3D; akv.appliedTo.length&quot; class&#x3D;&quot;float-right&quot;&gt;
+
+              &lt;!-- mapping exists --&gt;
+              &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-outline-warning mr-2&quot; *ngIf&#x3D;&quot;akv.mapPointerD.length &gt; 0&quot;
+                      data-toggle&#x3D;&quot;tooltip&quot; data-placement&#x3D;&quot;bottom&quot; title&#x3D;&quot;{{&#x27;MAIN_MAPPINGS_TT_EDIT&#x27; | translate}}&quot;&gt;
+                &lt;fa-icon [icon]&#x3D;&quot;faEdit&quot;&gt;&lt;/fa-icon&gt;
+              &lt;/button&gt;
+
+              &lt;span *ngIf&#x3D;&quot;akv.mapPointerD.length &gt; 1&quot;&gt;
+                &lt;div class&#x3D;&quot;btn-group&quot; role&#x3D;&quot;group&quot;&gt;
+                  &lt;div class&#x3D;&quot;btn-group&quot; role&#x3D;&quot;group&quot;&gt;
+                    &lt;button id&#x3D;&quot;edDetailsGroup&quot; type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-outline-secondary dropdown-toggle&quot;
+                            data-toggle&#x3D;&quot;dropdown&quot; aria-haspopup&#x3D;&quot;true&quot; aria-expanded&#x3D;&quot;false&quot;&gt;
+                      &lt;fa-icon [icon]&#x3D;&quot;faSearch&quot;&gt;&lt;/fa-icon&gt;
+                    &lt;/button&gt;
+                    &lt;div class&#x3D;&quot;dropdown-menu&quot; aria-labelledby&#x3D;&quot;edDetailsGroup&quot;&gt;
+                      &lt;a *ngFor&#x3D;&quot;let ecDetail of akv.mapPointerD; let i &#x3D; index;&quot;
+                         class&#x3D;&quot;dropdown-item&quot;
+                         [routerLink]&#x3D;&quot;[&#x27;&#x27;, { outlets: {primary: [&#x27;mappings&#x27;, selectedNetwork.id, &#x27;ed&#x27; + akv.mapPointerC[i]]} }]&quot;&gt;{{selectedNetwork.mappings.edgesDiscrete[i].classifier}}&lt;/a&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/span&gt;
+
+              &lt;span *ngIf&#x3D;&quot;akv.mapPointerD.length &#x3D;&#x3D;&#x3D; 1&quot;&gt;
+                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-outline-secondary&quot; *ngIf&#x3D;&quot;akv.mapPointerD.length &gt; 0&quot;
+                        [routerLink]&#x3D;&quot;[&#x27;&#x27;, { outlets: {primary: [&#x27;mappings&#x27;, selectedNetwork.id, &#x27;ed&#x27; + akv.mapPointerD[0]]} }]&quot;
+                        data-toggle&#x3D;&quot;tooltip&quot; data-placement&#x3D;&quot;bottom&quot;
+                        title&#x3D;&quot;{{&#x27;MAIN_MAPPINGS_TT_MAP_DETAILS&#x27; | translate}}&quot;&gt;
+                  &lt;fa-icon [icon]&#x3D;&quot;faSearch&quot;&gt;&lt;/fa-icon&gt;
+                &lt;/button&gt;
+              &lt;/span&gt;
+
+              &lt;!-- no mapping exists --&gt;
+              &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-outline-success&quot; *ngIf&#x3D;&quot;akv.mapPointerD.length &#x3D;&#x3D;&#x3D; 0&quot;
+                      [routerLink]&#x3D;&quot;[&#x27;&#x27;, { outlets: {primary: [&#x27;new&#x27;, selectedNetwork.id, &#x27;ed&#x27;, akvIndex]} }]&quot;
+                      data-toggle&#x3D;&quot;tooltip&quot; data-placement&#x3D;&quot;bottom&quot;
+                      title&#x3D;&quot;{{&#x27;MAIN_MAPPINGS_TT_NEW&#x27; | translate}}&quot;&gt;
+                &lt;fa-icon [icon]&#x3D;&quot;faPlus&quot;&gt;&lt;/fa-icon&gt;
+              &lt;/button&gt;
+
+            &lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;row&quot;&gt;
+      &lt;div class&#x3D;&quot;col-6&quot;&gt;
+
+        &lt;table class&#x3D;&quot;table table-borderless&quot; *ngIf&#x3D;&quot;selectedNetwork.aspectKeyValuesNodes.length &gt; 0&quot;&gt;
+          &lt;thead class&#x3D;&quot;border-bottom&quot;&gt;
+          &lt;th colspan&#x3D;&quot;3&quot;&gt;{{&#x27;MAIN_MAPPINGS_TITLE_NODES_CONTINUOUS&#x27; | translate}}&lt;/th&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+          &lt;tr *ngFor&#x3D;&quot;let akv of selectedNetwork.aspectKeyValuesNodes; let akvIndex &#x3D; index;&quot;&gt;
+            &lt;td *ngIf&#x3D;&quot;akv.datatype &#x3D;&#x3D;&#x3D; &#x27;double&#x27;&quot;&gt;
+              {{akv.name}}
+            &lt;/td&gt;
+            &lt;td *ngIf&#x3D;&quot;akv.datatype &#x3D;&#x3D;&#x3D; &#x27;double&#x27;&quot; class&#x3D;&quot;float-right&quot;&gt;
+
+              &lt;!-- mapping exists --&gt;
+              &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-outline-warning mr-2&quot; *ngIf&#x3D;&quot;akv.mapPointerC.length &gt; 0&quot;
+                      data-toggle&#x3D;&quot;tooltip&quot; data-placement&#x3D;&quot;bottom&quot; title&#x3D;&quot;{{&#x27;MAIN_MAPPINGS_TT_EDIT&#x27; | translate}}&quot;&gt;
+                &lt;fa-icon [icon]&#x3D;&quot;faEdit&quot;&gt;&lt;/fa-icon&gt;
+              &lt;/button&gt;
+
+              &lt;span *ngIf&#x3D;&quot;akv.mapPointerC.length &gt; 1&quot;&gt;
+                &lt;div class&#x3D;&quot;btn-group&quot; role&#x3D;&quot;group&quot;&gt;
+                  &lt;div class&#x3D;&quot;btn-group&quot; role&#x3D;&quot;group&quot;&gt;
+                    &lt;button id&#x3D;&quot;ncDetailsGroup&quot; type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-outline-secondary dropdown-toggle&quot;
+                            data-toggle&#x3D;&quot;dropdown&quot; aria-haspopup&#x3D;&quot;true&quot; aria-expanded&#x3D;&quot;false&quot;&gt;
+                      &lt;fa-icon [icon]&#x3D;&quot;faSearch&quot;&gt;&lt;/fa-icon&gt;
+                    &lt;/button&gt;
+                    &lt;div class&#x3D;&quot;dropdown-menu&quot; aria-labelledby&#x3D;&quot;ncDetailsGroup&quot;&gt;
+                      &lt;a *ngFor&#x3D;&quot;let ecDetail of akv.mapPointerC; let i &#x3D; index;&quot;
+                         class&#x3D;&quot;dropdown-item&quot;
+                         [routerLink]&#x3D;&quot;[&#x27;&#x27;, { outlets: {primary: [&#x27;mappings&#x27;, selectedNetwork.id, &#x27;nc&#x27; + akv.mapPointerC[i]]} }]&quot;&gt;{{selectedNetwork.mappings.nodesContinuous[i].title[0]}}&lt;/a&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/span&gt;
+
+              &lt;span *ngIf&#x3D;&quot;akv.mapPointerC.length &#x3D;&#x3D;&#x3D; 1&quot;&gt;
+                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-outline-secondary&quot; *ngIf&#x3D;&quot;akv.mapPointerC.length &gt; 0&quot;
+                        [routerLink]&#x3D;&quot;[&#x27;&#x27;, { outlets: {primary: [&#x27;mappings&#x27;, selectedNetwork.id, &#x27;nc&#x27; + akv.mapPointerC[0]]} }]&quot;
+                        data-toggle&#x3D;&quot;tooltip&quot; data-placement&#x3D;&quot;bottom&quot;
+                        title&#x3D;&quot;{{&#x27;MAIN_MAPPINGS_TT_MAP_DETAILS&#x27; | translate}}&quot;&gt;
+                  &lt;fa-icon [icon]&#x3D;&quot;faSearch&quot;&gt;&lt;/fa-icon&gt;
+                &lt;/button&gt;
+              &lt;/span&gt;
+
+              &lt;!-- no mapping exists --&gt;
+              &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-outline-success&quot; *ngIf&#x3D;&quot;akv.mapPointerC.length &#x3D;&#x3D;&#x3D; 0&quot;
+                      [routerLink]&#x3D;&quot;[&#x27;&#x27;, { outlets: {primary: [&#x27;new&#x27;, selectedNetwork.id, &#x27;nc&#x27;, akvIndex]} }]&quot;
+                      data-toggle&#x3D;&quot;tooltip&quot; data-placement&#x3D;&quot;bottom&quot;
+                      title&#x3D;&quot;{{&#x27;MAIN_MAPPINGS_TT_NEW&#x27; | translate}}&quot;&gt;
+                &lt;fa-icon [icon]&#x3D;&quot;faPlus&quot;&gt;&lt;/fa-icon&gt;
+              &lt;/button&gt;
+
+            &lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;col-6&quot;&gt;
+
+        &lt;table class&#x3D;&quot;table table-borderless&quot; *ngIf&#x3D;&quot;selectedNetwork.aspectKeyValuesEdges.length &gt; 0&quot;&gt;
+          &lt;thead class&#x3D;&quot;border-bottom&quot;&gt;
+          &lt;th colspan&#x3D;&quot;3&quot;&gt;{{&#x27;MAIN_MAPPINGS_TITLE_EDGES_CONTINUOUS&#x27; | translate}}&lt;/th&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+          &lt;tr *ngFor&#x3D;&quot;let akv of selectedNetwork.aspectKeyValuesEdges; let akvIndex &#x3D; index;&quot;&gt;
+            &lt;td *ngIf&#x3D;&quot;akv.datatype &#x3D;&#x3D;&#x3D; &#x27;double&#x27;&quot;&gt;
+              {{akv.name}}
+            &lt;/td&gt;
+            &lt;td *ngIf&#x3D;&quot;akv.datatype &#x3D;&#x3D;&#x3D; &#x27;double&#x27;&quot; class&#x3D;&quot;float-right&quot;&gt;
+
+              &lt;!-- mapping exists --&gt;
+              &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-outline-warning mr-2&quot; *ngIf&#x3D;&quot;akv.mapPointerC.length &gt; 0&quot;
+                      data-toggle&#x3D;&quot;tooltip&quot; data-placement&#x3D;&quot;bottom&quot; title&#x3D;&quot;{{&#x27;MAIN_MAPPINGS_TT_EDIT&#x27; | translate}}&quot;&gt;
+                &lt;fa-icon [icon]&#x3D;&quot;faEdit&quot;&gt;&lt;/fa-icon&gt;
+              &lt;/button&gt;
+
+              &lt;span *ngIf&#x3D;&quot;akv.mapPointerC.length &gt; 1&quot;&gt;
+                &lt;div class&#x3D;&quot;btn-group&quot; role&#x3D;&quot;group&quot;&gt;
+                  &lt;div class&#x3D;&quot;btn-group&quot; role&#x3D;&quot;group&quot;&gt;
+                    &lt;button id&#x3D;&quot;ecDetailsGroup&quot; type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-outline-secondary dropdown-toggle&quot;
+                            data-toggle&#x3D;&quot;dropdown&quot; aria-haspopup&#x3D;&quot;true&quot; aria-expanded&#x3D;&quot;false&quot;&gt;
+                      &lt;fa-icon [icon]&#x3D;&quot;faSearch&quot;&gt;&lt;/fa-icon&gt;
+                    &lt;/button&gt;
+                    &lt;div class&#x3D;&quot;dropdown-menu&quot; aria-labelledby&#x3D;&quot;ecDetailsGroup&quot;&gt;
+                      &lt;a *ngFor&#x3D;&quot;let ecDetail of akv.mapPointerC; let i &#x3D; index;&quot;
+                         class&#x3D;&quot;dropdown-item&quot;
+                         [routerLink]&#x3D;&quot;[&#x27;&#x27;, { outlets: {primary: [&#x27;mappings&#x27;, selectedNetwork.id, &#x27;ec&#x27; + akv.mapPointerC[i]]} }]&quot;&gt;{{selectedNetwork.mappings.edgesContinuous[i].title[0]}}&lt;/a&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/span&gt;
+
+              &lt;span *ngIf&#x3D;&quot;akv.mapPointerC.length &#x3D;&#x3D;&#x3D; 1&quot;&gt;
+                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-outline-secondary&quot; *ngIf&#x3D;&quot;akv.mapPointerC.length &gt; 0&quot;
+                        [routerLink]&#x3D;&quot;[&#x27;&#x27;, { outlets: {primary: [&#x27;mappings&#x27;, selectedNetwork.id, &#x27;ec&#x27; + akv.mapPointerC[0]]} }]&quot;
+                        data-toggle&#x3D;&quot;tooltip&quot; data-placement&#x3D;&quot;bottom&quot;
+                        title&#x3D;&quot;{{&#x27;MAIN_MAPPINGS_TT_MAP_DETAILS&#x27; | translate}}&quot;&gt;
+                  &lt;fa-icon [icon]&#x3D;&quot;faSearch&quot;&gt;&lt;/fa-icon&gt;
+                &lt;/button&gt;
+              &lt;/span&gt;
+
+              &lt;!-- no mapping exists --&gt;
+              &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-outline-success&quot; *ngIf&#x3D;&quot;akv.mapPointerC.length &#x3D;&#x3D;&#x3D; 0&quot;
+                      [routerLink]&#x3D;&quot;[&#x27;&#x27;, { outlets: {primary: [&#x27;new&#x27;, selectedNetwork.id, &#x27;ec&#x27;, akvIndex]} }]&quot;
+                      data-toggle&#x3D;&quot;tooltip&quot; data-placement&#x3D;&quot;bottom&quot;
+                      title&#x3D;&quot;{{&#x27;MAIN_MAPPINGS_TT_NEW&#x27; | translate}}&quot;&gt;
+                &lt;fa-icon [icon]&#x3D;&quot;faPlus&quot;&gt;&lt;/fa-icon&gt;
+              &lt;/button&gt;
+
+            &lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+  &lt;div *ngIf&#x3D;&quot;!showList&quot;&gt;
+    &lt;div class&#x3D;&quot;alert alert-danger&quot; role&#x3D;&quot;alert&quot;&gt;
+      {{&#x27;MAIN_MAPPINGS_CONFIRM_DELETION&#x27; | translate}}
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;row&quot;&gt;
+
+      &lt;!-- nevermind --&gt;
+      &lt;div class&#x3D;&quot;col-6&quot;&gt;
+        &lt;button class&#x3D;&quot;btn btn-block btn-outline-success&quot; (click)&#x3D;&quot;confirmDeletion(false)&quot;&gt;
+          &lt;fa-icon [icon]&#x3D;&quot;faTimes&quot;&gt;&lt;/fa-icon&gt;
+          {{&#x27;MAIN_MAPPINGS_CONFIRM_DELETION_NO&#x27; | translate}}
+        &lt;/button&gt;
+      &lt;/div&gt;
+
+      &lt;!-- confirm --&gt;
+      &lt;div class&#x3D;&quot;col-6&quot;&gt;
+        &lt;button class&#x3D;&quot;btn btn-block btn-outline-danger&quot; (click)&#x3D;&quot;confirmDeletion(true)&quot;&gt;
+          &lt;fa-icon [icon]&#x3D;&quot;faCheck&quot;&gt;&lt;/fa-icon&gt;
+          {{&#x27;MAIN_MAPPINGS_CONFIRM_DELETION_YES&#x27; | translate}}
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+
+&lt;/ng-container&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./main-mappings.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss"></code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><ng-container *ngIf="selectedNetwork">  <h1>    <a role="button" [routerLink]="[\'\', { outlets: {primary: [\'graph\', selectedNetwork.id]} }]"       data-toggle="tooltip" data-placement="bottom"       title="{{\'MAIN_MAPPINGS_GRAPH\' | translate}}">      <fa-icon [icon]="faArrowLeft"></fa-icon>    </a>    {{selectedNetwork.networkInformation.name}}  </h1>  <hr>  <span *ngFor="let map of selectedMapping">    <table *ngIf="map.chartValid" class="table table-bordered">      <thead>      <tr>        <th>{{map.title[1]}}</th>        <th>{{map.title[0]}}</th>      </tr>      </thead>      <tbody>      <tr *ngFor="let entry of map.chart.lineChartData[0].data; let i = index">        <td *ngIf="i === 0">&lt;</td>        <td *ngIf="i === map.chart.lineChartLabels.length - 1">&gt;</td>        <td          *ngIf="i > 0 && i < map.chart.lineChartLabels.length - 1">{{map.chart.lineChartLabels[i]}}</td>        <td>{{entry}}</td>      </tr>      </tbody>    </table>    <table *ngIf="map.gradientValid" class="table table-bordered">      <thead>      <tr>        <th>{{map.title[1]}}</th>        <th>{{map.title[0]}}</th>      </tr>      </thead>      <tbody>      <tr *ngFor="let entry of map.colorGradient; let i = index">        <td *ngIf="i === 0">&lt;</td>        <td *ngIf="i === map.colorGradient.length - 1">&gt;</td>        <td *ngIf="i > 0 && i < map.colorGradient.length - 1">          {{entry.numericThreshold}}        </td>        <td>          {{entry.color}}          <span class="badge badge-pill border" [ngStyle]="{\'background-color\': entry.color}">&nbsp;</span>        </td>      </tr>      </tbody>    </table>    <div class="table-responsive">      <table *ngIf="map.classifier" class="table table-bordered">        <thead>        <th colspan="3">{{map.classifier}}</th>        <th *ngFor="let value of map.values">{{value}}</th>        </thead>        <tbody>        <tr *ngFor="let style of map.styleMap">          <td><b>{{style.cssKey}}</b></td>          <td>            <button type="button" class="btn btn-block btn-outline-warning" data-toggle="tooltip"                    data-placement="bottom" title="{{\'MAIN_MAPPINGS_TT_EDIT\' | translate}}">              <fa-icon [icon]="faEdit"></fa-icon>            </button>          </td>          <td>            <button type="button" class="btn btn-block btn-outline-danger">              <fa-icon [icon]="faTrash"></fa-icon>            </button>          </td>          <td *ngFor="let value of map.values; let i = index">              <span *ngFor="let styleValue of style.cssValues; let j = index">                <span *ngIf="map.selectors[i] === style.selectors[j]">                    {{styleValue}}                  <span *ngIf="styleValue.indexOf(\'#\') > -1" class="badge badge-pill border"                        [ngStyle]="{\'background-color\': styleValue}">&nbsp;</span>                  </span>                </span>          </td>        </tr>        </tbody>      </table>    </div>    <div class="mt-3 mb-3" *ngIf="map.classifier || map.chartValid || map.gradientValid">      <div>        <button class="btn btn-block btn-outline-danger" (click)="toggleRemoveDialogue(map, givenMapType)">          <fa-icon [icon]="faTrash"></fa-icon>          {{\'MAIN_MAPPINGS_DELETE\' | translate}}        </button>      </div>    </div>  </span>  <hr>  <div *ngIf="showList">    <h3>{{\'MAIN_MAPPINGS_TITLE_LIST\' | translate}}</h3>    <div class="row">      <div class="col-6">        <table class="table table-borderless" *ngIf="selectedNetwork.aspectKeyValuesNodes.length > 0">          <thead class="border-bottom">          <th colspan="3">{{\'MAIN_MAPPINGS_TITLE_NODES_DISCRETE\' | translate}}</th>          </thead>          <tbody>          <tr *ngFor="let akv of selectedNetwork.aspectKeyValuesNodes; let akvIndex = index;">            <td *ngIf="akv.values.length !== akv.appliedTo.length">              {{akv.name}}            </td>            <td *ngIf="akv.values.length !== akv.appliedTo.length" class="float-right">              <!-- mapping exists -->              <button type="button" class="btn btn-outline-warning mr-2" *ngIf="akv.mapPointerD.length > 0"                      data-toggle="tooltip" data-placement="bottom" title="{{\'MAIN_MAPPINGS_TT_EDIT\' | translate}}">                <fa-icon [icon]="faEdit"></fa-icon>              </button>              <span *ngIf="akv.mapPointerD.length > 1">                <div class="btn-group" role="group">                  <div class="btn-group" role="group">                    <button id="ndDetailsGroup" type="button" class="btn btn-outline-secondary dropdown-toggle"                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">                      <fa-icon [icon]="faSearch"></fa-icon>                    </button>                    <div class="dropdown-menu" aria-labelledby="ndDetailsGroup">                      <a *ngFor="let ecDetail of akv.mapPointerD; let i = index;"                         class="dropdown-item"                         [routerLink]="[\'\', { outlets: {primary: [\'mappings\', selectedNetwork.id, \'nd\' + akv.mapPointerC[i]]} }]">{{selectedNetwork.mappings.nodesDiscrete[i].classifier}}</a>                    </div>                  </div>                </div>              </span>              <span *ngIf="akv.mapPointerD.length === 1">                <button type="button" class="btn btn-outline-secondary" *ngIf="akv.mapPointerD.length > 0"                        [routerLink]="[\'\', { outlets: {primary: [\'mappings\', selectedNetwork.id, \'nd\' + akv.mapPointerD[0]]} }]"                        data-toggle="tooltip" data-placement="bottom"                        title="{{\'MAIN_MAPPINGS_TT_MAP_DETAILS\' | translate}}">                  <fa-icon [icon]="faSearch"></fa-icon>                </button>              </span>              <!-- no mapping exists -->              <button type="button" class="btn btn-outline-success" *ngIf="akv.mapPointerD.length === 0"                      [routerLink]="[\'\', { outlets: {primary: [\'new\', selectedNetwork.id, \'nd\', akvIndex]} }]"                      data-toggle="tooltip" data-placement="bottom"                      title="{{\'MAIN_MAPPINGS_TT_NEW\' | translate}}">                <fa-icon [icon]="faPlus"></fa-icon>              </button>            </td>          </tr>          </tbody>        </table>      </div>      <div class="col-6">        <table class="table table-borderless" *ngIf="selectedNetwork.aspectKeyValuesEdges.length > 0">          <thead class="border-bottom">          <th colspan="3">{{\'MAIN_MAPPINGS_TITLE_EDGES_DISCRETE\' | translate}}</th>          </thead>          <tbody>          <tr *ngFor="let akv of selectedNetwork.aspectKeyValuesEdges; let akvIndex = index;">            <td *ngIf="akv.values.length !== akv.appliedTo.length">              {{akv.name}}            </td>            <td *ngIf="akv.values.length !== akv.appliedTo.length" class="float-right">              <!-- mapping exists -->              <button type="button" class="btn btn-outline-warning mr-2" *ngIf="akv.mapPointerD.length > 0"                      data-toggle="tooltip" data-placement="bottom" title="{{\'MAIN_MAPPINGS_TT_EDIT\' | translate}}">                <fa-icon [icon]="faEdit"></fa-icon>              </button>              <span *ngIf="akv.mapPointerD.length > 1">                <div class="btn-group" role="group">                  <div class="btn-group" role="group">                    <button id="edDetailsGroup" type="button" class="btn btn-outline-secondary dropdown-toggle"                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">                      <fa-icon [icon]="faSearch"></fa-icon>                    </button>                    <div class="dropdown-menu" aria-labelledby="edDetailsGroup">                      <a *ngFor="let ecDetail of akv.mapPointerD; let i = index;"                         class="dropdown-item"                         [routerLink]="[\'\', { outlets: {primary: [\'mappings\', selectedNetwork.id, \'ed\' + akv.mapPointerC[i]]} }]">{{selectedNetwork.mappings.edgesDiscrete[i].classifier}}</a>                    </div>                  </div>                </div>              </span>              <span *ngIf="akv.mapPointerD.length === 1">                <button type="button" class="btn btn-outline-secondary" *ngIf="akv.mapPointerD.length > 0"                        [routerLink]="[\'\', { outlets: {primary: [\'mappings\', selectedNetwork.id, \'ed\' + akv.mapPointerD[0]]} }]"                        data-toggle="tooltip" data-placement="bottom"                        title="{{\'MAIN_MAPPINGS_TT_MAP_DETAILS\' | translate}}">                  <fa-icon [icon]="faSearch"></fa-icon>                </button>              </span>              <!-- no mapping exists -->              <button type="button" class="btn btn-outline-success" *ngIf="akv.mapPointerD.length === 0"                      [routerLink]="[\'\', { outlets: {primary: [\'new\', selectedNetwork.id, \'ed\', akvIndex]} }]"                      data-toggle="tooltip" data-placement="bottom"                      title="{{\'MAIN_MAPPINGS_TT_NEW\' | translate}}">                <fa-icon [icon]="faPlus"></fa-icon>              </button>            </td>          </tr>          </tbody>        </table>      </div>    </div>    <div class="row">      <div class="col-6">        <table class="table table-borderless" *ngIf="selectedNetwork.aspectKeyValuesNodes.length > 0">          <thead class="border-bottom">          <th colspan="3">{{\'MAIN_MAPPINGS_TITLE_NODES_CONTINUOUS\' | translate}}</th>          </thead>          <tbody>          <tr *ngFor="let akv of selectedNetwork.aspectKeyValuesNodes; let akvIndex = index;">            <td *ngIf="akv.datatype === \'double\'">              {{akv.name}}            </td>            <td *ngIf="akv.datatype === \'double\'" class="float-right">              <!-- mapping exists -->              <button type="button" class="btn btn-outline-warning mr-2" *ngIf="akv.mapPointerC.length > 0"                      data-toggle="tooltip" data-placement="bottom" title="{{\'MAIN_MAPPINGS_TT_EDIT\' | translate}}">                <fa-icon [icon]="faEdit"></fa-icon>              </button>              <span *ngIf="akv.mapPointerC.length > 1">                <div class="btn-group" role="group">                  <div class="btn-group" role="group">                    <button id="ncDetailsGroup" type="button" class="btn btn-outline-secondary dropdown-toggle"                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">                      <fa-icon [icon]="faSearch"></fa-icon>                    </button>                    <div class="dropdown-menu" aria-labelledby="ncDetailsGroup">                      <a *ngFor="let ecDetail of akv.mapPointerC; let i = index;"                         class="dropdown-item"                         [routerLink]="[\'\', { outlets: {primary: [\'mappings\', selectedNetwork.id, \'nc\' + akv.mapPointerC[i]]} }]">{{selectedNetwork.mappings.nodesContinuous[i].title[0]}}</a>                    </div>                  </div>                </div>              </span>              <span *ngIf="akv.mapPointerC.length === 1">                <button type="button" class="btn btn-outline-secondary" *ngIf="akv.mapPointerC.length > 0"                        [routerLink]="[\'\', { outlets: {primary: [\'mappings\', selectedNetwork.id, \'nc\' + akv.mapPointerC[0]]} }]"                        data-toggle="tooltip" data-placement="bottom"                        title="{{\'MAIN_MAPPINGS_TT_MAP_DETAILS\' | translate}}">                  <fa-icon [icon]="faSearch"></fa-icon>                </button>              </span>              <!-- no mapping exists -->              <button type="button" class="btn btn-outline-success" *ngIf="akv.mapPointerC.length === 0"                      [routerLink]="[\'\', { outlets: {primary: [\'new\', selectedNetwork.id, \'nc\', akvIndex]} }]"                      data-toggle="tooltip" data-placement="bottom"                      title="{{\'MAIN_MAPPINGS_TT_NEW\' | translate}}">                <fa-icon [icon]="faPlus"></fa-icon>              </button>            </td>          </tr>          </tbody>        </table>      </div>      <div class="col-6">        <table class="table table-borderless" *ngIf="selectedNetwork.aspectKeyValuesEdges.length > 0">          <thead class="border-bottom">          <th colspan="3">{{\'MAIN_MAPPINGS_TITLE_EDGES_CONTINUOUS\' | translate}}</th>          </thead>          <tbody>          <tr *ngFor="let akv of selectedNetwork.aspectKeyValuesEdges; let akvIndex = index;">            <td *ngIf="akv.datatype === \'double\'">              {{akv.name}}            </td>            <td *ngIf="akv.datatype === \'double\'" class="float-right">              <!-- mapping exists -->              <button type="button" class="btn btn-outline-warning mr-2" *ngIf="akv.mapPointerC.length > 0"                      data-toggle="tooltip" data-placement="bottom" title="{{\'MAIN_MAPPINGS_TT_EDIT\' | translate}}">                <fa-icon [icon]="faEdit"></fa-icon>              </button>              <span *ngIf="akv.mapPointerC.length > 1">                <div class="btn-group" role="group">                  <div class="btn-group" role="group">                    <button id="ecDetailsGroup" type="button" class="btn btn-outline-secondary dropdown-toggle"                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">                      <fa-icon [icon]="faSearch"></fa-icon>                    </button>                    <div class="dropdown-menu" aria-labelledby="ecDetailsGroup">                      <a *ngFor="let ecDetail of akv.mapPointerC; let i = index;"                         class="dropdown-item"                         [routerLink]="[\'\', { outlets: {primary: [\'mappings\', selectedNetwork.id, \'ec\' + akv.mapPointerC[i]]} }]">{{selectedNetwork.mappings.edgesContinuous[i].title[0]}}</a>                    </div>                  </div>                </div>              </span>              <span *ngIf="akv.mapPointerC.length === 1">                <button type="button" class="btn btn-outline-secondary" *ngIf="akv.mapPointerC.length > 0"                        [routerLink]="[\'\', { outlets: {primary: [\'mappings\', selectedNetwork.id, \'ec\' + akv.mapPointerC[0]]} }]"                        data-toggle="tooltip" data-placement="bottom"                        title="{{\'MAIN_MAPPINGS_TT_MAP_DETAILS\' | translate}}">                  <fa-icon [icon]="faSearch"></fa-icon>                </button>              </span>              <!-- no mapping exists -->              <button type="button" class="btn btn-outline-success" *ngIf="akv.mapPointerC.length === 0"                      [routerLink]="[\'\', { outlets: {primary: [\'new\', selectedNetwork.id, \'ec\', akvIndex]} }]"                      data-toggle="tooltip" data-placement="bottom"                      title="{{\'MAIN_MAPPINGS_TT_NEW\' | translate}}">                <fa-icon [icon]="faPlus"></fa-icon>              </button>            </td>          </tr>          </tbody>        </table>      </div>    </div>  </div>  <div *ngIf="!showList">    <div class="alert alert-danger" role="alert">      {{\'MAIN_MAPPINGS_CONFIRM_DELETION\' | translate}}    </div>    <div class="row">      <!-- nevermind -->      <div class="col-6">        <button class="btn btn-block btn-outline-success" (click)="confirmDeletion(false)">          <fa-icon [icon]="faTimes"></fa-icon>          {{\'MAIN_MAPPINGS_CONFIRM_DELETION_NO\' | translate}}        </button>      </div>      <!-- confirm -->      <div class="col-6">        <button class="btn btn-block btn-outline-danger" (click)="confirmDeletion(true)">          <fa-icon [icon]="faCheck"></fa-icon>          {{\'MAIN_MAPPINGS_CONFIRM_DELETION_YES\' | translate}}        </button>      </div>    </div>  </div></ng-container></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'MainGraphComponent', 'selector': 'app-main-graph'},{'name': 'MainInfoComponent', 'selector': 'app-main-info'},{'name': 'MainMappingsComponent', 'selector': 'app-main-mappings'},{'name': 'MainMappingsNewComponent', 'selector': 'app-main-mappings-new'},{'name': 'MainStatsComponent', 'selector': 'app-main-stats'},{'name': 'SidebarCompareComponent', 'selector': 'app-sidebar-compare'},{'name': 'SidebarEditComponent', 'selector': 'app-sidebar-edit'},{'name': 'SidebarManageComponent', 'selector': 'app-sidebar-manage'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'MainMappingsComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'MainMappingsComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

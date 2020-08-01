@@ -156,7 +156,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/app/components/sidebar-compare/sidebar-compare.component.ts:8</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/components/sidebar-compare/sidebar-compare.component.ts:12</a></div>
                             </td>
                         </tr>
 
@@ -195,8 +195,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="12"
-                            class="link-to-prism">src/app/components/sidebar-compare/sidebar-compare.component.ts:12</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="16"
+                            class="link-to-prism">src/app/components/sidebar-compare/sidebar-compare.component.ts:16</a></div>
                 </td>
             </tr>
 
@@ -225,6 +225,10 @@
   templateUrl: &#x27;./sidebar-compare.component.html&#x27;,
   styleUrls: [&#x27;./sidebar-compare.component.scss&#x27;]
 })
+
+/**
+ * Component responsible for graph comparison
+ */
 export class SidebarCompareComponent implements OnInit {
 
   constructor() { }
@@ -237,7 +241,9 @@ export class SidebarCompareComponent implements OnInit {
     </div>
 
     <div class="tab-pane fade " id="c-templateData">
-        <pre class="line-numbers"><code class="language-html">&lt;p&gt;sidebar-compare works!&lt;/p&gt;
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;p-2&quot;&gt;
+  &lt;p&gt;sidebar-compare works!&lt;/p&gt;
+&lt;/div&gt;
 </code></pre>
     </div>
 
@@ -273,8 +279,8 @@ export class SidebarCompareComponent implements OnInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><p>sidebar-compare works!</p></div>'
-    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'MainGraphComponent', 'selector': 'app-main-graph'},{'name': 'MainInfoComponent', 'selector': 'app-main-info'},{'name': 'MainStatsComponent', 'selector': 'app-main-stats'},{'name': 'SidebarCompareComponent', 'selector': 'app-sidebar-compare'},{'name': 'SidebarEditComponent', 'selector': 'app-sidebar-edit'},{'name': 'SidebarManageComponent', 'selector': 'app-sidebar-manage'}];
+        var COMPONENT_TEMPLATE = '<div><div class="p-2">  <p>sidebar-compare works!</p></div></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'MainGraphComponent', 'selector': 'app-main-graph'},{'name': 'MainInfoComponent', 'selector': 'app-main-info'},{'name': 'MainMappingsComponent', 'selector': 'app-main-mappings'},{'name': 'MainMappingsNewComponent', 'selector': 'app-main-mappings-new'},{'name': 'MainStatsComponent', 'selector': 'app-main-stats'},{'name': 'SidebarCompareComponent', 'selector': 'app-sidebar-compare'},{'name': 'SidebarEditComponent', 'selector': 'app-sidebar-edit'},{'name': 'SidebarManageComponent', 'selector': 'app-sidebar-manage'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SidebarCompareComponent'};
 </script>

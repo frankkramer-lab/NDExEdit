@@ -66,12 +66,6 @@
 
 
 
-    <p class="comment">
-        <h3>Implements</h3>
-    </p>
-    <p class="comment">
-                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
-    </p>
 
 
 <section>
@@ -117,33 +111,6 @@
     </table>
 </section>
 
-    <section>
-    <h3 id="index">Index</h3>
-    <table class="table table-sm table-bordered index-table">
-        <tbody>
-
-                <tr>
-                    <td class="col-md-4">
-                        <h6><b>Methods</b></h6>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <ul class="index-list">
-                            <li>
-                                <a href="#ngOnInit">ngOnInit</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-
-
-
-
-
-        </tbody>
-    </table>
-</section>
 
     <section>
     <h3 id="constructor">Constructor</h3>
@@ -156,7 +123,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/app/components/main-info/main-info.component.ts:8</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/components/main-info/main-info.component.ts:12</a></div>
                             </td>
                         </tr>
 
@@ -168,68 +135,27 @@
 
 
 
-    <section>
-    
-    <h3 id="methods">
-        Methods
-    </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="ngOnInit"></a>
-                    <span class="name">
-                        <b>
-                            ngOnInit
-                        </b>
-                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>ngOnInit()</code>
-                </td>
-            </tr>
 
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="12"
-                            class="link-to-prism">src/app/components/main-info/main-info.component.ts:12</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</section>
 
 </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {Component} from &#x27;@angular/core&#x27;;
 
 @Component({
   selector: &#x27;app-main-info&#x27;,
   templateUrl: &#x27;./main-info.component.html&#x27;,
   styleUrls: [&#x27;./main-info.component.scss&#x27;]
 })
-export class MainInfoComponent implements OnInit {
 
-  constructor() { }
+/**
+ * Component responsible for FAQ display
+ */
+export class MainInfoComponent {
 
-  ngOnInit(): void {
+  constructor() {
+
   }
 
 }
@@ -249,6 +175,16 @@ export class MainInfoComponent implements OnInit {
   &lt;li&gt;{{&#x27;MAIN_INFO_STEPS_STEP_3&#x27; | translate}}&lt;/li&gt;
   &lt;li&gt;{{&#x27;MAIN_INFO_STEPS_STEP_4&#x27; | translate}}&lt;/li&gt;
   &lt;li&gt;{{&#x27;MAIN_INFO_STEPS_STEP_5&#x27; | translate}}&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+
+&lt;h3&gt;{{&#x27;MAIN_INFO_LAYOUT_TITLE&#x27; | translate}}&lt;/h3&gt;
+&lt;p&gt;{{&#x27;MAIN_INFO_LAYOUT_DESCRIPTION&#x27; | translate}}&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li [innerHTML]&#x3D;&quot;&#x27;MAIN_INFO_LAYOUT_STEP_1&#x27; | translate&quot;&gt;&lt;/li&gt;
+  &lt;li [innerHTML]&#x3D;&quot;&#x27;MAIN_INFO_LAYOUT_STEP_2&#x27; | translate&quot;&gt;&lt;/li&gt;
+  &lt;li [innerHTML]&#x3D;&quot;&#x27;MAIN_INFO_LAYOUT_STEP_3&#x27; | translate&quot;&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;hr&gt;
@@ -290,8 +226,8 @@ export class MainInfoComponent implements OnInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><h1>{{\'MAIN_INFO_TITLE\' | translate}}</h1><hr><h3>{{\'MAIN_INFO_STEPS_TITLE\' | translate}}</h3><p>{{\'MAIN_INFO_STEPS_DESCRIPTION\' | translate}}</p><ul>  <li>{{\'MAIN_INFO_STEPS_STEP_1\' | translate}}</li>  <li>{{\'MAIN_INFO_STEPS_STEP_2\' | translate}}</li>  <li>{{\'MAIN_INFO_STEPS_STEP_3\' | translate}}</li>  <li>{{\'MAIN_INFO_STEPS_STEP_4\' | translate}}</li>  <li>{{\'MAIN_INFO_STEPS_STEP_5\' | translate}}</li></ul><hr><h3>{{\'MAIN_INFO_DOCUMENTATION_TITLE\' | translate}}</h3><p [innerHTML]="\'MAIN_INFO_DOCUMENTATION_DESCRIPTION\' | translate"></p></div>'
-    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'MainGraphComponent', 'selector': 'app-main-graph'},{'name': 'MainInfoComponent', 'selector': 'app-main-info'},{'name': 'MainStatsComponent', 'selector': 'app-main-stats'},{'name': 'SidebarCompareComponent', 'selector': 'app-sidebar-compare'},{'name': 'SidebarEditComponent', 'selector': 'app-sidebar-edit'},{'name': 'SidebarManageComponent', 'selector': 'app-sidebar-manage'}];
+        var COMPONENT_TEMPLATE = '<div><h1>{{\'MAIN_INFO_TITLE\' | translate}}</h1><hr><h3>{{\'MAIN_INFO_STEPS_TITLE\' | translate}}</h3><p>{{\'MAIN_INFO_STEPS_DESCRIPTION\' | translate}}</p><ul>  <li>{{\'MAIN_INFO_STEPS_STEP_1\' | translate}}</li>  <li>{{\'MAIN_INFO_STEPS_STEP_2\' | translate}}</li>  <li>{{\'MAIN_INFO_STEPS_STEP_3\' | translate}}</li>  <li>{{\'MAIN_INFO_STEPS_STEP_4\' | translate}}</li>  <li>{{\'MAIN_INFO_STEPS_STEP_5\' | translate}}</li></ul><hr><h3>{{\'MAIN_INFO_LAYOUT_TITLE\' | translate}}</h3><p>{{\'MAIN_INFO_LAYOUT_DESCRIPTION\' | translate}}</p><ul>  <li [innerHTML]="\'MAIN_INFO_LAYOUT_STEP_1\' | translate"></li>  <li [innerHTML]="\'MAIN_INFO_LAYOUT_STEP_2\' | translate"></li>  <li [innerHTML]="\'MAIN_INFO_LAYOUT_STEP_3\' | translate"></li></ul><hr><h3>{{\'MAIN_INFO_DOCUMENTATION_TITLE\' | translate}}</h3><p [innerHTML]="\'MAIN_INFO_DOCUMENTATION_DESCRIPTION\' | translate"></p></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'MainGraphComponent', 'selector': 'app-main-graph'},{'name': 'MainInfoComponent', 'selector': 'app-main-info'},{'name': 'MainMappingsComponent', 'selector': 'app-main-mappings'},{'name': 'MainMappingsNewComponent', 'selector': 'app-main-mappings-new'},{'name': 'MainStatsComponent', 'selector': 'app-main-stats'},{'name': 'SidebarCompareComponent', 'selector': 'app-sidebar-compare'},{'name': 'SidebarEditComponent', 'selector': 'app-sidebar-edit'},{'name': 'SidebarManageComponent', 'selector': 'app-sidebar-manage'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'MainInfoComponent'};
 </script>
