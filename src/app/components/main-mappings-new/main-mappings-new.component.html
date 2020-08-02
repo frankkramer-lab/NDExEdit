@@ -2,8 +2,8 @@
 
   <h1>
     <a role="button" [routerLink]="['', { outlets: {primary: ['graph', selectedNetwork.id]} }]"
-       data-toggle="tooltip" data-placement="bottom"
-       title="{{'MAIN_MAPPINGS_GRAPH' | translate}}">
+       data-toggle="tooltip" placement="bottom"
+       ngbTooltip="{{'MAIN_MAPPINGS_GRAPH' | translate}}">
       <fa-icon [icon]="faArrowLeft"></fa-icon>
     </a>
     {{selectedNetwork.networkInformation.name}}
@@ -44,7 +44,8 @@
       <p>{{'MAIN_MAPPINGS_NEW_INSTRUCTIONS' | translate}}</p>
 
       <div class="alert alert-info" role="alert">
-        <button type="button" class="btn btn-sm btn-outline-secondary mr-4" data-toggle="tooltip" data-placement="bottom"
+        <button type="button" class="btn btn-sm btn-outline-secondary mr-4" data-toggle="tooltip"
+                data-placement="bottom"
                 title="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
                 (click)="toggleDistributionChart(!showDistribution)">
           <fa-icon [icon]="faChartBar"></fa-icon>
@@ -57,42 +58,71 @@
                 [chartType]="'bar'"
                 [datasets]="barChartData"
                 [labels]="barChartLabels"></canvas>
+        <hr>
       </div>
 
       <form>
 
         <div class="form-group row">
           <label for="ndCssProperty"
-                 class="col-3 col-form-label">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
-          <div>
-            <input type="text" class="col-9 form-control" id="ndCssProperty" name="ndCssProperty"
+                 class="col-4 col-form-label">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
+          <div class="col-7">
+            <input type="text" class="form-control" id="ndCssProperty" name="ndCssProperty"
                    [(ngModel)]="styleProperty">
             <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
+            <small *ngIf="needsColorValidation(styleProperty)"
+                   class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
           </div>
-          <div *ngIf="needsColorValidation(styleProperty)">
-            <button class="btn btn-outline-info"
-            data-toggle="tooltip" data-placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_NEW_COLOR_PREVIEW' | translate}}"
-            (click)="colorPreview()">
+          <div *ngIf="needsColorValidation(styleProperty)" class="col-1">
+            <button class="btn btn-block btn-outline-info"
+                    data-toggle="tooltip" data-placement="bottom"
+                    ngbTooltip="{{'MAIN_MAPPINGS_NEW_COLOR_PREVIEW' | translate}}"
+                    (click)="colorPreview()">
               <fa-icon [icon]="faPalette"></fa-icon>
             </button>
           </div>
-          <div *ngIf="needsColorValidation(styleProperty)" class="ml-4">
-            <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
-          </div>
+
         </div>
 
         <hr>
 
         <div class="form-group row" *ngFor="let entry of discreteMapping; let index = index">
-          <label for="nd{{index}}" class="col-3 col-form-label">{{entry.isHR}}</label>
-          <div>
-            <input type="text" class="col-9 form-control" id="nd{{index}}"
-                   value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="nd{{index}}" [(ngModel)]="discreteMapping[index].cssValue">
+          <label for="nd{{index}}" class="col-4 col-form-label">{{entry.isHR}}</label>
+          <div class="col-7">
+            <input type="text" class="form-control" id="nd{{index}}"
+                   value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="nd{{index}}"
+                   [(ngModel)]="discreteMapping[index].cssValue">
           </div>
-          <span *ngIf="showColorPreviews && needsColorValidation(styleProperty)" class="badge badge-pill border"
-          [ngStyle]="{'background-color': entry.cssValue}">
+          <span *ngIf="showColorPreviews && needsColorValidation(styleProperty)" class="badge badge-pill border col-1"
+                [ngStyle]="{'background-color': entry.cssValue}">
             &nbsp;
           </span>
+        </div>
+
+        <div class="row">
+          <div class="col-4">
+            <button type="button" class="btn btn-block btn-outline-danger"
+                    data-toggle="tooltip" placement="bottom"
+                    ngbTooltip="{{'MAIN_MAPPINGS_NEW_ABORT' | translate}}"
+                    [routerLink]="['', { outlets: {primary: ['graph', selectedNetwork.id ]} }]">
+              <fa-icon [icon]="faTimes"></fa-icon>
+            </button>
+          </div>
+          <div class="col-4">
+            <button type="button" class="btn btn-block btn-outline-warning"
+                    data-toggle="tooltip" placement="bottom"
+                    ngbTooltip="{{'MAIN_MAPPINGS_NEW_CLEAR' | translate}}"
+            (click)="clearAllInputs()">
+              <fa-icon [icon]="faUndo"></fa-icon>
+            </button>
+          </div>
+          <div class="col-4">
+            <button type="button" class="btn btn-block btn-outline-success"
+                    data-toggle="tooltip" placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
+            (click)="submitNewMapping()">
+              <fa-icon [icon]="faCheck"></fa-icon>
+            </button>
+          </div>
         </div>
 
       </form>

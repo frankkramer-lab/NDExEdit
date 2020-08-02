@@ -34,8 +34,11 @@
   "MAIN_STATS_BTN_COMPARE": "Vergleichen",
   "MAIN_STATS_GRAPH_ATTRIBUTES_EDGES_TITLE": "Vorhandene Kantenattribute",
   "MAIN_STATS_GRAPH_ATTRIBUTES_NODES_TITLE": "Vorhandene Knotenattribute",
+  "MAIN_STATS_TT_EDIT": "Dieses Netzwerk rendern und bearbeiten",
+  "MAIN_STATS_TT_COMPARE": "Dieses Netzwerk zu einem weiteren Netzwerk vergleichen",
 
   "MAIN_GRAPH_TITLE": "Graph",
+  "MAIN_GRAPH_TT_FIT": "Graph an die Größe des Fensters anpassen",
   "MAIN_GRAPH_BTN_FIT": "Größe anpassen",
 
   "SIDEBAR_MANAGE_TITLE": "Verfügbare Netzwerke",
@@ -43,12 +46,15 @@
   "SIDEBAR_MANAGE_TT_INFO": "Info über dieses Netzwerk",
   "SIDEBAR_MANAGE_TT_EDIT": "Dieses Netzwerk rendern und bearbeiten",
   "SIDEBAR_MANAGE_HELP": "Brauchst du Hilfe?",
+  "SIDEBAR_MANAGE_TT_HELP": "Tipps und erste Schritte",
   "SIDEBAR_MANAGE_LOCAL_FILE_LABEL": "Lokale Dateien",
   "SIDEBAR_MANAGE_LOCAL_FILE_BTN": "Hochladen",
   "SIDEBAR_MANAGE_REMOTE_FILE_LABEL": "Datei von NDEx laden",
   "SIDEBAR_MANAGE_REMOTE_FILE_TIP": "Lade ein Netzwerk über seine NDEx-URL",
   "SIDEBAR_MANAGE_REMOTE_FILE_BTN": "Laden",
   "SIDEBAR_MANAGE_REMOTE_FILE_EXAMPLE": "z.B. https://ndexbio.org/#/network/36f7d8fd-23dc-11e8-b939-0ac135e8bacf",
+  "SIDEBAR_MANAGE_TT_LOCAL_FILE": "Eine lokale .cx-Datei laden",
+  "SIDEBAR_MANAGE_TT_REMOTE_FILES": "Dateien von NDExBIO laden",
 
   "SIDEBAR_EDIT_DESCRIPTION_TITLE": "Beschreibung",
   "SIDEBAR_EDIT_EDITING_TITLE": "Knoten und Kanten highlighten",
@@ -115,7 +121,9 @@
   "MAIN_MAPPINGS_NEW_TT_DISTRIBUTION": "Verteilung der Ausprägungen für dieses Attribut",
   "MAIN_MAPPINGS_NEW_CSS_HINT": "Gib den Namen einer CSS Eigenschaft ein, die entsprechend der Attributausprägungen verändert werden soll",
   "MAIN_MAPPINGS_NEW_COLOR_PREVIEW": "Vorschau für die gesetzten Farbwerte",
-  "MAIN_MAPPINGS_NEW_COLOR_HINT": "Farben müssen mit # anfangen und mit sechs Zeichen spezifiziert sein"
-
+  "MAIN_MAPPINGS_NEW_COLOR_HINT": "Farben müssen mit # anfangen und mit sechs Zeichen spezifiziert sein",
+  "MAIN_MAPPINGS_NEW_SUBMIT": "Neues Mapping speichern",
+  "MAIN_MAPPINGS_NEW_ABORT": "Abbrechen und zurück zum Graph",
+  "MAIN_MAPPINGS_NEW_CLEAR": "Alle Felder zurücksetzen"
 
 }

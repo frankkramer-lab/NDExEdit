@@ -58,7 +58,7 @@
           <td>&nbsp;</td>
           <td *ngFor="let node of graphService.selectedElements.nodes">
             <a role="button" (click)="graphService.highlightByElementId(node.id)"
-            data-toggle="tooltip" data-placement="bottom" title="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_NODE' | translate}} {{node.id}}">
+            data-toggle="tooltip" placement="left" ngbTooltip="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_NODE' | translate}} {{node.id}}">
               <b>{{node.name}} ({{node.id}})</b>
             </a>
           </td>
@@ -83,7 +83,7 @@
           <td>&nbsp;</td>
           <td *ngFor="let edge of graphService.selectedElements.edges">
             <a role="button" (click)="graphService.highlightByElementId(edge.id)"
-                    data-toggle="tooltip" data-placement="bottom" title="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_EDGE' | translate}} {{edge.id}}">
+                    data-toggle="tooltip" placement="left" ngbTooltip="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_EDGE' | translate}} {{edge.id}}">
               <b>{{edge.name}} ({{edge.id}})</b>
             </a>
           </td>
@@ -141,8 +141,8 @@
               <tr *ngFor="let value of nodeMap.values; let i = index">
                 <td class="border-right">
                   <a role="button" (click)="graphService.highlightBySelector(nodeMap.selectors[i])"
-                     data-toggle="tooltip" data-placement="bottom"
-                     title="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{nodeMap.selectors[i]}}"><b>{{value}}</b>
+                     data-toggle="tooltip" placement="left"
+                     ngbTooltip="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{nodeMap.selectors[i]}}"><b>{{value}}</b>
                   </a>
                 </td>
                 <td *ngFor="let style of nodeMap.styleMap">
@@ -203,8 +203,8 @@
               <tr *ngFor="let value of edgeMap.values; let i = index">
                 <td class="border-right">
                   <a role="button" (click)="graphService.highlightBySelector(edgeMap.selectors[i])"
-                     data-toggle="tooltip" data-placement="bottom"
-                     title="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{edgeMap.selectors[i]}}"><b>{{value}}</b></a>
+                     data-toggle="tooltip" placement="left"
+                     ngbTooltip="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{edgeMap.selectors[i]}}"><b>{{value}}</b></a>
                 </td>
                 <td *ngFor="let style of edgeMap.styleMap">
                 <span *ngIf="style.cssValues.length > i">
@@ -259,8 +259,8 @@
       <div class="row border-bottom" *ngFor="let s of selectedNetwork.style">
         <div class="col">
           <a role="button" (click)="graphService.highlightBySelector(s.selector)"
-             data-toggle="tooltip" data-placement="bottom"
-             title="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{s.selector}}">{{s.selector}}</a>
+             data-toggle="tooltip" placement="left"
+             ngbTooltip="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{s.selector}}">{{s.selector}}</a>
         </div>
         <div class="col">
             <span *ngFor="let css of s.style|keyvalue">

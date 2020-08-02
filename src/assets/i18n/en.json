@@ -34,8 +34,11 @@
   "MAIN_STATS_BTN_COMPARE": "Compare",
   "MAIN_STATS_GRAPH_ATTRIBUTES_EDGES_TITLE": "Attributes for edges",
   "MAIN_STATS_GRAPH_ATTRIBUTES_NODES_TITLE": "Attributes for nodes",
+  "MAIN_STATS_TT_EDIT": "Render and edit this network",
+  "MAIN_STATS_TT_COMPARE": "Compare this edit to another one",
 
   "MAIN_GRAPH_TITLE": "Graph",
+  "MAIN_GRAPH_TT_FIT": "Fit graph to current page layout",
   "MAIN_GRAPH_BTN_FIT": "Fit graph",
 
   "SIDEBAR_MANAGE_TITLE": "Available networks",
@@ -43,12 +46,15 @@
   "SIDEBAR_MANAGE_TT_INFO": "Info about this network",
   "SIDEBAR_MANAGE_TT_EDIT": "Render and edit this network",
   "SIDEBAR_MANAGE_HELP": "Are you lost?",
+  "SIDEBAR_MANAGE_TT_HELP": "Tips and first steps",
   "SIDEBAR_MANAGE_LOCAL_FILE_LABEL": "Browse local files",
   "SIDEBAR_MANAGE_LOCAL_FILE_BTN": "Upload",
   "SIDEBAR_MANAGE_REMOTE_FILE_LABEL": "Load file from NDEx",
   "SIDEBAR_MANAGE_REMOTE_FILE_TIP": "You need the network's URL to load the file from NDEx",
   "SIDEBAR_MANAGE_REMOTE_FILE_BTN": "Load",
   "SIDEBAR_MANAGE_REMOTE_FILE_EXAMPLE": "e.g. https://ndexbio.org/#/network/36f7d8fd-23dc-11e8-b939-0ac135e8bacf",
+  "SIDEBAR_MANAGE_TT_LOCAL_FILE": "Load a local .cx file",
+  "SIDEBAR_MANAGE_TT_REMOTE_FILES": "Load files from NDExBIO",
 
   "SIDEBAR_EDIT_DESCRIPTION_TITLE": "Description",
   "SIDEBAR_EDIT_EDITING_TITLE": "Highlight nodes and edges",
@@ -115,7 +121,10 @@
   "MAIN_MAPPINGS_NEW_TT_DISTRIBUTION": "View distribution details for this property",
   "MAIN_MAPPINGS_NEW_CSS_HINT": "Enter the name of a CSS property you wish to map",
   "MAIN_MAPPINGS_NEW_COLOR_PREVIEW": "Validate your colors by toggeling previews",
-  "MAIN_MAPPINGS_NEW_COLOR_HINT": "Colors must begin with # and have six letters"
+  "MAIN_MAPPINGS_NEW_COLOR_HINT": "Colors must begin with # and have six letters",
+  "MAIN_MAPPINGS_NEW_SUBMIT": "Submit new mapping",
+  "MAIN_MAPPINGS_NEW_ABORT": "Abort and return to graph",
+  "MAIN_MAPPINGS_NEW_CLEAR": "Clear all fields"
 
 
 

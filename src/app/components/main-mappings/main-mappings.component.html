@@ -246,7 +246,7 @@
 
               <!-- mapping exists -->
               <button type="button" class="btn btn-outline-warning mr-2" *ngIf="akv.mapPointerC.length > 0"
-                      data-toggle="tooltip" data-placement="bottom" title="{{'MAIN_MAPPINGS_TT_EDIT' | translate}}">
+                      data-toggle="tooltip" placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_TT_EDIT' | translate}}">
                 <fa-icon [icon]="faEdit"></fa-icon>
               </button>
 
@@ -269,8 +269,8 @@
               <span *ngIf="akv.mapPointerC.length === 1">
                 <button type="button" class="btn btn-outline-secondary" *ngIf="akv.mapPointerC.length > 0"
                         [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nc' + akv.mapPointerC[0]]} }]"
-                        data-toggle="tooltip" data-placement="bottom"
-                        title="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}">
+                        data-toggle="tooltip" placement="bottom"
+                        ngbTooltip="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}">
                   <fa-icon [icon]="faSearch"></fa-icon>
                 </button>
               </span>
@@ -278,8 +278,8 @@
               <!-- no mapping exists -->
               <button type="button" class="btn btn-outline-success" *ngIf="akv.mapPointerC.length === 0"
                       [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'nc', akvIndex]} }]"
-                      data-toggle="tooltip" data-placement="bottom"
-                      title="{{'MAIN_MAPPINGS_TT_NEW' | translate}}">
+                      data-toggle="tooltip" placement="bottom"
+                      ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}">
                 <fa-icon [icon]="faPlus"></fa-icon>
               </button>
 
@@ -305,7 +305,7 @@
 
               <!-- mapping exists -->
               <button type="button" class="btn btn-outline-warning mr-2" *ngIf="akv.mapPointerC.length > 0"
-                      data-toggle="tooltip" data-placement="bottom" title="{{'MAIN_MAPPINGS_TT_EDIT' | translate}}">
+                      data-toggle="tooltip" placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_TT_EDIT' | translate}}">
                 <fa-icon [icon]="faEdit"></fa-icon>
               </button>
 
@@ -328,8 +328,8 @@
               <span *ngIf="akv.mapPointerC.length === 1">
                 <button type="button" class="btn btn-outline-secondary" *ngIf="akv.mapPointerC.length > 0"
                         [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ec' + akv.mapPointerC[0]]} }]"
-                        data-toggle="tooltip" data-placement="bottom"
-                        title="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}">
+                        data-toggle="tooltip" placement="bottom"
+                        ngbTooltip="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}">
                   <fa-icon [icon]="faSearch"></fa-icon>
                 </button>
               </span>
@@ -337,8 +337,8 @@
               <!-- no mapping exists -->
               <button type="button" class="btn btn-outline-success" *ngIf="akv.mapPointerC.length === 0"
                       [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'ec', akvIndex]} }]"
-                      data-toggle="tooltip" data-placement="bottom"
-                      title="{{'MAIN_MAPPINGS_TT_NEW' | translate}}">
+                      data-toggle="tooltip" placement="bottom"
+                      ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}">
                 <fa-icon [icon]="faPlus"></fa-icon>
               </button>
 

@@ -7,12 +7,12 @@
       <td class="float-left">{{network.networkInformation.name}}</td>
       <td class="text-nowrap float-right">
         <a class="btn btn-sm btn-outline-secondary mr-1" role="button" data-toggle="tooltip"
-           data-placement="bottom" title="{{'SIDEBAR_MANAGE_TT_INFO'|translate}}"
+           placement="left" ngbTooltip="{{'SIDEBAR_MANAGE_TT_INFO'|translate}}"
            [routerLink]="['', { outlets: {primary: ['stats', network.id]} }]">
           <fa-icon [icon]="faInfo"></fa-icon>
         </a>
         <a class="btn btn-sm btn-outline-success" role="button" data-toggle="tooltip"
-           data-placement="bottom" title="{{'SIDEBAR_MANAGE_TT_EDIT'|translate}}"
+           placement="left" ngbTooltip="{{'SIDEBAR_MANAGE_TT_EDIT'|translate}}"
            [routerLink]="['', { outlets: {primary: ['graph', network.id], sidebar: ['edit', network.id]} }]">
           <fa-icon [icon]="faPaintBrush"></fa-icon>
         </a>
@@ -28,7 +28,9 @@
       <small id="remoteNetworkHelp" class="form-text text-muted">{{'SIDEBAR_MANAGE_REMOTE_FILE_TIP'|translate}}</small>
     </div>
     <div class="col-3">
-      <button class="btn btn-block btn-outline-success" type="button">{{'SIDEBAR_MANAGE_REMOTE_FILE_BTN'|translate}}
+      <button class="btn btn-block btn-outline-success" type="button"
+              data-toggle="tooltip" placement="left" ngbTooltip="{{'SIDEBAR_MANAGE_TT_REMOTE_FILES' | translate}}">
+        {{'SIDEBAR_MANAGE_REMOTE_FILE_BTN'|translate}}
         [TODO]
       </button>
     </div>
@@ -41,12 +43,15 @@
       <label for="localNetworkFile" class="custom-file-label">{{'SIDEBAR_MANAGE_LOCAL_FILE_LABEL'|translate}}</label>
     </div>
     <div class="input-group-append">
-      <button class="btn btn-outline-secondary" type="button">{{'SIDEBAR_MANAGE_LOCAL_FILE_BTN'|translate}}[TODO]
+      <button class="btn btn-outline-secondary" type="button"
+              data-toggle="tooltip" placement="left" ngbTooltip="{{'SIDEBAR_MANAGE_TT_LOCAL_FILE' | translate}}">
+        {{'SIDEBAR_MANAGE_LOCAL_FILE_BTN'|translate}}[TODO]
       </button>
     </div>
   </div>
 
-  <a class="mb-3 btn btn-block btn-outline-danger" role="button" [routerLink]="['', { outlets: {primary: ['info']} }]">
+  <a class="mb-3 btn btn-block btn-outline-danger" role="button" [routerLink]="['', { outlets: {primary: ['info']} }]"
+     data-toggle="tooltip" placement="bottom" ngbTooltip="{{'SIDEBAR_MANAGE_TT_HELP' | translate}}">
     {{'SIDEBAR_MANAGE_HELP'|translate}}
   </a>
 </div>

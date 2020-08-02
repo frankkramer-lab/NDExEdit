@@ -11,10 +11,12 @@
       <h6>{{'MAIN_STATS_GRAPH_INFO_EDGES' | translate}}: {{selectedNetwork.edgeCount}}</h6>
       <h6>{{'MAIN_STATS_GRAPH_INFO_CLASSES' | translate}}: {{selectedNetwork.cssClassCount}}</h6>
       <a class="btn btn-block btn-outline-success mt-4" role="button"
+         data-toggle="tooltip" placement="bottom" ngbTooltip="{{'MAIN_STATS_TT_EDIT' | translate}}"
          [routerLink]="['', { outlets: {primary: ['graph', selectedNetwork.id], sidebar: ['edit', selectedNetwork.id]} }]">
         <fa-icon [icon]="faPaintBrush"></fa-icon>&nbsp;{{'MAIN_STATS_BTN_RENDER' | translate}}
       </a>
       <a class="btn btn-block btn-outline-secondary mt-2" role="button"
+         data-toggle="tooltip" placement="bottom" ngbTooltip="{{'MAIN_STATS_TT_COMPARE' | translate}}"
          [routerLink]="['', { outlets: {primary: ['graph', selectedNetwork.id], sidebar: ['compare', selectedNetwork.id]} }]">
         <fa-icon [icon]="faExchangeAlt"></fa-icon>&nbsp;{{'MAIN_STATS_BTN_COMPARE' | translate}}
       </a>
