@@ -3,9 +3,9 @@ import {NeStyleComponent} from './ne-style-component';
 import {NeColorGradient} from './ne-color-gradient';
 
 export interface NeContinuousCollection {
-  chart: NeContinuousChart;
-  values: NeStyleComponent[];
-  displayChart: boolean;
+  chart?: NeContinuousChart;
+  values?: NeStyleComponent[];
+  displayChart?: boolean;
   colorGradient?: NeColorGradient[];
   chartValid?: boolean;
   gradientValid?: boolean;

@@ -13,22 +13,26 @@
 
   <ul class="nav nav-pills nav-fill">
     <li class="nav-item">
-      <a class="nav-link" [ngClass]="{active: mappingsType.nd, disabled: !mappingsType.nd}" id="newNd" data-toggle="pill" href="#newNdForm"
+      <a class="nav-link" [ngClass]="{active: mappingsType.nd, disabled: !mappingsType.nd}" id="newNd"
+         data-toggle="pill" href="#newNdForm"
          role="tab"
          aria-controls="newNd" aria-selected="false">{{'MAIN_MAPPINGS_NEW_TYPE_ND' | translate}}</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" [ngClass]="{active: mappingsType.nc, disabled: !mappingsType.nc}" id="newNc" data-toggle="pill" href="#newNcForm"
+      <a class="nav-link" [ngClass]="{active: mappingsType.nc, disabled: !mappingsType.nc}" id="newNc"
+         data-toggle="pill" href="#newNcForm"
          role="tab"
          aria-controls="newNc" aria-selected="false">{{'MAIN_MAPPINGS_NEW_TYPE_NC' | translate}}</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" [ngClass]="{active: mappingsType.ed, disabled: !mappingsType.ed}" id="newEd" data-toggle="pill" href="#newEdForm"
+      <a class="nav-link" [ngClass]="{active: mappingsType.ed, disabled: !mappingsType.ed}" id="newEd"
+         data-toggle="pill" href="#newEdForm"
          role="tab"
          aria-controls="newEd" aria-selected="false">{{'MAIN_MAPPINGS_NEW_TYPE_ED' | translate}}</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" [ngClass]="{active: mappingsType.ec, disabled: !mappingsType.ec}" id="newEc" data-toggle="pill" href="#newEcForm"
+      <a class="nav-link" [ngClass]="{active: mappingsType.ec, disabled: !mappingsType.ec}" id="newEc"
+         data-toggle="pill" href="#newEcForm"
          role="tab"
          aria-controls="newEc" aria-selected="false">{{'MAIN_MAPPINGS_NEW_TYPE_EC' | translate}}</a>
     </li>
@@ -61,7 +65,7 @@
         <hr>
       </div>
 
-      <form>
+      <form *ngIf="discreteMapping">
 
         <div class="form-group row">
           <label for="ndCssProperty"
@@ -75,9 +79,9 @@
           </div>
 
           <div class="col-1 form-check" *ngIf="!needsColorValidation(styleProperty)">
-            <input class="form-check-input" type="checkbox" value="{{validateAsColor}}" id="colorValidation"
+            <input class="form-check-input" type="checkbox" value="{{validateAsColor}}" id="ndColorValidation"
                    (click)="colorValidation(!validateAsColor)">
-            <label class="form-check-label" for="colorValidation">
+            <label class="form-check-label" for="ndColorValidation">
               {{'MAIN_MAPPINGS_NEW_CB_COLORS' | translate}}
             </label>
           </div>
@@ -131,7 +135,7 @@
     </div>
 
 
-    <!-- NEW: NodesContinuous -->
+    <!-- TODO NEW: NodesContinuous -->
     <div class="tab-pane fade show" id="newNcForm" role="tabpanel" aria-labelledby="newNc"
          [ngClass]="{active: mappingsType.nc}">
       <h3>{{'MAIN_MAPPINGS_NEW_NC' | translate}}</h3>
@@ -162,10 +166,10 @@
         <hr>
       </div>
 
-      <form>
+      <form *ngIf="discreteMapping">
 
         <div class="form-group row">
-          <label for="ndCssProperty"
+          <label for="edCssProperty"
                  class="col-4 col-form-label">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
           <div class="col-7">
             <input type="text" class="form-control" id="edCssProperty" name="edCssProperty"
@@ -174,13 +178,13 @@
             <small *ngIf="needsColorValidation(styleProperty)"
                    class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
           </div>
-          <div *ngIf="needsColorValidation(styleProperty)" class="col-1">
-            <button class="btn btn-block btn-outline-info"
-                    data-toggle="tooltip" data-placement="bottom"
-                    ngbTooltip="{{'MAIN_MAPPINGS_NEW_COLOR_PREVIEW' | translate}}"
-                    (click)="colorPreview()">
-              <fa-icon [icon]="faPalette"></fa-icon>
-            </button>
+
+          <div class="col-1 form-check" *ngIf="!needsColorValidation(styleProperty)">
+            <input class="form-check-input" type="checkbox" value="{{validateAsColor}}" id="edColorValidation"
+                   (click)="colorValidation(!validateAsColor)">
+            <label class="form-check-label" for="edColorValidation">
+              {{'MAIN_MAPPINGS_NEW_CB_COLORS' | translate}}
+            </label>
           </div>
 
         </div>
@@ -255,6 +259,79 @@
                 [labels]="scatterChartLabels"></canvas>
         <hr>
       </div>
+
+      <form *ngIf="continuousMapping">
+
+        <div class="form-group row">
+          <label for="ecCssProperty"
+                 class="col-4 col-form-label">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
+          <div class="col-7">
+            <input type="text" class="form-control" id="ecCssProperty" name="ecCssProperty"
+                   [(ngModel)]="styleProperty">
+            <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
+            <small *ngIf="needsColorValidation(styleProperty)"
+                   class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
+          </div>
+          <div class="col-1 form-check" *ngIf="!needsColorValidation(styleProperty)">
+            <input class="form-check-input" type="checkbox" value="{{validateAsColor}}" id="ecColorValidation"
+                   (click)="colorValidation(!validateAsColor)">
+            <label class="form-check-label" for="ecColorValidation">
+              {{'MAIN_MAPPINGS_NEW_CB_COLORS' | translate}}
+            </label>
+          </div>
+        </div>
+
+        <!-- default lower -->
+        <div class="form-group row" *ngIf="continuousMapping">
+          <label for="ecDefaultLower"
+                 class="col-4 col-form-label">{{'MAIN_MAPPINGS_NEW_DEFAULT_LOW' | translate}}</label>
+          <div class="col-7">
+            <input type="text" class="form-control" id="ecDefaultLower"
+                   value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="ecDefaultLower"
+                   [(ngModel)]="continuousMapping.defaultLower">
+          </div>
+          <span *ngIf="showColorPreviews && needsColorValidation(styleProperty)" class="badge badge-pill border col-1"
+                [ngStyle]="{'background-color': continuousMapping.defaultLower}">
+            &nbsp;
+          </span>
+        </div>
+
+        <div class="form-group row" *ngFor="let threshold of continuousThresholds; let index = index">
+          <div class="col-4">
+            <input type="number" class="form-control" id="ecThreshold{{index}}" name="ecThreshold{{index}}"
+                   value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}"
+                   [(ngModel)]="threshold.value">
+          </div>
+          <div class="col-7">
+            <input type="text" class="form-control" id="ecValue{{index}}" name="ecValue{{index}}"
+                   [(ngModel)]="threshold.propertyValue">
+          </div>
+        </div>
+
+        <!-- button to add more thresholds -->
+        <div class="form-group row">
+          <div class="col-11">
+            <button class="btn btn-block btn-outline-info" (click)="addNewThreshold()">
+              <fa-icon [icon]="faPlus"></fa-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- default greater -->
+        <div class="form-group row">
+          <label for="ecDefaultGreater"
+                 class="col-4 col-form-label">{{'MAIN_MAPPINGS_NEW_DEFAULT_GREAT' | translate}}</label>
+          <div class="col-7">
+            <input type="text" class="form-control" id="ecDefaultGreater"
+                   value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="ecDefaultGreater"
+                   [(ngModel)]="continuousMapping.defaultGreater">
+          </div>
+          <span *ngIf="showColorPreviews && needsColorValidation(styleProperty)" class="badge badge-pill border col-1"
+                [ngStyle]="{'background-color': continuousMapping.defaultGreater}">
+            &nbsp;
+          </span>
+        </div>
+      </form>
 
     </div>
   </div>

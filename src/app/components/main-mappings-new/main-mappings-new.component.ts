@@ -2,12 +2,14 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NeNetwork} from '../../models/ne-network';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
-import {faArrowLeft, faArrowRight, faChartBar, faCheck, faPalette, faTimes, faUndo} from '@fortawesome/free-solid-svg-icons';
+import {faArrowLeft, faArrowRight, faChartBar, faCheck, faPalette, faPlus, faTimes, faUndo} from '@fortawesome/free-solid-svg-icons';
 import {NeMappingsDefinition} from '../../models/ne-mappings-definition';
 import {NeAspect} from '../../models/ne-aspect';
 import {ChartDataSets} from 'chart.js';
 import {Label} from 'ng2-charts';
 import {ParseService} from '../../services/parse.service';
+import {NeContinuousThresholds} from '../../models/ne-continuous-thresholds';
+import {NeThresholdMap} from '../../models/ne-threshold-map';
 
 @Component({
   selector: 'app-main-mappings-new',
@@ -27,6 +29,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   faCheck = faCheck;
   faChartBar = faChartBar;
   faTimes = faTimes;
+  faPlus = faPlus;
 
   selectedNetwork: NeNetwork;
   propertyToMap: NeAspect;
@@ -54,6 +57,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   public scatterChartLabels: Label[] = [''];
 
   discreteMapping: NeMappingsDefinition[];
+  continuousMapping: NeContinuousThresholds;
+  continuousThresholds: NeThresholdMap[] = [];
 
   constructor(private route: ActivatedRoute,
               public dataService: DataService) {
@@ -68,6 +73,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
           this.mappingsType.ed = false;
           this.mappingsType.ec = false;
           this.propertyToMap = this.selectedNetwork.aspectKeyValuesNodes[propertyPointer];
+          this.discreteMapping = [];
+          this.initDiscreteMapping(params.get('map'));
           break;
         case 'nc':
           this.mappingsType.nc = true;
@@ -75,6 +82,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
           this.mappingsType.ed = false;
           this.mappingsType.ec = false;
           this.propertyToMap = this.selectedNetwork.aspectKeyValuesNodes[propertyPointer];
+          this.continuousMapping = {};
           break;
         case 'ed':
           this.mappingsType.ed = true;
@@ -82,6 +90,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
           this.mappingsType.nd = false;
           this.mappingsType.ec = false;
           this.propertyToMap = this.selectedNetwork.aspectKeyValuesEdges[propertyPointer];
+          this.discreteMapping = [];
+          this.initDiscreteMapping(params.get('map'));
           break;
         case 'ec':
           this.mappingsType.ec = true;
@@ -89,11 +99,10 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
           this.mappingsType.nd = false;
           this.mappingsType.ed = false;
           this.propertyToMap = this.selectedNetwork.aspectKeyValuesEdges[propertyPointer];
+          this.continuousMapping = {};
           break;
 
       }
-      this.discreteMapping = [];
-      this.initMapping(params.get('map'));
 
     });
 
@@ -110,6 +119,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     this.barChartData = [];
     this.barChartLabels = [];
     this.scatterChartData = [];
+    this.continuousThresholds = [];
   }
 
   toggleDistributionChart(toggle: boolean): void {
@@ -124,7 +134,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     this.showColorPreviews = true;
   }
 
-  private initMapping(baseType: string): void {
+  private initDiscreteMapping(baseType: string): void {
     for (const value of this.propertyToMap.values) {
       const selector = '.' + (baseType.startsWith('n') ? 'node' : 'edge') + '_' + ParseService.utilCleanString(this.propertyToMap.name) + '_' + ParseService.utilCleanString(value);
       const tmp: NeMappingsDefinition = {
@@ -152,6 +162,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * Submits a new mapping
    */
   submitNewMapping(): void {
+
     if (this.validateAsColor && !this.dataService.colorProperties.includes(this.styleProperty)) {
       this.dataService.colorProperties.push(this.styleProperty);
     }
@@ -182,5 +193,13 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
 
   colorValidation(b: boolean): void {
     this.validateAsColor = b;
+  }
+
+  addNewThreshold(): void {
+    this.continuousThresholds.push({
+      value: 0.0,
+      propertyValue: ''
+    });
+    console.log(this.continuousThresholds);
   }
 }
