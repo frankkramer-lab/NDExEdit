@@ -55,13 +55,13 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="modules/AppModule.html" data-type="entity-link">AppModule</a>
                                     <li class="chapter inner">
                                         <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
-                                            'data-target="#components-links-module-AppModule-6e16853e3ee73ba2e91566bede701351"' : 'data-target="#xs-components-links-module-AppModule-6e16853e3ee73ba2e91566bede701351"' }>
+                                            'data-target="#components-links-module-AppModule-4632d1727c6bbb96618cb0e2ed81ec3e"' : 'data-target="#xs-components-links-module-AppModule-4632d1727c6bbb96618cb0e2ed81ec3e"' }>
                                             <span class="icon ion-md-cog"></span>
                                             <span>Components</span>
                                             <span class="icon ion-ios-arrow-down"></span>
                                         </div>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-AppModule-6e16853e3ee73ba2e91566bede701351"' :
-                                            'id="xs-components-links-module-AppModule-6e16853e3ee73ba2e91566bede701351"' }>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-AppModule-4632d1727c6bbb96618cb0e2ed81ec3e"' :
+                                            'id="xs-components-links-module-AppModule-4632d1727c6bbb96618cb0e2ed81ec3e"' }>
                                             <li class="link">
                                                 <a href="components/AppComponent.html"
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">AppComponent</a>
@@ -73,6 +73,14 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                             <li class="link">
                                                 <a href="components/MainInfoComponent.html"
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">MainInfoComponent</a>
+                                            </li>
+                                            <li class="link">
+                                                <a href="components/MainMappingsComponent.html"
+                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">MainMappingsComponent</a>
+                                            </li>
+                                            <li class="link">
+                                                <a href="components/MainMappingsNewComponent.html"
+                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">MainMappingsNewComponent</a>
                                             </li>
                                             <li class="link">
                                                 <a href="components/MainStatsComponent.html"
@@ -139,6 +147,18 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                         </div>
                         <ul class="links collapse " ${ isNormalMode ? ' id="interfaces-links"' : 'id="xs-interfaces-links"' }>
                             <li class="link">
+                                <a href="interfaces/NeAspect.html" data-type="entity-link">NeAspect</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/NeColorGradient.html" data-type="entity-link">NeColorGradient</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/NeContinuousChart.html" data-type="entity-link">NeContinuousChart</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/NeContinuousCollection.html" data-type="entity-link">NeContinuousCollection</a>
+                            </li>
+                            <li class="link">
                                 <a href="interfaces/NeContinuousMap.html" data-type="entity-link">NeContinuousMap</a>
                             </li>
                             <li class="link">
@@ -146,6 +166,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                             </li>
                             <li class="link">
                                 <a href="interfaces/NeConversionMap.html" data-type="entity-link">NeConversionMap</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/NeCyGraphSettings.html" data-type="entity-link">NeCyGraphSettings</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/NeEdge.html" data-type="entity-link">NeEdge</a>
@@ -160,6 +183,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="interfaces/NeGlobalMappings.html" data-type="entity-link">NeGlobalMappings</a>
                             </li>
                             <li class="link">
+                                <a href="interfaces/NeGroupedMappingsDiscrete.html" data-type="entity-link">NeGroupedMappingsDiscrete</a>
+                            </li>
+                            <li class="link">
                                 <a href="interfaces/NeMappings.html" data-type="entity-link">NeMappings</a>
                             </li>
                             <li class="link">
@@ -167,6 +193,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                             </li>
                             <li class="link">
                                 <a href="interfaces/NeMappingsDefinition.html" data-type="entity-link">NeMappingsDefinition</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/NeMappingsMap.html" data-type="entity-link">NeMappingsMap</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/NeNetwork.html" data-type="entity-link">NeNetwork</a>
@@ -181,10 +210,16 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="interfaces/NePosition.html" data-type="entity-link">NePosition</a>
                             </li>
                             <li class="link">
+                                <a href="interfaces/NeSelection.html" data-type="entity-link">NeSelection</a>
+                            </li>
+                            <li class="link">
                                 <a href="interfaces/NeStyle.html" data-type="entity-link">NeStyle</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/NeStyleComponent.html" data-type="entity-link">NeStyleComponent</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/NeStyleMap.html" data-type="entity-link">NeStyleMap</a>
                             </li>
                         </ul>
                     </li>

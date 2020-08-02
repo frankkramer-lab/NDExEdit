@@ -149,6 +149,12 @@
                                     <span class="modifier">Public</span>
                                 <a href="#translateService">translateService</a>
                             </li>
+                            <li>
+                                <a href="#widthMain">widthMain</a>
+                            </li>
+                            <li>
+                                <a href="#widthSidebar">widthSidebar</a>
+                            </li>
                         </ul>
                     </td>
                 </tr>
@@ -161,6 +167,9 @@
                 <tr>
                     <td class="col-md-4">
                         <ul class="index-list">
+                            <li>
+                                <a href="#handleClickEvent">handleClickEvent</a>
+                            </li>
                             <li>
                                     <span class="modifier">Private</span>
                                 <a href="#initDemoNetwork">initDemoNetwork</a>
@@ -176,6 +185,9 @@
                             <li>
                                     <span class="modifier">Private</span>
                                 <a href="#parseFileFromAssets">parseFileFromAssets</a>
+                            </li>
+                            <li>
+                                <a href="#resetPageLayout">resetPageLayout</a>
                             </li>
                         </ul>
                     </td>
@@ -200,12 +212,14 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/app.component.ts:33</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/app.component.ts:47</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>Initializes translation and renders the desired mock-ups</p>
+</div>
                             <div>
                                     <b>Parameters :</b>
                                     <table class="params">
@@ -214,6 +228,7 @@
                                                 <td>Name</td>
                                                     <td>Type</td>
                                                 <td>Optional</td>
+                                                    <td>Description</td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -228,6 +243,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <code><p>Service to manage languages</p>
+</code>
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>parseService</td>
@@ -240,6 +259,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <code><p>Service to handle parsing of mock-ups</p>
+</code>
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>dataService</td>
@@ -252,6 +275,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <code><p>Service to read and write globally accessible data</p>
+</code>
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>http</td>
@@ -264,6 +291,10 @@
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <code><p>Service to handle HTTP requests and file inputs</p>
+</code>
+                                                        </td>
                                                 </tr>
                                         </tbody>
                                     </table>
@@ -283,6 +314,103 @@
     <h3 id="methods">
         Methods
     </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleClickEvent"></a>
+                    <span class="name">
+                        <b>
+                            handleClickEvent
+                        </b>
+                        <a href="#handleClickEvent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>handleClickEvent(e: MouseEvent, direction: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="131"
+                            class="link-to-prism">src/app/app.component.ts:131</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Simple implementation to adjust the page layout:</p>
+<ul>
+   <li><b>left-click</b>: main view decreases, sidebar increases</li>
+   <li><b>right-click</b>: main view increases, sidebar decreases</li>
+   <li><b>Ctrl + left-click</b></li>: resets widths, see <a href="../components/AppComponent.html#resetPageLayout">AppComponent</a>
+</ul></div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>e</td>
+                                    <td>
+                                            <code>MouseEvent</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>event to fetch all pressed keys</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>direction</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>can be right or left</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -307,8 +435,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="65"
-                            class="link-to-prism">src/app/app.component.ts:65</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="92"
+                            class="link-to-prism">src/app/app.component.ts:92</a></div>
                 </td>
             </tr>
 
@@ -388,8 +516,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="52"
-                            class="link-to-prism">src/app/app.component.ts:52</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="79"
+                            class="link-to-prism">src/app/app.component.ts:79</a></div>
                 </td>
             </tr>
 
@@ -431,8 +559,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="87"
-                            class="link-to-prism">src/app/app.component.ts:87</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="114"
+                            class="link-to-prism">src/app/app.component.ts:114</a></div>
                 </td>
             </tr>
 
@@ -510,8 +638,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="79"
-                            class="link-to-prism">src/app/app.component.ts:79</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="106"
+                            class="link-to-prism">src/app/app.component.ts:106</a></div>
                 </td>
             </tr>
 
@@ -565,6 +693,47 @@
             </tr>
         </tbody>
     </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetPageLayout"></a>
+                    <span class="name">
+                        <b>
+                            resetPageLayout
+                        </b>
+                        <a href="#resetPageLayout"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resetPageLayout()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="157"
+                            class="link-to-prism">src/app/app.component.ts:157</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Resets page layout to <a href="../components/AppComponent.html#widthMain">AppComponent</a> and <a href="../components/AppComponent.html#widthSidebar">AppComponent</a></p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>
     <section>
     
@@ -592,10 +761,15 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/app.component.ts:38</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/app.component.ts:60</a></div>
                             </td>
                         </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description">Service to read and write globally accessible data</div>
+                    </td>
+                </tr>
 
             </tbody>
         </table>
@@ -626,7 +800,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/app.component.ts:33</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/app.component.ts:47</a></div>
                             </td>
                         </tr>
 
@@ -666,7 +840,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/app.component.ts:23</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/app.component.ts:37</a></div>
                             </td>
                         </tr>
 
@@ -706,7 +880,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/app.component.ts:28</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/app.component.ts:42</a></div>
                             </td>
                         </tr>
 
@@ -744,10 +918,16 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/app.component.ts:18</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/app.component.ts:22</a></div>
                             </td>
                         </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Title of the application is ndex-edit</p>
+</div>
+                    </td>
+                </tr>
 
             </tbody>
         </table>
@@ -772,10 +952,91 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/app.component.ts:36</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/app.component.ts:58</a></div>
                             </td>
                         </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description">Service to manage languages</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="widthMain"></a>
+                        <span class="name">
+                            <b>
+                            widthMain</b>
+                            <a href="#widthMain"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>&#x27;width-60&#x27;</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/app.component.ts:27</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Main: default page layout is 60%</p>
+</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="widthSidebar"></a>
+                        <span class="name">
+                            <b>
+                            widthSidebar</b>
+                            <a href="#widthSidebar"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>&#x27;width-38&#x27;</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/app.component.ts:32</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Sidebar: default page layout is 38%</p>
+</div>
+                    </td>
+                </tr>
 
             </tbody>
         </table>
@@ -802,7 +1063,21 @@ import {HttpClient} from &#x27;@angular/common/http&#x27;;
  * Root component of the application
  */
 export class AppComponent {
+
+  /**
+   * Title of the application is ndex-edit
+   */
   title &#x3D; &#x27;ndex-edit&#x27;;
+
+  /**
+   * Main: default page layout is 60%
+   */
+  widthMain &#x3D; &#x27;width-60&#x27;;
+
+  /**
+   * Sidebar: default page layout is 38%
+   */
+  widthSidebar &#x3D; &#x27;width-38&#x27;;
 
   /**
    * Path to mock-ups
@@ -819,6 +1094,14 @@ export class AppComponent {
    */
   private readonly defaultLanguage &#x3D; &#x27;en&#x27;;
 
+  /**
+   * Initializes translation and renders the desired mock-ups
+   *
+   * @param translateService Service to manage languages
+   * @param parseService Service to handle parsing of mock-ups
+   * @param dataService Service to read and write globally accessible data
+   * @param http Service to handle HTTP requests and file inputs
+   */
   constructor(
     public translateService: TranslateService,
     private parseService: ParseService,
@@ -826,10 +1109,15 @@ export class AppComponent {
     private http: HttpClient) {
     this.initializeTranslation();
 
-    this.initDemoNetwork(&#x27;01.cx&#x27;);
-    this.initDemoNetwork(&#x27;02.cx&#x27;);
-    this.initDemoNetwork(&#x27;03.cx&#x27;);
-    this.initDemoNetwork(&#x27;04.cx&#x27;);
+    this.initDemoNetwork(&#x27;01.cx&#x27;); // good example for discrete mappings
+    this.initDemoNetwork(&#x27;02.cx&#x27;); // good example for continuous mappings
+    this.initDemoNetwork(&#x27;03.cx&#x27;); // good for many many many edges
+    this.initDemoNetwork(&#x27;05.cx&#x27;); // example with arrows
+    // this.initDemoNetwork(&#x27;04.cx&#x27;); // this is a terribly built network and a negative example on how to manage a .cx file
+    // this.initDemoNetwork(&#x27;06.cx&#x27;); // also not very nice to display
+    // this.initDemoNetwork(&#x27;07.cx&#x27;); // 37MB are not very nice &#x3D;&gt; ndex does show a fallback graph in these cases (or only first n nodes)
+    // this.initDemoNetwork(&#x27;08.cx&#x27;); // 20MB are not very nice &#x3D;&gt; ndex does show a fallback graph in these cases (or only first n nodes)
+
 
   }
 
@@ -878,43 +1166,82 @@ export class AppComponent {
       .catch(error &#x3D;&gt; console.log(error));
   }
 
+  /**
+   * Simple implementation to adjust the page layout:
+   * &lt;ul&gt;
+   *   &lt;li&gt;&lt;b&gt;left-click&lt;/b&gt;: main view decreases, sidebar increases&lt;/li&gt;
+   *   &lt;li&gt;&lt;b&gt;right-click&lt;/b&gt;: main view increases, sidebar decreases&lt;/li&gt;
+   *   &lt;li&gt;&lt;b&gt;Ctrl + left-click&lt;/b&gt;&lt;/li&gt;: resets widths, see {@link AppComponent#resetPageLayout}
+   * &lt;/ul&gt;
+   * @param e event to fetch all pressed keys
+   * @param direction can be right or left
+   */
+  handleClickEvent(e: MouseEvent, direction: string): void {
+    if (e.ctrlKey) {
+      this.resetPageLayout();
+      return;
+    }
+
+    e.preventDefault();
+    let tmpMain &#x3D; Number(this.widthMain.split(&#x27;-&#x27;)[1]);
+    let tmpSidebar &#x3D; Number(this.widthSidebar.split(&#x27;-&#x27;)[1]);
+
+    if (direction &#x3D;&#x3D;&#x3D; &#x27;right&#x27; &amp;&amp; tmpSidebar &gt; 18) {
+      tmpMain +&#x3D; 10;
+      tmpSidebar -&#x3D; 10;
+      this.widthMain &#x3D; &#x27;width-&#x27; + tmpMain;
+      this.widthSidebar &#x3D; &#x27;width-&#x27; + tmpSidebar;
+    } else if (direction &#x3D;&#x3D;&#x3D; &#x27;left&#x27; &amp;&amp; tmpMain &gt; 20) {
+      tmpMain -&#x3D; 10;
+      tmpSidebar +&#x3D; 10;
+      this.widthMain &#x3D; &#x27;width-&#x27; + tmpMain;
+      this.widthSidebar &#x3D; &#x27;width-&#x27; + tmpSidebar;
+    }
+  }
+
+  /**
+   * Resets page layout to {@link AppComponent#widthMain} and {@link AppComponent#widthSidebar}
+   */
+  resetPageLayout(): void {
+    this.widthSidebar &#x3D; &#x27;width-38&#x27;;
+    this.widthMain &#x3D; &#x27;width-60&#x27;;
+  }
 }
 </code></pre>
     </div>
 
     <div class="tab-pane fade " id="c-templateData">
-        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;container-fluid p-o&quot;&gt;
-  &lt;div class&#x3D;&quot;row&quot;&gt;
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;container-fluid&quot;&gt;
 
-    &lt;div class&#x3D;&quot;col-7 border-right p-4&quot;&gt;
-      &lt;router-outlet&gt;&lt;/router-outlet&gt;
-    &lt;/div&gt;
+  &lt;div class&#x3D;&quot;float-left&quot; [ngClass]&#x3D;&quot;widthMain&quot;&gt;
+    &lt;router-outlet&gt;&lt;/router-outlet&gt;
+  &lt;/div&gt;
 
-    &lt;div class&#x3D;&quot;col-5 vh-100 pt-3 pl-0 pr-0&quot; [ngStyle]&#x3D;&quot;{&#x27;background-color&#x27;: &#x27;#d0d0d0&#x27;}&quot;&gt;
+  &lt;div class&#x3D;&quot;vh-100 float-right&quot; [ngClass]&#x3D;&quot;widthSidebar&quot;&gt;
 
-      &lt;ul class&#x3D;&quot;nav nav-tabs&quot;&gt;
-
-        &lt;li class&#x3D;&quot;nav-item pl-2&quot;&gt;
+      &lt;ul class&#x3D;&quot;nav nav-tabs mt-2 ml-1&quot;&gt;
+        &lt;li class&#x3D;&quot;nav-item&quot;&gt;
           &lt;a class&#x3D;&quot;nav-link text-black-50&quot; [routerLink]&#x3D;&quot;[&#x27;&#x27;, { outlets: {sidebar: [&#x27;manage&#x27;]} }]&quot;
              routerLinkActive&#x3D;&quot;active&quot;&gt;{{&#x27;NAV_MANAGE&#x27;|translate}}&lt;/a&gt;
         &lt;/li&gt;
         &lt;li class&#x3D;&quot;nav-item&quot;&gt;
-          &lt;a class&#x3D;&quot;nav-link text-black-50&quot; [routerLink]&#x3D;&quot;[&#x27;&#x27;, { outlets: {sidebar: [&#x27;edit&#x27;]} }]&quot;
-             routerLinkActive&#x3D;&quot;active&quot;&gt;{{&#x27;NAV_EDIT&#x27;|translate}}&lt;/a&gt;
+          &lt;a class&#x3D;&quot;nav-link text-black-50 disabled&quot; [routerLink]&#x3D;&quot;[&#x27;&#x27;, { outlets: {sidebar: [&#x27;edit&#x27;]} }]&quot;
+             routerLinkActive&#x3D;&quot;active&quot; data-toggle&#x3D;&quot;tooltip&quot; data-placement&#x3D;&quot;bottom&quot;
+             title&#x3D;&quot;{{&#x27;NAV_EDIT_TT_INFO&#x27; | translate}}&quot;&gt;
+            {{&#x27;NAV_EDIT&#x27;|translate}}&lt;/a&gt;
         &lt;/li&gt;
         &lt;li class&#x3D;&quot;nav-item&quot;&gt;
-          &lt;a class&#x3D;&quot;nav-link text-black-50&quot; [routerLink]&#x3D;&quot;[&#x27;&#x27;, { outlets: {sidebar: [&#x27;compare&#x27;]} }]&quot;
-             routerLinkActive&#x3D;&quot;active&quot;&gt;{{&#x27;NAV_COMPARE&#x27;|translate}}&lt;/a&gt;
+          &lt;a class&#x3D;&quot;nav-link text-black-50 disabled&quot; [routerLink]&#x3D;&quot;[&#x27;&#x27;, { outlets: {sidebar: [&#x27;compare&#x27;]} }]&quot;
+             routerLinkActive&#x3D;&quot;active&quot; data-toggle&#x3D;&quot;tooltip&quot; data-placement&#x3D;&quot;bottom&quot;
+             title&#x3D;&quot;{{&#x27;NAV_COMPARE_TT_INFO&#x27; | translate}}&quot;&gt;{{&#x27;NAV_COMPARE&#x27;|translate}}&lt;/a&gt;
         &lt;/li&gt;
-
       &lt;/ul&gt;
-
-      &lt;div class&#x3D;&quot;vh-100 bg-white p-2&quot;&gt;
-        &lt;router-outlet name&#x3D;&quot;sidebar&quot;&gt;&lt;/router-outlet&gt;
-      &lt;/div&gt;
-
-    &lt;/div&gt;
+      &lt;router-outlet name&#x3D;&quot;sidebar&quot;&gt;&lt;/router-outlet&gt;
   &lt;/div&gt;
+
+  &lt;div class&#x3D;&quot;vh-100 drag-bar float-right&quot; (click)&#x3D;&quot;handleClickEvent($event, &#x27;left&#x27;)&quot;
+       (contextmenu)&#x3D;&quot;handleClickEvent($event, &#x27;right&#x27;)&quot;&gt;&amp;nbsp;&lt;/div&gt;
+
 &lt;/div&gt;
 </code></pre>
     </div>
@@ -923,7 +1250,82 @@ export class AppComponent {
                 <p class="comment">
                     <code>./app.component.scss</code>
                 </p>
-                <pre class="line-numbers"><code class="language-scss"></code></pre>
+                <pre class="line-numbers"><code class="language-scss">.drag-bar {
+  background-color: #d8d8d8;
+  cursor: pointer;
+  width: 1%;
+  min-height: 100%;
+}
+
+.drag-bar:hover {
+  background-color: green;
+}
+
+.width-8 {
+  width: 8%;
+}
+.width-10 {
+  width: 10%;
+}
+
+.width-18 {
+  width: 18%;
+}
+.width-20 {
+  width: 20%;
+}
+
+.width-28 {
+  width: 28%;
+}
+.width-30 {
+  width: 30%;
+}
+
+.width-38 {
+  width: 38%;
+}
+.width-40 {
+  width: 40%;
+}
+
+.width-48 {
+  width: 48%;
+}
+.width-50 {
+  width: 50%;
+}
+
+.width-58 {
+  width: 58%;
+}
+.width-60 {
+  width: 60%;
+}
+
+.width-68 {
+  width: 68%;
+}
+.width-70 {
+  width: 70%;
+}
+
+.width-78 {
+  width: 78%;
+}
+.width-80 {
+  width: 80%;
+}
+
+.width-88 {
+  width: 88%;
+}
+.width-90 {
+  width: 90%;
+}
+
+
+</code></pre>
     </div>
 
     <div class="tab-pane fade " id="c-tree">
@@ -951,8 +1353,8 @@ export class AppComponent {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div class="container-fluid p-o">  <div class="row">    <div class="col-7 border-right p-4">      <router-outlet></router-outlet>    </div>    <div class="col-5 vh-100 pt-3 pl-0 pr-0" [ngStyle]="{\'background-color\': \'#d0d0d0\'}">      <ul class="nav nav-tabs">        <li class="nav-item pl-2">          <a class="nav-link text-black-50" [routerLink]="[\'\', { outlets: {sidebar: [\'manage\']} }]"             routerLinkActive="active">{{\'NAV_MANAGE\'|translate}}</a>        </li>        <li class="nav-item">          <a class="nav-link text-black-50" [routerLink]="[\'\', { outlets: {sidebar: [\'edit\']} }]"             routerLinkActive="active">{{\'NAV_EDIT\'|translate}}</a>        </li>        <li class="nav-item">          <a class="nav-link text-black-50" [routerLink]="[\'\', { outlets: {sidebar: [\'compare\']} }]"             routerLinkActive="active">{{\'NAV_COMPARE\'|translate}}</a>        </li>      </ul>      <div class="vh-100 bg-white p-2">        <router-outlet name="sidebar"></router-outlet>      </div>    </div>  </div></div></div>'
-    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'MainGraphComponent', 'selector': 'app-main-graph'},{'name': 'MainInfoComponent', 'selector': 'app-main-info'},{'name': 'MainStatsComponent', 'selector': 'app-main-stats'},{'name': 'SidebarCompareComponent', 'selector': 'app-sidebar-compare'},{'name': 'SidebarEditComponent', 'selector': 'app-sidebar-edit'},{'name': 'SidebarManageComponent', 'selector': 'app-sidebar-manage'}];
+        var COMPONENT_TEMPLATE = '<div><div class="container-fluid">  <div class="float-left" [ngClass]="widthMain">    <router-outlet></router-outlet>  </div>  <div class="vh-100 float-right" [ngClass]="widthSidebar">      <ul class="nav nav-tabs mt-2 ml-1">        <li class="nav-item">          <a class="nav-link text-black-50" [routerLink]="[\'\', { outlets: {sidebar: [\'manage\']} }]"             routerLinkActive="active">{{\'NAV_MANAGE\'|translate}}</a>        </li>        <li class="nav-item">          <a class="nav-link text-black-50 disabled" [routerLink]="[\'\', { outlets: {sidebar: [\'edit\']} }]"             routerLinkActive="active" data-toggle="tooltip" data-placement="bottom"             title="{{\'NAV_EDIT_TT_INFO\' | translate}}">            {{\'NAV_EDIT\'|translate}}</a>        </li>        <li class="nav-item">          <a class="nav-link text-black-50 disabled" [routerLink]="[\'\', { outlets: {sidebar: [\'compare\']} }]"             routerLinkActive="active" data-toggle="tooltip" data-placement="bottom"             title="{{\'NAV_COMPARE_TT_INFO\' | translate}}">{{\'NAV_COMPARE\'|translate}}</a>        </li>      </ul>      <router-outlet name="sidebar"></router-outlet>  </div>  <div class="vh-100 drag-bar float-right" (click)="handleClickEvent($event, \'left\')"       (contextmenu)="handleClickEvent($event, \'right\')">&nbsp;</div></div></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'MainGraphComponent', 'selector': 'app-main-graph'},{'name': 'MainInfoComponent', 'selector': 'app-main-info'},{'name': 'MainMappingsComponent', 'selector': 'app-main-mappings'},{'name': 'MainMappingsNewComponent', 'selector': 'app-main-mappings-new'},{'name': 'MainStatsComponent', 'selector': 'app-main-stats'},{'name': 'SidebarCompareComponent', 'selector': 'app-sidebar-compare'},{'name': 'SidebarEditComponent', 'selector': 'app-sidebar-edit'},{'name': 'SidebarManageComponent', 'selector': 'app-sidebar-manage'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'AppComponent'};
 </script>

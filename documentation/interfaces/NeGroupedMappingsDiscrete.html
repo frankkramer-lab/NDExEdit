@@ -43,7 +43,7 @@
 
 <ol class="breadcrumb">
   <li>Interfaces</li>
-  <li>NeStyle</li>
+  <li>NeGroupedMappingsDiscrete</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -61,7 +61,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/app/models/ne-style.ts</code>
+            <code>src/app/models/ne-grouped-mappings-discrete.ts</code>
         </p>
 
 
@@ -79,15 +79,19 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                            <span class="modifier">Optional</span>
-                                        <a href="#appliedTo">appliedTo</a>
+                                        <a href="#classifier">classifier</a>
                                 </li>
                                 <li>
-                                        <a href="#selector">selector</a>
+                                        <a href="#selectors">selectors</a>
                                 </li>
                                 <li>
-                                            <span class="modifier">Optional</span>
-                                        <a href="#style">style</a>
+                                        <a href="#styleMap">styleMap</a>
+                                </li>
+                                <li>
+                                        <a href="#th">th</a>
+                                </li>
+                                <li>
+                                        <a href="#values">values</a>
                                 </li>
                             </ul>
                         </td>
@@ -104,47 +108,13 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="appliedTo"></a>
-                                        <span class="name"><b>appliedTo</b><a href="#appliedTo"><span class="icon ion-ios-link"></span></a></span>
+                                        <a name="classifier"></a>
+                                        <span class="name"><b>classifier</b><a href="#classifier"><span class="icon ion-ios-link"></span></a></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>appliedTo:         <code><a href="../interfaces/NeElement.html" target="_self" >NeElement[]</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="../interfaces/NeElement.html" target="_self" >NeElement[]</a></code>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Optional</i>
-                                        </td>
-                                    </tr>
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="selector"></a>
-                                        <span class="name"><b>selector</b><a href="#selector"><span class="icon ion-ios-link"></span></a></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>selector:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>classifier:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -167,13 +137,13 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="style"></a>
-                                        <span class="name"><b>style</b><a href="#style"><span class="icon ion-ios-link"></span></a></span>
+                                        <a name="selectors"></a>
+                                        <span class="name"><b>selectors</b><a href="#selectors"><span class="icon ion-ios-link"></span></a></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>style:         <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                        <code>selectors:     <code>string[]</code>
 </code>
                                     </td>
                                 </tr>
@@ -181,16 +151,98 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            <i>Type : </i>    <code>string[]</code>
 
                                         </td>
                                     </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="styleMap"></a>
+                                        <span class="name"><b>styleMap</b><a href="#styleMap"><span class="icon ion-ios-link"></span></a></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>styleMap:     <code>NeStyleMap[]</code>
+</code>
+                                    </td>
+                                </tr>
+
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Optional</i>
+                                            <i>Type : </i>    <code>NeStyleMap[]</code>
+
                                         </td>
                                     </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="th"></a>
+                                        <span class="name"><b>th</b><a href="#th"><span class="icon ion-ios-link"></span></a></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>th:     <code>string[]</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>string[]</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="values"></a>
+                                        <span class="name"><b>values</b><a href="#values"><span class="icon ion-ios-link"></span></a></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>values:     <code>string[]</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>string[]</code>
+
+                                        </td>
+                                    </tr>
+
 
 
 
@@ -202,12 +254,15 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {NeElement} from &#x27;./ne-element&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {NeStyleComponent} from &#x27;./ne-style-component&#x27;;
+import {NeStyleMap} from &#x27;./ne-style-map&#x27;;
 
-export interface NeStyle {
-  selector: string;
-  style?: any;
-  appliedTo?: NeElement[];
+export interface NeGroupedMappingsDiscrete {
+  classifier: string;
+  values: string[];
+  styleMap: NeStyleMap[];
+  th: string[];
+  selectors: string[];
 }
 </code></pre>
     </div>
@@ -236,7 +291,7 @@ export interface NeStyle {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'NeStyle.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'NeGroupedMappingsDiscrete.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

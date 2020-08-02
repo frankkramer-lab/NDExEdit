@@ -84,6 +84,23 @@
                     </td>
                 </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#getNetworkById">getNetworkById</a>
+                            </li>
+                            <li>
+                                <a href="#removeMapping">removeMapping</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
 
 
 
@@ -112,7 +129,152 @@
         </table>
 </section>
 
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getNetworkById"></a>
+                    <span class="name">
+                        <b>
+                            getNetworkById
+                        </b>
+                        <a href="#getNetworkById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getNetworkById(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
 
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="14"
+                            class="link-to-prism">src/app/services/data.service.ts:14</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/NeNetwork.html" target="_self" >NeNetwork</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="removeMapping"></a>
+                    <span class="name">
+                        <b>
+                            removeMapping
+                        </b>
+                        <a href="#removeMapping"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>removeMapping(map: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="19"
+                            class="link-to-prism">src/app/services/data.service.ts:19</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>map</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
             <section>
     
         <h3 id="inputs">
@@ -200,6 +362,92 @@ export class DataService {
 
   constructor() {
   }
+
+  getNetworkById(id: number): NeNetwork {
+    return this.networksParsed.find(x &#x3D;&gt; x.id &#x3D;&#x3D;&#x3D; id);
+  }
+
+  // todo update aspectKeyValues -&gt; pointers to corresponding mappings after deletion
+  removeMapping(map: any): void {
+
+    const network &#x3D; this.getNetworkById(map.network);
+
+    switch (map.type) {
+      case &#x27;nd&#x27;:
+        const ndSelectors &#x3D; network.mappings.nodesDiscrete[map.mappingId].selectors;
+        network.mappings.nodesDiscrete.splice(map.mappingId, 1);
+
+        let ndNewStyle &#x3D; [];
+        for (const selector of ndSelectors) {
+
+          ndNewStyle &#x3D; ndNewStyle.concat(network.style.filter(x &#x3D;&gt; x.selector !&#x3D;&#x3D; selector));
+          const className &#x3D; selector.substring(1);
+
+          for (const element of network.elements) {
+
+            if (element.classes.includes(className)) {
+              element.classes &#x3D; element.classes.replace(className, &#x27;&#x27;).trim();
+            }
+          }
+        }
+
+        network.style &#x3D; ndNewStyle;
+        network.aspectKeyValuesNodes[map.akvIndex].mapPointerD &#x3D; network.aspectKeyValuesNodes[map.akvIndex].mapPointerD.filter(x &#x3D;&gt; x !&#x3D;&#x3D; map.mappingId);
+        break;
+      case &#x27;nc&#x27;:
+
+        network.mappings.nodesContinuous.splice(map.mappingId, 1);
+
+        for (const value of network.mappings.nodesContinuous[map.mappingId].values) {
+          const correspondingStyle &#x3D; network.style.find(x &#x3D;&gt; x.selector &#x3D;&#x3D;&#x3D; value.selector);
+          delete correspondingStyle.style[value.cssKey];
+        }
+
+        network.mappings.nodesContinuous.splice(map.mappingId, 1);
+        network.aspectKeyValuesNodes[map.akvIndex].mapPointerC &#x3D; network.aspectKeyValuesNodes[map.akvIndex].mapPointerC.filter(x &#x3D;&gt; x !&#x3D;&#x3D; map.mappingId);
+        break;
+      case &#x27;ed&#x27;:
+
+        const edSelectors &#x3D; network.mappings.edgesDiscrete[map.mappingId].selectors;
+        network.mappings.edgesDiscrete.splice(map.mappingId, 1);
+
+        let edNewStyle &#x3D; [];
+        for (const selector of edSelectors) {
+
+          edNewStyle &#x3D; edNewStyle.concat(network.style.filter(x &#x3D;&gt; x.selector !&#x3D;&#x3D; selector));
+          const className &#x3D; selector.substring(1);
+
+          for (const element of network.elements) {
+
+            if (element.classes.includes(className)) {
+              element.classes &#x3D; element.classes.replace(className, &#x27;&#x27;).trim();
+            }
+          }
+        }
+        network.aspectKeyValuesEdges[map.akvIndex].mapPointerD &#x3D; network.aspectKeyValuesEdges[map.akvIndex].mapPointerD.filter(x &#x3D;&gt; x !&#x3D;&#x3D; map.mappingId);
+        network.style &#x3D; edNewStyle;
+        break;
+      case &#x27;ec&#x27;:
+
+        for (const value of network.mappings.edgesContinuous[map.mappingId].values) {
+
+          const correspondingStyle &#x3D; network.style.find(x &#x3D;&gt; x.selector &#x3D;&#x3D;&#x3D; value.selector);
+
+          if (network.styleConstants[&#x27;arrow-as-edge&#x27;] &amp;&amp;
+            (value.cssKey &#x3D;&#x3D;&#x3D; &#x27;line-color&#x27; || value.cssKey &#x3D;&#x3D;&#x3D; &#x27;target-arrow-color&#x27; || value.cssKey &#x3D;&#x3D;&#x3D; &#x27;source-arrow-color&#x27;)) {
+            delete correspondingStyle.style[&#x27;line-color&#x27;];
+            delete correspondingStyle.style[&#x27;target-arrow-color&#x27;];
+            delete correspondingStyle.style[&#x27;source-arrow-color&#x27;];
+          } else {
+            delete correspondingStyle.style[value.cssKey];
+          }
+        }
+        network.aspectKeyValuesEdges[map.akvIndex].mapPointerC &#x3D; network.aspectKeyValuesEdges[map.akvIndex].mapPointerC.filter(x &#x3D;&gt; x !&#x3D;&#x3D; map.mappingId);
+        network.mappings.edgesContinuous.splice(map.mappingId, 1);
+        break;
+    }
+  }
+
 }
 </code></pre>
     </div>

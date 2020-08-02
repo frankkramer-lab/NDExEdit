@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NeNetwork} from '../../models/ne-network';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
-import {faArrowRight, faArrowLeft, faPalette, faUndo, faCheck} from '@fortawesome/free-solid-svg-icons';
+import {faArrowLeft, faArrowRight, faCheck, faPalette, faUndo} from '@fortawesome/free-solid-svg-icons';
 import {NeMappingsDefinition} from '../../models/ne-mappings-definition';
 import {NeAspect} from '../../models/ne-aspect';
 import {ChartDataSets} from 'chart.js';
@@ -13,7 +13,12 @@ import {Color, Label} from 'ng2-charts';
   templateUrl: './main-mappings-new.component.html',
   styleUrls: ['./main-mappings-new.component.scss']
 })
+
+/**
+ * Component responsible for creating new mappings
+ */
 export class MainMappingsNewComponent implements OnInit, OnDestroy {
+
   faArrowRight = faArrowRight;
   faArrowLeft = faArrowLeft;
   faPalette = faPalette;

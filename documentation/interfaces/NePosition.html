@@ -64,6 +64,13 @@
             <code>src/app/models/ne-position.ts</code>
         </p>
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Type for <a href="http://www.cut-the-knot.org/Curriculum/Calculus/Coordinates.shtml">cartesian layout</a></p>
+
+            </p>
 
 
         <section>
@@ -125,6 +132,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>References a <a href="NeNode#id">node&#39;s id</a></p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -154,6 +167,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>x dimension</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -183,6 +202,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>y dimension</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
             </section>
@@ -191,8 +216,20 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export interface NePosition {
+
+  /**
+   * References a {@link NeNode#id|node&#x27;s id}
+   */
   reference: string;
+
+  /**
+   * x dimension
+   */
   x: number;
+
+  /**
+   * y dimension
+   */
   y: number;
 }
 </code></pre>

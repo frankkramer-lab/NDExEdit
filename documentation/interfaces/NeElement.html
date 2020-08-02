@@ -64,6 +64,13 @@
             <code>src/app/models/ne-element.ts</code>
         </p>
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Basetype for <a href="../interfaces/NeNode.html">NeNode</a> and <a href="../interfaces/NeEdge.html">NeEdge</a></p>
+
+            </p>
 
 
         <section>
@@ -143,6 +150,13 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>An element&#39;s list of attributes,
+see <a href="../interfaces/NeElementAttribute.html">NeElementAttribute</a> for further details</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -177,6 +191,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>An element&#39;s list of attributes</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -206,6 +226,15 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Can be one of the following:</p>
+<ul>
+   <li><b>nodes</b>: if the elements are of type <a href="../interfaces/NeNode.html">NeNode</a></li>
+   <li><b>edges</b>: if the elements are of type <a href="../interfaces/NeEdge.html">NeEdge</a></li>
+</ul></div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -235,6 +264,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Needs to be unique within the graph</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -269,6 +304,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Used as label</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -303,6 +344,13 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Possibly links corresponding information on medical databases,
+see <a href="https://home.ndexbio.org/data-model/">CX data model</a> for further details</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
             </section>
@@ -312,12 +360,44 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {NeElementAttribute} from &#x27;./ne-element-attribute&#x27;;
 
+/**
+ * Basetype for {@link NeNode} and {@link NeEdge}
+ */
 export interface NeElement {
+  /**
+   * Needs to be unique within the graph
+   */
   id: string;
+
+  /**
+   * Used as label
+   */
   name?: string;
+
+  /**
+   * Possibly links corresponding information on medical databases,
+   * see {@link https://home.ndexbio.org/data-model/|CX data model} for further details
+   */
   reference?: string;
+
+  /**
+   * Can be one of the following:
+   * &lt;ul&gt;
+   *   &lt;li&gt;&lt;b&gt;nodes&lt;/b&gt;: if the elements are of type {@link NeNode}&lt;/li&gt;
+   *   &lt;li&gt;&lt;b&gt;edges&lt;/b&gt;: if the elements are of type {@link NeEdge}&lt;/li&gt;
+   * &lt;/ul&gt;
+   */
   group: string;
+
+  /**
+   * An element&#x27;s list of attributes,
+   * see {@link NeElementAttribute} for further details
+   */
   attributes?: NeElementAttribute[];
+
+  /**
+   * An element&#x27;s list of attributes
+   */
   classes?: string[];
 }
 </code></pre>

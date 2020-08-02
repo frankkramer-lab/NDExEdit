@@ -43,7 +43,7 @@
 
 <ol class="breadcrumb">
   <li>Interfaces</li>
-  <li>NeNode</li>
+  <li>NeContinuousCollection</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -61,23 +61,10 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/app/models/ne-node.ts</code>
+            <code>src/app/models/ne-continuous-collection.ts</code>
         </p>
 
-            <p class="comment">
-                <h3>Description</h3>
-            </p>
-            <p class="comment">
-                <p>Type based on <a href="../interfaces/NeElement.html">NeElement</a> describing nodes</p>
 
-            </p>
-
-            <p class="comment">
-                <h3>Extends</h3>
-            </p>
-            <p class="comment">
-                        <code><a href="../interfaces/NeElement.html" target="_self" >NeElement</a></code>
-            </p>
 
         <section>
             <h3 id="index">Index</h3>
@@ -92,29 +79,29 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                            <span class="modifier">Optional</span>
-                                        <a href="#attributes">attributes</a>
+                                        <a href="#chart">chart</a>
                                 </li>
                                 <li>
                                             <span class="modifier">Optional</span>
-                                        <a href="#classes">classes</a>
-                                </li>
-                                <li>
-                                        <a href="#group">group</a>
-                                </li>
-                                <li>
-                                        <a href="#id">id</a>
-                                </li>
-                                <li>
-                                        <a href="#name">name</a>
+                                        <a href="#chartValid">chartValid</a>
                                 </li>
                                 <li>
                                             <span class="modifier">Optional</span>
-                                        <a href="#position">position</a>
+                                        <a href="#colorGradient">colorGradient</a>
+                                </li>
+                                <li>
+                                        <a href="#displayChart">displayChart</a>
                                 </li>
                                 <li>
                                             <span class="modifier">Optional</span>
-                                        <a href="#reference">reference</a>
+                                        <a href="#gradientValid">gradientValid</a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#title">title</a>
+                                </li>
+                                <li>
+                                        <a href="#values">values</a>
                                 </li>
                             </ul>
                         </td>
@@ -131,13 +118,13 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="attributes"></a>
-                                        <span class="name"><b>attributes</b><a href="#attributes"><span class="icon ion-ios-link"></span></a></span>
+                                        <a name="chart"></a>
+                                        <span class="name"><b>chart</b><a href="#chart"><span class="icon ion-ios-link"></span></a></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>attributes:     <code>NeElementAttribute[]</code>
+                                        <code>chart:         <code><a href="../interfaces/NeContinuousChart.html" target="_self" >NeContinuousChart</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -145,7 +132,36 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>    <code>NeElementAttribute[]</code>
+                                            <i>Type : </i>        <code><a href="../interfaces/NeContinuousChart.html" target="_self" >NeContinuousChart</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="chartValid"></a>
+                                        <span class="name"><b>chartValid</b><a href="#chartValid"><span class="icon ion-ios-link"></span></a></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>chartValid:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
 
                                         </td>
                                     </tr>
@@ -159,25 +175,116 @@
 
 
 
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>{@inheritdoc}</p>
-</div>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="classes"></a>
-                                        <span class="name"><b>classes</b><a href="#classes"><span class="icon ion-ios-link"></span></a></span>
+                                        <a name="colorGradient"></a>
+                                        <span class="name"><b>colorGradient</b><a href="#colorGradient"><span class="icon ion-ios-link"></span></a></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>classes:     <code>string[]</code>
+                                        <code>colorGradient:         <code><a href="../interfaces/NeColorGradient.html" target="_self" >NeColorGradient[]</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../interfaces/NeColorGradient.html" target="_self" >NeColorGradient[]</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="displayChart"></a>
+                                        <span class="name"><b>displayChart</b><a href="#displayChart"><span class="icon ion-ios-link"></span></a></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>displayChart:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="gradientValid"></a>
+                                        <span class="name"><b>gradientValid</b><a href="#gradientValid"><span class="icon ion-ios-link"></span></a></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>gradientValid:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="title"></a>
+                                        <span class="name"><b>title</b><a href="#title"><span class="icon ion-ios-link"></span></a></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>title:     <code>string[]</code>
 </code>
                                     </td>
                                 </tr>
@@ -199,25 +306,19 @@
 
 
 
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>{@inheritdoc}</p>
-</div>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="group"></a>
-                                        <span class="name"><b>group</b><a href="#group"><span class="icon ion-ios-link"></span></a></span>
+                                        <a name="values"></a>
+                                        <span class="name"><b>values</b><a href="#values"><span class="icon ion-ios-link"></span></a></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>group:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>values:     <code>NeStyleComponent[]</code>
 </code>
                                     </td>
                                 </tr>
@@ -225,7 +326,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            <i>Type : </i>    <code>NeStyleComponent[]</code>
 
                                         </td>
                                     </tr>
@@ -234,163 +335,6 @@
 
 
 
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>{@inheritdoc}</p>
-</div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="id"></a>
-                                        <span class="name"><b>id</b><a href="#id"><span class="icon ion-ios-link"></span></a></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>id:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>{@inheritdoc}</p>
-</div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="name"></a>
-                                        <span class="name"><b>name</b><a href="#name"><span class="icon ion-ios-link"></span></a></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>name:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>{@inheritdoc}</p>
-</div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="position"></a>
-                                        <span class="name"><b>position</b><a href="#position"><span class="icon ion-ios-link"></span></a></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>position:         <code><a href="../interfaces/NePosition.html" target="_self" >NePosition</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="../interfaces/NePosition.html" target="_self" >NePosition</a></code>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Optional</i>
-                                        </td>
-                                    </tr>
-
-
-
-
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>Coordinates specified within a
-<a href="http://www.cut-the-knot.org/Curriculum/Calculus/Coordinates.shtml">cartesian layout</a></p>
-</div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="reference"></a>
-                                        <span class="name"><b>reference</b><a href="#reference"><span class="icon ion-ios-link"></span></a></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>reference:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Optional</i>
-                                        </td>
-                                    </tr>
-
-
-
-
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>{@inheritdoc}</p>
-</div>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
             </section>
@@ -398,50 +342,18 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {NeElement} from &#x27;./ne-element&#x27;;
-import {NeElementAttribute} from &#x27;./ne-element-attribute&#x27;;
-import {NePosition} from &#x27;./ne-position&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {NeContinuousChart} from &#x27;./ne-continuous-chart&#x27;;
+import {NeStyleComponent} from &#x27;./ne-style-component&#x27;;
+import {NeColorGradient} from &#x27;./ne-color-gradient&#x27;;
 
-/**
- * Type based on {@link NeElement} describing nodes
- */
-export interface NeNode extends NeElement {
-
-  /**
-   * {@inheritdoc}
-   */
-  id: string;
-
-  /**
-   * {@inheritdoc}
-   */
-  group: string;
-
-  /**
-   * {@inheritdoc}
-   */
-  name: string;
-
-  /**
-   * {@inheritdoc}
-   */
-  reference?: string;
-
-  /**
-   * {@inheritdoc}
-   */
-  attributes?: NeElementAttribute[];
-
-  /**
-   * Coordinates specified within a
-   * {@link http://www.cut-the-knot.org/Curriculum/Calculus/Coordinates.shtml|cartesian layout}
-   */
-  position?: NePosition;
-
-  /**
-   * {@inheritdoc}
-   */
-  classes?: string[];
+export interface NeContinuousCollection {
+  chart: NeContinuousChart;
+  values: NeStyleComponent[];
+  displayChart: boolean;
+  colorGradient?: NeColorGradient[];
+  chartValid?: boolean;
+  gradientValid?: boolean;
+  title?: string[];
 }
 </code></pre>
     </div>
@@ -470,7 +382,7 @@ export interface NeNode extends NeElement {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'NeNode.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'NeContinuousCollection.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

@@ -20,40 +20,128 @@ import {NeColorGradient} from '../../models/ne-color-gradient';
  */
 export class SidebarEditComponent implements AfterViewInit, OnDestroy {
 
+  /**
+   * Icon: faPalette
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faPalette = faPalette;
+
+  /**
+   * Icon: faLightbulb
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faLightbulb = faLightbulb;
 
+  /**
+   * Selected network of type {@link NeNetwork|NeNetwork}
+   */
   selectedNetwork: NeNetwork;
-  isInitialized = false;
 
+  /**
+   * Checks if the view is initialized
+   * @private
+   */
+  private isInitialized = false;
+
+  /**
+   * CSS property which is mapped by {@link SidebarEditComponent#attribute|this attribute}
+   */
   lookup: string;
+
+  /**
+   * attribute responsible for {@link SidebarEditComponent#lookup|this CSS property's} value
+   */
   attribute: string;
 
+  /**
+   * Toggles displaying the comparison of multiple selected elements
+   */
   showComparison = false;
+
+  /**
+   * Toggles displaying the chart for numeric continuous mappings
+   */
   showChart = false;
+
+  /**
+   * Toggles displaying the color gradient for color based continuous mappings
+   */
   showColorGradient = false;
+
+  /**
+   * Default value for continuous mappings if less than 100% range is covered
+   */
   gradientBackground = '';
+
+  /**
+   * todo research
+   */
   index = '';
 
+  /**
+   * chart data used to display numeric continuous mapping, initialized with default values.
+   * See {@link ParseService#buildChartData} for more details
+   */
   public lineChartData: ChartDataSets[] = [
     {data: [0], label: 'no data found'}
   ];
+
+  /**
+   * chart labels used to display numeric continuous mapping
+   * See {@link ParseService#buildChartData} for more details
+   */
   public lineChartLabels: Label[] = [''];
+
+  /**
+   * chart cosmetics used to display numeric continuous mapping
+   * See {@link ParseService#buildChartData} for more details
+   */
   public lineChartColors: Color[] = [
     {
       backgroundColor: 'rgba(255,0,0,0.4)',
     }
   ];
+
+  /**
+   * chart options used to display numeric continuous mapping
+   * See {@link ParseService#buildChartData} for more details
+   */
   public lineChartOptions;
 
+  /**
+   * Default color for highlighting a lost node
+   */
   highlightNodes = '#0000ff';
+
+  /**
+   * Default color for highlighting a lost edge
+   */
   highlightEdges = '#0000ff';
+
+  /**
+   * Default duration for highlight a lost element, in milliseconds
+   */
   highlightDuration = 2000;
 
+  /**
+   * Toggles displaying labels for a rendered graph, not true by default to improve rendering performance.
+   * See {@link https://js.cytoscape.org/|Cytoscape.js} for further details
+   */
   showLabels = false;
 
+  /**
+   * Ensures that only a graph is rendered if the id is specified within the URL
+   * @private
+   */
   private readonly subscription: Subscription;
 
+  /**
+   * Subscribes to graph id and renders the graph if the view is already initialized
+   *
+   * @param dataService Service to read and write globally accessible data
+   * @param route Service to read URL
+   * @param graphService Service for graph manipulations
+   */
   constructor(public dataService: DataService,
               private route: ActivatedRoute,
               public graphService: GraphService) {
@@ -63,10 +151,16 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  /**
+   * Sets initialized status
+   */
   ngAfterViewInit(): void {
     this.isInitialized = true;
   }
 
+  /**
+   * Unsets initialized status and restores default values
+   */
   ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
@@ -80,11 +174,21 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     this.graphService.selectedElements.edges = [];
   }
 
+  /**
+   * Toggles labels by using a specific CSS class which overrides the values of the labels
+   * @param show Determines if labels are to be displayed
+   */
   toggleLabels(show: boolean): void {
     this.graphService.toggleLabels(show);
     this.showLabels = show;
   }
 
+  /**
+   * Displays details to a selected mapping within the sidebar
+   * @param chart data for continuous mapping with numeric values
+   * @param colorGradient data for continuous mapping with color based values
+   * @param index todo
+   */
   displayMapping(chart: any = null, colorGradient: NeColorGradient[] = [], index: string): void {
     this.index = index;
     if (chart !== null) {
