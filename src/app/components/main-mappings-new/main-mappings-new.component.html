@@ -44,15 +44,15 @@
       <p>{{'MAIN_MAPPINGS_NEW_INSTRUCTIONS' | translate}}</p>
 
       <div class="alert alert-info" role="alert">
-        <button *ngIf="chartReady" type="button" class="btn btn-sm btn-outline-secondary mr-4" data-toggle="tooltip" data-placement="bottom"
+        <button type="button" class="btn btn-sm btn-outline-secondary mr-4" data-toggle="tooltip" data-placement="bottom"
                 title="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
                 (click)="toggleDistributionChart(!showDistribution)">
           <fa-icon [icon]="faChartBar"></fa-icon>
         </button>
-        {{'MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE' | translate}}: {{propertyToMap.name}}
+        {{'MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE' | translate}}: <b>{{propertyToMap.name}}</b>
       </div>
 
-      <div *ngIf="showDistribution && chartReady" [ngStyle]="{'width.%': 100}">
+      <div *ngIf="showDistribution" [ngStyle]="{'width.%': 100}">
         <canvas baseChart [ngStyle]="{'width.%': 100}"
                 [chartType]="'bar'"
                 [datasets]="barChartData"
@@ -67,17 +67,32 @@
           <div>
             <input type="text" class="col-9 form-control" id="ndCssProperty" name="ndCssProperty"
                    [(ngModel)]="styleProperty">
+            <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
+          </div>
+          <div *ngIf="needsColorValidation(styleProperty)">
+            <button class="btn btn-outline-info"
+            data-toggle="tooltip" data-placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_NEW_COLOR_PREVIEW' | translate}}"
+            (click)="colorPreview()">
+              <fa-icon [icon]="faPalette"></fa-icon>
+            </button>
+          </div>
+          <div *ngIf="needsColorValidation(styleProperty)" class="ml-4">
+            <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
           </div>
         </div>
 
         <hr>
 
-        <div class="form-group row" *ngFor="let value of propertyToMap.values; let index = index;">
-          <label for="nd{{index}}" class="col-3 col-form-label">{{value}}</label>
+        <div class="form-group row" *ngFor="let entry of discreteMapping; let index = index">
+          <label for="nd{{index}}" class="col-3 col-form-label">{{entry.isHR}}</label>
           <div>
             <input type="text" class="col-9 form-control" id="nd{{index}}"
-                   value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
+                   value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="nd{{index}}" [(ngModel)]="discreteMapping[index].cssValue">
           </div>
+          <span *ngIf="showColorPreviews && needsColorValidation(styleProperty)" class="badge badge-pill border"
+          [ngStyle]="{'background-color': entry.cssValue}">
+            &nbsp;
+          </span>
         </div>
 
       </form>

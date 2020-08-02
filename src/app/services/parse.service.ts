@@ -70,7 +70,7 @@ export class ParseService {
    * @param input string to be cleaned
    * @returns cleaned string
    */
-  private static utilCleanString(input: string): string {
+  public static utilCleanString(input: string): string {
     if (!input) {
       return '';
     }
@@ -255,7 +255,7 @@ export class ParseService {
     return parsedStyles.sort((a, b) => (a.priority < b.priority) ? -1 : 1);
   }
 
-  private static findPriorityBySelector(selector: string): number {
+  public static findPriorityBySelector(selector: string): number {
     let priority = -1;
 
     if (selector === 'node' || selector === 'edge') {

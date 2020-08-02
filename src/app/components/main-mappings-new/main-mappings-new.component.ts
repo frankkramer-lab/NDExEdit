@@ -1,4 +1,4 @@
-import {AfterViewChecked, AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NeNetwork} from '../../models/ne-network';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
@@ -6,7 +6,8 @@ import {faArrowLeft, faArrowRight, faChartBar, faCheck, faPalette, faUndo} from 
 import {NeMappingsDefinition} from '../../models/ne-mappings-definition';
 import {NeAspect} from '../../models/ne-aspect';
 import {ChartDataSets} from 'chart.js';
-import {Color, Label} from 'ng2-charts';
+import {Label} from 'ng2-charts';
+import {ParseService} from '../../services/parse.service';
 
 @Component({
   selector: 'app-main-mappings-new',
@@ -36,6 +37,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     ec: false
   };
 
+  showColorPreviews = false;
   showDistribution = false;
   styleProperty: string;
   nodesColorProperties: string[] = ['background-color', 'border-color'];
@@ -45,7 +47,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     {data: [0], label: 'no data found'}
   ];
   public barChartLabels: Label[] = [''];
-  public chartReady = false;
 
   discreteMapping: NeMappingsDefinition[];
 
@@ -87,6 +88,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
 
       }
       this.discreteMapping = [];
+      this.initMapping(params.get('map'));
 
     });
 
@@ -95,11 +97,9 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.barChartData = this.propertyToMap.chartDiscreteDistribution.chartData;
     this.barChartLabels = this.propertyToMap.chartDiscreteDistribution.chartLabels;
-    this.chartReady = true;
   }
 
   ngOnDestroy(): void {
-    this.chartReady = false;
     this.barChartData = [];
     this.barChartLabels = [];
   }
@@ -108,4 +108,30 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     this.showDistribution = toggle;
   }
 
+  needsColorValidation(property: string): boolean {
+    return (this.nodesColorProperties.includes(property) || this.edgesColorProperties.includes(property));
+  }
+
+  colorPreview(): void {
+    this.showColorPreviews = true;
+  }
+
+  private initMapping(baseType: string): void {
+    for (const value of this.propertyToMap.values) {
+      const selector = '.' + (baseType.startsWith('n') ? 'node' : 'edge') + '_' + ParseService.utilCleanString(this.propertyToMap.name) + '_' + ParseService.utilCleanString(value);
+      const tmp: NeMappingsDefinition = {
+        col: ParseService.utilCleanString(this.propertyToMap.name),
+        colHR: this.propertyToMap.name,
+        is: ParseService.utilCleanString(value),
+        isHR: value,
+        selector,
+        cssKey: this.styleProperty,
+        cssValue: null,
+        priority: ParseService.findPriorityBySelector(selector),
+        datatype: null
+      };
+      this.discreteMapping.push(tmp);
+    }
+    console.log(this.discreteMapping);
+  }
 }
