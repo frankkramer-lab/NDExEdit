@@ -677,10 +677,23 @@ export class ParseService {
         chartLabels: []
       };
 
+      akv.chartContinuousDistribution = {
+        chartData: [{
+          label: akv.name,
+          data: [] // contains obj as such: {data: [{x: 0, y: <value>}, {...} ]}
+        }]
+      };
+
       for (const value of akv.values) {
         akv.chartDiscreteDistribution.chartLabels.push(value);
         akv.chartDiscreteDistribution.chartData[0].data.push(0);
         akv.chartDiscreteDistribution.chartData[0].label = akv.name;
+
+        const index = akv.values.indexOf(value);
+        akv.chartContinuousDistribution.chartData[0].data.push({
+          x: index,
+          y: value
+        });
 
         for (const element of parsedData.filter(x => x.group === 'nodes')) {
           for (const attribute of element.attributes) {
@@ -702,10 +715,23 @@ export class ParseService {
         chartLabels: []
       };
 
+      akv.chartContinuousDistribution = {
+        chartData: [{
+          label: akv.name,
+          data: [] // contains obj as such: {data: [{x: 0, y: <value>}, {...} ]}
+        }]
+      };
+
       for (const value of akv.values) {
         akv.chartDiscreteDistribution.chartLabels.push(value);
         akv.chartDiscreteDistribution.chartData[0].data.push(0);
         akv.chartDiscreteDistribution.chartData[0].label = akv.name;
+
+        const index = akv.values.indexOf(value);
+        akv.chartContinuousDistribution.chartData[0].data.push({
+          x: index,
+          y: value
+        });
 
         for (const element of parsedData.filter(x => x.group === 'edges')) {
           for (const attribute of element.attributes) {

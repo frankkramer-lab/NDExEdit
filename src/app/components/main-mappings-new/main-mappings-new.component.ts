@@ -49,6 +49,11 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   ];
   public barChartLabels: Label[] = [''];
 
+  public scatterChartData: ChartDataSets[] = [
+    {data: [0], label: 'no data found'}
+  ];
+  public scatterChartLabels: Label[] = [''];
+
   discreteMapping: NeMappingsDefinition[];
 
   constructor(private route: ActivatedRoute,
@@ -98,11 +103,14 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.barChartData = this.propertyToMap.chartDiscreteDistribution.chartData;
     this.barChartLabels = this.propertyToMap.chartDiscreteDistribution.chartLabels;
+    this.scatterChartData = this.propertyToMap.chartContinuousDistribution.chartData;
   }
 
   ngOnDestroy(): void {
+    this.showDistribution = false;
     this.barChartData = [];
     this.barChartLabels = [];
+    this.scatterChartData = [];
   }
 
   toggleDistributionChart(toggle: boolean): void {

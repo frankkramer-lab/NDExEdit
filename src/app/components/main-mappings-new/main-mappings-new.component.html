@@ -237,6 +237,24 @@
          [ngClass]="{active: mappingsType.ec}">
       <h3>{{'MAIN_MAPPINGS_NEW_EC' | translate}}</h3>
 
+      <div class="alert alert-info" role="alert">
+
+        <button type="button" class="btn btn-sm btn-outline-secondary mr-4" data-toggle="tooltip"
+                placement="right"
+                ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
+                (click)="toggleDistributionChart(!showDistribution)">
+          <fa-icon [icon]="faChartBar"></fa-icon>
+        </button>
+        {{'MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE' | translate}}: <b>{{propertyToMap.name}}</b>
+      </div>
+
+      <div *ngIf="showDistribution" [ngStyle]="{'width.%': 100}">
+        <canvas baseChart
+                [chartType]="'scatter'"
+                [datasets]="scatterChartData"
+                [labels]="scatterChartLabels"></canvas>
+        <hr>
+      </div>
 
     </div>
   </div>
