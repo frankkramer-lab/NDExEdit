@@ -41,19 +41,43 @@
          [ngClass]="{active: mappingsType.nd}">
       <h3>{{'MAIN_MAPPINGS_NEW_ND' | translate}}</h3>
 
+      <p>{{'MAIN_MAPPINGS_NEW_INSTRUCTIONS' | translate}}</p>
+
+      <div class="alert alert-info" role="alert">
+        {{'MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE' | translate}}: {{propertyToMap.name}}
+      </div>
+
       <form>
 
-        <div class="form-group row" *ngFor="let value of propertyToMap.values">
-          <label for="" class="col-3 col-form-label">{{value}}</label>
+        <div class="form-group row">
+          <label for="ndCssProperty"
+                 class="col-3 col-form-label">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
           <div>
-            <input type="text" class="col-9 form-control-plaintext" id="" value="">
+            <input type="text" class="col-9 form-control" id="ndCssProperty" name="ndCssProperty"
+                   [(ngModel)]="styleProperty">
+          </div>
+        </div>
+
+        <hr>
+
+        <div class="form-group row" *ngFor="let value of propertyToMap.values; let index = index;">
+          <label for="nd{{index}}" class="col-3 col-form-label">{{value}}</label>
+          <div>
+            <input type="text" class="col-9 form-control" id="nd{{index}}"
+                   value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
           </div>
         </div>
 
       </form>
-
-
     </div>
+
+
+    <canvas id="quantityChart" baseChart [ngStyle]="{'width.%': 100}"
+            [chartType]="'bar'"
+            [datasets]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"></canvas>
+
 
     <!-- NEW: NodesContinuous -->
     <div class="tab-pane fade show" id="newNcForm" role="tabpanel" aria-labelledby="newNc"

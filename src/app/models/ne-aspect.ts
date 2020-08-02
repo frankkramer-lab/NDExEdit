@@ -8,4 +8,6 @@ export interface NeAspect {
   datatype?: string;
   mapPointerC?: number[];
   mapPointerD?: number[];
+  chartDiscreteDistribution?: any;
+  chartContinuousDistribution?: any;
 }

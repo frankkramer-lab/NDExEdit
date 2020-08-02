@@ -583,7 +583,9 @@ export class ParseService {
           appliedTo: [],
           datatype: attribute.datatype,
           mapPointerD: [],
-          mapPointerC: []
+          mapPointerC: [],
+          chartDiscreteDistribution: null,
+          chartContinuousDistribution: null
         };
 
         if (elementType === 'nodes') {
@@ -631,9 +633,22 @@ export class ParseService {
 
 
     for (const akv of aspectKeyValuesNodes) {
+      // akv.chartDiscreteDistribution = {
+      //   chartLabels: [],
+      //   chartData: []
+      // };
+
       for (const nodeMap of groupedMappingsNodes) {
         if (akv.name === nodeMap.classifier) {
+          // akv is discrete
           akv.mapPointerD.push(groupedMappingsNodes.indexOf(nodeMap));
+
+          // for (const value of akv.values) {
+          //   if (!akv.chartDiscreteDistribution.chartLabels.includes(value)) {
+          //     akv.chartDiscreteDistribution.chartLabels.push(value);
+          //     akv.chartDiscreteDistribution.chartData.push(0);
+          //   }
+          // }
         }
       }
 
@@ -645,9 +660,21 @@ export class ParseService {
     }
 
     for (const akv of aspectKeyValuesEdges) {
+      // akv.chartDiscreteDistribution = {
+      //   chartLabels: [],
+      //   chartData: []
+      // };
+
       for (const edgeMap of groupedMappingsEdges) {
         if (akv.name === edgeMap.classifier) {
           akv.mapPointerD.push(groupedMappingsEdges.indexOf(edgeMap));
+
+          // for (const value of akv.values) {
+          //   if (!akv.chartDiscreteDistribution.chartLabels.includes(value)) {
+          //     akv.chartDiscreteDistribution.chartLabels.push(value);
+          //     akv.chartDiscreteDistribution.chartData.push(0);
+          //   }
+          // }
         }
       }
 
@@ -658,7 +685,63 @@ export class ParseService {
       }
     }
 
+    for (const akv of aspectKeyValuesNodes) {
+      akv.chartDiscreteDistribution = {
+        chartData: [
+          {data: []}
+        ],
+        chartLabels: []
+      };
 
+      for (const value of akv.values) {
+        akv.chartDiscreteDistribution.chartLabels.push(value);
+        akv.chartDiscreteDistribution.chartData[0].data.push(0);
+
+        for (const element of parsedData.filter(x => x.group === 'nodes')) {
+          for (const attribute of element.attributes) {
+            if (attribute.keyHR === akv.name && attribute.valueHR === value) {
+              for (const label of akv.chartDiscreteDistribution.chartLabels) {
+                akv.chartDiscreteDistribution.chartData[0].data[akv.chartDiscreteDistribution.chartLabels.indexOf(value)]++;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    for (const akv of aspectKeyValuesEdges) {
+      akv.chartDiscreteDistribution = {
+        chartData: [
+          {data: [], label: akv.name}
+        ],
+        chartLabels: [],
+        chartOptions: {
+          responsive: true,
+          maintainAspectRatio: true,
+          title: {
+            display: false,
+            text: akv.name
+          },
+          legend: {
+            display: true,
+            position: top
+          }
+        }
+      };
+
+      for (const value of akv.values) {
+        akv.chartDiscreteDistribution.chartLabels.push(value);
+        akv.chartDiscreteDistribution.chartData[0].data.push(0);
+
+        for (const element of parsedData.filter(x => x.group === 'edges')) {
+          for (const attribute of element.attributes) {
+            if (attribute.keyHR === akv.name && attribute.valueHR === value) {
+              akv.chartDiscreteDistribution.chartData[0].data[akv.chartDiscreteDistribution.chartLabels.indexOf(value)]++;
+            }
+          }
+        }
+      }
+    }
 
     return {
       id: currentId,

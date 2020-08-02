@@ -1,17 +1,19 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NeNetwork} from '../../models/ne-network';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
 import {faArrowRight, faArrowLeft, faPalette, faUndo, faCheck} from '@fortawesome/free-solid-svg-icons';
 import {NeMappingsDefinition} from '../../models/ne-mappings-definition';
 import {NeAspect} from '../../models/ne-aspect';
+import {ChartDataSets} from 'chart.js';
+import {Color, Label} from 'ng2-charts';
 
 @Component({
   selector: 'app-main-mappings-new',
   templateUrl: './main-mappings-new.component.html',
   styleUrls: ['./main-mappings-new.component.scss']
 })
-export class MainMappingsNewComponent implements OnInit {
+export class MainMappingsNewComponent implements OnInit, OnDestroy {
   faArrowRight = faArrowRight;
   faArrowLeft = faArrowLeft;
   faPalette = faPalette;
@@ -19,20 +21,31 @@ export class MainMappingsNewComponent implements OnInit {
   faCheck = faCheck;
 
   propertyToMap: NeAspect;
-  styleProperty: string;
-
   selectedNetwork: NeNetwork;
-  selectedAspect: any;
+
   mappingsType = {
     nd: false,
     nc: false,
     ed: false,
     ec: false
   };
+
+  styleProperty: string;
   nodesColorProperties: string[] = ['background-color', 'border-color'];
   edgesColorProperties: string[] = ['line-color', 'target-arrow-color', 'source-arrow-color'];
 
-  discreteMapping: NeMappingsDefinition[];
+  public barChartData: ChartDataSets[] = [
+    {data: [0], label: 'no data found'}
+  ];
+  public barChartLabels: Label[] = [''];
+  public barChartColors: Color[] = [
+    {
+      backgroundColor: 'rgba(255,0,0,0.4)',
+    }
+  ];
+  public barChartOptions;
+
+  discreteMapping: NeMappingsDefinition[]; // new mapping collection
 
   constructor(private route: ActivatedRoute,
               public dataService: DataService) {
@@ -72,10 +85,20 @@ export class MainMappingsNewComponent implements OnInit {
 
       }
       this.discreteMapping = [];
+
     });
 
   }
 
   ngOnInit(): void {
+    this.barChartData = this.propertyToMap.chartDiscreteDistribution.chartData;
+    this.barChartLabels = this.propertyToMap.chartDiscreteDistribution.chartLabels;
+    this.barChartOptions = this.propertyToMap.chartDiscreteDistribution.chartOptions;
+  }
+
+  ngOnDestroy(): void {
+    this.barChartData = [];
+    this.barChartLabels = [];
+    this.barChartOptions = [];
   }
 }

@@ -15,7 +15,6 @@ export class DataService {
     return this.networksParsed.find(x => x.id === id);
   }
 
-  // todo update aspectKeyValues -> pointers to corresponding mappings after deletion
   removeMapping(map: any): void {
 
     const network = this.getNetworkById(map.network);
