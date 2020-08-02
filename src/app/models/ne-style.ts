@@ -4,4 +4,5 @@ export interface NeStyle {
   selector: string;
   style?: any;
   appliedTo?: NeElement[];
+  priority?: number;
 }

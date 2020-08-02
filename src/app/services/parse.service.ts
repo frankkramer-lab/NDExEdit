@@ -229,7 +229,8 @@ export class ParseService {
           const tmp: NeStyle = {
             selector: ps.selector,
             style: {},
-            appliedTo: []
+            appliedTo: [],
+            priority: ps.priority
           };
           tmp.style[ps.cssKey] = ps.cssValue;
           globalStyle.push(tmp);
@@ -549,21 +550,24 @@ export class ParseService {
         'line-color': '#0000ff',
         'target-arrow-color': '#0000ff',
         'source-arrow-color': '#0000ff'
-      }
+      },
+      priority: 4
     });
 
     globalStyle.push({
       selector: '.text-wrap',
       style: {
         'text-wrap': 'wrap',
-      }
+      },
+      priority: 4
     });
 
     globalStyle.push({
       selector: '.hide_label',
       style: {
         label: '',
-      }
+      },
+      priority: 4
     });
 
     const currentId = this.id;
@@ -1465,7 +1469,8 @@ export class ParseService {
     return returnValue;
   }
 
-  private groupDiscreteMappings(mappings: NeMappingsDefinition[]): any {
+
+  private groupDiscreteMappings(mappings: NeMappingsDefinition[]): NeGroupedMappingsDiscrete[] {
 
     const groupedMappings: NeGroupedMappingsDiscrete[] = [];
 

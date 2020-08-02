@@ -4,6 +4,8 @@ import {NeMappingsDefinition} from '../models/ne-mappings-definition';
 import {NeStyle} from '../models/ne-style';
 import {NeNode} from '../models/ne-node';
 import {NeEdge} from '../models/ne-edge';
+import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete';
+import {NeMappingsMap} from '../models/ne-mappings-map';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,9 @@ import {NeEdge} from '../models/ne-edge';
  * Service containing globally accessible data and providing manipulations
  */
 export class DataService {
+
+  constructor() {
+  }
 
   /**
    * List of networks available to be rendered within the app
@@ -24,7 +29,13 @@ export class DataService {
    */
   networksDownloaded: NeNetwork[] = [];
 
-  constructor() {
+  /**
+   * Orders styles by their priority to avoid overriding high priority styles with newly added styles
+   *
+   * @param styles List of styles to be sorted
+   */
+  private static orderStylesByPriority(styles: NeStyle[]): NeStyle[] {
+    return styles.sort((a, b) => (a.priority < b.priority) ? -1 : 1);
   }
 
   /**
@@ -136,7 +147,8 @@ export class DataService {
       const styleMap: NeStyle = {
         selector: map.selector,
         style: styleProperty,
-        appliedTo: []
+        appliedTo: [],
+        priority: map.priority
       };
 
       for (const element of elements) {
@@ -158,8 +170,95 @@ export class DataService {
         }
       }
     }
-    network.style = styles; // todo order accordingly
+    network.style = DataService.orderStylesByPriority(styles); // todo order accordingly
     network.elements = elements;
-    this.networksParsed.filter(x => x.id !== id).concat(network);
+
+    const newlyGroupedMappings = this.updateMappings(discreteMapping, network.mappings);
+
+    if (isNode) {
+      network.mappings.nodesDiscrete = network.mappings.nodesDiscrete.concat(newlyGroupedMappings);
+
+      for (const akv of network.aspectKeyValuesNodes) {
+        if (akv.name === discreteMapping[0].colHR) {
+          akv.mapPointerD.push(network.mappings.nodesDiscrete.length - 1);
+        }
+      }
+
+    } else {
+      network.mappings.edgesDiscrete = network.mappings.edgesDiscrete.concat(newlyGroupedMappings);
+
+      for (const akv of network.aspectKeyValuesEdges) {
+        if (akv.name === discreteMapping[0].colHR) {
+          akv.mapPointerD.push(network.mappings.edgesDiscrete.length - 1);
+        }
+      }
+    }
+
+    this.networksParsed = this.networksParsed.filter(x => x.id !== id).concat(network);
+  }
+
+  private updateMappings(discreteMapping: NeMappingsDefinition[], mappings: NeMappingsMap): NeGroupedMappingsDiscrete[] {
+
+    const groupedMappings: NeGroupedMappingsDiscrete[] = [];
+
+    if (!mappings) {
+      return groupedMappings;
+    }
+
+    outer: for (const map of discreteMapping) {
+      for (const gm of groupedMappings) {
+        if (gm.classifier === map.colHR) {
+          continue outer;
+        }
+      }
+      groupedMappings.push({
+        classifier: map.colHR,
+        values: [],
+        styleMap: [],
+        th: [],
+        selectors: []
+      });
+    }
+
+    for (const map of discreteMapping) {
+      for (const gm of groupedMappings) {
+
+        if (gm.classifier === map.colHR) {
+          let found = false;
+          for (const style of gm.styleMap) {
+            if (style.cssKey === map.cssKey) {
+              found = true;
+              if (!style.selectors.includes(map.selector)) {
+                style.cssValues.push(map.cssValue);
+                style.selectors.push(map.selector);
+                if (!gm.selectors.includes(map.selector)) {
+                  gm.selectors.push(map.selector);
+                }
+              }
+            }
+          }
+
+          if (!found) {
+            gm.th.push(map.cssKey);
+
+            if (!gm.selectors.includes(map.selector)) {
+              gm.selectors.push(map.selector);
+            }
+            gm.styleMap.push({
+              cssKey: map.cssKey,
+              cssValues: [map.cssValue],
+              selectors: [map.selector]
+            });
+          }
+
+          if (!gm.values.includes(map.isHR)) {
+            gm.values.push(map.isHR);
+          }
+        }
+      }
+    }
+
+    return groupedMappings;
+
   }
 }

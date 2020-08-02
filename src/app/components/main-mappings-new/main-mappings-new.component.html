@@ -112,14 +112,15 @@
             <button type="button" class="btn btn-block btn-outline-warning"
                     data-toggle="tooltip" placement="bottom"
                     ngbTooltip="{{'MAIN_MAPPINGS_NEW_CLEAR' | translate}}"
-            (click)="clearAllInputs()">
+                    (click)="clearAllInputs()">
               <fa-icon [icon]="faUndo"></fa-icon>
             </button>
           </div>
           <div class="col-4">
             <button type="button" class="btn btn-block btn-outline-success"
                     data-toggle="tooltip" placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
-            (click)="submitNewMapping()">
+                    (click)="submitNewMapping()"
+                    [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nd' + (getNextIdForMappingType('nd')) ]} }]">
               <fa-icon [icon]="faCheck"></fa-icon>
             </button>
           </div>

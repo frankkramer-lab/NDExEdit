@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NeNetwork} from '../../models/ne-network';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
-import {faArrowLeft, faArrowRight, faChartBar, faCheck, faPalette, faUndo, faTimes} from '@fortawesome/free-solid-svg-icons';
+import {faArrowLeft, faArrowRight, faChartBar, faCheck, faPalette, faTimes, faUndo} from '@fortawesome/free-solid-svg-icons';
 import {NeMappingsDefinition} from '../../models/ne-mappings-definition';
 import {NeAspect} from '../../models/ne-aspect';
 import {ChartDataSets} from 'chart.js';
@@ -133,7 +133,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
       };
       this.discreteMapping.push(tmp);
     }
-    console.log(this.discreteMapping);
   }
 
   clearAllInputs(): void {
@@ -142,11 +141,31 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Submits a new mapping
+   */
   submitNewMapping(): void {
     for (const entry of this.discreteMapping) {
       entry.cssKey = this.styleProperty.trim();
-      entry.cssValue = entry.cssValue.trim();
+      if (entry.cssValue) {
+        entry.cssValue = entry.cssValue.trim();
+      } else {
+        entry.cssValue = '';
+      }
     }
     this.dataService.addMappingDiscrete(this.selectedNetwork.id, this.mappingsType.nd, this.discreteMapping);
+  }
+
+  getNextIdForMappingType(mappingType: string): string {
+    switch (mappingType) {
+      case 'nd':
+        return this.selectedNetwork.mappings.nodesDiscrete.length;
+      case 'nc':
+        return this.selectedNetwork.mappings.nodesContinuous.length;
+      case 'ed':
+        return this.selectedNetwork.mappings.edgesDiscrete.length;
+      case 'ec':
+        return this.selectedNetwork.mappings.edgesContinuous.length;
+    }
   }
 }
