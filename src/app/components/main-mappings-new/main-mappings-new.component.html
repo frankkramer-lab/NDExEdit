@@ -2,7 +2,7 @@
 
   <h1>
     <a role="button" [routerLink]="['', { outlets: {primary: ['graph', selectedNetwork.id]} }]"
-       data-toggle="tooltip" placement="bottom"
+       data-toggle="tooltip" placement="right"
        ngbTooltip="{{'MAIN_MAPPINGS_GRAPH' | translate}}">
       <fa-icon [icon]="faArrowLeft"></fa-icon>
     </a>
@@ -45,8 +45,8 @@
 
       <div class="alert alert-info" role="alert">
         <button type="button" class="btn btn-sm btn-outline-secondary mr-4" data-toggle="tooltip"
-                data-placement="bottom"
-                title="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
+                placement="right"
+                ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
                 (click)="toggleDistributionChart(!showDistribution)">
           <fa-icon [icon]="faChartBar"></fa-icon>
         </button>
@@ -54,7 +54,7 @@
       </div>
 
       <div *ngIf="showDistribution" [ngStyle]="{'width.%': 100}">
-        <canvas baseChart [ngStyle]="{'width.%': 100}"
+        <canvas baseChart
                 [chartType]="'bar'"
                 [datasets]="barChartData"
                 [labels]="barChartLabels"></canvas>
@@ -146,8 +146,8 @@
 
       <div class="alert alert-info" role="alert">
         <button type="button" class="btn btn-sm btn-outline-secondary mr-4" data-toggle="tooltip"
-                data-placement="bottom"
-                title="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
+                placement="bottom"
+                ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
                 (click)="toggleDistributionChart(!showDistribution)">
           <fa-icon [icon]="faChartBar"></fa-icon>
         </button>

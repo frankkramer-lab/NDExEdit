@@ -1205,7 +1205,7 @@
       },
       {
         "n": "name",
-        "v": "This is a dummy with manipulated nodes and edges"
+        "v": "dummy: add discrete mapping for nodes"
       }
     ]
   },
