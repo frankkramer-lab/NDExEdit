@@ -73,13 +73,13 @@
             <small *ngIf="needsColorValidation(styleProperty)"
                    class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
           </div>
-          <div *ngIf="needsColorValidation(styleProperty)" class="col-1">
-            <button class="btn btn-block btn-outline-info"
-                    data-toggle="tooltip" data-placement="bottom"
-                    ngbTooltip="{{'MAIN_MAPPINGS_NEW_COLOR_PREVIEW' | translate}}"
-                    (click)="colorPreview()">
-              <fa-icon [icon]="faPalette"></fa-icon>
-            </button>
+
+          <div class="col-1 form-check" *ngIf="!needsColorValidation(styleProperty)">
+            <input class="form-check-input" type="checkbox" value="{{validateAsColor}}" id="colorValidation"
+                   (click)="colorValidation(!validateAsColor)">
+            <label class="form-check-label" for="colorValidation">
+              {{'MAIN_MAPPINGS_NEW_CB_COLORS' | translate}}
+            </label>
           </div>
 
         </div>
@@ -93,7 +93,7 @@
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="nd{{index}}"
                    [(ngModel)]="discreteMapping[index].cssValue">
           </div>
-          <span *ngIf="showColorPreviews && needsColorValidation(styleProperty)" class="badge badge-pill border col-1"
+          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-1"
                 [ngStyle]="{'background-color': entry.cssValue}">
             &nbsp;
           </span>

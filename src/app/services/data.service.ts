@@ -30,6 +30,17 @@ export class DataService {
   networksDownloaded: NeNetwork[] = [];
 
   /**
+   * List of known color properties, mainly used for color previews within {@link MainMappingsNewComponent}
+   */
+  colorProperties: string[] = [
+    'background-color',
+    'border-color',
+    'line-color',
+    'target-arrow-color',
+    'source-arrow-color',
+  ];
+
+  /**
    * Orders styles by their priority to avoid overriding high priority styles with newly added styles
    *
    * @param styles List of styles to be sorted

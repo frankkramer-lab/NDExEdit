@@ -127,6 +127,7 @@
   "MAIN_MAPPINGS_NEW_COLOR_HINT": "Farben müssen mit # anfangen und mit sechs Zeichen spezifiziert sein",
   "MAIN_MAPPINGS_NEW_SUBMIT": "Neues Mapping speichern",
   "MAIN_MAPPINGS_NEW_ABORT": "Abbrechen und zurück zum Graph",
-  "MAIN_MAPPINGS_NEW_CLEAR": "Alle Felder zurücksetzen"
+  "MAIN_MAPPINGS_NEW_CLEAR": "Alle Felder zurücksetzen",
+  "MAIN_MAPPINGS_NEW_CB_COLORS": "Als Farbeigenschaft behandeln"
 
 }

@@ -28,8 +28,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   faChartBar = faChartBar;
   faTimes = faTimes;
 
-  propertyToMap: NeAspect;
   selectedNetwork: NeNetwork;
+  propertyToMap: NeAspect;
 
   mappingsType = {
     nd: false,
@@ -38,11 +38,10 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     ec: false
   };
 
+  validateAsColor = false;
   showColorPreviews = false;
   showDistribution = false;
   styleProperty: string;
-  nodesColorProperties: string[] = ['background-color', 'border-color'];
-  edgesColorProperties: string[] = ['line-color', 'target-arrow-color', 'source-arrow-color'];
 
   public barChartData: ChartDataSets[] = [
     {data: [0], label: 'no data found'}
@@ -118,7 +117,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   }
 
   needsColorValidation(property: string): boolean {
-    return (this.nodesColorProperties.includes(property) || this.edgesColorProperties.includes(property));
+    return (this.dataService.colorProperties.includes(property));
   }
 
   colorPreview(): void {
@@ -153,6 +152,10 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * Submits a new mapping
    */
   submitNewMapping(): void {
+    if (this.validateAsColor && !this.dataService.colorProperties.includes(this.styleProperty)) {
+      this.dataService.colorProperties.push(this.styleProperty);
+    }
+
     for (const entry of this.discreteMapping) {
       entry.cssKey = this.styleProperty.trim();
       if (entry.cssValue) {
@@ -175,5 +178,9 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
       case 'ec':
         return this.selectedNetwork.mappings.edgesContinuous.length;
     }
+  }
+
+  colorValidation(b: boolean): void {
+    this.validateAsColor = b;
   }
 }
