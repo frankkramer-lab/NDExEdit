@@ -111,7 +111,8 @@
   "MAIN_MAPPINGS_NEW_PLACEHOLDER": "New value",
   "MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL": "CSS property",
   "MAIN_MAPPINGS_NEW_INSTRUCTIONS": "Create a new mapping here. The selected attribute's values are listed in the form below. Each of these values can be mapped to a specific CSS value. Enter the CSS property's key into the specified field to map it by your selected attribute. Validation if such a CSS property exists is not provided.",
-  "MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE": "Selected attribute"
+  "MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE": "Selected attribute",
+  "MAIN_MAPPINGS_NEW_TT_DISTRIBUTION": "View distribution details for this property"
 
 
 

@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {faInfo, faPaintBrush} from '@fortawesome/free-solid-svg-icons';
+import {DataService} from '../../services/data.service';
 
 @Component({
   selector: 'app-sidebar-manage',
@@ -24,7 +25,7 @@ export class SidebarManageComponent {
    */
   faInfo = faInfo;
 
-  constructor() {
+  constructor(public dataService: DataService) {
   }
 
 }

@@ -185,8 +185,8 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
 
   /**
    * Displays details to a selected mapping within the sidebar
-   * @param chart data for continuous mapping with numeric values
-   * @param colorGradient data for continuous mapping with color based values
+   * @param chart data for continuous mapping with numeric values; see {@link ParseService#buildChartData}
+   * @param colorGradient data for continuous mapping with color based values; see {@link ParseService#buildColorGradient}
    * @param index todo
    */
   displayMapping(chart: any = null, colorGradient: NeColorGradient[] = [], index: string): void {

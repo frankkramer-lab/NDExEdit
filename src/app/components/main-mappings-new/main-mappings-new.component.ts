@@ -1,8 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {NeNetwork} from '../../models/ne-network';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
-import {faArrowLeft, faArrowRight, faCheck, faPalette, faUndo} from '@fortawesome/free-solid-svg-icons';
+import {faArrowLeft, faArrowRight, faChartBar, faCheck, faPalette, faUndo} from '@fortawesome/free-solid-svg-icons';
 import {NeMappingsDefinition} from '../../models/ne-mappings-definition';
 import {NeAspect} from '../../models/ne-aspect';
 import {ChartDataSets} from 'chart.js';
@@ -24,6 +24,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   faPalette = faPalette;
   faUndo = faUndo;
   faCheck = faCheck;
+  faChartBar = faChartBar;
 
   propertyToMap: NeAspect;
   selectedNetwork: NeNetwork;
@@ -35,6 +36,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     ec: false
   };
 
+  showDistribution = false;
   styleProperty: string;
   nodesColorProperties: string[] = ['background-color', 'border-color'];
   edgesColorProperties: string[] = ['line-color', 'target-arrow-color', 'source-arrow-color'];
@@ -43,14 +45,9 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     {data: [0], label: 'no data found'}
   ];
   public barChartLabels: Label[] = [''];
-  public barChartColors: Color[] = [
-    {
-      backgroundColor: 'rgba(255,0,0,0.4)',
-    }
-  ];
-  public barChartOptions;
+  public chartReady = false;
 
-  discreteMapping: NeMappingsDefinition[]; // new mapping collection
+  discreteMapping: NeMappingsDefinition[];
 
   constructor(private route: ActivatedRoute,
               public dataService: DataService) {
@@ -98,12 +95,17 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.barChartData = this.propertyToMap.chartDiscreteDistribution.chartData;
     this.barChartLabels = this.propertyToMap.chartDiscreteDistribution.chartLabels;
-    this.barChartOptions = this.propertyToMap.chartDiscreteDistribution.chartOptions;
+    this.chartReady = true;
   }
 
   ngOnDestroy(): void {
+    this.chartReady = false;
     this.barChartData = [];
     this.barChartLabels = [];
-    this.barChartOptions = [];
   }
+
+  toggleDistributionChart(toggle: boolean): void {
+    this.showDistribution = toggle;
+  }
+
 }

@@ -111,7 +111,8 @@
   "MAIN_MAPPINGS_NEW_PLACEHOLDER": "Neuer Wert",
   "MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL": "Zu setzende CSS-Eigenschaft",
   "MAIN_MAPPINGS_NEW_INSTRUCTIONS": "Hier kann ein neues Mapping angelegt werden. Die gewählte Eigenschaft hat die in nachfolgendem Formular aufgeführten Ausprägungen. Jede dieser Ausprägungen kann mit einem Wert versehen werden, den die ausgewählte CSS-Eigenschaft einnehmen soll. Die CSS-Eigenschaft wird durch Eingabe ins Textfeld festgelegt. Ob eine solche CSS-Eigenschaft existiert, wird nicht validiert.",
-  "MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE": "Ausgewähltes Attribut"
+  "MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE": "Ausgewähltes Attribut",
+  "MAIN_MAPPINGS_NEW_TT_DISTRIBUTION": "Verteilung der Ausprägungen für dieses Attribut"
 
 
 }

@@ -44,7 +44,19 @@
       <p>{{'MAIN_MAPPINGS_NEW_INSTRUCTIONS' | translate}}</p>
 
       <div class="alert alert-info" role="alert">
+        <button *ngIf="chartReady" type="button" class="btn btn-sm btn-outline-secondary mr-4" data-toggle="tooltip" data-placement="bottom"
+                title="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
+                (click)="toggleDistributionChart(!showDistribution)">
+          <fa-icon [icon]="faChartBar"></fa-icon>
+        </button>
         {{'MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE' | translate}}: {{propertyToMap.name}}
+      </div>
+
+      <div *ngIf="showDistribution && chartReady" [ngStyle]="{'width.%': 100}">
+        <canvas baseChart [ngStyle]="{'width.%': 100}"
+                [chartType]="'bar'"
+                [datasets]="barChartData"
+                [labels]="barChartLabels"></canvas>
       </div>
 
       <form>
@@ -69,14 +81,8 @@
         </div>
 
       </form>
+
     </div>
-
-
-    <canvas id="quantityChart" baseChart [ngStyle]="{'width.%': 100}"
-            [chartType]="'bar'"
-            [datasets]="barChartData"
-            [labels]="barChartLabels"
-            [options]="barChartOptions"></canvas>
 
 
     <!-- NEW: NodesContinuous -->

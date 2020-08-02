@@ -633,22 +633,12 @@ export class ParseService {
 
 
     for (const akv of aspectKeyValuesNodes) {
-      // akv.chartDiscreteDistribution = {
-      //   chartLabels: [],
-      //   chartData: []
-      // };
 
       for (const nodeMap of groupedMappingsNodes) {
         if (akv.name === nodeMap.classifier) {
           // akv is discrete
           akv.mapPointerD.push(groupedMappingsNodes.indexOf(nodeMap));
 
-          // for (const value of akv.values) {
-          //   if (!akv.chartDiscreteDistribution.chartLabels.includes(value)) {
-          //     akv.chartDiscreteDistribution.chartLabels.push(value);
-          //     akv.chartDiscreteDistribution.chartData.push(0);
-          //   }
-          // }
         }
       }
 
@@ -660,21 +650,11 @@ export class ParseService {
     }
 
     for (const akv of aspectKeyValuesEdges) {
-      // akv.chartDiscreteDistribution = {
-      //   chartLabels: [],
-      //   chartData: []
-      // };
 
       for (const edgeMap of groupedMappingsEdges) {
         if (akv.name === edgeMap.classifier) {
           akv.mapPointerD.push(groupedMappingsEdges.indexOf(edgeMap));
 
-          // for (const value of akv.values) {
-          //   if (!akv.chartDiscreteDistribution.chartLabels.includes(value)) {
-          //     akv.chartDiscreteDistribution.chartLabels.push(value);
-          //     akv.chartDiscreteDistribution.chartData.push(0);
-          //   }
-          // }
         }
       }
 
@@ -696,6 +676,7 @@ export class ParseService {
       for (const value of akv.values) {
         akv.chartDiscreteDistribution.chartLabels.push(value);
         akv.chartDiscreteDistribution.chartData[0].data.push(0);
+        akv.chartDiscreteDistribution.chartData[0].label = akv.name;
 
         for (const element of parsedData.filter(x => x.group === 'nodes')) {
           for (const attribute of element.attributes) {
@@ -714,24 +695,13 @@ export class ParseService {
         chartData: [
           {data: [], label: akv.name}
         ],
-        chartLabels: [],
-        chartOptions: {
-          responsive: true,
-          maintainAspectRatio: true,
-          title: {
-            display: false,
-            text: akv.name
-          },
-          legend: {
-            display: true,
-            position: top
-          }
-        }
+        chartLabels: []
       };
 
       for (const value of akv.values) {
         akv.chartDiscreteDistribution.chartLabels.push(value);
         akv.chartDiscreteDistribution.chartData[0].data.push(0);
+        akv.chartDiscreteDistribution.chartData[0].label = akv.name;
 
         for (const element of parsedData.filter(x => x.group === 'edges')) {
           for (const attribute of element.attributes) {
