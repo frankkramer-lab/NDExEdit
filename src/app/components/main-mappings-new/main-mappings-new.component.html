@@ -13,22 +13,22 @@
 
   <ul class="nav nav-pills nav-fill">
     <li class="nav-item">
-      <a class="nav-link" [ngClass]="{active: mappingsType.nd}" id="newNd" data-toggle="pill" href="#newNdForm"
+      <a class="nav-link" [ngClass]="{active: mappingsType.nd, disabled: !mappingsType.nd}" id="newNd" data-toggle="pill" href="#newNdForm"
          role="tab"
          aria-controls="newNd" aria-selected="false">{{'MAIN_MAPPINGS_NEW_TYPE_ND' | translate}}</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" [ngClass]="{active: mappingsType.nc}" id="newNc" data-toggle="pill" href="#newNcForm"
+      <a class="nav-link" [ngClass]="{active: mappingsType.nc, disabled: !mappingsType.nc}" id="newNc" data-toggle="pill" href="#newNcForm"
          role="tab"
          aria-controls="newNc" aria-selected="false">{{'MAIN_MAPPINGS_NEW_TYPE_NC' | translate}}</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" [ngClass]="{active: mappingsType.ed}" id="newEd" data-toggle="pill" href="#newEdForm"
+      <a class="nav-link" [ngClass]="{active: mappingsType.ed, disabled: !mappingsType.ed}" id="newEd" data-toggle="pill" href="#newEdForm"
          role="tab"
          aria-controls="newEd" aria-selected="false">{{'MAIN_MAPPINGS_NEW_TYPE_ED' | translate}}</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" [ngClass]="{active: mappingsType.ec}" id="newEc" data-toggle="pill" href="#newEcForm"
+      <a class="nav-link" [ngClass]="{active: mappingsType.ec, disabled: !mappingsType.ec}" id="newEc" data-toggle="pill" href="#newEcForm"
          role="tab"
          aria-controls="newEc" aria-selected="false">{{'MAIN_MAPPINGS_NEW_TYPE_EC' | translate}}</a>
     </li>
@@ -143,6 +143,91 @@
     <div class="tab-pane fade show" id="newEdForm" role="tabpanel" aria-labelledby="newEd"
          [ngClass]="{active: mappingsType.ed}">
       <h3>{{'MAIN_MAPPINGS_NEW_ED' | translate}}</h3>
+
+      <div class="alert alert-info" role="alert">
+        <button type="button" class="btn btn-sm btn-outline-secondary mr-4" data-toggle="tooltip"
+                data-placement="bottom"
+                title="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
+                (click)="toggleDistributionChart(!showDistribution)">
+          <fa-icon [icon]="faChartBar"></fa-icon>
+        </button>
+        {{'MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE' | translate}}: <b>{{propertyToMap.name}}</b>
+      </div>
+
+      <div *ngIf="showDistribution" [ngStyle]="{'width.%': 100}">
+        <canvas baseChart [ngStyle]="{'width.%': 100}"
+                [chartType]="'bar'"
+                [datasets]="barChartData"
+                [labels]="barChartLabels"></canvas>
+        <hr>
+      </div>
+
+      <form>
+
+        <div class="form-group row">
+          <label for="ndCssProperty"
+                 class="col-4 col-form-label">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
+          <div class="col-7">
+            <input type="text" class="form-control" id="edCssProperty" name="edCssProperty"
+                   [(ngModel)]="styleProperty">
+            <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
+            <small *ngIf="needsColorValidation(styleProperty)"
+                   class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
+          </div>
+          <div *ngIf="needsColorValidation(styleProperty)" class="col-1">
+            <button class="btn btn-block btn-outline-info"
+                    data-toggle="tooltip" data-placement="bottom"
+                    ngbTooltip="{{'MAIN_MAPPINGS_NEW_COLOR_PREVIEW' | translate}}"
+                    (click)="colorPreview()">
+              <fa-icon [icon]="faPalette"></fa-icon>
+            </button>
+          </div>
+
+        </div>
+
+        <hr>
+
+        <div class="form-group row" *ngFor="let entry of discreteMapping; let index = index">
+          <label for="ed{{index}}" class="col-4 col-form-label">{{entry.isHR}}</label>
+          <div class="col-7">
+            <input type="text" class="form-control" id="ed{{index}}"
+                   value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="ed{{index}}"
+                   [(ngModel)]="discreteMapping[index].cssValue">
+          </div>
+          <span *ngIf="showColorPreviews && needsColorValidation(styleProperty)" class="badge badge-pill border col-1"
+                [ngStyle]="{'background-color': entry.cssValue}">
+            &nbsp;
+          </span>
+        </div>
+
+        <div class="row">
+          <div class="col-4">
+            <button type="button" class="btn btn-block btn-outline-danger"
+                    data-toggle="tooltip" placement="top"
+                    ngbTooltip="{{'MAIN_MAPPINGS_NEW_ABORT' | translate}}"
+                    [routerLink]="['', { outlets: {primary: ['graph', selectedNetwork.id ]} }]">
+              <fa-icon [icon]="faTimes"></fa-icon>
+            </button>
+          </div>
+          <div class="col-4">
+            <button type="button" class="btn btn-block btn-outline-warning"
+                    data-toggle="tooltip" placement="top"
+                    ngbTooltip="{{'MAIN_MAPPINGS_NEW_CLEAR' | translate}}"
+                    (click)="clearAllInputs()">
+              <fa-icon [icon]="faUndo"></fa-icon>
+            </button>
+          </div>
+          <div class="col-4">
+            <button type="button" class="btn btn-block btn-outline-success"
+                    data-toggle="tooltip" placement="top" ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
+                    (click)="submitNewMapping()"
+                    [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ed' + (getNextIdForMappingType('ed')) ]} }]">
+              <fa-icon [icon]="faCheck"></fa-icon>
+            </button>
+          </div>
+        </div>
+
+      </form>
 
 
     </div>
