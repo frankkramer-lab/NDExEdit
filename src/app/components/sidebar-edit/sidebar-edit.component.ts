@@ -216,17 +216,35 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
       let color = 'linear-gradient(90deg, ';
       const tmp = [];
 
+      let foundLowest = false;
+      let foundHighest = false;
       for (const gradient of colorGradient) {
+
+        if (gradient.offset === '0%') {
+          foundLowest = true;
+        } else if (gradient.offset === '100%') {
+          foundHighest = true;
+        }
+
         if (gradient.offset !== '-1' && gradient.offset !== '101') {
           tmp.push(gradient.color.concat(' '.concat(gradient.offset)));
         }
+      }
+
+      if (!foundLowest) {
+        const lowestFallback = colorGradient.find(x => x.offset === '-1');
+        tmp.splice(0, 0, lowestFallback.color.concat(' '.concat('0%')));
+      }
+
+      if (!foundHighest) {
+        const highestFallback = colorGradient.find(x => x.offset === '101');
+        tmp.push(highestFallback.color.concat(' '.concat('100%')));
       }
 
       color = color.concat(tmp.join(', '));
       color = color.concat(')');
 
       this.gradientBackground = colorGradient[0].color + ' ' + color;
-
       this.showComparison = false;
       this.showChart = false;
       this.showColorGradient = true;

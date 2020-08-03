@@ -123,7 +123,7 @@
           <div class="col-4">
             <button type="button" class="btn btn-block btn-outline-success"
                     data-toggle="tooltip" placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
-                    (click)="submitNewMapping()"
+                    (click)="submitNewDiscreteMapping()"
                     [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nd' + (getNextIdForMappingType('nd')) ]} }]">
               <fa-icon [icon]="faCheck"></fa-icon>
             </button>
@@ -198,7 +198,7 @@
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="ed{{index}}"
                    [(ngModel)]="discreteMapping[index].cssValue">
           </div>
-          <span *ngIf="showColorPreviews && needsColorValidation(styleProperty)" class="badge badge-pill border col-1"
+          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-1"
                 [ngStyle]="{'background-color': entry.cssValue}">
             &nbsp;
           </span>
@@ -224,7 +224,7 @@
           <div class="col-4">
             <button type="button" class="btn btn-block btn-outline-success"
                     data-toggle="tooltip" placement="top" ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
-                    (click)="submitNewMapping()"
+                    (click)="submitNewDiscreteMapping()"
                     [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ed' + (getNextIdForMappingType('ed')) ]} }]">
               <fa-icon [icon]="faCheck"></fa-icon>
             </button>
@@ -269,7 +269,7 @@
             <input type="text" class="form-control" id="ecCssProperty" name="ecCssProperty"
                    [(ngModel)]="styleProperty">
             <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
-            <small *ngIf="needsColorValidation(styleProperty)"
+            <small *ngIf="needsColorValidation(styleProperty) || validateAsColor"
                    class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
           </div>
           <div class="col-1 form-check" *ngIf="!needsColorValidation(styleProperty)">
@@ -290,7 +290,7 @@
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="ecDefaultLower"
                    [(ngModel)]="continuousMapping.defaultLower">
           </div>
-          <span *ngIf="showColorPreviews && needsColorValidation(styleProperty)" class="badge badge-pill border col-1"
+          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-1"
                 [ngStyle]="{'background-color': continuousMapping.defaultLower}">
             &nbsp;
           </span>
@@ -306,6 +306,10 @@
             <input type="text" class="form-control" id="ecValue{{index}}" name="ecValue{{index}}"
                    [(ngModel)]="threshold.propertyValue">
           </div>
+          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-1"
+                [ngStyle]="{'background-color': threshold.propertyValue}">
+            &nbsp;
+          </span>
         </div>
 
         <!-- button to add more thresholds -->
@@ -326,11 +330,40 @@
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="ecDefaultGreater"
                    [(ngModel)]="continuousMapping.defaultGreater">
           </div>
-          <span *ngIf="showColorPreviews && needsColorValidation(styleProperty)" class="badge badge-pill border col-1"
+          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-1"
                 [ngStyle]="{'background-color': continuousMapping.defaultGreater}">
             &nbsp;
           </span>
         </div>
+
+        <!-- Buttons -->
+        <div class="row">
+          <div class="col-4">
+            <button type="button" class="btn btn-block btn-outline-danger"
+                    data-toggle="tooltip" placement="top"
+                    ngbTooltip="{{'MAIN_MAPPINGS_NEW_ABORT' | translate}}"
+                    [routerLink]="['', { outlets: {primary: ['graph', selectedNetwork.id ]} }]">
+              <fa-icon [icon]="faTimes"></fa-icon>
+            </button>
+          </div>
+          <div class="col-4">
+            <button type="button" class="btn btn-block btn-outline-warning"
+                    data-toggle="tooltip" placement="top"
+                    ngbTooltip="{{'MAIN_MAPPINGS_NEW_CLEAR' | translate}}"
+                    (click)="clearAllInputs()">
+              <fa-icon [icon]="faUndo"></fa-icon>
+            </button>
+          </div>
+          <div class="col-4">
+            <button type="button" class="btn btn-block btn-outline-success"
+                    data-toggle="tooltip" placement="top" ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
+                    (click)="submitNewContinuousMapping()"
+                    [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ed' + (getNextIdForMappingType('ed')) ]} }]">
+              <fa-icon [icon]="faCheck"></fa-icon>
+            </button>
+          </div>
+        </div>
+
       </form>
 
     </div>

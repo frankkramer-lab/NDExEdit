@@ -83,6 +83,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
           this.mappingsType.ec = false;
           this.propertyToMap = this.selectedNetwork.aspectKeyValuesNodes[propertyPointer];
           this.continuousMapping = {};
+          this.initContinuousMapping();
           break;
         case 'ed':
           this.mappingsType.ed = true;
@@ -100,6 +101,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
           this.mappingsType.ed = false;
           this.propertyToMap = this.selectedNetwork.aspectKeyValuesEdges[propertyPointer];
           this.continuousMapping = {};
+          this.initContinuousMapping();
           break;
 
       }
@@ -152,16 +154,35 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     }
   }
 
+  private initContinuousMapping(): void {
+    this.continuousMapping.defaultGreater = '';
+    this.continuousMapping.defaultLower = '';
+    this.continuousMapping.breakpoints = this.continuousThresholds;
+    this.continuousMapping.cssKey = '';
+  }
+
+
   clearAllInputs(): void {
-    for (const entry of this.discreteMapping) {
-      entry.cssValue = '';
+    if (this.discreteMapping) {
+      for (const entry of this.discreteMapping) {
+        entry.cssValue = '';
+      }
+    }
+
+    if (this.continuousMapping) {
+      this.continuousMapping.defaultLower = '';
+      this.continuousMapping.defaultGreater = '';
+      for (const breakpoint of this.continuousMapping.breakpoints) {
+        breakpoint.value = 0.0;
+        breakpoint.propertyValue = '';
+      }
     }
   }
 
   /**
-   * Submits a new mapping
+   * Submits a new discrete mapping, adds CSS property to color properties managed in {@link GraphService}
    */
-  submitNewMapping(): void {
+  submitNewDiscreteMapping(): void {
 
     if (this.validateAsColor && !this.dataService.colorProperties.includes(this.styleProperty)) {
       this.dataService.colorProperties.push(this.styleProperty);
@@ -176,6 +197,21 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
       }
     }
     this.dataService.addMappingDiscrete(this.selectedNetwork.id, this.mappingsType.nd, this.discreteMapping);
+  }
+
+  /**
+   * Submits a new continuous mapping, adds CSS property to color properties managed in {@link GraphService}
+   */
+  submitNewContinuousMapping(): void {
+    if (this.validateAsColor && !this.dataService.colorProperties.includes(this.styleProperty)) {
+      this.dataService.colorProperties.push(this.styleProperty);
+    }
+    this.continuousMapping.cssKey = this.styleProperty;
+    this.continuousMapping.mappedProperty = this.propertyToMap;
+    this.continuousMapping.breakpoints = this.continuousMapping.breakpoints.filter(x => x.value !== null);
+    this.continuousMapping.breakpoints = this.continuousMapping.breakpoints.sort((a, b) => (a.value < b.value ? -1 : 1));
+
+    this.dataService.addMappingContinuous(this.selectedNetwork.id, this.mappingsType.nc, this.continuousMapping);
   }
 
   getNextIdForMappingType(mappingType: string): string {
@@ -197,9 +233,9 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
 
   addNewThreshold(): void {
     this.continuousThresholds.push({
-      value: 0.0,
+      value: null,
       propertyValue: ''
     });
-    console.log(this.continuousThresholds);
   }
+
 }

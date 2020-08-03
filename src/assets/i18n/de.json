@@ -128,6 +128,8 @@
   "MAIN_MAPPINGS_NEW_SUBMIT": "Neues Mapping speichern",
   "MAIN_MAPPINGS_NEW_ABORT": "Abbrechen und zurück zum Graph",
   "MAIN_MAPPINGS_NEW_CLEAR": "Alle Felder zurücksetzen",
-  "MAIN_MAPPINGS_NEW_CB_COLORS": "Als Farbeigenschaft behandeln"
+  "MAIN_MAPPINGS_NEW_CB_COLORS": "Als Farbeigenschaft behandeln",
+  "MAIN_MAPPINGS_NEW_DEFAULT_LOW": "Standardwert für alle niedrigeren Werte",
+  "MAIN_MAPPINGS_NEW_DEFAULT_GREAT": "Standardwert für alle höheren Werte"
 
 }

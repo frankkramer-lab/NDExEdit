@@ -128,7 +128,9 @@
   "MAIN_MAPPINGS_NEW_SUBMIT": "Submit new mapping",
   "MAIN_MAPPINGS_NEW_ABORT": "Abort and return to graph",
   "MAIN_MAPPINGS_NEW_CLEAR": "Clear all fields",
-  "MAIN_MAPPINGS_NEW_CB_COLORS": "Evaluate as color property"
+  "MAIN_MAPPINGS_NEW_CB_COLORS": "Evaluate as color property",
+  "MAIN_MAPPINGS_NEW_DEFAULT_LOW": "Default for all lower values",
+  "MAIN_MAPPINGS_NEW_DEFAULT_GREAT": "Default for all greater values"
 
 
 
