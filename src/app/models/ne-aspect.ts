@@ -9,4 +9,6 @@ export interface NeAspect {
   mapPointerD?: number[];
   chartDiscreteDistribution?: any;
   chartContinuousDistribution?: any;
+  min?: number;
+  max?: number;
 }

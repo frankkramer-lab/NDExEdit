@@ -152,7 +152,6 @@
 
     </div>
 
-    <!-- TODO NEW: NodesContinuous -->
     <div class="tab-pane fade show" id="newNcForm" role="tabpanel" aria-labelledby="newNc"
          [ngClass]="{active: mappingsType.nc}">
       <h3>{{'MAIN_MAPPINGS_NEW_NC' | translate}}</h3>
@@ -190,6 +189,13 @@
                 [datasets]="scatterChartData"
                 [labels]="scatterChartLabels"></canvas>
         <hr>
+      </div>
+
+      <div class="alert alert-info" role="alert" *ngIf="propertyToMap.min !== null && propertyToMap.max !== null">
+        <h5>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING' | translate}}</h5>
+        <p>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT' | translate}}</p>
+        <p>{{'MAIN_MAPPINGS_NEW_CURRENT_MIN' | translate}}: <b>{{propertyToMap.min}}</b></p>
+        <p>{{'MAIN_MAPPINGS_NEW_CURRENT_MAX' | translate}}: <b>{{propertyToMap.max}}</b></p>
       </div>
 
       <form *ngIf="continuousMapping">
@@ -448,6 +454,14 @@
                 [labels]="scatterChartLabels"></canvas>
         <hr>
       </div>
+
+      <div class="alert alert-info" role="alert" *ngIf="propertyToMap.min !== null && propertyToMap.max !== null">
+        <h5>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING' | translate}}</h5>
+        <p>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT' | translate}}</p>
+        <p>{{'MAIN_MAPPINGS_NEW_CURRENT_MIN' | translate}}: <b>{{propertyToMap.min}}</b></p>
+        <p>{{'MAIN_MAPPINGS_NEW_CURRENT_MAX' | translate}}: <b>{{propertyToMap.max}}</b></p>
+      </div>
+
 
       <form *ngIf="continuousMapping">
 

@@ -589,7 +589,9 @@ export class ParseService {
           mapPointerD: [],
           mapPointerC: [],
           chartDiscreteDistribution: null,
-          chartContinuousDistribution: null
+          chartContinuousDistribution: null,
+          min: null,
+          max: null
         };
 
         if (elementType === 'nodes') {
@@ -638,6 +640,25 @@ export class ParseService {
 
     for (const akv of aspectKeyValuesNodes) {
 
+      let min: number = Number.MAX_SAFE_INTEGER;
+      let max: number = Number.MIN_SAFE_INTEGER;
+
+      for (const value of akv.values) {
+        if (!isNaN(Number(value)) && Number(value) < min) {
+          min = Number(value);
+        }
+        if (!isNaN(Number(value)) && Number(value) > max) {
+          max = Number(value);
+        }
+      }
+
+      if (!isNaN(Number(min)) && Number(min) < Number.MAX_SAFE_INTEGER) {
+        akv.min = Number(min);
+      }
+      if (!isNaN(Number(max)) && Number(max) > Number.MIN_SAFE_INTEGER) {
+        akv.max = Number(max);
+      }
+
       for (const nodeMap of groupedMappingsNodes) {
         if (akv.name === nodeMap.classifier) {
           // akv is discrete
@@ -654,6 +675,25 @@ export class ParseService {
     }
 
     for (const akv of aspectKeyValuesEdges) {
+
+      let min: number = Number.MAX_SAFE_INTEGER;
+      let max: number = Number.MIN_SAFE_INTEGER;
+
+      for (const value of akv.values) {
+        if (!isNaN(Number(value)) && Number(value) < min) {
+          min = Number(value);
+        }
+        if (!isNaN(Number(value)) && Number(value) > max) {
+          max = Number(value);
+        }
+      }
+
+      if (!isNaN(Number(min)) && Number(min) < Number.MAX_SAFE_INTEGER) {
+        akv.min = Number(min);
+      }
+      if (!isNaN(Number(max)) && Number(max) > Number.MIN_SAFE_INTEGER) {
+        akv.max = Number(max);
+      }
 
       for (const edgeMap of groupedMappingsEdges) {
         if (akv.name === edgeMap.classifier) {

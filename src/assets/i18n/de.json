@@ -135,6 +135,9 @@
   "MAIN_MAPPINGS_NEW_DEFAULT_GREAT": "Standardwert für alle höheren Werte",
   "MAIN_MAPPINGS_NEW_ALREADY_EXISTS": "Ein Mapping für dieses Attribut und diese CSS-Eigenschaft existiert bereits",
   "MAIN_MAPPINGS_NEW_EDIT_INSTEAD": "Ein zweites Mapping anzulegen ist in der Regel nicht sinnvoll. Möchtest du dieses Mapping stattdessen bearbeiten?",
-  "MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD": "Existierendes Mapping bearbeiten"
-
+  "MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD": "Existierendes Mapping bearbeiten",
+  "MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING": "Standardwerte sind nicht zu unterschätzen!",
+  "MAIN_MAPPINGS_NEW_DEFAULT_HINT": "Wenn sie korrekt eingesetzt werden, haben Standardwerte keinen direkten Einfluss auf das Erschreinungsbild deines Graphen. Ihr Zweck ist es, Fälle abzudecken, die aktuell noch nicht im Graph vorkommen. Somit kannst du den Graphen nachträglich problemlos anpassen, z.B. Knoten oder Kanten hinzufügen. Es wird empfohlen, die aktuelle Spanne der Werte deines ausgewählten Attributes vollständig abzudecken - ohne sich auf die Standardwerte zu verlassen.",
+  "MAIN_MAPPINGS_NEW_CURRENT_MIN": "Aktuelles Minimum (empfohlener Schwellwert#1)",
+  "MAIN_MAPPINGS_NEW_CURRENT_MAX": "Aktuelles Maximum (empfohlener Schwellwert#2)"
 }

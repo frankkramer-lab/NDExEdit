@@ -61,8 +61,8 @@ export class AppComponent {
     private http: HttpClient) {
     this.initializeTranslation();
 
-    this.initDemoNetwork('dummy.cx');
-    this.initDemoNetwork('dummy2.cx');
+    // this.initDemoNetwork('dummy.cx');
+    // this.initDemoNetwork('dummy2.cx');
 
     // this.initDemoNetwork('01.cx'); // good example for discrete mappings
     this.initDemoNetwork('02.cx'); // good example for continuous mappings
