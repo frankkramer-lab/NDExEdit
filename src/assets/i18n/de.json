@@ -88,6 +88,8 @@
   "SIDEBAR_EDIT_COMPARISON_EDGE_ATTRIBUTES": "Kantenattribute",
   "SIDEBAR_EDIT_TT_HIGHLIGHT_NODE": "Knoten hervorheben | ID:",
   "SIDEBAR_EDIT_TT_HIGHLIGHT_EDGE": "Kante hervorheben | ID:",
+  "SIDEBAR_EDIT_TT_MANAGE_MAPPINGS": "Neue Mappings anlegen und existierende Mappings verwalten",
+  "SIDEBAR_EDIT_MANAGE_MAPPINGS": "Mappings anlegen und verwalten",
 
   "MAIN_MAPPINGS_GRAPH": "Zurück zum Graph",
   "MAIN_MAPPINGS_TITLE_NODES_DISCRETE": "Diskrete Knotenmappings",
