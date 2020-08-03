@@ -128,12 +128,6 @@
             <td *ngIf="akv.values.length !== akv.appliedTo.length && akv.datatype !== 'double'" class="float-right">
 
               <!-- mapping exists -->
-              <button type="button" class="btn btn-outline-warning mr-2" *ngIf="akv.mapPointerD.length > 0"
-                      data-toggle="tooltip" placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_TT_EDIT' | translate}}">
-                <fa-icon [icon]="faEdit"></fa-icon>
-              </button>
-
-
               <span *ngIf="akv.mapPointerD.length > 1">
                 <div class="btn-group" role="group">
                   <div class="btn-group" role="group">
@@ -159,8 +153,7 @@
                 </button>
               </span>
 
-              <!-- no mapping exists -->
-              <button type="button" class="btn btn-outline-success" *ngIf="akv.mapPointerD.length === 0 && akv.datatype !== 'double'"
+              <button type="button" class="btn btn-outline-success ml-2" *ngIf="akv.datatype !== 'double'"
                       [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'nd', akvIndex]} }]"
                       data-toggle="tooltip" placement="bottom"
                       ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}">
@@ -188,11 +181,6 @@
             <td *ngIf="akv.values.length !== akv.appliedTo.length && akv.datatype !== 'double'" class="float-right">
 
               <!-- mapping exists -->
-              <button type="button" class="btn btn-outline-warning mr-2" *ngIf="akv.mapPointerD.length > 0"
-                      data-toggle="tooltip" placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_TT_EDIT' | translate}}">
-                <fa-icon [icon]="faEdit"></fa-icon>
-              </button>
-
               <span *ngIf="akv.mapPointerD.length > 1">
                 <div class="btn-group" role="group">
                   <div class="btn-group" role="group">
@@ -218,8 +206,7 @@
                 </button>
               </span>
 
-              <!-- no mapping exists -->
-              <button type="button" class="btn btn-outline-success" *ngIf="akv.mapPointerD.length === 0 && akv.datatype !== 'double'"
+              <button type="button" class="btn btn-outline-success ml-2" *ngIf="akv.datatype !== 'double'"
                       [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'ed', akvIndex]} }]"
                       data-toggle="tooltip" placement="bottom"
                       ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}">
@@ -249,11 +236,6 @@
             <td *ngIf="akv.datatype === 'double'" class="float-right">
 
               <!-- mapping exists -->
-              <button type="button" class="btn btn-outline-warning mr-2" *ngIf="akv.mapPointerC.length > 0"
-                      data-toggle="tooltip" placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_TT_EDIT' | translate}}">
-                <fa-icon [icon]="faEdit"></fa-icon>
-              </button>
-
               <span *ngIf="akv.mapPointerC.length > 1">
                 <div class="btn-group" role="group">
                   <div class="btn-group" role="group">
@@ -279,8 +261,7 @@
                 </button>
               </span>
 
-              <!-- no mapping exists -->
-              <button type="button" class="btn btn-outline-success" *ngIf="akv.mapPointerC.length === 0 && akv.datatype === 'double'"
+              <button type="button" class="btn btn-outline-success ml-2" *ngIf="akv.datatype === 'double'"
                       [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'nc', akvIndex]} }]"
                       data-toggle="tooltip" placement="bottom"
                       ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}">
@@ -308,11 +289,6 @@
             <td *ngIf="akv.datatype === 'double'" class="float-right">
 
               <!-- mapping exists -->
-              <button type="button" class="btn btn-outline-warning mr-2" *ngIf="akv.mapPointerC.length > 0"
-                      data-toggle="tooltip" placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_TT_EDIT' | translate}}">
-                <fa-icon [icon]="faEdit"></fa-icon>
-              </button>
-
               <span *ngIf="akv.mapPointerC.length > 1">
                 <div class="btn-group" role="group">
                   <div class="btn-group" role="group">
@@ -338,8 +314,7 @@
                 </button>
               </span>
 
-              <!-- no mapping exists -->
-              <button type="button" class="btn btn-outline-success" *ngIf="akv.mapPointerC.length === 0 && akv.datatype === 'double'"
+              <button type="button" class="btn btn-outline-success ml-2" *ngIf="akv.datatype === 'double'"
                       [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'ec', akvIndex]} }]"
                       data-toggle="tooltip" placement="bottom"
                       ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}">

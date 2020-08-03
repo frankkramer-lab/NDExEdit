@@ -130,6 +130,9 @@
   "MAIN_MAPPINGS_NEW_CLEAR": "Alle Felder zurücksetzen",
   "MAIN_MAPPINGS_NEW_CB_COLORS": "Als Farbeigenschaft behandeln",
   "MAIN_MAPPINGS_NEW_DEFAULT_LOW": "Standardwert für alle niedrigeren Werte",
-  "MAIN_MAPPINGS_NEW_DEFAULT_GREAT": "Standardwert für alle höheren Werte"
+  "MAIN_MAPPINGS_NEW_DEFAULT_GREAT": "Standardwert für alle höheren Werte",
+  "MAIN_MAPPINGS_NEW_ALREADY_EXISTS": "Ein Mapping für dieses Attribut und diese CSS-Eigenschaft existiert bereits",
+  "MAIN_MAPPINGS_NEW_EDIT_INSTEAD": "Ein zweites Mapping anzulegen ist in der Regel nicht sinnvoll. Möchtest du dieses Mapping stattdessen bearbeiten?",
+  "MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD": "Existierendes Mapping bearbeiten"
 
 }

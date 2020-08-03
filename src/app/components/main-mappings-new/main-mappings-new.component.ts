@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NeNetwork} from '../../models/ne-network';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
-import {faArrowLeft, faArrowRight, faChartBar, faCheck, faPalette, faPlus, faTimes, faUndo} from '@fortawesome/free-solid-svg-icons';
+import {faArrowLeft, faArrowRight, faChartBar, faCheck, faPalette, faPlus, faTimes, faUndo, faRoute} from '@fortawesome/free-solid-svg-icons';
 import {NeMappingsDefinition} from '../../models/ne-mappings-definition';
 import {NeAspect} from '../../models/ne-aspect';
 import {ChartDataSets} from 'chart.js';
@@ -30,6 +30,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   faChartBar = faChartBar;
   faTimes = faTimes;
   faPlus = faPlus;
+  faRoute = faRoute;
 
   selectedNetwork: NeNetwork;
   propertyToMap: NeAspect;
@@ -238,4 +239,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     });
   }
 
+  // todo
+  redirect(): void {
+    console.log('redirect');
+  }
 }

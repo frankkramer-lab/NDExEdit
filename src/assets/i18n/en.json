@@ -130,8 +130,8 @@
   "MAIN_MAPPINGS_NEW_CLEAR": "Clear all fields",
   "MAIN_MAPPINGS_NEW_CB_COLORS": "Evaluate as color property",
   "MAIN_MAPPINGS_NEW_DEFAULT_LOW": "Default for all lower values",
-  "MAIN_MAPPINGS_NEW_DEFAULT_GREAT": "Default for all greater values"
-
-
-
+  "MAIN_MAPPINGS_NEW_DEFAULT_GREAT": "Default for all greater values",
+  "MAIN_MAPPINGS_NEW_ALREADY_EXISTS": "A mapping for this attribute-css-combination already exists",
+  "MAIN_MAPPINGS_NEW_EDIT_INSTEAD": "Creating a second one is usually a bad idea. Do you want to edit the existing one?",
+  "MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD": "Edit existing mapping"
 }
