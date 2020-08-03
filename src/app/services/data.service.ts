@@ -396,7 +396,7 @@ export class DataService {
           },
           title: {
             display: false,
-            text: [continuousMapping.mappedProperty.name, continuousMapping.cssKey || '']
+            text: [continuousMapping.cssKey, continuousMapping.mappedProperty.name]
           },
           elements: {
             line: {
@@ -422,7 +422,7 @@ export class DataService {
         colorGradient: null,
         gradientValid: false,
         displayChart: true,
-        title: [continuousMapping.mappedProperty.name, continuousMapping.cssKey || ''],
+        title: [continuousMapping.cssKey, continuousMapping.mappedProperty.name],
         values: continuousMapping.mappedProperty.values
       };
 

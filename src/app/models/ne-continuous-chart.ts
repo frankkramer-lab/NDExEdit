@@ -1,5 +1,5 @@
 import {ChartDataSets} from 'chart.js';
-import {Color, Label} from 'ng2-charts';
+import {Label} from 'ng2-charts';
 
 export interface NeContinuousChart {
   lineChartData: ChartDataSets[];
