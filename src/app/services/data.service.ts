@@ -10,6 +10,7 @@ import {NeContinuousThresholds} from '../models/ne-continuous-thresholds';
 import {NeColorGradient} from '../models/ne-color-gradient';
 import {NeContinuousMap} from '../models/ne-continuous-map';
 import {NeThresholdMap} from '../models/ne-threshold-map';
+import {NeContinuousChart} from '../models/ne-continuous-chart';
 
 @Injectable({
   providedIn: 'root'
@@ -69,10 +70,10 @@ export class DataService {
   }
 
   /**
-   * Removes a mapping completely
-   * @param map The specified mappping
+   * Removes a discrete mapping completely
+   * @param map The specified discrete mappping
    */
-  removeMapping(map: any): void {
+  removeDiscreteMapping(map: any): void {
 
     const network = this.getNetworkById(map.network);
 
@@ -103,18 +104,18 @@ export class DataService {
         break;
       case 'nc':
 
-        network.mappings.nodesContinuous.splice(map.mappingId, 1);
-
-        for (const value of network.mappings.nodesContinuous[map.mappingId].values) {
-          const correspondingStyle = network.style.find(x => x.selector === value.selector);
-          delete correspondingStyle.style[value.cssKey];
-        }
-
-        network.mappings.nodesContinuous.splice(map.mappingId, 1);
-        network.aspectKeyValuesNodes[map.akvIndex].mapPointerC = network
-          .aspectKeyValuesNodes[map.akvIndex]
-          .mapPointerC
-          .filter(x => x !== map.mappingId);
+        // network.mappings.nodesContinuous.splice(map.mappingId, 1);
+        //
+        // for (const value of network.mappings.nodesContinuous[map.mappingId].values) {
+        //   const correspondingStyle = network.style.find(x => x.selector === value.selector);
+        //   delete correspondingStyle.style[value.cssKey];
+        // }
+        //
+        // network.mappings.nodesContinuous.splice(map.mappingId, 1);
+        // network.aspectKeyValuesNodes[map.akvIndex].mapPointerC = network
+        //   .aspectKeyValuesNodes[map.akvIndex]
+        //   .mapPointerC
+        //   .filter(x => x !== map.mappingId);
         break;
       case 'ed':
 
@@ -142,24 +143,24 @@ export class DataService {
         break;
       case 'ec':
 
-        for (const value of network.mappings.edgesContinuous[map.mappingId].values) {
-
-          const correspondingStyle = network.style.find(x => x.selector === value.selector);
-
-          if (network.styleConstants['arrow-as-edge'] &&
-            (value.cssKey === 'line-color' || value.cssKey === 'target-arrow-color' || value.cssKey === 'source-arrow-color')) {
-            delete correspondingStyle.style['line-color'];
-            delete correspondingStyle.style['target-arrow-color'];
-            delete correspondingStyle.style['source-arrow-color'];
-          } else {
-            delete correspondingStyle.style[value.cssKey];
-          }
-        }
-        network.aspectKeyValuesEdges[map.akvIndex].mapPointerC = network
-          .aspectKeyValuesEdges[map.akvIndex]
-          .mapPointerC
-          .filter(x => x !== map.mappingId);
-        network.mappings.edgesContinuous.splice(map.mappingId, 1);
+        // for (const value of network.mappings.edgesContinuous[map.mappingId].values) {
+        //
+        //   const correspondingStyle = network.style.find(x => x.selector === value.selector);
+        //
+        //   if (network.styleConstants['arrow-as-edge'] &&
+        //     (value.cssKey === 'line-color' || value.cssKey === 'target-arrow-color' || value.cssKey === 'source-arrow-color')) {
+        //     delete correspondingStyle.style['line-color'];
+        //     delete correspondingStyle.style['target-arrow-color'];
+        //     delete correspondingStyle.style['source-arrow-color'];
+        //   } else {
+        //     delete correspondingStyle.style[value.cssKey];
+        //   }
+        // }
+        // network.aspectKeyValuesEdges[map.akvIndex].mapPointerC = network
+        //   .aspectKeyValuesEdges[map.akvIndex]
+        //   .mapPointerC
+        //   .filter(x => x !== map.mappingId);
+        // network.mappings.edgesContinuous.splice(map.mappingId, 1);
         break;
     }
   }
@@ -298,6 +299,7 @@ export class DataService {
 
   addMappingContinuous(id: number, isNode: boolean, continuousMapping: NeContinuousThresholds): void {
     const network = this.getNetworkById(id);
+    const elements = network.elements;
     let styles: NeStyle[] = network.style;
 
     let minPropertyValue: number = Number(continuousMapping.mappedProperty.values[0]);
@@ -310,7 +312,6 @@ export class DataService {
         maxPropertyValue = Number(val);
       }
     }
-
 
     if (this.colorProperties.includes(continuousMapping.cssKey)) {
 
@@ -361,13 +362,88 @@ export class DataService {
       };
 
       if (isNode) {
-        network.mappings.nodesContinuous.push(finalizedMapping);
+        network.mappings.nodesContinuous = network.mappings.nodesContinuous.concat([finalizedMapping]);
+        for (const akv of network.aspectKeyValuesNodes) {
+          if (akv.name === continuousMapping.mappedProperty.name) {
+            akv.mapPointerC.push(network.mappings.nodesContinuous.length - 1);
+          }
+        }
       } else {
-        network.mappings.edgesContinuous.push(finalizedMapping);
+        network.mappings.edgesContinuous = network.mappings.edgesContinuous.concat([finalizedMapping]);
+        for (const akv of network.aspectKeyValuesEdges) {
+          if (akv.name === continuousMapping.mappedProperty.name) {
+            akv.mapPointerC.push(network.mappings.edgesContinuous.length - 1);
+          }
+        }
+      }
+    } else {
+      const chart: NeContinuousChart = {
+        lineChartData: [{
+          data: [Number(continuousMapping.defaultLower)],
+          label: continuousMapping.cssKey
+        }],
+        lineChartLabels: [''],
+        lineChartOptions: {
+          scales: {
+            yAxes: [
+              {
+                type: 'linear',
+                display: true,
+                position: 'left',
+                id: 'y-axis-1',
+              }
+            ]
+          },
+          title: {
+            display: false,
+            text: [continuousMapping.mappedProperty.name, continuousMapping.cssKey || '']
+          },
+          elements: {
+            line: {
+              tension: 0
+            }
+          },
+          responsive: true,
+          maintainAspectRatio: true
+        }
+      };
+
+      for (const breakpoint of continuousMapping.breakpoints) {
+        chart.lineChartData[0].data.push(Number(breakpoint.propertyValue));
+        chart.lineChartLabels.push(String(breakpoint.value));
+      }
+
+      chart.lineChartData[0].data.push(Number(continuousMapping.defaultGreater));
+      chart.lineChartLabels.push(String(''));
+
+      const finalizedMapping = {
+        chart,
+        chartValid: true,
+        colorGradient: null,
+        gradientValid: false,
+        displayChart: true,
+        title: [continuousMapping.mappedProperty.name, continuousMapping.cssKey || ''],
+        values: continuousMapping.mappedProperty.values
+      };
+
+      if (isNode) {
+        network.mappings.nodesContinuous = network.mappings.nodesContinuous.concat([finalizedMapping]);
+        for (const akv of network.aspectKeyValuesNodes) {
+          if (akv.name === continuousMapping.mappedProperty.name) {
+            akv.mapPointerC.push(network.mappings.nodesContinuous.length - 1);
+          }
+        }
+      } else {
+        network.mappings.edgesContinuous = network.mappings.edgesContinuous.concat([finalizedMapping]);
+        for (const akv of network.aspectKeyValuesEdges) {
+          if (akv.name === continuousMapping.mappedProperty.name) {
+            akv.mapPointerC.push(network.mappings.edgesContinuous.length - 1);
+          }
+        }
       }
     }
 
-    for (const element of network.elements) {
+    for (const element of elements) {
       if (isNode ? element.group === 'nodes' : element.group === 'edges') {
         for (const attribute of element.data.attributes) {
           if (attribute.keyHR === continuousMapping.mappedProperty.name) {
@@ -466,15 +542,10 @@ export class DataService {
         }
       }
     }
-    console.log(styles);
-    network.style = styles;
-
-
-    // build selectors for each element (all nodes or all edges)
-
-    // calculate respective values for each element
-
-    // update mappointer within akvs
+    network.elements = elements;
+    network.style = DataService.orderStylesByPriority(styles);
+    console.log(network);
+    this.networksParsed = this.networksParsed.filter(x => x.id !== id).concat(network);
   }
 
   private addPropertyToStyle(existingStyle: NeStyle, styleObj: NeStyle): NeStyle {
