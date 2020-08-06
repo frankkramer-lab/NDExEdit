@@ -138,7 +138,7 @@
                     <div class="dropdown-menu" aria-labelledby="ndDetailsGroup">
                       <a *ngFor="let ecDetail of akv.mapPointerD; let i = index;"
                          class="dropdown-item"
-                         [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nd' + akv.mapPointerC[i]]} }]">{{selectedNetwork.mappings.nodesDiscrete[i].classifier}}</a>
+                         [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nd' + akv.mapPointerD[i]]} }]">{{selectedNetwork.mappings.nodesDiscrete[i].classifier}}</a>
                     </div>
                   </div>
                 </div>
@@ -191,7 +191,7 @@
                     <div class="dropdown-menu" aria-labelledby="edDetailsGroup">
                       <a *ngFor="let ecDetail of akv.mapPointerD; let i = index;"
                          class="dropdown-item"
-                         [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ed' + akv.mapPointerC[i]]} }]">{{selectedNetwork.mappings.edgesDiscrete[i].classifier}}</a>
+                         [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ed' + akv.mapPointerD[i]]} }]">{{selectedNetwork.mappings.edgesDiscrete[i].classifier}}</a>
                     </div>
                   </div>
                 </div>
