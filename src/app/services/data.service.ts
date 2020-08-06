@@ -104,20 +104,39 @@ export class DataService {
           .filter(x => x !== map.mappingId);
         break;
       case 'nc':
+        const nodeAkvs = network.aspectKeyValuesNodes;
+        const nodeElements = network.elements;
+        const nodeStyle = network.style;
+        let updatedNodeStyle = nodeStyle;
 
-        // network.mappings.nodesContinuous.splice(map.mappingId, 1);
-        //
-        // for (const value of network.mappings.nodesContinuous[map.mappingId].values) {
-        //   const correspondingStyle = network.style.find(x => x.selector === value.selector);
-        //   delete correspondingStyle.style[value.cssKey];
-        // }
-        //
-        // network.mappings.nodesContinuous.splice(map.mappingId, 1);
-        // network.aspectKeyValuesNodes[map.akvIndex].mapPointerC = network
-        //   .aspectKeyValuesNodes[map.akvIndex]
-        //   .mapPointerC
-        //   .filter(x => x !== map.mappingId);
+        for (const s of nodeStyle) {
+          for (const node of nodeElements) {
+
+            if (node.group === 'nodes') {
+              const currentSelector = '.node_' + node.data.id;
+
+              if (s.selector === currentSelector) {
+                delete s.style[map.map.title[0]];
+
+                if (Object.keys(s.style).length === 0) {
+                  updatedNodeStyle = updatedNodeStyle.filter(x => x !== s);
+                }
+              }
+            }
+          }
+        }
+
+        if (nodeAkvs[map.akvIndex].mapPointerC.includes(map.mappingId)) {
+          nodeAkvs[map.akvIndex].mapPointerC = nodeAkvs[map.akvIndex].mapPointerC.filter(x => x !== map.mappingId);
+        }
+
+        network.style = updatedNodeStyle;
+        network.elements = nodeElements;
+        network.aspectKeyValuesNodes = nodeAkvs;
+        network.mappings.nodesContinuous = network.mappings.nodesDiscrete.splice(map.mappingId, 1);
+        this.networksParsed = this.networksParsed.filter(x => x.id !== map.network).concat(network);
         break;
+
       case 'ed':
 
         const edSelectors = network.mappings.edgesDiscrete[map.mappingId].selectors;
@@ -144,24 +163,38 @@ export class DataService {
         break;
       case 'ec':
 
-        // for (const value of network.mappings.edgesContinuous[map.mappingId].values) {
-        //
-        //   const correspondingStyle = network.style.find(x => x.selector === value.selector);
-        //
-        //   if (network.styleConstants['arrow-as-edge'] &&
-        //     (value.cssKey === 'line-color' || value.cssKey === 'target-arrow-color' || value.cssKey === 'source-arrow-color')) {
-        //     delete correspondingStyle.style['line-color'];
-        //     delete correspondingStyle.style['target-arrow-color'];
-        //     delete correspondingStyle.style['source-arrow-color'];
-        //   } else {
-        //     delete correspondingStyle.style[value.cssKey];
-        //   }
-        // }
-        // network.aspectKeyValuesEdges[map.akvIndex].mapPointerC = network
-        //   .aspectKeyValuesEdges[map.akvIndex]
-        //   .mapPointerC
-        //   .filter(x => x !== map.mappingId);
-        // network.mappings.edgesContinuous.splice(map.mappingId, 1);
+        const edgeAkvs = network.aspectKeyValuesEdges;
+        const edgeElements = network.elements;
+        const edgeStyle = network.style;
+        let updatedEdgeStyle = edgeStyle;
+
+        for (const s of edgeStyle) {
+          for (const edge of edgeElements) {
+
+            if (edge.group === 'edges') {
+              const currentSelector = '.edge_' + edge.data.id;
+
+              if (s.selector === currentSelector) {
+                delete s.style[map.map.title[0]];
+
+                if (Object.keys(s.style).length === 0) {
+                  updatedEdgeStyle = updatedEdgeStyle.filter(x => x !== s);
+                }
+              }
+            }
+          }
+        }
+
+        if (edgeAkvs[map.akvIndex].mapPointerC.includes(map.mappingId)) {
+          edgeAkvs[map.akvIndex].mapPointerC = edgeAkvs[map.akvIndex].mapPointerC.filter(x => x !== map.mappingId);
+        }
+
+        network.style = updatedEdgeStyle;
+        network.elements = edgeElements;
+        network.aspectKeyValuesEdges = edgeAkvs;
+        network.mappings.edgesContinuous = network.mappings.edgesContinuous.splice(map.mappingId, 1);
+        this.networksParsed = this.networksParsed.filter(x => x.id !== map.network).concat(network);
+
         break;
     }
   }
@@ -204,17 +237,17 @@ export class DataService {
               }
             }
           }
-          if (!styles.includes(styleMap)) {
-            let found = false;
-            for (const s of styles) {
-              if (s.selector === styleMap.selector) {
-                found = true;
-                s.style[map.cssKey] = map.cssValue;
-              }
+        }
+        if (!styles.includes(styleMap)) {
+          let found = false;
+          for (const s of styles) {
+            if (s.selector === styleMap.selector) {
+              found = true;
+              s.style[map.cssKey] = map.cssValue;
             }
-            if (!found) {
-              styles.push(styleMap);
-            }
+          }
+          if (!found) {
+            styles.push(styleMap);
           }
         }
       }
@@ -223,22 +256,43 @@ export class DataService {
     network.elements = elements;
 
     const newlyGroupedMappings = this.updateMappings(discreteMapping, network.mappings, isNode);
+    let changeMapPointerNodes = true;
 
     if (isNode) {
       network.mappings.nodesDiscrete = newlyGroupedMappings;
 
-      for (const akv of network.aspectKeyValuesNodes) {
-        if (akv.name === discreteMapping[0].colHR && !akv.mapPointerD.includes(network.mappings.nodesDiscrete.length - 1)) {
-          akv.mapPointerD.push(network.mappings.nodesDiscrete.length - 1);
+      for (const nodeMap of network.mappings.nodesDiscrete) {
+        if (nodeMap.classifier === discreteMapping[0].colHR) {
+          changeMapPointerNodes = false;
+          break;
+        }
+      }
+
+      if (changeMapPointerNodes) {
+        for (const akv of network.aspectKeyValuesNodes) {
+          if (akv.name === discreteMapping[0].colHR
+            && !akv.mapPointerD.includes(network.mappings.nodesDiscrete.length - 1)) {
+            akv.mapPointerD.push(network.mappings.nodesDiscrete.length - 1);
+          }
         }
       }
 
     } else {
       network.mappings.edgesDiscrete = newlyGroupedMappings;
+      let changeMapPointerEdges = true;
 
-      for (const akv of network.aspectKeyValuesEdges) {
-        if (akv.name === discreteMapping[0].colHR && !akv.mapPointerD.includes(network.mappings.edgesDiscrete.length - 1)) {
-          akv.mapPointerD.push(network.mappings.edgesDiscrete.length - 1);
+      for (const edgeMap of network.mappings.edgesDiscrete) {
+        if (edgeMap.classifier === discreteMapping[0].colHR) {
+          changeMapPointerEdges = false;
+          break;
+        }
+      }
+
+      if (changeMapPointerEdges) {
+        for (const akv of network.aspectKeyValuesEdges) {
+          if (akv.name === discreteMapping[0].colHR && !akv.mapPointerD.includes(network.mappings.edgesDiscrete.length - 1)) {
+            akv.mapPointerD.push(network.mappings.edgesDiscrete.length - 1);
+          }
         }
       }
     }
@@ -272,13 +326,21 @@ export class DataService {
       cssValues: dmCssValues,
       selectors: dmSelectors
     };
-    console.log(styleMap);
 
     let found = false;
     for (const elementMap of groupedMappings) {
       if (discreteMapping[0].colHR === elementMap.classifier) {
         found = true;
         elementMap.th.push(discreteMapping[0].cssKey);
+
+        for (const dm of discreteMapping) {
+          const writeToIndex = elementMap.selectors.indexOf(dm.selector);
+          if (writeToIndex === -1) {
+            // value is not yet in list of values and needs adding => just push to last
+            elementMap.selectors.push(dm.selector);
+            elementMap.values.push(dm.isHR);
+          }
+        }
 
         if (!elementMap.styleMap.includes(styleMap)) {
           elementMap.styleMap.push(styleMap);
@@ -306,8 +368,6 @@ export class DataService {
       };
       groupedMappings.push(newElementMap);
     }
-
-    console.log(groupedMappings);
     return groupedMappings;
 
   }
@@ -489,7 +549,7 @@ export class DataService {
 
             if (continuousMapping.breakpoints[index] && continuousMapping.breakpoints[index].value === elementValue) {
               // case 1: element hits breakpoint threshold => apply threshold value
-              styleObj.style[continuousMapping.cssKey] = continuousMapping.breakpoints[index].value;
+              styleObj.style[continuousMapping.cssKey] = continuousMapping.breakpoints[index].propertyValue;
 
             } else if (index === 0 && continuousMapping.breakpoints[index] && continuousMapping.breakpoints[index].value > elementValue) {
               // case 2: element is smaller than lowest threshold => apply relatively lower
@@ -563,7 +623,6 @@ export class DataService {
     }
     network.elements = elements;
     network.style = DataService.orderStylesByPriority(styles);
-    console.log(network);
     this.networksParsed = this.networksParsed.filter(x => x.id !== id).concat(network);
   }
 

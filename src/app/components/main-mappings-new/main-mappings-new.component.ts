@@ -2,7 +2,17 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NeNetwork} from '../../models/ne-network';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
-import {faArrowLeft, faArrowRight, faChartBar, faCheck, faPalette, faPlus, faTimes, faUndo, faRoute} from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowLeft,
+  faArrowRight,
+  faChartBar,
+  faCheck,
+  faPalette,
+  faPlus,
+  faRoute,
+  faTimes,
+  faUndo
+} from '@fortawesome/free-solid-svg-icons';
 import {NeMappingsDefinition} from '../../models/ne-mappings-definition';
 import {NeAspect} from '../../models/ne-aspect';
 import {ChartDataSets} from 'chart.js';
@@ -174,7 +184,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
       this.continuousMapping.defaultLower = '';
       this.continuousMapping.defaultGreater = '';
       for (const breakpoint of this.continuousMapping.breakpoints) {
-        breakpoint.value = 0.0;
+        breakpoint.value = null;
         breakpoint.propertyValue = '';
       }
     }
@@ -216,17 +226,40 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   }
 
   getNextIdForMappingType(mappingType: string): string {
+
     switch (mappingType) {
       case 'nd':
+        for (const nodeMap of this.selectedNetwork.mappings.nodesDiscrete) {
+          if (nodeMap.classifier === this.propertyToMap.name) {
+            return String(this.selectedNetwork.mappings.nodesDiscrete.indexOf(nodeMap));
+          }
+        }
         return this.selectedNetwork.mappings.nodesDiscrete.length;
       case 'nc':
+        for (const nodeMap of this.selectedNetwork.mappings.nodesContinuous) {
+          if (nodeMap.title[1] === this.propertyToMap.name) {
+            return String(this.selectedNetwork.mappings.nodesContinuous.indexOf(nodeMap));
+          }
+        }
         return this.selectedNetwork.mappings.nodesContinuous.length;
       case 'ed':
+        for (const edgeMap of this.selectedNetwork.mappings.edgesDiscrete) {
+          if (edgeMap.classifier === this.propertyToMap.name) {
+            return String(this.selectedNetwork.mappings.edgesDiscrete.indexOf(edgeMap));
+          }
+        }
         return this.selectedNetwork.mappings.edgesDiscrete.length;
       case 'ec':
+        for (const edgeMap of this.selectedNetwork.mappings.edgesContinuous) {
+          if (edgeMap.title[1] === this.propertyToMap.name) {
+            return String(this.selectedNetwork.mappings.edgesContinuous.indexOf(edgeMap));
+          }
+        }
         return this.selectedNetwork.mappings.edgesContinuous.length;
     }
+    return String(-1);
   }
+
 
   colorValidation(b: boolean): void {
     this.validateAsColor = b;
