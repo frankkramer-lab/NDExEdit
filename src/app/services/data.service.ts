@@ -110,27 +110,10 @@ export class DataService {
           .mapPointerD
           .filter(x => x !== map.mappingId);
 
-        // const ndAkvs = network.aspectKeyValuesNodes;
-
         for (const akv of network.aspectKeyValuesNodes) {
           akv.mapPointerD = akv.mapPointerD.map(x => x > map.mappingId ? --x : x);
-          //   for (let i = 0; i < akv.mapPointerD.length; i++) {
-          //     if (akv.mapPointerD[i] > map.mappingId) {
-          //       console.log(akv.mapPointerD[i]);
-          //       akv.mapPointerD[i] -= 1;
-          //     }
-          //   }
-          // for (let pointer of akv.mapPointerD) {
-          //   if (pointer > map.mappingId) {
-          //     pointer -= 1;
-          //     console.log(pointer);
-          //   }
-          // }
         }
 
-        console.log(network.aspectKeyValuesNodes);
-        // network.aspectKeyValuesNodes = ndAkvs;
-        // console.log(ndAkvs, network.aspectKeyValuesNodes);
         break;
       case 'nc':
         const nodeAkvs = network.aspectKeyValuesNodes;
@@ -164,6 +147,11 @@ export class DataService {
         network.aspectKeyValuesNodes = nodeAkvs;
         network.mappings.nodesContinuous
           = network.mappings.nodesDiscrete.filter(x => network.mappings.nodesContinuous.indexOf(x) !== map.mappingId);
+
+        for (const akv of network.aspectKeyValuesNodes) {
+          akv.mapPointerC = akv.mapPointerC.map(x => x > map.mappingId ? --x : x);
+        }
+
         this.networksParsed = this.networksParsed.filter(x => x.id !== map.network).concat(network);
         break;
 
@@ -190,6 +178,12 @@ export class DataService {
           .mapPointerD
           .filter(x => x !== map.mappingId);
         network.style = edNewStyle;
+
+        for (const akv of network.aspectKeyValuesEdges) {
+          akv.mapPointerD = akv.mapPointerD.map(x => x > map.mappingId ? --x : x);
+        }
+
+        this.networksParsed = this.networksParsed.filter(x => x.id !== map.network).concat(network);
         break;
       case 'ec':
 
@@ -224,6 +218,11 @@ export class DataService {
         network.aspectKeyValuesEdges = edgeAkvs;
         network.mappings.edgesContinuous
           = network.mappings.edgesContinuous.filter(x => network.mappings.edgesContinuous.indexOf(x) !== map.mappingId);
+
+        for (const akv of network.aspectKeyValuesEdges) {
+          akv.mapPointerC = akv.mapPointerC.map(x => x > map.mappingId ? --x : x);
+        }
+
         this.networksParsed = this.networksParsed.filter(x => x.id !== map.network).concat(network);
 
         break;
