@@ -634,8 +634,8 @@ export class ParseService {
       }
     }
 
-    const groupedMappingsNodes = this.groupDiscreteMappings(parsedMappingsNodesDefault.discrete);
-    const groupedMappingsEdges = this.groupDiscreteMappings(parsedMappingsEdgesDefault.discrete);
+    const groupedMappingsNodes: NeGroupedMappingsDiscrete[] = this.groupDiscreteMappings(parsedMappingsNodesDefault.discrete);
+    const groupedMappingsEdges: NeGroupedMappingsDiscrete[] = this.groupDiscreteMappings(parsedMappingsEdgesDefault.discrete);
 
 
     for (const akv of aspectKeyValuesNodes) {

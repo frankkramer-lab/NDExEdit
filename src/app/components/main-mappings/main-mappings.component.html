@@ -61,7 +61,7 @@
           <th *ngFor="let value of map.values">{{value}}</th>
           </thead>
           <tbody>
-          <tr *ngFor="let style of map.styleMap">
+          <tr *ngFor="let style of map.styleMap" [ngClass]="{'table-info' : (propertyToRemove.style === style)}">
 
             <td><b>{{style.cssKey}}</b></td>
             <td>
@@ -375,7 +375,7 @@
 
       <!-- nevermind -->
       <div class="col-6">
-        <button class="btn btn-block btn-outline-success" (click)="confirmDeletion(false)">
+        <button class="btn btn-block btn-outline-success" (click)="confirmDeletion(false, 'single')">
           <fa-icon [icon]="faTimes"></fa-icon>
           {{'MAIN_MAPPINGS_CONFIRM_DELETION_NO' | translate}}
         </button>

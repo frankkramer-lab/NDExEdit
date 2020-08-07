@@ -93,6 +93,15 @@ export class MainMappingsComponent {
   };
 
   /**
+   * Property to be removed which is overridden as soon as the user selects a property to delete
+   */
+  propertyToRemove = {
+    mapReference: -1,
+    mapType: '',
+    style: null
+  };
+
+  /**
    * Can be one of the following types:
    * <ul>
    *   <li><b>nd</b>: discrete node mapping</li>
@@ -200,7 +209,38 @@ export class MainMappingsComponent {
     this.mappingToRemove.type = type;
     this.mappingToRemove.network = this.selectedNetwork.id;
     console.log(this.mappingToRemove);
+  }
 
+  toggleSingleRemoveDialogue(map: any = null, mapType: string = '', style: any = null): void {
+    this.propertyToRemove.style = style;
+    this.propertyToRemove.mapType = mapType;
+    switch (mapType) {
+      case 'nd':
+        this.propertyToRemove.mapReference = this.selectedNetwork.mappings.nodesDiscrete.indexOf(map);
+        this.showSingleDeletionDialogue = true;
+        break;
+      case 'nc':
+        this.propertyToRemove.mapReference = this.selectedNetwork.mappings.nodesContinuous.indexOf(map);
+        this.showSingleDeletionDialogue = true;
+        break;
+      case 'ed':
+        this.propertyToRemove.mapReference = this.selectedNetwork.mappings.edgesDiscrete.indexOf(map);
+        this.showSingleDeletionDialogue = true;
+        break;
+      case 'ec':
+        this.propertyToRemove.mapReference = this.selectedNetwork.mappings.edgesContinuous.indexOf(map);
+        this.showSingleDeletionDialogue = true;
+        break;
+      default:
+        this.propertyToRemove = {
+          mapType: '',
+          mapReference: -1,
+          style: null
+        };
+        this.showSingleDeletionDialogue = false;
+        break;
+    }
+    console.log(this.propertyToRemove);
   }
 
   /**
@@ -209,6 +249,7 @@ export class MainMappingsComponent {
    * When not confirming the deletion merely the dialogue is hidden again.
    *
    * @param confirmation Determines if the deletion is executed or not
+   * @param scope Can either be global or single depending on which deletion button was clicked
    */
   confirmDeletion(confirmation: boolean, scope = 'global'): void {
 
@@ -222,16 +263,19 @@ export class MainMappingsComponent {
         break;
       case 'single':
         if (confirmation) {
-
+          // todo
+          console.log(this.propertyToRemove);
+          this.dataService.removePropertyFromMapping(this.selectedNetwork.id, this.propertyToRemove);
+          this.propertyToRemove = {
+            mapReference: -1,
+            mapType: '',
+            style: null
+          };
         }
         this.toggleSingleRemoveDialogue();
         break;
     }
   }
 
-  toggleSingleRemoveDialogue(map: any = null, mapType: string = '', style: any = null): void {
-    console.log(map, mapType, style);
-    this.showSingleDeletionDialogue = !this.showSingleDeletionDialogue;
 
-  }
 }

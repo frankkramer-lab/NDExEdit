@@ -753,4 +753,28 @@ export class DataService {
     return returnValue;
   }
 
+  /**
+   * Removing a property from an existing mapping can only be executed for discrete mappings
+   *
+   * @param id The network's id
+   * @param property Property to remove
+   */
+  removePropertyFromMapping(id: number, property: { mapReference: number; mapType: string; style: any }): void {
+    const network = this.getNetworkById(id);
+    const isNode = property.mapType.startsWith('n');
+    const mapping: NeGroupedMappingsDiscrete = isNode ? network.mappings.nodesDiscrete[property.mapReference] : network.mappings.edgesDiscrete[property.mapReference];
+
+    mapping.th = mapping.th.filter(x => x !== property.style.cssKey);
+    mapping.styleMap = mapping.styleMap.filter(x => x !== property.style);
+
+    for (const selector of mapping.selectors) {
+      for (const s of network.style) {
+        if (s.selector === selector) {
+          delete s.style[property.style.cssKey];
+
+        }
+      }
+    }
+
+  }
 }

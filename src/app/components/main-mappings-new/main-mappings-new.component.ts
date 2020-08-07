@@ -230,11 +230,12 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     switch (mappingType) {
       case 'nd':
         for (const nodeMap of this.selectedNetwork.mappings.nodesDiscrete) {
+          console.log(nodeMap);
           if (nodeMap.classifier === this.propertyToMap.name) {
             return String(this.selectedNetwork.mappings.nodesDiscrete.indexOf(nodeMap));
           }
         }
-        return this.selectedNetwork.mappings.nodesDiscrete.length;
+        return String(this.selectedNetwork.mappings.nodesDiscrete.length);
       case 'nc':
         return this.selectedNetwork.mappings.nodesContinuous.length;
       case 'ed':
@@ -243,7 +244,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
             return String(this.selectedNetwork.mappings.edgesDiscrete.indexOf(edgeMap));
           }
         }
-        return this.selectedNetwork.mappings.edgesDiscrete.length;
+        return String(this.selectedNetwork.mappings.edgesDiscrete.length);
       case 'ec':
         return this.selectedNetwork.mappings.edgesContinuous.length;
     }
