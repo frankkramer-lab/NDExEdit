@@ -236,11 +236,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         }
         return this.selectedNetwork.mappings.nodesDiscrete.length;
       case 'nc':
-        for (const nodeMap of this.selectedNetwork.mappings.nodesContinuous) {
-          if (nodeMap.title[1] === this.propertyToMap.name) {
-            return String(this.selectedNetwork.mappings.nodesContinuous.indexOf(nodeMap));
-          }
-        }
         return this.selectedNetwork.mappings.nodesContinuous.length;
       case 'ed':
         for (const edgeMap of this.selectedNetwork.mappings.edgesDiscrete) {
@@ -250,11 +245,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         }
         return this.selectedNetwork.mappings.edgesDiscrete.length;
       case 'ec':
-        for (const edgeMap of this.selectedNetwork.mappings.edgesContinuous) {
-          if (edgeMap.title[1] === this.propertyToMap.name) {
-            return String(this.selectedNetwork.mappings.edgesContinuous.indexOf(edgeMap));
-          }
-        }
         return this.selectedNetwork.mappings.edgesContinuous.length;
     }
     return String(-1);

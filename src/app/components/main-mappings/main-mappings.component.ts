@@ -209,7 +209,7 @@ export class MainMappingsComponent {
   confirmDeletion(confirmation: boolean): void {
     if (confirmation) {
       console.log(this.mappingToRemove);
-      this.dataService.removeDiscreteMapping(this.mappingToRemove);
+      this.dataService.removeMapping(this.mappingToRemove);
       this.selectedMapping = [];
     }
     this.toggleRemoveDialogue();

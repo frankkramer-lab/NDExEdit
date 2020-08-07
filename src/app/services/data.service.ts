@@ -71,10 +71,10 @@ export class DataService {
   }
 
   /**
-   * Removes a discrete mapping completely
+   * Removes a mapping completely
    * @param map The specified discrete mappping
    */
-  removeDiscreteMapping(map: any): void {
+  removeMapping(map: any): void {
 
     const network = this.getNetworkById(map.network);
 
@@ -133,7 +133,8 @@ export class DataService {
         network.style = updatedNodeStyle;
         network.elements = nodeElements;
         network.aspectKeyValuesNodes = nodeAkvs;
-        network.mappings.nodesContinuous = network.mappings.nodesDiscrete.splice(map.mappingId, 1);
+        network.mappings.nodesContinuous
+          = network.mappings.nodesDiscrete.filter(x => network.mappings.nodesContinuous.indexOf(x) !== map.mappingId);
         this.networksParsed = this.networksParsed.filter(x => x.id !== map.network).concat(network);
         break;
 
@@ -192,7 +193,8 @@ export class DataService {
         network.style = updatedEdgeStyle;
         network.elements = edgeElements;
         network.aspectKeyValuesEdges = edgeAkvs;
-        network.mappings.edgesContinuous = network.mappings.edgesContinuous.splice(map.mappingId, 1);
+        network.mappings.edgesContinuous
+          = network.mappings.edgesContinuous.filter(x => network.mappings.edgesContinuous.indexOf(x) !== map.mappingId);
         this.networksParsed = this.networksParsed.filter(x => x.id !== map.network).concat(network);
 
         break;
