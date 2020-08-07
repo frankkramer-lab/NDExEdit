@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
 import {NeNetwork} from '../../models/ne-network';
-import {faEdit, faPlus, faTrash, faTimes, faCheck, faSearch, faArrowLeft} from '@fortawesome/free-solid-svg-icons';
+import {faArrowLeft, faCheck, faEdit, faPlus, faSearch, faTimes, faTrash} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-main-mappings',
@@ -60,7 +60,11 @@ export class MainMappingsComponent {
   /**
    * Used as a switch to toggle between list of all currently existing mappings and confirmation dialogue to delete a mapping
    */
-  showList = true;
+    // showList = true;
+
+  showGlobalDeletionDialogue = false;
+
+  showSingleDeletionDialogue = false;
 
   /**
    * Selected network of type {@link NeNetwork|NeNetwork}
@@ -152,7 +156,7 @@ export class MainMappingsComponent {
    * @param map Single mapping which is to be deleted
    * @param type As specified by {@link MainMappingsComponent#givenMapType}
    */
-  toggleRemoveDialogue(map: any = null, type: string = ''): void {
+  toggleGlobalRemoveDialogue(map: any = null, type: string = ''): void {
     switch (type) {
       case 'nd':
         for (const akv of this.selectedNetwork.aspectKeyValuesNodes) {
@@ -191,7 +195,7 @@ export class MainMappingsComponent {
         this.mappingToRemove.mappingId = this.selectedNetwork.mappings.edgesContinuous.indexOf(map);
         break;
     }
-    this.showList = !this.showList;
+    this.showGlobalDeletionDialogue = !this.showGlobalDeletionDialogue;
     this.mappingToRemove.map = map;
     this.mappingToRemove.type = type;
     this.mappingToRemove.network = this.selectedNetwork.id;
@@ -206,12 +210,28 @@ export class MainMappingsComponent {
    *
    * @param confirmation Determines if the deletion is executed or not
    */
-  confirmDeletion(confirmation: boolean): void {
-    if (confirmation) {
-      console.log(this.mappingToRemove);
-      this.dataService.removeMapping(this.mappingToRemove);
-      this.selectedMapping = [];
+  confirmDeletion(confirmation: boolean, scope = 'global'): void {
+
+    switch (scope) {
+      case 'global':
+        if (confirmation) {
+          this.dataService.removeMapping(this.mappingToRemove);
+          this.selectedMapping = [];
+        }
+        this.toggleGlobalRemoveDialogue();
+        break;
+      case 'single':
+        if (confirmation) {
+
+        }
+        this.toggleSingleRemoveDialogue();
+        break;
     }
-    this.toggleRemoveDialogue();
+  }
+
+  toggleSingleRemoveDialogue(map: any = null, mapType: string = '', style: any = null): void {
+    console.log(map, mapType, style);
+    this.showSingleDeletionDialogue = !this.showSingleDeletionDialogue;
+
   }
 }

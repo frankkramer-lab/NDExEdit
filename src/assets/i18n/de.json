@@ -107,6 +107,7 @@
   "MAIN_MAPPINGS_TT_DELETE": "Alle Eigenschaften, die entsprechend dieses Attributes verwaltet werden, werden hiermit gelöscht",
   "MAIN_MAPPINGS_TT_SINGLE_DELETE": "Diesen Eintrag löschen",
   "MAIN_MAPPINGS_CONFIRM_DELETION": "Möchtest du das oben dargestellte Mapping wirklich löschen?",
+  "MAIN_MAPPINGS_SINGLE_CONFIRM_DELETION": "Möchtest du diese Eigenschaft vom oben dargestellten Mapping wirklich löschen?",
   "MAIN_MAPPINGS_CONFIRM_DELETION_YES": "Ja, lösch' es endlich",
   "MAIN_MAPPINGS_CONFIRM_DELETION_NO": "Hab' mich geirrt",
   "MAIN_MAPPINGS_TT_MAP_DETAILS": "Details in obiger Tabelle anzeigen",

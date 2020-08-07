@@ -55,6 +55,13 @@ export class DataService {
     return styles.sort((a, b) => (a.priority < b.priority) ? -1 : 1);
   }
 
+  /**
+   * Fills a string with leading zeros to the specified length
+   *
+   * @param s string to be filled
+   * @param targetLength final number of characters
+   * @private
+   */
   private static utilLeadingZeros(s: string, targetLength: number): string {
     while (s.length < targetLength) {
       s = '0'.concat(s);
@@ -102,6 +109,28 @@ export class DataService {
           .aspectKeyValuesNodes[map.akvIndex]
           .mapPointerD
           .filter(x => x !== map.mappingId);
+
+        // const ndAkvs = network.aspectKeyValuesNodes;
+
+        for (const akv of network.aspectKeyValuesNodes) {
+          akv.mapPointerD = akv.mapPointerD.map(x => x > map.mappingId ? --x : x);
+          //   for (let i = 0; i < akv.mapPointerD.length; i++) {
+          //     if (akv.mapPointerD[i] > map.mappingId) {
+          //       console.log(akv.mapPointerD[i]);
+          //       akv.mapPointerD[i] -= 1;
+          //     }
+          //   }
+          // for (let pointer of akv.mapPointerD) {
+          //   if (pointer > map.mappingId) {
+          //     pointer -= 1;
+          //     console.log(pointer);
+          //   }
+          // }
+        }
+
+        console.log(network.aspectKeyValuesNodes);
+        // network.aspectKeyValuesNodes = ndAkvs;
+        // console.log(ndAkvs, network.aspectKeyValuesNodes);
         break;
       case 'nc':
         const nodeAkvs = network.aspectKeyValuesNodes;
@@ -302,6 +331,14 @@ export class DataService {
     this.networksParsed = this.networksParsed.filter(x => x.id !== id).concat(network);
   }
 
+  /**
+   * After adding a discrete mapping all newly set values have to be aggregated into a nicely displayable mapping
+   *
+   * @param discreteMapping Newly created mapping
+   * @param mappings Existing mappings
+   * @param isNode True if the mapping applies to nodes, false if the mapping applies to edges
+   * @private
+   */
   private updateMappings(discreteMapping: NeMappingsDefinition[], mappings: NeMappingsMap, isNode: boolean): NeGroupedMappingsDiscrete[] {
 
     if (!mappings || discreteMapping.length === 0) {
@@ -374,6 +411,13 @@ export class DataService {
 
   }
 
+  /**
+   * Adds a continuous mapping to the graph
+   *
+   * @param id the network's ID
+   * @param isNode True, if the mapping applies to nodes, false if the mapping applies to edges
+   * @param continuousMapping newly created mapping
+   */
   addMappingContinuous(id: number, isNode: boolean, continuousMapping: NeContinuousThresholds): void {
     const network = this.getNetworkById(id);
     const elements = network.elements;
@@ -628,6 +672,13 @@ export class DataService {
     this.networksParsed = this.networksParsed.filter(x => x.id !== id).concat(network);
   }
 
+  /**
+   * Adds a style object to the graph's existing style
+   *
+   * @param existingStyle the graph's current style
+   * @param styleObj newly created style
+   * @private
+   */
   private addPropertyToStyle(existingStyle: NeStyle, styleObj: NeStyle): NeStyle {
     const keys = Object.keys(styleObj.style);
     for (const k of keys) {
@@ -636,7 +687,12 @@ export class DataService {
     return existingStyle;
   }
 
-
+  /**
+   * Calculates an element's continuously mapped value
+   *
+   * @param inputMap of type {@link NeContinuousMap} displaying the element's value and corresponding lower and greater thresholds
+   * @private
+   */
   private calculateRelativeValue(inputMap: NeContinuousMap): string {
 
     let returnValue;
