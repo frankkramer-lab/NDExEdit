@@ -12,6 +12,7 @@ import {NeContinuousMap} from '../models/ne-continuous-map';
 import {NeThresholdMap} from '../models/ne-threshold-map';
 import {NeContinuousChart} from '../models/ne-continuous-chart';
 import {NeStyleMap} from '../models/ne-style-map';
+import {ElementDefinition} from 'cytoscape';
 
 @Injectable({
   providedIn: 'root'
@@ -419,8 +420,7 @@ export class DataService {
    */
   addMappingContinuous(id: number, isNode: boolean, continuousMapping: NeContinuousThresholds): void {
     const network = this.getNetworkById(id);
-    const elements = network.elements;
-    let styles: NeStyle[] = network.style;
+    const styles: NeStyle[] = network.style;
 
     let minPropertyValue: number = Number(continuousMapping.mappedProperty.values[0]);
     let maxPropertyValue: number = Number(continuousMapping.mappedProperty.values[0]);
@@ -567,6 +567,97 @@ export class DataService {
       }
     }
 
+    network.elements = this.updateElementsContinuously(isNode, continuousMapping, network, minPropertyValue, maxPropertyValue);
+    network.style = DataService.orderStylesByPriority(styles);
+    this.networksParsed = this.networksParsed.filter(x => x.id !== id).concat(network);
+  }
+
+  /**
+   * Adds a style object to the graph's existing style
+   *
+   * @param existingStyle the graph's current style
+   * @param styleObj newly created style
+   * @private
+   */
+  private addPropertyToStyle(existingStyle: NeStyle, styleObj: NeStyle): NeStyle {
+    const keys = Object.keys(styleObj.style);
+    for (const k of keys) {
+      existingStyle.style[k] = styleObj.style[k];
+    }
+    return existingStyle;
+  }
+
+  /**
+   * Calculates an element's continuously mapped value
+   *
+   * @param inputMap of type {@link NeContinuousMap} displaying the element's value and corresponding lower and greater thresholds
+   * @private
+   */
+  private calculateRelativeValue(inputMap: NeContinuousMap): string {
+
+    let returnValue;
+    const xDiff = Number(inputMap.greaterThreshold) - Number(inputMap.lowerThreshold);
+    const xDiffRequired = Number(inputMap.inputValue) - Number(inputMap.lowerThreshold);
+
+    if (inputMap.lower.includes('#')) {
+      // workaround for hex value comparison
+      const hexGreater = inputMap.greater.replace('#', '');
+      const hexLower = inputMap.lower.replace('#', '');
+
+      const hexGreaterMap = {
+        r: Number('0x'.concat(hexGreater.substring(0, 2))),
+        g: Number('0x'.concat(hexGreater.substring(2, 4))),
+        b: Number('0x'.concat(hexGreater.substring(4, 6))),
+      };
+
+      const hexLowerMap = {
+        r: Number('0x'.concat(hexLower.substring(0, 2))),
+        g: Number('0x'.concat(hexLower.substring(2, 4))),
+        b: Number('0x'.concat(hexLower.substring(4, 6))),
+      };
+
+      const yDiffMap = {
+        r: hexGreaterMap.r - hexLowerMap.r,
+        g: hexGreaterMap.g - hexLowerMap.g,
+        b: hexGreaterMap.b - hexLowerMap.b
+      };
+
+      const slopeCoefficientMap = {
+        r: yDiffMap.r / xDiff,
+        g: yDiffMap.g / xDiff,
+        b: yDiffMap.b / xDiff
+      };
+
+      const resultMap = {
+        // tslint:disable-next-line:no-bitwise
+        r: ((xDiffRequired * slopeCoefficientMap.r) + hexLowerMap.r) & 0xff,
+        // tslint:disable-next-line:no-bitwise
+        g: ((xDiffRequired * slopeCoefficientMap.g) + hexLowerMap.g) & 0xff,
+        // tslint:disable-next-line:no-bitwise
+        b: ((xDiffRequired * slopeCoefficientMap.b) + hexLowerMap.b) & 0xff
+      };
+
+      const resultR = DataService.utilLeadingZeros(resultMap.r.toString(16), 2);
+      const resultG = DataService.utilLeadingZeros(resultMap.g.toString(16), 2);
+      const resultB = DataService.utilLeadingZeros(resultMap.b.toString(16), 2);
+
+      returnValue = '#'.concat(resultR.concat(resultG.concat(resultB)));
+
+    } else {
+
+      const yDiff = Number(inputMap.greater) - Number(inputMap.lower);
+      const slopeCoefficient = yDiff / xDiff;
+
+      returnValue = String(((xDiffRequired * slopeCoefficient) + Number(inputMap.lower)).toPrecision(5));
+    }
+
+    return returnValue;
+  }
+
+  private updateElementsContinuously(isNode: boolean, continuousMapping: any, network: NeNetwork, minPropertyValue, maxPropertyValue): ElementDefinition[] {
+    const styles: NeStyle[] = network.style;
+    const elements: ElementDefinition[] = network.elements;
+
     for (const element of elements) {
       if (isNode ? element.group === 'nodes' : element.group === 'edges') {
         for (const attribute of element.data.attributes) {
@@ -660,98 +751,15 @@ export class DataService {
             if (!style) {
               styles.push(styleObj);
             } else {
-              styles = styles.filter(x => x !== style).concat(this.addPropertyToStyle(style, styleObj));
+              network.style = styles.filter(x => x !== style).concat(this.addPropertyToStyle(style, styleObj));
             }
           }
         }
       }
     }
-    network.elements = elements;
-    network.style = DataService.orderStylesByPriority(styles);
-    this.networksParsed = this.networksParsed.filter(x => x.id !== id).concat(network);
+    return elements;
   }
 
-  /**
-   * Adds a style object to the graph's existing style
-   *
-   * @param existingStyle the graph's current style
-   * @param styleObj newly created style
-   * @private
-   */
-  private addPropertyToStyle(existingStyle: NeStyle, styleObj: NeStyle): NeStyle {
-    const keys = Object.keys(styleObj.style);
-    for (const k of keys) {
-      existingStyle.style[k] = styleObj.style[k];
-    }
-    return existingStyle;
-  }
-
-  /**
-   * Calculates an element's continuously mapped value
-   *
-   * @param inputMap of type {@link NeContinuousMap} displaying the element's value and corresponding lower and greater thresholds
-   * @private
-   */
-  private calculateRelativeValue(inputMap: NeContinuousMap): string {
-
-    let returnValue;
-    const xDiff = Number(inputMap.greaterThreshold) - Number(inputMap.lowerThreshold);
-    const xDiffRequired = Number(inputMap.inputValue) - Number(inputMap.lowerThreshold);
-
-    if (inputMap.lower.includes('#')) {
-      // workaround for hex value comparison
-      const hexGreater = inputMap.greater.replace('#', '');
-      const hexLower = inputMap.lower.replace('#', '');
-
-      const hexGreaterMap = {
-        r: Number('0x'.concat(hexGreater.substring(0, 2))),
-        g: Number('0x'.concat(hexGreater.substring(2, 4))),
-        b: Number('0x'.concat(hexGreater.substring(4, 6))),
-      };
-
-      const hexLowerMap = {
-        r: Number('0x'.concat(hexLower.substring(0, 2))),
-        g: Number('0x'.concat(hexLower.substring(2, 4))),
-        b: Number('0x'.concat(hexLower.substring(4, 6))),
-      };
-
-      const yDiffMap = {
-        r: hexGreaterMap.r - hexLowerMap.r,
-        g: hexGreaterMap.g - hexLowerMap.g,
-        b: hexGreaterMap.b - hexLowerMap.b
-      };
-
-      const slopeCoefficientMap = {
-        r: yDiffMap.r / xDiff,
-        g: yDiffMap.g / xDiff,
-        b: yDiffMap.b / xDiff
-      };
-
-      const resultMap = {
-        // tslint:disable-next-line:no-bitwise
-        r: ((xDiffRequired * slopeCoefficientMap.r) + hexLowerMap.r) & 0xff,
-        // tslint:disable-next-line:no-bitwise
-        g: ((xDiffRequired * slopeCoefficientMap.g) + hexLowerMap.g) & 0xff,
-        // tslint:disable-next-line:no-bitwise
-        b: ((xDiffRequired * slopeCoefficientMap.b) + hexLowerMap.b) & 0xff
-      };
-
-      const resultR = DataService.utilLeadingZeros(resultMap.r.toString(16), 2);
-      const resultG = DataService.utilLeadingZeros(resultMap.g.toString(16), 2);
-      const resultB = DataService.utilLeadingZeros(resultMap.b.toString(16), 2);
-
-      returnValue = '#'.concat(resultR.concat(resultG.concat(resultB)));
-
-    } else {
-
-      const yDiff = Number(inputMap.greater) - Number(inputMap.lower);
-      const slopeCoefficient = yDiff / xDiff;
-
-      returnValue = String(((xDiffRequired * slopeCoefficient) + Number(inputMap.lower)).toPrecision(5));
-    }
-
-    return returnValue;
-  }
 
   /**
    * Removing a property from an existing mapping can only be executed for discrete mappings
@@ -778,22 +786,91 @@ export class DataService {
 
   }
 
-  editMapping(id: number, mappingToEdit: any, styleProperty: string, mappingsType: { nc: boolean; nd: boolean; ec: boolean; ed: boolean }): void {
+  editMapping(id: number, mappingToEdit: any | any[], styleProperty: string, mappingsType: { nc: boolean; nd: boolean; ec: boolean; ed: boolean }): void {
     const network = this.getNetworkById(id);
     if (mappingsType.nd) {
-      // update values to be set, selectors within styles are already there, only update values there as well
-      const existingNdMapping = network.mappings.nodesDiscrete.find(x => x.classifier === mappingToEdit.classifier
-        && x.styleMap.map(a => a.cssKey).includes(styleProperty));
-      console.log(existingNdMapping);
-      
+
+      const existingNdMappingIndex = network.mappings.nodesDiscrete.findIndex(x => x.classifier === mappingToEdit[0].colHR
+        && x.styleMap.map(a => a.cssKey).includes(mappingToEdit[0].cssKey));
+      const existingNdMapping = network.mappings.nodesDiscrete[existingNdMappingIndex];
+
+      const correspondingStyleMapNd = existingNdMapping.styleMap.find(x => x.cssKey === mappingToEdit[0].cssKey);
+      for (const map of mappingToEdit) {
+        const currentSelector = map.selector;
+        for (let i = 0; i < correspondingStyleMapNd.cssValues.length; i++) {
+          if (correspondingStyleMapNd.selectors[i] === currentSelector) {
+            correspondingStyleMapNd.cssValues[i] = map.cssValue;
+          }
+        }
+      }
+
+      for (const s of network.style) {
+        for (let i = 0; i < correspondingStyleMapNd.selectors.length; i++) {
+          if (s.selector === correspondingStyleMapNd.selectors[i]) {
+            s.style[correspondingStyleMapNd.cssKey] = correspondingStyleMapNd.cssValues[i];
+          }
+        }
+      }
+
     } else if (mappingsType.ed) {
-      // same
-      const existingEdMapping = network.mappings.edgesDiscrete.find(x => x.classifier === mappingToEdit.classifier
-        && x.styleMap.map(a => a.cssKey).includes(styleProperty));
+
+      const existingEdMappingIndex = network.mappings.edgesDiscrete.findIndex(x => x.classifier === mappingToEdit[0].colHR
+        && x.styleMap.map(a => a.cssKey).includes(mappingToEdit[0].cssKey));
+      const existingEdMapping = network.mappings.edgesDiscrete[existingEdMappingIndex];
+
+      const correspondingStyleMapEd = existingEdMapping.styleMap.find(x => x.cssKey === mappingToEdit[0].cssKey);
+      for (const map of mappingToEdit) {
+        const currentSelector = map.selector;
+        for (let i = 0; i < correspondingStyleMapEd.cssValues.length; i++) {
+          if (correspondingStyleMapEd.selectors[i] === currentSelector) {
+            correspondingStyleMapEd.cssValues[i] = map.cssValue;
+          }
+        }
+      }
+
+      for (const s of network.style) {
+        for (let i = 0; i < correspondingStyleMapEd.selectors.length; i++) {
+          if (s.selector === correspondingStyleMapEd.selectors[i]) {
+            s.style[correspondingStyleMapEd.cssKey] = correspondingStyleMapEd.cssValues[i];
+          }
+        }
+      }
+
     } else if (mappingsType.nc) {
       // all selectors are there, but thresholds need to be re-calculated
     } else if (mappingsType.ec) {
-      // same
+
+      mappingToEdit.breakpoints = mappingToEdit.breakpoints.filter(x => x.value !== null);
+
+      const existingEcMappingIndex = network.mappings.edgesContinuous.findIndex(x => x.title[0] === mappingToEdit.cssKey
+        && x.title[1] === mappingToEdit.mappedProperty.name);
+      const existingEcMapping = network.mappings.edgesContinuous[existingEcMappingIndex];
+
+      if (existingEcMapping.chartValid) {
+        // update chart
+        existingEcMapping.chart.lineChartData[0].data[0] = mappingToEdit.defaultLower;
+        existingEcMapping.chart.lineChartData[0].data[mappingToEdit.breakpoints.length + 1] = mappingToEdit.defaultGreater;
+
+        for (let i = 0; i < mappingToEdit.breakpoints.length; i++) {
+          existingEcMapping.chart.lineChartData[0].data[1 + i] = mappingToEdit.breakpoints[i].propertyValue;
+          existingEcMapping.chart.lineChartLabels[1 + i] = mappingToEdit.breakpoints[i].value;
+        }
+      } else if (existingEcMapping.gradientValid) {
+        // update gradient
+        existingEcMapping.colorGradient[0].color = mappingToEdit.defaultLower;
+        existingEcMapping.colorGradient[mappingToEdit.breakpoints.length + 1].color = mappingToEdit.defaultGreater;
+
+        for (let i = 0; i < mappingToEdit.breakpoints.length; i++) {
+          console.log(mappingToEdit.breakpoints[i].value, mappingToEdit.mappedProperty.min);
+          const offset = (100 * (Number(mappingToEdit.breakpoints[i].value) - Number(mappingToEdit.mappedProperty.min))).toFixed(0);
+          existingEcMapping.colorGradient[1 + i].color = mappingToEdit.breakpoints[i].propertyValue;
+          existingEcMapping.colorGradient[1 + i].numericThreshold = mappingToEdit.breakpoints[i].value;
+          existingEcMapping.colorGradient[1 + i].offset = String(offset) + '%';
+        }
+      }
+
+      network.elements = this.updateElementsContinuously(false, mappingToEdit, network, Number(mappingToEdit.mappedProperty.min), Number(mappingToEdit.mappedProperty.max));
+
     }
   }
 }

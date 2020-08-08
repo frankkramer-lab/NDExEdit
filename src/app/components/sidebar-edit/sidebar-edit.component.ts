@@ -219,7 +219,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
       let foundLowest = false;
       let foundHighest = false;
       for (const gradient of colorGradient) {
-
+        console.log(gradient);
         if (gradient.offset === '0%') {
           foundLowest = true;
         } else if (gradient.offset === '100%') {
