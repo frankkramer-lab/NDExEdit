@@ -777,4 +777,23 @@ export class DataService {
     }
 
   }
+
+  editMapping(id: number, mappingToEdit: any, styleProperty: string, mappingsType: { nc: boolean; nd: boolean; ec: boolean; ed: boolean }): void {
+    const network = this.getNetworkById(id);
+    if (mappingsType.nd) {
+      // update values to be set, selectors within styles are already there, only update values there as well
+      const existingNdMapping = network.mappings.nodesDiscrete.find(x => x.classifier === mappingToEdit.classifier
+        && x.styleMap.map(a => a.cssKey).includes(styleProperty));
+      console.log(existingNdMapping);
+      
+    } else if (mappingsType.ed) {
+      // same
+      const existingEdMapping = network.mappings.edgesDiscrete.find(x => x.classifier === mappingToEdit.classifier
+        && x.styleMap.map(a => a.cssKey).includes(styleProperty));
+    } else if (mappingsType.nc) {
+      // all selectors are there, but thresholds need to be re-calculated
+    } else if (mappingsType.ec) {
+      // same
+    }
+  }
 }

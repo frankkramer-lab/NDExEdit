@@ -116,7 +116,7 @@
           <div class="col-7">
             <input type="text" class="form-control" id="nd{{index}}"
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="nd{{index}}"
-                   [(ngModel)]="discreteMapping[index].cssValue">
+                   [(ngModel)]="entry.cssValue">
           </div>
           <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-1"
                 [ngStyle]="{'background-color': entry.cssValue}">
@@ -143,10 +143,18 @@
             </button>
           </div>
           <div class="col-4">
-            <button type="button" class="btn btn-block btn-outline-success"
+            <!-- create new mapping -->
+            <button *ngIf="!isEdit" type="button" class="btn btn-block btn-outline-success"
                     data-toggle="tooltip" placement="top" ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
                     (click)="submitNewDiscreteMapping()"
                     [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nd' + (getNextIdForMappingType('nd')) ]} }]">
+              <fa-icon [icon]="faCheck"></fa-icon>
+            </button>
+            <!-- edit existing mapping -->
+            <button *ngIf="isEdit" type="button" class="btn btn-block btn-outline-success"
+                    data-toggle="tooltip" placement="top" ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
+                    (click)="editMapping()"
+                    [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nd' +  currentMappingId]} }]">
               <fa-icon [icon]="faCheck"></fa-icon>
             </button>
           </div>
@@ -303,10 +311,18 @@
             </button>
           </div>
           <div class="col-4">
-            <button type="button" class="btn btn-block btn-outline-success"
+            <!-- create new mapping -->
+            <button *ngIf="!isEdit" type="button" class="btn btn-block btn-outline-success"
                     data-toggle="tooltip" placement="top" ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
                     (click)="submitNewContinuousMapping()"
                     [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nc' + (getNextIdForMappingType('nc')) ]} }]">
+              <fa-icon [icon]="faCheck"></fa-icon>
+            </button>
+            <!-- edit existing mapping -->
+            <button *ngIf="isEdit" type="button" class="btn btn-block btn-outline-success"
+                    data-toggle="tooltip" placement="top" ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
+                    (click)="editMapping()"
+                    [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nc' + currentMappingId ]} }]">
               <fa-icon [icon]="faCheck"></fa-icon>
             </button>
           </div>
@@ -418,10 +434,18 @@
             </button>
           </div>
           <div class="col-4">
-            <button type="button" class="btn btn-block btn-outline-success"
+            <!-- create new mapping -->
+            <button *ngIf="!isEdit" type="button" class="btn btn-block btn-outline-success"
                     data-toggle="tooltip" placement="top" ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
                     (click)="submitNewDiscreteMapping()"
                     [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ed' + (getNextIdForMappingType('ed')) ]} }]">
+              <fa-icon [icon]="faCheck"></fa-icon>
+            </button>
+            <!-- edit existing mapping -->
+            <button *ngIf="isEdit" type="button" class="btn btn-block btn-outline-success"
+                    data-toggle="tooltip" placement="top" ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
+                    (click)="editMapping()"
+                    [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ed' + currentMappingId ]} }]">
               <fa-icon [icon]="faCheck"></fa-icon>
             </button>
           </div>
@@ -578,10 +602,18 @@
             </button>
           </div>
           <div class="col-4">
-            <button type="button" class="btn btn-block btn-outline-success"
+            <!-- create new mapping -->
+            <button *ngIf="!isEdit" type="button" class="btn btn-block btn-outline-success"
                     data-toggle="tooltip" placement="top" ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
                     (click)="submitNewContinuousMapping()"
                     [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ec' + (getNextIdForMappingType('ec')) ]} }]">
+              <fa-icon [icon]="faCheck"></fa-icon>
+            </button>
+            <!-- edit existing mapping -->
+            <button *ngIf="isEdit" type="button" class="btn btn-block btn-outline-success"
+                    data-toggle="tooltip" placement="top" ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
+                    (click)="editMapping()"
+                    [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ec' + currentMappingId ]} }]">
               <fa-icon [icon]="faCheck"></fa-icon>
             </button>
           </div>

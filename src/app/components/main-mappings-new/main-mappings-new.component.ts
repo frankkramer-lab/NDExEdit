@@ -69,16 +69,19 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   ];
   public scatterChartLabels: Label[] = [''];
 
+  currentMappingId = '';
   discreteMapping: NeMappingsDefinition[];
   continuousMapping: NeContinuousThresholds;
   continuousThresholds: NeThresholdMap[] = [];
+  mappingToEdit: any;
 
   constructor(private route: ActivatedRoute,
               public dataService: DataService) {
 
     this.route.paramMap.subscribe(params => {
-      this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
       const map = params.get('map');
+      this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
+      this.currentMappingId = map.substring(2);
       const mapType = map.substring(0, 2);
       switch (mapType) {
         case 'nd':
@@ -127,13 +130,10 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
 
       } else {
         // edit existing
-
         this.isEdit = true;
         let existingMapping;
         let propertyId;
         const mapId = map.substring(2);
-        console.log(params);
-        console.log(mapId);
 
         switch (mapType) {
           case 'nd':
@@ -163,7 +163,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
             this.prefillContinuousMapping(existingMapping);
             break;
         }
-        console.log(existingMapping);
       }
 
 
@@ -176,8 +175,13 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     this.validateAsColor = this.needsColorValidation(this.styleProperty);
 
     if (mapping.chartValid) {
-      // use mapping.chart.lineChartLabels (without highest and lowest) as thresholds
-      // use mapping.chart.lineChartData[0].data as values foreach label
+      let mappedProperty;
+      if (this.mappingsType.nc) {
+        mappedProperty = this.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === mapping.title[1]);
+      } else if (this.mappingsType.ec) {
+        mappedProperty = this.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === mapping.title[1]);
+      }
+
       for (const label of mapping.chart.lineChartLabels) {
         if (label !== '') {
           const thresholdObj: NeThresholdMap = {
@@ -191,11 +195,20 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         defaultGreater: mapping.chart.lineChartData[0].data[mapping.chart.lineChartData[0].data.length - 1],
         defaultLower: mapping.chart.lineChartData[0].data[0],
         breakpoints: this.continuousThresholds,
-        cssKey: this.styleProperty
+        cssKey: this.styleProperty,
+        mappedProperty
       };
+      console.log(this.continuousMapping);
 
     } else if (mapping.gradientValid) {
-      // use mapping.colorGradient as both values (.color) and thresholds (.numericThreshold) (without highest and lowest)
+
+      let mappedProperty;
+      if (this.mappingsType.nc) {
+        mappedProperty = this.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === mapping.title[1]);
+      } else if (this.mappingsType.ec) {
+        mappedProperty = this.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === mapping.title[1]);
+      }
+
       for (const color of mapping.colorGradient) {
         if (color.offset !== '-1' && color.offset !== '101') {
           const thresholdObj: NeThresholdMap = {
@@ -209,8 +222,11 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         defaultGreater: mapping.colorGradient[mapping.colorGradient.length - 1].color,
         defaultLower: mapping.colorGradient[0].color,
         breakpoints: this.continuousThresholds,
-        cssKey: this.styleProperty
+        cssKey: this.styleProperty,
+        mappedProperty
       };
+      console.log(this.continuousMapping);
+
     }
   }
 
@@ -385,4 +401,15 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   redirect(): void {
     console.log('redirect');
   }
+
+  editMapping(): void {
+    // todo
+    console.log(this.discreteMapping, this.continuousMapping);
+    if (this.mappingsType.nd || this.mappingsType.ed) {
+      this.dataService.editMapping(this.selectedNetwork.id, this.discreteMapping, this.styleProperty, this.mappingsType);
+    } else {
+      this.dataService.editMapping(this.selectedNetwork.id, this.continuousMapping, this.styleProperty, this.mappingsType);
+    }
+  }
+
 }
