@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
 import {NeNetwork} from '../../models/ne-network';
 import {faArrowLeft, faCheck, faEdit, faPlus, faSearch, faTimes, faTrash} from '@fortawesome/free-solid-svg-icons';
+import {NeGroupedMappingsDiscrete} from '../../models/ne-grouped-mappings-discrete';
 
 @Component({
   selector: 'app-main-mappings',
@@ -74,7 +75,7 @@ export class MainMappingsComponent {
   /**
    * Selected mapping which is displayed in the table at the top of the view
    */
-  selectedMapping: any[];
+  selectedMapping: NeGroupedMappingsDiscrete[] | any[];
 
   /**
    * Id of the currently selected mapping

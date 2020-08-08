@@ -18,15 +18,27 @@
         <thead>
         <tr>
           <th>{{map.title[1]}}</th>
+          <th>
+            <button *ngIf="givenMapType.startsWith('n')" class="btn btn-block btn-outline-warning" data-toggle="tooltip"
+                    placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"
+                    [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, givenMapType + selectedNetwork.mappings.nodesContinuous.indexOf(map) ]} }]">
+              <fa-icon [icon]="faEdit"></fa-icon>
+            </button>
+            <button *ngIf="givenMapType.startsWith('e')" class="btn btn-block btn-outline-warning" data-toggle="tooltip"
+                    placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"
+                    [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, givenMapType + selectedNetwork.mappings.edgesContinuous.indexOf(map) ]} }]">
+              <fa-icon [icon]="faEdit"></fa-icon>
+            </button>
+          </th>
           <th>{{map.title[0]}}</th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let entry of map.chart.lineChartData[0].data; let i = index">
-          <td *ngIf="i === 0">&lt;</td>
-          <td *ngIf="i === map.chart.lineChartLabels.length - 1">&gt;</td>
-          <td
-            *ngIf="i > 0 && i < map.chart.lineChartLabels.length - 1">{{map.chart.lineChartLabels[i]}}</td>
+          <td colspan="2" *ngIf="i === 0">&lt;</td>
+          <td colspan="2" *ngIf="i === map.chart.lineChartLabels.length - 1">&gt;</td>
+          <td colspan="2"
+              *ngIf="i > 0 && i < map.chart.lineChartLabels.length - 1">{{map.chart.lineChartLabels[i]}}</td>
           <td>{{entry}}</td>
         </tr>
         </tbody>
@@ -36,14 +48,26 @@
         <thead>
         <tr>
           <th>{{map.title[1]}}</th>
+          <th>
+            <button *ngIf="givenMapType.startsWith('n')" class="btn btn-block btn-outline-warning" data-toggle="tooltip"
+                    placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"
+                    [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, givenMapType + selectedNetwork.mappings.nodesContinuous.indexOf(map) ]} }]">
+              <fa-icon [icon]="faEdit"></fa-icon>
+            </button>
+            <button *ngIf="givenMapType.startsWith('e')" class="btn btn-block btn-outline-warning" data-toggle="tooltip"
+                    placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"
+                    [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, givenMapType + selectedNetwork.mappings.edgesContinuous.indexOf(map) ]} }]">
+              <fa-icon [icon]="faEdit"></fa-icon>
+            </button>
+          </th>
           <th>{{map.title[0]}}</th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let entry of map.colorGradient; let i = index">
-          <td *ngIf="i === 0">&lt;</td>
-          <td *ngIf="i === map.colorGradient.length - 1">&gt;</td>
-          <td *ngIf="i > 0 && i < map.colorGradient.length - 1">
+          <td colspan="2" *ngIf="i === 0">&lt;</td>
+          <td colspan="2" *ngIf="i === map.colorGradient.length - 1">&gt;</td>
+          <td colspan="2" *ngIf="i > 0 && i < map.colorGradient.length - 1">
             {{entry.numericThreshold}}
           </td>
           <td>
@@ -65,8 +89,16 @@
 
             <td><b>{{style.cssKey}}</b></td>
             <td>
-              <button type="button" class="btn btn-block btn-outline-warning" data-toggle="tooltip"
-                      placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}">
+              <button *ngIf="givenMapType.startsWith('n')" type="button" class="btn btn-block btn-outline-warning"
+                      data-toggle="tooltip"
+                      placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"
+                      [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, givenMapType + selectedNetwork.mappings.nodesDiscrete.indexOf(map), map.styleMap.indexOf(style) ]} }]">
+                <fa-icon [icon]="faEdit"></fa-icon>
+              </button>
+              <button *ngIf="givenMapType.startsWith('e')" type="button" class="btn btn-block btn-outline-warning"
+                      data-toggle="tooltip"
+                      placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"
+                      [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, givenMapType + selectedNetwork.mappings.edgesDiscrete.indexOf(map), map.styleMap.indexOf(style) ]} }]">
                 <fa-icon [icon]="faEdit"></fa-icon>
               </button>
             </td>

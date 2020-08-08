@@ -60,6 +60,26 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'edit/:id/:map/:propertyId',
+    component: MainMappingsNewComponent,
+    children: [
+      {
+        path: '',
+        component: MainInfoComponent
+      }
+    ]
+  },
+  {
+    path: 'edit/:id/:map',
+    component: MainMappingsNewComponent,
+    children: [
+      {
+        path: '',
+        component: MainInfoComponent
+      }
+    ]
+  },
+  {
     path: 'manage',
     component: SidebarManageComponent,
     outlet: 'sidebar'

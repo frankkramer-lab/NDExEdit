@@ -50,7 +50,7 @@
       <span *ngFor="let nodeMap of selectedNetwork.mappings.nodesDiscrete">
         <span *ngFor="let style of nodeMap.styleMap">
           <div class="alert alert-danger" role="alert"
-               *ngIf="nodeMap.classifier === propertyToMap.name && style.cssKey === styleProperty">
+               *ngIf="nodeMap.classifier === propertyToMap.name && style.cssKey === styleProperty && !isEdit">
             <h5>
               <button type="button" class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
                       placement="right"
@@ -92,7 +92,7 @@
                  class="col-4 col-form-label">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
           <div class="col-7">
             <input type="text" class="form-control" id="ndCssProperty" name="ndCssProperty"
-                   [(ngModel)]="styleProperty">
+                   [(ngModel)]="styleProperty" [readOnly]="isEdit">
             <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
             <small *ngIf="needsColorValidation(styleProperty)"
                    class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
@@ -164,7 +164,7 @@
       <!-- ALERT: mapping already exists -->
       <span *ngFor="let nodeMap of selectedNetwork.mappings.nodesContinuous">
         <div class="alert alert-danger" role="alert"
-             *ngIf="nodeMap.title[0].includes(propertyToMap.name) && nodeMap.title[1] === styleProperty">
+             *ngIf="nodeMap.title[0].includes(propertyToMap.name) && nodeMap.title[1] === styleProperty && !isEdit">
           <h5>
             <button type="button" class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
                     placement="right"
@@ -214,7 +214,7 @@
                  class="col-4 col-form-label">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
           <div class="col-7">
             <input type="text" class="form-control" id="ncCssProperty" name="ecCssProperty"
-                   [(ngModel)]="styleProperty">
+                   [(ngModel)]="styleProperty" [readOnly]="isEdit">
             <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
             <small *ngIf="needsColorValidation(styleProperty) || validateAsColor"
                    class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
@@ -325,7 +325,7 @@
       <span *ngFor="let edgeMap of selectedNetwork.mappings.edgesDiscrete">
         <span *ngFor="let style of edgeMap.styleMap">
           <div class="alert alert-danger" role="alert"
-               *ngIf="edgeMap.classifier === propertyToMap.name && style.cssKey === styleProperty">
+               *ngIf="edgeMap.classifier === propertyToMap.name && style.cssKey === styleProperty && !isEdit">
             <h5>
               <button type="button" class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
                       placement="right"
@@ -367,7 +367,7 @@
                  class="col-4 col-form-label">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
           <div class="col-7">
             <input type="text" class="form-control" id="edCssProperty" name="edCssProperty"
-                   [(ngModel)]="styleProperty">
+                   [(ngModel)]="styleProperty" [readOnly]="isEdit">
             <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
             <small *ngIf="needsColorValidation(styleProperty)"
                    class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
@@ -439,7 +439,7 @@
       <!-- ALERT: mapping already exists -->
       <span *ngFor="let edgeMap of selectedNetwork.mappings.edgesContinuous">
         <div class="alert alert-danger" role="alert"
-             *ngIf="edgeMap.title[0].includes(propertyToMap.name) && edgeMap.title[1] === styleProperty">
+             *ngIf="edgeMap.title[0].includes(propertyToMap.name) && edgeMap.title[1] === styleProperty && !isEdit">
           <h5>
             <button type="button" class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
                     placement="right"
@@ -489,7 +489,7 @@
                  class="col-4 col-form-label">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
           <div class="col-7">
             <input type="text" class="form-control" id="ecCssProperty" name="ecCssProperty"
-                   [(ngModel)]="styleProperty">
+                   [(ngModel)]="styleProperty" [readOnly]="isEdit">
             <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
             <small *ngIf="needsColorValidation(styleProperty) || validateAsColor"
                    class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
