@@ -770,7 +770,9 @@ export class DataService {
   removePropertyFromMapping(id: number, property: { mapReference: number; mapType: string; style: any }): void {
     const network = this.getNetworkById(id);
     const isNode = property.mapType.startsWith('n');
-    const mapping: NeGroupedMappingsDiscrete = isNode ? network.mappings.nodesDiscrete[property.mapReference] : network.mappings.edgesDiscrete[property.mapReference];
+    const mapping: NeGroupedMappingsDiscrete = isNode
+      ? network.mappings.nodesDiscrete[property.mapReference]
+      : network.mappings.edgesDiscrete[property.mapReference];
 
     mapping.th = mapping.th.filter(x => x !== property.style.cssKey);
     mapping.styleMap = mapping.styleMap.filter(x => x !== property.style);
@@ -783,7 +785,6 @@ export class DataService {
         }
       }
     }
-
   }
 
   editMapping(id: number, mappingToEdit: any | any[], styleProperty: string, mappingsType: { nc: boolean; nd: boolean; ec: boolean; ed: boolean }): void {
@@ -838,6 +839,34 @@ export class DataService {
 
     } else if (mappingsType.nc) {
       // all selectors are there, but thresholds need to be re-calculated
+      mappingToEdit.breakpoints = mappingToEdit.breakpoints.filter(x => x.value !== null);
+
+      const existingNcMappingIndex = network.mappings.nodesContinuous.findIndex(x => x.title[0] === mappingToEdit.cssKey
+        && x.title[1] === mappingToEdit.mappedProperty.name);
+      const existingNcMapping = network.mappings.nodesContinuous[existingNcMappingIndex];
+
+      if (existingNcMapping.chartValid) {
+        existingNcMapping.chart.lineChartData[0].data[0] = mappingToEdit.defaultLower;
+        existingNcMapping.chart.lineChartData[0].data[mappingToEdit.breakpoints.length + 1] = mappingToEdit.defaultGreater;
+
+        for (let i = 0; i < mappingToEdit.breakpoints.length; i++) {
+          existingNcMapping.chart.lineChartData[0].data[1 + i] = mappingToEdit.breakpoints[i].propertyValue;
+          existingNcMapping.chart.lineChartLabels[1 + i] = mappingToEdit.breakpoints[i].value;
+        }
+      } else if (existingNcMapping.gradientValid) {
+        existingNcMapping.colorGradient[0].color = mappingToEdit.defaultLower;
+        existingNcMapping.colorGradient[mappingToEdit.breakpoints.length + 1].color = mappingToEdit.defaultGreater;
+
+        for (let i = 0; i < mappingToEdit.breakpoints.length; i++) {
+          const offset = (100 * (Number(mappingToEdit.breakpoints[i].value) - Number(mappingToEdit.mappedProperty.min))).toFixed(0);
+          existingNcMapping.colorGradient[1 + i].color = mappingToEdit.breakpoints[i].propertyValue;
+          existingNcMapping.colorGradient[1 + i].numericThreshold = mappingToEdit.breakpoints[i].value;
+          existingNcMapping.colorGradient[1 + i].offset = String(offset) + '%';
+        }
+      }
+
+      network.elements = this.updateElementsContinuously(true, mappingToEdit, network, Number(mappingToEdit.mappedProperty.min), Number(mappingToEdit.mappedProperty.max));
+
     } else if (mappingsType.ec) {
 
       mappingToEdit.breakpoints = mappingToEdit.breakpoints.filter(x => x.value !== null);
@@ -861,14 +890,12 @@ export class DataService {
         existingEcMapping.colorGradient[mappingToEdit.breakpoints.length + 1].color = mappingToEdit.defaultGreater;
 
         for (let i = 0; i < mappingToEdit.breakpoints.length; i++) {
-          console.log(mappingToEdit.breakpoints[i].value, mappingToEdit.mappedProperty.min);
           const offset = (100 * (Number(mappingToEdit.breakpoints[i].value) - Number(mappingToEdit.mappedProperty.min))).toFixed(0);
           existingEcMapping.colorGradient[1 + i].color = mappingToEdit.breakpoints[i].propertyValue;
           existingEcMapping.colorGradient[1 + i].numericThreshold = mappingToEdit.breakpoints[i].value;
           existingEcMapping.colorGradient[1 + i].offset = String(offset) + '%';
         }
       }
-
       network.elements = this.updateElementsContinuously(false, mappingToEdit, network, Number(mappingToEdit.mappedProperty.min), Number(mappingToEdit.mappedProperty.max));
 
     }
