@@ -803,8 +803,8 @@ export class DataService {
         && x.styleMap.map(a => a.cssKey).includes(mappingToEdit[0].cssKey));
       const existingNdMapping = network.mappings.nodesDiscrete[existingNdMappingIndex];
       const correspondingStyleMapNd = existingNdMapping.styleMap.find(x => x.cssKey === mappingToEdit[0].cssKey);
-      const mappingsNotFound = [];
-      const styles: NeStyle[] = network.style;
+      const ndMappingsNotFound = [];
+      const ndStyles: NeStyle[] = network.style;
 
       for (const map of mappingToEdit) {
         const currentSelector = map.selector;
@@ -816,12 +816,11 @@ export class DataService {
           }
         }
         if (!found) {
-          mappingsNotFound.push(map);
+          ndMappingsNotFound.push(map);
           correspondingStyleMapNd.cssValues.push(map.cssValue);
           correspondingStyleMapNd.selectors.push(currentSelector);
         }
       }
-      console.log(mappingToEdit, correspondingStyleMapNd);
 
       for (let i = 0; i < correspondingStyleMapNd.selectors.length; i++) {
         let found = false;
@@ -840,21 +839,31 @@ export class DataService {
           };
           newStyle.style[correspondingStyleMapNd.cssKey] = correspondingStyleMapNd.cssValues[i];
 
-          for (const map of mappingsNotFound) {
+          for (const map of ndMappingsNotFound) {
             for (const element of network.elements) {
               if (element.group === 'nodes') {
                 for (const attribute of element.data.attributes) {
                   if (attribute.keyHR === map.colHR && attribute.valueHR === map.isHR) {
-                    console.log(map);
                     element.data.classes.push(map.selector.substring(1));
                     newStyle.appliedTo.push(element.data as NeNode);
                   }
                 }
               }
               element.classes = element.data.classes.join(' ');
+              for (const nodeMap of network.mappings.nodesDiscrete) {
+                if (nodeMap.classifier === map.colHR) {
+                  if (!nodeMap.selectors.includes(map.selector)) {
+                    nodeMap.selectors.push(map.selector);
+                  }
+                  if (!nodeMap.values.includes(map.isHR)) {
+                    nodeMap.values.push(map.isHR);
+                  }
+                }
+              }
             }
           }
-          network.style = UtilityService.orderStylesByPriority(styles.concat([newStyle]));
+          network.style = UtilityService.orderStylesByPriority(ndStyles.concat([newStyle]));
+
         }
       }
 
@@ -863,22 +872,68 @@ export class DataService {
       const existingEdMappingIndex = network.mappings.edgesDiscrete.findIndex(x => x.classifier === mappingToEdit[0].colHR
         && x.styleMap.map(a => a.cssKey).includes(mappingToEdit[0].cssKey));
       const existingEdMapping = network.mappings.edgesDiscrete[existingEdMappingIndex];
-
       const correspondingStyleMapEd = existingEdMapping.styleMap.find(x => x.cssKey === mappingToEdit[0].cssKey);
+      const edMappingsNotFound = [];
+      const edStyles: NeStyle[] = network.style;
+
       for (const map of mappingToEdit) {
+        let found = false;
         const currentSelector = map.selector;
         for (let i = 0; i < correspondingStyleMapEd.cssValues.length; i++) {
           if (correspondingStyleMapEd.selectors[i] === currentSelector) {
             correspondingStyleMapEd.cssValues[i] = map.cssValue;
+            found = true;
           }
+        }
+        if (!found) {
+          edMappingsNotFound.push(map);
+          correspondingStyleMapEd.cssValues.push(map.cssValue);
+          correspondingStyleMapEd.selectors.push(currentSelector);
         }
       }
 
-      for (const s of network.style) {
-        for (let i = 0; i < correspondingStyleMapEd.selectors.length; i++) {
+      for (let i = 0; i < correspondingStyleMapEd.selectors.length; i++) {
+        let found = false;
+        for (const s of network.style) {
           if (s.selector === correspondingStyleMapEd.selectors[i]) {
+            found = true;
             s.style[correspondingStyleMapEd.cssKey] = correspondingStyleMapEd.cssValues[i];
           }
+        }
+        if (!found) {
+          const newStyle: NeStyle = {
+            selector: correspondingStyleMapEd.selectors[i],
+            style: {},
+            appliedTo: [],
+            priority: UtilityService.utilfindPriorityBySelector(correspondingStyleMapEd.selectors[i]),
+          };
+          newStyle.style[correspondingStyleMapEd.cssKey] = correspondingStyleMapEd.cssValues[i];
+
+          for (const map of edMappingsNotFound) {
+            for (const element of network.elements) {
+              if (element.group === 'edges') {
+                for (const attribute of element.data.attributes) {
+                  if (attribute.keyHR === map.colHR && attribute.valueHR === map.isHR) {
+                    element.data.classes.push(map.selector.substring(1));
+                    newStyle.appliedTo.push(element.data as NeEdge);
+                  }
+                }
+              }
+              element.classes = element.data.classes.join(' ');
+              for (const edgeMap of network.mappings.edgesDiscrete) {
+                if (edgeMap.classifier === map.colHR) {
+                  if (!edgeMap.selectors.includes(map.selector)) {
+                    edgeMap.selectors.push(map.selector);
+                  }
+                  if (!edgeMap.values.includes(map.isHR)) {
+                    edgeMap.values.push(map.isHR);
+                  }
+                }
+              }
+            }
+          }
+          network.style = UtilityService.orderStylesByPriority(edStyles.concat([newStyle]));
+
         }
       }
 
