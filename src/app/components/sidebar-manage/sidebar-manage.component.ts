@@ -192,13 +192,16 @@ export class SidebarManageComponent {
           eCollection.push(cMapping.chart.lineChartData[0].data[i]);
           gCollection.push(cMapping.chart.lineChartData[0].data[i]);
         }
-        ovCollection.splice(0, 1); // remove threshold for default lowest
-        ovCollection.splice(ovCollection.length - 1, 1); // remove threshold for default highest
+        // ovCollection.splice(0, 1); // remove threshold for default lowest
+        // ovCollection.splice(ovCollection.length - 1, 1); // remove threshold for default highest
+
+        const defaultLower = cMapping.chart.lineChartData[0].data[0];
+        const defaultGreater = cMapping.chart.lineChartData[0].data[cMapping.chart.lineChartData[0].data.length - 1];
 
         const newNumericMapping: NeMappings = {
           key: lookup,
           type: 'double',
-          definition: this.collapseContinuousMappingIntoString(col, 'double', lCollection, eCollection, gCollection, ovCollection)
+          definition: this.collapseContinuousMappingIntoString(col, 'double', lCollection, eCollection, gCollection, ovCollection, defaultLower, defaultGreater)
         };
         newMappings.push(newNumericMapping);
 
@@ -213,13 +216,15 @@ export class SidebarManageComponent {
           eCollection.push(gradient.color);
           gCollection.push(gradient.color);
         }
-        ovCollection.splice(0, 1, ovCollection[1]); // remove threshold for default lowest
-        ovCollection.splice(ovCollection.length - 1, 1); // remove threshold for default highest
+        // ovCollection.splice(0, 1, ovCollection[1]); // remove threshold for default lowest
+        // ovCollection.splice(ovCollection.length - 1, 1); // remove threshold for default highest
 
+        const defaultLower = cMapping.colorGradient.find(x => x.offset === '-1').color;
+        const defaultGreater = cMapping.colorGradient.find(x => x.offset === '101').color;
         const newColorMapping: NeMappings = {
           key: lookup,
           type: 'double',
-          definition: this.collapseContinuousMappingIntoString(col, 'double', lCollection, eCollection, gCollection, ovCollection),
+          definition: this.collapseContinuousMappingIntoString(col, 'double', lCollection, eCollection, gCollection, ovCollection, defaultLower, defaultGreater),
         };
         newMappings.push(newColorMapping);
       }
@@ -262,24 +267,41 @@ export class SidebarManageComponent {
                                               lCollection: string[],
                                               eCollection: string[],
                                               gCollection: string[],
-                                              ovCollection: string[]): string {
+                                              ovCollection: string[],
+                                              defaultLower: string,
+                                              defaultGreater: string): string {
 
     if (lCollection.length !== eCollection.length || gCollection.length !== lCollection.length) {
       return '';
     }
 
     const partials = [];
-    for (let i = 0; i < lCollection.length; i++) {
-      partials.push('L=' + i + '=' + lCollection[i]);
-      partials.push('E=' + i + '=' + eCollection[i]);
-      partials.push('G=' + i + '=' + gCollection[i]);
-      if (i === 0) {
-        partials.push('OV=' + i + '=' + ovCollection[1]);
-      } else if (i === lCollection.length - 1) {
-        partials.push('OV=' + i + '=' + ovCollection[ovCollection.length - 1]);
+    // for (let i = 0; i < ovCollection.length; i++) {
+    //   if (i > 0) {
+    //     partials.push('L=' + i + '=' + lCollection[i + 1]);
+    //   }
+    //   partials.push('E=' + i + '=' + eCollection[i + 1]);
+    //   if (i < ovCollection.length - 1) {
+    //     partials.push('G=' + i + '=' + gCollection[i + 1]);
+    //   }
+    //   partials.push('OV=' + i + '=' + ovCollection[i]);
+    // }
+
+    console.log(ovCollection);
+
+    for (let i = 1; i < ovCollection.length - 1; i++) {
+      if (i === 1) {
+        partials.push('L=' + (i - 1) + '=' + defaultLower);
       } else {
-        partials.push('OV=' + i + '=' + ovCollection[i]);
+        partials.push('L=' + (i - 1) + '=' + lCollection[i]);
       }
+      partials.push('E=' + (i - 1) + '=' + eCollection[i]);
+      if (i === ovCollection.length - 2) {
+        partials.push('G=' + (i - 1) + '=' + defaultGreater);
+      } else {
+        partials.push('G=' + (i - 1) + '=' + gCollection[i]);
+      }
+      partials.push('OV=' + (i - 1) + '=' + ovCollection[i]);
     }
 
     return 'COL=' + col + ',T=' + t + ',' + partials.join(',');
