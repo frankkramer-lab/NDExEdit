@@ -21,6 +21,7 @@ import {NeAspect} from '../models/ne-aspect';
 import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete';
 import {NeContinuousCollection} from '../models/ne-continuous-collection';
 import {NeColorGradient} from '../models/ne-color-gradient';
+import {UtilityService} from './utility.service';
 
 @Injectable({
   providedIn: 'root'
@@ -64,19 +65,19 @@ export class ParseService {
    */
   private lookupData: NeConversionMap[];
 
-  /**
-   * Utility method for removing any whitespace and round brackets from a string; also casts to lower case
-   *
-   * @param input string to be cleaned
-   * @returns cleaned string
-   */
-  public static utilCleanString(input: string): string {
-    if (!input) {
-      return '';
-    }
-    input = String(input);
-    return input.replace(/\s*\(*\)*\.*/g, '').toLowerCase();
-  }
+  // /**
+  //  * Utility method for removing any whitespace and round brackets from a string; also casts to lower case
+  //  *
+  //  * @param input string to be cleaned
+  //  * @returns cleaned string
+  //  */
+  // public static utilCleanString(input: string): string {
+  //   if (!input) {
+  //     return '';
+  //   }
+  //   input = String(input);
+  //   return input.replace(/\s*\(*\)*\.*/g, '').toLowerCase();
+  // }
 
   /**
    * Method for parsing node data. See {@link NeNode|NeNode} for further info on format
@@ -110,9 +111,9 @@ export class ParseService {
     for (const entry of readData) {
       const obj: NeElementAttribute = {
         reference: String(entry.po),
-        key: ParseService.utilCleanString(entry.n),
+        key: UtilityService.utilCleanString(entry.n),
         keyHR: entry.n,
-        value: ParseService.utilCleanString(entry.v),
+        value: UtilityService.utilCleanString(entry.v),
         valueHR: entry.v,
         datatype: entry.d || null
       };
@@ -144,7 +145,7 @@ export class ParseService {
           reference: obj.id,
           key: 'interaction',
           keyHR: 'interaction',
-          value: this.utilCleanString(entry.i),
+          value: UtilityService.utilCleanString(entry.i),
           valueHR: entry.i,
           datatype: 'string'
         });
@@ -256,25 +257,25 @@ export class ParseService {
     return parsedStyles.sort((a, b) => (a.priority < b.priority) ? -1 : 1);
   }
 
-  public static findPriorityBySelector(selector: string): number {
-    let priority = -1;
-
-    if (selector === 'node' || selector === 'edge') {
-      // selectors: default
-      priority = 0;
-    } else if (selector.startsWith('.') && selector.match(/[0-9]/g) === null) {
-      // selectors: aspect specific
-      priority = 1;
-    } else if (selector.match(/[0-9]/g) !== null) {
-      // selectors: element specific
-      priority = 2;
-    } else if (selector.includes(':')) {
-      // selectors: special
-      priority = 3;
-    }
-
-    return priority;
-  }
+  // public static findPriorityBySelector(selector: string): number {
+  //   let priority = -1;
+  //
+  //   if (selector === 'node' || selector === 'edge') {
+  //     // selectors: default
+  //     priority = 0;
+  //   } else if (selector.startsWith('.') && selector.match(/[0-9]/g) === null) {
+  //     // selectors: aspect specific
+  //     priority = 1;
+  //   } else if (selector.match(/[0-9]/g) !== null) {
+  //     // selectors: element specific
+  //     priority = 2;
+  //   } else if (selector.includes(':')) {
+  //     // selectors: special
+  //     priority = 3;
+  //   }
+  //
+  //   return priority;
+  // }
 
   /**
    * Parses a file from .cx to cytoscape.js interpretable data
@@ -1001,7 +1002,7 @@ export class ParseService {
       builtSelector = lookupMap.selector;
     }
 
-    const priority = ParseService.findPriorityBySelector(builtSelector);
+    const priority = UtilityService.utilfindPriorityBySelector(builtSelector);
 
     // case 1: simply applicable
     if (lookupMap && !lookupMap.conversionType && lookupMap[to].length === 1) {
@@ -1138,7 +1139,7 @@ export class ParseService {
       const equalSplit = cs.split('=');
       switch (equalSplit[0]) {
         case 'COL':
-          tmpObj.col = ParseService.utilCleanString(equalSplit[1]);
+          tmpObj.col = UtilityService.utilCleanString(equalSplit[1]);
           originalCol = equalSplit[1];
           break;
         case 'T':
@@ -1155,7 +1156,7 @@ export class ParseService {
 
     for (const k of tmpCollection.tmpK) {
       lookupProperty.value = tmpCollection.tmpV[tmpCollection.tmpK.indexOf(k)];
-      tmpObj.is = ParseService.utilCleanString(k);
+      tmpObj.is = UtilityService.utilCleanString(k);
 
       if (tmpObj.col === 'sharedinteraction') {
         tmpObj.col = 'interaction';
@@ -1163,7 +1164,7 @@ export class ParseService {
       }
 
       const tmpSelector = '.'.concat(elementType.concat('_'.concat(tmpObj.col.concat('_'.concat(tmpObj.is)))));
-      const priority = ParseService.findPriorityBySelector(tmpSelector);
+      const priority = UtilityService.utilfindPriorityBySelector(tmpSelector);
       tmpObj.selector = tmpSelector;
 
       let lookup: NeStyleComponent[] = [];
@@ -1286,7 +1287,7 @@ export class ParseService {
           let intervalPointer = -1;
 
           const finalSelector = '.'.concat(elementType.concat('_'.concat(element.id)));
-          const priority = ParseService.findPriorityBySelector(finalSelector);
+          const priority = UtilityService.utilfindPriorityBySelector(finalSelector);
 
           for (let i = 0; i < (thresholds.length); i++) {
 

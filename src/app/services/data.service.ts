@@ -13,6 +13,7 @@ import {NeThresholdMap} from '../models/ne-threshold-map';
 import {NeContinuousChart} from '../models/ne-continuous-chart';
 import {NeStyleMap} from '../models/ne-style-map';
 import {ElementDefinition} from 'cytoscape';
+import {UtilityService} from './utility.service';
 
 @Injectable({
   providedIn: 'root'
@@ -47,14 +48,14 @@ export class DataService {
     'source-arrow-color',
   ];
 
-  /**
-   * Orders styles by their priority to avoid overriding high priority styles with newly added styles
-   *
-   * @param styles List of styles to be sorted
-   */
-  private static orderStylesByPriority(styles: NeStyle[]): NeStyle[] {
-    return styles.sort((a, b) => (a.priority < b.priority) ? -1 : 1);
-  }
+  // /**
+  //  * Orders styles by their priority to avoid overriding high priority styles with newly added styles
+  //  *
+  //  * @param styles List of styles to be sorted
+  //  */
+  // private static orderStylesByPriority(styles: NeStyle[]): NeStyle[] {
+  //   return styles.sort((a, b) => (a.priority < b.priority) ? -1 : 1);
+  // }
 
   /**
    * Fills a string with leading zeros to the specified length
@@ -283,7 +284,7 @@ export class DataService {
         }
       }
     }
-    network.style = DataService.orderStylesByPriority(styles);
+    network.style = UtilityService.orderStylesByPriority(styles);
     network.elements = elements;
 
     const newlyGroupedMappings = this.updateMappings(discreteMapping, network.mappings, isNode);
@@ -568,7 +569,7 @@ export class DataService {
     }
 
     network.elements = this.updateElementsContinuously(isNode, continuousMapping, network, minPropertyValue, maxPropertyValue);
-    network.style = DataService.orderStylesByPriority(styles);
+    network.style = UtilityService.orderStylesByPriority(styles);
     this.networksParsed = this.networksParsed.filter(x => x.id !== id).concat(network);
   }
 
@@ -654,7 +655,11 @@ export class DataService {
     return returnValue;
   }
 
-  private updateElementsContinuously(isNode: boolean, continuousMapping: any, network: NeNetwork, minPropertyValue, maxPropertyValue): ElementDefinition[] {
+  private updateElementsContinuously(isNode: boolean,
+                                     continuousMapping: any,
+                                     network: NeNetwork,
+                                     minPropertyValue,
+                                     maxPropertyValue): ElementDefinition[] {
     const styles: NeStyle[] = network.style;
     const elements: ElementDefinition[] = network.elements;
 
@@ -787,29 +792,69 @@ export class DataService {
     }
   }
 
-  editMapping(id: number, mappingToEdit: any | any[], styleProperty: string, mappingsType: { nc: boolean; nd: boolean; ec: boolean; ed: boolean }): void {
+  editMapping(id: number,
+              mappingToEdit: any | any[],
+              styleProperty: string,
+              mappingsType: { nc: boolean; nd: boolean; ec: boolean; ed: boolean }): void {
     const network = this.getNetworkById(id);
     if (mappingsType.nd) {
 
       const existingNdMappingIndex = network.mappings.nodesDiscrete.findIndex(x => x.classifier === mappingToEdit[0].colHR
         && x.styleMap.map(a => a.cssKey).includes(mappingToEdit[0].cssKey));
       const existingNdMapping = network.mappings.nodesDiscrete[existingNdMappingIndex];
-
       const correspondingStyleMapNd = existingNdMapping.styleMap.find(x => x.cssKey === mappingToEdit[0].cssKey);
+      const mappingsNotFound = [];
+      const styles: NeStyle[] = network.style;
+
       for (const map of mappingToEdit) {
         const currentSelector = map.selector;
+        let found = false;
         for (let i = 0; i < correspondingStyleMapNd.cssValues.length; i++) {
           if (correspondingStyleMapNd.selectors[i] === currentSelector) {
             correspondingStyleMapNd.cssValues[i] = map.cssValue;
+            found = true;
           }
         }
+        if (!found) {
+          mappingsNotFound.push(map);
+          correspondingStyleMapNd.cssValues.push(map.cssValue);
+          correspondingStyleMapNd.selectors.push(currentSelector);
+        }
       }
+      console.log(mappingToEdit, correspondingStyleMapNd);
 
-      for (const s of network.style) {
-        for (let i = 0; i < correspondingStyleMapNd.selectors.length; i++) {
+      for (let i = 0; i < correspondingStyleMapNd.selectors.length; i++) {
+        let found = false;
+        for (const s of network.style) {
           if (s.selector === correspondingStyleMapNd.selectors[i]) {
+            found = true;
             s.style[correspondingStyleMapNd.cssKey] = correspondingStyleMapNd.cssValues[i];
           }
+        }
+        if (!found) {
+          const newStyle: NeStyle = {
+            selector: correspondingStyleMapNd.selectors[i],
+            style: {},
+            appliedTo: [],
+            priority: UtilityService.utilfindPriorityBySelector(correspondingStyleMapNd.selectors[i]),
+          };
+          newStyle.style[correspondingStyleMapNd.cssKey] = correspondingStyleMapNd.cssValues[i];
+
+          for (const map of mappingsNotFound) {
+            for (const element of network.elements) {
+              if (element.group === 'nodes') {
+                for (const attribute of element.data.attributes) {
+                  if (attribute.keyHR === map.colHR && attribute.valueHR === map.isHR) {
+                    console.log(map);
+                    element.data.classes.push(map.selector.substring(1));
+                    newStyle.appliedTo.push(element.data as NeNode);
+                  }
+                }
+              }
+              element.classes = element.data.classes.join(' ');
+            }
+          }
+          network.style = UtilityService.orderStylesByPriority(styles.concat([newStyle]));
         }
       }
 
@@ -865,7 +910,8 @@ export class DataService {
         }
       }
 
-      network.elements = this.updateElementsContinuously(true, mappingToEdit, network, Number(mappingToEdit.mappedProperty.min), Number(mappingToEdit.mappedProperty.max));
+      network.elements = this.updateElementsContinuously(true,
+        mappingToEdit, network, Number(mappingToEdit.mappedProperty.min), Number(mappingToEdit.mappedProperty.max));
 
     } else if (mappingsType.ec) {
 
@@ -896,7 +942,8 @@ export class DataService {
           existingEcMapping.colorGradient[1 + i].offset = String(offset) + '%';
         }
       }
-      network.elements = this.updateElementsContinuously(false, mappingToEdit, network, Number(mappingToEdit.mappedProperty.min), Number(mappingToEdit.mappedProperty.max));
+      network.elements = this.updateElementsContinuously(false,
+        mappingToEdit, network, Number(mappingToEdit.mappedProperty.min), Number(mappingToEdit.mappedProperty.max));
 
     }
   }

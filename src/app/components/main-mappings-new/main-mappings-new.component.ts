@@ -21,6 +21,7 @@ import {ParseService} from '../../services/parse.service';
 import {NeContinuousThresholds} from '../../models/ne-continuous-thresholds';
 import {NeThresholdMap} from '../../models/ne-threshold-map';
 import {NeGroupedMappingsDiscrete} from '../../models/ne-grouped-mappings-discrete';
+import {UtilityService} from '../../services/utility.service';
 
 @Component({
   selector: 'app-main-mappings-new',
@@ -141,7 +142,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
             existingMapping = this.selectedNetwork.mappings.nodesDiscrete[mapId];
             this.propertyToMap = this.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === existingMapping.classifier);
             this.styleProperty = existingMapping.styleMap[propertyId].cssKey;
-            this.prefillDiscreteMapping(existingMapping, Number(propertyId));
+            this.prefillDiscreteMapping(existingMapping, Number(propertyId), true);
             break;
           case 'nc':
             existingMapping = this.selectedNetwork.mappings.nodesContinuous[mapId];
@@ -154,7 +155,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
             existingMapping = this.selectedNetwork.mappings.edgesDiscrete[mapId];
             this.propertyToMap = this.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === existingMapping.classifier);
             this.styleProperty = existingMapping.styleMap[propertyId].cssKey;
-            this.prefillDiscreteMapping(existingMapping, Number(propertyId));
+            this.prefillDiscreteMapping(existingMapping, Number(propertyId), false);
             break;
           case 'ec':
             existingMapping = this.selectedNetwork.mappings.edgesContinuous[mapId];
@@ -230,21 +231,47 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     }
   }
 
-  prefillDiscreteMapping(mapping: NeGroupedMappingsDiscrete, propertyId: number): void {
+  prefillDiscreteMapping(mapping: NeGroupedMappingsDiscrete, propertyId: number, isNode: boolean): void {
     this.discreteMapping = [];
+    const correspondingAkv = (isNode
+      ? this.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === mapping.classifier)
+      : this.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === mapping.classifier));
+
+    console.log(correspondingAkv);
+
     for (const selector of mapping.styleMap[propertyId].selectors) {
       const mapObj: NeMappingsDefinition = {
-        col: mapping.classifier,
+        col: UtilityService.utilCleanString(mapping.classifier),
         colHR: mapping.classifier,
-        is: mapping.values[mapping.styleMap[propertyId].selectors.indexOf(selector)],
+        is: UtilityService.utilCleanString(mapping.values[mapping.styleMap[propertyId].selectors.indexOf(selector)]),
         isHR: mapping.values[mapping.styleMap[propertyId].selectors.indexOf(selector)],
         selector,
         cssKey: this.styleProperty,
         cssValue: mapping.styleMap[propertyId].cssValues[mapping.styleMap[propertyId].selectors.indexOf(selector)],
-        priority: null
+        priority: UtilityService.utilfindPriorityBySelector(selector)
       };
       this.discreteMapping.push(mapObj);
     }
+
+    for (const val of correspondingAkv.values) {
+      if (!this.discreteMapping.map(x => x.isHR).includes(val)) {
+        const col = UtilityService.utilCleanString(correspondingAkv.name);
+        const is = UtilityService.utilCleanString(val);
+        const selector = (isNode ? '.node_' : '.edge_') + col + '_' + is;
+        const obj: NeMappingsDefinition = {
+          col,
+          colHR: correspondingAkv.name,
+          is,
+          isHR: val,
+          selector,
+          cssKey: this.styleProperty,
+          cssValue: '',
+          priority: UtilityService.utilfindPriorityBySelector(selector)
+        };
+        this.discreteMapping.push(obj);
+      }
+    }
+
   }
 
 
@@ -284,16 +311,16 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
 
   private initDiscreteMapping(baseType: string): void {
     for (const value of this.propertyToMap.values) {
-      const selector = '.' + (baseType.startsWith('n') ? 'node' : 'edge') + '_' + ParseService.utilCleanString(this.propertyToMap.name) + '_' + ParseService.utilCleanString(value);
+      const selector = '.' + (baseType.startsWith('n') ? 'node' : 'edge') + '_' + UtilityService.utilCleanString(this.propertyToMap.name) + '_' + UtilityService.utilCleanString(value);
       const tmp: NeMappingsDefinition = {
-        col: ParseService.utilCleanString(this.propertyToMap.name),
+        col: UtilityService.utilCleanString(this.propertyToMap.name),
         colHR: this.propertyToMap.name,
-        is: ParseService.utilCleanString(value),
+        is: UtilityService.utilCleanString(value),
         isHR: value,
         selector,
         cssKey: this.styleProperty,
         cssValue: null,
-        priority: ParseService.findPriorityBySelector(selector),
+        priority: UtilityService.utilfindPriorityBySelector(selector),
         datatype: null
       };
       this.discreteMapping.push(tmp);
