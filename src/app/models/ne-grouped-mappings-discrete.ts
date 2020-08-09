@@ -6,4 +6,5 @@ export interface NeGroupedMappingsDiscrete {
   styleMap: NeStyleMap[];
   th: string[];
   selectors: string[];
+  datatype?: string;
 }

@@ -65,20 +65,6 @@ export class ParseService {
    */
   private lookupData: NeConversionMap[];
 
-  // /**
-  //  * Utility method for removing any whitespace and round brackets from a string; also casts to lower case
-  //  *
-  //  * @param input string to be cleaned
-  //  * @returns cleaned string
-  //  */
-  // public static utilCleanString(input: string): string {
-  //   if (!input) {
-  //     return '';
-  //   }
-  //   input = String(input);
-  //   return input.replace(/\s*\(*\)*\.*/g, '').toLowerCase();
-  // }
-
   /**
    * Method for parsing node data. See {@link NeNode|NeNode} for further info on format
    * @param readData input data
@@ -257,32 +243,13 @@ export class ParseService {
     return parsedStyles.sort((a, b) => (a.priority < b.priority) ? -1 : 1);
   }
 
-  // public static findPriorityBySelector(selector: string): number {
-  //   let priority = -1;
-  //
-  //   if (selector === 'node' || selector === 'edge') {
-  //     // selectors: default
-  //     priority = 0;
-  //   } else if (selector.startsWith('.') && selector.match(/[0-9]/g) === null) {
-  //     // selectors: aspect specific
-  //     priority = 1;
-  //   } else if (selector.match(/[0-9]/g) !== null) {
-  //     // selectors: element specific
-  //     priority = 2;
-  //   } else if (selector.includes(':')) {
-  //     // selectors: special
-  //     priority = 3;
-  //   }
-  //
-  //   return priority;
-  // }
-
   /**
    * Parses a file from .cx to cytoscape.js interpretable data
    *
    * @param filedata data of the .cx file
+   * @param filename name of original file
    */
-  mockedFiles(filedata: any): NeNetwork {
+  mockedFiles(filedata: any, filename: string): NeNetwork {
     let networkAttributeData;
     let nodeData;
     let nodeAttributeData;
@@ -346,6 +313,7 @@ export class ParseService {
       networkType: '',
       organism: '',
       description: '',
+      originalFilename: filename
     };
 
     for (const na of networkAttributes) {
@@ -1556,7 +1524,8 @@ export class ParseService {
         values: [],
         styleMap: [],
         th: [],
-        selectors: []
+        selectors: [],
+        datatype: map.datatype
       });
     }
 

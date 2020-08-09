@@ -45,6 +45,7 @@
   "SIDEBAR_MANAGE_NW_NAME": "Network name",
   "SIDEBAR_MANAGE_TT_INFO": "Info about this network",
   "SIDEBAR_MANAGE_TT_EDIT": "Render and edit this network",
+  "SIDEBAR_MANAGE_TT_DOWNLOAD": "Download as .cx file",
   "SIDEBAR_MANAGE_HELP": "Are you lost?",
   "SIDEBAR_MANAGE_TT_HELP": "Tips and first steps",
   "SIDEBAR_MANAGE_LOCAL_FILE_LABEL": "Browse local files",

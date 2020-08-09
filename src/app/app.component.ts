@@ -95,7 +95,7 @@ export class AppComponent {
   private initDemoNetwork(filename: string): void {
     this.loadFileFromAssets(filename)
       .then(network => {
-        const parsedNetwork = this.parseFileFromAssets(network);
+        const parsedNetwork = this.parseFileFromAssets(network, filename);
         this.dataService.networksDownloaded.push(network);
         this.dataService.networksParsed.push(parsedNetwork);
       })
@@ -105,9 +105,10 @@ export class AppComponent {
   /**
    * Method to parse the specified network from .cx to cytoscape format
    * @param network network file in .cx format
+   * @param filename name of file, needed for reconversion
    */
-  private parseFileFromAssets(network: any): NeNetwork {
-    return this.parseService.mockedFiles(network);
+  private parseFileFromAssets(network: any, filename: string): NeNetwork {
+    return this.parseService.mockedFiles(network, this.mockedFilepath + filename);
   }
 
   /**

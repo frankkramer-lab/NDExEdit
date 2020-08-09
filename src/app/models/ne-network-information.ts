@@ -4,4 +4,5 @@ export interface NeNetworkInformation {
   networkType?: string;
   organism?: string;
   description?: string;
+  originalFilename?: string;
 }
