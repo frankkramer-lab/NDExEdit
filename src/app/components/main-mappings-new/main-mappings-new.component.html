@@ -47,15 +47,16 @@
       <p>{{'MAIN_MAPPINGS_NEW_INSTRUCTIONS' | translate}}</p>
 
       <!-- ALERT: mapping already exists -->
-      <span *ngFor="let nodeMap of selectedNetwork.mappings.nodesDiscrete">
-        <span *ngFor="let style of nodeMap.styleMap">
+      <span *ngFor="let nodeMap of selectedNetwork.mappings.nodesDiscrete; let mapIndex = index;">
+        <span *ngFor="let style of nodeMap.styleMap; let propertyIndex = index;">
           <div class="alert alert-danger" role="alert"
                *ngIf="nodeMap.classifier === propertyToMap.name && style.cssKey === styleProperty && !isEdit">
             <h5>
               <button type="button" class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
                       placement="right"
                       ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
-                      (click)="redirect()">
+                      (click)="redirect(nodeMap)"
+                      [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, 'nd' + mapIndex, propertyIndex ]} }]">
                 <fa-icon [icon]="faRoute"></fa-icon>
               </button>
               {{'MAIN_MAPPINGS_NEW_ALREADY_EXISTS' | translate}}
@@ -170,14 +171,15 @@
       <h3>{{'MAIN_MAPPINGS_NEW_NC' | translate}}</h3>
 
       <!-- ALERT: mapping already exists -->
-      <span *ngFor="let nodeMap of selectedNetwork.mappings.nodesContinuous">
+      <span *ngFor="let nodeMap of selectedNetwork.mappings.nodesContinuous; let mapIndex = index;">
         <div class="alert alert-danger" role="alert"
-             *ngIf="nodeMap.title[0].includes(propertyToMap.name) && nodeMap.title[1] === styleProperty && !isEdit">
+             *ngIf="nodeMap.title[1] === propertyToMap.name && nodeMap.title[0].includes(styleProperty) && !isEdit">
           <h5>
             <button type="button" class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
                     placement="right"
                     ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
-                    (click)="redirect()">
+                    (click)="redirect(nodeMap)"
+                    [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, 'nc' + mapIndex ]} }]">
               <fa-icon [icon]="faRoute"></fa-icon>
             </button>
             {{'MAIN_MAPPINGS_NEW_ALREADY_EXISTS' | translate}}
@@ -338,15 +340,16 @@
       <p>{{'MAIN_MAPPINGS_NEW_INSTRUCTIONS' | translate}}</p>
 
       <!-- ALERT: mapping already exists -->
-      <span *ngFor="let edgeMap of selectedNetwork.mappings.edgesDiscrete">
-        <span *ngFor="let style of edgeMap.styleMap">
+      <span *ngFor="let edgeMap of selectedNetwork.mappings.edgesDiscrete; let mapIndex = index">
+        <span *ngFor="let style of edgeMap.styleMap; let propertyIndex = index">
           <div class="alert alert-danger" role="alert"
                *ngIf="edgeMap.classifier === propertyToMap.name && style.cssKey === styleProperty && !isEdit">
             <h5>
               <button type="button" class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
                       placement="right"
                       ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
-                      (click)="redirect()">
+                      (click)="redirect(edgeMap)"
+                      [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, 'ed' + mapIndex, propertyIndex ]} }]">
                 <fa-icon [icon]="faRoute"></fa-icon>
               </button>
               {{'MAIN_MAPPINGS_NEW_ALREADY_EXISTS' | translate}}
@@ -461,14 +464,15 @@
       <h3>{{'MAIN_MAPPINGS_NEW_EC' | translate}}</h3>
 
       <!-- ALERT: mapping already exists -->
-      <span *ngFor="let edgeMap of selectedNetwork.mappings.edgesContinuous">
+      <span *ngFor="let edgeMap of selectedNetwork.mappings.edgesContinuous; let mapIndex = index;">
         <div class="alert alert-danger" role="alert"
-             *ngIf="edgeMap.title[0].includes(propertyToMap.name) && edgeMap.title[1] === styleProperty && !isEdit">
+             *ngIf="edgeMap.title[1] === propertyToMap.name && edgeMap.title[0].includes(styleProperty) && !isEdit">
           <h5>
             <button type="button" class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
                     placement="right"
                     ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
-                    (click)="redirect()">
+                    (click)="redirect(edgeMap)"
+                    [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, 'ec' + mapIndex ]} }]">
               <fa-icon [icon]="faRoute"></fa-icon>
             </button>
             {{'MAIN_MAPPINGS_NEW_ALREADY_EXISTS' | translate}}

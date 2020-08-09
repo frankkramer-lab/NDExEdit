@@ -425,8 +425,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   }
 
   // todo
-  redirect(): void {
-    console.log('redirect');
+  redirect(mapping: any): void {
+    console.log(mapping);
   }
 
   editMapping(): void {
