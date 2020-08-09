@@ -5,6 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {NeMappings} from '../../models/ne-mappings';
 import {NeGroupedMappingsDiscrete} from '../../models/ne-grouped-mappings-discrete';
 import {NeConversionMap} from '../../models/ne-conversion-map';
+import {UtilityService} from '../../services/utility.service';
 
 @Component({
   selector: 'app-sidebar-manage',
@@ -77,24 +78,14 @@ export class SidebarManageComponent {
   }
 
   /**
-   * Triggers reconversion to .cx file format and downloads the resulting file
-   *
-   * @param id network's id
-   */
-  downloadAsCx(id: number): void {
-    const data: Response = this.reconvert(id);
-  }
-
-  /**
    * Converts a network to .cx file format
    *
    * @param id network's id
    */
-  reconvert(id: number): Response {
+  reconvert(id: number): void {
     const network = this.dataService.networksParsed.find(x => x.id === id);
     let mappingsNodes: NeMappings[] = [];
     let mappingsEdges: NeMappings[] = [];
-    let cyVisualProperties;
 
     for (const ndMapping of network.mappings.nodesDiscrete) {
       const map: NeMappings[] = this.buildDiscreteMappingDefinition(ndMapping);
@@ -116,35 +107,48 @@ export class SidebarManageComponent {
       const map: NeMappings[] = this.buildContinuousMappingDefinition(ecMapping);
       mappingsEdges = mappingsEdges.concat(map);
     }
-    console.log(mappingsNodes, mappingsEdges);
 
     const originalFile = this.http.get(network.networkInformation.originalFilename)
-      .toPromise()
-      .then((originalData: any[]) => {
+      .subscribe((originalData: any[]) => {
 
         for (const aspect of originalData) {
           if (aspect.cyVisualProperties) {
-            cyVisualProperties = aspect.cyVisualProperties;
-            break;
+            for (const cvp of aspect.cyVisualProperties) {
+              switch (cvp.properties_of) {
+                case 'nodes:default':
+                  if (mappingsNodes.length > 0) {
+                    cvp.mappings = {};
+                    for (const nodeMap of mappingsNodes) {
+                      cvp.mappings[nodeMap.key] = {
+                        type: nodeMap.type,
+                        definition: nodeMap.definition
+                      };
+                    }
+                  }
+                  break;
+                case 'edges:default':
+                  if (mappingsEdges.length > 0) {
+                    cvp.mappings = {};
+                    for (const edgeMap of mappingsEdges) {
+                      cvp.mappings[edgeMap.key] = {
+                        type: edgeMap.type,
+                        definition: edgeMap.definition,
+                      };
+                    }
+                  }
+                  break;
+              }
+            }
           }
         }
-
-        for (const cvp of cyVisualProperties) {
-          switch (cvp.properties_of) {
-            case 'nodes:default':
-              break;
-            case 'edges:default':
-              break;
-
-          }
+        let newFilename;
+        if (network.networkInformation.name) {
+          newFilename = UtilityService.utilCleanString(network.networkInformation.name);
+        } else {
+          newFilename = 'network_' + id;
         }
-
-      })
-      .catch(error => console.error(error));
-
-
-    return null;
-
+        this.downloadFile(originalData, newFilename);
+      });
   }
 
   private buildDiscreteMappingDefinition(dMapping: NeGroupedMappingsDiscrete): NeMappings[] {
@@ -192,8 +196,6 @@ export class SidebarManageComponent {
           eCollection.push(cMapping.chart.lineChartData[0].data[i]);
           gCollection.push(cMapping.chart.lineChartData[0].data[i]);
         }
-        // ovCollection.splice(0, 1); // remove threshold for default lowest
-        // ovCollection.splice(ovCollection.length - 1, 1); // remove threshold for default highest
 
         const defaultLower = cMapping.chart.lineChartData[0].data[0];
         const defaultGreater = cMapping.chart.lineChartData[0].data[cMapping.chart.lineChartData[0].data.length - 1];
@@ -201,7 +203,8 @@ export class SidebarManageComponent {
         const newNumericMapping: NeMappings = {
           key: lookup,
           type: 'double',
-          definition: this.collapseContinuousMappingIntoString(col, 'double', lCollection, eCollection, gCollection, ovCollection, defaultLower, defaultGreater)
+          definition: this.collapseContinuousMappingIntoString(col,
+            'double', lCollection, eCollection, gCollection, ovCollection, defaultLower, defaultGreater)
         };
         newMappings.push(newNumericMapping);
 
@@ -216,15 +219,14 @@ export class SidebarManageComponent {
           eCollection.push(gradient.color);
           gCollection.push(gradient.color);
         }
-        // ovCollection.splice(0, 1, ovCollection[1]); // remove threshold for default lowest
-        // ovCollection.splice(ovCollection.length - 1, 1); // remove threshold for default highest
 
         const defaultLower = cMapping.colorGradient.find(x => x.offset === '-1').color;
         const defaultGreater = cMapping.colorGradient.find(x => x.offset === '101').color;
         const newColorMapping: NeMappings = {
           key: lookup,
           type: 'double',
-          definition: this.collapseContinuousMappingIntoString(col, 'double', lCollection, eCollection, gCollection, ovCollection, defaultLower, defaultGreater),
+          definition: this.collapseContinuousMappingIntoString(col,
+            'double', lCollection, eCollection, gCollection, ovCollection, defaultLower, defaultGreater),
         };
         newMappings.push(newColorMapping);
       }
@@ -276,18 +278,6 @@ export class SidebarManageComponent {
     }
 
     const partials = [];
-    // for (let i = 0; i < ovCollection.length; i++) {
-    //   if (i > 0) {
-    //     partials.push('L=' + i + '=' + lCollection[i + 1]);
-    //   }
-    //   partials.push('E=' + i + '=' + eCollection[i + 1]);
-    //   if (i < ovCollection.length - 1) {
-    //     partials.push('G=' + i + '=' + gCollection[i + 1]);
-    //   }
-    //   partials.push('OV=' + i + '=' + ovCollection[i]);
-    // }
-
-    console.log(ovCollection);
 
     for (let i = 1; i < ovCollection.length - 1; i++) {
       if (i === 1) {
@@ -305,5 +295,18 @@ export class SidebarManageComponent {
     }
 
     return 'COL=' + col + ',T=' + t + ',' + partials.join(',');
+  }
+
+  private downloadFile(fileData: BlobPart[], filename: string): void {
+    const blob = new Blob([JSON.stringify(fileData)], {type: 'application/octet-stream'});
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.setAttribute('download', filename + '.cx');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
   }
 }
