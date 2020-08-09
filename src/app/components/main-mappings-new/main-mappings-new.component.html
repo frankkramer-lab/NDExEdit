@@ -55,7 +55,6 @@
               <button type="button" class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
                       placement="right"
                       ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
-                      (click)="redirect(nodeMap)"
                       [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, 'nd' + mapIndex, propertyIndex ]} }]">
                 <fa-icon [icon]="faRoute"></fa-icon>
               </button>
@@ -178,7 +177,6 @@
             <button type="button" class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
                     placement="right"
                     ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
-                    (click)="redirect(nodeMap)"
                     [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, 'nc' + mapIndex ]} }]">
               <fa-icon [icon]="faRoute"></fa-icon>
             </button>
@@ -348,7 +346,6 @@
               <button type="button" class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
                       placement="right"
                       ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
-                      (click)="redirect(edgeMap)"
                       [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, 'ed' + mapIndex, propertyIndex ]} }]">
                 <fa-icon [icon]="faRoute"></fa-icon>
               </button>
@@ -471,7 +468,6 @@
             <button type="button" class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
                     placement="right"
                     ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
-                    (click)="redirect(edgeMap)"
                     [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, 'ec' + mapIndex ]} }]">
               <fa-icon [icon]="faRoute"></fa-icon>
             </button>

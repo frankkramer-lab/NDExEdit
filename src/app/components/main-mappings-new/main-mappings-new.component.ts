@@ -199,7 +199,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         cssKey: this.styleProperty,
         mappedProperty
       };
-      console.log(this.continuousMapping);
 
     } else if (mapping.gradientValid) {
 
@@ -226,7 +225,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         cssKey: this.styleProperty,
         mappedProperty
       };
-      console.log(this.continuousMapping);
 
     }
   }
@@ -236,8 +234,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     const correspondingAkv = (isNode
       ? this.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === mapping.classifier)
       : this.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === mapping.classifier));
-
-    console.log(correspondingAkv);
 
     for (const selector of mapping.styleMap[propertyId].selectors) {
       const mapObj: NeMappingsDefinition = {
@@ -424,14 +420,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     });
   }
 
-  // todo
-  redirect(mapping: any): void {
-    console.log(mapping);
-  }
-
   editMapping(): void {
-    // todo
-    console.log(this.discreteMapping, this.continuousMapping);
     if (this.mappingsType.nd || this.mappingsType.ed) {
       this.dataService.editMapping(this.selectedNetwork.id, this.discreteMapping, this.styleProperty, this.mappingsType);
     } else {
