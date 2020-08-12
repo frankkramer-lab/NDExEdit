@@ -6,6 +6,9 @@ import {NeMappings} from '../../models/ne-mappings';
 import {NeGroupedMappingsDiscrete} from '../../models/ne-grouped-mappings-discrete';
 import {NeConversionMap} from '../../models/ne-conversion-map';
 import {UtilityService} from '../../services/utility.service';
+import {NeStyleComponent} from '../../models/ne-style-component';
+import {GraphService} from '../../services/graph.service';
+import {NeNetwork} from '../../models/ne-network';
 
 @Component({
   selector: 'app-sidebar-manage',
@@ -17,6 +20,16 @@ import {UtilityService} from '../../services/utility.service';
  * Component responsible for graph selection and file management
  */
 export class SidebarManageComponent {
+
+
+  constructor(public dataService: DataService, private http: HttpClient, private graphService: GraphService) {
+    this.http.get(this.lookupFilePath.concat(this.lookupFileName))
+      .toPromise()
+      .then((fileContent: any) => {
+        this.lookupData = fileContent;
+      })
+      .catch(error => console.error(error));
+  }
 
   /**
    * Icon: faPaintBrush
@@ -67,14 +80,87 @@ export class SidebarManageComponent {
    */
   private readonly lookupFilePath = 'assets/';
 
+  private static collapseContinuousMappingIntoString(col: string,
+                                                     t: string,
+                                                     lCollection: string[],
+                                                     eCollection: string[],
+                                                     gCollection: string[],
+                                                     ovCollection: string[],
+                                                     defaultLower: string,
+                                                     defaultGreater: string): string {
 
-  constructor(public dataService: DataService, private http: HttpClient) {
-    this.http.get(this.lookupFilePath.concat(this.lookupFileName))
-      .toPromise()
-      .then((fileContent: any) => {
-        this.lookupData = fileContent;
-      })
-      .catch(error => console.error(error));
+    if (lCollection.length !== eCollection.length || gCollection.length !== lCollection.length) {
+      return '';
+    }
+
+    const partials = [];
+
+    for (let i = 1; i < ovCollection.length - 1; i++) {
+      if (i === 1) {
+        partials.push('L=' + (i - 1) + '=' + defaultLower);
+      } else {
+        partials.push('L=' + (i - 1) + '=' + lCollection[i]);
+      }
+      partials.push('E=' + (i - 1) + '=' + eCollection[i]);
+      if (i === ovCollection.length - 2) {
+        partials.push('G=' + (i - 1) + '=' + defaultGreater);
+      } else {
+        partials.push('G=' + (i - 1) + '=' + gCollection[i]);
+      }
+      partials.push('OV=' + (i - 1) + '=' + ovCollection[i]);
+    }
+
+    return 'COL=' + col + ',T=' + t + ',' + partials.join(',');
+  }
+
+  private static collapseDiscreteMappingIntoString(col: string, t: string, kCollection: string[], vCollection: string[]): string {
+    if (kCollection.length !== vCollection.length || kCollection.length === 0) {
+      return '';
+    }
+
+    const partials = [];
+    let i = 0;
+    let index = i;
+    for (i; i < kCollection.length; i++) {
+      if (vCollection[i] !== undefined && vCollection[i] !== '') {
+        partials.push('K=' + index + '=' + kCollection[i]);
+        partials.push('V=' + index + '=' + vCollection[i]);
+        index++;
+      }
+    }
+    if (partials.length > 0) {
+      return 'COL=' + col + ',T=' + t + ',' + partials.join(',');
+    } else {
+      return '';
+    }
+  }
+
+  private static downloadFile(fileData: BlobPart[], filename: string): void {
+    const blob = new Blob([JSON.stringify(fileData)], {type: 'application/octet-stream'});
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.setAttribute('download', filename + '.cx');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+  }
+
+  /**
+   * Cleans out the three utility classes which are added to the network on import
+   *
+   * @param network network to be cleaned
+   * @private
+   */
+  private static cleanoutUtilStyles(network: NeNetwork): NeNetwork {
+    network.style = network.style.filter(x => x.selector !== '.hide_label' && x.selector !== '.text-wrap' && x.selector !== '.custom_highlight_color');
+    for (const element of network.elements) {
+      element.data.classes = element.data.classes.filter(x => x !== 'hide_label' && x !== 'text-wrap' && x !== 'custom_highlight_color');
+      element.classes = element.data.classes.join(' ');
+    }
+    return network;
   }
 
   /**
@@ -83,7 +169,8 @@ export class SidebarManageComponent {
    * @param id network's id
    */
   reconvert(id: number): void {
-    const network = this.dataService.networksParsed.find(x => x.id === id);
+    let network = this.dataService.networksParsed.find(x => x.id === id);
+    network = SidebarManageComponent.cleanoutUtilStyles(network);
     let mappingsNodes: NeMappings[] = [];
     let mappingsEdges: NeMappings[] = [];
 
@@ -147,34 +234,48 @@ export class SidebarManageComponent {
         } else {
           newFilename = 'network_' + id;
         }
-        this.downloadFile(originalData, newFilename);
+        SidebarManageComponent.downloadFile(originalData, newFilename);
       });
   }
 
   private buildDiscreteMappingDefinition(dMapping: NeGroupedMappingsDiscrete): NeMappings[] {
 
-    // todo FIX NODE_LABEL_POSITION!!!!!! => probably have to use deepLookup instead of only checking for corresponding keys
+    // todo fix interaction on edges
     const newMappings: NeMappings[] = [];
     const col = dMapping.classifier;
 
     for (const style of dMapping.styleMap) {
-      for (const lookup of this.lookupKey([style.cssKey], 'cytoscape', 'ndex')) {
-        const kCollection = [];
-        const vCollection = [];
-        const t = dMapping.datatype;
 
-        for (const value of dMapping.values) {
-          kCollection.push(value);
-          vCollection.push(style.cssValues[dMapping.values.indexOf(value)]);
-        }
-
-        const newMap: NeMappings = {
-          key: lookup,
-          type: 'DISCRETE',
-          definition: this.collapseDiscreteMappingIntoString(col, t, kCollection, vCollection)
+      for (const val of style.cssValues) {
+        const property = {
+          key: style.cssKey,
+          value: val
         };
 
-        newMappings.push(newMap);
+        const selector = style.selectors[style.cssValues.indexOf(val)];
+
+        for (const lookup of this.lookup(property, selector, 'cytoscape', 'ndex')) {
+          const kCollection = [];
+          const vCollection = [];
+          const t = dMapping.datatype;
+
+          for (const value of dMapping.values) {
+            kCollection.push(value);
+            vCollection.push(style.cssValues[dMapping.values.indexOf(value)]);
+          }
+
+          const newMap: NeMappings = {
+            key: lookup.cssKey,
+            type: 'DISCRETE',
+            definition: SidebarManageComponent.collapseDiscreteMappingIntoString(col, t, kCollection, vCollection)
+          };
+
+          if (newMap.definition !== ''
+            && (!newMappings.map(x => x.key).includes(newMap.key)
+              || !newMappings.map(x => x.definition).includes(newMap.definition))) {
+            newMappings.push(newMap);
+          }
+        }
       }
     }
     return newMappings;
@@ -203,7 +304,7 @@ export class SidebarManageComponent {
         const newNumericMapping: NeMappings = {
           key: lookup,
           type: 'double',
-          definition: this.collapseContinuousMappingIntoString(col,
+          definition: SidebarManageComponent.collapseContinuousMappingIntoString(col,
             'double', lCollection, eCollection, gCollection, ovCollection, defaultLower, defaultGreater)
         };
         newMappings.push(newNumericMapping);
@@ -225,7 +326,7 @@ export class SidebarManageComponent {
         const newColorMapping: NeMappings = {
           key: lookup,
           type: 'double',
-          definition: this.collapseContinuousMappingIntoString(col,
+          definition: SidebarManageComponent.collapseContinuousMappingIntoString(col,
             'double', lCollection, eCollection, gCollection, ovCollection, defaultLower, defaultGreater),
         };
         newMappings.push(newColorMapping);
@@ -250,63 +351,130 @@ export class SidebarManageComponent {
     return mappedKeys;
   }
 
-  private collapseDiscreteMappingIntoString(col: string, t: string, kCollection: string[], vCollection: string[]): string {
-    if (kCollection.length !== vCollection.length || kCollection.length === 0) {
-      return '';
-    }
+  /**
+   * Method for matching NDEx properties to cytoscape properties and vice versa
+   *
+   * @param property Object containing cssKey and cssValue to be parsed
+   * @param selector name by which this style is recognised within CSS
+   * @param from origin format
+   * @param to target format
+   * @returns array of {@link NeStyleComponent|NeStyleComponent}
+   */
+  private lookup(property: any, selector: string = 'node', from: string = 'ndex', to: string = 'cytoscape'): NeStyleComponent[] {
 
-    const partials = [];
-    for (let i = 0; i < kCollection.length; i++) {
-      partials.push('K=' + i + '=' + kCollection[i]);
-      partials.push('V=' + i + '=' + vCollection[i]);
-    }
+    let lookupMap: NeConversionMap;
 
-    return 'COL=' + col + ',T=' + t + ',' + partials.join(',');
-  }
-
-  private collapseContinuousMappingIntoString(col: string,
-                                              t: string,
-                                              lCollection: string[],
-                                              eCollection: string[],
-                                              gCollection: string[],
-                                              ovCollection: string[],
-                                              defaultLower: string,
-                                              defaultGreater: string): string {
-
-    if (lCollection.length !== eCollection.length || gCollection.length !== lCollection.length) {
-      return '';
-    }
-
-    const partials = [];
-
-    for (let i = 1; i < ovCollection.length - 1; i++) {
-      if (i === 1) {
-        partials.push('L=' + (i - 1) + '=' + defaultLower);
-      } else {
-        partials.push('L=' + (i - 1) + '=' + lCollection[i]);
+    // width is within Cytoscape.js a valid property for both nodes and edges
+    for (const entry of this.lookupData) {
+      if (selector.includes('edge')
+        && property.key === 'width'
+        && entry[from].includes(property.key)
+        && entry[to].includes('EDGE_WIDTH')) {
+        lookupMap = entry;
+      } else if (selector.includes('node')
+        && property.key === 'width'
+        && entry[from].includes(property.key)
+        && entry[to].includes('NODE_WIDTH')) {
+        lookupMap = entry;
+      } else if (entry[from].includes(property.key)) {
+        lookupMap = entry;
+        break;
       }
-      partials.push('E=' + (i - 1) + '=' + eCollection[i]);
-      if (i === ovCollection.length - 2) {
-        partials.push('G=' + (i - 1) + '=' + defaultGreater);
-      } else {
-        partials.push('G=' + (i - 1) + '=' + gCollection[i]);
-      }
-      partials.push('OV=' + (i - 1) + '=' + ovCollection[i]);
     }
 
-    return 'COL=' + col + ',T=' + t + ',' + partials.join(',');
-  }
+    let styleCollection: NeStyleComponent[];
 
-  private downloadFile(fileData: BlobPart[], filename: string): void {
-    const blob = new Blob([JSON.stringify(fileData)], {type: 'application/octet-stream'});
-    const url = window.URL.createObjectURL(blob);
+    let builtSelector = selector;
+    if (selector !== 'node' && selector !== 'edge' && lookupMap && lookupMap.selector) {
+      builtSelector = selector.concat(lookupMap.selector);
+    } else if (lookupMap && lookupMap.selector) {
+      builtSelector = lookupMap.selector;
+    }
 
-    const a = document.createElement('a');
-    a.href = url;
-    a.setAttribute('download', filename + '.cx');
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    const priority = UtilityService.utilfindPriorityBySelector(builtSelector);
 
+    // case 1: simply applicable
+    if (lookupMap && !lookupMap.conversionType && lookupMap[to].length === 1) {
+      return [{
+        selector: builtSelector,
+        cssKey: lookupMap[to][0],
+        cssValue: property.value,
+        priority
+      }];
+    } else if (lookupMap && lookupMap.conversionType) {
+      switch (lookupMap.conversionType) {
+
+        // case 2: conversion by method
+        case 'method':
+
+          let cssValue = property.value;
+          styleCollection = [];
+
+          for (const conv of lookupMap.conversion as any) {
+            switch (conv[to]) {
+              case 'low':
+                cssValue = cssValue.toLowerCase();
+                break;
+              case 'up':
+                cssValue = cssValue.toUpperCase();
+                break;
+              case '_':
+                cssValue = cssValue.replace('-', '_');
+                break;
+              case '-':
+                cssValue = cssValue.replace('_', '-');
+                break;
+              case 'norm255to1':
+                cssValue /= 255;
+                break;
+              case 'norm1to255':
+                cssValue *= 255;
+                break;
+            }
+          }
+
+          for (const key of lookupMap[to]) {
+            const obj: NeStyleComponent = {
+              selector: builtSelector,
+              cssKey: key,
+              cssValue,
+              priority
+            };
+
+            if (!styleCollection.includes(obj)) {
+              styleCollection.push(obj);
+            }
+          }
+
+          return styleCollection;
+
+        // case 3: conversion by split
+        case 'split':
+          const splitted = property.value.split(lookupMap.splitRules.splitAt);
+          styleCollection = [];
+          for (const index of lookupMap.splitRules.evalIndex) {
+            const initialValue = splitted[index];
+            const matchedValue: string[] = lookupMap.matchRules[initialValue];
+
+            for (const key of lookupMap[to]) {
+
+              const indexOfKey = lookupMap[to].indexOf(key);
+              if (!matchedValue) {
+                continue;
+              }
+
+              const obj: NeStyleComponent = {
+                selector: builtSelector,
+                cssKey: key,
+                cssValue: matchedValue[indexOfKey],
+                priority
+              };
+              styleCollection.push(obj);
+            }
+          }
+          return styleCollection;
+      }
+    }
+    return [];
   }
 }

@@ -707,9 +707,7 @@ export class ParseService {
         for (const element of parsedData.filter(x => x.group === 'nodes')) {
           for (const attribute of element.attributes) {
             if (attribute.keyHR === akv.name && attribute.valueHR === value) {
-              for (const label of akv.chartDiscreteDistribution.chartLabels) {
-                akv.chartDiscreteDistribution.chartData[0].data[akv.chartDiscreteDistribution.chartLabels.indexOf(value)]++;
-              }
+              akv.chartDiscreteDistribution.chartData[0].data[akv.chartDiscreteDistribution.chartLabels.indexOf(value)]++;
             }
           }
         }
@@ -787,6 +785,13 @@ export class ParseService {
     if (properties) {
 
       for (const propKey of Object.keys(properties)) {
+
+        // if (propKey === 'NODE_SIZE'
+        // || propKey === 'NODE_WIDTH'
+        // || propKey === 'NODE_HEIGHT') {
+        //   console.log(propKey, properties[propKey]);
+        // }
+
         if (propKey === 'NODE_SIZE' && properties[propKey] !== '35.0') {
           useSize = true;
         } else if (propKey === 'NODE_WIDTH' && properties[propKey] !== '75.0') {
@@ -798,9 +803,16 @@ export class ParseService {
 
       for (const propKey of Object.keys(properties)) {
 
-        if (!((propKey === 'NODE_SIZE' && !useSize)
-          || (propKey === 'NODE_WIDTH' && !useWidth)
-          || (propKey === 'NODE_HEIGHT' && !useHeight))) {
+        if (!useWidth
+          && !useHeight
+          && !useSize) {
+          // prefer rectangular nodes for default, as in cytoscape itself
+          useWidth = true;
+        }
+
+        if (!((propKey === 'NODE_WIDTH' && !useWidth)
+          || (propKey === 'NODE_HEIGHT' && !useHeight)
+          || (propKey === 'NODE_SIZE' && !useSize))) {
 
           if (propKey === 'NODE_SIZE') {
             const tmpWidth = {

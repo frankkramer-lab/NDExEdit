@@ -48,15 +48,6 @@ export class DataService {
     'source-arrow-color',
   ];
 
-  // /**
-  //  * Orders styles by their priority to avoid overriding high priority styles with newly added styles
-  //  *
-  //  * @param styles List of styles to be sorted
-  //  */
-  // private static orderStylesByPriority(styles: NeStyle[]): NeStyle[] {
-  //   return styles.sort((a, b) => (a.priority < b.priority) ? -1 : 1);
-  // }
-
   /**
    * Fills a string with leading zeros to the specified length
    *
@@ -115,6 +106,7 @@ export class DataService {
         for (const akv of network.aspectKeyValuesNodes) {
           akv.mapPointerD = akv.mapPointerD.map(x => x > map.mappingId ? --x : x);
         }
+
 
         break;
       case 'nc':
@@ -287,12 +279,9 @@ export class DataService {
     network.style = UtilityService.orderStylesByPriority(styles);
     network.elements = elements;
 
-    const newlyGroupedMappings = this.updateMappings(discreteMapping, network.mappings, isNode);
-    let changeMapPointerNodes = true;
-
     if (isNode) {
-      network.mappings.nodesDiscrete = newlyGroupedMappings;
-
+      // check if we need to update mappointers
+      let changeMapPointerNodes = true;
       for (const nodeMap of network.mappings.nodesDiscrete) {
         if (nodeMap.classifier === discreteMapping[0].colHR) {
           changeMapPointerNodes = false;
@@ -303,14 +292,14 @@ export class DataService {
       if (changeMapPointerNodes) {
         for (const akv of network.aspectKeyValuesNodes) {
           if (akv.name === discreteMapping[0].colHR
-            && !akv.mapPointerD.includes(network.mappings.nodesDiscrete.length - 1)) {
-            akv.mapPointerD.push(network.mappings.nodesDiscrete.length - 1);
+            && !akv.mapPointerD.includes(network.mappings.nodesDiscrete.length)) {
+            akv.mapPointerD.push(network.mappings.nodesDiscrete.length);
           }
         }
       }
 
+
     } else {
-      network.mappings.edgesDiscrete = newlyGroupedMappings;
       let changeMapPointerEdges = true;
 
       for (const edgeMap of network.mappings.edgesDiscrete) {
@@ -322,11 +311,19 @@ export class DataService {
 
       if (changeMapPointerEdges) {
         for (const akv of network.aspectKeyValuesEdges) {
-          if (akv.name === discreteMapping[0].colHR && !akv.mapPointerD.includes(network.mappings.edgesDiscrete.length - 1)) {
-            akv.mapPointerD.push(network.mappings.edgesDiscrete.length - 1);
+          if (akv.name === discreteMapping[0].colHR && !akv.mapPointerD.includes(network.mappings.edgesDiscrete.length)) {
+            akv.mapPointerD.push(network.mappings.edgesDiscrete.length);
           }
         }
       }
+
+    }
+
+    const newlyGroupedMappings = this.updateMappings(discreteMapping, network.mappings, isNode);
+    if (isNode) {
+      network.mappings.nodesDiscrete = newlyGroupedMappings;
+    } else {
+      network.mappings.edgesDiscrete = newlyGroupedMappings;
     }
 
     this.networksParsed = this.networksParsed.filter(x => x.id !== id).concat(network);
@@ -355,10 +352,8 @@ export class DataService {
     const dmCssValues: string[] = [];
     const dmSelectors: string[] = [];
     for (const dm of discreteMapping) {
-      if (dm.cssValue !== '') {
-        dmCssValues.push(dm.cssValue);
-        dmSelectors.push(dm.selector);
-      }
+      dmCssValues.push(dm.cssValue);
+      dmSelectors.push(dm.selector);
     }
 
     const styleMap: NeStyleMap = {

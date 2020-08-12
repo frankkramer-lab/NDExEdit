@@ -1,7 +1,7 @@
 import {EventEmitter, Injectable, Output} from '@angular/core';
 import {NeNetwork} from '../models/ne-network';
 import * as cytoscape from 'cytoscape';
-import {CytoscapeOptions, EventObject} from 'cytoscape';
+import {CytoscapeOptions, ElementDefinition, EventObject} from 'cytoscape';
 import {NeCyGraphSettings} from '../models/ne-cy-graph-settings';
 import {NeNode} from '../models/ne-node';
 import {NeEdge} from '../models/ne-edge';
@@ -32,12 +32,12 @@ export class GraphService {
   }
 
 
-  interpretAsCytoscape(container: HTMLElement, network: NeNetwork, overrideSettings: NeCyGraphSettings = {}): CytoscapeOptions {
+  interpretAsCytoscape(container: HTMLElement, network: NeNetwork): CytoscapeOptions {
     return {
       container,
       elements: network.elements,
       style: network.style,
-      layout: overrideSettings.layout || {
+      layout: {
         name: 'preset'
       },
     };
