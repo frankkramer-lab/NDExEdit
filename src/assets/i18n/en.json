@@ -56,6 +56,12 @@
   "SIDEBAR_MANAGE_REMOTE_FILE_EXAMPLE": "e.g. https://ndexbio.org/#/network/36f7d8fd-23dc-11e8-b939-0ac135e8bacf",
   "SIDEBAR_MANAGE_TT_LOCAL_FILE": "Load a local .cx file",
   "SIDEBAR_MANAGE_TT_REMOTE_FILES": "Load files from NDExBIO",
+  "SIDEBAR_MANAGE_FILE_SIZE_TOO_LARGE": "File too large",
+  "SIDEBAR_MANAGE_FILE_SIZE_OK": "File size okay",
+  "SIDEBAR_MANAGE_FILE_SIZE_LABEL_CURRENT": "Current file size",
+  "SIDEBAR_MANAGE_FILE_SIZE_LABEL_MAX": "Maximum allowed file size",
+  "SIDEBAR_MANAGE_FILE_TYPE_ERROR": "Wrong file extension",
+  "SIDEBAR_MANAGE_FILE_TYPE_LABEL": "The loaded file needs to have the .cx file extension. Your file currently has the extension",
 
   "SIDEBAR_EDIT_DESCRIPTION_TITLE": "Description",
   "SIDEBAR_EDIT_EDITING_TITLE": "Highlight nodes and edges",

@@ -56,6 +56,12 @@
   "SIDEBAR_MANAGE_REMOTE_FILE_EXAMPLE": "z.B. https://ndexbio.org/#/network/36f7d8fd-23dc-11e8-b939-0ac135e8bacf",
   "SIDEBAR_MANAGE_TT_LOCAL_FILE": "Eine lokale .cx-Datei laden",
   "SIDEBAR_MANAGE_TT_REMOTE_FILES": "Dateien von NDExBIO laden",
+  "SIDEBAR_MANAGE_FILE_SIZE_TOO_LARGE": "Datei zu groß",
+  "SIDEBAR_MANAGE_FILE_SIZE_OK": "Dateigröße in Ordnung",
+  "SIDEBAR_MANAGE_FILE_SIZE_LABEL_CURRENT": "Aktuelle Dateigröße",
+  "SIDEBAR_MANAGE_FILE_SIZE_LABEL_MAX": "Maximal erlaubte Dateigröße",
+  "SIDEBAR_MANAGE_FILE_TYPE_ERROR": "Falscher Dateityp",
+  "SIDEBAR_MANAGE_FILE_TYPE_LABEL": "Nur Dateien mit Endung .cx sind valide. Deine Datei hat das Format",
 
   "SIDEBAR_EDIT_DESCRIPTION_TITLE": "Beschreibung",
   "SIDEBAR_EDIT_EDITING_TITLE": "Knoten und Kanten highlighten",

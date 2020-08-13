@@ -32,13 +32,7 @@ import {UtilityService} from './utility.service';
  */
 export class ParseService {
 
-  constructor(public http: HttpClient) {
-    this.http.get(this.lookupFilePath.concat(this.lookupFileName))
-      .toPromise()
-      .then((fileContent: any) => {
-        this.lookupData = fileContent;
-      })
-      .catch(error => console.error(error));
+  constructor(public http: HttpClient, private utilityService: UtilityService) {
   }
 
   /**
@@ -46,24 +40,6 @@ export class ParseService {
    * @private
    */
   private id = 0;
-
-  /**
-   * filepath to lookup file
-   * @private
-   */
-  private readonly lookupFilePath = 'assets/';
-
-  /**
-   * filename of lookup file
-   * @private
-   */
-  private readonly lookupFileName = 'lookup.json';
-
-  /**
-   * data of lookup file
-   * @private
-   */
-  private lookupData: NeConversionMap[];
 
   /**
    * Method for parsing node data. See {@link NeNode|NeNode} for further info on format
@@ -232,7 +208,7 @@ export class ParseService {
    * @param filedata data of the .cx file
    * @param filename name of original file
    */
-  mockedFiles(filedata: any, filename: string): NeNetwork {
+  mockedFiles(filedata: any[], filename: string): NeNetwork {
     let networkAttributeData;
     let nodeData;
     let nodeAttributeData;
@@ -735,10 +711,10 @@ export class ParseService {
       networkInformation,
       elements: cyParsedData,
       style: globalStyle,
-      nodeCount: parsedData.filter(x => x.group === 'nodes').length, // rework to access KPI by given properties
-      edgeCount: parsedData.filter(x => x.group === 'edges').length, // rework to access KPI by given properties
-      cssClassCount: globalStyle.length, // rework to access KPI by given properties
-      aspectKeyValuesNodes, // submit these as possible mappings todo add interaction, if given
+      nodeCount: parsedData.filter(x => x.group === 'nodes').length,
+      edgeCount: parsedData.filter(x => x.group === 'edges').length,
+      cssClassCount: globalStyle.length,
+      aspectKeyValuesNodes,
       aspectKeyValuesEdges,
       mappings: {
         nodesDiscrete: groupedMappingsNodes,
@@ -765,12 +741,6 @@ export class ParseService {
     if (properties) {
 
       for (const propKey of Object.keys(properties)) {
-
-        // if (propKey === 'NODE_SIZE'
-        // || propKey === 'NODE_WIDTH'
-        // || propKey === 'NODE_HEIGHT') {
-        //   console.log(propKey, properties[propKey]);
-        // }
 
         if (propKey === 'NODE_SIZE' && properties[propKey] !== '35.0') {
           useSize = true;
@@ -803,8 +773,8 @@ export class ParseService {
               key: 'NODE_HEIGHT',
               value: properties[propKey]
             };
-            const lookupWidth = this.lookup(tmpWidth);
-            const lookupHeight = this.lookup(tmpHeight);
+            const lookupWidth = this.utilityService.lookup(tmpWidth);
+            const lookupHeight = this.utilityService.lookup(tmpHeight);
 
             styleNodesDefault = styleNodesDefault.concat(lookupWidth);
             styleNodesDefault = styleNodesDefault.concat(lookupHeight);
@@ -816,7 +786,7 @@ export class ParseService {
               value: properties[propKey]
             };
 
-            const lookup = this.lookup(tmp);
+            const lookup = this.utilityService.lookup(tmp);
             styleNodesDefault = styleNodesDefault.concat(lookup);
           }
         }
@@ -848,7 +818,7 @@ export class ParseService {
           key: propKey,
           value: properties[propKey]
         };
-        const lookup = this.lookup(tmp, 'edge');
+        const lookup = this.utilityService.lookup(tmp, 'edge');
         styleEdgesDefault = styleEdgesDefault.concat(lookup);
       }
     }
@@ -871,7 +841,7 @@ export class ParseService {
             value: properties[propKey]
           };
 
-          const lookup = this.lookup(tmp, '.'.concat(elementType.concat('_'.concat(entry.applies_to))));
+          const lookup = this.utilityService.lookup(tmp, '.'.concat(elementType.concat('_'.concat(entry.applies_to))));
           style = style.concat(lookup);
 
         }
@@ -917,7 +887,7 @@ export class ParseService {
           mappingsElementsDefault = mappingsElementsDefault.concat(this.parseMappingDiscrete(currentEntry, elementType));
           break;
         case 'PASSTHROUGH':
-          // todo
+          // no specific handling
           break;
         case 'CONTINUOUS':
           const continuous = this.parseMappingContinuous(currentEntry, elementType, data);
@@ -931,137 +901,6 @@ export class ParseService {
       discrete: mappingsElementsDefault,
       continuous: mappingsElementsSpecific
     };
-  }
-
-  /**
-   * Method for matching NDEx properties to cytoscape properties and vice versa
-   *
-   * @param property Object containing cssKey and cssValue to be parsed
-   * @param selector name by which this style is recognised within CSS
-   * @param from origin format
-   * @param to target format
-   * @returns array of {@link NeStyleComponent|NeStyleComponent}
-   */
-  private lookup(property: any, selector: string = 'node', from: string = 'ndex', to: string = 'cytoscape'): NeStyleComponent[] {
-
-    let lookupMap: NeConversionMap;
-
-    for (const entry of this.lookupData) {
-      if (entry[from].includes(property.key)) {
-        lookupMap = entry;
-        break;
-      }
-    }
-
-    let styleCollection: NeStyleComponent[];
-
-    let builtSelector = selector;
-    if (selector !== 'node' && selector !== 'edge' && lookupMap && lookupMap.selector) {
-      builtSelector = selector.concat(lookupMap.selector);
-    } else if (lookupMap && lookupMap.selector) {
-      builtSelector = lookupMap.selector;
-    }
-
-    const priority = UtilityService.utilfindPriorityBySelector(builtSelector);
-
-    // case 1: simply applicable
-    if (lookupMap && !lookupMap.conversionType && lookupMap[to].length === 1) {
-      return [{
-        selector: builtSelector,
-        cssKey: lookupMap[to][0],
-        cssValue: property.value,
-        priority
-      }];
-    } else if (lookupMap && lookupMap.conversionType) {
-      switch (lookupMap.conversionType) {
-
-        // case 2: conversion by method
-        case 'method':
-
-          const cssKey = lookupMap[to];
-          let cssValue = property.value;
-          styleCollection = [];
-
-          for (const conv of lookupMap.conversion as any) {
-            switch (conv[to]) {
-              case 'low':
-                cssValue = cssValue.toLowerCase();
-                break;
-              case 'up':
-                cssValue = cssValue.toUpperCase();
-                break;
-              case '_':
-                cssValue = cssValue.replace('-', '_');
-                break;
-              case '-':
-                cssValue = cssValue.replace('_', '-');
-                break;
-              case 'norm255to1':
-                cssValue /= 255;
-                break;
-              case 'norm1to255':
-                cssValue *= 255;
-                break;
-            }
-          }
-
-          for (const key of lookupMap[to]) {
-            const obj: NeStyleComponent = {
-              selector: builtSelector,
-              cssKey: key,
-              cssValue,
-              priority
-            };
-
-            if (!styleCollection.includes(obj)) {
-              styleCollection.push(obj);
-            }
-          }
-
-          return styleCollection;
-
-        // case 3: conversion by split
-        case 'split':
-          const splitted = property.value.split(lookupMap.splitRules.splitAt);
-          styleCollection = [];
-          for (const index of lookupMap.splitRules.evalIndex) {
-            const initialValue = splitted[index];
-            const matchedValue: string[] = lookupMap.matchRules[initialValue];
-
-            for (const key of lookupMap[to]) {
-
-              const indexOfKey = lookupMap[to].indexOf(key);
-              if (!matchedValue) {
-                continue;
-              }
-
-              const obj: NeStyleComponent = {
-                selector: builtSelector,
-                cssKey: key,
-                cssValue: matchedValue[indexOfKey],
-                priority
-              };
-              styleCollection.push(obj);
-            }
-          }
-          return styleCollection;
-      }
-    }
-    return [];
-  }
-
-  private lookupKey(keys: string[], from: string = 'ndex', to: string = 'cytoscape'): string[] {
-
-    let mappedKeys: string[] = [];
-
-    for (const key of keys) {
-      for (const entry of this.lookupData) {
-        if (entry[from].includes(key)) {
-          mappedKeys = mappedKeys.concat(entry[to]);
-        }
-      }
-    }
-    return mappedKeys;
   }
 
   private parseMappingDiscrete(mapping: NeMappings, elementType: string): NeMappingsDefinition[] {
@@ -1130,11 +969,11 @@ export class ParseService {
       let lookup: NeStyleComponent[] = [];
 
       if (lookupProperty.key === 'NODE_SIZE') {
-        const lookupWidth = this.lookup({
+        const lookupWidth = this.utilityService.lookup({
           key: 'NODE_WIDTH',
           value: lookupProperty.value
         }, tmpSelector);
-        const lookupHeight = this.lookup({
+        const lookupHeight = this.utilityService.lookup({
           key: 'NODE_HEIGHT',
           value: lookupProperty.value
         }, tmpSelector);
@@ -1150,9 +989,9 @@ export class ParseService {
           key: lookupProperty.key,
           value: lookupProperty.value.replace(/%/g, ',')
         };
-        lookup = this.lookup(tmpProperty, tmpSelector);
+        lookup = this.utilityService.lookup(tmpProperty, tmpSelector);
       } else {
-        lookup = this.lookup(lookupProperty, tmpSelector);
+        lookup = this.utilityService.lookup(lookupProperty, tmpSelector);
       }
       for (const lookupStyle of lookup) {
 
@@ -1184,7 +1023,7 @@ export class ParseService {
                                  elementType: string,
                                  data: NeElement[]): NeContinuousCollection {
 
-    const lookup: string[] = this.lookupKey([mapping.key]);
+    const lookup: string[] = this.utilityService.lookupKey([mapping.key]);
     const commaSplit = mapping.definition.split(',');
 
     const continuousCollection: NeContinuousCollection = {
@@ -1434,68 +1273,6 @@ export class ParseService {
 
     return chartMappingObject;
   }
-
-  // private calculateRelativeValue(inputMap: NeContinuousMap): string {
-  //
-  //   let returnValue;
-  //   const xDiff = Number(inputMap.greaterThreshold) - Number(inputMap.lowerThreshold);
-  //   const xDiffRequired = Number(inputMap.inputValue) - Number(inputMap.lowerThreshold);
-  //
-  //   if (inputMap.lower.includes('#')) {
-  //     // workaround for hex value comparison
-  //     const hexGreater = inputMap.greater.replace('#', '');
-  //     const hexLower = inputMap.lower.replace('#', '');
-  //
-  //     const hexGreaterMap = {
-  //       r: Number('0x'.concat(hexGreater.substring(0, 2))),
-  //       g: Number('0x'.concat(hexGreater.substring(2, 4))),
-  //       b: Number('0x'.concat(hexGreater.substring(4, 6))),
-  //     };
-  //
-  //     const hexLowerMap = {
-  //       r: Number('0x'.concat(hexLower.substring(0, 2))),
-  //       g: Number('0x'.concat(hexLower.substring(2, 4))),
-  //       b: Number('0x'.concat(hexLower.substring(4, 6))),
-  //     };
-  //
-  //     const yDiffMap = {
-  //       r: hexGreaterMap.r - hexLowerMap.r,
-  //       g: hexGreaterMap.g - hexLowerMap.g,
-  //       b: hexGreaterMap.b - hexLowerMap.b
-  //     };
-  //
-  //     const slopeCoefficientMap = {
-  //       r: yDiffMap.r / xDiff,
-  //       g: yDiffMap.g / xDiff,
-  //       b: yDiffMap.b / xDiff
-  //     };
-  //
-  //     const resultMap = {
-  //       // tslint:disable-next-line:no-bitwise
-  //       r: ((xDiffRequired * slopeCoefficientMap.r) + hexLowerMap.r) & 0xff,
-  //       // tslint:disable-next-line:no-bitwise
-  //       g: ((xDiffRequired * slopeCoefficientMap.g) + hexLowerMap.g) & 0xff,
-  //       // tslint:disable-next-line:no-bitwise
-  //       b: ((xDiffRequired * slopeCoefficientMap.b) + hexLowerMap.b) & 0xff
-  //     };
-  //
-  //     const resultR = ParseService.utilLeadingZeros(resultMap.r.toString(16), 2);
-  //     const resultG = ParseService.utilLeadingZeros(resultMap.g.toString(16), 2);
-  //     const resultB = ParseService.utilLeadingZeros(resultMap.b.toString(16), 2);
-  //
-  //     returnValue = '#'.concat(resultR.concat(resultG.concat(resultB)));
-  //
-  //   } else {
-  //
-  //     const yDiff = Number(inputMap.greater) - Number(inputMap.lower);
-  //     const slopeCoefficient = yDiff / xDiff;
-  //
-  //     returnValue = String(((xDiffRequired * slopeCoefficient) + Number(inputMap.lower)).toPrecision(5));
-  //   }
-  //
-  //   return returnValue;
-  // }
-
 
   private groupDiscreteMappings(mappings: NeMappingsDefinition[]): NeGroupedMappingsDiscrete[] {
 

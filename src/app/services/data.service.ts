@@ -35,7 +35,7 @@ export class DataService {
   /**
    * List of networks available in .cx file format
    */
-  networksDownloaded: NeNetwork[] = [];
+  networksDownloaded: any[] = [];
 
   /**
    * List of known color properties, mainly used for color previews within {@link MainMappingsNewComponent}

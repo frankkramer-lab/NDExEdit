@@ -96,9 +96,9 @@ export class AppComponent {
    */
   private initDemoNetwork(filename: string): void {
     this.loadFileFromAssets(filename)
-      .then(network => {
-        const parsedNetwork = this.parseFileFromAssets(network, filename);
-        this.dataService.networksDownloaded.push(network);
+      .then(() => {
+        const loadedNetwork = this.dataService.networksDownloaded[this.dataService.networksDownloaded.length - 1];
+        const parsedNetwork = this.parseFileFromAssets(loadedNetwork, filename);
         this.dataService.networksParsed.push(parsedNetwork);
       })
       .catch(error => console.log(error));
@@ -120,7 +120,9 @@ export class AppComponent {
   private loadFileFromAssets(filename: string): Promise<any> {
     return this.http.get(this.mockedFilepath.concat(filename))
       .toPromise()
-      .then(data => data)
+      .then(data => {
+        this.dataService.networksDownloaded.push(data);
+      })
       .catch(error => console.log(error));
   }
 

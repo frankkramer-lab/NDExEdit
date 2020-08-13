@@ -42,15 +42,40 @@
   </div>
 
   <h5>{{'SIDEBAR_MANAGE_LOCAL_FILE_LABEL'|translate}}</h5>
+
+  <div *ngIf="showFileSizeTooLargeAlert" class="alert alert-warning alert-dismissible" role="alert">
+    <h5>{{'SIDEBAR_MANAGE_FILE_SIZE_TOO_LARGE' | translate}}</h5>
+    <p><b>{{'SIDEBAR_MANAGE_FILE_SIZE_LABEL_CURRENT' | translate}}</b>: ~ {{currentFileSize}} MB</p>
+    <p><b>{{'SIDEBAR_MANAGE_FILE_SIZE_LABEL_MAX' | translate}}</b>: {{sizeLimit}} MB</p>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div *ngIf="showFileSizeOkAlert" class="alert alert-success alert-dismissible" role="alert">
+    <h5>{{'SIDEBAR_MANAGE_FILE_SIZE_OK' | translate}}</h5>
+    <p><b>{{'SIDEBAR_MANAGE_FILE_SIZE_LABEL_CURRENT' | translate}}</b>: ~ {{currentFileSize}} MB</p>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div *ngIf="showFileNotValidAlert" class="alert alert-danger alert-dismissible" role="alert">
+    <h5>{{'SIDEBAR_MANAGE_FILE_TYPE_ERROR' | translate}}</h5>
+    <p>{{'SIDEBAR_MANAGE_FILE_TYPE_LABEL' | translate}}: <b>".{{invalidExtension}}"</b></p>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
   <div class="input-group mb-3">
     <div class="custom-file">
-      <input type="file" class="custom-file-input" id="localNetworkFile">
+      <input type="file" class="custom-file-input" id="localNetworkFile" (change)="setFile($event)">
       <label for="localNetworkFile" class="custom-file-label">{{'SIDEBAR_MANAGE_LOCAL_FILE_LABEL'|translate}}</label>
     </div>
     <div class="input-group-append">
       <button class="btn btn-outline-secondary" type="button"
-              data-toggle="tooltip" placement="left" ngbTooltip="{{'SIDEBAR_MANAGE_TT_LOCAL_FILE' | translate}}">
-        {{'SIDEBAR_MANAGE_LOCAL_FILE_BTN'|translate}}[TODO]
+              data-toggle="tooltip" placement="left" ngbTooltip="{{'SIDEBAR_MANAGE_TT_LOCAL_FILE' | translate}}"
+              (click)="importLocalFile()">
+        {{'SIDEBAR_MANAGE_LOCAL_FILE_BTN'|translate}}
       </button>
     </div>
   </div>
@@ -60,3 +85,4 @@
     {{'SIDEBAR_MANAGE_HELP'|translate}}
   </a>
 </div>
+

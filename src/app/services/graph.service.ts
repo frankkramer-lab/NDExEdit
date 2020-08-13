@@ -1,8 +1,7 @@
-import {EventEmitter, Injectable, Output} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {NeNetwork} from '../models/ne-network';
 import * as cytoscape from 'cytoscape';
-import {CytoscapeOptions, ElementDefinition, EventObject} from 'cytoscape';
-import {NeCyGraphSettings} from '../models/ne-cy-graph-settings';
+import {CytoscapeOptions, EventObject} from 'cytoscape';
 import {NeNode} from '../models/ne-node';
 import {NeEdge} from '../models/ne-edge';
 import {NeSelection} from '../models/ne-selection';

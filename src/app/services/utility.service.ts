@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {NeStyle} from '../models/ne-style';
 import {NeStyleComponent} from '../models/ne-style-component';
 import {NeContinuousMap} from '../models/ne-continuous-map';
+import {NeConversionMap} from '../models/ne-conversion-map';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,36 @@ import {NeContinuousMap} from '../models/ne-continuous-map';
  */
 export class UtilityService {
 
-  constructor() {
+  /**
+   * filepath to lookup file
+   * @private
+   */
+  private readonly lookupFilePath = 'assets/';
+
+  /**
+   * filename of lookup file
+   * @private
+   */
+  private readonly lookupFileName = 'lookup.json';
+
+  /**
+   * data of lookup file
+   * @private
+   */
+  private lookupData: NeConversionMap[];
+
+  /**
+   * Reading lookup file data
+   *
+   * @param http
+   */
+  constructor(private http: HttpClient) {
+    this.http.get(this.lookupFilePath.concat(this.lookupFileName))
+      .toPromise()
+      .then((fileContent: any) => {
+        this.lookupData = fileContent;
+      })
+      .catch(error => console.error(error));
   }
 
   /**
@@ -151,6 +182,144 @@ export class UtilityService {
     }
 
     return returnValue;
+  }
+
+  /**
+   * Method for matching NDEx properties to cytoscape properties and vice versa
+   *
+   * @param property Object containing cssKey and cssValue to be parsed
+   * @param selector name by which this style is recognised within CSS
+   * @param from origin format
+   * @param to target format
+   * @returns array of {@link NeStyleComponent|NeStyleComponent}
+   */
+  public lookup(property: any, selector: string = 'node', from: string = 'ndex', to: string = 'cytoscape'): NeStyleComponent[] {
+
+    let lookupMap: NeConversionMap;
+
+    for (const entry of this.lookupData) {
+      if (entry[from].includes(property.key)) {
+        lookupMap = entry;
+        break;
+      }
+    }
+
+    let styleCollection: NeStyleComponent[];
+
+    let builtSelector = selector;
+    if (selector !== 'node' && selector !== 'edge' && lookupMap && lookupMap.selector) {
+      builtSelector = selector.concat(lookupMap.selector);
+    } else if (lookupMap && lookupMap.selector) {
+      builtSelector = lookupMap.selector;
+    }
+
+    const priority = UtilityService.utilfindPriorityBySelector(builtSelector);
+
+    // case 1: simply applicable
+    if (lookupMap && !lookupMap.conversionType && lookupMap[to].length === 1) {
+      return [{
+        selector: builtSelector,
+        cssKey: lookupMap[to][0],
+        cssValue: property.value,
+        priority
+      }];
+    } else if (lookupMap && lookupMap.conversionType) {
+      switch (lookupMap.conversionType) {
+
+        // case 2: conversion by method
+        case 'method':
+
+          const cssKey = lookupMap[to];
+          let cssValue = property.value;
+          styleCollection = [];
+
+          for (const conv of lookupMap.conversion as any) {
+            switch (conv[to]) {
+              case 'low':
+                cssValue = cssValue.toLowerCase();
+                break;
+              case 'up':
+                cssValue = cssValue.toUpperCase();
+                break;
+              case '_':
+                cssValue = cssValue.replace('-', '_');
+                break;
+              case '-':
+                cssValue = cssValue.replace('_', '-');
+                break;
+              case 'norm255to1':
+                cssValue /= 255;
+                break;
+              case 'norm1to255':
+                cssValue *= 255;
+                break;
+            }
+          }
+
+          for (const key of lookupMap[to]) {
+            const obj: NeStyleComponent = {
+              selector: builtSelector,
+              cssKey: key,
+              cssValue,
+              priority
+            };
+
+            if (!styleCollection.includes(obj)) {
+              styleCollection.push(obj);
+            }
+          }
+
+          return styleCollection;
+
+        // case 3: conversion by split
+        case 'split':
+          const splitted = property.value.split(lookupMap.splitRules.splitAt);
+          styleCollection = [];
+          for (const index of lookupMap.splitRules.evalIndex) {
+            const initialValue = splitted[index];
+            const matchedValue: string[] = lookupMap.matchRules[initialValue];
+
+            for (const key of lookupMap[to]) {
+
+              const indexOfKey = lookupMap[to].indexOf(key);
+              if (!matchedValue) {
+                continue;
+              }
+
+              const obj: NeStyleComponent = {
+                selector: builtSelector,
+                cssKey: key,
+                cssValue: matchedValue[indexOfKey],
+                priority
+              };
+              styleCollection.push(obj);
+            }
+          }
+          return styleCollection;
+      }
+    }
+    return [];
+  }
+
+  /**
+   * Only fetching corresponding key, not mapping or transforming any of the values
+   *
+   * @param keys keys to look for
+   * @param from source format
+   * @param to target format
+   */
+  public lookupKey(keys: string[], from: string = 'ndex', to: string = 'cytoscape'): string[] {
+
+    let mappedKeys: string[] = [];
+
+    for (const key of keys) {
+      for (const entry of this.lookupData) {
+        if (entry[from].includes(key)) {
+          mappedKeys = mappedKeys.concat(entry[to]);
+        }
+      }
+    }
+    return mappedKeys;
   }
 
 }
