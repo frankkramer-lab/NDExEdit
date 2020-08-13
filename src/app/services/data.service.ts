@@ -5,15 +5,15 @@ import {NeStyle} from '../models/ne-style';
 import {NeNode} from '../models/ne-node';
 import {NeEdge} from '../models/ne-edge';
 import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete';
-import {NeMappingsMap} from '../models/ne-mappings-map';
 import {NeContinuousThresholds} from '../models/ne-continuous-thresholds';
 import {NeColorGradient} from '../models/ne-color-gradient';
 import {NeContinuousMap} from '../models/ne-continuous-map';
 import {NeThresholdMap} from '../models/ne-threshold-map';
 import {NeContinuousChart} from '../models/ne-continuous-chart';
-import {NeStyleMap} from '../models/ne-style-map';
 import {ElementDefinition} from 'cytoscape';
 import {UtilityService} from './utility.service';
+import {NeMappingsMap} from '../models/ne-mappings-map';
+import {NeStyleMap} from '../models/ne-style-map';
 
 @Injectable({
   providedIn: 'root'
@@ -49,287 +49,6 @@ export class DataService {
   ];
 
   /**
-   * Fills a string with leading zeros to the specified length
-   *
-   * @param s string to be filled
-   * @param targetLength final number of characters
-   * @private
-   */
-  private static utilLeadingZeros(s: string, targetLength: number): string {
-    while (s.length < targetLength) {
-      s = '0'.concat(s);
-    }
-    return s;
-  }
-
-  /**
-   * Fetches a network by its id
-   * @param id The network's id
-   */
-  getNetworkById(id: number): NeNetwork {
-    return this.networksParsed.find(x => x.id === id);
-  }
-
-  /**
-   * Removes a mapping completely
-   * @param map The specified discrete mappping
-   */
-  removeMapping(map: any): void {
-
-    const network = this.getNetworkById(map.network);
-
-    switch (map.type) {
-      case 'nd':
-        const ndSelectors = network.mappings.nodesDiscrete[map.mappingId].selectors;
-        network.mappings.nodesDiscrete.splice(map.mappingId, 1);
-
-        let ndNewStyle = [];
-        for (const selector of ndSelectors) {
-
-          ndNewStyle = ndNewStyle.concat(network.style.filter(x => x.selector !== selector));
-          const className = selector.substring(1);
-
-          for (const element of network.elements) {
-
-            if (element.classes.includes(className)) {
-              element.classes = element.classes.replace(className, '').trim();
-            }
-          }
-        }
-
-        network.style = ndNewStyle;
-        network.aspectKeyValuesNodes[map.akvIndex].mapPointerD = network
-          .aspectKeyValuesNodes[map.akvIndex]
-          .mapPointerD
-          .filter(x => x !== map.mappingId);
-
-        for (const akv of network.aspectKeyValuesNodes) {
-          akv.mapPointerD = akv.mapPointerD.map(x => x > map.mappingId ? --x : x);
-        }
-
-
-        break;
-      case 'nc':
-        const nodeAkvs = network.aspectKeyValuesNodes;
-        const nodeElements = network.elements;
-        const nodeStyle = network.style;
-        let updatedNodeStyle = nodeStyle;
-
-        for (const s of nodeStyle) {
-          for (const node of nodeElements) {
-
-            if (node.group === 'nodes') {
-              const currentSelector = '.node_' + node.data.id;
-
-              if (s.selector === currentSelector) {
-                delete s.style[map.map.title[0]];
-
-                if (Object.keys(s.style).length === 0) {
-                  updatedNodeStyle = updatedNodeStyle.filter(x => x !== s);
-                }
-              }
-            }
-          }
-        }
-
-        if (nodeAkvs[map.akvIndex].mapPointerC.includes(map.mappingId)) {
-          nodeAkvs[map.akvIndex].mapPointerC = nodeAkvs[map.akvIndex].mapPointerC.filter(x => x !== map.mappingId);
-        }
-
-        network.style = updatedNodeStyle;
-        network.elements = nodeElements;
-        network.aspectKeyValuesNodes = nodeAkvs;
-        network.mappings.nodesContinuous
-          = network.mappings.nodesDiscrete.filter(x => network.mappings.nodesContinuous.indexOf(x) !== map.mappingId);
-
-        for (const akv of network.aspectKeyValuesNodes) {
-          akv.mapPointerC = akv.mapPointerC.map(x => x > map.mappingId ? --x : x);
-        }
-
-        this.networksParsed = this.networksParsed.filter(x => x.id !== map.network).concat(network);
-        break;
-
-      case 'ed':
-
-        const edSelectors = network.mappings.edgesDiscrete[map.mappingId].selectors;
-        network.mappings.edgesDiscrete.splice(map.mappingId, 1);
-
-        let edNewStyle = [];
-        for (const selector of edSelectors) {
-
-          edNewStyle = edNewStyle.concat(network.style.filter(x => x.selector !== selector));
-          const className = selector.substring(1);
-
-          for (const element of network.elements) {
-
-            if (element.classes.includes(className)) {
-              element.classes = element.classes.replace(className, '').trim();
-            }
-          }
-        }
-        network.aspectKeyValuesEdges[map.akvIndex].mapPointerD = network
-          .aspectKeyValuesEdges[map.akvIndex]
-          .mapPointerD
-          .filter(x => x !== map.mappingId);
-        network.style = edNewStyle;
-
-        for (const akv of network.aspectKeyValuesEdges) {
-          akv.mapPointerD = akv.mapPointerD.map(x => x > map.mappingId ? --x : x);
-        }
-
-        this.networksParsed = this.networksParsed.filter(x => x.id !== map.network).concat(network);
-        break;
-      case 'ec':
-
-        const edgeAkvs = network.aspectKeyValuesEdges;
-        const edgeElements = network.elements;
-        const edgeStyle = network.style;
-        let updatedEdgeStyle = edgeStyle;
-
-        for (const s of edgeStyle) {
-          for (const edge of edgeElements) {
-
-            if (edge.group === 'edges') {
-              const currentSelector = '.edge_' + edge.data.id;
-
-              if (s.selector === currentSelector) {
-                delete s.style[map.map.title[0]];
-
-                if (Object.keys(s.style).length === 0) {
-                  updatedEdgeStyle = updatedEdgeStyle.filter(x => x !== s);
-                }
-              }
-            }
-          }
-        }
-
-        if (edgeAkvs[map.akvIndex].mapPointerC.includes(map.mappingId)) {
-          edgeAkvs[map.akvIndex].mapPointerC = edgeAkvs[map.akvIndex].mapPointerC.filter(x => x !== map.mappingId);
-        }
-
-        network.style = updatedEdgeStyle;
-        network.elements = edgeElements;
-        network.aspectKeyValuesEdges = edgeAkvs;
-        network.mappings.edgesContinuous
-          = network.mappings.edgesContinuous.filter(x => network.mappings.edgesContinuous.indexOf(x) !== map.mappingId);
-
-        for (const akv of network.aspectKeyValuesEdges) {
-          akv.mapPointerC = akv.mapPointerC.map(x => x > map.mappingId ? --x : x);
-        }
-
-        this.networksParsed = this.networksParsed.filter(x => x.id !== map.network).concat(network);
-
-        break;
-    }
-  }
-
-  /**
-   * Adds a new mapping to an already parsed network
-   * @param id The network's id
-   * @param isNode Indicates if the type to which the mapping belongs is a {@link NeNode|node}
-   * @param discreteMapping The specified mapping which is filled in {@link MainMappingsNewComponent}
-   */
-  addMappingDiscrete(id: number, isNode: boolean, discreteMapping: NeMappingsDefinition[]): void {
-    const network = this.getNetworkById(id);
-    const styles: NeStyle[] = network.style;
-    const elements = network.elements;
-
-    for (const map of discreteMapping) {
-
-      if (map.cssValue !== '') {
-
-        const styleProperty = {};
-        styleProperty[map.cssKey] = map.cssValue;
-        const styleMap: NeStyle = {
-          selector: map.selector,
-          style: styleProperty,
-          appliedTo: [],
-          priority: map.priority
-        };
-
-        for (const element of elements) {
-          for (const attribute of element.data.attributes) {
-            if (attribute.key === map.col && attribute.value === map.is && !element.data.classes.includes(map.selector.substring(1))) {
-              element.data.classes.push(map.selector.substring(1));
-              element.classes = element.data.classes.join(' ');
-              if (isNode && !styleMap.appliedTo.includes(element.data as NeNode)) {
-                styleMap.appliedTo.push(element.data as NeNode);
-                break;
-              } else if (!styleMap.appliedTo.includes(element.data as NeEdge)) {
-                styleMap.appliedTo.push(element.data as NeEdge);
-                break;
-              }
-            }
-          }
-        }
-        if (!styles.includes(styleMap)) {
-          let found = false;
-          for (const s of styles) {
-            if (s.selector === styleMap.selector) {
-              found = true;
-              s.style[map.cssKey] = map.cssValue;
-            }
-          }
-          if (!found) {
-            styles.push(styleMap);
-          }
-        }
-      }
-    }
-    network.style = UtilityService.orderStylesByPriority(styles);
-    network.elements = elements;
-
-    if (isNode) {
-      // check if we need to update mappointers
-      let changeMapPointerNodes = true;
-      for (const nodeMap of network.mappings.nodesDiscrete) {
-        if (nodeMap.classifier === discreteMapping[0].colHR) {
-          changeMapPointerNodes = false;
-          break;
-        }
-      }
-
-      if (changeMapPointerNodes) {
-        for (const akv of network.aspectKeyValuesNodes) {
-          if (akv.name === discreteMapping[0].colHR
-            && !akv.mapPointerD.includes(network.mappings.nodesDiscrete.length)) {
-            akv.mapPointerD.push(network.mappings.nodesDiscrete.length);
-          }
-        }
-      }
-
-
-    } else {
-      let changeMapPointerEdges = true;
-
-      for (const edgeMap of network.mappings.edgesDiscrete) {
-        if (edgeMap.classifier === discreteMapping[0].colHR) {
-          changeMapPointerEdges = false;
-          break;
-        }
-      }
-
-      if (changeMapPointerEdges) {
-        for (const akv of network.aspectKeyValuesEdges) {
-          if (akv.name === discreteMapping[0].colHR && !akv.mapPointerD.includes(network.mappings.edgesDiscrete.length)) {
-            akv.mapPointerD.push(network.mappings.edgesDiscrete.length);
-          }
-        }
-      }
-
-    }
-
-    const newlyGroupedMappings = this.updateMappings(discreteMapping, network.mappings, isNode);
-    if (isNode) {
-      network.mappings.nodesDiscrete = newlyGroupedMappings;
-    } else {
-      network.mappings.edgesDiscrete = newlyGroupedMappings;
-    }
-
-    this.networksParsed = this.networksParsed.filter(x => x.id !== id).concat(network);
-  }
-
-  /**
    * After adding a discrete mapping all newly set values have to be aggregated into a nicely displayable mapping
    *
    * @param discreteMapping Newly created mapping
@@ -337,7 +56,9 @@ export class DataService {
    * @param isNode True if the mapping applies to nodes, false if the mapping applies to edges
    * @private
    */
-  private updateMappings(discreteMapping: NeMappingsDefinition[], mappings: NeMappingsMap, isNode: boolean): NeGroupedMappingsDiscrete[] {
+  private static updateMappings(discreteMapping: NeMappingsDefinition[],
+                                mappings: NeMappingsMap,
+                                isNode: boolean): NeGroupedMappingsDiscrete[] {
 
     if (!mappings || discreteMapping.length === 0) {
       return [];
@@ -405,6 +126,285 @@ export class DataService {
     }
     return groupedMappings;
 
+  }
+
+  /**
+   * Adds a style object to the graph's existing style
+   *
+   * @param existingStyle the graph's current style
+   * @param styleObj newly created style
+   * @private
+   */
+  private static addPropertyToStyle(existingStyle: NeStyle, styleObj: NeStyle): NeStyle {
+    const keys = Object.keys(styleObj.style);
+    for (const k of keys) {
+      existingStyle.style[k] = styleObj.style[k];
+    }
+    return existingStyle;
+  }
+
+  /**
+   * Fetches a network by its id
+   * @param id The network's id
+   */
+  getNetworkById(id: number): NeNetwork {
+    return this.networksParsed.find(x => x.id === id);
+  }
+
+  /**
+   * Removes a mapping completely
+   * @param map The specified discrete mappping
+   */
+  removeMapping(map: any): void {
+
+    const network = this.getNetworkById(map.network);
+
+    switch (map.type) {
+      case 'nd':
+        const ndSelectors = network.mappings.nodesDiscrete[map.mappingId].selectors;
+        network.mappings.nodesDiscrete.splice(map.mappingId, 1);
+
+        let ndNewStyle = [];
+        for (const selector of ndSelectors) {
+
+          ndNewStyle = ndNewStyle.concat(network.style.filter(x => x.selector !== selector));
+          const className = selector.substring(1);
+
+          for (const element of network.elements) {
+
+            if (element.classes.includes(className)) {
+              element.classes = element.classes.replace(className, '').trim();
+            }
+          }
+        }
+
+        network.style = ndNewStyle;
+        network.aspectKeyValuesNodes[map.akvIndex].mapPointerD = network
+          .aspectKeyValuesNodes[map.akvIndex]
+          .mapPointerD
+          .filter(x => x !== map.mappingId);
+
+        for (const akv of network.aspectKeyValuesNodes) {
+          akv.mapPointerD = akv.mapPointerD.map(x => x > map.mappingId ? --x : x);
+        }
+        break;
+
+      case 'nc':
+        const nodeAkvs = network.aspectKeyValuesNodes;
+        const nodeElements = network.elements;
+        const nodeStyle = network.style;
+        let updatedNodeStyle = nodeStyle;
+
+        for (const s of nodeStyle) {
+          for (const node of nodeElements) {
+
+            if (node.group === 'nodes') {
+              const currentSelector = '.node_' + node.data.id;
+
+              if (s.selector === currentSelector) {
+                delete s.style[map.map.title[0]];
+
+                if (Object.keys(s.style).length === 0) {
+                  updatedNodeStyle = updatedNodeStyle.filter(x => x !== s);
+                }
+              }
+            }
+          }
+        }
+
+        if (nodeAkvs[map.akvIndex].mapPointerC.includes(map.mappingId)) {
+          nodeAkvs[map.akvIndex].mapPointerC = nodeAkvs[map.akvIndex].mapPointerC.filter(x => x !== map.mappingId);
+        }
+
+        network.style = updatedNodeStyle;
+        network.elements = nodeElements;
+        network.aspectKeyValuesNodes = nodeAkvs;
+        network.mappings.nodesContinuous
+          = network.mappings.nodesContinuous.filter(x => network.mappings.nodesContinuous.indexOf(x) !== map.mappingId);
+
+        for (const akv of network.aspectKeyValuesNodes) {
+          akv.mapPointerC = akv.mapPointerC.map(x => x > map.mappingId ? --x : x);
+        }
+
+        this.networksParsed = this.networksParsed.filter(x => x.id !== map.network).concat(network);
+        break;
+
+      case 'ed':
+
+        const edSelectors = network.mappings.edgesDiscrete[map.mappingId].selectors;
+        network.mappings.edgesDiscrete.splice(map.mappingId, 1);
+
+        let edNewStyle = [];
+        for (const selector of edSelectors) {
+
+          edNewStyle = edNewStyle.concat(network.style.filter(x => x.selector !== selector));
+          const className = selector.substring(1);
+
+          for (const element of network.elements) {
+
+            if (element.classes.includes(className)) {
+              element.classes = element.classes.replace(className, '').trim();
+            }
+          }
+        }
+        network.style = edNewStyle;
+        network.aspectKeyValuesEdges[map.akvIndex].mapPointerD = network
+          .aspectKeyValuesEdges[map.akvIndex]
+          .mapPointerD
+          .filter(x => x !== map.mappingId);
+
+        for (const akv of network.aspectKeyValuesEdges) {
+          akv.mapPointerD = akv.mapPointerD.map(x => x > map.mappingId ? --x : x);
+        }
+        break;
+
+      case 'ec':
+
+        const edgeAkvs = network.aspectKeyValuesEdges;
+        const edgeElements = network.elements;
+        const edgeStyle = network.style;
+        let updatedEdgeStyle = edgeStyle;
+
+        for (const s of edgeStyle) {
+          for (const edge of edgeElements) {
+
+            if (edge.group === 'edges') {
+              const currentSelector = '.edge_' + edge.data.id;
+
+              if (s.selector === currentSelector) {
+                delete s.style[map.map.title[0]];
+
+                if (Object.keys(s.style).length === 0) {
+                  updatedEdgeStyle = updatedEdgeStyle.filter(x => x !== s);
+                }
+              }
+            }
+          }
+        }
+
+        if (edgeAkvs[map.akvIndex].mapPointerC.includes(map.mappingId)) {
+          edgeAkvs[map.akvIndex].mapPointerC = edgeAkvs[map.akvIndex].mapPointerC.filter(x => x !== map.mappingId);
+        }
+
+        network.style = updatedEdgeStyle;
+        network.elements = edgeElements;
+        network.aspectKeyValuesEdges = edgeAkvs;
+        network.mappings.edgesContinuous
+          = network.mappings.edgesContinuous.filter(x => network.mappings.edgesContinuous.indexOf(x) !== map.mappingId);
+
+        for (const akv of network.aspectKeyValuesEdges) {
+          akv.mapPointerC = akv.mapPointerC.map(x => x > map.mappingId ? --x : x);
+        }
+
+        this.networksParsed = this.networksParsed.filter(x => x.id !== map.network).concat(network);
+        break;
+    }
+  }
+
+  /**
+   * Adds a new mapping to an already parsed network
+   * @param id The network's id
+   * @param isNode Indicates if the type to which the mapping belongs is a {@link NeNode|node}
+   * @param discreteMapping The specified mapping which is filled in {@link MainMappingsNewComponent}
+   */
+  addMappingDiscrete(id: number, isNode: boolean, discreteMapping: NeMappingsDefinition[]): void {
+    const network = this.getNetworkById(id);
+    const styles: NeStyle[] = network.style;
+    const elements = network.elements;
+
+    for (const map of discreteMapping) {
+
+      if (map.cssValue !== '') {
+
+        const styleProperty = {};
+        styleProperty[map.cssKey] = map.cssValue;
+        const styleMap: NeStyle = {
+          selector: map.selector,
+          style: styleProperty,
+          appliedTo: [],
+          priority: map.priority
+        };
+
+        for (const element of elements) {
+          for (const attribute of element.data.attributes) {
+            if (attribute.key === map.col && attribute.value === map.is && !element.data.classes.includes(map.selector.substring(1))) {
+              element.data.classes.push(map.selector.substring(1));
+              element.classes = element.data.classes.join(' ');
+              if (isNode && !styleMap.appliedTo.includes(element.data as NeNode)) {
+                styleMap.appliedTo.push(element.data as NeNode);
+                break;
+              } else if (!styleMap.appliedTo.includes(element.data as NeEdge)) {
+                styleMap.appliedTo.push(element.data as NeEdge);
+                break;
+              }
+            }
+          }
+        }
+        if (!styles.includes(styleMap)) {
+          let found = false;
+          for (const s of styles) {
+            if (s.selector === styleMap.selector) {
+              found = true;
+              s.style[map.cssKey] = map.cssValue;
+            }
+          }
+          if (!found) {
+            styles.push(styleMap);
+          }
+        }
+      }
+    }
+    network.style = UtilityService.utilOrderStylesByPriority(styles);
+    network.elements = elements;
+
+    if (isNode) {
+      // check if we need to update mappointers
+      let changeMapPointerNodes = true;
+      for (const nodeMap of network.mappings.nodesDiscrete) {
+        if (nodeMap.classifier === discreteMapping[0].colHR) {
+          changeMapPointerNodes = false;
+          break;
+        }
+      }
+
+      if (changeMapPointerNodes) {
+        for (const akv of network.aspectKeyValuesNodes) {
+          if (akv.name === discreteMapping[0].colHR
+            && !akv.mapPointerD.includes(network.mappings.nodesDiscrete.length)) {
+            akv.mapPointerD.push(network.mappings.nodesDiscrete.length);
+          }
+        }
+      }
+
+
+    } else {
+      let changeMapPointerEdges = true;
+
+      for (const edgeMap of network.mappings.edgesDiscrete) {
+        if (edgeMap.classifier === discreteMapping[0].colHR) {
+          changeMapPointerEdges = false;
+          break;
+        }
+      }
+
+      if (changeMapPointerEdges) {
+        for (const akv of network.aspectKeyValuesEdges) {
+          if (akv.name === discreteMapping[0].colHR && !akv.mapPointerD.includes(network.mappings.edgesDiscrete.length)) {
+            akv.mapPointerD.push(network.mappings.edgesDiscrete.length);
+          }
+        }
+      }
+
+    }
+
+    const newlyGroupedMappings = DataService.updateMappings(discreteMapping, network.mappings, isNode);
+    if (isNode) {
+      network.mappings.nodesDiscrete = newlyGroupedMappings;
+    } else {
+      network.mappings.edgesDiscrete = newlyGroupedMappings;
+    }
+
+    this.networksParsed = this.networksParsed.filter(x => x.id !== id).concat(network);
   }
 
   /**
@@ -564,92 +564,20 @@ export class DataService {
     }
 
     network.elements = this.updateElementsContinuously(isNode, continuousMapping, network, minPropertyValue, maxPropertyValue);
-    network.style = UtilityService.orderStylesByPriority(styles);
+    network.style = UtilityService.utilOrderStylesByPriority(styles);
     this.networksParsed = this.networksParsed.filter(x => x.id !== id).concat(network);
   }
 
   /**
-   * Adds a style object to the graph's existing style
+   * Updates all elements after adding a new continuous mapping or after editing an existing continuous mapping
    *
-   * @param existingStyle the graph's current style
-   * @param styleObj newly created style
+   * @param isNode true if elements are nodes
+   * @param continuousMapping new or existing continuous mapping
+   * @param network corresponding network
+   * @param minPropertyValue minimum of the element's attribute's values
+   * @param maxPropertyValue maximum of the elements's attribute's values
    * @private
    */
-  private addPropertyToStyle(existingStyle: NeStyle, styleObj: NeStyle): NeStyle {
-    const keys = Object.keys(styleObj.style);
-    for (const k of keys) {
-      existingStyle.style[k] = styleObj.style[k];
-    }
-    return existingStyle;
-  }
-
-  /**
-   * Calculates an element's continuously mapped value
-   *
-   * @param inputMap of type {@link NeContinuousMap} displaying the element's value and corresponding lower and greater thresholds
-   * @private
-   */
-  private calculateRelativeValue(inputMap: NeContinuousMap): string {
-
-    let returnValue;
-    const xDiff = Number(inputMap.greaterThreshold) - Number(inputMap.lowerThreshold);
-    const xDiffRequired = Number(inputMap.inputValue) - Number(inputMap.lowerThreshold);
-
-    if (inputMap.lower.includes('#')) {
-      // workaround for hex value comparison
-      const hexGreater = inputMap.greater.replace('#', '');
-      const hexLower = inputMap.lower.replace('#', '');
-
-      const hexGreaterMap = {
-        r: Number('0x'.concat(hexGreater.substring(0, 2))),
-        g: Number('0x'.concat(hexGreater.substring(2, 4))),
-        b: Number('0x'.concat(hexGreater.substring(4, 6))),
-      };
-
-      const hexLowerMap = {
-        r: Number('0x'.concat(hexLower.substring(0, 2))),
-        g: Number('0x'.concat(hexLower.substring(2, 4))),
-        b: Number('0x'.concat(hexLower.substring(4, 6))),
-      };
-
-      const yDiffMap = {
-        r: hexGreaterMap.r - hexLowerMap.r,
-        g: hexGreaterMap.g - hexLowerMap.g,
-        b: hexGreaterMap.b - hexLowerMap.b
-      };
-
-      const slopeCoefficientMap = {
-        r: yDiffMap.r / xDiff,
-        g: yDiffMap.g / xDiff,
-        b: yDiffMap.b / xDiff
-      };
-
-      const resultMap = {
-        // tslint:disable-next-line:no-bitwise
-        r: ((xDiffRequired * slopeCoefficientMap.r) + hexLowerMap.r) & 0xff,
-        // tslint:disable-next-line:no-bitwise
-        g: ((xDiffRequired * slopeCoefficientMap.g) + hexLowerMap.g) & 0xff,
-        // tslint:disable-next-line:no-bitwise
-        b: ((xDiffRequired * slopeCoefficientMap.b) + hexLowerMap.b) & 0xff
-      };
-
-      const resultR = DataService.utilLeadingZeros(resultMap.r.toString(16), 2);
-      const resultG = DataService.utilLeadingZeros(resultMap.g.toString(16), 2);
-      const resultB = DataService.utilLeadingZeros(resultMap.b.toString(16), 2);
-
-      returnValue = '#'.concat(resultR.concat(resultG.concat(resultB)));
-
-    } else {
-
-      const yDiff = Number(inputMap.greater) - Number(inputMap.lower);
-      const slopeCoefficient = yDiff / xDiff;
-
-      returnValue = String(((xDiffRequired * slopeCoefficient) + Number(inputMap.lower)).toPrecision(5));
-    }
-
-    return returnValue;
-  }
-
   private updateElementsContinuously(isNode: boolean,
                                      continuousMapping: any,
                                      network: NeNetwork,
@@ -697,7 +625,7 @@ export class DataService {
                 greater: String(continuousMapping.breakpoints[index].propertyValue)
               };
 
-              styleObj.style[continuousMapping.cssKey] = this.calculateRelativeValue(inputMap);
+              styleObj.style[continuousMapping.cssKey] = UtilityService.utilCalculateRelativeValue(inputMap);
 
             } else if (continuousMapping.breakpoints[index] && continuousMapping.breakpoints[index].value > elementValue) {
               // case 3: element lower than the current breakpoint =>
@@ -721,7 +649,7 @@ export class DataService {
                 greater: String(limitHigh.propertyValue)
               };
 
-              styleObj.style[continuousMapping.cssKey] = this.calculateRelativeValue(inputMap);
+              styleObj.style[continuousMapping.cssKey] = UtilityService.utilCalculateRelativeValue(inputMap);
 
             } else if (index === continuousMapping.breakpoints.length && index > 0
               && elementValue > continuousMapping.breakpoints[index - 1].value) {
@@ -734,7 +662,7 @@ export class DataService {
                 greater: String(continuousMapping.defaultGreater)
               };
 
-              styleObj.style[continuousMapping.cssKey] = this.calculateRelativeValue(inputMap);
+              styleObj.style[continuousMapping.cssKey] = UtilityService.utilCalculateRelativeValue(inputMap);
 
             } else if (index === 0 && index === continuousMapping.breakpoints.length) {
               const inputMap: NeContinuousMap = {
@@ -745,13 +673,13 @@ export class DataService {
                 greater: String(continuousMapping.defaultGreater)
               };
 
-              styleObj.style[continuousMapping.cssKey] = this.calculateRelativeValue(inputMap);
+              styleObj.style[continuousMapping.cssKey] = UtilityService.utilCalculateRelativeValue(inputMap);
             }
 
             if (!style) {
               styles.push(styleObj);
             } else {
-              network.style = styles.filter(x => x !== style).concat(this.addPropertyToStyle(style, styleObj));
+              network.style = styles.filter(x => x !== style).concat(DataService.addPropertyToStyle(style, styleObj));
             }
           }
         }
@@ -787,6 +715,14 @@ export class DataService {
     }
   }
 
+  /**
+   * Edits an existing mapping, usable for both discrete and contiuous mappings
+   *
+   * @param id network's id
+   * @param mappingToEdit updated mapping
+   * @param styleProperty corresponding style from within the network's existing style
+   * @param mappingsType true for type of mapping
+   */
   editMapping(id: number,
               mappingToEdit: any | any[],
               styleProperty: string,
@@ -857,7 +793,7 @@ export class DataService {
               }
             }
           }
-          network.style = UtilityService.orderStylesByPriority(ndStyles.concat([newStyle]));
+          network.style = UtilityService.utilOrderStylesByPriority(ndStyles.concat([newStyle]));
 
         }
       }
@@ -927,7 +863,7 @@ export class DataService {
               }
             }
           }
-          network.style = UtilityService.orderStylesByPriority(edStyles.concat([newStyle]));
+          network.style = UtilityService.utilOrderStylesByPriority(edStyles.concat([newStyle]));
 
         }
       }

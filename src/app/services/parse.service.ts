@@ -227,23 +227,6 @@ export class ParseService {
   }
 
   /**
-   * Method to fill up any string with leading zeros
-   *
-   * @param s input string
-   * @param targetLength length to be filled up on
-   */
-  private static utilLeadingZeros(s: string, targetLength: number): string {
-    while (s.length < targetLength) {
-      s = '0'.concat(s);
-    }
-    return s;
-  }
-
-  private static orderStyles(parsedStyles: NeStyleComponent[]): NeStyleComponent[] {
-    return parsedStyles.sort((a, b) => (a.priority < b.priority) ? -1 : 1);
-  }
-
-  /**
    * Parses a file from .cx to cytoscape.js interpretable data
    *
    * @param filedata data of the .cx file
@@ -365,7 +348,6 @@ export class ParseService {
 
     const arrowColorAsEdgeColor: boolean = this.evalEdgeStyleDependencies(styleEdgesDefault || []);
 
-    // adding discrete mappings to matching nodes
     if (parsedMappingsNodesDefault.discrete) {
       for (const node of parsedNodeData) {
         for (const nodeAttribute of node.attributes) {
@@ -392,7 +374,6 @@ export class ParseService {
       }
     }
 
-    // adding discrete mappings to matching edges
     if (parsedMappingsEdgesDefault.discrete) {
       for (const edge of parsedEdgeData) {
         for (const edgeAttribute of edge.attributes) {
@@ -476,7 +457,7 @@ export class ParseService {
     }
 
     parsedStyles = this.addArrowColor(parsedStyles, arrowColorAsEdgeColor);
-    parsedStyles = ParseService.orderStyles(parsedStyles);
+    parsedStyles = UtilityService.utilOrderStyleComponentsByPriority(parsedStyles);
 
     const globalStyle: NeStyle[] = [];
     const styleConstants: any = {};
@@ -630,7 +611,6 @@ export class ParseService {
 
       for (const nodeMap of groupedMappingsNodes) {
         if (akv.name === nodeMap.classifier) {
-          // akv is discrete
           akv.mapPointerD.push(groupedMappingsNodes.indexOf(nodeMap));
 
         }
@@ -689,7 +669,7 @@ export class ParseService {
       akv.chartContinuousDistribution = {
         chartData: [{
           label: akv.name,
-          data: [] // contains obj as such: {data: [{x: 0, y: <value>}, {...} ]}
+          data: []
         }]
       };
 
@@ -1289,7 +1269,7 @@ export class ParseService {
                   greater: lowers[intervalPointer],
                   greaterThreshold: thresholds[intervalPointer],
                 };
-                cssValue = this.calculateRelativeValue(calculationMap);
+                cssValue = UtilityService.utilCalculateRelativeValue(calculationMap);
                 if (cssValue.startsWith('#') && displayChart) {
                   displayChart = false;
 
@@ -1455,66 +1435,66 @@ export class ParseService {
     return chartMappingObject;
   }
 
-  private calculateRelativeValue(inputMap: NeContinuousMap): string {
-
-    let returnValue;
-    const xDiff = Number(inputMap.greaterThreshold) - Number(inputMap.lowerThreshold);
-    const xDiffRequired = Number(inputMap.inputValue) - Number(inputMap.lowerThreshold);
-
-    if (inputMap.lower.includes('#')) {
-      // workaround for hex value comparison
-      const hexGreater = inputMap.greater.replace('#', '');
-      const hexLower = inputMap.lower.replace('#', '');
-
-      const hexGreaterMap = {
-        r: Number('0x'.concat(hexGreater.substring(0, 2))),
-        g: Number('0x'.concat(hexGreater.substring(2, 4))),
-        b: Number('0x'.concat(hexGreater.substring(4, 6))),
-      };
-
-      const hexLowerMap = {
-        r: Number('0x'.concat(hexLower.substring(0, 2))),
-        g: Number('0x'.concat(hexLower.substring(2, 4))),
-        b: Number('0x'.concat(hexLower.substring(4, 6))),
-      };
-
-      const yDiffMap = {
-        r: hexGreaterMap.r - hexLowerMap.r,
-        g: hexGreaterMap.g - hexLowerMap.g,
-        b: hexGreaterMap.b - hexLowerMap.b
-      };
-
-      const slopeCoefficientMap = {
-        r: yDiffMap.r / xDiff,
-        g: yDiffMap.g / xDiff,
-        b: yDiffMap.b / xDiff
-      };
-
-      const resultMap = {
-        // tslint:disable-next-line:no-bitwise
-        r: ((xDiffRequired * slopeCoefficientMap.r) + hexLowerMap.r) & 0xff,
-        // tslint:disable-next-line:no-bitwise
-        g: ((xDiffRequired * slopeCoefficientMap.g) + hexLowerMap.g) & 0xff,
-        // tslint:disable-next-line:no-bitwise
-        b: ((xDiffRequired * slopeCoefficientMap.b) + hexLowerMap.b) & 0xff
-      };
-
-      const resultR = ParseService.utilLeadingZeros(resultMap.r.toString(16), 2);
-      const resultG = ParseService.utilLeadingZeros(resultMap.g.toString(16), 2);
-      const resultB = ParseService.utilLeadingZeros(resultMap.b.toString(16), 2);
-
-      returnValue = '#'.concat(resultR.concat(resultG.concat(resultB)));
-
-    } else {
-
-      const yDiff = Number(inputMap.greater) - Number(inputMap.lower);
-      const slopeCoefficient = yDiff / xDiff;
-
-      returnValue = String(((xDiffRequired * slopeCoefficient) + Number(inputMap.lower)).toPrecision(5));
-    }
-
-    return returnValue;
-  }
+  // private calculateRelativeValue(inputMap: NeContinuousMap): string {
+  //
+  //   let returnValue;
+  //   const xDiff = Number(inputMap.greaterThreshold) - Number(inputMap.lowerThreshold);
+  //   const xDiffRequired = Number(inputMap.inputValue) - Number(inputMap.lowerThreshold);
+  //
+  //   if (inputMap.lower.includes('#')) {
+  //     // workaround for hex value comparison
+  //     const hexGreater = inputMap.greater.replace('#', '');
+  //     const hexLower = inputMap.lower.replace('#', '');
+  //
+  //     const hexGreaterMap = {
+  //       r: Number('0x'.concat(hexGreater.substring(0, 2))),
+  //       g: Number('0x'.concat(hexGreater.substring(2, 4))),
+  //       b: Number('0x'.concat(hexGreater.substring(4, 6))),
+  //     };
+  //
+  //     const hexLowerMap = {
+  //       r: Number('0x'.concat(hexLower.substring(0, 2))),
+  //       g: Number('0x'.concat(hexLower.substring(2, 4))),
+  //       b: Number('0x'.concat(hexLower.substring(4, 6))),
+  //     };
+  //
+  //     const yDiffMap = {
+  //       r: hexGreaterMap.r - hexLowerMap.r,
+  //       g: hexGreaterMap.g - hexLowerMap.g,
+  //       b: hexGreaterMap.b - hexLowerMap.b
+  //     };
+  //
+  //     const slopeCoefficientMap = {
+  //       r: yDiffMap.r / xDiff,
+  //       g: yDiffMap.g / xDiff,
+  //       b: yDiffMap.b / xDiff
+  //     };
+  //
+  //     const resultMap = {
+  //       // tslint:disable-next-line:no-bitwise
+  //       r: ((xDiffRequired * slopeCoefficientMap.r) + hexLowerMap.r) & 0xff,
+  //       // tslint:disable-next-line:no-bitwise
+  //       g: ((xDiffRequired * slopeCoefficientMap.g) + hexLowerMap.g) & 0xff,
+  //       // tslint:disable-next-line:no-bitwise
+  //       b: ((xDiffRequired * slopeCoefficientMap.b) + hexLowerMap.b) & 0xff
+  //     };
+  //
+  //     const resultR = ParseService.utilLeadingZeros(resultMap.r.toString(16), 2);
+  //     const resultG = ParseService.utilLeadingZeros(resultMap.g.toString(16), 2);
+  //     const resultB = ParseService.utilLeadingZeros(resultMap.b.toString(16), 2);
+  //
+  //     returnValue = '#'.concat(resultR.concat(resultG.concat(resultB)));
+  //
+  //   } else {
+  //
+  //     const yDiff = Number(inputMap.greater) - Number(inputMap.lower);
+  //     const slopeCoefficient = yDiff / xDiff;
+  //
+  //     returnValue = String(((xDiffRequired * slopeCoefficient) + Number(inputMap.lower)).toPrecision(5));
+  //   }
+  //
+  //   return returnValue;
+  // }
 
 
   private groupDiscreteMappings(mappings: NeMappingsDefinition[]): NeGroupedMappingsDiscrete[] {
