@@ -208,7 +208,7 @@ export class ParseService {
    * @param filedata data of the .cx file
    * @param filename name of original file
    */
-  mockedFiles(filedata: any[], filename: string): NeNetwork {
+  convert(filedata: any[], filename: string): NeNetwork {
     let networkAttributeData;
     let nodeData;
     let nodeAttributeData;

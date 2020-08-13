@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {faFileDownload, faFileExport, faInfo, faPaintBrush, faSave} from '@fortawesome/free-solid-svg-icons';
 import {DataService} from '../../services/data.service';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {NeMappings} from '../../models/ne-mappings';
 import {NeGroupedMappingsDiscrete} from '../../models/ne-grouped-mappings-discrete';
 import {UtilityService} from '../../services/utility.service';
@@ -61,18 +61,64 @@ export class SidebarManageComponent {
    */
   fileToUpload: File = null;
 
+  /**
+   * Factor to display bytes as megabytes
+   *
+   * @private
+   */
   private readonly megaFactor = 1000000;
 
+  /**
+   * Options required for HTTP requests to public NDEx API
+   *
+   * @private
+   */
+  private readonly options = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
+
+  /**
+   * NDEx's public API endpoint
+   * @private
+   */
+  private readonly ndexPublicApiHost = 'http://public.ndexbio.org/v2/';
+
+  /**
+   * Link to NDEx network which is to be loaded
+   */
+  ndexLinkToUpload: string = null;
+
+
+  /**
+   * Boolean to disaply the file-is-too-large-alert
+   */
   showFileSizeTooLargeAlert = false;
 
+  /**
+   * Boolean to display the file-size-ok-alert
+   */
   showFileSizeOkAlert = false;
 
+  /**
+   * Boolean to display the file-extension-invalid-alert
+   */
   showFileNotValidAlert = false;
 
+  /**
+   * File size limit in MB
+   */
   sizeLimit = 20;
 
+  /**
+   * Current file size
+   */
   currentFileSize: number;
 
+  /**
+   * Current file extension
+   */
   invalidExtension: string;
 
   /**
@@ -187,6 +233,49 @@ export class SidebarManageComponent {
     return network;
   }
 
+  private static buildDownloadFile(originalData: any[],
+                                   mappingsNodes: NeMappings[],
+                                   mappingsEdges: NeMappings[],
+                                   network: NeNetwork): void {
+    for (const aspect of originalData) {
+      if (aspect.cyVisualProperties) {
+        for (const cvp of aspect.cyVisualProperties) {
+          switch (cvp.properties_of) {
+            case 'nodes:default':
+              if (mappingsNodes.length > 0) {
+                cvp.mappings = {};
+                for (const nodeMap of mappingsNodes) {
+                  cvp.mappings[nodeMap.key] = {
+                    type: nodeMap.type,
+                    definition: nodeMap.definition
+                  };
+                }
+              }
+              break;
+            case 'edges:default':
+              if (mappingsEdges.length > 0) {
+                cvp.mappings = {};
+                for (const edgeMap of mappingsEdges) {
+                  cvp.mappings[edgeMap.key] = {
+                    type: edgeMap.type,
+                    definition: edgeMap.definition,
+                  };
+                }
+              }
+              break;
+          }
+        }
+      }
+    }
+    let newFilename;
+    if (network.networkInformation.name) {
+      newFilename = UtilityService.utilCleanString(network.networkInformation.name);
+    } else {
+      newFilename = 'network_' + network.id;
+    }
+    SidebarManageComponent.downloadFile(originalData, newFilename);
+  }
+
   /**
    * Converts a network to .cx file format
    *
@@ -219,47 +308,17 @@ export class SidebarManageComponent {
       mappingsEdges = mappingsEdges.concat(map);
     }
 
-    const originalFile = this.http.get(network.networkInformation.originalFilename)
-      .subscribe((originalData: any[]) => {
+    if (network.networkInformation.originalFilename.startsWith('/assets/mocks')) {
+      // work with local mock-file
+      const originalFile = this.http.get(network.networkInformation.originalFilename)
+        .subscribe((originalData: any[]) => SidebarManageComponent.buildDownloadFile(originalData, mappingsNodes, mappingsEdges, network));
+    } else {
+      // work with file from networksDownloaded
+      const originalData = this.dataService.networksDownloaded[id];
+      SidebarManageComponent.buildDownloadFile(originalData, mappingsNodes, mappingsEdges, network);
+    }
 
-        for (const aspect of originalData) {
-          if (aspect.cyVisualProperties) {
-            for (const cvp of aspect.cyVisualProperties) {
-              switch (cvp.properties_of) {
-                case 'nodes:default':
-                  if (mappingsNodes.length > 0) {
-                    cvp.mappings = {};
-                    for (const nodeMap of mappingsNodes) {
-                      cvp.mappings[nodeMap.key] = {
-                        type: nodeMap.type,
-                        definition: nodeMap.definition
-                      };
-                    }
-                  }
-                  break;
-                case 'edges:default':
-                  if (mappingsEdges.length > 0) {
-                    cvp.mappings = {};
-                    for (const edgeMap of mappingsEdges) {
-                      cvp.mappings[edgeMap.key] = {
-                        type: edgeMap.type,
-                        definition: edgeMap.definition,
-                      };
-                    }
-                  }
-                  break;
-              }
-            }
-          }
-        }
-        let newFilename;
-        if (network.networkInformation.name) {
-          newFilename = UtilityService.utilCleanString(network.networkInformation.name);
-        } else {
-          newFilename = 'network_' + id;
-        }
-        SidebarManageComponent.downloadFile(originalData, newFilename);
-      });
+
   }
 
   /**
@@ -372,15 +431,75 @@ export class SidebarManageComponent {
     return newMappings;
   }
 
+  /**
+   * Adds a selected file from the local harddrive to the application, triggers its conversion and makes it displayable.
+   */
   importLocalFile(): void {
+    if (!this.fileToUpload) {
+      return;
+    } else {
+
+      this.fileToUpload.text()
+        .then(data => {
+          this.dataService.networksDownloaded.push(JSON.parse(data));
+          this.dataService.networksParsed.push(this.parseService.convert(JSON.parse(data), UtilityService.utilCleanString(this.fileToUpload.name)));
+        })
+        .catch(error => console.log(error));
+    }
+  }
+
+  /**
+   * Imports data from NDEx. Works with link to publicly accessible network or just its ID
+   */
+  importFromNdex(): void {
+    const slashSplit = this.ndexLinkToUpload.split('/');
+
+    this.http.get(this.ndexPublicApiHost + 'network/' + slashSplit[slashSplit.length - 1], this.options)
+      .toPromise()
+      .then((data: any[]) => {
+
+        let networkName = String(this.dataService.networksDownloaded.length);
+        for (const d of data) {
+          if (d.networkAttributes) {
+            for (const prop of d.networkAttributes) {
+              if (d.n === 'name') {
+                networkName = d.networkAttributes.name;
+              }
+            }
+          }
+        }
+        this.dataService.networksDownloaded.push(data);
+        this.dataService.networksParsed.push(this.parseService.convert(data, UtilityService.utilCleanString(networkName)));
+
+      })
+      .catch(error => console.log(error));
+  }
+
+  /**
+   * Sets file to be uploaded from local directory. If an error with the file exists, it displays alerts.
+   * Validations include correct file extension (.cx) and size limit of 20 MB.
+   *
+   * @param event ChangeEvent is triggered on selection of a local file or the aborted selection
+   */
+  setAndValidateFile(event: Event): void {
+
+    if (event.target.files && event.target.files.length > 0) {
+      this.fileToUpload = event.target.files[0];
+    } else {
+      return;
+    }
+
     const pointSplit = this.fileToUpload.name.split('.');
     const fileExtension = pointSplit[pointSplit.length - 1];
+    this.currentFileSize = Number((this.fileToUpload.size / this.megaFactor).toFixed(2));
+
     // current file limit is set to 20MB, which has proofen to overload the application
     if (this.fileToUpload.size > (this.sizeLimit * this.megaFactor)) {
       this.showFileSizeTooLargeAlert = true;
       this.showFileSizeOkAlert = false;
       this.showFileNotValidAlert = false;
-      this.currentFileSize = Number((this.fileToUpload.size / this.megaFactor).toFixed(2));
+      this.fileToUpload = null;
+
       setTimeout(() => {
         this.showFileSizeTooLargeAlert = false;
       }, 5000);
@@ -391,30 +510,21 @@ export class SidebarManageComponent {
       this.showFileNotValidAlert = true;
       this.showFileSizeOkAlert = false;
       this.showFileSizeTooLargeAlert = false;
+      this.fileToUpload = null;
+
+      setTimeout(() => {
+        this.showFileNotValidAlert = false;
+      }, 5000);
 
     } else {
 
-      this.showFileNotValidAlert = false;
-      this.showFileSizeTooLargeAlert = false;
       this.showFileSizeOkAlert = true;
-      this.currentFileSize = Number((this.fileToUpload.size / this.megaFactor).toFixed(2));
-
-      (this.fileToUpload.text())
-        .then(data => {
-          this.dataService.networksDownloaded.push(JSON.parse(data));
-          this.dataService.networksParsed.push(this.parseService.mockedFiles(JSON.parse(data), this.fileToUpload.name + '.cx'));
-        })
-        .catch(error => console.log(error));
+      this.showFileSizeTooLargeAlert = false;
+      this.showFileNotValidAlert = false;
 
       setTimeout(() => {
         this.showFileSizeOkAlert = false;
       }, 5000);
-    }
-  }
-
-  setFile(event: Event): void {
-    if (event.target.files && event.target.files.length > 0) {
-      this.fileToUpload = event.target.files[0];
     }
   }
 }

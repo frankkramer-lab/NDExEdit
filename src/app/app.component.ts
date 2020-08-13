@@ -110,7 +110,7 @@ export class AppComponent {
    * @param filename name of file, needed for reconversion
    */
   private parseFileFromAssets(network: any, filename: string): NeNetwork {
-    return this.parseService.mockedFiles(network, this.mockedFilepath + filename);
+    return this.parseService.convert(network, this.mockedFilepath + filename);
   }
 
   /**

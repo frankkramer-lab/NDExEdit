@@ -29,14 +29,14 @@
   <div class="row mb-3">
     <div class="col-9 form-group mb-2">
       <input type="text" class="form-control" id="remoteNetworkFile" aria-describedby="remoteNetworkHelp"
-             placeholder="{{'SIDEBAR_MANAGE_REMOTE_FILE_EXAMPLE'|translate}}">
+             placeholder="{{'SIDEBAR_MANAGE_REMOTE_FILE_EXAMPLE'|translate}}" [(ngModel)]="ndexLinkToUpload">
       <small id="remoteNetworkHelp" class="form-text text-muted">{{'SIDEBAR_MANAGE_REMOTE_FILE_TIP'|translate}}</small>
     </div>
     <div class="col-3">
       <button class="btn btn-block btn-outline-success" type="button"
-              data-toggle="tooltip" placement="left" ngbTooltip="{{'SIDEBAR_MANAGE_TT_REMOTE_FILES' | translate}}">
+              data-toggle="tooltip" placement="left" ngbTooltip="{{'SIDEBAR_MANAGE_TT_REMOTE_FILES' | translate}}"
+              (click)="importFromNdex()">
         {{'SIDEBAR_MANAGE_REMOTE_FILE_BTN'|translate}}
-        [TODO]
       </button>
     </div>
   </div>
@@ -68,7 +68,7 @@
 
   <div class="input-group mb-3">
     <div class="custom-file">
-      <input type="file" class="custom-file-input" id="localNetworkFile" (change)="setFile($event)">
+      <input type="file" class="custom-file-input" id="localNetworkFile" (change)="setAndValidateFile($event)">
       <label for="localNetworkFile" class="custom-file-label">{{'SIDEBAR_MANAGE_LOCAL_FILE_LABEL'|translate}}</label>
     </div>
     <div class="input-group-append">

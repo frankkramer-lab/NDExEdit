@@ -51,7 +51,7 @@
   "SIDEBAR_MANAGE_LOCAL_FILE_LABEL": "Browse local files",
   "SIDEBAR_MANAGE_LOCAL_FILE_BTN": "Upload",
   "SIDEBAR_MANAGE_REMOTE_FILE_LABEL": "Load file from NDEx",
-  "SIDEBAR_MANAGE_REMOTE_FILE_TIP": "You need the network's URL to load the file from NDEx",
+  "SIDEBAR_MANAGE_REMOTE_FILE_TIP": "You need the network's URL or UUID to load the file from NDEx",
   "SIDEBAR_MANAGE_REMOTE_FILE_BTN": "Load",
   "SIDEBAR_MANAGE_REMOTE_FILE_EXAMPLE": "e.g. https://ndexbio.org/#/network/36f7d8fd-23dc-11e8-b939-0ac135e8bacf",
   "SIDEBAR_MANAGE_TT_LOCAL_FILE": "Load a local .cx file",
