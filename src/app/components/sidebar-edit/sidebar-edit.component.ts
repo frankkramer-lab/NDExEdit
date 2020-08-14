@@ -74,7 +74,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   gradientBackground = '';
 
   /**
-   * todo research
+   * todo research and possibly delete because not necessary (?)
    */
   index = '';
 

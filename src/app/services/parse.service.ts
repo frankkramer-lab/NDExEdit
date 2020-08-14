@@ -1,8 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import * as cytoscape from 'cytoscape';
 import {ElementDefinition, ElementGroup} from 'cytoscape';
-import {NeConversionMap} from '../models/ne-conversion-map';
 import {NeStyle} from '../models/ne-style';
 import {NeNode} from '../models/ne-node';
 import {NeElementAttribute} from '../models/ne-element-attribute';
@@ -903,6 +901,13 @@ export class ParseService {
     };
   }
 
+  /**
+   * Parses a discrete mapping
+   *
+   * @param mapping the mapping in .cx format
+   * @param elementType can either be node or edge
+   * @private
+   */
   private parseMappingDiscrete(mapping: NeMappings, elementType: string): NeMappingsDefinition[] {
     const mappingsElementsDefault: NeMappingsDefinition[] = [];
 
@@ -1019,6 +1024,14 @@ export class ParseService {
     return mappingsElementsDefault;
   }
 
+  /**
+   * Parses a continuous mapping
+   *
+   * @param mapping mapping in .cx format
+   * @param elementType can either be node or edge
+   * @param data Collection of either nodes or edges which need to be mapped by this mapping
+   * @private
+   */
   private parseMappingContinuous(mapping: NeMappings,
                                  elementType: string,
                                  data: NeElement[]): NeContinuousCollection {
@@ -1175,6 +1188,16 @@ export class ParseService {
     return continuousCollection;
   }
 
+  /**
+   * Builds the color gradient for this continuous mapping
+   * @param thresholds list of thresholds
+   * @param lowers list of lowers
+   * @param equals list of equals
+   * @param greaters list of greaters
+   * @param lookup to property matching lookup
+   * @param attribute attribute to define this color
+   * @private
+   */
   private buildColorGradient(thresholds: string[],
                              lowers: string[],
                              equals: string[],
@@ -1214,6 +1237,16 @@ export class ParseService {
     return colorGradientCollection;
   }
 
+  /**
+   * Builds chart data for this contiuous mapping
+   * @param thresholds list of thresholds
+   * @param lowers list of lowers
+   * @param equals list of equals
+   * @param greaters list of greaters
+   * @param lookup to property matching lookup
+   * @param attribute attribute to define this color
+   * @private
+   */
   private buildChartData(
     thresholds: string[],
     lowers: string[],
@@ -1274,6 +1307,11 @@ export class ParseService {
     return chartMappingObject;
   }
 
+  /**
+   * Groups a list of mappings by their selectors
+   * @param mappings list of mappings which all use the same selectors
+   * @private
+   */
   private groupDiscreteMappings(mappings: NeMappingsDefinition[]): NeGroupedMappingsDiscrete[] {
 
     const groupedMappings: NeGroupedMappingsDiscrete[] = [];
@@ -1339,12 +1377,25 @@ export class ParseService {
     return groupedMappings;
   }
 
+  /**
+   * Method specifically for determining arrows' colors on edges
+   *
+   * @param styleEdgesDefault edge styles needed to determine which color arrows need to be
+   * @private
+   */
   private evalEdgeStyleDependencies(styleEdgesDefault: any): boolean {
     if (styleEdgesDefault.dependencies) {
       return styleEdgesDefault.dependencies.arrowColorMatchesEdge || false;
     }
   }
 
+  /**
+   * Adds the arrow color to the graph
+   *
+   * @param parsedStyles List of existing styles within this network
+   * @param arrowColorAsEdgeColor boolean if the edge color is also applied to the arrow
+   * @private
+   */
   private addArrowColor(parsedStyles: NeStyleComponent[], arrowColorAsEdgeColor: boolean): NeStyleComponent[] {
     for (const style of parsedStyles) {
       if (style && style.cssKey === 'line-color' && arrowColorAsEdgeColor) {

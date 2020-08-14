@@ -59,12 +59,13 @@ export class MainMappingsComponent {
   faArrowLeft = faArrowLeft;
 
   /**
-   * Used as a switch to toggle between list of all currently existing mappings and confirmation dialogue to delete a mapping
+   * Displays deletion dialogue for the whole mapping
    */
-    // showList = true;
-
   showGlobalDeletionDialogue = false;
 
+  /**
+   * Displays deletion dialogue for a single property within a mapping
+   */
   showSingleDeletionDialogue = false;
 
   /**
@@ -209,9 +210,15 @@ export class MainMappingsComponent {
     this.mappingToRemove.map = map;
     this.mappingToRemove.type = type;
     this.mappingToRemove.network = this.selectedNetwork.id;
-    console.log(this.mappingToRemove);
   }
 
+  /**
+   * Toggles the dialogue to confirm deletion of a property from an existing mapping.
+   *
+   * @param map mapping to remove the property from
+   * @param mapType type of property
+   * @param style the style object matching the selected property
+   */
   toggleSingleRemoveDialogue(map: any = null, mapType: string = '', style: any = null): void {
     this.propertyToRemove.style = style;
     this.propertyToRemove.mapType = mapType;
@@ -241,11 +248,11 @@ export class MainMappingsComponent {
         this.showSingleDeletionDialogue = false;
         break;
     }
-    console.log(this.propertyToRemove);
   }
 
   /**
-   * On confirmation the deletion of the mapping is executed and instead of the confirmation dialogue the list of
+   * On confirmation the deletion of the mapping or a selected property is executed and
+   * instead of the confirmation dialogue the list of
    * existing mappings reappears.
    * When not confirming the deletion merely the dialogue is hidden again.
    *
@@ -264,8 +271,6 @@ export class MainMappingsComponent {
         break;
       case 'single':
         if (confirmation) {
-          // todo
-          console.log(this.propertyToRemove);
           this.dataService.removePropertyFromMapping(this.selectedNetwork.id, this.propertyToRemove);
           this.propertyToRemove = {
             mapReference: -1,
@@ -277,6 +282,5 @@ export class MainMappingsComponent {
         break;
     }
   }
-
 
 }

@@ -233,6 +233,16 @@ export class SidebarManageComponent {
     return network;
   }
 
+  /**
+   * Builds the download file based on the originally given file. Since currently it is merely possible to
+   * change mappings, only these parts of the data are overridden
+   *
+   * @param originalData originally given file data
+   * @param mappingsNodes mappings regarding nodes
+   * @param mappingsEdges mappings regarding edges
+   * @param network the given network
+   * @private
+   */
   private static buildDownloadFile(originalData: any[],
                                    mappingsNodes: NeMappings[],
                                    mappingsEdges: NeMappings[],

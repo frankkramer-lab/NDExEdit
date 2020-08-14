@@ -9,11 +9,27 @@ import {NeSelection} from '../models/ne-selection';
 @Injectable({
   providedIn: 'root'
 })
+
+/**
+ * Service responsible for displaying a graph
+ */
 export class GraphService {
 
+  /**
+   * Core belonging to the selected network
+   * @private
+   */
   private core: cytoscape.Core;
+
+  /**
+   * Duration of highlighting elements in milliseconds
+   * @private
+   */
   private flashDuration = 2000;
 
+  /**
+   * Collection of selected nodes or edges whose information are to be displayed within the sidebar
+   */
   public selectedElements: NeSelection = {
     nodes: [],
     edges: []
@@ -22,6 +38,11 @@ export class GraphService {
   constructor() {
   }
 
+  /**
+   * Renders the selected network
+   * @param container DOM element where to render the graph
+   * @param network network to be rendered
+   */
   render(container: HTMLElement, network: NeNetwork): cytoscape.Core {
     this.unsubscribeFromCoreEvents();
     this.core = cytoscape(this.interpretAsCytoscape(container, network));
@@ -30,7 +51,11 @@ export class GraphService {
     return this.core;
   }
 
-
+  /**
+   * Makes a network and the chosen container a valid input for the cytoscape constructor
+   * @param container DOM element where to render the graph
+   * @param network selected network
+   */
   interpretAsCytoscape(container: HTMLElement, network: NeNetwork): CytoscapeOptions {
     return {
       container,
@@ -42,18 +67,34 @@ export class GraphService {
     };
   }
 
+  /**
+   * Toggles the application internal CSS class on elements with the given selector
+   *
+   * @param selector selector by which elements are to be highlighted
+   */
   highlightBySelector(selector: string): void {
     if (selector !== undefined) {
       this.core.elements(selector).flashClass('custom_highlight_color', this.flashDuration);
     }
   }
 
+  /**
+   * Toggles the application internal CSS clas on specific elements
+   *
+   * @param id the element's id
+   */
   highlightByElementId(id: string): void {
     if (id !== undefined) {
       this.core.getElementById(id).flashClass('custom_highlight_color', this.flashDuration);
     }
   }
 
+  /**
+   * Adjusts the color and duration of higlhighting an elements by selector or ID
+   * @param hexColorNodes new highlight color for nodes
+   * @param hexColorEdges new highlight color for edges
+   * @param duration highlight duration in milliseconds
+   */
   setHighlightColorAndDuration(hexColorNodes: string, hexColorEdges: string, duration: number): void {
     const styleJson = this.core.style().json();
 
@@ -73,10 +114,18 @@ export class GraphService {
 
   }
 
+  /**
+   * Toggles labels
+   * @param show current status of labels
+   */
   toggleLabels(show: boolean): void {
     this.core.elements().toggleClass('hide_label', !show);
   }
 
+  /**
+   * Called on component init, defines which cytoscape core events are handled
+   * @private
+   */
   private subscribeToCoreEvents(): void {
     if (this.core) {
       this.core.ready(() => {
@@ -87,6 +136,11 @@ export class GraphService {
     }
   }
 
+  /**
+   * Handles cytoscape core events
+   * @param event the triggered event
+   * @private
+   */
   private handleEvent(event: EventObject): void {
     switch (event.type as string) {
       case 'select':
@@ -106,12 +160,19 @@ export class GraphService {
     }
   }
 
+  /**
+   * On component destruction unsubscribing the core events to prevent memory leaks
+   * @private
+   */
   private unsubscribeFromCoreEvents(): void {
     if (this.core) {
       this.core.removeListener('click');
     }
   }
 
+  /**
+   * Fits the graph to the screen width
+   */
   fitGraph(): void {
     this.core.fit();
   }
