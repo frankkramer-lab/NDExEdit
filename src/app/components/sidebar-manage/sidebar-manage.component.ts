@@ -299,7 +299,6 @@ export class SidebarManageComponent {
    * @param id network's id
    */
   reconvert(id: number): void {
-    // todo fix node size!! wtf i already fixed that before
     const network = this.dataService.networksParsed.find(x => x.id === id);
     const cleanNetwork: NeNetwork = SidebarManageComponent.utilCleanoutStyles(network);
     let mappingsNodes: NeMappings[] = [];
@@ -329,6 +328,7 @@ export class SidebarManageComponent {
       const map: NeMappings[] = this.buildDiscreteMappingDefinition(ndMapping);
       mappingsNodes = mappingsNodes.concat(map);
     }
+
     for (const edMapping of cleanNetwork.mappings.edgesDiscrete) {
       const map: NeMappings[] = this.buildDiscreteMappingDefinition(edMapping);
       mappingsEdges = mappingsEdges.concat(map);
@@ -343,9 +343,6 @@ export class SidebarManageComponent {
       const map: NeMappings[] = this.buildContinuousMappingDefinition(ecMapping);
       mappingsEdges = mappingsEdges.concat(map);
     }
-
-
-    console.log(mappingsNodes, network.mappings.nodesDiscrete);
 
     if (cleanNetwork.networkInformation.originalFilename.startsWith('/assets/mocks')) {
       // work with local mock-file
@@ -368,13 +365,11 @@ export class SidebarManageComponent {
    * @private
    */
   private buildDiscreteMappingDefinition(dMapping: NeGroupedMappingsDiscrete): NeMappings[] {
-    console.log(dMapping);
     // todo fix interaction on edges
     const newMappings: NeMappings[] = [];
     const col = dMapping.classifier;
 
     for (const style of dMapping.styleMap) {
-
       for (const val of style.cssValues) {
         const property = {
           key: style.cssKey,
@@ -382,8 +377,8 @@ export class SidebarManageComponent {
         };
 
         const selector = style.selectors[style.cssValues.indexOf(val)];
+
         for (const lookup of this.utilityService.lookup(property, selector, 'cytoscape', 'ndex')) {
-          console.log(lookup);
           const kCollection = [];
           const vCollection = [];
           const t = dMapping.datatype;

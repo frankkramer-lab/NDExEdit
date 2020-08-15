@@ -194,7 +194,6 @@ export class UtilityService {
    * @returns array of {@link NeStyleComponent|NeStyleComponent}
    */
   public lookup(property: any, selector: string = 'node', from: string = 'ndex', to: string = 'cytoscape'): NeStyleComponent[] {
-
     let lookupMap: NeConversionMap;
 
     if (property.key === 'width' && !selector.includes('node')) {
@@ -225,13 +224,17 @@ export class UtilityService {
     const priority = UtilityService.utilfindPriorityBySelector(builtSelector);
 
     // case 1: simply applicable
-    if (lookupMap && !lookupMap.conversionType && lookupMap[to].length === 1) {
-      return [{
-        selector: builtSelector,
-        cssKey: lookupMap[to][0],
-        cssValue: property.value,
-        priority
-      }];
+    if (lookupMap && !lookupMap.conversionType) {
+      const collection: NeStyleComponent[] = [];
+      for (let i = 0; i < lookupMap[to].length; i++) {
+        collection.push({
+          selector: builtSelector,
+          cssKey: lookupMap[to][i],
+          cssValue: property.value,
+          priority
+        });
+      }
+      return collection;
     } else if (lookupMap && lookupMap.conversionType) {
       switch (lookupMap.conversionType) {
 
