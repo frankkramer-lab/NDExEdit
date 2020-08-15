@@ -197,10 +197,19 @@ export class UtilityService {
 
     let lookupMap: NeConversionMap;
 
-    for (const entry of this.lookupData) {
-      if (entry[from].includes(property.key)) {
-        lookupMap = entry;
-        break;
+    if (property.key === 'width' && !selector.includes('node')) {
+      for (const entry of this.lookupData) {
+        if (entry[from].includes(property.key) && entry[to].includes('EDGE_WIDTH')) {
+          lookupMap = entry;
+          break;
+        }
+      }
+    } else {
+      for (const entry of this.lookupData) {
+        if (entry[from].includes(property.key)) {
+          lookupMap = entry;
+          break;
+        }
       }
     }
 

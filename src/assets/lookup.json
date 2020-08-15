@@ -149,6 +149,14 @@
   },
   {
     "ndex": [
+      "NODE_SIZE"
+    ],
+    "cytoscape": [
+      "size"
+    ]
+  },
+  {
+    "ndex": [
       "NODE_BORDER_PAINT"
     ],
     "cytoscape": [
@@ -271,16 +279,28 @@
     }
   },
   {
-    "ndex": ["EDGE_TARGET_ARROW_UNSELECTED_PAINT"],
-    "cytoscape": ["target-arrow-color"]
+    "ndex": [
+      "EDGE_TARGET_ARROW_UNSELECTED_PAINT"
+    ],
+    "cytoscape": [
+      "target-arrow-color"
+    ]
   },
   {
-    "ndex": ["EDGE_SOURCE_ARROW_UNSELECTED_PAINT"],
-    "cytoscape": ["source-arrow-color"]
+    "ndex": [
+      "EDGE_SOURCE_ARROW_UNSELECTED_PAINT"
+    ],
+    "cytoscape": [
+      "source-arrow-color"
+    ]
   },
   {
-    "ndex": ["EDGE_CURVED"],
-    "cytoscape": ["curve-style"],
+    "ndex": [
+      "EDGE_CURVED"
+    ],
+    "cytoscape": [
+      "curve-style"
+    ],
     "conversionType": "split",
     "splitRules": {
       "splitAt": "%",

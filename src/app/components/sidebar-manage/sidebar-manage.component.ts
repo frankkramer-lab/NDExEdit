@@ -7,6 +7,8 @@ import {NeGroupedMappingsDiscrete} from '../../models/ne-grouped-mappings-discre
 import {UtilityService} from '../../services/utility.service';
 import {NeNetwork} from '../../models/ne-network';
 import {ParseService} from '../../services/parse.service';
+import {GraphService} from '../../services/graph.service';
+import {NeStyleMap} from '../../models/ne-style-map';
 
 @Component({
   selector: 'app-sidebar-manage',
@@ -23,7 +25,8 @@ export class SidebarManageComponent {
   constructor(public dataService: DataService,
               private http: HttpClient,
               private utilityService: UtilityService,
-              private parseService: ParseService) {
+              private parseService: ParseService,
+              private graphService: GraphService) {
   }
 
   /**
@@ -224,13 +227,17 @@ export class SidebarManageComponent {
    * @param network network to be cleaned
    * @private
    */
-  private static cleanoutUtilStyles(network: NeNetwork): NeNetwork {
-    network.style = network.style.filter(x => x.selector !== '.hide_label' && x.selector !== '.text-wrap' && x.selector !== '.custom_highlight_color');
-    for (const element of network.elements) {
+  private static utilCleanoutStyles(network: NeNetwork): NeNetwork {
+    const newNetwork = JSON.parse(JSON.stringify(network)); // enforcing deep copy to not override current network
+    const newStyle = network.style.filter(x => x.selector !== '.hide_label' && x.selector !== '.text-wrap' && x.selector !== '.custom_highlight_color');
+    const newElements = network.elements;
+    for (const element of newElements) {
       element.data.classes = element.data.classes.filter(x => x !== 'hide_label' && x !== 'text-wrap' && x !== 'custom_highlight_color');
       element.classes = element.data.classes.join(' ');
     }
-    return network;
+    newNetwork.elements = newElements;
+    newNetwork.style = newStyle;
+    return newNetwork;
   }
 
   /**
@@ -292,40 +299,63 @@ export class SidebarManageComponent {
    * @param id network's id
    */
   reconvert(id: number): void {
-    let network = this.dataService.networksParsed.find(x => x.id === id);
-    network = SidebarManageComponent.cleanoutUtilStyles(network);
+    // todo fix node size!! wtf i already fixed that before
+    const network = this.dataService.networksParsed.find(x => x.id === id);
+    const cleanNetwork: NeNetwork = SidebarManageComponent.utilCleanoutStyles(network);
     let mappingsNodes: NeMappings[] = [];
     let mappingsEdges: NeMappings[] = [];
 
-    for (const ndMapping of network.mappings.nodesDiscrete) {
+    for (const nodeMap of cleanNetwork.mappings.nodesDiscrete) {
+      const availableProperties = nodeMap.styleMap.map(x => x.cssKey);
+      if (availableProperties.includes('width') && availableProperties.includes('height')) {
+        const widthMapping = nodeMap.styleMap.find(x => x.cssKey === 'width');
+        const heightMapping = nodeMap.styleMap.find(x => x.cssKey === 'height');
+        const additionalSizeMap: NeStyleMap = {
+          cssKey: 'size',
+          cssValues: [],
+          selectors: []
+        };
+        for (let i = 0; i < widthMapping.cssValues.length; i++) {
+          if (widthMapping.cssValues[i] === heightMapping.cssValues[i] && widthMapping.selectors[i] === heightMapping.selectors[i]) {
+            additionalSizeMap.cssValues.push(widthMapping.cssValues[i]);
+            additionalSizeMap.selectors.push(widthMapping.selectors[i]);
+          }
+        }
+        nodeMap.styleMap.push(additionalSizeMap);
+      }
+    }
+
+    for (const ndMapping of cleanNetwork.mappings.nodesDiscrete) {
       const map: NeMappings[] = this.buildDiscreteMappingDefinition(ndMapping);
       mappingsNodes = mappingsNodes.concat(map);
     }
-
-    for (const edMapping of network.mappings.edgesDiscrete) {
+    for (const edMapping of cleanNetwork.mappings.edgesDiscrete) {
       const map: NeMappings[] = this.buildDiscreteMappingDefinition(edMapping);
       mappingsEdges = mappingsEdges.concat(map);
     }
 
-
-    for (const ncMapping of network.mappings.nodesContinuous) {
+    for (const ncMapping of cleanNetwork.mappings.nodesContinuous) {
       const map: NeMappings[] = this.buildContinuousMappingDefinition(ncMapping);
       mappingsNodes = mappingsNodes.concat(map);
     }
 
-    for (const ecMapping of network.mappings.edgesContinuous) {
+    for (const ecMapping of cleanNetwork.mappings.edgesContinuous) {
       const map: NeMappings[] = this.buildContinuousMappingDefinition(ecMapping);
       mappingsEdges = mappingsEdges.concat(map);
     }
 
-    if (network.networkInformation.originalFilename.startsWith('/assets/mocks')) {
+
+    console.log(mappingsNodes, network.mappings.nodesDiscrete);
+
+    if (cleanNetwork.networkInformation.originalFilename.startsWith('/assets/mocks')) {
       // work with local mock-file
-      const originalFile = this.http.get(network.networkInformation.originalFilename)
-        .subscribe((originalData: any[]) => SidebarManageComponent.buildDownloadFile(originalData, mappingsNodes, mappingsEdges, network));
+      const originalFile = this.http.get(cleanNetwork.networkInformation.originalFilename)
+        .subscribe((originalData: any[]) => SidebarManageComponent
+          .buildDownloadFile(originalData, mappingsNodes, mappingsEdges, cleanNetwork));
     } else {
       // work with file from networksDownloaded
       const originalData = this.dataService.networksDownloaded[id];
-      SidebarManageComponent.buildDownloadFile(originalData, mappingsNodes, mappingsEdges, network);
+      SidebarManageComponent.buildDownloadFile(originalData, mappingsNodes, mappingsEdges, cleanNetwork);
     }
 
 
@@ -338,7 +368,7 @@ export class SidebarManageComponent {
    * @private
    */
   private buildDiscreteMappingDefinition(dMapping: NeGroupedMappingsDiscrete): NeMappings[] {
-
+    console.log(dMapping);
     // todo fix interaction on edges
     const newMappings: NeMappings[] = [];
     const col = dMapping.classifier;
@@ -352,8 +382,8 @@ export class SidebarManageComponent {
         };
 
         const selector = style.selectors[style.cssValues.indexOf(val)];
-
         for (const lookup of this.utilityService.lookup(property, selector, 'cytoscape', 'ndex')) {
+          console.log(lookup);
           const kCollection = [];
           const vCollection = [];
           const t = dMapping.datatype;
@@ -452,7 +482,8 @@ export class SidebarManageComponent {
       this.fileToUpload.text()
         .then(data => {
           this.dataService.networksDownloaded.push(JSON.parse(data));
-          this.dataService.networksParsed.push(this.parseService.convert(JSON.parse(data), UtilityService.utilCleanString(this.fileToUpload.name)));
+          this.dataService.networksParsed.push(this.parseService.convert(JSON.parse(data),
+            UtilityService.utilCleanString(this.fileToUpload.name)));
         })
         .catch(error => console.log(error));
     }
@@ -503,7 +534,7 @@ export class SidebarManageComponent {
     const fileExtension = pointSplit[pointSplit.length - 1];
     this.currentFileSize = Number((this.fileToUpload.size / this.megaFactor).toFixed(2));
 
-    // current file limit is set to 20MB, which has proofen to overload the application
+    // current file limit is set to 20MB, which has proven to overload the application
     if (this.fileToUpload.size > (this.sizeLimit * this.megaFactor)) {
       this.showFileSizeTooLargeAlert = true;
       this.showFileSizeOkAlert = false;
