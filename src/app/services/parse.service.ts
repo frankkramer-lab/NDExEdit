@@ -720,7 +720,8 @@ export class ParseService {
         nodesContinuous: parsedMappingsNodesDefault.continuous,
         edgesContinuous: parsedMappingsEdgesDefault.continuous
       },
-      styleConstants
+      styleConstants,
+      showLabels: false
     };
   }
 

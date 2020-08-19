@@ -19,4 +19,5 @@ export interface NeNetwork {
   aspectKeyValuesEdges?: NeAspect[];
   mappings?: NeMappingsMap;
   styleConstants?: any;
+  showLabels?: boolean;
 }

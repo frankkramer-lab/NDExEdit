@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, OnDestroy} from '@angular/core';
 import {DataService} from '../../services/data.service';
 import {ActivatedRoute} from '@angular/router';
 import {NeNetwork} from '../../models/ne-network';
@@ -111,23 +111,17 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   /**
    * Default color for highlighting a lost node
    */
-  highlightNodes = '#0000ff';
+  highlightNodes = '';
 
   /**
    * Default color for highlighting a lost edge
    */
-  highlightEdges = '#0000ff';
+  highlightEdges = '';
 
   /**
    * Default duration for highlight a lost element, in milliseconds
    */
   highlightDuration = 2000;
-
-  /**
-   * Toggles displaying labels for a rendered graph, not true by default to improve rendering performance.
-   * See {@link https://js.cytoscape.org/|Cytoscape.js} for further details
-   */
-  showLabels = false;
 
   /**
    * Ensures that only a graph is rendered if the id is specified within the URL
@@ -148,14 +142,17 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
 
     this.subscription = this.route.paramMap.subscribe(params => {
       this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
+      this.initColorHighlighting();
     });
   }
 
   /**
-   * Sets initialized status
+   * Sets initialized status, toggles labels with respect to network information
+   * and initializes the color highlighting properties to be used for this specific network
    */
   ngAfterViewInit(): void {
     this.isInitialized = true;
+    this.graphService.toggleLabels(this.selectedNetwork.showLabels);
   }
 
   /**
@@ -180,7 +177,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    */
   toggleLabels(show: boolean): void {
     this.graphService.toggleLabels(show);
-    this.showLabels = show;
+    this.selectedNetwork.showLabels = show;
   }
 
   /**
@@ -247,6 +244,38 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
       this.showComparison = false;
       this.showChart = false;
       this.showColorGradient = true;
+    }
+  }
+
+  /**
+   * Overrides the network's style property with the given color codes, duration will be reset if the view is
+   * destroyed and reinitialized, because this is not stored within the network
+   *
+   * @param highlightNodes color to highlight the nodes
+   * @param highlightEdges color to highlight the edges
+   * @param highlightDuration duration to highlight each element in milliseconds
+   */
+  setHighlightColorAndDuration(highlightNodes: string, highlightEdges: string, highlightDuration: number): void {
+    this.graphService.setHighlightColorAndDuration(highlightNodes, highlightEdges, highlightDuration);
+    const colorStyle = {
+      'background-color': highlightNodes,
+      'line-color': highlightEdges,
+      'source-arrow-color': highlightEdges,
+      'target-arrow-color': highlightEdges
+    };
+    const styleIndex = this.selectedNetwork.style.findIndex(x => x.selector  === '.custom_highlight_color');
+    this.selectedNetwork.style[styleIndex].style = colorStyle;
+  }
+
+  /**
+   * If there is network information for color highlighting this information is used
+   * @private
+   */
+  private initColorHighlighting(): void {
+    const colorStyle = this.selectedNetwork.style.find(x => x.selector === '.custom_highlight_color');
+    if (colorStyle) {
+      this.highlightNodes = colorStyle.style['background-color'];
+      this.highlightEdges = colorStyle.style['line-color'];
     }
   }
 

@@ -90,7 +90,7 @@
         <div class="form-group row">
           <label for="ndCssProperty"
                  class="col-4 col-form-label">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
-          <div class="col-7">
+          <div class="col-6">
             <input type="text" class="form-control" id="ndCssProperty" name="ndCssProperty"
                    [(ngModel)]="styleProperty" [readOnly]="isEdit">
             <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
@@ -98,7 +98,7 @@
                    class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
           </div>
 
-          <div class="col-1 form-check" *ngIf="!needsColorValidation(styleProperty)">
+          <div class="col-2 form-check" *ngIf="!needsColorValidation(styleProperty)">
             <input class="form-check-input" type="checkbox" value="{{validateAsColor}}" id="ndColorValidation"
                    (click)="colorValidation(!validateAsColor)">
             <label class="form-check-label" for="ndColorValidation">
@@ -113,12 +113,12 @@
         <!-- values and input fields for each value -->
         <div class="form-group row" *ngFor="let entry of discreteMapping; let index = index">
           <label for="nd{{index}}" class="col-4 col-form-label">{{entry.isHR}}</label>
-          <div class="col-7">
+          <div class="col-6">
             <input type="text" class="form-control" id="nd{{index}}"
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="nd{{index}}"
                    [(ngModel)]="entry.cssValue">
           </div>
-          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-1"
+          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-2"
                 [ngStyle]="{'background-color': entry.cssValue}">
             &nbsp;
           </span>
@@ -220,14 +220,14 @@
         <div class="form-group row">
           <label for="ncCssProperty"
                  class="col-4 col-form-label">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
-          <div class="col-7">
+          <div class="col-6">
             <input type="text" class="form-control" id="ncCssProperty" name="ecCssProperty"
                    [(ngModel)]="styleProperty" [readOnly]="isEdit">
             <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
             <small *ngIf="needsColorValidation(styleProperty) || validateAsColor"
                    class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
           </div>
-          <div class="col-1 form-check" *ngIf="!needsColorValidation(styleProperty)">
+          <div class="col-2 form-check" *ngIf="!needsColorValidation(styleProperty)">
             <input class="form-check-input" type="checkbox" value="{{validateAsColor}}" id="ncColorValidation"
                    (click)="colorValidation(!validateAsColor)">
             <label class="form-check-label" for="ncColorValidation">
@@ -240,12 +240,12 @@
         <div class="form-group row" *ngIf="continuousMapping">
           <label for="ncDefaultLower"
                  class="col-4 col-form-label">{{'MAIN_MAPPINGS_NEW_DEFAULT_LOW' | translate}}</label>
-          <div class="col-7">
+          <div class="col-6">
             <input type="text" class="form-control" id="ncDefaultLower"
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="ncDefaultLower"
                    [(ngModel)]="continuousMapping.defaultLower">
           </div>
-          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-1"
+          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-2"
                 [ngStyle]="{'background-color': continuousMapping.defaultLower}">
             &nbsp;
           </span>
@@ -258,11 +258,11 @@
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}"
                    [(ngModel)]="threshold.value">
           </div>
-          <div class="col-7">
+          <div class="col-6">
             <input type="text" class="form-control" id="ncValue{{index}}" name="ncValue{{index}}"
                    [(ngModel)]="threshold.propertyValue">
           </div>
-          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-1"
+          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-2"
                 [ngStyle]="{'background-color': threshold.propertyValue}">
             &nbsp;
           </span>
@@ -270,7 +270,7 @@
 
         <!-- button to add more thresholds -->
         <div class="form-group row">
-          <div class="col-11">
+          <div class="col-10">
             <button class="btn btn-block btn-outline-info" (click)="addNewThreshold()">
               <fa-icon [icon]="faPlus"></fa-icon>
             </button>
@@ -281,12 +281,12 @@
         <div class="form-group row">
           <label for="ncDefaultGreater"
                  class="col-4 col-form-label">{{'MAIN_MAPPINGS_NEW_DEFAULT_GREAT' | translate}}</label>
-          <div class="col-7">
+          <div class="col-6">
             <input type="text" class="form-control" id="ncDefaultGreater"
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="ncDefaultGreater"
                    [(ngModel)]="continuousMapping.defaultGreater">
           </div>
-          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-1"
+          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-2"
                 [ngStyle]="{'background-color': continuousMapping.defaultGreater}">
             &nbsp;
           </span>
@@ -359,7 +359,7 @@
       <!-- ALERT: distribution -->
       <div class="alert alert-info" role="alert">
         <button type="button" class="btn btn-sm btn-outline-secondary mr-4" data-toggle="tooltip"
-                placement="bottom"
+                placement="right"
                 ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
                 (click)="toggleDistributionChart(!showDistribution)">
           <fa-icon [icon]="faChartBar"></fa-icon>
@@ -381,7 +381,7 @@
         <div class="form-group row">
           <label for="edCssProperty"
                  class="col-4 col-form-label">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
-          <div class="col-7">
+          <div class="col-6">
             <input type="text" class="form-control" id="edCssProperty" name="edCssProperty"
                    [(ngModel)]="styleProperty" [readOnly]="isEdit">
             <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
@@ -389,7 +389,7 @@
                    class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
           </div>
 
-          <div class="col-1 form-check" *ngIf="!needsColorValidation(styleProperty)">
+          <div class="col-2 form-check" *ngIf="!needsColorValidation(styleProperty)">
             <input class="form-check-input" type="checkbox" value="{{validateAsColor}}" id="edColorValidation"
                    (click)="colorValidation(!validateAsColor)">
             <label class="form-check-label" for="edColorValidation">
@@ -404,12 +404,12 @@
         <!-- values and input fields for each value -->
         <div class="form-group row" *ngFor="let entry of discreteMapping; let index = index">
           <label for="ed{{index}}" class="col-4 col-form-label">{{entry.isHR}}</label>
-          <div class="col-7">
+          <div class="col-6">
             <input type="text" class="form-control" id="ed{{index}}"
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="ed{{index}}"
                    [(ngModel)]="discreteMapping[index].cssValue">
           </div>
-          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-1"
+          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-2"
                 [ngStyle]="{'background-color': entry.cssValue}">
             &nbsp;
           </span>
@@ -511,14 +511,14 @@
         <div class="form-group row">
           <label for="ecCssProperty"
                  class="col-4 col-form-label">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
-          <div class="col-7">
+          <div class="col-6">
             <input type="text" class="form-control" id="ecCssProperty" name="ecCssProperty"
                    [(ngModel)]="styleProperty" [readOnly]="isEdit">
             <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
             <small *ngIf="needsColorValidation(styleProperty) || validateAsColor"
                    class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
           </div>
-          <div class="col-1 form-check" *ngIf="!needsColorValidation(styleProperty)">
+          <div class="col-2 form-check" *ngIf="!needsColorValidation(styleProperty)">
             <input class="form-check-input" type="checkbox" value="{{validateAsColor}}" id="ecColorValidation"
                    (click)="colorValidation(!validateAsColor)">
             <label class="form-check-label" for="ecColorValidation">
@@ -531,7 +531,7 @@
         <div class="form-group row" *ngIf="continuousMapping">
           <label for="ecDefaultLower"
                  class="col-4 col-form-label">{{'MAIN_MAPPINGS_NEW_DEFAULT_LOW' | translate}}</label>
-          <div class="col-7">
+          <div class="col-6">
             <input type="text" class="form-control" id="ecDefaultLower"
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="ecDefaultLower"
                    [(ngModel)]="continuousMapping.defaultLower">
@@ -549,11 +549,11 @@
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}"
                    [(ngModel)]="threshold.value">
           </div>
-          <div class="col-7">
+          <div class="col-6">
             <input type="text" class="form-control" id="ecValue{{index}}" name="ecValue{{index}}"
                    [(ngModel)]="threshold.propertyValue">
           </div>
-          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-1"
+          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-2"
                 [ngStyle]="{'background-color': threshold.propertyValue}">
             &nbsp;
           </span>
@@ -561,7 +561,7 @@
 
         <!-- button to add more thresholds -->
         <div class="form-group row">
-          <div class="col-11">
+          <div class="col-10">
             <button class="btn btn-block btn-outline-info" (click)="addNewThreshold()">
               <fa-icon [icon]="faPlus"></fa-icon>
             </button>
@@ -572,12 +572,12 @@
         <div class="form-group row">
           <label for="ecDefaultGreater"
                  class="col-4 col-form-label">{{'MAIN_MAPPINGS_NEW_DEFAULT_GREAT' | translate}}</label>
-          <div class="col-7">
+          <div class="col-6">
             <input type="text" class="form-control" id="ecDefaultGreater"
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="ecDefaultGreater"
                    [(ngModel)]="continuousMapping.defaultGreater">
           </div>
-          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-1"
+          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-2"
                 [ngStyle]="{'background-color': continuousMapping.defaultGreater}">
             &nbsp;
           </span>

@@ -97,7 +97,6 @@ export class GraphService {
    */
   setHighlightColorAndDuration(hexColorNodes: string, hexColorEdges: string, duration: number): void {
     const styleJson = this.core.style().json();
-
     for (const style of styleJson) {
       if (style.selector === '.custom_highlight_color') {
         style.style = {
