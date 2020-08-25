@@ -311,7 +311,6 @@ export class DataService {
     const network = this.getNetworkById(id);
     const styles: NeStyle[] = network.style;
     const elements = network.elements;
-    console.log(discreteMapping);
 
     for (const map of discreteMapping) {
 
@@ -328,9 +327,7 @@ export class DataService {
 
         for (const element of elements) {
           for (const attribute of element.data.attributes) {
-            console.log(attribute, map); // TODO NEED CLEAN key and value (HR ARE UNCLEAN ONES!!!!!)
             if (attribute.key === map.col && attribute.value === map.is && !element.data.classes.includes(map.selector.substring(1))) {
-              console.log('HIT');
               element.data.classes.push(map.selector.substring(1));
               element.classes = element.data.classes.join(' ');
               if (isNode && !styleMap.appliedTo.includes(element.data as NeNode)) {
