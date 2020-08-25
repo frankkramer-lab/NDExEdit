@@ -515,6 +515,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
       }
     }
     this.dataService.addMappingDiscrete(this.selectedNetwork.id, this.mappingsType.nd, this.discreteMapping);
+    console.log(this.dataService.colorProperties);
+
 
   }
 
@@ -528,12 +530,15 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
       this.dataService.colorProperties = this.dataService.colorProperties.filter(x => x !== this.styleProperty);
     }
 
+    console.log(this.styleProperty, this.propertyToMap);
+
     this.continuousMapping.cssKey = this.styleProperty;
     this.continuousMapping.mappedProperty = this.propertyToMap;
     this.continuousMapping.breakpoints = this.continuousMapping.breakpoints.filter(x => x.value !== null);
     this.continuousMapping.breakpoints = this.continuousMapping.breakpoints.sort((a, b) => (a.value < b.value ? -1 : 1));
 
     this.dataService.addMappingContinuous(this.selectedNetwork.id, this.mappingsType.nc, this.continuousMapping);
+    console.log(this.dataService.colorProperties);
   }
 
   /**

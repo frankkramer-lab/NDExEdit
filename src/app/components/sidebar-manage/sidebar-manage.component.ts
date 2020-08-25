@@ -494,6 +494,23 @@ export class SidebarManageComponent {
       .toPromise()
       .then((data: any[]) => {
 
+        if (!data) {
+          return;
+        }
+
+        const dataSize = new TextEncoder().encode(JSON.stringify(data)).length;
+        this.currentFileSize = Number((dataSize / this.megaFactor).toFixed(2));
+
+        if (this.currentFileSize > this.sizeLimit) {
+          this.showFileSizeTooLargeAlert = true;
+          this.showFileNotValidAlert = false;
+          this.showFileSizeOkAlert = false;
+        } else {
+          this.showFileSizeTooLargeAlert = false;
+          this.showFileNotValidAlert = false;
+          this.showFileSizeOkAlert = true;
+        }
+
         let networkName = String(this.dataService.networksDownloaded.length);
         for (const d of data) {
           if (d.networkAttributes) {

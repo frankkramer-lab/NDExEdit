@@ -57,7 +57,7 @@ export class UtilityService {
       return '';
     }
     input = String(input);
-    return input.replace(/\s*\(*\)*\.*/g, '').toLowerCase();
+    return input.replace(/\s*\(*\)*\.*\/*\\*/g, '').toLowerCase();
   }
 
   /**

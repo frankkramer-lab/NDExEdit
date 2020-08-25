@@ -536,7 +536,7 @@
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="ecDefaultLower"
                    [(ngModel)]="continuousMapping.defaultLower">
           </div>
-          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-1"
+          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-2"
                 [ngStyle]="{'background-color': continuousMapping.defaultLower}">
             &nbsp;
           </span>

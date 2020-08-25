@@ -127,9 +127,9 @@ export class ParseService {
     for (const entry of readData) {
       const obj: NeElementAttribute = {
         reference: 'e'.concat(String(entry.po)),
-        key: entry.n,
+        key: UtilityService.utilCleanString(entry.n),
         keyHR: entry.n,
-        value: entry.v,
+        value: UtilityService.utilCleanString(entry.v),
         valueHR: entry.v,
         datatype: entry.d || null
       };
