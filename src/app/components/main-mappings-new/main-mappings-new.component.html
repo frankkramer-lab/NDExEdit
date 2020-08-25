@@ -100,7 +100,7 @@
 
           <div class="col-2 form-check">
             <input class="form-check-input" type="checkbox" [checked]="validateAsColor || needsColorValidation(styleProperty)" id="ndColorValidation"
-                   (click)="colorValidation($event)">
+                   (click)="colorValidation(!(validateAsColor || needsColorValidation(styleProperty)))">
             <label class="form-check-label" for="ndColorValidation">
               {{'MAIN_MAPPINGS_NEW_CB_COLORS' | translate}}
             </label>
@@ -229,7 +229,7 @@
           </div>
           <div class="col-2 form-check">
             <input class="form-check-input" type="checkbox" [checked]="validateAsColor || needsColorValidation(styleProperty)" id="ncColorValidation"
-                   (click)="colorValidation(!validateAsColor)">
+                   (click)="colorValidation(!(validateAsColor || needsColorValidation(styleProperty)))">
             <label class="form-check-label" for="ncColorValidation">
               {{'MAIN_MAPPINGS_NEW_CB_COLORS' | translate}}
             </label>
@@ -391,7 +391,7 @@
 
           <div class="col-2 form-check">
             <input class="form-check-input" type="checkbox" [checked]="validateAsColor || needsColorValidation(styleProperty)" id="edColorValidation"
-                   (click)="colorValidation(!validateAsColor)">
+                   (click)="colorValidation(!(validateAsColor || needsColorValidation(styleProperty)))">
             <label class="form-check-label" for="edColorValidation">
               {{'MAIN_MAPPINGS_NEW_CB_COLORS' | translate}}
             </label>
@@ -520,7 +520,7 @@
           </div>
           <div class="col-2 form-check">
             <input class="form-check-input" type="checkbox" [checked]="validateAsColor || needsColorValidation(styleProperty)" id="ecColorValidation"
-                   (click)="colorValidation(!validateAsColor)">
+                   (click)="colorValidation(!(validateAsColor || needsColorValidation(styleProperty)))">
             <label class="form-check-label" for="ecColorValidation">
               {{'MAIN_MAPPINGS_NEW_CB_COLORS' | translate}}
             </label>

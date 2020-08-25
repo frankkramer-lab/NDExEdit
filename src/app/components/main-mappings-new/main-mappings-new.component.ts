@@ -502,6 +502,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
 
     if (this.validateAsColor && !this.dataService.colorProperties.includes(this.styleProperty)) {
       this.dataService.colorProperties.push(this.styleProperty);
+    } else if (!this.validateAsColor && this.dataService.colorProperties.includes(this.styleProperty)) {
+      this.dataService.colorProperties = this.dataService.colorProperties.filter(x => x !== this.styleProperty);
     }
 
     for (const entry of this.discreteMapping) {
@@ -513,6 +515,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
       }
     }
     this.dataService.addMappingDiscrete(this.selectedNetwork.id, this.mappingsType.nd, this.discreteMapping);
+    console.log(this.dataService.colorProperties);
+
   }
 
   /**
@@ -521,6 +525,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   submitNewContinuousMapping(): void {
     if (this.validateAsColor && !this.dataService.colorProperties.includes(this.styleProperty)) {
       this.dataService.colorProperties.push(this.styleProperty);
+    } else if (!this.validateAsColor && this.dataService.colorProperties.includes(this.styleProperty)) {
+      this.dataService.colorProperties = this.dataService.colorProperties.filter(x => x !== this.styleProperty);
     }
 
     this.continuousMapping.cssKey = this.styleProperty;
@@ -529,6 +535,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     this.continuousMapping.breakpoints = this.continuousMapping.breakpoints.sort((a, b) => (a.value < b.value ? -1 : 1));
 
     this.dataService.addMappingContinuous(this.selectedNetwork.id, this.mappingsType.nc, this.continuousMapping);
+    console.log(this.dataService.colorProperties);
   }
 
   /**
