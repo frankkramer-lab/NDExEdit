@@ -11,10 +11,10 @@
   "MAIN_INFO_STEPS_TITLE": "Erste Schritte",
   "MAIN_INFO_STEPS_DESCRIPTION": "Wenn Du NdexEdit noch nie verwendet hast, hier ein paar Tipps:",
   "MAIN_INFO_STEPS_STEP_1": "Suche auf der NDExBIO Website ein Netzwerk, was du optisch anpassen möchtest",
-  "MAIN_INFO_STEPS_STEP_2": "Kopiere die URL zum Netzwerk ins Textfeld im Bereich \"Verwalten\"",
+  "MAIN_INFO_STEPS_STEP_2": "Kopiere die URL oder die UUID zum Netzwerk ins Textfeld im Bereich \"Verwalten\" oder wähle eine .cx Datei von deinem PC aus",
   "MAIN_INFO_STEPS_STEP_3": "Klicke auf das (i) neben dem Netzwerknamen und lass dir alle Informationen zum Netzwerk anzeigen",
   "MAIN_INFO_STEPS_STEP_4": "Mit Klick auf \"Bearbeiten\" kannst du anpassen, wie der Graph aussieht",
-  "MAIN_INFO_STEPS_STEP_5": "Deine Änderungen kannst du auf einer privaten NDEx-Instanz sichern",
+  "MAIN_INFO_STEPS_STEP_5": "Den veränderten Graphen kannst du als .cx Datei runterladen",
   "MAIN_INFO_LAYOUT_TITLE": "Seitenverhältnis",
   "MAIN_INFO_LAYOUT_DESCRIPTION": "Um das Seitenverhältnis der Anwendung zu manipulieren, auf den vertikalen Balken zwischen Haupt- und Zweitansicht klicken:",
   "MAIN_INFO_LAYOUT_STEP_1": "<code>Linksklick</code> vergrößert die rechte Seite",
@@ -147,5 +147,13 @@
   "MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING": "Standardwerte sind nicht zu unterschätzen!",
   "MAIN_MAPPINGS_NEW_DEFAULT_HINT": "Wenn sie korrekt eingesetzt werden, haben Standardwerte keinen direkten Einfluss auf das Erschreinungsbild deines Graphen. Ihr Zweck ist es, Fälle abzudecken, die aktuell noch nicht im Graph vorkommen. Somit kannst du den Graphen nachträglich problemlos anpassen, z.B. Knoten oder Kanten hinzufügen. Es wird empfohlen, die aktuelle Spanne der Werte deines ausgewählten Attributes vollständig abzudecken - ohne sich auf die Standardwerte zu verlassen.",
   "MAIN_MAPPINGS_NEW_CURRENT_MIN": "Aktuelles Minimum (empfohlener Schwellwert#1)",
-  "MAIN_MAPPINGS_NEW_CURRENT_MAX": "Aktuelles Maximum (empfohlener Schwellwert#2)"
+  "MAIN_MAPPINGS_NEW_CURRENT_MAX": "Aktuelles Maximum (empfohlener Schwellwert#2)",
+
+  "SIDEBAR_COMPARE_TITLE": "Zwei Netzwerke vergleichen",
+  "SIDEBAR_COMPARE_ABOUT": "Über NDExEdit",
+  "SIDEBAR_COMPARE_ABOUT_1": "Gefällt dir die Anwendung bislang? Warte mal, was noch alles auf dich zukommt!",
+  "SIDEBAR_COMPARE_ABOUT_2": "NDExEdit wurde im Rahmen einer Abschlussarbeit an der Universität Augsburg entwickelt",
+  "SIDEBAR_COMPARE_ABOUT_3_1": "Verbesserungsvorschläge und Nachfragen sind bei",
+  "SIDEBAR_COMPARE_ABOUT_3_2": "gut aufgehoben",
+  "SIDEBAR_COMPARE_TEASER": "Vergleich zweier Netzwerke kommt demnächst!"
 }

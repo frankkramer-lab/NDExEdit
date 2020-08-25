@@ -98,9 +98,9 @@
                    class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
           </div>
 
-          <div class="col-2 form-check" *ngIf="!needsColorValidation(styleProperty)">
-            <input class="form-check-input" type="checkbox" value="{{validateAsColor}}" id="ndColorValidation"
-                   (click)="colorValidation(!validateAsColor)">
+          <div class="col-2 form-check">
+            <input class="form-check-input" type="checkbox" [checked]="validateAsColor || needsColorValidation(styleProperty)" id="ndColorValidation"
+                   (click)="colorValidation($event)">
             <label class="form-check-label" for="ndColorValidation">
               {{'MAIN_MAPPINGS_NEW_CB_COLORS' | translate}}
             </label>
@@ -227,8 +227,8 @@
             <small *ngIf="needsColorValidation(styleProperty) || validateAsColor"
                    class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
           </div>
-          <div class="col-2 form-check" *ngIf="!needsColorValidation(styleProperty)">
-            <input class="form-check-input" type="checkbox" value="{{validateAsColor}}" id="ncColorValidation"
+          <div class="col-2 form-check">
+            <input class="form-check-input" type="checkbox" [checked]="validateAsColor || needsColorValidation(styleProperty)" id="ncColorValidation"
                    (click)="colorValidation(!validateAsColor)">
             <label class="form-check-label" for="ncColorValidation">
               {{'MAIN_MAPPINGS_NEW_CB_COLORS' | translate}}
@@ -389,8 +389,8 @@
                    class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
           </div>
 
-          <div class="col-2 form-check" *ngIf="!needsColorValidation(styleProperty)">
-            <input class="form-check-input" type="checkbox" value="{{validateAsColor}}" id="edColorValidation"
+          <div class="col-2 form-check">
+            <input class="form-check-input" type="checkbox" [checked]="validateAsColor || needsColorValidation(styleProperty)" id="edColorValidation"
                    (click)="colorValidation(!validateAsColor)">
             <label class="form-check-label" for="edColorValidation">
               {{'MAIN_MAPPINGS_NEW_CB_COLORS' | translate}}
@@ -518,8 +518,8 @@
             <small *ngIf="needsColorValidation(styleProperty) || validateAsColor"
                    class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
           </div>
-          <div class="col-2 form-check" *ngIf="!needsColorValidation(styleProperty)">
-            <input class="form-check-input" type="checkbox" value="{{validateAsColor}}" id="ecColorValidation"
+          <div class="col-2 form-check">
+            <input class="form-check-input" type="checkbox" [checked]="validateAsColor || needsColorValidation(styleProperty)" id="ecColorValidation"
                    (click)="colorValidation(!validateAsColor)">
             <label class="form-check-label" for="ecColorValidation">
               {{'MAIN_MAPPINGS_NEW_CB_COLORS' | translate}}

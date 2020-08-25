@@ -11,10 +11,10 @@
   "MAIN_INFO_STEPS_TITLE": "First steps",
   "MAIN_INFO_STEPS_DESCRIPTION": "If you never worked with NdexEdit before, here are a few first steps you might want to try out:",
   "MAIN_INFO_STEPS_STEP_1": "Visit the NDExBIO Website and select a network you would like to edit visually",
-  "MAIN_INFO_STEPS_STEP_2": "Enter this network's URL into the downloader under \"Manage\"",
+  "MAIN_INFO_STEPS_STEP_2": "Enter this network's URL or UUID into the downloader under \"Manage\" or select a local .cx file",
   "MAIN_INFO_STEPS_STEP_3": "Inspect the information displayed to this specific network by clicking on the i-Icon right next to the networks name",
   "MAIN_INFO_STEPS_STEP_4": "Click on \"Edit\" to manipulate how the graph is displayed",
-  "MAIN_INFO_STEPS_STEP_5": "You can save your changes to a private NDEx instance",
+  "MAIN_INFO_STEPS_STEP_5": "You can download the adapted graph as .cx file",
   "MAIN_INFO_LAYOUT_TITLE": "Page layout",
   "MAIN_INFO_LAYOUT_DESCRIPTION": "To modify the proportion of main view and sidebar click the bar between the two:",
   "MAIN_INFO_LAYOUT_STEP_1": "<code>Left click</code> increases the sidebar",
@@ -147,6 +147,14 @@
   "MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING": "Default values are your friends!",
   "MAIN_MAPPINGS_NEW_DEFAULT_HINT": "Though they don't impact your imminent mapping, default values are essential if you are making changes to your graph later on, e.g. add nodes or edges. It is recommended that the complete range of your selected attribute is covered not be relying on default values.",
   "MAIN_MAPPINGS_NEW_CURRENT_MIN": "Current minimum (recommended threshold#1)",
-  "MAIN_MAPPINGS_NEW_CURRENT_MAX": "Current maximum (recommended threshold#2)"
+  "MAIN_MAPPINGS_NEW_CURRENT_MAX": "Current maximum (recommended threshold#2)",
+
+  "SIDEBAR_COMPARE_TITLE": "Compare two networks",
+  "SIDEBAR_COMPARE_ABOUT": "About NDExEdit",
+  "SIDEBAR_COMPARE_ABOUT_1": "Do you like this app? There's a lot more to come!",
+  "SIDEBAR_COMPARE_ABOUT_2": "NDExEdit was developed as a bachelor thesis at University of Augsburg",
+  "SIDEBAR_COMPARE_ABOUT_3_1": "Please contact",
+  "SIDEBAR_COMPARE_ABOUT_3_2": "for feature requests and inquiries",
+  "SIDEBAR_COMPARE_TEASER": "Comparison tool coming soon!"
 
 }

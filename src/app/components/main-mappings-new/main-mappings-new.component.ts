@@ -522,6 +522,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     if (this.validateAsColor && !this.dataService.colorProperties.includes(this.styleProperty)) {
       this.dataService.colorProperties.push(this.styleProperty);
     }
+
     this.continuousMapping.cssKey = this.styleProperty;
     this.continuousMapping.mappedProperty = this.propertyToMap;
     this.continuousMapping.breakpoints = this.continuousMapping.breakpoints.filter(x => x.value !== null);

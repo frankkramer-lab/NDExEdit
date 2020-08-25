@@ -66,9 +66,9 @@ export class AppComponent {
     // this.initDemoNetwork('dummy.cx');
     // this.initDemoNetwork('dummy2.cx');
 
-    this.initDemoNetwork('01.cx'); // good example for discrete mappings
+    // this.initDemoNetwork('01.cx'); // good example for discrete mappings
     // this.initDemoNetwork('02.cx'); // good example for continuous mappings
-    // this.initDemoNetwork('03.cx'); // good for many many many edges
+    this.initDemoNetwork('03.cx'); // good for many many many edges
     // this.initDemoNetwork('05.cx'); // example with arrows
     // this.initDemoNetwork('04.cx'); // this is a terribly built network and a negative example on how to manage a .cx file
     // this.initDemoNetwork('06.cx'); // also not very nice to display

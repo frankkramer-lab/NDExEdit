@@ -519,8 +519,10 @@ export class SidebarManageComponent {
    */
   setAndValidateFile(event: Event): void {
 
-    if (event.target.files && event.target.files.length > 0) {
-      this.fileToUpload = event.target.files[0];
+    const target = event.target as HTMLInputElement;
+
+    if (target.files && target.files.length > 0) {
+      this.fileToUpload = target.files[0];
     } else {
       return;
     }
