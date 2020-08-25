@@ -99,6 +99,7 @@ export class MainMappingsComponent {
    */
   propertyToRemove = {
     mapReference: -1,
+    attributeName: '',
     mapType: '',
     style: null
   };
@@ -220,33 +221,42 @@ export class MainMappingsComponent {
    * @param style the style object matching the selected property
    */
   toggleSingleRemoveDialogue(map: any = null, mapType: string = '', style: any = null): void {
-    this.propertyToRemove.style = style;
-    this.propertyToRemove.mapType = mapType;
-    switch (mapType) {
-      case 'nd':
-        this.propertyToRemove.mapReference = this.selectedNetwork.mappings.nodesDiscrete.indexOf(map);
-        this.showSingleDeletionDialogue = true;
-        break;
-      case 'nc':
-        this.propertyToRemove.mapReference = this.selectedNetwork.mappings.nodesContinuous.indexOf(map);
-        this.showSingleDeletionDialogue = true;
-        break;
-      case 'ed':
-        this.propertyToRemove.mapReference = this.selectedNetwork.mappings.edgesDiscrete.indexOf(map);
-        this.showSingleDeletionDialogue = true;
-        break;
-      case 'ec':
-        this.propertyToRemove.mapReference = this.selectedNetwork.mappings.edgesContinuous.indexOf(map);
-        this.showSingleDeletionDialogue = true;
-        break;
-      default:
-        this.propertyToRemove = {
-          mapType: '',
-          mapReference: -1,
-          style: null
-        };
-        this.showSingleDeletionDialogue = false;
-        break;
+    console.log(map);
+    if (map && map.styleMap.length === 1) {
+      this.toggleGlobalRemoveDialogue(map, mapType);
+    } else {
+      this.propertyToRemove.style = style;
+      this.propertyToRemove.mapType = mapType;
+      if (map) {
+        this.propertyToRemove.attributeName = map.classifier;
+      }
+      switch (mapType) {
+        case 'nd':
+          this.propertyToRemove.mapReference = this.selectedNetwork.mappings.nodesDiscrete.indexOf(map);
+          this.showSingleDeletionDialogue = true;
+          break;
+        case 'nc':
+          this.propertyToRemove.mapReference = this.selectedNetwork.mappings.nodesContinuous.indexOf(map);
+          this.showSingleDeletionDialogue = true;
+          break;
+        case 'ed':
+          this.propertyToRemove.mapReference = this.selectedNetwork.mappings.edgesDiscrete.indexOf(map);
+          this.showSingleDeletionDialogue = true;
+          break;
+        case 'ec':
+          this.propertyToRemove.mapReference = this.selectedNetwork.mappings.edgesContinuous.indexOf(map);
+          this.showSingleDeletionDialogue = true;
+          break;
+        default:
+          this.propertyToRemove = {
+            mapType: '',
+            attributeName: '',
+            mapReference: -1,
+            style: null
+          };
+          this.showSingleDeletionDialogue = false;
+          break;
+      }
     }
   }
 
@@ -274,6 +284,7 @@ export class MainMappingsComponent {
           this.dataService.removePropertyFromMapping(this.selectedNetwork.id, this.propertyToRemove);
           this.propertyToRemove = {
             mapReference: -1,
+            attributeName: '',
             mapType: '',
             style: null
           };

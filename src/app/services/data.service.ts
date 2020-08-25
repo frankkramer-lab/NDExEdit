@@ -695,7 +695,8 @@ export class DataService {
    * @param id The network's id
    * @param property Property to remove
    */
-  removePropertyFromMapping(id: number, property: { mapReference: number; mapType: string; style: any }): void {
+  removePropertyFromMapping(id: number, property: { mapReference: number; attributeName: string; mapType: string; style: any }): void {
+    console.log(id, property);
     const network = this.getNetworkById(id);
     const isNode = property.mapType.startsWith('n');
     const mapping: NeGroupedMappingsDiscrete = isNode
