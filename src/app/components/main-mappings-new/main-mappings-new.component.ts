@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {NeNetwork} from '../../models/ne-network';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
@@ -32,6 +32,11 @@ import {UtilityService} from '../../services/utility.service';
  * Component responsible for creating new mappings
  */
 export class MainMappingsNewComponent implements OnInit, OnDestroy {
+
+  /**
+   * Emits changes in mappings which also have to be visible within the sidebar
+   */
+  @Output() static mappingsNewEmitter: EventEmitter<any> = new EventEmitter<any>();
 
   /**
    * Icon: faArrowRight
@@ -397,16 +402,20 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Sets chart data for distribution of the selected aspect
+   * Sets chart data for distribution of the selected aspect and hides the label checkbox
    */
   ngOnInit(): void {
+
     this.barChartData = this.propertyToMap.chartDiscreteDistribution.chartData;
     this.barChartLabels = this.propertyToMap.chartDiscreteDistribution.chartLabels;
     this.scatterChartData = this.propertyToMap.chartContinuousDistribution.chartData;
+
+    // avoid confusion by hiding any mappings preview in sidebar
+    MainMappingsNewComponent.mappingsNewEmitter.emit({showLabelCheckbox: false});
   }
 
   /**
-   * Resets chart data
+   * Resets chart data and re-displays the label checkbox
    */
   ngOnDestroy(): void {
     this.showDistribution = false;
@@ -414,6 +423,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     this.barChartLabels = [];
     this.scatterChartData = [];
     this.continuousThresholds = [];
+    MainMappingsNewComponent.mappingsNewEmitter.emit({showLabelCheckbox: true});
   }
 
   /**

@@ -1,4 +1,4 @@
-import {AfterViewChecked, AfterViewInit, Component, OnDestroy} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy} from '@angular/core';
 import {DataService} from '../../services/data.service';
 import {ActivatedRoute} from '@angular/router';
 import {NeNetwork} from '../../models/ne-network';
@@ -8,6 +8,8 @@ import {faLightbulb, faPalette} from '@fortawesome/free-solid-svg-icons';
 import {ChartDataSets} from 'chart.js';
 import {Color, Label} from 'ng2-charts';
 import {NeColorGradient} from '../../models/ne-color-gradient';
+import {MainMappingsComponent} from '../main-mappings/main-mappings.component';
+import {MainMappingsNewComponent} from '../main-mappings-new/main-mappings-new.component';
 
 @Component({
   selector: 'app-sidebar-edit',
@@ -69,6 +71,11 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   showColorGradient = false;
 
   /**
+   * Toggles displaying the checkbox where the labels may be toggled
+   */
+  showLabelCheckbox = true;
+
+  /**
    * Default value for continuous mappings if less than 100% range is covered
    */
   gradientBackground = '';
@@ -127,7 +134,19 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * Ensures that only a graph is rendered if the id is specified within the URL
    * @private
    */
-  private readonly subscription: Subscription;
+  private readonly routerSubscription: Subscription;
+
+  /**
+   * Subscription to the event emitter of the component {@link MainMappingsComponent}
+   * @private
+   */
+  private mappingsSubscription: Subscription;
+
+  /**
+   * Subscription to the event emitter of the component {@link MainMappingsNewComponent}
+   * @private
+   */
+  private mappingsNewSubscription: Subscription;
 
   /**
    * Subscribes to graph id and renders the graph if the view is already initialized
@@ -140,10 +159,35 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
               private route: ActivatedRoute,
               public graphService: GraphService) {
 
-    this.subscription = this.route.paramMap.subscribe(params => {
+    this.routerSubscription = this.route.paramMap.subscribe(params => {
       this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
       this.initColorHighlighting();
     });
+
+    this.mappingsSubscription = MainMappingsComponent.mappingsEmitter.subscribe(data => {
+      this.handleViewChanges(data);
+    });
+
+    this.mappingsNewSubscription = MainMappingsNewComponent.mappingsNewEmitter.subscribe(data => {
+      this.handleViewChanges(data);
+    });
+  }
+
+  /**
+   * Handles the view toggles for the sidebar
+   *
+   * @param data
+   */
+  handleViewChanges(data: any): void {
+    if (data.showGradient !== null) {
+      this.showColorGradient = data.showGradient;
+    }
+    if (data.showLabelCheckbox !== null) {
+      this.showLabelCheckbox = data.showLabelCheckbox;
+    }
+    if (data.showChart !== null) {
+      this.showChart = data.showChart;
+    }
   }
 
   /**
@@ -159,16 +203,24 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * Unsets initialized status and restores default values
    */
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
     }
     this.showComparison = false;
     this.showChart = false;
     this.showColorGradient = false;
+    this.showLabelCheckbox = true;
     this.gradientBackground = '';
     this.index = '';
     this.graphService.selectedElements.nodes = [];
     this.graphService.selectedElements.edges = [];
+
+    if (this.mappingsSubscription) {
+      this.mappingsSubscription.unsubscribe();
+    }
+    if (this.mappingsNewSubscription) {
+      this.mappingsNewSubscription.unsubscribe();
+    }
   }
 
   /**
@@ -263,7 +315,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
       'source-arrow-color': highlightEdges,
       'target-arrow-color': highlightEdges
     };
-    const styleIndex = this.selectedNetwork.style.findIndex(x => x.selector  === '.custom_highlight_color');
+    const styleIndex = this.selectedNetwork.style.findIndex(x => x.selector === '.custom_highlight_color');
     this.selectedNetwork.style[styleIndex].style = colorStyle;
   }
 

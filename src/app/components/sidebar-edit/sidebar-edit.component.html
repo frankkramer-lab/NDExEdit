@@ -6,7 +6,7 @@
     <p [innerHTML]="selectedNetwork.networkInformation.description"></p>
   </div>
 
-  <div class="form-check mb-2">
+  <div class="form-check mb-2" *ngIf="showLabelCheckbox">
     <input class="form-check-input" type="checkbox" [checked]="selectedNetwork.showLabels" id="showLabels"
            (click)="toggleLabels(!selectedNetwork.showLabels)">
     <label class="form-check-label" for="showLabels">

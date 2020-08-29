@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
 import {NeNetwork} from '../../models/ne-network';
@@ -14,7 +14,64 @@ import {NeGroupedMappingsDiscrete} from '../../models/ne-grouped-mappings-discre
 /**
  * Component responsible for displaying existing mappings
  */
-export class MainMappingsComponent {
+export class MainMappingsComponent implements OnInit, OnDestroy {
+
+  /**
+   * The URL rendering this view contains both the specified graph and a mapping whose details are displayed.
+   * Thus within the constructor both {@link MainMappingsComponent#selectedNetwork} and
+   * {@link MainMappingsComponent#selectedMapping} are set
+   *
+   * @param route Service to read URL
+   * @param dataService Service to read and write to globally accessible data
+   */
+  constructor(
+    private route: ActivatedRoute,
+    public dataService: DataService) {
+
+    this.route.paramMap.subscribe(params => {
+
+      this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
+      this.givenMapType = params.get('map').substring(0, 2);
+      this.currentMappingId = params.get('map').substring(2).split('-');
+      this.selectedMapping = [];
+
+      switch (this.givenMapType) {
+        case 'ec':
+          for (const mapIndex of this.currentMappingId) {
+            this.selectedMapping.push(this.selectedNetwork.mappings.edgesContinuous[mapIndex]);
+          }
+          break;
+        case 'nc':
+          for (const mapIndex of this.currentMappingId) {
+            this.selectedMapping.push(this.selectedNetwork.mappings.nodesContinuous[mapIndex]);
+          }
+          break;
+        case 'ed':
+          for (const mapIndex of this.currentMappingId) {
+            this.selectedMapping.push(this.selectedNetwork.mappings.edgesDiscrete[mapIndex]);
+          }
+          break;
+        case 'nd':
+          for (const mapIndex of this.currentMappingId) {
+            this.selectedMapping.push(this.selectedNetwork.mappings.nodesDiscrete[mapIndex]);
+          }
+          break;
+        default:
+          break;
+      }
+    });
+  }
+
+  /**
+   * Emits changes in mappings which also have to be visible within the sidebar.
+   * Emitted data as the following valid keys:
+   * <ul>
+   *   <li>showLabelCheckbox</li>
+   *   <li>showGradient</li>
+   *   <li>showChart</li>
+   * </ul>
+   */
+  @Output() static mappingsEmitter: EventEmitter<any> = new EventEmitter<any>();
 
   /**
    * Icon: faPlus
@@ -116,52 +173,6 @@ export class MainMappingsComponent {
   givenMapType: string;
 
   /**
-   * The URL rendering this view contains both the specified graph and a mapping whose details are displayed.
-   * Thus within the constructor both {@link MainMappingsComponent#selectedNetwork} and
-   * {@link MainMappingsComponent#selectedMapping} are set
-   *
-   * @param route Service to read URL
-   * @param dataService Service to read and write to globally accessible data
-   */
-  constructor(
-    private route: ActivatedRoute,
-    public dataService: DataService) {
-
-    this.route.paramMap.subscribe(params => {
-
-      this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
-      this.givenMapType = params.get('map').substring(0, 2);
-      this.currentMappingId = params.get('map').substring(2).split('-');
-      this.selectedMapping = [];
-
-      switch (this.givenMapType) {
-        case 'ec':
-          for (const mapIndex of this.currentMappingId) {
-            this.selectedMapping.push(this.selectedNetwork.mappings.edgesContinuous[mapIndex]);
-          }
-          break;
-        case 'nc':
-          for (const mapIndex of this.currentMappingId) {
-            this.selectedMapping.push(this.selectedNetwork.mappings.nodesContinuous[mapIndex]);
-          }
-          break;
-        case 'ed':
-          for (const mapIndex of this.currentMappingId) {
-            this.selectedMapping.push(this.selectedNetwork.mappings.edgesDiscrete[mapIndex]);
-          }
-          break;
-        case 'nd':
-          for (const mapIndex of this.currentMappingId) {
-            this.selectedMapping.push(this.selectedNetwork.mappings.nodesDiscrete[mapIndex]);
-          }
-          break;
-        default:
-          break;
-      }
-    });
-  }
-
-  /**
    * Toggles the dialogue to confirm deletion of an existing mapping. Selects the mapping to be deleted by
    * overriding {@link MainMappingsComponent#mappingToRemove}
    *
@@ -221,7 +232,6 @@ export class MainMappingsComponent {
    * @param style the style object matching the selected property
    */
   toggleSingleRemoveDialogue(map: any = null, mapType: string = '', style: any = null): void {
-    console.log(map);
     if (map && map.styleMap.length === 1) {
       this.toggleGlobalRemoveDialogue(map, mapType);
     } else {
@@ -276,8 +286,15 @@ export class MainMappingsComponent {
         if (confirmation) {
           this.dataService.removeMapping(this.mappingToRemove);
           this.selectedMapping = [];
+
+          // hide the gradient or chart currently displayed to avoid confusion
+          MainMappingsComponent.mappingsEmitter.emit({
+            showGradient: false,
+            showChart: false
+          });
         }
         this.toggleGlobalRemoveDialogue();
+
         break;
       case 'single':
         if (confirmation) {
@@ -292,6 +309,20 @@ export class MainMappingsComponent {
         this.toggleSingleRemoveDialogue();
         break;
     }
+  }
+
+  /**
+   * On initialization the emitter informs its subscribers to hide the label checkbox to prevent unnecessary toggling
+   */
+  ngOnInit(): void {
+    MainMappingsComponent.mappingsEmitter.emit({showLabelCheckbox: false});
+  }
+
+  /**
+   * On destruction the label checkbox is re-displayed
+   */
+  ngOnDestroy(): void {
+    MainMappingsComponent.mappingsEmitter.emit({showLabelCheckbox: true});
   }
 
 }
