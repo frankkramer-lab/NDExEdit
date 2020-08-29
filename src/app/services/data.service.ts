@@ -590,7 +590,7 @@ export class DataService {
       if (isNode ? element.group === 'nodes' : element.group === 'edges') {
         for (const attribute of element.data.attributes) {
           if (attribute.keyHR === continuousMapping.mappedProperty.name) {
-            const elementValue = Number(attribute.value);
+            const elementValue = Number(attribute.valueHR);
 
             let index = 0;
             while (continuousMapping.breakpoints.length > index && continuousMapping.breakpoints[index].value < elementValue) {
@@ -599,10 +599,13 @@ export class DataService {
 
             const selector = ((isNode) ? '.node_' : '.edge_') + element.data.id;
             const style = styles.find(x => x.selector === selector);
+
+            const tmpData = (isNode ? [element.data as NeNode] : [element.data as NeEdge]);
+
             const styleObj: NeStyle = {
               selector,
               style: {},
-              appliedTo: [element.data as NeNode],
+              appliedTo: tmpData,
               priority: 2
             };
 
@@ -624,6 +627,7 @@ export class DataService {
                 greaterThreshold: String(continuousMapping.breakpoints[index].value),
                 greater: String(continuousMapping.breakpoints[index].propertyValue)
               };
+
 
               styleObj.style[continuousMapping.cssKey] = UtilityService.utilCalculateRelativeValue(inputMap);
 
@@ -794,7 +798,6 @@ export class DataService {
             }
           }
           network.style = UtilityService.utilOrderStylesByPriority(ndStyles.concat([newStyle]));
-
         }
       }
 

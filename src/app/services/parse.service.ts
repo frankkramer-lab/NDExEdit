@@ -1104,7 +1104,7 @@ export class ParseService {
 
           for (let i = 0; i < (thresholds.length); i++) {
 
-            if (Number(elementAttribute.value) < Number(thresholds[i])) {
+            if (Number(elementAttribute.valueHR) < Number(thresholds[i])) {
 
               intervalPointer = i;
               let cssValue = '';
@@ -1116,7 +1116,7 @@ export class ParseService {
                 }
               } else {
                 const calculationMap: NeContinuousMap = {
-                  inputValue: elementAttribute.value,
+                  inputValue: elementAttribute.valueHR,
                   lower: greaters[intervalPointer - 1],
                   lowerThreshold: thresholds[intervalPointer - 1],
                   greater: lowers[intervalPointer],
@@ -1140,7 +1140,7 @@ export class ParseService {
 
               }
               continue outer;
-            } else if (Number(elementAttribute.value) === Number(thresholds[i])) {
+            } else if (Number(elementAttribute.valueHR) === Number(thresholds[i])) {
 
               for (const lu of lookup) {
                 buildClasses.push({

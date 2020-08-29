@@ -480,7 +480,7 @@ export class SidebarManageComponent {
           this.dataService.networksParsed.push(this.parseService.convert(JSON.parse(data),
             UtilityService.utilCleanString(this.fileToUpload.name)));
         })
-        .catch(error => console.log(error));
+        .catch(error => console.error(error));
     }
   }
 
@@ -525,7 +525,7 @@ export class SidebarManageComponent {
         this.dataService.networksParsed.push(this.parseService.convert(data, UtilityService.utilCleanString(networkName)));
 
       })
-      .catch(error => console.log(error));
+      .catch(error => console.error(error));
   }
 
   /**
