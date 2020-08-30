@@ -1046,6 +1046,7 @@ export class ParseService {
       displayChart: true,
       colorGradient: [],
       title: [],
+      selector: ''
     };
 
     let datatype;
@@ -1100,6 +1101,7 @@ export class ParseService {
           let intervalPointer = -1;
 
           const finalSelector = '.'.concat(elementType.concat('_'.concat(element.id)));
+          continuousCollection.selector = finalSelector;
           const priority = UtilityService.utilfindPriorityBySelector(finalSelector);
 
           for (let i = 0; i < (thresholds.length); i++) {
@@ -1161,7 +1163,7 @@ export class ParseService {
 
           for (const lu of lookup) {
             buildClasses.push({
-              selector: '.'.concat(elementType.concat('_'.concat(element.id))),
+              selector: finalSelector,
               cssKey: lu,
               cssValue: greaters[greaters.length - 1],
               priority

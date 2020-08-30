@@ -196,7 +196,7 @@ export class UtilityService {
   public lookup(property: any, selector: string = 'node', from: string = 'ndex', to: string = 'cytoscape'): NeStyleComponent[] {
     let lookupMap: NeConversionMap;
 
-    if (property.key === 'width' && !selector.includes('node')) {
+    if (property.key === 'width' && selector && !selector.includes('node')) {
       for (const entry of this.lookupData) {
         if (entry[from].includes(property.key) && entry[to].includes('EDGE_WIDTH')) {
           lookupMap = entry;

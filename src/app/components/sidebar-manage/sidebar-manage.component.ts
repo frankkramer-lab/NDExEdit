@@ -9,6 +9,7 @@ import {NeNetwork} from '../../models/ne-network';
 import {ParseService} from '../../services/parse.service';
 import {GraphService} from '../../services/graph.service';
 import {NeStyleMap} from '../../models/ne-style-map';
+import {NeAspect} from '../../models/ne-aspect';
 
 @Component({
   selector: 'app-sidebar-manage',
@@ -335,12 +336,12 @@ export class SidebarManageComponent {
     }
 
     for (const ncMapping of cleanNetwork.mappings.nodesContinuous) {
-      const map: NeMappings[] = this.buildContinuousMappingDefinition(ncMapping);
+      const map: NeMappings[] = this.buildContinuousMappingDefinition(ncMapping, cleanNetwork.aspectKeyValuesNodes);
       mappingsNodes = mappingsNodes.concat(map);
     }
 
     for (const ecMapping of cleanNetwork.mappings.edgesContinuous) {
-      const map: NeMappings[] = this.buildContinuousMappingDefinition(ecMapping);
+      const map: NeMappings[] = this.buildContinuousMappingDefinition(ecMapping, cleanNetwork.aspectKeyValuesEdges);
       mappingsEdges = mappingsEdges.concat(map);
     }
 
@@ -365,7 +366,6 @@ export class SidebarManageComponent {
    * @private
    */
   private buildDiscreteMappingDefinition(dMapping: NeGroupedMappingsDiscrete): NeMappings[] {
-    // todo fix interaction on edges
     const newMappings: NeMappings[] = [];
     const col = dMapping.classifier;
 
@@ -409,57 +409,75 @@ export class SidebarManageComponent {
    * Builds collections from existing continuous mappings to prepare building of definition string
    *
    * @param cMapping
+   * @param aspects
    * @private
    */
-  private buildContinuousMappingDefinition(cMapping: any): NeMappings[] {
+  private buildContinuousMappingDefinition(cMapping: any, aspects: NeAspect[]): NeMappings[] {
     const newMappings: NeMappings[] = [];
     const col = cMapping.title[1];
+    let datatype = 'string';
 
-    for (const lookup of this.utilityService.lookupKey(cMapping.title[0], 'cytoscape', 'ndex')) {
-      if (cMapping.chartValid) {
-        const lCollection: string[] = [];
-        const eCollection: string[] = [];
-        const gCollection: string[] = [];
-        const ovCollection: string[] = [];
-        for (let i = 0; i < cMapping.chart.lineChartLabels.length; i++) {
-          ovCollection.push(cMapping.chart.lineChartLabels[i]);
-          lCollection.push(cMapping.chart.lineChartData[0].data[i]);
-          eCollection.push(cMapping.chart.lineChartData[0].data[i]);
-          gCollection.push(cMapping.chart.lineChartData[0].data[i]);
+    for (const a of aspects) {
+      if (a.name === col && a.datatype !== null) {
+        datatype = a.datatype;
+        break;
+      }
+    }
+
+    console.log(cMapping);
+
+    for (const val of cMapping.values) {
+      const property = {
+        key: cMapping.title[0],
+        value: val
+      };
+
+      for (const lookup of this.utilityService.lookup(property, cMapping.selector, 'cytoscape', 'ndex')) {
+        if (cMapping.chartValid) {
+          const lCollection: string[] = [];
+          const eCollection: string[] = [];
+          const gCollection: string[] = [];
+          const ovCollection: string[] = [];
+          for (let i = 0; i < cMapping.chart.lineChartLabels.length; i++) {
+            ovCollection.push(cMapping.chart.lineChartLabels[i]);
+            lCollection.push(cMapping.chart.lineChartData[0].data[i]);
+            eCollection.push(cMapping.chart.lineChartData[0].data[i]);
+            gCollection.push(cMapping.chart.lineChartData[0].data[i]);
+          }
+
+          const defaultLower = cMapping.chart.lineChartData[0].data[0];
+          const defaultGreater = cMapping.chart.lineChartData[0].data[cMapping.chart.lineChartData[0].data.length - 1];
+
+          const newNumericMapping: NeMappings = {
+            key: lookup.cssKey,
+            type: 'CONTINUOUS',
+            definition: SidebarManageComponent.collapseContinuousMappingIntoString(col,
+              datatype, lCollection, eCollection, gCollection, ovCollection, defaultLower, defaultGreater)
+          };
+          newMappings.push(newNumericMapping);
+
+        } else if (cMapping.gradientValid) {
+          const lCollection: string[] = [];
+          const eCollection: string[] = [];
+          const gCollection: string[] = [];
+          const ovCollection: string[] = [];
+          for (const gradient of cMapping.colorGradient) {
+            ovCollection.push(gradient.numericThreshold);
+            lCollection.push(gradient.color);
+            eCollection.push(gradient.color);
+            gCollection.push(gradient.color);
+          }
+
+          const defaultLower = cMapping.colorGradient.find(x => x.offset === '-1').color;
+          const defaultGreater = cMapping.colorGradient.find(x => x.offset === '101').color;
+          const newColorMapping: NeMappings = {
+            key: lookup.cssKey,
+            type: 'CONTINUOUS',
+            definition: SidebarManageComponent.collapseContinuousMappingIntoString(col,
+              datatype, lCollection, eCollection, gCollection, ovCollection, defaultLower, defaultGreater),
+          };
+          newMappings.push(newColorMapping);
         }
-
-        const defaultLower = cMapping.chart.lineChartData[0].data[0];
-        const defaultGreater = cMapping.chart.lineChartData[0].data[cMapping.chart.lineChartData[0].data.length - 1];
-
-        const newNumericMapping: NeMappings = {
-          key: lookup,
-          type: 'double',
-          definition: SidebarManageComponent.collapseContinuousMappingIntoString(col,
-            'double', lCollection, eCollection, gCollection, ovCollection, defaultLower, defaultGreater)
-        };
-        newMappings.push(newNumericMapping);
-
-      } else if (cMapping.gradientValid) {
-        const lCollection: string[] = [];
-        const eCollection: string[] = [];
-        const gCollection: string[] = [];
-        const ovCollection: string[] = [];
-        for (const gradient of cMapping.colorGradient) {
-          ovCollection.push(gradient.numericThreshold);
-          lCollection.push(gradient.color);
-          eCollection.push(gradient.color);
-          gCollection.push(gradient.color);
-        }
-
-        const defaultLower = cMapping.colorGradient.find(x => x.offset === '-1').color;
-        const defaultGreater = cMapping.colorGradient.find(x => x.offset === '101').color;
-        const newColorMapping: NeMappings = {
-          key: lookup,
-          type: 'double',
-          definition: SidebarManageComponent.collapseContinuousMappingIntoString(col,
-            'double', lCollection, eCollection, gCollection, ovCollection, defaultLower, defaultGreater),
-        };
-        newMappings.push(newColorMapping);
       }
     }
 

@@ -10,4 +10,5 @@ export interface NeContinuousCollection {
   chartValid?: boolean;
   gradientValid?: boolean;
   title?: string[];
+  selector?: string;
 }
