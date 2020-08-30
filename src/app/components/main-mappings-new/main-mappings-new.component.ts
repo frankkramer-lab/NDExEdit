@@ -133,11 +133,11 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   styleProperty: string;
 
-  /**
-   * If a color property is entered into the input field this color validation boolean is set to true
-   * and thus display of color previews is triggered (see {@link MainMappingsNewComponent#showColorPreviews})
-   */
-  validateAsColor = this.needsColorValidation(this.styleProperty);
+  // /**
+  //  * If a color property is entered into the input field this color validation boolean is set to true
+  //  * and thus display of color previews is triggered (see {@link MainMappingsNewComponent#showColorPreviews})
+  //  */
+  // validateAsColor = this.needsColorValidation(this.styleProperty);
 
   /**
    * Distribution chart data for discrete aspects
@@ -297,7 +297,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   prefillContinuousMapping(mapping: any): void {
     this.continuousThresholds = [];
-    this.validateAsColor = this.needsColorValidation(this.styleProperty);
 
     if (mapping.chartValid) {
       let mappedProperty;
@@ -362,7 +361,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   prefillDiscreteMapping(mapping: NeGroupedMappingsDiscrete, propertyId: number, isNode: boolean): void {
     this.discreteMapping = [];
-    this.validateAsColor = this.needsColorValidation(this.styleProperty);
     const correspondingAkv = (isNode
       ? this.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === mapping.classifier)
       : this.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === mapping.classifier));
@@ -511,8 +509,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   submitNewDiscreteMapping(): void {
 
-    console.log(this.needsColorValidation(this.styleProperty), this.dataService.colorProperties);
-
     if (this.needsColorValidation(this.styleProperty) && !this.dataService.colorProperties.includes(this.styleProperty)) {
       this.dataService.colorProperties.push(this.styleProperty);
     } else if (!this.needsColorValidation(this.styleProperty) && this.dataService.colorProperties.includes(this.styleProperty)) {
@@ -535,8 +531,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * Submits a new continuous mapping, adds CSS property to color properties managed in {@link GraphService}
    */
   submitNewContinuousMapping(): void {
-
-    console.log(this.needsColorValidation(this.styleProperty), this.dataService.colorProperties);
 
     if (this.needsColorValidation(this.styleProperty) && !this.dataService.colorProperties.includes(this.styleProperty)) {
       this.dataService.colorProperties.push(this.styleProperty);
@@ -587,7 +581,11 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * @param b
    */
   colorValidation(b: boolean): void {
-    this.validateAsColor = b;
+    if (this.dataService.colorProperties.includes(this.styleProperty) && !b) {
+      this.dataService.colorProperties = this.dataService.colorProperties.filter(x => x !== this.styleProperty);
+    } else if (!this.dataService.colorProperties.includes(this.styleProperty) && b) {
+      this.dataService.colorProperties.push(this.styleProperty);
+    }
   }
 
   /**

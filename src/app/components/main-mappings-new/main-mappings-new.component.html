@@ -99,8 +99,8 @@
           </div>
 
           <div class="col-2 form-check">
-            <input class="form-check-input" type="checkbox" [checked]="validateAsColor || needsColorValidation(styleProperty)" id="ndColorValidation"
-                   (click)="colorValidation(!(validateAsColor || needsColorValidation(styleProperty)))">
+            <input class="form-check-input" type="checkbox" [checked]="needsColorValidation(styleProperty)" id="ndColorValidation"
+                   (click)="colorValidation(!needsColorValidation(styleProperty))">
             <label class="form-check-label" for="ndColorValidation">
               {{'MAIN_MAPPINGS_NEW_CB_COLORS' | translate}}
             </label>
@@ -118,7 +118,7 @@
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="nd{{index}}"
                    [(ngModel)]="entry.cssValue">
           </div>
-          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-2"
+          <span *ngIf="needsColorValidation(styleProperty)" class="badge badge-pill border col-2"
                 [ngStyle]="{'background-color': entry.cssValue}">
             &nbsp;
           </span>
@@ -224,12 +224,12 @@
             <input type="text" class="form-control" id="ncCssProperty" name="ecCssProperty"
                    [(ngModel)]="styleProperty" [readOnly]="isEdit">
             <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
-            <small *ngIf="needsColorValidation(styleProperty) || validateAsColor"
+            <small *ngIf="needsColorValidation(styleProperty)"
                    class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
           </div>
           <div class="col-2 form-check">
-            <input class="form-check-input" type="checkbox" [checked]="validateAsColor || needsColorValidation(styleProperty)" id="ncColorValidation"
-                   (click)="colorValidation(!(validateAsColor || needsColorValidation(styleProperty)))">
+            <input class="form-check-input" type="checkbox" [checked]="needsColorValidation(styleProperty)" id="ncColorValidation"
+                   (click)="colorValidation(!needsColorValidation(styleProperty))">
             <label class="form-check-label" for="ncColorValidation">
               {{'MAIN_MAPPINGS_NEW_CB_COLORS' | translate}}
             </label>
@@ -245,7 +245,7 @@
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="ncDefaultLower"
                    [(ngModel)]="continuousMapping.defaultLower">
           </div>
-          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-2"
+          <span *ngIf="needsColorValidation(styleProperty)" class="badge badge-pill border col-2"
                 [ngStyle]="{'background-color': continuousMapping.defaultLower}">
             &nbsp;
           </span>
@@ -262,7 +262,7 @@
             <input type="text" class="form-control" id="ncValue{{index}}" name="ncValue{{index}}"
                    [(ngModel)]="threshold.propertyValue">
           </div>
-          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-2"
+          <span *ngIf="needsColorValidation(styleProperty)" class="badge badge-pill border col-2"
                 [ngStyle]="{'background-color': threshold.propertyValue}">
             &nbsp;
           </span>
@@ -286,7 +286,7 @@
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="ncDefaultGreater"
                    [(ngModel)]="continuousMapping.defaultGreater">
           </div>
-          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-2"
+          <span *ngIf="needsColorValidation(styleProperty)" class="badge badge-pill border col-2"
                 [ngStyle]="{'background-color': continuousMapping.defaultGreater}">
             &nbsp;
           </span>
@@ -390,8 +390,8 @@
           </div>
 
           <div class="col-2 form-check">
-            <input class="form-check-input" type="checkbox" [checked]="validateAsColor || needsColorValidation(styleProperty)" id="edColorValidation"
-                   (click)="colorValidation(!(validateAsColor || needsColorValidation(styleProperty)))">
+            <input class="form-check-input" type="checkbox" [checked]="needsColorValidation(styleProperty)" id="edColorValidation"
+                   (click)="colorValidation(!needsColorValidation(styleProperty))">
             <label class="form-check-label" for="edColorValidation">
               {{'MAIN_MAPPINGS_NEW_CB_COLORS' | translate}}
             </label>
@@ -409,7 +409,7 @@
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="ed{{index}}"
                    [(ngModel)]="discreteMapping[index].cssValue">
           </div>
-          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-2"
+          <span *ngIf="needsColorValidation(styleProperty)" class="badge badge-pill border col-2"
                 [ngStyle]="{'background-color': entry.cssValue}">
             &nbsp;
           </span>
@@ -515,12 +515,12 @@
             <input type="text" class="form-control" id="ecCssProperty" name="ecCssProperty"
                    [(ngModel)]="styleProperty" [readOnly]="isEdit">
             <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
-            <small *ngIf="needsColorValidation(styleProperty) || validateAsColor"
+            <small *ngIf="needsColorValidation(styleProperty)"
                    class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
           </div>
           <div class="col-2 form-check">
-            <input class="form-check-input" type="checkbox" [checked]="validateAsColor || needsColorValidation(styleProperty)" id="ecColorValidation"
-                   (click)="colorValidation(!(validateAsColor || needsColorValidation(styleProperty)))">
+            <input class="form-check-input" type="checkbox" [checked]="needsColorValidation(styleProperty)" id="ecColorValidation"
+                   (click)="colorValidation(!needsColorValidation(styleProperty))">
             <label class="form-check-label" for="ecColorValidation">
               {{'MAIN_MAPPINGS_NEW_CB_COLORS' | translate}}
             </label>
@@ -536,7 +536,7 @@
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="ecDefaultLower"
                    [(ngModel)]="continuousMapping.defaultLower">
           </div>
-          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-2"
+          <span *ngIf="needsColorValidation(styleProperty)" class="badge badge-pill border col-2"
                 [ngStyle]="{'background-color': continuousMapping.defaultLower}">
             &nbsp;
           </span>
@@ -553,7 +553,7 @@
             <input type="text" class="form-control" id="ecValue{{index}}" name="ecValue{{index}}"
                    [(ngModel)]="threshold.propertyValue">
           </div>
-          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-2"
+          <span *ngIf="needsColorValidation(styleProperty)" class="badge badge-pill border col-2"
                 [ngStyle]="{'background-color': threshold.propertyValue}">
             &nbsp;
           </span>
@@ -577,7 +577,7 @@
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}" name="ecDefaultGreater"
                    [(ngModel)]="continuousMapping.defaultGreater">
           </div>
-          <span *ngIf="needsColorValidation(styleProperty) || validateAsColor" class="badge badge-pill border col-2"
+          <span *ngIf="needsColorValidation(styleProperty)" class="badge badge-pill border col-2"
                 [ngStyle]="{'background-color': continuousMapping.defaultGreater}">
             &nbsp;
           </span>
