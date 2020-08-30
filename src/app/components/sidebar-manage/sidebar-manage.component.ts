@@ -424,8 +424,6 @@ export class SidebarManageComponent {
       }
     }
 
-    console.log(cMapping);
-
     for (const val of cMapping.values) {
       const property = {
         key: cMapping.title[0],
