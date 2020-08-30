@@ -421,16 +421,8 @@ export class DataService {
     const network = this.getNetworkById(id);
     const styles: NeStyle[] = network.style;
 
-    let minPropertyValue: number = Number(continuousMapping.mappedProperty.values[0]);
-    let maxPropertyValue: number = Number(continuousMapping.mappedProperty.values[0]);
-    for (const val of continuousMapping.mappedProperty.values) {
-      if (Number(val) < minPropertyValue) {
-        minPropertyValue = Number(val);
-      }
-      if (Number(val) > maxPropertyValue) {
-        maxPropertyValue = Number(val);
-      }
-    }
+    const minPropertyValue: number = continuousMapping.mappedProperty.min;
+    const maxPropertyValue: number = continuousMapping.mappedProperty.max;
 
     if (this.colorProperties.includes(continuousMapping.cssKey)) {
 
@@ -451,7 +443,7 @@ export class DataService {
         numericThreshold: String(Number.MAX_SAFE_INTEGER),
         offset: '101',
         color: greatestColor,
-        title: [continuousMapping.cssKey || '', continuousMapping.mappedProperty.name]
+        title: [continuousMapping.cssKey, continuousMapping.mappedProperty.name]
       };
 
       const range = maxPropertyValue - minPropertyValue;
@@ -933,12 +925,13 @@ export class DataService {
         mappingToEdit, network, Number(mappingToEdit.mappedProperty.min), Number(mappingToEdit.mappedProperty.max));
 
     } else if (mappingsType.ec) {
-
       mappingToEdit.breakpoints = mappingToEdit.breakpoints.filter(x => x.value !== null);
+      mappingToEdit.breakpoints = mappingToEdit.breakpoints.sort((a, b) => a.value > b.value ? 1 : -1);
 
       const existingEcMappingIndex = network.mappings.edgesContinuous.findIndex(x => x.title[0] === mappingToEdit.cssKey
         && x.title[1] === mappingToEdit.mappedProperty.name);
       const existingEcMapping = network.mappings.edgesContinuous[existingEcMappingIndex];
+      const ecAkv = network.aspectKeyValuesEdges.find(x => x.name === existingEcMapping.title[1]);
 
       if (existingEcMapping.chartValid) {
         // update chart
@@ -951,16 +944,38 @@ export class DataService {
         }
         existingEcMapping.chart.lineChartLabels.push('');
       } else if (existingEcMapping.gradientValid) {
-        // update gradient
-        existingEcMapping.colorGradient[0].color = mappingToEdit.defaultLower;
-        existingEcMapping.colorGradient[mappingToEdit.breakpoints.length + 1].color = mappingToEdit.defaultGreater;
 
-        for (let i = 0; i < mappingToEdit.breakpoints.length; i++) {
-          const offset = (100 * (Number(mappingToEdit.breakpoints[i].value) - Number(mappingToEdit.mappedProperty.min))).toFixed(0);
-          existingEcMapping.colorGradient[1 + i].color = mappingToEdit.breakpoints[i].propertyValue;
-          existingEcMapping.colorGradient[1 + i].numericThreshold = mappingToEdit.breakpoints[i].value;
-          existingEcMapping.colorGradient[1 + i].offset = String(offset) + '%';
+        const min = ecAkv.min;
+        const max = ecAkv.max;
+        const range = max - min;
+
+        const newEcMapping = existingEcMapping;
+        const title = existingEcMapping.colorGradient[0].title;
+        newEcMapping.colorGradient = [];
+
+        for (const breakpoint of mappingToEdit.breakpoints) {
+          newEcMapping.colorGradient.push({
+            color: breakpoint.propertyValue,
+            numericThreshold: breakpoint.value,
+            offset: String((Number(breakpoint.value) - min) * 100 / range) + '%',
+            title,
+          });
         }
+
+        newEcMapping.colorGradient = [{
+          color: mappingToEdit.defaultLower,
+          numericThreshold: String(Number.MIN_SAFE_INTEGER),
+          offset: '-1',
+          title
+        }].concat(newEcMapping.colorGradient);
+
+        newEcMapping.colorGradient.push({
+          color: mappingToEdit.defaultGreater,
+          numericThreshold: String(Number.MAX_SAFE_INTEGER),
+          offset: '101',
+          title
+        });
+
       }
       network.elements = this.updateElementsContinuously(false,
         mappingToEdit, network, Number(mappingToEdit.mappedProperty.min), Number(mappingToEdit.mappedProperty.max));

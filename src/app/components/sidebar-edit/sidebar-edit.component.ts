@@ -241,8 +241,8 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   displayMapping(chart: any = null, colorGradient: NeColorGradient[] = [], index: string): void {
     this.index = index;
     if (chart !== null) {
-      this.attribute = chart.lineChartOptions.title.text[0];
-      this.lookup = chart.lineChartOptions.title.text[1];
+      this.lookup = chart.lineChartOptions.title.text[0];
+      this.attribute = chart.lineChartOptions.title.text[1];
       this.lineChartData = chart.lineChartData;
       this.lineChartLabels = chart.lineChartLabels;
       this.lineChartColors = [{
