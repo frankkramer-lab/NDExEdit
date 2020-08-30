@@ -170,6 +170,7 @@ export class DataService {
           for (const element of network.elements) {
 
             if (element.classes.includes(className)) {
+              element.data.classes = element.data.classes.filter(x => x !== className);
               element.classes = element.classes.replace(className, '').trim();
             }
           }
@@ -759,7 +760,6 @@ export class DataService {
           correspondingStyleMapNd.selectors.push(currentSelector);
         }
       }
-
       for (let i = 0; i < correspondingStyleMapNd.selectors.length; i++) {
         let found = false;
         for (const s of network.style) {
@@ -783,11 +783,11 @@ export class DataService {
                 for (const attribute of element.data.attributes) {
                   if (attribute.keyHR === map.colHR && attribute.valueHR === map.isHR) {
                     element.data.classes.push(map.selector.substring(1));
+                    element.classes = element.data.classes.join(' ');
                     newStyle.appliedTo.push(element.data as NeNode);
                   }
                 }
               }
-              element.classes = element.data.classes.join(' ');
               for (const nodeMap of network.mappings.nodesDiscrete) {
                 if (nodeMap.classifier === map.colHR) {
                   if (!nodeMap.selectors.includes(map.selector)) {
@@ -852,11 +852,11 @@ export class DataService {
                 for (const attribute of element.data.attributes) {
                   if (attribute.keyHR === map.colHR && attribute.valueHR === map.isHR) {
                     element.data.classes.push(map.selector.substring(1));
+                    element.classes = element.data.classes.join(' ');
                     newStyle.appliedTo.push(element.data as NeEdge);
                   }
                 }
               }
-              element.classes = element.data.classes.join(' ');
               for (const edgeMap of network.mappings.edgesDiscrete) {
                 if (edgeMap.classifier === map.colHR) {
                   if (!edgeMap.selectors.includes(map.selector)) {
