@@ -337,6 +337,12 @@ export class DataService {
                 styleMap.appliedTo.push(element.data as NeEdge);
                 break;
               }
+            } else if (attribute.key === map.col) {
+              const tmpSelector = (isNode ? 'node_' : 'edge_') + attribute.key + '_' + attribute.value;
+              if (!element.data.classes.includes(tmpSelector)) {
+                element.data.classes.push(tmpSelector);
+                element.classes = element.data.classes.join(' ');
+              }
             }
           }
         }
@@ -354,6 +360,7 @@ export class DataService {
         }
       }
     }
+
     network.style = UtilityService.utilOrderStylesByPriority(styles);
     network.elements = elements;
 
