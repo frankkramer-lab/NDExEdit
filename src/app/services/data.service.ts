@@ -893,6 +893,8 @@ export class DataService {
           existingNcMapping.chart.lineChartData[0].data[1 + i] = mappingToEdit.breakpoints[i].propertyValue;
           existingNcMapping.chart.lineChartLabels[1 + i] = mappingToEdit.breakpoints[i].value;
         }
+        existingNcMapping.chart.lineChartLabels.push('');
+
       } else if (existingNcMapping.gradientValid) {
 
         const min = ncAkv.min;
@@ -925,9 +927,10 @@ export class DataService {
           offset: '101',
           title
         });
-        console.log(newNcMapping);
 
       }
+      network.elements = this.updateElementsContinuously(true,
+        mappingToEdit, network, Number(mappingToEdit.mappedProperty.min), Number(mappingToEdit.mappedProperty.max));
 
     } else if (mappingsType.ec) {
 
@@ -946,6 +949,7 @@ export class DataService {
           existingEcMapping.chart.lineChartData[0].data[1 + i] = mappingToEdit.breakpoints[i].propertyValue;
           existingEcMapping.chart.lineChartLabels[1 + i] = mappingToEdit.breakpoints[i].value;
         }
+        existingEcMapping.chart.lineChartLabels.push('');
       } else if (existingEcMapping.gradientValid) {
         // update gradient
         existingEcMapping.colorGradient[0].color = mappingToEdit.defaultLower;
