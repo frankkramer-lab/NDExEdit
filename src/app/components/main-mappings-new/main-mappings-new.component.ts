@@ -606,6 +606,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     if (this.mappingsType.nd || this.mappingsType.ed) {
       this.dataService.editMapping(this.selectedNetwork.id, this.discreteMapping, this.styleProperty, this.mappingsType);
     } else {
+      console.log(this.continuousMapping);
       this.dataService.editMapping(this.selectedNetwork.id, this.continuousMapping, this.styleProperty, this.mappingsType);
     }
   }

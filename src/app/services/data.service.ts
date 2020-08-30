@@ -438,7 +438,7 @@ export class DataService {
 
       const lowestColor = String(continuousMapping.defaultLower);
       const lowest: NeColorGradient = {
-        numericThreshold: '-1',
+        numericThreshold: String(Number.MIN_SAFE_INTEGER),
         offset: '-1',
         color: lowestColor,
         title: [continuousMapping.cssKey, continuousMapping.mappedProperty.name]
@@ -448,7 +448,7 @@ export class DataService {
 
       const greatestColor = String(continuousMapping.defaultGreater);
       const greatest: NeColorGradient = {
-        numericThreshold: '101',
+        numericThreshold: String(Number.MAX_SAFE_INTEGER),
         offset: '101',
         color: greatestColor,
         title: [continuousMapping.cssKey || '', continuousMapping.mappedProperty.name]
@@ -735,7 +735,6 @@ export class DataService {
               styleProperty: string,
               mappingsType: { nc: boolean; nd: boolean; ec: boolean; ed: boolean }): void {
     const network = this.getNetworkById(id);
-    console.log('EDITING', mappingToEdit,styleProperty, mappingsType);
     if (mappingsType.nd) {
 
       const existingNdMappingIndex = network.mappings.nodesDiscrete.findIndex(x => x.classifier === mappingToEdit[0].colHR
@@ -877,12 +876,16 @@ export class DataService {
     } else if (mappingsType.nc) {
       // all selectors are there, but thresholds need to be re-calculated
       mappingToEdit.breakpoints = mappingToEdit.breakpoints.filter(x => x.value !== null);
+      mappingToEdit.breakpoints = mappingToEdit.breakpoints.sort((a, b) => a.value > b.value ? 1 : -1);
+
 
       const existingNcMappingIndex = network.mappings.nodesContinuous.findIndex(x => x.title[0] === mappingToEdit.cssKey
         && x.title[1] === mappingToEdit.mappedProperty.name);
       const existingNcMapping = network.mappings.nodesContinuous[existingNcMappingIndex];
+      const ncAkv = network.aspectKeyValuesNodes.find(x => x.name === existingNcMapping.title[1]);
 
       if (existingNcMapping.chartValid) {
+
         existingNcMapping.chart.lineChartData[0].data[0] = mappingToEdit.defaultLower;
         existingNcMapping.chart.lineChartData[0].data[mappingToEdit.breakpoints.length + 1] = mappingToEdit.defaultGreater;
 
@@ -891,19 +894,40 @@ export class DataService {
           existingNcMapping.chart.lineChartLabels[1 + i] = mappingToEdit.breakpoints[i].value;
         }
       } else if (existingNcMapping.gradientValid) {
-        existingNcMapping.colorGradient[0].color = mappingToEdit.defaultLower;
-        existingNcMapping.colorGradient[mappingToEdit.breakpoints.length + 1].color = mappingToEdit.defaultGreater;
 
-        for (let i = 0; i < mappingToEdit.breakpoints.length; i++) {
-          const offset = (100 * (Number(mappingToEdit.breakpoints[i].value) - Number(mappingToEdit.mappedProperty.min))).toFixed(0);
-          existingNcMapping.colorGradient[1 + i].color = mappingToEdit.breakpoints[i].propertyValue;
-          existingNcMapping.colorGradient[1 + i].numericThreshold = mappingToEdit.breakpoints[i].value;
-          existingNcMapping.colorGradient[1 + i].offset = String(offset) + '%';
+        const min = ncAkv.min;
+        const max = ncAkv.max;
+        const range = max - min;
+
+        const newNcMapping = existingNcMapping;
+        const title = existingNcMapping.colorGradient[0].title;
+        newNcMapping.colorGradient = [];
+
+        for (const breakpoint of mappingToEdit.breakpoints) {
+          newNcMapping.colorGradient.push({
+            color: breakpoint.propertyValue,
+            numericThreshold: breakpoint.value,
+            offset: String((Number(breakpoint.value) - min) * 100 / range) + '%',
+            title,
+          });
         }
-      }
 
-      network.elements = this.updateElementsContinuously(true,
-        mappingToEdit, network, Number(mappingToEdit.mappedProperty.min), Number(mappingToEdit.mappedProperty.max));
+        newNcMapping.colorGradient = [{
+          color: mappingToEdit.defaultLower,
+          numericThreshold: String(Number.MIN_SAFE_INTEGER),
+          offset: '-1',
+          title
+        }].concat(newNcMapping.colorGradient);
+
+        newNcMapping.colorGradient.push({
+          color: mappingToEdit.defaultGreater,
+          numericThreshold: String(Number.MAX_SAFE_INTEGER),
+          offset: '101',
+          title
+        });
+        console.log(newNcMapping);
+
+      }
 
     } else if (mappingsType.ec) {
 
