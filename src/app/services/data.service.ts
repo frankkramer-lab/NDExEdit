@@ -163,13 +163,10 @@ export class DataService {
       case 'nd':
         const ndSelectors = network.mappings.nodesDiscrete[map.mappingId].selectors;
         network.mappings.nodesDiscrete.splice(map.mappingId, 1);
+        const ndNewStyle = network.style.filter(x => !ndSelectors.includes(x.selector));
 
-        let ndNewStyle = [];
         for (const selector of ndSelectors) {
-
-          ndNewStyle = ndNewStyle.concat(network.style.filter(x => x.selector !== selector));
           const className = selector.substring(1);
-
           for (const element of network.elements) {
 
             if (element.classes.includes(className)) {
@@ -233,13 +230,10 @@ export class DataService {
 
         const edSelectors = network.mappings.edgesDiscrete[map.mappingId].selectors;
         network.mappings.edgesDiscrete.splice(map.mappingId, 1);
+        const edNewStyle = network.style.filter(x => !edSelectors.includes(x.selector));
 
-        let edNewStyle = [];
         for (const selector of edSelectors) {
-
-          edNewStyle = edNewStyle.concat(network.style.filter(x => x.selector !== selector));
           const className = selector.substring(1);
-
           for (const element of network.elements) {
 
             if (element.classes.includes(className)) {
@@ -247,6 +241,7 @@ export class DataService {
             }
           }
         }
+
         network.style = edNewStyle;
         network.aspectKeyValuesEdges[map.akvIndex].mapPointerD = network
           .aspectKeyValuesEdges[map.akvIndex]
@@ -739,6 +734,7 @@ export class DataService {
               styleProperty: string,
               mappingsType: { nc: boolean; nd: boolean; ec: boolean; ed: boolean }): void {
     const network = this.getNetworkById(id);
+    console.log('EDITING', mappingToEdit,styleProperty, mappingsType);
     if (mappingsType.nd) {
 
       const existingNdMappingIndex = network.mappings.nodesDiscrete.findIndex(x => x.classifier === mappingToEdit[0].colHR
