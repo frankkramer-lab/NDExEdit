@@ -9,7 +9,7 @@
   "MAIN_INFO_DOCUMENTATION_TITLE": "Documentation",
   "MAIN_INFO_DOCUMENTATION_DESCRIPTION": "Run the command <code>npm run compodoc</code> to build the documentation and access it via <code>localhost:8080</code>.",
   "MAIN_INFO_STEPS_TITLE": "First steps",
-  "MAIN_INFO_STEPS_DESCRIPTION": "If you never worked with NdexEdit before, here are a few first steps you might want to try out:",
+  "MAIN_INFO_STEPS_DESCRIPTION": "If you never worked with NDExEdit before, here are a few first steps you might want to try out:",
   "MAIN_INFO_STEPS_STEP_1": "Visit the NDExBIO Website and select a network you would like to edit visually",
   "MAIN_INFO_STEPS_STEP_2": "Enter this network's URL or UUID into the downloader under \"Manage\" or select a local .cx file",
   "MAIN_INFO_STEPS_STEP_3": "Inspect the information displayed to this specific network by clicking on the i-Icon right next to the networks name",
