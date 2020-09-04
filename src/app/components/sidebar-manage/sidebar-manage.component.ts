@@ -536,6 +536,9 @@ export class SidebarManageComponent {
           this.showFileSizeTooLargeAlert = false;
           this.showFileNotValidAlert = false;
           this.showFileSizeOkAlert = false;
+          setTimeout(() => {
+            this.showFileElementCountTooBig = false;
+          }, 8000);
           return;
         } else {
           this.http.get(this.ndexPublicApiHost + 'network/' + slashSplit[slashSplit.length - 1], this.options)
@@ -554,12 +557,18 @@ export class SidebarManageComponent {
                 this.showFileElementCountTooBig = false;
                 this.showFileNotValidAlert = false;
                 this.showFileSizeOkAlert = false;
+                setTimeout(() => {
+                  this.showFileSizeTooLargeAlert = false;
+                }, 8000);
                 return;
               } else {
                 this.showFileSizeOkAlert = true;
                 this.showFileElementCountTooBig = false;
                 this.showFileSizeTooLargeAlert = false;
                 this.showFileNotValidAlert = false;
+                setTimeout(() => {
+                  this.showFileSizeOkAlert = false;
+                }, 8000);
               }
 
               let networkName = String(this.dataService.networksDownloaded.length);
@@ -613,7 +622,7 @@ export class SidebarManageComponent {
 
       setTimeout(() => {
         this.showFileSizeTooLargeAlert = false;
-      }, 5000);
+      }, 8000);
 
     } else if (fileExtension !== 'cx') {
 
@@ -626,7 +635,7 @@ export class SidebarManageComponent {
 
       setTimeout(() => {
         this.showFileNotValidAlert = false;
-      }, 5000);
+      }, 8000);
 
     } else {
 
@@ -637,7 +646,7 @@ export class SidebarManageComponent {
 
       setTimeout(() => {
         this.showFileSizeOkAlert = false;
-      }, 5000);
+      }, 8000);
     }
   }
 }
