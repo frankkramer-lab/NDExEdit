@@ -111,6 +111,26 @@ export class SidebarManageComponent {
   showFileNotValidAlert = false;
 
   /**
+   * Boolean to display the element-count-too-big-alert
+   */
+  showFileElementCountTooBig = false;
+
+  /**
+   * Number of nodes
+   */
+  nodeCount = 0;
+
+  /**
+   * Number of edges
+   */
+  edgeCount = 0;
+
+  /**
+   * Limit of elements for each nodes or edges
+   */
+  elementLimit = 30000;
+
+  /**
    * File size limit in MB
    */
   sizeLimit = 20;
@@ -506,42 +526,61 @@ export class SidebarManageComponent {
   importFromNdex(): void {
     const slashSplit = this.ndexLinkToUpload.split('/');
 
-    this.http.get(this.ndexPublicApiHost + 'network/' + slashSplit[slashSplit.length - 1], this.options)
+    this.http.get(this.ndexPublicApiHost + 'network/' + slashSplit[slashSplit.length - 1] + '/summary', this.options)
       .toPromise()
-      .then((data: any[]) => {
-
-        if (!data) {
-          return;
-        }
-
-        const dataSize = new TextEncoder().encode(JSON.stringify(data)).length;
-        this.currentFileSize = Number((dataSize / this.megaFactor).toFixed(2));
-
-        if (this.currentFileSize > this.sizeLimit) {
-          this.showFileSizeTooLargeAlert = true;
-          this.showFileNotValidAlert = false;
-          this.showFileSizeOkAlert = false;
-        } else {
+      .then((preview: any) => {
+        if ((preview.nodeCount && preview.nodeCount > this.elementLimit) || (preview.edgeCount && preview.edgeCount > this.elementLimit)) {
+          this.nodeCount = preview.nodeCount;
+          this.edgeCount = preview.edgeCount;
+          this.showFileElementCountTooBig = true;
           this.showFileSizeTooLargeAlert = false;
           this.showFileNotValidAlert = false;
-          this.showFileSizeOkAlert = true;
-        }
+          this.showFileSizeOkAlert = false;
+          return;
+        } else {
+          this.http.get(this.ndexPublicApiHost + 'network/' + slashSplit[slashSplit.length - 1], this.options)
+            .toPromise()
+            .then((data: any[]) => {
 
-        let networkName = String(this.dataService.networksDownloaded.length);
-        for (const d of data) {
-          if (d.networkAttributes) {
-            for (const prop of d.networkAttributes) {
-              if (d.n === 'name') {
-                networkName = d.networkAttributes.name;
+              if (!data) {
+                return;
               }
-            }
-          }
-        }
-        this.dataService.networksDownloaded.push(data);
-        this.dataService.networksParsed.push(this.parseService.convert(data, UtilityService.utilCleanString(networkName)));
 
+              const dataSize = new TextEncoder().encode(JSON.stringify(data)).length;
+              this.currentFileSize = Number((dataSize / this.megaFactor).toFixed(2));
+
+              if (this.currentFileSize > this.sizeLimit) {
+                this.showFileSizeTooLargeAlert = true;
+                this.showFileElementCountTooBig = false;
+                this.showFileNotValidAlert = false;
+                this.showFileSizeOkAlert = false;
+                return;
+              } else {
+                this.showFileSizeOkAlert = true;
+                this.showFileElementCountTooBig = false;
+                this.showFileSizeTooLargeAlert = false;
+                this.showFileNotValidAlert = false;
+              }
+
+              let networkName = String(this.dataService.networksDownloaded.length);
+              for (const d of data) {
+                if (d.networkAttributes) {
+                  for (const prop of d.networkAttributes) {
+                    if (d.n === 'name') {
+                      networkName = d.networkAttributes.name;
+                    }
+                  }
+                }
+              }
+              this.dataService.networksDownloaded.push(data);
+              this.dataService.networksParsed.push(this.parseService.convert(data, UtilityService.utilCleanString(networkName)));
+
+            })
+            .catch(error => console.error(error));
+        }
       })
       .catch(error => console.error(error));
+
   }
 
   /**
@@ -567,6 +606,7 @@ export class SidebarManageComponent {
     // current file limit is set to 20MB, which has proven to overload the application
     if (this.fileToUpload.size > (this.sizeLimit * this.megaFactor)) {
       this.showFileSizeTooLargeAlert = true;
+      this.showFileElementCountTooBig = false;
       this.showFileSizeOkAlert = false;
       this.showFileNotValidAlert = false;
       this.fileToUpload = null;
@@ -579,6 +619,7 @@ export class SidebarManageComponent {
 
       this.invalidExtension = fileExtension;
       this.showFileNotValidAlert = true;
+      this.showFileElementCountTooBig = false;
       this.showFileSizeOkAlert = false;
       this.showFileSizeTooLargeAlert = false;
       this.fileToUpload = null;
@@ -590,6 +631,7 @@ export class SidebarManageComponent {
     } else {
 
       this.showFileSizeOkAlert = true;
+      this.showFileElementCountTooBig = false;
       this.showFileSizeTooLargeAlert = false;
       this.showFileNotValidAlert = false;
 

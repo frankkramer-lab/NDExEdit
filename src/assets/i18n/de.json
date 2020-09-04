@@ -62,6 +62,9 @@
   "SIDEBAR_MANAGE_FILE_SIZE_LABEL_MAX": "Maximal erlaubte Dateigröße",
   "SIDEBAR_MANAGE_FILE_TYPE_ERROR": "Falscher Dateityp",
   "SIDEBAR_MANAGE_FILE_TYPE_LABEL": "Nur Dateien mit Endung .cx sind valide. Deine Datei hat das Format",
+  "SIDEBAR_MANAGE_FILE_ELEMENT_COUNT": "Sorry - Das Netzwerk kann so viele Elemente nicht verarbeiten",
+  "SIDEBAR_MANAGE_FILE_ELEMENT_COUNT_LABEL_NODES": "#Knoten",
+  "SIDEBAR_MANAGE_FILE_ELEMENT_COUNT_LABEL_EDGES": "#Kanten",
 
   "SIDEBAR_EDIT_DESCRIPTION_TITLE": "Beschreibung",
   "SIDEBAR_EDIT_EDITING_TITLE": "Knoten und Kanten highlighten",

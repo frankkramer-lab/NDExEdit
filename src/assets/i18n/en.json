@@ -62,6 +62,9 @@
   "SIDEBAR_MANAGE_FILE_SIZE_LABEL_MAX": "Maximum allowed file size",
   "SIDEBAR_MANAGE_FILE_TYPE_ERROR": "Wrong file extension",
   "SIDEBAR_MANAGE_FILE_TYPE_LABEL": "The loaded file needs to have the .cx file extension. Your file currently has the extension",
+  "SIDEBAR_MANAGE_FILE_ELEMENT_COUNT": "Sorry - The network contains too many elements for this application",
+  "SIDEBAR_MANAGE_FILE_ELEMENT_COUNT_LABEL_NODES": "#Nodes",
+  "SIDEBAR_MANAGE_FILE_ELEMENT_COUNT_LABEL_EDGES": "#Edges",
 
   "SIDEBAR_EDIT_DESCRIPTION_TITLE": "Description",
   "SIDEBAR_EDIT_EDITING_TITLE": "Highlight nodes and edges",
