@@ -57,7 +57,12 @@
   </div>
 
 
-  <h5>{{'SIDEBAR_MANAGE_REMOTE_FILE_LABEL'|translate}}</h5>
+  <h5>
+    {{'SIDEBAR_MANAGE_REMOTE_FILE_LABEL'|translate}}
+    <div *ngIf="loadingHttp" class="spinner-border spinner-border-sm mr-2 align-middle" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </h5>
   <div class="row mb-3">
     <div class="col-9 form-group mb-2">
       <input type="text" class="form-control" id="remoteNetworkFile" aria-describedby="remoteNetworkHelp"
@@ -73,7 +78,12 @@
     </div>
   </div>
 
-  <h5>{{'SIDEBAR_MANAGE_LOCAL_FILE_LABEL'|translate}}</h5>
+  <h5>
+    {{'SIDEBAR_MANAGE_LOCAL_FILE_LABEL'|translate}}
+    <div *ngIf="loadingFile" class="spinner-border spinner-border-sm mr-2 align-middle" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </h5>
 
   <div class="input-group mb-3">
     <div class="custom-file">

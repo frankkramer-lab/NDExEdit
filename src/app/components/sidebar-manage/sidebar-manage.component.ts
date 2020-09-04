@@ -116,6 +116,16 @@ export class SidebarManageComponent {
   showFileElementCountTooBig = false;
 
   /**
+   * Boolean indicating if data is currently being loaded via HTTP
+   */
+  loadingHttp = false;
+
+  /**
+   * Boolean indicating if data is currently being loaded from a file
+   */
+  loadingFile = false;
+
+  /**
    * Number of nodes
    */
   nodeCount = 0;
@@ -507,14 +517,17 @@ export class SidebarManageComponent {
    */
   importLocalFile(): void {
     if (!this.fileToUpload) {
+      this.loadingFile = false;
       return;
     } else {
-
+      this.loadingFile = true;
       this.fileToUpload.text()
         .then(data => {
           this.dataService.networksDownloaded.push(JSON.parse(data));
           this.dataService.networksParsed.push(this.parseService.convert(JSON.parse(data),
             UtilityService.utilCleanString(this.fileToUpload.name)));
+          this.loadingFile = false;
+
         })
         .catch(error => console.error(error));
     }
@@ -524,8 +537,12 @@ export class SidebarManageComponent {
    * Imports data from NDEx. Works with link to publicly accessible network or just its ID
    */
   importFromNdex(): void {
+    if (!this.ndexLinkToUpload) {
+      this.loadingHttp = false;
+      return;
+    }
+    this.loadingHttp = true;
     const slashSplit = this.ndexLinkToUpload.split('/');
-
     this.http.get(this.ndexPublicApiHost + 'network/' + slashSplit[slashSplit.length - 1] + '/summary', this.options)
       .toPromise()
       .then((preview: any) => {
@@ -536,9 +553,12 @@ export class SidebarManageComponent {
           this.showFileSizeTooLargeAlert = false;
           this.showFileNotValidAlert = false;
           this.showFileSizeOkAlert = false;
+          this.loadingHttp = false;
+
           setTimeout(() => {
             this.showFileElementCountTooBig = false;
           }, 8000);
+
           return;
         } else {
           this.http.get(this.ndexPublicApiHost + 'network/' + slashSplit[slashSplit.length - 1], this.options)
@@ -557,15 +577,20 @@ export class SidebarManageComponent {
                 this.showFileElementCountTooBig = false;
                 this.showFileNotValidAlert = false;
                 this.showFileSizeOkAlert = false;
+                this.loadingHttp = false;
+
                 setTimeout(() => {
                   this.showFileSizeTooLargeAlert = false;
                 }, 8000);
+
                 return;
               } else {
                 this.showFileSizeOkAlert = true;
                 this.showFileElementCountTooBig = false;
                 this.showFileSizeTooLargeAlert = false;
                 this.showFileNotValidAlert = false;
+                this.loadingHttp = false;
+
                 setTimeout(() => {
                   this.showFileSizeOkAlert = false;
                 }, 8000);
@@ -583,13 +608,13 @@ export class SidebarManageComponent {
               }
               this.dataService.networksDownloaded.push(data);
               this.dataService.networksParsed.push(this.parseService.convert(data, UtilityService.utilCleanString(networkName)));
+              this.loadingHttp = false;
 
             })
             .catch(error => console.error(error));
         }
       })
       .catch(error => console.error(error));
-
   }
 
   /**
