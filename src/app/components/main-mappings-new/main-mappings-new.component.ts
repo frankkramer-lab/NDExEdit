@@ -21,6 +21,7 @@ import {NeContinuousThresholds} from '../../models/ne-continuous-thresholds';
 import {NeThresholdMap} from '../../models/ne-threshold-map';
 import {NeGroupedMappingsDiscrete} from '../../models/ne-grouped-mappings-discrete';
 import {UtilityService} from '../../services/utility.service';
+import {NeMappingsType} from '../../models/ne-mappings-type';
 
 @Component({
   selector: 'app-main-mappings-new',
@@ -105,7 +106,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   /**
    * Object containing the type of mapping to be added
    */
-  mappingsType = {
+  mappingsType: NeMappingsType = {
     nd: false,
     nc: false,
     ed: false,
@@ -119,11 +120,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   isEdit = false;
 
   /**
-   * Boolean if color previews are to display
-   */
-  showColorPreviews = false;
-
-  /**
    * True if the distribution chart for the selected property is to be shown
    */
   showDistribution = false;
@@ -133,35 +129,29 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   styleProperty: string;
 
-  // /**
-  //  * If a color property is entered into the input field this color validation boolean is set to true
-  //  * and thus display of color previews is triggered (see {@link MainMappingsNewComponent#showColorPreviews})
-  //  */
-  // validateAsColor = this.needsColorValidation(this.styleProperty);
-
   /**
    * Distribution chart data for discrete aspects
    */
-  public barChartData: ChartDataSets[] = [
+  barChartData: ChartDataSets[] = [
     {data: [0], label: 'no data found'}
   ];
 
   /**
    * Distribution chart labels for discrete aspects
    */
-  public barChartLabels: Label[] = [''];
+  barChartLabels: Label[] = [''];
 
   /**
    * Distribution chart data for continuous aspects
    */
-  public scatterChartData: ChartDataSets[] = [
+  scatterChartData: ChartDataSets[] = [
     {data: [0], label: 'no data found'}
   ];
 
   /**
    * Distribution chart labels for continuous aspects
    */
-  public scatterChartLabels: Label[] = [''];
+  scatterChartLabels: Label[] = [''];
 
   /**
    * The new mapping's or the existing mapping's id
@@ -195,99 +185,127 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * @param route Current route
    * @param dataService Service used to find the currently selected network
    */
-  constructor(private route: ActivatedRoute,
-              public dataService: DataService) {
+  constructor(
+    private route: ActivatedRoute,
+    public dataService: DataService
+  ) {
 
     this.route.paramMap.subscribe(params => {
       const map = params.get('map');
-      this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
-      this.currentMappingId = map.substring(2);
-      const mapType = map.substring(0, 2);
-      switch (mapType) {
-        case 'nd':
-          this.mappingsType.nd = true;
-          this.mappingsType.nc = false;
-          this.mappingsType.ed = false;
-          this.mappingsType.ec = false;
-          break;
-        case 'nc':
-          this.mappingsType.nc = true;
-          this.mappingsType.nd = false;
-          this.mappingsType.ed = false;
-          this.mappingsType.ec = false;
-          break;
-        case 'ed':
-          this.mappingsType.ed = true;
-          this.mappingsType.nc = false;
-          this.mappingsType.nd = false;
-          this.mappingsType.ec = false;
-          break;
-        case 'ec':
-          this.mappingsType.ec = true;
-          this.mappingsType.nc = false;
-          this.mappingsType.nd = false;
-          this.mappingsType.ed = false;
-          break;
+      const networkId = params.get('id');
 
-      }
-      if (params.get('property')) {
-        // create new
-        const propertyPointer = params.get('property');
-
-        if (mapType.startsWith('n')) {
-          this.propertyToMap = this.selectedNetwork.aspectKeyValuesNodes[propertyPointer];
-        } else {
-          this.propertyToMap = this.selectedNetwork.aspectKeyValuesEdges[propertyPointer];
-        }
-
-        if (mapType.endsWith('c')) {
-          this.continuousMapping = {};
-          this.initContinuousMapping();
-        } else {
-          this.discreteMapping = [];
-          this.initDiscreteMapping(mapType);
-        }
-
-      } else {
-        // edit existing
-        this.isEdit = true;
-        let existingMapping;
-        let propertyId;
-        const mapId = map.substring(2);
-
+      if (map && networkId) {
+        this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(networkId));
+        this.currentMappingId = map.substring(2);
+        const mapType = map.substring(0, 2);
         switch (mapType) {
           case 'nd':
-            propertyId = params.get('propertyId');
-            existingMapping = this.selectedNetwork.mappings.nodesDiscrete[mapId];
-            this.propertyToMap = this.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === existingMapping.classifier);
-            this.styleProperty = existingMapping.styleMap[propertyId].cssKey;
-            this.prefillDiscreteMapping(existingMapping, Number(propertyId), true);
+            this.mappingsType.nd = true;
+            this.mappingsType.nc = false;
+            this.mappingsType.ed = false;
+            this.mappingsType.ec = false;
             break;
           case 'nc':
-            existingMapping = this.selectedNetwork.mappings.nodesContinuous[mapId];
-            this.propertyToMap = this.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === existingMapping.title[1]);
-            this.styleProperty = existingMapping.title[0];
-            this.prefillContinuousMapping(existingMapping);
+            this.mappingsType.nc = true;
+            this.mappingsType.nd = false;
+            this.mappingsType.ed = false;
+            this.mappingsType.ec = false;
             break;
           case 'ed':
-            propertyId = params.get('propertyId');
-            existingMapping = this.selectedNetwork.mappings.edgesDiscrete[mapId];
-            this.propertyToMap = this.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === existingMapping.classifier);
-            this.styleProperty = existingMapping.styleMap[propertyId].cssKey;
-            this.prefillDiscreteMapping(existingMapping, Number(propertyId), false);
+            this.mappingsType.ed = true;
+            this.mappingsType.nc = false;
+            this.mappingsType.nd = false;
+            this.mappingsType.ec = false;
             break;
           case 'ec':
-            existingMapping = this.selectedNetwork.mappings.edgesContinuous[mapId];
-            this.propertyToMap = this.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === existingMapping.title[1]);
-            this.styleProperty = existingMapping.title[0];
-            this.prefillContinuousMapping(existingMapping);
+            this.mappingsType.ec = true;
+            this.mappingsType.nc = false;
+            this.mappingsType.nd = false;
+            this.mappingsType.ed = false;
             break;
+
+        }
+        if (params.get('property')) {
+          // create new
+          const propertyPointer = params.get('property');
+
+          if (mapType.startsWith('n')) {
+            this.propertyToMap = this.selectedNetwork.aspectKeyValuesNodes[propertyPointer];
+          } else {
+            this.propertyToMap = this.selectedNetwork.aspectKeyValuesEdges[propertyPointer];
+          }
+
+          if (mapType.endsWith('c')) {
+            this.continuousMapping = {};
+            this.initContinuousMapping();
+          } else {
+            this.discreteMapping = [];
+            this.initDiscreteMapping(mapType);
+          }
+
+        } else {
+          // edit existing
+          this.isEdit = true;
+          let existingMapping;
+          let propertyId;
+          const mapId = map.substring(2);
+
+          switch (mapType) {
+            case 'nd':
+              propertyId = params.get('propertyId');
+              existingMapping = this.selectedNetwork.mappings.nodesDiscrete[mapId];
+              this.propertyToMap = this.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === existingMapping.classifier);
+              this.styleProperty = existingMapping.styleMap[propertyId].cssKey;
+              this.prefillDiscreteMapping(existingMapping, Number(propertyId), true);
+              break;
+            case 'nc':
+              existingMapping = this.selectedNetwork.mappings.nodesContinuous[mapId];
+              this.propertyToMap = this.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === existingMapping.title[1]);
+              this.styleProperty = existingMapping.title[0];
+              this.prefillContinuousMapping(existingMapping);
+              break;
+            case 'ed':
+              propertyId = params.get('propertyId');
+              existingMapping = this.selectedNetwork.mappings.edgesDiscrete[mapId];
+              this.propertyToMap = this.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === existingMapping.classifier);
+              this.styleProperty = existingMapping.styleMap[propertyId].cssKey;
+              this.prefillDiscreteMapping(existingMapping, Number(propertyId), false);
+              break;
+            case 'ec':
+              existingMapping = this.selectedNetwork.mappings.edgesContinuous[mapId];
+              this.propertyToMap = this.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === existingMapping.title[1]);
+              this.styleProperty = existingMapping.title[0];
+              this.prefillContinuousMapping(existingMapping);
+              break;
+          }
         }
       }
-
-
     });
+  }
 
+  /**
+   * Sets chart data for distribution of the selected aspect and hides the label checkbox
+   */
+  ngOnInit(): void {
+
+    this.barChartData = this.propertyToMap.chartDiscreteDistribution.chartData;
+    this.barChartLabels = this.propertyToMap.chartDiscreteDistribution.chartLabels;
+    this.scatterChartData = this.propertyToMap.chartContinuousDistribution.chartData;
+
+    // avoid confusion by hiding any mappings preview in sidebar
+    MainMappingsNewComponent.mappingsNewEmitter.emit({showLabelCheckbox: false});
+  }
+
+  /**
+   * Resets chart data and re-displays the label checkbox
+   */
+  ngOnDestroy(): void {
+    this.showDistribution = false;
+    this.barChartData = [];
+    this.barChartLabels = [];
+    this.scatterChartData = [];
+    this.continuousThresholds = [];
+    MainMappingsNewComponent.mappingsNewEmitter.emit({showLabelCheckbox: true});
   }
 
   /**
@@ -398,31 +416,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
       }
     }
 
-  }
-
-  /**
-   * Sets chart data for distribution of the selected aspect and hides the label checkbox
-   */
-  ngOnInit(): void {
-
-    this.barChartData = this.propertyToMap.chartDiscreteDistribution.chartData;
-    this.barChartLabels = this.propertyToMap.chartDiscreteDistribution.chartLabels;
-    this.scatterChartData = this.propertyToMap.chartContinuousDistribution.chartData;
-
-    // avoid confusion by hiding any mappings preview in sidebar
-    MainMappingsNewComponent.mappingsNewEmitter.emit({showLabelCheckbox: false});
-  }
-
-  /**
-   * Resets chart data and re-displays the label checkbox
-   */
-  ngOnDestroy(): void {
-    this.showDistribution = false;
-    this.barChartData = [];
-    this.barChartLabels = [];
-    this.scatterChartData = [];
-    this.continuousThresholds = [];
-    MainMappingsNewComponent.mappingsNewEmitter.emit({showLabelCheckbox: true});
   }
 
   /**
@@ -606,7 +599,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     if (this.mappingsType.nd || this.mappingsType.ed) {
       this.dataService.editMapping(this.selectedNetwork.id, this.discreteMapping, this.styleProperty, this.mappingsType);
     } else {
-      console.log(this.continuousMapping);
       this.dataService.editMapping(this.selectedNetwork.id, this.continuousMapping, this.styleProperty, this.mappingsType);
     }
   }

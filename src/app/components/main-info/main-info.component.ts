@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {faThumbsUp, faUserGraduate, faComments} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-main-info',
@@ -10,6 +11,24 @@ import {Component} from '@angular/core';
  * Component responsible for FAQ display
  */
 export class MainInfoComponent {
+
+  /**
+   * Icon: faThumbsUp
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faThumbsUp = faThumbsUp;
+
+  /**
+   * Icon: faUserGraduate
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faUserGraduate = faUserGraduate;
+
+  /**
+   * Icon: faComments
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faComments = faComments;
 
   constructor() {
 

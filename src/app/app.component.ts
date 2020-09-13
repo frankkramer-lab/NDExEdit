@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {ParseService} from './services/parse.service';
-import {NeNetwork} from './models/ne-network';
 import {DataService} from './services/data.service';
 import {HttpClient} from '@angular/common/http';
 
@@ -15,21 +14,6 @@ import {HttpClient} from '@angular/common/http';
  * Root component of the application
  */
 export class AppComponent {
-
-  /**
-   * Title of the application is ndex-edit
-   */
-  title = 'ndex-edit';
-
-  /**
-   * Main: default page layout is 60%
-   */
-  widthMain = 'width-60';
-
-  /**
-   * Sidebar: default page layout is 38%
-   */
-  widthSidebar = 'width-38';
 
   /**
    * Path to mock-ups
@@ -47,6 +31,21 @@ export class AppComponent {
   private readonly defaultLanguage = 'en';
 
   /**
+   * Title of the application is NDExEdit
+   */
+  title = 'NDExEdit';
+
+  /**
+   * Main: default page layout is 60%
+   */
+  widthMain = 60;
+
+  /**
+   * Sidebar: default page layout is 38%
+   */
+  widthSidebar = 38;
+
+  /**
    * Initializes translation and renders the desired mock-ups
    *
    * @param translateService Service to manage languages
@@ -58,24 +57,12 @@ export class AppComponent {
     public translateService: TranslateService,
     private parseService: ParseService,
     public dataService: DataService,
-    private http: HttpClient) {
+    private http: HttpClient
+  ) {
+
     this.initializeTranslation();
 
     this.initDemoNetwork('DummyForTesting.cx');
-
-    // this.initDemoNetwork('dummy.cx');
-    // this.initDemoNetwork('dummy2.cx');
-
-    // this.initDemoNetwork('01.cx'); // good example for discrete mappings
-    // this.initDemoNetwork('02.cx'); // good example for continuous mappings
-    this.initDemoNetwork('03.cx'); // good for many many many edges
-    // this.initDemoNetwork('05.cx'); // example with arrows
-    // this.initDemoNetwork('04.cx'); // this is a terribly built network and a negative example on how to manage a .cx file
-    // this.initDemoNetwork('06.cx'); // also not very nice to display
-    // this.initDemoNetwork('07.cx'); // 37MB are not very nice => ndex does show a fallback graph in these cases (or only first n nodes)
-    // this.initDemoNetwork('08.cx'); // 20MB are not very nice => ndex does show a fallback graph in these cases (or only first n nodes)
-
-
   }
 
   /**
@@ -91,37 +78,17 @@ export class AppComponent {
   /**
    * For development purposes this method loads the specified file from the assets directory and adds the files to both the
    * {@link dataService#networksDownloaded|loaded} and
-   * {@link dataService#networksParsed|parsed networks} accessible through the {@link dataService|dataService}.
+   * {@link dataService#networksParsed} accessible through the {@link dataService|dataService}.
    * @param filename name of the file to be loaded, parsed and added
    */
   private initDemoNetwork(filename: string): void {
-    this.loadFileFromAssets(filename)
-      .then(() => {
-        const loadedNetwork = this.dataService.networksDownloaded[this.dataService.networksDownloaded.length - 1];
-        const parsedNetwork = this.parseFileFromAssets(loadedNetwork, filename);
-        this.dataService.networksParsed.push(parsedNetwork);
-      })
-      .catch(error => console.log(error));
-  }
-
-  /**
-   * Method to parse the specified network from .cx to cytoscape format
-   * @param network network file in .cx format
-   * @param filename name of file, needed for reconversion
-   */
-  private parseFileFromAssets(network: any, filename: string): NeNetwork {
-    return this.parseService.convert(network, this.mockedFilepath + filename);
-  }
-
-  /**
-   * Method making an http request to load the file from the assets directory
-   * @param filename name of the file to be loaded
-   */
-  private loadFileFromAssets(filename: string): Promise<any> {
-    return this.http.get(this.mockedFilepath.concat(filename))
+    this.http.get(this.mockedFilepath.concat(filename))
       .toPromise()
-      .then(data => {
+      .then((data: any[]) => {
+        const parsedNetwork = this.parseService.convert(data, this.mockedFilepath + filename);
         this.dataService.networksDownloaded.push(data);
+        this.dataService.networksParsed.push(parsedNetwork);
+        console.log(this.dataService.networksParsed);
       })
       .catch(error => console.log(error));
   }
@@ -134,28 +101,28 @@ export class AppComponent {
    *   <li><b>Ctrl + left-click</b></li>: resets widths, see {@link AppComponent#resetPageLayout}
    * </ul>
    * @param e event to fetch all pressed keys
-   * @param direction can be right or left
+   * @param isLeft indicates if the direction is towards the left
    */
-  handleClickEvent(e: MouseEvent, direction: string): void {
+  handleClickEvent(e: MouseEvent, isLeft: boolean): void {
     if (e.ctrlKey) {
       this.resetPageLayout();
       return;
     }
 
     e.preventDefault();
-    let tmpMain = Number(this.widthMain.split('-')[1]);
-    let tmpSidebar = Number(this.widthSidebar.split('-')[1]);
+    let tmpMain = this.widthMain;
+    let tmpSidebar = this.widthSidebar;
 
-    if (direction === 'right' && tmpSidebar > 18) {
+    if (!isLeft && tmpSidebar > 18) {
       tmpMain += 10;
       tmpSidebar -= 10;
-      this.widthMain = 'width-' + tmpMain;
-      this.widthSidebar = 'width-' + tmpSidebar;
-    } else if (direction === 'left' && tmpMain > 20) {
+      this.widthMain = tmpMain;
+      this.widthSidebar = tmpSidebar;
+    } else if (isLeft && tmpMain > 20) {
       tmpMain -= 10;
       tmpSidebar += 10;
-      this.widthMain = 'width-' + tmpMain;
-      this.widthSidebar = 'width-' + tmpSidebar;
+      this.widthMain = tmpMain;
+      this.widthSidebar = tmpSidebar;
     }
   }
 
@@ -163,7 +130,7 @@ export class AppComponent {
    * Resets page layout to {@link AppComponent#widthMain} and {@link AppComponent#widthSidebar}
    */
   resetPageLayout(): void {
-    this.widthSidebar = 'width-38';
-    this.widthMain = 'width-60';
+    this.widthSidebar = 38;
+    this.widthMain = 60;
   }
 }

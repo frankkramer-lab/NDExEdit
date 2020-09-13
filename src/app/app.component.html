@@ -1,12 +1,12 @@
 <div class="container-fluid">
 
-  <div class="float-left" [ngClass]="widthMain">
+  <div class="float-left" [ngClass]="'width-' + widthMain">
     <router-outlet></router-outlet>
   </div>
 
-  <div class="vh-100 float-right" [ngClass]="widthSidebar">
+  <div class="vh-100 float-right" [ngClass]="'width-' + widthSidebar">
 
-      <ul class="nav nav-tabs mt-2 ml-1">
+      <ul class="nav nav-tabs mt-2 ml-1 mr-1">
         <li class="nav-item">
           <a class="nav-link text-black-50" [routerLink]="['', { outlets: {sidebar: ['manage']} }]"
              routerLinkActive="active">{{'NAV_MANAGE'|translate}}</a>
@@ -26,7 +26,7 @@
       <router-outlet name="sidebar"></router-outlet>
   </div>
 
-  <div class="vh-100 drag-bar float-right" (click)="handleClickEvent($event, 'left')"
-       (contextmenu)="handleClickEvent($event, 'right')">&nbsp;</div>
+  <div class="vh-100 drag-bar float-right" (click)="handleClickEvent($event, true)"
+       (contextmenu)="handleClickEvent($event, false)">&nbsp;</div>
 
 </div>

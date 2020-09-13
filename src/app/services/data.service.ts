@@ -14,6 +14,8 @@ import {ElementDefinition} from 'cytoscape';
 import {UtilityService} from './utility.service';
 import {NeMappingsMap} from '../models/ne-mappings-map';
 import {NeStyleMap} from '../models/ne-style-map';
+import {NeMappingProperty} from '../models/ne-mapping-property';
+import {NeMappingsType} from '../models/ne-mappings-type';
 
 @Injectable({
   providedIn: 'root'
@@ -56,9 +58,11 @@ export class DataService {
    * @param isNode True if the mapping applies to nodes, false if the mapping applies to edges
    * @private
    */
-  private static updateMappings(discreteMapping: NeMappingsDefinition[],
-                                mappings: NeMappingsMap,
-                                isNode: boolean): NeGroupedMappingsDiscrete[] {
+  private static updateMappings(
+    discreteMapping: NeMappingsDefinition[],
+    mappings: NeMappingsMap,
+    isNode: boolean
+  ): NeGroupedMappingsDiscrete[] {
 
     if (!mappings || discreteMapping.length === 0) {
       return [];
@@ -573,11 +577,14 @@ export class DataService {
    * @param maxPropertyValue maximum of the elements's attribute's values
    * @private
    */
-  private updateElementsContinuously(isNode: boolean,
-                                     continuousMapping: any,
-                                     network: NeNetwork,
-                                     minPropertyValue,
-                                     maxPropertyValue): ElementDefinition[] {
+  private updateElementsContinuously(
+    isNode: boolean,
+    continuousMapping: any,
+    network: NeNetwork,
+    minPropertyValue,
+    maxPropertyValue
+  ): ElementDefinition[] {
+
     const styles: NeStyle[] = network.style;
     const elements: ElementDefinition[] = network.elements;
 
@@ -687,14 +694,13 @@ export class DataService {
     return elements;
   }
 
-
   /**
    * Removing a property from an existing mapping can only be executed for discrete mappings
    *
    * @param id The network's id
    * @param property Property to remove
    */
-  removePropertyFromMapping(id: number, property: { mapReference: number; attributeName: string; mapType: string; style: any }): void {
+  removePropertyFromMapping(id: number, property: NeMappingProperty): void {
     const network = this.getNetworkById(id);
     const isNode = property.mapType.startsWith('n');
     const mapping: NeGroupedMappingsDiscrete = isNode
@@ -722,10 +728,12 @@ export class DataService {
    * @param styleProperty corresponding style from within the network's existing style
    * @param mappingsType true for type of mapping
    */
-  editMapping(id: number,
-              mappingToEdit: any | any[],
-              styleProperty: string,
-              mappingsType: { nc: boolean; nd: boolean; ec: boolean; ed: boolean }): void {
+  editMapping(
+    id: number,
+    mappingToEdit: any | any[],
+    styleProperty: string,
+    mappingsType: NeMappingsType
+  ): void {
     const network = this.getNetworkById(id);
     if (mappingsType.nd) {
 

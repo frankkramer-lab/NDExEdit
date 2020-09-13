@@ -17,6 +17,12 @@ import {ActivatedRoute} from '@angular/router';
 export class MainGraphComponent implements AfterViewInit, OnDestroy {
 
   /**
+   * Ensures that only a graph is rendered if the id is specified within the URL
+   * @private
+   */
+  private readonly subscription: Subscription;
+
+  /**
    * Selected network of type {@link NeNetwork|NeNetwork}
    */
   selectedNetwork: NeNetwork;
@@ -27,21 +33,15 @@ export class MainGraphComponent implements AfterViewInit, OnDestroy {
   cyContainer: any;
 
   /**
-   * Ensures that only a graph is rendered if the id is specified within the URL
-   * @private
+   * Main view width which needs to be specified in order to re-render the graph accordingly
    */
-  private readonly subscription: Subscription;
+  width: string;
 
   /**
    * Checks if the view is initialized
    * @private
    */
   private isInitialized = false;
-
-  /**
-   * Main view width which needs to be specified in order to re-render the graph accordingly
-   */
-  public width: string;
 
   /**
    * Subscribes to graph id and renders the graph if the view is already initialized
@@ -55,11 +55,14 @@ export class MainGraphComponent implements AfterViewInit, OnDestroy {
     public dataService: DataService,
     public route: ActivatedRoute,
     private renderer: Renderer2,
-    public graphService: GraphService) {
+    public graphService: GraphService
+  ) {
 
     this.subscription = this.route.paramMap.subscribe(params => {
-      this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
-      console.log(this.selectedNetwork);
+      const networkId = params.get('id');
+      if (networkId) {
+        this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(networkId));
+      }
 
       if (this.isInitialized) {
         this.renderGraph();
@@ -99,10 +102,4 @@ export class MainGraphComponent implements AfterViewInit, OnDestroy {
 
   }
 
-  /**
-   * Fits the graph to the given {@link MainGraphComponent#width} by calling {@link GraphService#fitGraph}
-   */
-  fit(): void {
-    this.graphService.fitGraph();
-  }
 }

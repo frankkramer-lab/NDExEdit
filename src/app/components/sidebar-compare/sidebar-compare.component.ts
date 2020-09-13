@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {faCalendar, faGrinStars, faRoad, faThumbsUp, faUserGraduate, faComments, faTools, faToolbox} from '@fortawesome/free-solid-svg-icons';
+import {faThumbsUp, faUserGraduate, faComments, faTools} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-sidebar-compare',
@@ -12,14 +12,29 @@ import {faCalendar, faGrinStars, faRoad, faThumbsUp, faUserGraduate, faComments,
  */
 export class SidebarCompareComponent implements OnInit {
 
-  faCalendar = faCalendar;
-  faGrinStars = faGrinStars;
-  faRoad = faRoad;
+  /**
+   * Icon: faThumbsUp
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faThumbsUp = faThumbsUp;
+
+  /**
+   * Icon: faUserGraduate
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faUserGraduate = faUserGraduate;
+
+  /**
+   * Icon: faComments
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faComments = faComments;
+
+  /**
+   * Icon: faTools
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faTools = faTools;
-  faToolbox = faToolbox;
 
   constructor() { }
 

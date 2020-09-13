@@ -15,8 +15,12 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
 import {ChartsModule} from 'ng2-charts';
-import { MainMappingsComponent } from './components/main-mappings/main-mappings.component';
-import { MainMappingsNewComponent } from './components/main-mappings-new/main-mappings-new.component';
+import {MainMappingsComponent} from './components/main-mappings/main-mappings.component';
+import {MainMappingsNewComponent} from './components/main-mappings-new/main-mappings-new.component';
+import {DataService} from './services/data.service';
+import {GraphService} from './services/graph.service';
+import {ParseService} from './services/parse.service';
+import {UtilityService} from './services/utility.service';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http);
@@ -50,7 +54,12 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     NgbModule,
     ChartsModule
   ],
-  providers: [],
+  providers: [
+    DataService,
+    GraphService,
+    ParseService,
+    UtilityService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

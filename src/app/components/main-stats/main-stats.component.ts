@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {NeNetwork} from '../../models/ne-network';
 import {DataService} from '../../services/data.service';
-import {faPaintBrush, faExchangeAlt} from '@fortawesome/free-solid-svg-icons';
+import {faExchangeAlt, faPaintBrush} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-main-stats',
@@ -33,6 +33,22 @@ export class MainStatsComponent {
   selectedNetwork: NeNetwork;
 
   /**
+   * Amount of nodes in the selected network
+   */
+  nodeCount = 0;
+
+  /**
+   * Amount of edges in the selected network
+   */
+  edgeCount = 0;
+
+  /**
+   * Amount of style classes in the selected network (not counting the three utility classes added by NDExEdit);
+   * also not counting the three default classes needed for Cytoscape.js
+   */
+  styleCount = 0;
+
+  /**
    * Subscribes to graph id and renders the graph if the view is already initialized
    *
    * @param route Service to read URL
@@ -40,7 +56,13 @@ export class MainStatsComponent {
    */
   constructor(public route: ActivatedRoute, public dataService: DataService) {
     this.route.paramMap.subscribe(params => {
-      this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
+      const networkId = params.get('id');
+      if (networkId) {
+        this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
+        this.nodeCount = this.selectedNetwork.elements.filter(x => x.group === 'nodes').length;
+        this.edgeCount = this.selectedNetwork.elements.filter(x => x.group === 'edges').length;
+        this.styleCount = this.selectedNetwork.style.length - 6;
+      }
     });
   }
 }

@@ -23,6 +23,24 @@ import {MainMappingsNewComponent} from '../main-mappings-new/main-mappings-new.c
 export class SidebarEditComponent implements AfterViewInit, OnDestroy {
 
   /**
+   * Ensures that only a graph is rendered if the id is specified within the URL
+   * @private
+   */
+  private readonly routerSubscription: Subscription;
+
+  /**
+   * Subscription to the event emitter of the component {@link MainMappingsComponent}
+   * @private
+   */
+  private mappingsSubscription: Subscription;
+
+  /**
+   * Subscription to the event emitter of the component {@link MainMappingsNewComponent}
+   * @private
+   */
+  private mappingsNewSubscription: Subscription;
+
+  /**
    * Icon: faPalette
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
@@ -81,7 +99,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   gradientBackground = '';
 
   /**
-   * todo research and possibly delete because not necessary (?)
+   * Indicates which type of mapping is to be displayed
    */
   index = '';
 
@@ -89,7 +107,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * chart data used to display numeric continuous mapping, initialized with default values.
    * See {@link ParseService#buildChartData} for more details
    */
-  public lineChartData: ChartDataSets[] = [
+  lineChartData: ChartDataSets[] = [
     {data: [0], label: 'no data found'}
   ];
 
@@ -97,13 +115,13 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * chart labels used to display numeric continuous mapping
    * See {@link ParseService#buildChartData} for more details
    */
-  public lineChartLabels: Label[] = [''];
+  lineChartLabels: Label[] = [''];
 
   /**
    * chart cosmetics used to display numeric continuous mapping
    * See {@link ParseService#buildChartData} for more details
    */
-  public lineChartColors: Color[] = [
+  lineChartColors: Color[] = [
     {
       backgroundColor: 'rgba(255,0,0,0.4)',
     }
@@ -113,7 +131,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * chart options used to display numeric continuous mapping
    * See {@link ParseService#buildChartData} for more details
    */
-  public lineChartOptions;
+  lineChartOptions;
 
   /**
    * Default color for highlighting a lost node
@@ -131,37 +149,24 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   highlightDuration = 2000;
 
   /**
-   * Ensures that only a graph is rendered if the id is specified within the URL
-   * @private
-   */
-  private readonly routerSubscription: Subscription;
-
-  /**
-   * Subscription to the event emitter of the component {@link MainMappingsComponent}
-   * @private
-   */
-  private mappingsSubscription: Subscription;
-
-  /**
-   * Subscription to the event emitter of the component {@link MainMappingsNewComponent}
-   * @private
-   */
-  private mappingsNewSubscription: Subscription;
-
-  /**
    * Subscribes to graph id and renders the graph if the view is already initialized
    *
    * @param dataService Service to read and write globally accessible data
    * @param route Service to read URL
    * @param graphService Service for graph manipulations
    */
-  constructor(public dataService: DataService,
-              private route: ActivatedRoute,
-              public graphService: GraphService) {
+  constructor(
+    public dataService: DataService,
+    private route: ActivatedRoute,
+    public graphService: GraphService
+  ) {
 
     this.routerSubscription = this.route.paramMap.subscribe(params => {
-      this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
-      this.initColorHighlighting();
+      const networkId = params.get('id');
+      if (networkId) {
+        this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
+        this.initColorHighlighting();
+      }
     });
 
     this.mappingsSubscription = MainMappingsComponent.mappingsEmitter.subscribe(data => {
@@ -171,23 +176,6 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     this.mappingsNewSubscription = MainMappingsNewComponent.mappingsNewEmitter.subscribe(data => {
       this.handleViewChanges(data);
     });
-  }
-
-  /**
-   * Handles the view toggles for the sidebar
-   *
-   * @param data
-   */
-  handleViewChanges(data: any): void {
-    if (data.showGradient !== null) {
-      this.showColorGradient = data.showGradient;
-    }
-    if (data.showLabelCheckbox !== null) {
-      this.showLabelCheckbox = data.showLabelCheckbox;
-    }
-    if (data.showChart !== null) {
-      this.showChart = data.showChart;
-    }
   }
 
   /**
@@ -224,6 +212,23 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   }
 
   /**
+   * Handles the view toggles for the sidebar
+   *
+   * @param data
+   */
+  handleViewChanges(data: any): void {
+    if (data.showGradient !== null) {
+      this.showColorGradient = data.showGradient;
+    }
+    if (data.showLabelCheckbox !== null) {
+      this.showLabelCheckbox = data.showLabelCheckbox;
+    }
+    if (data.showChart !== null) {
+      this.showChart = data.showChart;
+    }
+  }
+
+  /**
    * Toggles labels by using a specific CSS class which overrides the values of the labels
    * @param show Determines if labels are to be displayed
    */
@@ -236,7 +241,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * Displays details to a selected mapping within the sidebar
    * @param chart data for continuous mapping with numeric values; see {@link ParseService#buildChartData}
    * @param colorGradient data for continuous mapping with color based values; see {@link ParseService#buildColorGradient}
-   * @param index todo
+   * @param index type of mapping
    */
   displayMapping(chart: any = null, colorGradient: NeColorGradient[] = [], index: string): void {
     this.index = index;

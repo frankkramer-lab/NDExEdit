@@ -4,8 +4,8 @@
 
   <table class="mb-3 table table-borderless">
     <tr *ngFor="let network of dataService.networksParsed" class="border-bottom">
-      <td class="float-left">{{network.networkInformation.name}}</td>
-      <td class="text-nowrap float-right">
+      <td class="text-left">{{network.networkInformation.name}}</td>
+      <td class="text-nowrap text-right">
         <a class="btn btn-sm btn-outline-secondary mr-1" role="button" data-toggle="tooltip"
            placement="left" ngbTooltip="{{'SIDEBAR_MANAGE_TT_INFO'|translate}}"
            [routerLink]="['', { outlets: {primary: ['stats', network.id]} }]">
@@ -70,7 +70,7 @@
       <small id="remoteNetworkHelp" class="form-text text-muted">{{'SIDEBAR_MANAGE_REMOTE_FILE_TIP'|translate}}</small>
     </div>
     <div class="col-3">
-      <button class="btn btn-block btn-outline-success" type="button"
+      <button class="btn btn-block btn-outline-success" type="button" [disabled]="loadingHttp"
               data-toggle="tooltip" placement="left" ngbTooltip="{{'SIDEBAR_MANAGE_TT_REMOTE_FILES' | translate}}"
               (click)="importFromNdex()">
         {{'SIDEBAR_MANAGE_REMOTE_FILE_BTN'|translate}}
@@ -91,7 +91,7 @@
       <label for="localNetworkFile" class="custom-file-label">{{'SIDEBAR_MANAGE_LOCAL_FILE_LABEL'|translate}}</label>
     </div>
     <div class="input-group-append">
-      <button class="btn btn-outline-secondary" type="button"
+      <button class="btn btn-outline-secondary" type="button" [disabled]="loadingFile"
               data-toggle="tooltip" placement="left" ngbTooltip="{{'SIDEBAR_MANAGE_TT_LOCAL_FILE' | translate}}"
               (click)="importLocalFile()">
         {{'SIDEBAR_MANAGE_LOCAL_FILE_BTN'|translate}}

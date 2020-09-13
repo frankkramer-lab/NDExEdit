@@ -30,7 +30,7 @@ export class GraphService {
   /**
    * Collection of selected nodes or edges whose information are to be displayed within the sidebar
    */
-  public selectedElements: NeSelection = {
+  selectedElements: NeSelection = {
     nodes: [],
     edges: []
   };
@@ -73,7 +73,7 @@ export class GraphService {
    * @param selector selector by which elements are to be highlighted
    */
   highlightBySelector(selector: string): void {
-    if (selector !== undefined) {
+    if (selector) {
       this.core.elements(selector).flashClass('custom_highlight_color', this.flashDuration);
     }
   }
@@ -84,7 +84,7 @@ export class GraphService {
    * @param id the element's id
    */
   highlightByElementId(id: string): void {
-    if (id !== undefined) {
+    if (id) {
       this.core.getElementById(id).flashClass('custom_highlight_color', this.flashDuration);
     }
   }

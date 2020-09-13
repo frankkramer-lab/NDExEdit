@@ -7,7 +7,7 @@
 
   "MAIN_INFO_TITLE": "Allgemeine Infos & Erste Schritte",
   "MAIN_INFO_DOCUMENTATION_TITLE": "Dokumentation",
-  "MAIN_INFO_DOCUMENTATION_DESCRIPTION": "Der Befehl <code>npm run compodoc</code> baut die Dokumentation zum Code. Erreichbar ist sie über <code>localhost:8080</code>.",
+  "MAIN_INFO_DOCUMENTATION_DESCRIPTION": "Die Dokumentation zu dieser Anwendung ist als separate .zip-Datei im Release-Commit angehängt. Die dort enthaltene <code>index.html</code> kann direkt ausgeführt werden.",
   "MAIN_INFO_STEPS_TITLE": "Erste Schritte",
   "MAIN_INFO_STEPS_DESCRIPTION": "Wenn Du NDExEdit noch nie verwendet hast, hier ein paar Tipps:",
   "MAIN_INFO_STEPS_STEP_1": "Suche auf der NDExBIO Website ein Netzwerk, was du optisch anpassen möchtest",
@@ -62,7 +62,7 @@
   "SIDEBAR_MANAGE_FILE_SIZE_LABEL_MAX": "Maximal erlaubte Dateigröße",
   "SIDEBAR_MANAGE_FILE_TYPE_ERROR": "Falscher Dateityp",
   "SIDEBAR_MANAGE_FILE_TYPE_LABEL": "Nur Dateien mit Endung .cx sind valide. Deine Datei hat das Format",
-  "SIDEBAR_MANAGE_FILE_ELEMENT_COUNT": "Sorry - Das Netzwerk kann so viele Elemente nicht verarbeiten",
+  "SIDEBAR_MANAGE_FILE_ELEMENT_COUNT": "Ein Netzwerk mit so vielen Elementen kann nicht verarbeitet werden",
   "SIDEBAR_MANAGE_FILE_ELEMENT_COUNT_LABEL_NODES": "#Knoten",
   "SIDEBAR_MANAGE_FILE_ELEMENT_COUNT_LABEL_EDGES": "#Kanten",
 

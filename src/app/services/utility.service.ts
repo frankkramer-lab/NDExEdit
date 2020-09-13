@@ -126,10 +126,15 @@ export class UtilityService {
   public static utilCalculateRelativeValue(inputMap: NeContinuousMap): string {
 
     let returnValue;
+
+    if (!inputMap.greaterThreshold || !inputMap.lowerThreshold || !inputMap.greater || !inputMap.lower || !inputMap.inputValue) {
+      return '';
+    }
+
     const xDiff = Number(inputMap.greaterThreshold) - Number(inputMap.lowerThreshold);
     const xDiffRequired = Number(inputMap.inputValue) - Number(inputMap.lowerThreshold);
 
-    if (inputMap.lower.includes('#')) {
+    if (inputMap.greater && inputMap.lower && inputMap.lower.includes('#')) {
       // workaround for hex value comparison
       const hexGreater = inputMap.greater.replace('#', '');
       const hexLower = inputMap.lower.replace('#', '');
@@ -226,10 +231,10 @@ export class UtilityService {
     // case 1: simply applicable
     if (lookupMap && !lookupMap.conversionType) {
       const collection: NeStyleComponent[] = [];
-      for (let i = 0; i < lookupMap[to].length; i++) {
+      for (const lookup of lookupMap[to]) {
         collection.push({
           selector: builtSelector,
-          cssKey: lookupMap[to][i],
+          cssKey: lookup,
           cssValue: property.value,
           priority
         });
@@ -241,7 +246,6 @@ export class UtilityService {
         // case 2: conversion by method
         case 'method':
 
-          const cssKey = lookupMap[to];
           let cssValue = property.value;
           styleCollection = [];
 

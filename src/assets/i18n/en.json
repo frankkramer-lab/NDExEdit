@@ -7,7 +7,7 @@
 
   "MAIN_INFO_TITLE": "General info & First Steps",
   "MAIN_INFO_DOCUMENTATION_TITLE": "Documentation",
-  "MAIN_INFO_DOCUMENTATION_DESCRIPTION": "Run the command <code>npm run compodoc</code> to build the documentation and access it via <code>localhost:8080</code>.",
+  "MAIN_INFO_DOCUMENTATION_DESCRIPTION": "The documentation to this application is available as a separate .zip file delived with the release. You can run the <code>index.html</code> to read up on the code.",
   "MAIN_INFO_STEPS_TITLE": "First steps",
   "MAIN_INFO_STEPS_DESCRIPTION": "If you never worked with NDExEdit before, here are a few first steps you might want to try out:",
   "MAIN_INFO_STEPS_STEP_1": "Visit the NDExBIO Website and select a network you would like to edit visually",
@@ -62,7 +62,7 @@
   "SIDEBAR_MANAGE_FILE_SIZE_LABEL_MAX": "Maximum allowed file size",
   "SIDEBAR_MANAGE_FILE_TYPE_ERROR": "Wrong file extension",
   "SIDEBAR_MANAGE_FILE_TYPE_LABEL": "The loaded file needs to have the .cx file extension. Your file currently has the extension",
-  "SIDEBAR_MANAGE_FILE_ELEMENT_COUNT": "Sorry - The network contains too many elements for this application",
+  "SIDEBAR_MANAGE_FILE_ELEMENT_COUNT": "The network contains too many elements for this application",
   "SIDEBAR_MANAGE_FILE_ELEMENT_COUNT_LABEL_NODES": "#Nodes",
   "SIDEBAR_MANAGE_FILE_ELEMENT_COUNT_LABEL_EDGES": "#Edges",
 

@@ -7,9 +7,9 @@
 
   <div class="row mt-3 p-2">
     <div class="col-3">
-      <h6>{{'MAIN_STATS_GRAPH_INFO_NODES' | translate}}: {{selectedNetwork.nodeCount}}</h6>
-      <h6>{{'MAIN_STATS_GRAPH_INFO_EDGES' | translate}}: {{selectedNetwork.edgeCount}}</h6>
-      <h6>{{'MAIN_STATS_GRAPH_INFO_CLASSES' | translate}}: {{selectedNetwork.cssClassCount}}</h6>
+      <h6>{{'MAIN_STATS_GRAPH_INFO_NODES' | translate}}: {{nodeCount}}</h6>
+      <h6>{{'MAIN_STATS_GRAPH_INFO_EDGES' | translate}}: {{edgeCount}}</h6>
+      <h6>{{'MAIN_STATS_GRAPH_INFO_CLASSES' | translate}}: {{styleCount}}</h6>
       <a class="btn btn-block btn-outline-success mt-4" role="button"
          data-toggle="tooltip" placement="bottom" ngbTooltip="{{'MAIN_STATS_TT_EDIT' | translate}}"
          [routerLink]="['', { outlets: {primary: ['graph', selectedNetwork.id], sidebar: ['edit', selectedNetwork.id]} }]">
@@ -60,4 +60,3 @@
 
 </ng-container>
 
-<app-main-info></app-main-info>

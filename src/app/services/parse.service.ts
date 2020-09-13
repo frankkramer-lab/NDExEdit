@@ -158,16 +158,6 @@ export class ParseService {
   }
 
   /**
-   * @todo
-   * Method for parsing network style data. See {@link NeStyleComponent|NeStyleComponent} for further info on format
-   * @param readData input data
-   */
-  private static parseStyleNetwork(readData: any): NeStyleComponent[] {
-    const styleNetwork: NeStyleComponent[] = [];
-    return styleNetwork;
-  }
-
-  /**
    * Method to consolidate the styling of the graph
    * @param parsedStyles styles which need to be added to an existing selector within globalStyles
    * or for which a new selector has to be created
@@ -308,7 +298,6 @@ export class ParseService {
       edge.attributes = edge.attributes.concat(parsedEdgeAttributeData.filter(x => x.reference === edge.id));
     }
 
-    const parsedStyleNetwork = ParseService.parseStyleNetwork(styleNetwork || []); // todo
     const parsedStyleNodesDefault = this.parseStyleNodesDefault(styleNodesDefault || []);
     const parsedStyleNodes = this.parseStyleElements(styleNodes || [], 'node');
     const parsedStyleEdgesDefault = this.parseStyleEdgesDefault(styleEdgesDefault || []);
@@ -409,8 +398,7 @@ export class ParseService {
     }
 
     const parsedData = parsedNodeData.concat(parsedEdgeData);
-    let parsedStyles = parsedStyleNetwork.concat(
-      parsedStyleNodesDefault,
+    let parsedStyles = parsedStyleNodesDefault.concat(
       parsedStyleEdgesDefault,
       parsedMappingsEdgesDefault.discrete,
       parsedMappingsNodesDefault.discrete,
@@ -561,7 +549,6 @@ export class ParseService {
     const groupedMappingsNodes: NeGroupedMappingsDiscrete[] = this.groupDiscreteMappings(parsedMappingsNodesDefault.discrete);
     const groupedMappingsEdges: NeGroupedMappingsDiscrete[] = this.groupDiscreteMappings(parsedMappingsEdgesDefault.discrete);
 
-
     for (const akv of aspectKeyValuesNodes) {
 
       let min: number = Number.MAX_SAFE_INTEGER;
@@ -709,9 +696,6 @@ export class ParseService {
       networkInformation,
       elements: cyParsedData,
       style: globalStyle,
-      nodeCount: parsedData.filter(x => x.group === 'nodes').length,
-      edgeCount: parsedData.filter(x => x.group === 'edges').length,
-      cssClassCount: globalStyle.length,
       aspectKeyValuesNodes,
       aspectKeyValuesEdges,
       mappings: {
@@ -857,48 +841,51 @@ export class ParseService {
    * @returns object containing discrete, continuous and passthrough mappings, if available.
    * See {@link NeGlobalMappings|NeGlobalMappings} for details on format
    */
-  private parseMappingsElementsDefault(readData: any,
-                                       elementType: string,
-                                       data: NeElement[]): NeGlobalMappings {
+  private parseMappingsElementsDefault(
+    readData: any,
+    elementType: string,
+    data: NeElement[]
+  ): NeGlobalMappings {
+
     let mappingsElementsDefault: NeMappingsDefinition[] = [];
     let mappingsElementsSpecific: NeContinuousCollection[] = [];
 
-    if (!readData.mappings) {
-      return {
-        discrete: [],
-        continuous: []
-      };
-    }
+    if (readData.mappings) {
 
-    const mappings = readData.mappings;
-    const mapKeys = Object.keys(mappings);
+      const mappings = readData.mappings;
+      const mapKeys = Object.keys(mappings);
 
-    for (const mapKey of mapKeys) {
+      for (const mapKey of mapKeys) {
 
-      const currentEntry: NeMappings = {
-        key: mapKey,
-        definition: readData.mappings[mapKey].definition,
-        type: readData.mappings[mapKey].type
-      };
+        const currentEntry: NeMappings = {
+          key: mapKey,
+          definition: readData.mappings[mapKey].definition,
+          type: readData.mappings[mapKey].type
+        };
 
-      switch (currentEntry.type) {
-        case 'DISCRETE':
-          mappingsElementsDefault = mappingsElementsDefault.concat(this.parseMappingDiscrete(currentEntry, elementType));
-          break;
-        case 'PASSTHROUGH':
-          // no specific handling
-          break;
-        case 'CONTINUOUS':
-          const continuous = this.parseMappingContinuous(currentEntry, elementType, data);
-          mappingsElementsSpecific = mappingsElementsSpecific.concat(continuous);
-
-          break;
+        switch (currentEntry.type) {
+          case 'DISCRETE':
+            mappingsElementsDefault = mappingsElementsDefault.concat(this.parseMappingDiscrete(currentEntry, elementType));
+            break;
+          case 'PASSTHROUGH':
+            // no specific handling
+            break;
+          case 'CONTINUOUS':
+            const continuous = this.parseMappingContinuous(currentEntry, elementType, data);
+            mappingsElementsSpecific = mappingsElementsSpecific.concat(continuous);
+            break;
+        }
       }
+
+      return {
+        discrete: mappingsElementsDefault,
+        continuous: mappingsElementsSpecific
+      };
     }
 
     return {
-      discrete: mappingsElementsDefault,
-      continuous: mappingsElementsSpecific
+      discrete: [],
+      continuous: []
     };
   }
 
@@ -1033,9 +1020,11 @@ export class ParseService {
    * @param data Collection of either nodes or edges which need to be mapped by this mapping
    * @private
    */
-  private parseMappingContinuous(mapping: NeMappings,
-                                 elementType: string,
-                                 data: NeElement[]): NeContinuousCollection {
+  private parseMappingContinuous(
+    mapping: NeMappings,
+    elementType: string,
+    data: NeElement[]
+  ): NeContinuousCollection {
 
     const lookup: string[] = this.utilityService.lookupKey([mapping.key]);
     const commaSplit = mapping.definition.split(',');
@@ -1201,12 +1190,15 @@ export class ParseService {
    * @param attribute attribute to define this color
    * @private
    */
-  private buildColorGradient(thresholds: string[],
-                             lowers: string[],
-                             equals: string[],
-                             greaters: string[],
-                             lookup: string[],
-                             attribute: string): NeColorGradient[] {
+  private buildColorGradient(
+    thresholds: string[],
+    lowers: string[],
+    equals: string[],
+    greaters: string[],
+    lookup: string[],
+    attribute: string
+  ): NeColorGradient[] {
+
     if (!lowers[0].startsWith('#')) {
       return [];
     }

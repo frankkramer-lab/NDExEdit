@@ -4,6 +4,7 @@ import {DataService} from '../../services/data.service';
 import {NeNetwork} from '../../models/ne-network';
 import {faArrowLeft, faCheck, faEdit, faPlus, faSearch, faTimes, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {NeGroupedMappingsDiscrete} from '../../models/ne-grouped-mappings-discrete';
+import {NeMappingProperty} from '../../models/ne-mapping-property';
 
 @Component({
   selector: 'app-main-mappings',
@@ -26,38 +27,41 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    */
   constructor(
     private route: ActivatedRoute,
-    public dataService: DataService) {
+    public dataService: DataService
+  ) {
 
     this.route.paramMap.subscribe(params => {
+      const networkId = params.get('id');
+      if (networkId) {
+        this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
+        this.givenMapType = params.get('map').substring(0, 2);
+        this.currentMappingId = params.get('map').substring(2).split('-');
+        this.selectedMapping = [];
 
-      this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
-      this.givenMapType = params.get('map').substring(0, 2);
-      this.currentMappingId = params.get('map').substring(2).split('-');
-      this.selectedMapping = [];
-
-      switch (this.givenMapType) {
-        case 'ec':
-          for (const mapIndex of this.currentMappingId) {
-            this.selectedMapping.push(this.selectedNetwork.mappings.edgesContinuous[mapIndex]);
-          }
-          break;
-        case 'nc':
-          for (const mapIndex of this.currentMappingId) {
-            this.selectedMapping.push(this.selectedNetwork.mappings.nodesContinuous[mapIndex]);
-          }
-          break;
-        case 'ed':
-          for (const mapIndex of this.currentMappingId) {
-            this.selectedMapping.push(this.selectedNetwork.mappings.edgesDiscrete[mapIndex]);
-          }
-          break;
-        case 'nd':
-          for (const mapIndex of this.currentMappingId) {
-            this.selectedMapping.push(this.selectedNetwork.mappings.nodesDiscrete[mapIndex]);
-          }
-          break;
-        default:
-          break;
+        switch (this.givenMapType) {
+          case 'ec':
+            for (const mapIndex of this.currentMappingId) {
+              this.selectedMapping.push(this.selectedNetwork.mappings.edgesContinuous[mapIndex]);
+            }
+            break;
+          case 'nc':
+            for (const mapIndex of this.currentMappingId) {
+              this.selectedMapping.push(this.selectedNetwork.mappings.nodesContinuous[mapIndex]);
+            }
+            break;
+          case 'ed':
+            for (const mapIndex of this.currentMappingId) {
+              this.selectedMapping.push(this.selectedNetwork.mappings.edgesDiscrete[mapIndex]);
+            }
+            break;
+          case 'nd':
+            for (const mapIndex of this.currentMappingId) {
+              this.selectedMapping.push(this.selectedNetwork.mappings.nodesDiscrete[mapIndex]);
+            }
+            break;
+          default:
+            break;
+        }
       }
     });
   }
@@ -154,7 +158,7 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
   /**
    * Property to be removed which is overridden as soon as the user selects a property to delete
    */
-  propertyToRemove = {
+  propertyToRemove: NeMappingProperty = {
     mapReference: -1,
     attributeName: '',
     mapType: '',
@@ -171,6 +175,20 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    * </ul>
    */
   givenMapType: string;
+
+  /**
+   * On initialization the emitter informs its subscribers to hide the label checkbox to prevent unnecessary toggling
+   */
+  ngOnInit(): void {
+    MainMappingsComponent.mappingsEmitter.emit({showLabelCheckbox: false});
+  }
+
+  /**
+   * On destruction the label checkbox is re-displayed
+   */
+  ngOnDestroy(): void {
+    MainMappingsComponent.mappingsEmitter.emit({showLabelCheckbox: true});
+  }
 
   /**
    * Toggles the dialogue to confirm deletion of an existing mapping. Selects the mapping to be deleted by
@@ -234,39 +252,41 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
   toggleSingleRemoveDialogue(map: any = null, mapType: string = '', style: any = null): void {
     if (map && map.styleMap.length === 1) {
       this.toggleGlobalRemoveDialogue(map, mapType);
-    } else {
-      this.propertyToRemove.style = style;
-      this.propertyToRemove.mapType = mapType;
-      if (map) {
-        this.propertyToRemove.attributeName = map.classifier;
-      }
-      switch (mapType) {
-        case 'nd':
-          this.propertyToRemove.mapReference = this.selectedNetwork.mappings.nodesDiscrete.indexOf(map);
-          this.showSingleDeletionDialogue = true;
-          break;
-        case 'nc':
-          this.propertyToRemove.mapReference = this.selectedNetwork.mappings.nodesContinuous.indexOf(map);
-          this.showSingleDeletionDialogue = true;
-          break;
-        case 'ed':
-          this.propertyToRemove.mapReference = this.selectedNetwork.mappings.edgesDiscrete.indexOf(map);
-          this.showSingleDeletionDialogue = true;
-          break;
-        case 'ec':
-          this.propertyToRemove.mapReference = this.selectedNetwork.mappings.edgesContinuous.indexOf(map);
-          this.showSingleDeletionDialogue = true;
-          break;
-        default:
-          this.propertyToRemove = {
-            mapType: '',
-            attributeName: '',
-            mapReference: -1,
-            style: null
-          };
-          this.showSingleDeletionDialogue = false;
-          break;
-      }
+      return;
+    }
+
+    this.propertyToRemove.style = style;
+    this.propertyToRemove.mapType = mapType;
+    if (map) {
+      this.propertyToRemove.attributeName = map.classifier;
+    }
+    switch (mapType) {
+      case 'nd':
+        this.propertyToRemove.mapReference = this.selectedNetwork.mappings.nodesDiscrete.indexOf(map);
+        this.showSingleDeletionDialogue = true;
+        break;
+      case 'nc':
+        this.propertyToRemove.mapReference = this.selectedNetwork.mappings.nodesContinuous.indexOf(map);
+        this.showSingleDeletionDialogue = true;
+        break;
+      case 'ed':
+        this.propertyToRemove.mapReference = this.selectedNetwork.mappings.edgesDiscrete.indexOf(map);
+        this.showSingleDeletionDialogue = true;
+        break;
+      case 'ec':
+        this.propertyToRemove.mapReference = this.selectedNetwork.mappings.edgesContinuous.indexOf(map);
+        this.showSingleDeletionDialogue = true;
+        break;
+      default:
+        this.propertyToRemove = {
+          mapType: '',
+          attributeName: '',
+          mapReference: -1,
+          style: null
+        };
+        this.showSingleDeletionDialogue = false;
+        break;
+
     }
   }
 
@@ -310,19 +330,4 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
         break;
     }
   }
-
-  /**
-   * On initialization the emitter informs its subscribers to hide the label checkbox to prevent unnecessary toggling
-   */
-  ngOnInit(): void {
-    MainMappingsComponent.mappingsEmitter.emit({showLabelCheckbox: false});
-  }
-
-  /**
-   * On destruction the label checkbox is re-displayed
-   */
-  ngOnDestroy(): void {
-    MainMappingsComponent.mappingsEmitter.emit({showLabelCheckbox: true});
-  }
-
 }

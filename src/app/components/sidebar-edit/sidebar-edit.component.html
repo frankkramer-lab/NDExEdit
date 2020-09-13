@@ -311,16 +311,21 @@
           &nbsp;
         </span>
 
+      </div>
+      <div class="form-row">
+
         <label for="highlightEdgesHex">{{'SIDEBAR_EDIT_LABEL_HEX_EDGE' | translate}}</label>
         <input type="text" class="form-control mb-2 col-10" id="highlightEdgesHex" name="highlightEdgesHex"
                placeholder="#ff00ff" [(ngModel)]="highlightEdges">
         <span class="ml-2 mb-2 col badge badge-pill border" [ngStyle]="{'background-color': highlightEdges}">
           &nbsp;
         </span>
+      </div>
+      <div class="form-row">
         <label for="highlightDuration">{{'SIDEBAR_EDIT_LABEL_DURATION' | translate}}</label>
-        <input type="number" min="0" step="1" class="form-control mb-2" id="highlightDuration"
+        <input type="number" min="0" step="100" class="form-control mb-2" id="highlightDuration"
                name="highlightDuration"
-               placeholder="4000" [(ngModel)]="highlightDuration">
+               placeholder="2000" [(ngModel)]="highlightDuration">
 
         <button type="button" class="btn btn-outline-success btn-block mb-3"
                 (click)="setHighlightColorAndDuration(highlightNodes, highlightEdges, highlightDuration)">
@@ -328,9 +333,7 @@
 
       </div>
     </div>
-
   </div>
-
 </div>
 
 

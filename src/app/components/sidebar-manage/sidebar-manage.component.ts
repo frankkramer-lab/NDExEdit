@@ -7,7 +7,6 @@ import {NeGroupedMappingsDiscrete} from '../../models/ne-grouped-mappings-discre
 import {UtilityService} from '../../services/utility.service';
 import {NeNetwork} from '../../models/ne-network';
 import {ParseService} from '../../services/parse.service';
-import {GraphService} from '../../services/graph.service';
 import {NeStyleMap} from '../../models/ne-style-map';
 import {NeAspect} from '../../models/ne-aspect';
 
@@ -22,12 +21,36 @@ import {NeAspect} from '../../models/ne-aspect';
  */
 export class SidebarManageComponent {
 
+  /**
+   * Factor to display bytes as megabytes
+   *
+   * @private
+   */
+  private readonly megaFactor = 1000000;
 
-  constructor(public dataService: DataService,
-              private http: HttpClient,
-              private utilityService: UtilityService,
-              private parseService: ParseService,
-              private graphService: GraphService) {
+  /**
+   * Options required for HTTP requests to public NDEx API
+   *
+   * @private
+   */
+  private readonly options = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
+
+  /**
+   * NDEx's public API endpoint
+   * @private
+   */
+  private readonly ndexPublicApiHost = 'http://public.ndexbio.org/v2/';
+
+  constructor(
+    public dataService: DataService,
+    private http: HttpClient,
+    private utilityService: UtilityService,
+    private parseService: ParseService,
+  ) {
   }
 
   /**
@@ -66,34 +89,9 @@ export class SidebarManageComponent {
   fileToUpload: File = null;
 
   /**
-   * Factor to display bytes as megabytes
-   *
-   * @private
-   */
-  private readonly megaFactor = 1000000;
-
-  /**
-   * Options required for HTTP requests to public NDEx API
-   *
-   * @private
-   */
-  private readonly options = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  };
-
-  /**
-   * NDEx's public API endpoint
-   * @private
-   */
-  private readonly ndexPublicApiHost = 'http://public.ndexbio.org/v2/';
-
-  /**
    * Link to NDEx network which is to be loaded
    */
   ndexLinkToUpload: string = null;
-
 
   /**
    * Boolean to disaply the file-is-too-large-alert
@@ -168,14 +166,16 @@ export class SidebarManageComponent {
    * @param defaultGreater value of default highest threshold
    * @private
    */
-  private static collapseContinuousMappingIntoString(col: string,
-                                                     t: string,
-                                                     lCollection: string[],
-                                                     eCollection: string[],
-                                                     gCollection: string[],
-                                                     ovCollection: string[],
-                                                     defaultLower: string,
-                                                     defaultGreater: string): string {
+  private static collapseContinuousMappingIntoString(
+    col: string,
+    t: string,
+    lCollection: string[],
+    eCollection: string[],
+    gCollection: string[],
+    ovCollection: string[],
+    defaultLower: string,
+    defaultGreater: string
+  ): string {
 
     if (lCollection.length !== eCollection.length || gCollection.length !== lCollection.length) {
       return '';
@@ -184,17 +184,21 @@ export class SidebarManageComponent {
     const partials = [];
 
     for (let i = 1; i < ovCollection.length - 1; i++) {
+
       if (i === 1) {
         partials.push('L=' + (i - 1) + '=' + defaultLower);
       } else {
         partials.push('L=' + (i - 1) + '=' + lCollection[i]);
       }
+
       partials.push('E=' + (i - 1) + '=' + eCollection[i]);
+
       if (i === ovCollection.length - 2) {
         partials.push('G=' + (i - 1) + '=' + defaultGreater);
       } else {
         partials.push('G=' + (i - 1) + '=' + gCollection[i]);
       }
+
       partials.push('OV=' + (i - 1) + '=' + ovCollection[i]);
     }
 
@@ -210,7 +214,12 @@ export class SidebarManageComponent {
    * @param vCollection collection of values
    * @private
    */
-  private static collapseDiscreteMappingIntoString(col: string, t: string, kCollection: string[], vCollection: string[]): string {
+  private static collapseDiscreteMappingIntoString(
+    col: string,
+    t: string,
+    kCollection: string[],
+    vCollection: string[]
+  ): string {
     if (kCollection.length !== vCollection.length || kCollection.length === 0) {
       return '';
     }
@@ -281,14 +290,19 @@ export class SidebarManageComponent {
    * @param network the given network
    * @private
    */
-  private static buildDownloadFile(originalData: any[],
-                                   mappingsNodes: NeMappings[],
-                                   mappingsEdges: NeMappings[],
-                                   network: NeNetwork): void {
+  private static buildDownloadFile(
+    originalData: any[],
+    mappingsNodes: NeMappings[],
+    mappingsEdges: NeMappings[],
+    network: NeNetwork
+  ): void {
+
     for (const aspect of originalData) {
       if (aspect.cyVisualProperties) {
         for (const cvp of aspect.cyVisualProperties) {
+
           switch (cvp.properties_of) {
+
             case 'nodes:default':
               if (mappingsNodes.length > 0) {
                 cvp.mappings = {};
@@ -300,6 +314,7 @@ export class SidebarManageComponent {
                 }
               }
               break;
+
             case 'edges:default':
               if (mappingsEdges.length > 0) {
                 cvp.mappings = {};
@@ -315,12 +330,15 @@ export class SidebarManageComponent {
         }
       }
     }
+
     let newFilename;
+
     if (network.networkInformation.name) {
       newFilename = UtilityService.utilCleanString(network.networkInformation.name);
     } else {
       newFilename = 'network_' + network.id;
     }
+
     SidebarManageComponent.downloadFile(originalData, newFilename);
   }
 
@@ -385,8 +403,6 @@ export class SidebarManageComponent {
       const originalData = this.dataService.networksDownloaded[id];
       SidebarManageComponent.buildDownloadFile(originalData, mappingsNodes, mappingsEdges, cleanNetwork);
     }
-
-
   }
 
   /**
@@ -519,18 +535,17 @@ export class SidebarManageComponent {
     if (!this.fileToUpload) {
       this.loadingFile = false;
       return;
-    } else {
-      this.loadingFile = true;
-      this.fileToUpload.text()
-        .then(data => {
-          this.dataService.networksDownloaded.push(JSON.parse(data));
-          this.dataService.networksParsed.push(this.parseService.convert(JSON.parse(data),
-            UtilityService.utilCleanString(this.fileToUpload.name)));
-          this.loadingFile = false;
-
-        })
-        .catch(error => console.error(error));
     }
+    this.loadingFile = true;
+    this.fileToUpload.text()
+      .then(data => {
+        this.dataService.networksDownloaded.push(JSON.parse(data));
+        this.dataService.networksParsed.push(this.parseService.convert(JSON.parse(data),
+          UtilityService.utilCleanString(this.fileToUpload.name)));
+        this.loadingFile = false;
+
+      })
+      .catch(error => console.error(error));
   }
 
   /**
@@ -543,6 +558,7 @@ export class SidebarManageComponent {
     }
     this.loadingHttp = true;
     const slashSplit = this.ndexLinkToUpload.split('/');
+
     this.http.get(this.ndexPublicApiHost + 'network/' + slashSplit[slashSplit.length - 1] + '/summary', this.options)
       .toPromise()
       .then((preview: any) => {
@@ -560,59 +576,59 @@ export class SidebarManageComponent {
           }, 8000);
 
           return;
-        } else {
-          this.http.get(this.ndexPublicApiHost + 'network/' + slashSplit[slashSplit.length - 1], this.options)
-            .toPromise()
-            .then((data: any[]) => {
+        }
+        this.http.get(this.ndexPublicApiHost + 'network/' + slashSplit[slashSplit.length - 1], this.options)
+          .toPromise()
+          .then((data: any[]) => {
 
-              if (!data) {
-                return;
-              }
+            if (!data) {
+              return;
+            }
 
-              const dataSize = new TextEncoder().encode(JSON.stringify(data)).length;
-              this.currentFileSize = Number((dataSize / this.megaFactor).toFixed(2));
+            const dataSize = new TextEncoder().encode(JSON.stringify(data)).length;
+            this.currentFileSize = Number((dataSize / this.megaFactor).toFixed(2));
 
-              if (this.currentFileSize > this.sizeLimit) {
-                this.showFileSizeTooLargeAlert = true;
-                this.showFileElementCountTooBig = false;
-                this.showFileNotValidAlert = false;
-                this.showFileSizeOkAlert = false;
-                this.loadingHttp = false;
+            if (this.currentFileSize > this.sizeLimit) {
+              this.showFileSizeTooLargeAlert = true;
+              this.showFileElementCountTooBig = false;
+              this.showFileNotValidAlert = false;
+              this.showFileSizeOkAlert = false;
+              this.loadingHttp = false;
 
-                setTimeout(() => {
-                  this.showFileSizeTooLargeAlert = false;
-                }, 8000);
-
-                return;
-              } else {
-                this.showFileSizeOkAlert = true;
-                this.showFileElementCountTooBig = false;
+              setTimeout(() => {
                 this.showFileSizeTooLargeAlert = false;
-                this.showFileNotValidAlert = false;
-                this.loadingHttp = false;
+              }, 8000);
 
-                setTimeout(() => {
-                  this.showFileSizeOkAlert = false;
-                }, 8000);
-              }
+              return;
+            } else {
+              this.showFileSizeOkAlert = true;
+              this.showFileElementCountTooBig = false;
+              this.showFileSizeTooLargeAlert = false;
+              this.showFileNotValidAlert = false;
+              this.loadingHttp = false;
 
-              let networkName = String(this.dataService.networksDownloaded.length);
-              for (const d of data) {
-                if (d.networkAttributes) {
-                  for (const prop of d.networkAttributes) {
-                    if (d.n === 'name') {
-                      networkName = d.networkAttributes.name;
-                    }
+              setTimeout(() => {
+                this.showFileSizeOkAlert = false;
+              }, 8000);
+            }
+
+            let networkName = String(this.dataService.networksDownloaded.length);
+            for (const d of data) {
+              if (d.networkAttributes) {
+                for (const prop of d.networkAttributes) {
+                  if (d.n === 'name') {
+                    networkName = d.networkAttributes.name;
                   }
                 }
               }
-              this.dataService.networksDownloaded.push(data);
-              this.dataService.networksParsed.push(this.parseService.convert(data, UtilityService.utilCleanString(networkName)));
-              this.loadingHttp = false;
+            }
+            this.dataService.networksDownloaded.push(data);
+            this.dataService.networksParsed.push(this.parseService.convert(data, UtilityService.utilCleanString(networkName)));
+            this.loadingHttp = false;
 
-            })
-            .catch(error => console.error(error));
-        }
+          })
+          .catch(error => console.error(error));
+
       })
       .catch(error => console.error(error));
   }

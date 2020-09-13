@@ -1,9 +1,18 @@
 import {NeMappingsDefinition} from './ne-mappings-definition';
-import {NeStyleComponent} from './ne-style-component';
-import {NeContinuousChart} from './ne-continuous-chart';
 import {NeContinuousCollection} from './ne-continuous-collection';
 
+/**
+ * Collection of discrete and continuous mappings
+ */
 export interface NeGlobalMappings {
+
+  /**
+   * List of discrete mappings
+   */
   discrete?: NeMappingsDefinition[];
+
+  /**
+   * List of continuous mappings
+   */
   continuous?: NeContinuousCollection[];
 }
