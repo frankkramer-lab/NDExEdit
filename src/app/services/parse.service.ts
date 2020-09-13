@@ -30,14 +30,14 @@ import {UtilityService} from './utility.service';
  */
 export class ParseService {
 
-  constructor(public http: HttpClient, private utilityService: UtilityService) {
-  }
-
   /**
    * id used for networks in {@link GraphService#networksParsed|networksParsed}
    * @private
    */
   private id = 0;
+
+  constructor(public http: HttpClient, private utilityService: UtilityService) {
+  }
 
   /**
    * Method for parsing node data. See {@link NeNode|NeNode} for further info on format

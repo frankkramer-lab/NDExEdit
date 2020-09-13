@@ -4,7 +4,6 @@
   "NAV_COMPARE": "Compare",
   "NAV_COMPARE_TT_INFO": "Please select a network",
   "NAV_EDIT_TT_INFO": "Please select a network",
-
   "MAIN_INFO_TITLE": "General info & First Steps",
   "MAIN_INFO_DOCUMENTATION_TITLE": "Documentation",
   "MAIN_INFO_DOCUMENTATION_DESCRIPTION": "The documentation to this application is available as a separate .zip file delived with the release. You can run the <code>index.html</code> to read up on the code.",
@@ -20,7 +19,6 @@
   "MAIN_INFO_LAYOUT_STEP_1": "<code>Left click</code> increases the sidebar",
   "MAIN_INFO_LAYOUT_STEP_2": "<code>Right click</code> increases the main view",
   "MAIN_INFO_LAYOUT_STEP_3": "<code>Ctrl</code> + <code>Left click</code> resets the proportion to default",
-
   "MAIN_STATS_TITLE": "Statistics",
   "MAIN_STATS_GRAPH_INFO_TITLE": "Info about",
   "MAIN_STATS_GRAPH_INFO_NODES": "(#) Nodes",
@@ -36,11 +34,9 @@
   "MAIN_STATS_GRAPH_ATTRIBUTES_NODES_TITLE": "Attributes for nodes",
   "MAIN_STATS_TT_EDIT": "Render and edit this network",
   "MAIN_STATS_TT_COMPARE": "Compare this edit to another one",
-
   "MAIN_GRAPH_TITLE": "Graph",
   "MAIN_GRAPH_TT_FIT": "Fit graph to current page layout",
   "MAIN_GRAPH_BTN_FIT": "Fit graph",
-
   "SIDEBAR_MANAGE_TITLE": "Available networks",
   "SIDEBAR_MANAGE_NW_NAME": "Network name",
   "SIDEBAR_MANAGE_TT_INFO": "Info about this network",
@@ -65,7 +61,6 @@
   "SIDEBAR_MANAGE_FILE_ELEMENT_COUNT": "The network contains too many elements for this application",
   "SIDEBAR_MANAGE_FILE_ELEMENT_COUNT_LABEL_NODES": "#Nodes",
   "SIDEBAR_MANAGE_FILE_ELEMENT_COUNT_LABEL_EDGES": "#Edges",
-
   "SIDEBAR_EDIT_DESCRIPTION_TITLE": "Description",
   "SIDEBAR_EDIT_EDITING_TITLE": "Highlight nodes and edges",
   "SIDEBAR_EDIT_STYLE_TITLE": "Applied styles",
@@ -100,7 +95,6 @@
   "SIDEBAR_EDIT_TT_HIGHLIGHT_EDGE": "Highlight edge",
   "SIDEBAR_EDIT_TT_MANAGE_MAPPINGS": "Manage existing mappings and create new ones",
   "SIDEBAR_EDIT_MANAGE_MAPPINGS": "Create and manage mappings",
-
   "MAIN_MAPPINGS_GRAPH": "Return to graph",
   "MAIN_MAPPINGS_TITLE_NODES_DISCRETE": "Discrete node mappings",
   "MAIN_MAPPINGS_TITLE_NODES_CONTINUOUS": "Continuous node mappings",
@@ -121,7 +115,6 @@
   "MAIN_MAPPINGS_CONFIRM_DELETION_YES": "I'm pretty sure, delete this",
   "MAIN_MAPPINGS_CONFIRM_DELETION_NO": "Never mind",
   "MAIN_MAPPINGS_TT_MAP_DETAILS": "Show details in table above",
-
   "MAIN_MAPPINGS_NEW_ND": "New Mapping: Nodes discrete",
   "MAIN_MAPPINGS_NEW_NC": "New Mapping: Nodes continuous",
   "MAIN_MAPPINGS_NEW_ED": "New Mapping: Edges discrete",
@@ -151,7 +144,6 @@
   "MAIN_MAPPINGS_NEW_DEFAULT_HINT": "Though they don't impact your imminent mapping, default values are essential if you are making changes to your graph later on, e.g. add nodes or edges. It is recommended that the complete range of your selected attribute is covered not be relying on default values.",
   "MAIN_MAPPINGS_NEW_CURRENT_MIN": "Current minimum (recommended threshold#1)",
   "MAIN_MAPPINGS_NEW_CURRENT_MAX": "Current maximum (recommended threshold#2)",
-
   "SIDEBAR_COMPARE_TITLE": "Compare two networks",
   "SIDEBAR_COMPARE_ABOUT": "About NDExEdit",
   "SIDEBAR_COMPARE_ABOUT_1": "Do you like this app? There's a lot more to come!",
@@ -159,5 +151,4 @@
   "SIDEBAR_COMPARE_ABOUT_3_1": "Please contact",
   "SIDEBAR_COMPARE_ABOUT_3_2": "for feature requests and inquiries",
   "SIDEBAR_COMPARE_TEASER": "Comparison tool coming soon!"
-
 }

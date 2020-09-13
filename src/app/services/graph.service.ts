@@ -16,24 +16,22 @@ import {NeSelection} from '../models/ne-selection';
 export class GraphService {
 
   /**
-   * Core belonging to the selected network
-   * @private
-   */
-  private core: cytoscape.Core;
-
-  /**
-   * Duration of highlighting elements in milliseconds
-   * @private
-   */
-  private flashDuration = 2000;
-
-  /**
    * Collection of selected nodes or edges whose information are to be displayed within the sidebar
    */
   selectedElements: NeSelection = {
     nodes: [],
     edges: []
   };
+  /**
+   * Core belonging to the selected network
+   * @private
+   */
+  private core: cytoscape.Core;
+  /**
+   * Duration of highlighting elements in milliseconds
+   * @private
+   */
+  private flashDuration = 2000;
 
   constructor() {
   }
@@ -122,6 +120,13 @@ export class GraphService {
   }
 
   /**
+   * Fits the graph to the screen width
+   */
+  fitGraph(): void {
+    this.core.fit();
+  }
+
+  /**
    * Called on component init, defines which cytoscape core events are handled
    * @private
    */
@@ -167,13 +172,6 @@ export class GraphService {
     if (this.core) {
       this.core.removeListener('click');
     }
-  }
-
-  /**
-   * Fits the graph to the screen width
-   */
-  fitGraph(): void {
-    this.core.fit();
   }
 
 }

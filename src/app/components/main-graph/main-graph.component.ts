@@ -17,26 +17,22 @@ import {ActivatedRoute} from '@angular/router';
 export class MainGraphComponent implements AfterViewInit, OnDestroy {
 
   /**
-   * Ensures that only a graph is rendered if the id is specified within the URL
-   * @private
-   */
-  private readonly subscription: Subscription;
-
-  /**
    * Selected network of type {@link NeNetwork|NeNetwork}
    */
   selectedNetwork: NeNetwork;
-
   /**
    * Contains DOM element for {@link https://js.cytoscape.org/|Cytoscape.js}
    */
   cyContainer: any;
-
   /**
    * Main view width which needs to be specified in order to re-render the graph accordingly
    */
   width: string;
-
+  /**
+   * Ensures that only a graph is rendered if the id is specified within the URL
+   * @private
+   */
+  private readonly subscription: Subscription;
   /**
    * Checks if the view is initialized
    * @private

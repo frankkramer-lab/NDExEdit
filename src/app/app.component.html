@@ -1,32 +1,33 @@
 <div class="container-fluid">
 
-  <div class="float-left" [ngClass]="'width-' + widthMain">
+  <div [ngClass]="'width-' + widthMain" class="float-left">
     <router-outlet></router-outlet>
   </div>
 
-  <div class="vh-100 float-right" [ngClass]="'width-' + widthSidebar">
+  <div [ngClass]="'width-' + widthSidebar" class="vh-100 float-right">
 
-      <ul class="nav nav-tabs mt-2 ml-1 mr-1">
-        <li class="nav-item">
-          <a class="nav-link text-black-50" [routerLink]="['', { outlets: {sidebar: ['manage']} }]"
-             routerLinkActive="active">{{'NAV_MANAGE'|translate}}</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-black-50 disabled" [routerLink]="['', { outlets: {sidebar: ['edit']} }]"
-             routerLinkActive="active" data-toggle="tooltip" data-placement="bottom"
-             title="{{'NAV_EDIT_TT_INFO' | translate}}">
-            {{'NAV_EDIT'|translate}}</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-black-50 disabled" [routerLink]="['', { outlets: {sidebar: ['compare']} }]"
-             routerLinkActive="active" data-toggle="tooltip" data-placement="bottom"
-             title="{{'NAV_COMPARE_TT_INFO' | translate}}">{{'NAV_COMPARE'|translate}}</a>
-        </li>
-      </ul>
-      <router-outlet name="sidebar"></router-outlet>
+    <ul class="nav nav-tabs mt-2 ml-1 mr-1">
+      <li class="nav-item">
+        <a [routerLink]="['', { outlets: {sidebar: ['manage']} }]" class="nav-link text-black-50"
+           routerLinkActive="active">{{'NAV_MANAGE'|translate}}</a>
+      </li>
+      <li class="nav-item">
+        <a [routerLink]="['', { outlets: {sidebar: ['edit']} }]" class="nav-link text-black-50 disabled"
+           data-placement="bottom" data-toggle="tooltip" routerLinkActive="active"
+           title="{{'NAV_EDIT_TT_INFO' | translate}}">
+          {{'NAV_EDIT'|translate}}</a>
+      </li>
+      <li class="nav-item">
+        <a [routerLink]="['', { outlets: {sidebar: ['compare']} }]" class="nav-link text-black-50 disabled"
+           data-placement="bottom" data-toggle="tooltip" routerLinkActive="active"
+           title="{{'NAV_COMPARE_TT_INFO' | translate}}">{{'NAV_COMPARE'|translate}}</a>
+      </li>
+    </ul>
+    <router-outlet name="sidebar"></router-outlet>
   </div>
 
-  <div class="vh-100 drag-bar float-right" (click)="handleClickEvent($event, true)"
-       (contextmenu)="handleClickEvent($event, false)">&nbsp;</div>
+  <div (click)="handleClickEvent($event, true)" (contextmenu)="handleClickEvent($event, false)"
+       class="vh-100 drag-bar float-right">&nbsp;
+  </div>
 
 </div>

@@ -1,9 +1,9 @@
 <ng-container *ngIf="selectedNetwork">
 
   <h1>
-    <a role="button" [routerLink]="['', { outlets: {primary: ['graph', selectedNetwork.id]} }]"
-       data-toggle="tooltip" placement="right"
-       ngbTooltip="{{'MAIN_MAPPINGS_GRAPH' | translate}}">
+    <a [routerLink]="['', { outlets: {primary: ['graph', selectedNetwork.id]} }]" data-toggle="tooltip"
+       ngbTooltip="{{'MAIN_MAPPINGS_GRAPH' | translate}}" placement="right"
+       role="button">
       <fa-icon [icon]="faArrowLeft"></fa-icon>
     </a>
     {{selectedNetwork.networkInformation.name}}
@@ -19,14 +19,14 @@
         <tr>
           <th>{{map.title[1]}}</th>
           <th>
-            <button *ngIf="givenMapType.startsWith('n')" class="btn btn-block btn-outline-warning" data-toggle="tooltip"
-                    placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"
-                    [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, givenMapType + selectedNetwork.mappings.nodesContinuous.indexOf(map) ]} }]">
+            <button *ngIf="givenMapType.startsWith('n')" [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, givenMapType + selectedNetwork.mappings.nodesContinuous.indexOf(map) ]} }]" class="btn btn-block btn-outline-warning"
+                    data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"
+                    placement="bottom">
               <fa-icon [icon]="faEdit"></fa-icon>
             </button>
-            <button *ngIf="givenMapType.startsWith('e')" class="btn btn-block btn-outline-warning" data-toggle="tooltip"
-                    placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"
-                    [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, givenMapType + selectedNetwork.mappings.edgesContinuous.indexOf(map) ]} }]">
+            <button *ngIf="givenMapType.startsWith('e')" [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, givenMapType + selectedNetwork.mappings.edgesContinuous.indexOf(map) ]} }]" class="btn btn-block btn-outline-warning"
+                    data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"
+                    placement="bottom">
               <fa-icon [icon]="faEdit"></fa-icon>
             </button>
           </th>
@@ -35,10 +35,10 @@
         </thead>
         <tbody>
         <tr *ngFor="let entry of map.chart.lineChartData[0].data; let i = index">
-          <td colspan="2" *ngIf="i === 0">&lt;</td>
-          <td colspan="2" *ngIf="i === map.chart.lineChartLabels.length - 1">&gt;</td>
-          <td colspan="2"
-              *ngIf="i > 0 && i < map.chart.lineChartLabels.length - 1">{{map.chart.lineChartLabels[i]}}</td>
+          <td *ngIf="i === 0" colspan="2">&lt;</td>
+          <td *ngIf="i === map.chart.lineChartLabels.length - 1" colspan="2">&gt;</td>
+          <td *ngIf="i > 0 && i < map.chart.lineChartLabels.length - 1"
+              colspan="2">{{map.chart.lineChartLabels[i]}}</td>
           <td>{{entry}}</td>
         </tr>
         </tbody>
@@ -49,14 +49,14 @@
         <tr>
           <th>{{map.title[1]}}</th>
           <th>
-            <button *ngIf="givenMapType.startsWith('n')" class="btn btn-block btn-outline-warning" data-toggle="tooltip"
-                    placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"
-                    [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, givenMapType + selectedNetwork.mappings.nodesContinuous.indexOf(map) ]} }]">
+            <button *ngIf="givenMapType.startsWith('n')" [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, givenMapType + selectedNetwork.mappings.nodesContinuous.indexOf(map) ]} }]" class="btn btn-block btn-outline-warning"
+                    data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"
+                    placement="bottom">
               <fa-icon [icon]="faEdit"></fa-icon>
             </button>
-            <button *ngIf="givenMapType.startsWith('e')" class="btn btn-block btn-outline-warning" data-toggle="tooltip"
-                    placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"
-                    [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, givenMapType + selectedNetwork.mappings.edgesContinuous.indexOf(map) ]} }]">
+            <button *ngIf="givenMapType.startsWith('e')" [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, givenMapType + selectedNetwork.mappings.edgesContinuous.indexOf(map) ]} }]" class="btn btn-block btn-outline-warning"
+                    data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"
+                    placement="bottom">
               <fa-icon [icon]="faEdit"></fa-icon>
             </button>
           </th>
@@ -65,14 +65,14 @@
         </thead>
         <tbody>
         <tr *ngFor="let entry of map.colorGradient; let i = index">
-          <td colspan="2" *ngIf="i === 0">&lt;</td>
-          <td colspan="2" *ngIf="i === map.colorGradient.length - 1">&gt;</td>
-          <td colspan="2" *ngIf="i > 0 && i < map.colorGradient.length - 1">
+          <td *ngIf="i === 0" colspan="2">&lt;</td>
+          <td *ngIf="i === map.colorGradient.length - 1" colspan="2">&gt;</td>
+          <td *ngIf="i > 0 && i < map.colorGradient.length - 1" colspan="2">
             {{entry.numericThreshold}}
           </td>
           <td>
             {{entry.color}}
-            <span class="badge badge-pill border" [ngStyle]="{'background-color': entry.color}">&nbsp;</span>
+            <span [ngStyle]="{'background-color': entry.color}" class="badge badge-pill border">&nbsp;</span>
           </td>
         </tr>
         </tbody>
@@ -89,23 +89,23 @@
 
             <td><b>{{style.cssKey}}</b></td>
             <td>
-              <button *ngIf="givenMapType.startsWith('n')" type="button" class="btn btn-block btn-outline-warning"
+              <button *ngIf="givenMapType.startsWith('n')" [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, givenMapType + selectedNetwork.mappings.nodesDiscrete.indexOf(map), map.styleMap.indexOf(style) ]} }]" class="btn btn-block btn-outline-warning"
                       data-toggle="tooltip"
-                      placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"
-                      [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, givenMapType + selectedNetwork.mappings.nodesDiscrete.indexOf(map), map.styleMap.indexOf(style) ]} }]">
+                      ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}" placement="bottom"
+                      type="button">
                 <fa-icon [icon]="faEdit"></fa-icon>
               </button>
-              <button *ngIf="givenMapType.startsWith('e')" type="button" class="btn btn-block btn-outline-warning"
+              <button *ngIf="givenMapType.startsWith('e')" [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, givenMapType + selectedNetwork.mappings.edgesDiscrete.indexOf(map), map.styleMap.indexOf(style) ]} }]" class="btn btn-block btn-outline-warning"
                       data-toggle="tooltip"
-                      placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"
-                      [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, givenMapType + selectedNetwork.mappings.edgesDiscrete.indexOf(map), map.styleMap.indexOf(style) ]} }]">
+                      ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}" placement="bottom"
+                      type="button">
                 <fa-icon [icon]="faEdit"></fa-icon>
               </button>
             </td>
             <td>
-              <button type="button" class="btn btn-block btn-outline-danger" data-toggle="tooltip"
-                      placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_DELETE' | translate}}"
-                      (click)="toggleSingleRemoveDialogue(map, givenMapType, style)">
+              <button (click)="toggleSingleRemoveDialogue(map, givenMapType, style)" class="btn btn-block btn-outline-danger" data-toggle="tooltip"
+                      ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_DELETE' | translate}}" placement="bottom"
+                      type="button">
                 <fa-icon [icon]="faTrash"></fa-icon>
               </button>
             </td>
@@ -115,8 +115,8 @@
                 <span *ngFor="let styleValue of style.cssValues; let j = index">
                   <span *ngIf="map.selectors[i] === style.selectors[j]">
                       {{styleValue}}
-                    <span *ngIf="styleValue && styleValue.toString().indexOf('#') > -1" class="badge badge-pill border"
-                          [ngStyle]="{'background-color': styleValue}">&nbsp;</span>
+                    <span *ngIf="styleValue && styleValue.toString().indexOf('#') > -1" [ngStyle]="{'background-color': styleValue}"
+                          class="badge badge-pill border">&nbsp;</span>
                     </span>
                   </span>
 
@@ -127,10 +127,10 @@
         </table>
       </div>
 
-      <div class="mt-3 mb-3" *ngIf="map && (map.classifier || map.chartValid || map.gradientValid)">
+      <div *ngIf="map && (map.classifier || map.chartValid || map.gradientValid)" class="mt-3 mb-3">
         <div>
-          <button class="btn btn-block btn-outline-danger" (click)="toggleGlobalRemoveDialogue(map, givenMapType)"
-                  data-toggle="tooltip" placement="bottom" ngbTooltip="{{'MAIN_MAPPINGS_TT_DELETE' | translate}}">
+          <button (click)="toggleGlobalRemoveDialogue(map, givenMapType)" class="btn btn-block btn-outline-danger"
+                  data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_DELETE' | translate}}" placement="bottom">
             <fa-icon [icon]="faTrash"></fa-icon>
             {{'MAIN_MAPPINGS_DELETE' | translate}}
           </button>
@@ -150,48 +150,52 @@
     <div class="row">
       <div class="col-6">
 
-        <table class="table table-borderless"
-               *ngIf="selectedNetwork && selectedNetwork.aspectKeyValuesNodes.length > 0">
+        <table *ngIf="selectedNetwork && selectedNetwork.aspectKeyValuesNodes.length > 0"
+               class="table table-borderless">
           <thead class="border-bottom">
           <th colspan="3">{{'MAIN_MAPPINGS_TITLE_NODES_DISCRETE' | translate}}</th>
           </thead>
           <tbody>
           <tr *ngFor="let akv of selectedNetwork.aspectKeyValuesNodes; let akvIndex = index;">
-            <td *ngIf="akv.values.length !== akv.appliedTo.length && akv.datatype !== 'double' && akv.datatype !== 'integer'">
+            <td
+              *ngIf="akv.values.length !== akv.appliedTo.length && akv.datatype !== 'double' && akv.datatype !== 'integer'">
               {{akv.name}}
             </td>
-            <td *ngIf="akv.values.length !== akv.appliedTo.length && akv.datatype !== 'double' && akv.datatype !== 'integer'" class="float-right">
+            <td
+              *ngIf="akv.values.length !== akv.appliedTo.length && akv.datatype !== 'double' && akv.datatype !== 'integer'"
+              class="float-right">
 
               <!-- mapping exists -->
               <span *ngIf="akv.mapPointerD.length > 1">
                 <div class="btn-group" role="group">
                   <div class="btn-group" role="group">
-                    <button id="ndDetailsGroup" type="button" class="btn btn-outline-secondary dropdown-toggle"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button aria-expanded="false" aria-haspopup="true" class="btn btn-outline-secondary dropdown-toggle"
+                            data-toggle="dropdown" id="ndDetailsGroup" type="button">
                       <fa-icon [icon]="faSearch"></fa-icon>
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="ndDetailsGroup">
+                    <div aria-labelledby="ndDetailsGroup" class="dropdown-menu">
                       <a *ngFor="let ecDetail of akv.mapPointerD; let i = index;"
-                         class="dropdown-item"
-                         [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nd' + akv.mapPointerD[i]]} }]">{{selectedNetwork.mappings.nodesDiscrete[i].classifier}}</a>
+                         [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nd' + akv.mapPointerD[i]]} }]"
+                         class="dropdown-item">{{selectedNetwork.mappings.nodesDiscrete[i].classifier}}</a>
                     </div>
                   </div>
                 </div>
               </span>
 
               <span *ngIf="akv.mapPointerD.length === 1">
-                <button type="button" class="btn btn-outline-secondary" *ngIf="akv.mapPointerD.length > 0"
-                        [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nd' + akv.mapPointerD[0]]} }]"
-                        data-toggle="tooltip" placement="bottom"
-                        ngbTooltip="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}">
+                <button *ngIf="akv.mapPointerD.length > 0" [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nd' + akv.mapPointerD[0]]} }]" class="btn btn-outline-secondary"
+                        data-toggle="tooltip"
+                        ngbTooltip="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}" placement="bottom"
+                        type="button">
                   <fa-icon [icon]="faSearch"></fa-icon>
                 </button>
               </span>
 
-              <button type="button" class="btn btn-outline-success ml-2" *ngIf="akv.datatype !== 'double' && akv.datatype !== 'integer'"
-                      [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'nd', akvIndex]} }]"
-                      data-toggle="tooltip" placement="bottom"
-                      ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}">
+              <button *ngIf="akv.datatype !== 'double' && akv.datatype !== 'integer'" [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'nd', akvIndex]} }]"
+                      class="btn btn-outline-success ml-2"
+                      data-toggle="tooltip"
+                      ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"
+                      type="button">
                 <fa-icon [icon]="faPlus"></fa-icon>
               </button>
 
@@ -204,48 +208,52 @@
 
       <div class="col-6">
 
-        <table class="table table-borderless"
-               *ngIf="selectedNetwork && selectedNetwork.aspectKeyValuesEdges.length > 0">
+        <table *ngIf="selectedNetwork && selectedNetwork.aspectKeyValuesEdges.length > 0"
+               class="table table-borderless">
           <thead class="border-bottom">
           <th colspan="3">{{'MAIN_MAPPINGS_TITLE_EDGES_DISCRETE' | translate}}</th>
           </thead>
           <tbody>
           <tr *ngFor="let akv of selectedNetwork.aspectKeyValuesEdges; let akvIndex = index;">
-            <td *ngIf="akv.values.length !== akv.appliedTo.length && akv.datatype !== 'double' && akv.datatype !== 'integer'">
+            <td
+              *ngIf="akv.values.length !== akv.appliedTo.length && akv.datatype !== 'double' && akv.datatype !== 'integer'">
               {{akv.name}}
             </td>
-            <td *ngIf="akv.values.length !== akv.appliedTo.length && akv.datatype !== 'double' && akv.datatype !== 'integer'" class="float-right">
+            <td
+              *ngIf="akv.values.length !== akv.appliedTo.length && akv.datatype !== 'double' && akv.datatype !== 'integer'"
+              class="float-right">
 
               <!-- mapping exists -->
               <span *ngIf="akv.mapPointerD.length > 1">
                 <div class="btn-group" role="group">
                   <div class="btn-group" role="group">
-                    <button id="edDetailsGroup" type="button" class="btn btn-outline-secondary dropdown-toggle"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button aria-expanded="false" aria-haspopup="true" class="btn btn-outline-secondary dropdown-toggle"
+                            data-toggle="dropdown" id="edDetailsGroup" type="button">
                       <fa-icon [icon]="faSearch"></fa-icon>
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="edDetailsGroup">
+                    <div aria-labelledby="edDetailsGroup" class="dropdown-menu">
                       <a *ngFor="let ecDetail of akv.mapPointerD; let i = index;"
-                         class="dropdown-item"
-                         [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ed' + akv.mapPointerD[i]]} }]">{{selectedNetwork.mappings.edgesDiscrete[i].classifier}}</a>
+                         [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ed' + akv.mapPointerD[i]]} }]"
+                         class="dropdown-item">{{selectedNetwork.mappings.edgesDiscrete[i].classifier}}</a>
                     </div>
                   </div>
                 </div>
               </span>
 
               <span *ngIf="akv.mapPointerD.length === 1">
-                <button type="button" class="btn btn-outline-secondary" *ngIf="akv.mapPointerD.length > 0"
-                        [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ed' + akv.mapPointerD[0]]} }]"
-                        data-toggle="tooltip" placement="bottom"
-                        ngbTooltip="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}">
+                <button *ngIf="akv.mapPointerD.length > 0" [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ed' + akv.mapPointerD[0]]} }]" class="btn btn-outline-secondary"
+                        data-toggle="tooltip"
+                        ngbTooltip="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}" placement="bottom"
+                        type="button">
                   <fa-icon [icon]="faSearch"></fa-icon>
                 </button>
               </span>
 
-              <button type="button" class="btn btn-outline-success ml-2" *ngIf="akv.datatype !== 'double' && akv.datatype !== 'integer'"
-                      [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'ed', akvIndex]} }]"
-                      data-toggle="tooltip" placement="bottom"
-                      ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}">
+              <button *ngIf="akv.datatype !== 'double' && akv.datatype !== 'integer'" [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'ed', akvIndex]} }]"
+                      class="btn btn-outline-success ml-2"
+                      data-toggle="tooltip"
+                      ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"
+                      type="button">
                 <fa-icon [icon]="faPlus"></fa-icon>
               </button>
 
@@ -260,8 +268,8 @@
     <div class="row">
       <div class="col-6">
 
-        <table class="table table-borderless"
-               *ngIf="selectedNetwork && selectedNetwork.aspectKeyValuesNodes.length > 0">
+        <table *ngIf="selectedNetwork && selectedNetwork.aspectKeyValuesNodes.length > 0"
+               class="table table-borderless">
           <thead class="border-bottom">
           <th colspan="3">{{'MAIN_MAPPINGS_TITLE_NODES_CONTINUOUS' | translate}}</th>
           </thead>
@@ -276,32 +284,33 @@
               <span *ngIf="akv.mapPointerC.length > 1">
                 <div class="btn-group" role="group">
                   <div class="btn-group" role="group">
-                    <button id="ncDetailsGroup" type="button" class="btn btn-outline-secondary dropdown-toggle"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button aria-expanded="false" aria-haspopup="true" class="btn btn-outline-secondary dropdown-toggle"
+                            data-toggle="dropdown" id="ncDetailsGroup" type="button">
                       <fa-icon [icon]="faSearch"></fa-icon>
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="ncDetailsGroup">
+                    <div aria-labelledby="ncDetailsGroup" class="dropdown-menu">
                       <a *ngFor="let ecDetail of akv.mapPointerC; let i = index;"
-                         class="dropdown-item"
-                         [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nc' + akv.mapPointerC[i]]} }]">{{selectedNetwork.mappings.nodesContinuous[i].title[0]}}</a>
+                         [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nc' + akv.mapPointerC[i]]} }]"
+                         class="dropdown-item">{{selectedNetwork.mappings.nodesContinuous[i].title[0]}}</a>
                     </div>
                   </div>
                 </div>
               </span>
 
               <span *ngIf="akv.mapPointerC.length === 1">
-                <button type="button" class="btn btn-outline-secondary" *ngIf="akv.mapPointerC.length > 0"
-                        [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nc' + akv.mapPointerC[0]]} }]"
-                        data-toggle="tooltip" placement="bottom"
-                        ngbTooltip="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}">
+                <button *ngIf="akv.mapPointerC.length > 0" [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'nc' + akv.mapPointerC[0]]} }]" class="btn btn-outline-secondary"
+                        data-toggle="tooltip"
+                        ngbTooltip="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}" placement="bottom"
+                        type="button">
                   <fa-icon [icon]="faSearch"></fa-icon>
                 </button>
               </span>
 
-              <button type="button" class="btn btn-outline-success ml-2" *ngIf="akv.datatype === 'double' || akv.datatype === 'integer'"
-                      [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'nc', akvIndex]} }]"
-                      data-toggle="tooltip" placement="bottom"
-                      ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}">
+              <button *ngIf="akv.datatype === 'double' || akv.datatype === 'integer'" [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'nc', akvIndex]} }]"
+                      class="btn btn-outline-success ml-2"
+                      data-toggle="tooltip"
+                      ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"
+                      type="button">
                 <fa-icon [icon]="faPlus"></fa-icon>
               </button>
 
@@ -314,8 +323,8 @@
 
       <div class="col-6">
 
-        <table class="table table-borderless"
-               *ngIf="selectedNetwork && selectedNetwork.aspectKeyValuesEdges.length > 0">
+        <table *ngIf="selectedNetwork && selectedNetwork.aspectKeyValuesEdges.length > 0"
+               class="table table-borderless">
           <thead class="border-bottom">
           <th colspan="3">{{'MAIN_MAPPINGS_TITLE_EDGES_CONTINUOUS' | translate}}</th>
           </thead>
@@ -330,32 +339,33 @@
               <span *ngIf="akv.mapPointerC.length > 1">
                 <div class="btn-group" role="group">
                   <div class="btn-group" role="group">
-                    <button id="ecDetailsGroup" type="button" class="btn btn-outline-secondary dropdown-toggle"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button aria-expanded="false" aria-haspopup="true" class="btn btn-outline-secondary dropdown-toggle"
+                            data-toggle="dropdown" id="ecDetailsGroup" type="button">
                       <fa-icon [icon]="faSearch"></fa-icon>
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="ecDetailsGroup">
+                    <div aria-labelledby="ecDetailsGroup" class="dropdown-menu">
                       <a *ngFor="let ecDetail of akv.mapPointerC; let i = index;"
-                         class="dropdown-item"
-                         [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ec' + akv.mapPointerC[i]]} }]">{{selectedNetwork.mappings.edgesContinuous[i].title[0]}}</a>
+                         [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ec' + akv.mapPointerC[i]]} }]"
+                         class="dropdown-item">{{selectedNetwork.mappings.edgesContinuous[i].title[0]}}</a>
                     </div>
                   </div>
                 </div>
               </span>
 
               <span *ngIf="akv.mapPointerC.length === 1">
-                <button type="button" class="btn btn-outline-secondary" *ngIf="akv.mapPointerC.length > 0"
-                        [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ec' + akv.mapPointerC[0]]} }]"
-                        data-toggle="tooltip" placement="bottom"
-                        ngbTooltip="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}">
+                <button *ngIf="akv.mapPointerC.length > 0" [routerLink]="['', { outlets: {primary: ['mappings', selectedNetwork.id, 'ec' + akv.mapPointerC[0]]} }]" class="btn btn-outline-secondary"
+                        data-toggle="tooltip"
+                        ngbTooltip="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}" placement="bottom"
+                        type="button">
                   <fa-icon [icon]="faSearch"></fa-icon>
                 </button>
               </span>
 
-              <button type="button" class="btn btn-outline-success ml-2" *ngIf="akv.datatype === 'double' || akv.datatype === 'integer'"
-                      [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'ec', akvIndex]} }]"
-                      data-toggle="tooltip" placement="bottom"
-                      ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}">
+              <button *ngIf="akv.datatype === 'double' || akv.datatype === 'integer'" [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'ec', akvIndex]} }]"
+                      class="btn btn-outline-success ml-2"
+                      data-toggle="tooltip"
+                      ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"
+                      type="button">
                 <fa-icon [icon]="faPlus"></fa-icon>
               </button>
 
@@ -379,7 +389,7 @@
 
       <!-- nevermind -->
       <div class="col-6">
-        <button class="btn btn-block btn-outline-success" (click)="confirmDeletion(false)">
+        <button (click)="confirmDeletion(false)" class="btn btn-block btn-outline-success">
           <fa-icon [icon]="faTimes"></fa-icon>
           {{'MAIN_MAPPINGS_CONFIRM_DELETION_NO' | translate}}
         </button>
@@ -387,8 +397,8 @@
 
       <!-- confirm -->
       <div class="col-6">
-        <button class="btn btn-block btn-outline-danger" (click)="confirmDeletion(true, 'global')"
-                [routerLink]="['', { outlets: {primary: ['graph', selectedNetwork.id]} }]">
+        <button (click)="confirmDeletion(true, 'global')" [routerLink]="['', { outlets: {primary: ['graph', selectedNetwork.id]} }]"
+                class="btn btn-block btn-outline-danger">
           <fa-icon [icon]="faCheck"></fa-icon>
           {{'MAIN_MAPPINGS_CONFIRM_DELETION_YES' | translate}}
         </button>
@@ -407,7 +417,7 @@
 
       <!-- nevermind -->
       <div class="col-6">
-        <button class="btn btn-block btn-outline-success" (click)="confirmDeletion(false, 'single')">
+        <button (click)="confirmDeletion(false, 'single')" class="btn btn-block btn-outline-success">
           <fa-icon [icon]="faTimes"></fa-icon>
           {{'MAIN_MAPPINGS_CONFIRM_DELETION_NO' | translate}}
         </button>
@@ -415,8 +425,8 @@
 
       <!-- confirm -->
       <div class="col-6">
-        <button class="btn btn-block btn-outline-danger" (click)="confirmDeletion(true, 'single')"
-                [routerLink]="['', { outlets: {primary: ['graph', selectedNetwork.id]} }]">
+        <button (click)="confirmDeletion(true, 'single')" [routerLink]="['', { outlets: {primary: ['graph', selectedNetwork.id]} }]"
+                class="btn btn-block btn-outline-danger">
           <fa-icon [icon]="faCheck"></fa-icon>
           {{'MAIN_MAPPINGS_CONFIRM_DELETION_YES' | translate}}
         </button>

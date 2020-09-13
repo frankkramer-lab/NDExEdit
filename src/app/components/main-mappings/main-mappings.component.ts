@@ -18,6 +18,101 @@ import {NeMappingProperty} from '../../models/ne-mapping-property';
 export class MainMappingsComponent implements OnInit, OnDestroy {
 
   /**
+   * Emits changes in mappings which also have to be visible within the sidebar.
+   * Emitted data as the following valid keys:
+   * <ul>
+   *   <li>showLabelCheckbox</li>
+   *   <li>showGradient</li>
+   *   <li>showChart</li>
+   * </ul>
+   */
+  @Output() static mappingsEmitter: EventEmitter<any> = new EventEmitter<any>();
+  /**
+   * Icon: faPlus
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faPlus = faPlus;
+  /**
+   * Icon: faEdit
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faEdit = faEdit;
+  /**
+   * Icon: faTrash
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faTrash = faTrash;
+  /**
+   * Icon: faTimes
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faTimes = faTimes;
+  /**
+   * Icon: faCheck
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faCheck = faCheck;
+  /**
+   * Icon: faSearch
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faSearch = faSearch;
+  /**
+   * Icon: faArrowLeft
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faArrowLeft = faArrowLeft;
+  /**
+   * Displays deletion dialogue for the whole mapping
+   */
+  showGlobalDeletionDialogue = false;
+  /**
+   * Displays deletion dialogue for a single property within a mapping
+   */
+  showSingleDeletionDialogue = false;
+  /**
+   * Selected network of type {@link NeNetwork|NeNetwork}
+   */
+  selectedNetwork: NeNetwork;
+  /**
+   * Selected mapping which is displayed in the table at the top of the view
+   */
+  selectedMapping: NeGroupedMappingsDiscrete[] | any[];
+  /**
+   * Id of the currently selected mapping
+   */
+  currentMappingId: string[];
+  /**
+   * Mapping to be removed which is overridden as soon as the user selects a mapping to delete
+   */
+  mappingToRemove = {
+    map: null,
+    type: '',
+    network: -1,
+    mappingId: -1,
+    akvIndex: -1,
+  };
+  /**
+   * Property to be removed which is overridden as soon as the user selects a property to delete
+   */
+  propertyToRemove: NeMappingProperty = {
+    mapReference: -1,
+    attributeName: '',
+    mapType: '',
+    style: null
+  };
+  /**
+   * Can be one of the following types:
+   * <ul>
+   *   <li><b>nd</b>: discrete node mapping</li>
+   *   <li><b>nc</b>: continuous node mapping</li>
+   *   <li><b>ed</b>: discrete edge mapping</li>
+   *   <li><b>ec</b>: continuous edge mapping</li>
+   * </ul>
+   */
+  givenMapType: string;
+
+  /**
    * The URL rendering this view contains both the specified graph and a mapping whose details are displayed.
    * Thus within the constructor both {@link MainMappingsComponent#selectedNetwork} and
    * {@link MainMappingsComponent#selectedMapping} are set
@@ -65,116 +160,6 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
       }
     });
   }
-
-  /**
-   * Emits changes in mappings which also have to be visible within the sidebar.
-   * Emitted data as the following valid keys:
-   * <ul>
-   *   <li>showLabelCheckbox</li>
-   *   <li>showGradient</li>
-   *   <li>showChart</li>
-   * </ul>
-   */
-  @Output() static mappingsEmitter: EventEmitter<any> = new EventEmitter<any>();
-
-  /**
-   * Icon: faPlus
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faPlus = faPlus;
-
-  /**
-   * Icon: faEdit
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faEdit = faEdit;
-
-  /**
-   * Icon: faTrash
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faTrash = faTrash;
-
-  /**
-   * Icon: faTimes
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faTimes = faTimes;
-
-  /**
-   * Icon: faCheck
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faCheck = faCheck;
-
-  /**
-   * Icon: faSearch
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faSearch = faSearch;
-
-  /**
-   * Icon: faArrowLeft
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faArrowLeft = faArrowLeft;
-
-  /**
-   * Displays deletion dialogue for the whole mapping
-   */
-  showGlobalDeletionDialogue = false;
-
-  /**
-   * Displays deletion dialogue for a single property within a mapping
-   */
-  showSingleDeletionDialogue = false;
-
-  /**
-   * Selected network of type {@link NeNetwork|NeNetwork}
-   */
-  selectedNetwork: NeNetwork;
-
-  /**
-   * Selected mapping which is displayed in the table at the top of the view
-   */
-  selectedMapping: NeGroupedMappingsDiscrete[] | any[];
-
-  /**
-   * Id of the currently selected mapping
-   */
-  currentMappingId: string[];
-
-  /**
-   * Mapping to be removed which is overridden as soon as the user selects a mapping to delete
-   */
-  mappingToRemove = {
-    map: null,
-    type: '',
-    network: -1,
-    mappingId: -1,
-    akvIndex: -1,
-  };
-
-  /**
-   * Property to be removed which is overridden as soon as the user selects a property to delete
-   */
-  propertyToRemove: NeMappingProperty = {
-    mapReference: -1,
-    attributeName: '',
-    mapType: '',
-    style: null
-  };
-
-  /**
-   * Can be one of the following types:
-   * <ul>
-   *   <li><b>nd</b>: discrete node mapping</li>
-   *   <li><b>nc</b>: continuous node mapping</li>
-   *   <li><b>ed</b>: discrete edge mapping</li>
-   *   <li><b>ec</b>: continuous edge mapping</li>
-   * </ul>
-   */
-  givenMapType: string;
 
   /**
    * On initialization the emitter informs its subscribers to hide the label checkbox to prevent unnecessary toggling

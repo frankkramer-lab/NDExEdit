@@ -16,34 +16,29 @@ import {HttpClient} from '@angular/common/http';
 export class AppComponent {
 
   /**
-   * Path to mock-ups
-   */
-  private readonly mockedFilepath = '/assets/mocks/';
-
-  /**
-   * Array of currently supported languages, which is easily expansable
-   */
-  private readonly supportedLanguages = ['en', 'de'];
-
-  /**
-   * Default language is English
-   */
-  private readonly defaultLanguage = 'en';
-
-  /**
    * Title of the application is NDExEdit
    */
   title = 'NDExEdit';
-
   /**
    * Main: default page layout is 60%
    */
   widthMain = 60;
-
   /**
    * Sidebar: default page layout is 38%
    */
   widthSidebar = 38;
+  /**
+   * Path to mock-ups
+   */
+  private readonly mockedFilepath = '/assets/mocks/';
+  /**
+   * Array of currently supported languages, which is easily expansable
+   */
+  private readonly supportedLanguages = ['en', 'de'];
+  /**
+   * Default language is English
+   */
+  private readonly defaultLanguage = 'en';
 
   /**
    * Initializes translation and renders the desired mock-ups
@@ -63,34 +58,6 @@ export class AppComponent {
     this.initializeTranslation();
 
     this.initDemoNetwork('DummyForTesting.cx');
-  }
-
-  /**
-   * Using set browser language to determine which language to use within the frontend
-   */
-  private initializeTranslation(): void {
-    this.translateService.setDefaultLang(this.defaultLanguage);
-
-    const browserLang = this.translateService.getBrowserLang();
-    this.translateService.use((browserLang && this.supportedLanguages.includes(browserLang)) ? browserLang : this.defaultLanguage);
-  }
-
-  /**
-   * For development purposes this method loads the specified file from the assets directory and adds the files to both the
-   * {@link dataService#networksDownloaded|loaded} and
-   * {@link dataService#networksParsed} accessible through the {@link dataService|dataService}.
-   * @param filename name of the file to be loaded, parsed and added
-   */
-  private initDemoNetwork(filename: string): void {
-    this.http.get(this.mockedFilepath.concat(filename))
-      .toPromise()
-      .then((data: any[]) => {
-        const parsedNetwork = this.parseService.convert(data, this.mockedFilepath + filename);
-        this.dataService.networksDownloaded.push(data);
-        this.dataService.networksParsed.push(parsedNetwork);
-        console.log(this.dataService.networksParsed);
-      })
-      .catch(error => console.log(error));
   }
 
   /**
@@ -132,5 +99,33 @@ export class AppComponent {
   resetPageLayout(): void {
     this.widthSidebar = 38;
     this.widthMain = 60;
+  }
+
+  /**
+   * Using set browser language to determine which language to use within the frontend
+   */
+  private initializeTranslation(): void {
+    this.translateService.setDefaultLang(this.defaultLanguage);
+
+    const browserLang = this.translateService.getBrowserLang();
+    this.translateService.use((browserLang && this.supportedLanguages.includes(browserLang)) ? browserLang : this.defaultLanguage);
+  }
+
+  /**
+   * For development purposes this method loads the specified file from the assets directory and adds the files to both the
+   * {@link dataService#networksDownloaded|loaded} and
+   * {@link dataService#networksParsed} accessible through the {@link dataService|dataService}.
+   * @param filename name of the file to be loaded, parsed and added
+   */
+  private initDemoNetwork(filename: string): void {
+    this.http.get(this.mockedFilepath.concat(filename))
+      .toPromise()
+      .then((data: any[]) => {
+        const parsedNetwork = this.parseService.convert(data, this.mockedFilepath + filename);
+        this.dataService.networksDownloaded.push(data);
+        this.dataService.networksParsed.push(parsedNetwork);
+        console.log(this.dataService.networksParsed);
+      })
+      .catch(error => console.log(error));
   }
 }

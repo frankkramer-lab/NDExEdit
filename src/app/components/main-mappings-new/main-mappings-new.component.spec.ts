@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MainMappingsNewComponent } from './main-mappings-new.component';
+import {MainMappingsNewComponent} from './main-mappings-new.component';
 
 describe('MainMappingsNewComponent', () => {
   let component: MainMappingsNewComponent;
@@ -8,9 +8,9 @@ describe('MainMappingsNewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MainMappingsNewComponent ]
+      declarations: [MainMappingsNewComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

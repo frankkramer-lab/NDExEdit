@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MainGraphComponent } from './main-graph.component';
+import {MainGraphComponent} from './main-graph.component';
 
 describe('MainGraphComponent', () => {
   let component: MainGraphComponent;
@@ -8,9 +8,9 @@ describe('MainGraphComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MainGraphComponent ]
+      declarations: [MainGraphComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

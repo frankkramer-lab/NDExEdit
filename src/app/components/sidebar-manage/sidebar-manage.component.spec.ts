@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SidebarManageComponent } from './sidebar-manage.component';
+import {SidebarManageComponent} from './sidebar-manage.component';
 
 describe('SidebarManageComponent', () => {
   let component: SidebarManageComponent;
@@ -8,9 +8,9 @@ describe('SidebarManageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SidebarManageComponent ]
+      declarations: [SidebarManageComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

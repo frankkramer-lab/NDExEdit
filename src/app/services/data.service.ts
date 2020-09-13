@@ -26,19 +26,14 @@ import {NeMappingsType} from '../models/ne-mappings-type';
  */
 export class DataService {
 
-  constructor() {
-  }
-
   /**
    * List of networks available to be rendered within the app
    */
   networksParsed: NeNetwork[] = [];
-
   /**
    * List of networks available in .cx file format
    */
   networksDownloaded: any[] = [];
-
   /**
    * List of known color properties, mainly used for color previews within {@link MainMappingsNewComponent}
    */
@@ -49,6 +44,9 @@ export class DataService {
     'target-arrow-color',
     'source-arrow-color',
   ];
+
+  constructor() {
+  }
 
   /**
    * After adding a discrete mapping all newly set values have to be aggregated into a nicely displayable mapping
@@ -568,133 +566,6 @@ export class DataService {
   }
 
   /**
-   * Updates all elements after adding a new continuous mapping or after editing an existing continuous mapping
-   *
-   * @param isNode true if elements are nodes
-   * @param continuousMapping new or existing continuous mapping
-   * @param network corresponding network
-   * @param minPropertyValue minimum of the element's attribute's values
-   * @param maxPropertyValue maximum of the elements's attribute's values
-   * @private
-   */
-  private updateElementsContinuously(
-    isNode: boolean,
-    continuousMapping: any,
-    network: NeNetwork,
-    minPropertyValue,
-    maxPropertyValue
-  ): ElementDefinition[] {
-
-    const styles: NeStyle[] = network.style;
-    const elements: ElementDefinition[] = network.elements;
-
-    for (const element of elements) {
-      if (isNode ? element.group === 'nodes' : element.group === 'edges') {
-        for (const attribute of element.data.attributes) {
-          if (attribute.keyHR === continuousMapping.mappedProperty.name) {
-            const elementValue = Number(attribute.valueHR);
-
-            let index = 0;
-            while (continuousMapping.breakpoints.length > index && continuousMapping.breakpoints[index].value < elementValue) {
-              index++;
-            }
-
-            const selector = ((isNode) ? '.node_' : '.edge_') + element.data.id;
-            const style = styles.find(x => x.selector === selector);
-
-            const tmpData = (isNode ? [element.data as NeNode] : [element.data as NeEdge]);
-
-            const styleObj: NeStyle = {
-              selector,
-              style: {},
-              appliedTo: tmpData,
-              priority: 2
-            };
-
-            if (!element.data.classes.includes(selector.substring(1))) {
-              element.data.classes.push(selector.substring(1));
-              element.classes = element.data.classes.join(' ');
-            }
-
-            if (continuousMapping.breakpoints[index] && continuousMapping.breakpoints[index].value === elementValue) {
-              // case 1: element hits breakpoint threshold => apply threshold value
-              styleObj.style[continuousMapping.cssKey] = continuousMapping.breakpoints[index].propertyValue;
-
-            } else if (index === 0 && continuousMapping.breakpoints[index] && continuousMapping.breakpoints[index].value > elementValue) {
-              // case 2: element is smaller than lowest threshold => apply relatively lower
-              const inputMap: NeContinuousMap = {
-                inputValue: String(elementValue),
-                lowerThreshold: String(minPropertyValue),
-                lower: continuousMapping.defaultLower,
-                greaterThreshold: String(continuousMapping.breakpoints[index].value),
-                greater: String(continuousMapping.breakpoints[index].propertyValue)
-              };
-
-
-              styleObj.style[continuousMapping.cssKey] = UtilityService.utilCalculateRelativeValue(inputMap);
-
-            } else if (continuousMapping.breakpoints[index] && continuousMapping.breakpoints[index].value > elementValue) {
-              // case 3: element lower than the current breakpoint =>
-              // calculate relative value between two breakpoints or lowest default and current breakpoint
-              let limitLow: NeThresholdMap;
-              if (index === 0) {
-                limitLow = {
-                  value: minPropertyValue,
-                  propertyValue: continuousMapping.defaultLower
-                };
-              } else {
-                limitLow = continuousMapping.breakpoints[index - 1];
-              }
-
-              const limitHigh = continuousMapping.breakpoints[index];
-              const inputMap: NeContinuousMap = {
-                inputValue: String(elementValue),
-                lowerThreshold: String(limitLow.value),
-                lower: String(limitLow.propertyValue),
-                greaterThreshold: String(limitHigh.value),
-                greater: String(limitHigh.propertyValue)
-              };
-
-              styleObj.style[continuousMapping.cssKey] = UtilityService.utilCalculateRelativeValue(inputMap);
-
-            } else if (index === continuousMapping.breakpoints.length && index > 0
-              && elementValue > continuousMapping.breakpoints[index - 1].value) {
-              // case 4: maxxed out index and elements value still greater => apply relatively greater
-              const inputMap: NeContinuousMap = {
-                inputValue: String(elementValue),
-                lowerThreshold: String(continuousMapping.breakpoints[index - 1].value),
-                lower: String(continuousMapping.breakpoints[index - 1].propertyValue),
-                greaterThreshold: String(maxPropertyValue),
-                greater: String(continuousMapping.defaultGreater)
-              };
-
-              styleObj.style[continuousMapping.cssKey] = UtilityService.utilCalculateRelativeValue(inputMap);
-
-            } else if (index === 0 && index === continuousMapping.breakpoints.length) {
-              const inputMap: NeContinuousMap = {
-                inputValue: String(elementValue),
-                lowerThreshold: String(minPropertyValue),
-                lower: String(continuousMapping.defaultLower),
-                greaterThreshold: String(maxPropertyValue),
-                greater: String(continuousMapping.defaultGreater)
-              };
-
-              styleObj.style[continuousMapping.cssKey] = UtilityService.utilCalculateRelativeValue(inputMap);
-            }
-
-            if (!style) {
-              styles.push(styleObj);
-            } else {
-              network.style = styles.filter(x => x !== style).concat(DataService.addPropertyToStyle(style, styleObj));
-            }
-          }
-        }
-      }
-    }
-    return elements;
-  }
-
-  /**
    * Removing a property from an existing mapping can only be executed for discrete mappings
    *
    * @param id The network's id
@@ -989,5 +860,132 @@ export class DataService {
         mappingToEdit, network, Number(mappingToEdit.mappedProperty.min), Number(mappingToEdit.mappedProperty.max));
 
     }
+  }
+
+  /**
+   * Updates all elements after adding a new continuous mapping or after editing an existing continuous mapping
+   *
+   * @param isNode true if elements are nodes
+   * @param continuousMapping new or existing continuous mapping
+   * @param network corresponding network
+   * @param minPropertyValue minimum of the element's attribute's values
+   * @param maxPropertyValue maximum of the elements's attribute's values
+   * @private
+   */
+  private updateElementsContinuously(
+    isNode: boolean,
+    continuousMapping: any,
+    network: NeNetwork,
+    minPropertyValue,
+    maxPropertyValue
+  ): ElementDefinition[] {
+
+    const styles: NeStyle[] = network.style;
+    const elements: ElementDefinition[] = network.elements;
+
+    for (const element of elements) {
+      if (isNode ? element.group === 'nodes' : element.group === 'edges') {
+        for (const attribute of element.data.attributes) {
+          if (attribute.keyHR === continuousMapping.mappedProperty.name) {
+            const elementValue = Number(attribute.valueHR);
+
+            let index = 0;
+            while (continuousMapping.breakpoints.length > index && continuousMapping.breakpoints[index].value < elementValue) {
+              index++;
+            }
+
+            const selector = ((isNode) ? '.node_' : '.edge_') + element.data.id;
+            const style = styles.find(x => x.selector === selector);
+
+            const tmpData = (isNode ? [element.data as NeNode] : [element.data as NeEdge]);
+
+            const styleObj: NeStyle = {
+              selector,
+              style: {},
+              appliedTo: tmpData,
+              priority: 2
+            };
+
+            if (!element.data.classes.includes(selector.substring(1))) {
+              element.data.classes.push(selector.substring(1));
+              element.classes = element.data.classes.join(' ');
+            }
+
+            if (continuousMapping.breakpoints[index] && continuousMapping.breakpoints[index].value === elementValue) {
+              // case 1: element hits breakpoint threshold => apply threshold value
+              styleObj.style[continuousMapping.cssKey] = continuousMapping.breakpoints[index].propertyValue;
+
+            } else if (index === 0 && continuousMapping.breakpoints[index] && continuousMapping.breakpoints[index].value > elementValue) {
+              // case 2: element is smaller than lowest threshold => apply relatively lower
+              const inputMap: NeContinuousMap = {
+                inputValue: String(elementValue),
+                lowerThreshold: String(minPropertyValue),
+                lower: continuousMapping.defaultLower,
+                greaterThreshold: String(continuousMapping.breakpoints[index].value),
+                greater: String(continuousMapping.breakpoints[index].propertyValue)
+              };
+
+
+              styleObj.style[continuousMapping.cssKey] = UtilityService.utilCalculateRelativeValue(inputMap);
+
+            } else if (continuousMapping.breakpoints[index] && continuousMapping.breakpoints[index].value > elementValue) {
+              // case 3: element lower than the current breakpoint =>
+              // calculate relative value between two breakpoints or lowest default and current breakpoint
+              let limitLow: NeThresholdMap;
+              if (index === 0) {
+                limitLow = {
+                  value: minPropertyValue,
+                  propertyValue: continuousMapping.defaultLower
+                };
+              } else {
+                limitLow = continuousMapping.breakpoints[index - 1];
+              }
+
+              const limitHigh = continuousMapping.breakpoints[index];
+              const inputMap: NeContinuousMap = {
+                inputValue: String(elementValue),
+                lowerThreshold: String(limitLow.value),
+                lower: String(limitLow.propertyValue),
+                greaterThreshold: String(limitHigh.value),
+                greater: String(limitHigh.propertyValue)
+              };
+
+              styleObj.style[continuousMapping.cssKey] = UtilityService.utilCalculateRelativeValue(inputMap);
+
+            } else if (index === continuousMapping.breakpoints.length && index > 0
+              && elementValue > continuousMapping.breakpoints[index - 1].value) {
+              // case 4: maxxed out index and elements value still greater => apply relatively greater
+              const inputMap: NeContinuousMap = {
+                inputValue: String(elementValue),
+                lowerThreshold: String(continuousMapping.breakpoints[index - 1].value),
+                lower: String(continuousMapping.breakpoints[index - 1].propertyValue),
+                greaterThreshold: String(maxPropertyValue),
+                greater: String(continuousMapping.defaultGreater)
+              };
+
+              styleObj.style[continuousMapping.cssKey] = UtilityService.utilCalculateRelativeValue(inputMap);
+
+            } else if (index === 0 && index === continuousMapping.breakpoints.length) {
+              const inputMap: NeContinuousMap = {
+                inputValue: String(elementValue),
+                lowerThreshold: String(minPropertyValue),
+                lower: String(continuousMapping.defaultLower),
+                greaterThreshold: String(maxPropertyValue),
+                greater: String(continuousMapping.defaultGreater)
+              };
+
+              styleObj.style[continuousMapping.cssKey] = UtilityService.utilCalculateRelativeValue(inputMap);
+            }
+
+            if (!style) {
+              styles.push(styleObj);
+            } else {
+              network.style = styles.filter(x => x !== style).concat(DataService.addPropertyToStyle(style, styleObj));
+            }
+          }
+        }
+      }
+    }
+    return elements;
   }
 }

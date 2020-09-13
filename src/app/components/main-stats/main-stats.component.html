@@ -10,31 +10,35 @@
       <h6>{{'MAIN_STATS_GRAPH_INFO_NODES' | translate}}: {{nodeCount}}</h6>
       <h6>{{'MAIN_STATS_GRAPH_INFO_EDGES' | translate}}: {{edgeCount}}</h6>
       <h6>{{'MAIN_STATS_GRAPH_INFO_CLASSES' | translate}}: {{styleCount}}</h6>
-      <a class="btn btn-block btn-outline-success mt-4" role="button"
-         data-toggle="tooltip" placement="bottom" ngbTooltip="{{'MAIN_STATS_TT_EDIT' | translate}}"
-         [routerLink]="['', { outlets: {primary: ['graph', selectedNetwork.id], sidebar: ['edit', selectedNetwork.id]} }]">
+      <a [routerLink]="['', { outlets: {primary: ['graph', selectedNetwork.id], sidebar: ['edit', selectedNetwork.id]} }]" class="btn btn-block btn-outline-success mt-4"
+         data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_EDIT' | translate}}" placement="bottom"
+         role="button">
         <fa-icon [icon]="faPaintBrush"></fa-icon>&nbsp;{{'MAIN_STATS_BTN_RENDER' | translate}}
       </a>
-      <a class="btn btn-block btn-outline-secondary mt-2" role="button"
-         data-toggle="tooltip" placement="bottom" ngbTooltip="{{'MAIN_STATS_TT_COMPARE' | translate}}"
-         [routerLink]="['', { outlets: {primary: ['graph', selectedNetwork.id], sidebar: ['compare', selectedNetwork.id]} }]">
+      <a [routerLink]="['', { outlets: {primary: ['graph', selectedNetwork.id], sidebar: ['compare', selectedNetwork.id]} }]" class="btn btn-block btn-outline-secondary mt-2"
+         data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_COMPARE' | translate}}" placement="bottom"
+         role="button">
         <fa-icon [icon]="faExchangeAlt"></fa-icon>&nbsp;{{'MAIN_STATS_BTN_COMPARE' | translate}}
       </a>
     </div>
-    <div class="col-9 card" *ngIf="selectedNetwork.networkInformation.rightsholder || selectedNetwork.networkInformation.networkType || selectedNetwork.networkInformation.organism || selectedNetwork.networkInformation.description">
+    <div *ngIf="selectedNetwork.networkInformation.rightsholder || selectedNetwork.networkInformation.networkType || selectedNetwork.networkInformation.organism || selectedNetwork.networkInformation.description"
+         class="col-9 card">
       <div class="card-body">
         <p *ngIf="selectedNetwork.networkInformation.rightsholder">
           <b [innerHTML]="">{{'MAIN_STATS_GRAPH_INFO_NW_RIGHTSHOLDER' | translate}}:</b>&nbsp;
           <span [innerHTML]="selectedNetwork.networkInformation.rightsholder"></span>
         </p>
         <p *ngIf="selectedNetwork.networkInformation.networkType">
-          <b>{{'MAIN_STATS_GRAPH_INFO_NW_TYPE' | translate}}:</b>&nbsp;<span [innerHTML]="selectedNetwork.networkInformation.networkType"></span>
+          <b>{{'MAIN_STATS_GRAPH_INFO_NW_TYPE' | translate}}:</b>&nbsp;<span
+          [innerHTML]="selectedNetwork.networkInformation.networkType"></span>
         </p>
         <p *ngIf="selectedNetwork.networkInformation.organism">
-          <b>{{'MAIN_STATS_GRAPH_INFO_NW_ORGANISM' | translate}}:</b>&nbsp;<span [innerHTML]="selectedNetwork.networkInformation.organism"></span>
+          <b>{{'MAIN_STATS_GRAPH_INFO_NW_ORGANISM' | translate}}:</b>&nbsp;<span
+          [innerHTML]="selectedNetwork.networkInformation.organism"></span>
         </p>
         <p *ngIf="selectedNetwork.networkInformation.description">
-          <b>{{'MAIN_STATS_GRAPH_INFO_NW_DESCRIPTION' | translate}}:</b>&nbsp;<span [innerHTML]="selectedNetwork.networkInformation.description"></span>
+          <b>{{'MAIN_STATS_GRAPH_INFO_NW_DESCRIPTION' | translate}}:</b>&nbsp;<span
+          [innerHTML]="selectedNetwork.networkInformation.description"></span>
         </p>
       </div>
     </div>
@@ -42,14 +46,16 @@
 
   <hr>
 
-  <h3 *ngIf="selectedNetwork.aspectKeyValuesNodes.length > 0">{{'MAIN_STATS_GRAPH_ATTRIBUTES_NODES_TITLE' | translate}}</h3>
+  <h3
+    *ngIf="selectedNetwork.aspectKeyValuesNodes.length > 0">{{'MAIN_STATS_GRAPH_ATTRIBUTES_NODES_TITLE' | translate}}</h3>
   <ul *ngIf="selectedNetwork.aspectKeyValuesNodes.length > 0">
     <li *ngFor="let aspect of selectedNetwork.aspectKeyValuesNodes">
       {{aspect.name}}
     </li>
   </ul>
 
-  <h3 *ngIf="selectedNetwork.aspectKeyValuesEdges.length > 0">{{'MAIN_STATS_GRAPH_ATTRIBUTES_EDGES_TITLE' | translate}}</h3>
+  <h3
+    *ngIf="selectedNetwork.aspectKeyValuesEdges.length > 0">{{'MAIN_STATS_GRAPH_ATTRIBUTES_EDGES_TITLE' | translate}}</h3>
   <ul *ngIf="selectedNetwork.aspectKeyValuesEdges.length > 0">
     <li *ngFor="let aspect of selectedNetwork.aspectKeyValuesEdges">
       {{aspect.name}}

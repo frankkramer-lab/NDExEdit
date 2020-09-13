@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {faThumbsUp, faUserGraduate, faComments, faTools} from '@fortawesome/free-solid-svg-icons';
+import {Component, OnInit} from '@angular/core';
+import {faComments, faThumbsUp, faTools, faUserGraduate} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-sidebar-compare',
@@ -36,7 +36,8 @@ export class SidebarCompareComponent implements OnInit {
    */
   faTools = faTools;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

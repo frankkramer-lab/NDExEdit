@@ -443,41 +443,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Basic init on creating a new discrete mapping
-   *
-   * @param baseType is either nd or ed and determines if a discrete node or edge mapping is to be added
-   * @private
-   */
-  private initDiscreteMapping(baseType: string): void {
-    for (const value of this.propertyToMap.values) {
-      const selector = '.' + (baseType.startsWith('n') ? 'node' : 'edge') + '_' + UtilityService.utilCleanString(this.propertyToMap.name) + '_' + UtilityService.utilCleanString(value);
-      const tmp: NeMappingsDefinition = {
-        col: UtilityService.utilCleanString(this.propertyToMap.name),
-        colHR: this.propertyToMap.name,
-        is: UtilityService.utilCleanString(value),
-        isHR: value,
-        selector,
-        cssKey: this.styleProperty,
-        cssValue: null,
-        priority: UtilityService.utilfindPriorityBySelector(selector),
-        datatype: null
-      };
-      this.discreteMapping.push(tmp);
-    }
-  }
-
-  /**
-   * Basic init on creating a continuous mapping
-   * @private
-   */
-  private initContinuousMapping(): void {
-    this.continuousMapping.defaultGreater = '';
-    this.continuousMapping.defaultLower = '';
-    this.continuousMapping.breakpoints = this.continuousThresholds;
-    this.continuousMapping.cssKey = '';
-  }
-
-  /**
    * Resets all input values within the form, except the color property
    */
   clearAllInputs(): void {
@@ -601,6 +566,41 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     } else {
       this.dataService.editMapping(this.selectedNetwork.id, this.continuousMapping, this.styleProperty, this.mappingsType);
     }
+  }
+
+  /**
+   * Basic init on creating a new discrete mapping
+   *
+   * @param baseType is either nd or ed and determines if a discrete node or edge mapping is to be added
+   * @private
+   */
+  private initDiscreteMapping(baseType: string): void {
+    for (const value of this.propertyToMap.values) {
+      const selector = '.' + (baseType.startsWith('n') ? 'node' : 'edge') + '_' + UtilityService.utilCleanString(this.propertyToMap.name) + '_' + UtilityService.utilCleanString(value);
+      const tmp: NeMappingsDefinition = {
+        col: UtilityService.utilCleanString(this.propertyToMap.name),
+        colHR: this.propertyToMap.name,
+        is: UtilityService.utilCleanString(value),
+        isHR: value,
+        selector,
+        cssKey: this.styleProperty,
+        cssValue: null,
+        priority: UtilityService.utilfindPriorityBySelector(selector),
+        datatype: null
+      };
+      this.discreteMapping.push(tmp);
+    }
+  }
+
+  /**
+   * Basic init on creating a continuous mapping
+   * @private
+   */
+  private initContinuousMapping(): void {
+    this.continuousMapping.defaultGreater = '';
+    this.continuousMapping.defaultLower = '';
+    this.continuousMapping.breakpoints = this.continuousThresholds;
+    this.continuousMapping.cssKey = '';
   }
 
 }

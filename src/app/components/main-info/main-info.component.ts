@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {faThumbsUp, faUserGraduate, faComments} from '@fortawesome/free-solid-svg-icons';
+import {faComments, faThumbsUp, faUserGraduate} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-main-info',

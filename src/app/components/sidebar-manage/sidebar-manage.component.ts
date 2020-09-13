@@ -22,12 +22,92 @@ import {NeAspect} from '../../models/ne-aspect';
 export class SidebarManageComponent {
 
   /**
+   * Icon: faPaintBrush
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faPaintBrush = faPaintBrush;
+  /**
+   * Icon: faInfo
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faInfo = faInfo;
+  /**
+   * Icon: faFileDownload
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faFileDownload = faFileDownload;
+  /**
+   * Icon: faSave
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faSave = faSave;
+  /**
+   * Icon: faFileExport
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faFileExport = faFileExport;
+  /**
+   * File from local computer to import
+   */
+  fileToUpload: File = null;
+  /**
+   * Link to NDEx network which is to be loaded
+   */
+  ndexLinkToUpload: string = null;
+  /**
+   * Boolean to disaply the file-is-too-large-alert
+   */
+  showFileSizeTooLargeAlert = false;
+  /**
+   * Boolean to display the file-size-ok-alert
+   */
+  showFileSizeOkAlert = false;
+  /**
+   * Boolean to display the file-extension-invalid-alert
+   */
+  showFileNotValidAlert = false;
+  /**
+   * Boolean to display the element-count-too-big-alert
+   */
+  showFileElementCountTooBig = false;
+  /**
+   * Boolean indicating if data is currently being loaded via HTTP
+   */
+  loadingHttp = false;
+  /**
+   * Boolean indicating if data is currently being loaded from a file
+   */
+  loadingFile = false;
+  /**
+   * Number of nodes
+   */
+  nodeCount = 0;
+  /**
+   * Number of edges
+   */
+  edgeCount = 0;
+  /**
+   * Limit of elements for each nodes or edges
+   */
+  elementLimit = 30000;
+  /**
+   * File size limit in MB
+   */
+  sizeLimit = 20;
+  /**
+   * Current file size
+   */
+  currentFileSize: number;
+  /**
+   * Current file extension
+   */
+  invalidExtension: string;
+  /**
    * Factor to display bytes as megabytes
    *
    * @private
    */
   private readonly megaFactor = 1000000;
-
   /**
    * Options required for HTTP requests to public NDEx API
    *
@@ -38,7 +118,6 @@ export class SidebarManageComponent {
       'Content-Type': 'application/json'
     })
   };
-
   /**
    * NDEx's public API endpoint
    * @private
@@ -52,106 +131,6 @@ export class SidebarManageComponent {
     private parseService: ParseService,
   ) {
   }
-
-  /**
-   * Icon: faPaintBrush
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faPaintBrush = faPaintBrush;
-
-  /**
-   * Icon: faInfo
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faInfo = faInfo;
-
-  /**
-   * Icon: faFileDownload
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faFileDownload = faFileDownload;
-
-  /**
-   * Icon: faSave
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faSave = faSave;
-
-  /**
-   * Icon: faFileExport
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faFileExport = faFileExport;
-
-  /**
-   * File from local computer to import
-   */
-  fileToUpload: File = null;
-
-  /**
-   * Link to NDEx network which is to be loaded
-   */
-  ndexLinkToUpload: string = null;
-
-  /**
-   * Boolean to disaply the file-is-too-large-alert
-   */
-  showFileSizeTooLargeAlert = false;
-
-  /**
-   * Boolean to display the file-size-ok-alert
-   */
-  showFileSizeOkAlert = false;
-
-  /**
-   * Boolean to display the file-extension-invalid-alert
-   */
-  showFileNotValidAlert = false;
-
-  /**
-   * Boolean to display the element-count-too-big-alert
-   */
-  showFileElementCountTooBig = false;
-
-  /**
-   * Boolean indicating if data is currently being loaded via HTTP
-   */
-  loadingHttp = false;
-
-  /**
-   * Boolean indicating if data is currently being loaded from a file
-   */
-  loadingFile = false;
-
-  /**
-   * Number of nodes
-   */
-  nodeCount = 0;
-
-  /**
-   * Number of edges
-   */
-  edgeCount = 0;
-
-  /**
-   * Limit of elements for each nodes or edges
-   */
-  elementLimit = 30000;
-
-  /**
-   * File size limit in MB
-   */
-  sizeLimit = 20;
-
-  /**
-   * Current file size
-   */
-  currentFileSize: number;
-
-  /**
-   * Current file extension
-   */
-  invalidExtension: string;
 
   /**
    * Collapsing a continuous mapping into the definition string which can be interpreted by NDEx
@@ -406,129 +385,6 @@ export class SidebarManageComponent {
   }
 
   /**
-   * Builds collections from existing discrete mappings to prepare building of definition string
-   *
-   * @param dMapping discrete mapping to be converted
-   * @private
-   */
-  private buildDiscreteMappingDefinition(dMapping: NeGroupedMappingsDiscrete): NeMappings[] {
-    const newMappings: NeMappings[] = [];
-    const col = dMapping.classifier;
-
-    for (const style of dMapping.styleMap) {
-      for (const val of style.cssValues) {
-        const property = {
-          key: style.cssKey,
-          value: val
-        };
-
-        const selector = style.selectors[style.cssValues.indexOf(val)];
-
-        for (const lookup of this.utilityService.lookup(property, selector, 'cytoscape', 'ndex')) {
-          const kCollection = [];
-          const vCollection = [];
-          const t = dMapping.datatype;
-
-          for (const value of dMapping.values) {
-            kCollection.push(value);
-            vCollection.push(style.cssValues[dMapping.values.indexOf(value)]);
-          }
-
-          const newMap: NeMappings = {
-            key: lookup.cssKey,
-            type: 'DISCRETE',
-            definition: SidebarManageComponent.collapseDiscreteMappingIntoString(col, t, kCollection, vCollection)
-          };
-
-          if (newMap.definition !== ''
-            && (!newMappings.map(x => x.key).includes(newMap.key)
-              || !newMappings.map(x => x.definition).includes(newMap.definition))) {
-            newMappings.push(newMap);
-          }
-        }
-      }
-    }
-    return newMappings;
-  }
-
-  /**
-   * Builds collections from existing continuous mappings to prepare building of definition string
-   *
-   * @param cMapping
-   * @param aspects
-   * @private
-   */
-  private buildContinuousMappingDefinition(cMapping: any, aspects: NeAspect[]): NeMappings[] {
-    const newMappings: NeMappings[] = [];
-    const col = cMapping.title[1];
-    let datatype = 'string';
-
-    for (const a of aspects) {
-      if (a.name === col && a.datatype !== null) {
-        datatype = a.datatype;
-        break;
-      }
-    }
-
-    for (const val of cMapping.values) {
-      const property = {
-        key: cMapping.title[0],
-        value: val
-      };
-
-      for (const lookup of this.utilityService.lookup(property, cMapping.selector, 'cytoscape', 'ndex')) {
-        if (cMapping.chartValid) {
-          const lCollection: string[] = [];
-          const eCollection: string[] = [];
-          const gCollection: string[] = [];
-          const ovCollection: string[] = [];
-          for (let i = 0; i < cMapping.chart.lineChartLabels.length; i++) {
-            ovCollection.push(cMapping.chart.lineChartLabels[i]);
-            lCollection.push(cMapping.chart.lineChartData[0].data[i]);
-            eCollection.push(cMapping.chart.lineChartData[0].data[i]);
-            gCollection.push(cMapping.chart.lineChartData[0].data[i]);
-          }
-
-          const defaultLower = cMapping.chart.lineChartData[0].data[0];
-          const defaultGreater = cMapping.chart.lineChartData[0].data[cMapping.chart.lineChartData[0].data.length - 1];
-
-          const newNumericMapping: NeMappings = {
-            key: lookup.cssKey,
-            type: 'CONTINUOUS',
-            definition: SidebarManageComponent.collapseContinuousMappingIntoString(col,
-              datatype, lCollection, eCollection, gCollection, ovCollection, defaultLower, defaultGreater)
-          };
-          newMappings.push(newNumericMapping);
-
-        } else if (cMapping.gradientValid) {
-          const lCollection: string[] = [];
-          const eCollection: string[] = [];
-          const gCollection: string[] = [];
-          const ovCollection: string[] = [];
-          for (const gradient of cMapping.colorGradient) {
-            ovCollection.push(gradient.numericThreshold);
-            lCollection.push(gradient.color);
-            eCollection.push(gradient.color);
-            gCollection.push(gradient.color);
-          }
-
-          const defaultLower = cMapping.colorGradient.find(x => x.offset === '-1').color;
-          const defaultGreater = cMapping.colorGradient.find(x => x.offset === '101').color;
-          const newColorMapping: NeMappings = {
-            key: lookup.cssKey,
-            type: 'CONTINUOUS',
-            definition: SidebarManageComponent.collapseContinuousMappingIntoString(col,
-              datatype, lCollection, eCollection, gCollection, ovCollection, defaultLower, defaultGreater),
-          };
-          newMappings.push(newColorMapping);
-        }
-      }
-    }
-
-    return newMappings;
-  }
-
-  /**
    * Adds a selected file from the local harddrive to the application, triggers its conversion and makes it displayable.
    */
   importLocalFile(): void {
@@ -689,5 +545,128 @@ export class SidebarManageComponent {
         this.showFileSizeOkAlert = false;
       }, 8000);
     }
+  }
+
+  /**
+   * Builds collections from existing discrete mappings to prepare building of definition string
+   *
+   * @param dMapping discrete mapping to be converted
+   * @private
+   */
+  private buildDiscreteMappingDefinition(dMapping: NeGroupedMappingsDiscrete): NeMappings[] {
+    const newMappings: NeMappings[] = [];
+    const col = dMapping.classifier;
+
+    for (const style of dMapping.styleMap) {
+      for (const val of style.cssValues) {
+        const property = {
+          key: style.cssKey,
+          value: val
+        };
+
+        const selector = style.selectors[style.cssValues.indexOf(val)];
+
+        for (const lookup of this.utilityService.lookup(property, selector, 'cytoscape', 'ndex')) {
+          const kCollection = [];
+          const vCollection = [];
+          const t = dMapping.datatype;
+
+          for (const value of dMapping.values) {
+            kCollection.push(value);
+            vCollection.push(style.cssValues[dMapping.values.indexOf(value)]);
+          }
+
+          const newMap: NeMappings = {
+            key: lookup.cssKey,
+            type: 'DISCRETE',
+            definition: SidebarManageComponent.collapseDiscreteMappingIntoString(col, t, kCollection, vCollection)
+          };
+
+          if (newMap.definition !== ''
+            && (!newMappings.map(x => x.key).includes(newMap.key)
+              || !newMappings.map(x => x.definition).includes(newMap.definition))) {
+            newMappings.push(newMap);
+          }
+        }
+      }
+    }
+    return newMappings;
+  }
+
+  /**
+   * Builds collections from existing continuous mappings to prepare building of definition string
+   *
+   * @param cMapping
+   * @param aspects
+   * @private
+   */
+  private buildContinuousMappingDefinition(cMapping: any, aspects: NeAspect[]): NeMappings[] {
+    const newMappings: NeMappings[] = [];
+    const col = cMapping.title[1];
+    let datatype = 'string';
+
+    for (const a of aspects) {
+      if (a.name === col && a.datatype !== null) {
+        datatype = a.datatype;
+        break;
+      }
+    }
+
+    for (const val of cMapping.values) {
+      const property = {
+        key: cMapping.title[0],
+        value: val
+      };
+
+      for (const lookup of this.utilityService.lookup(property, cMapping.selector, 'cytoscape', 'ndex')) {
+        if (cMapping.chartValid) {
+          const lCollection: string[] = [];
+          const eCollection: string[] = [];
+          const gCollection: string[] = [];
+          const ovCollection: string[] = [];
+          for (let i = 0; i < cMapping.chart.lineChartLabels.length; i++) {
+            ovCollection.push(cMapping.chart.lineChartLabels[i]);
+            lCollection.push(cMapping.chart.lineChartData[0].data[i]);
+            eCollection.push(cMapping.chart.lineChartData[0].data[i]);
+            gCollection.push(cMapping.chart.lineChartData[0].data[i]);
+          }
+
+          const defaultLower = cMapping.chart.lineChartData[0].data[0];
+          const defaultGreater = cMapping.chart.lineChartData[0].data[cMapping.chart.lineChartData[0].data.length - 1];
+
+          const newNumericMapping: NeMappings = {
+            key: lookup.cssKey,
+            type: 'CONTINUOUS',
+            definition: SidebarManageComponent.collapseContinuousMappingIntoString(col,
+              datatype, lCollection, eCollection, gCollection, ovCollection, defaultLower, defaultGreater)
+          };
+          newMappings.push(newNumericMapping);
+
+        } else if (cMapping.gradientValid) {
+          const lCollection: string[] = [];
+          const eCollection: string[] = [];
+          const gCollection: string[] = [];
+          const ovCollection: string[] = [];
+          for (const gradient of cMapping.colorGradient) {
+            ovCollection.push(gradient.numericThreshold);
+            lCollection.push(gradient.color);
+            eCollection.push(gradient.color);
+            gCollection.push(gradient.color);
+          }
+
+          const defaultLower = cMapping.colorGradient.find(x => x.offset === '-1').color;
+          const defaultGreater = cMapping.colorGradient.find(x => x.offset === '101').color;
+          const newColorMapping: NeMappings = {
+            key: lookup.cssKey,
+            type: 'CONTINUOUS',
+            definition: SidebarManageComponent.collapseContinuousMappingIntoString(col,
+              datatype, lCollection, eCollection, gCollection, ovCollection, defaultLower, defaultGreater),
+          };
+          newMappings.push(newColorMapping);
+        }
+      }
+    }
+
+    return newMappings;
   }
 }

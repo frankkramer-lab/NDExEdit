@@ -23,86 +23,51 @@ import {MainMappingsNewComponent} from '../main-mappings-new/main-mappings-new.c
 export class SidebarEditComponent implements AfterViewInit, OnDestroy {
 
   /**
-   * Ensures that only a graph is rendered if the id is specified within the URL
-   * @private
-   */
-  private readonly routerSubscription: Subscription;
-
-  /**
-   * Subscription to the event emitter of the component {@link MainMappingsComponent}
-   * @private
-   */
-  private mappingsSubscription: Subscription;
-
-  /**
-   * Subscription to the event emitter of the component {@link MainMappingsNewComponent}
-   * @private
-   */
-  private mappingsNewSubscription: Subscription;
-
-  /**
    * Icon: faPalette
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faPalette = faPalette;
-
   /**
    * Icon: faLightbulb
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faLightbulb = faLightbulb;
-
   /**
    * Selected network of type {@link NeNetwork|NeNetwork}
    */
   selectedNetwork: NeNetwork;
-
-  /**
-   * Checks if the view is initialized
-   * @private
-   */
-  private isInitialized = false;
-
   /**
    * CSS property which is mapped by {@link SidebarEditComponent#attribute|this attribute}
    */
   lookup: string;
-
   /**
    * attribute responsible for {@link SidebarEditComponent#lookup|this CSS property's} value
    */
   attribute: string;
-
   /**
    * Toggles displaying the comparison of multiple selected elements
    */
   showComparison = false;
-
   /**
    * Toggles displaying the chart for numeric continuous mappings
    */
   showChart = false;
-
   /**
    * Toggles displaying the color gradient for color based continuous mappings
    */
   showColorGradient = false;
-
   /**
    * Toggles displaying the checkbox where the labels may be toggled
    */
   showLabelCheckbox = true;
-
   /**
    * Default value for continuous mappings if less than 100% range is covered
    */
   gradientBackground = '';
-
   /**
    * Indicates which type of mapping is to be displayed
    */
   index = '';
-
   /**
    * chart data used to display numeric continuous mapping, initialized with default values.
    * See {@link ParseService#buildChartData} for more details
@@ -110,13 +75,11 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   lineChartData: ChartDataSets[] = [
     {data: [0], label: 'no data found'}
   ];
-
   /**
    * chart labels used to display numeric continuous mapping
    * See {@link ParseService#buildChartData} for more details
    */
   lineChartLabels: Label[] = [''];
-
   /**
    * chart cosmetics used to display numeric continuous mapping
    * See {@link ParseService#buildChartData} for more details
@@ -126,27 +89,43 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
       backgroundColor: 'rgba(255,0,0,0.4)',
     }
   ];
-
   /**
    * chart options used to display numeric continuous mapping
    * See {@link ParseService#buildChartData} for more details
    */
   lineChartOptions;
-
   /**
    * Default color for highlighting a lost node
    */
   highlightNodes = '';
-
   /**
    * Default color for highlighting a lost edge
    */
   highlightEdges = '';
-
   /**
    * Default duration for highlight a lost element, in milliseconds
    */
   highlightDuration = 2000;
+  /**
+   * Ensures that only a graph is rendered if the id is specified within the URL
+   * @private
+   */
+  private readonly routerSubscription: Subscription;
+  /**
+   * Subscription to the event emitter of the component {@link MainMappingsComponent}
+   * @private
+   */
+  private mappingsSubscription: Subscription;
+  /**
+   * Subscription to the event emitter of the component {@link MainMappingsNewComponent}
+   * @private
+   */
+  private mappingsNewSubscription: Subscription;
+  /**
+   * Checks if the view is initialized
+   * @private
+   */
+  private isInitialized = false;
 
   /**
    * Subscribes to graph id and renders the graph if the view is already initialized
