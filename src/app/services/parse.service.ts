@@ -1046,13 +1046,12 @@ export class ParseService {
     const equals = [];
     const greaters = [];
 
-
     for (const cs of commaSplit) {
 
       const equalSplit = cs.split('=');
       switch (equalSplit[0]) {
         case 'COL':
-          attribute = equalSplit[1];
+          attribute = UtilityService.utilCleanString(equalSplit[1]);
           break;
         case 'T':
           datatype = equalSplit[1];
@@ -1071,7 +1070,6 @@ export class ParseService {
           break;
       }
     }
-
     for (let th of thresholds) {
       if (th.includes('E')) {
         const eSplit = th.split('E');
@@ -1080,7 +1078,6 @@ export class ParseService {
     }
 
     const buildClasses: NeStyleComponent[] = [];
-
     outer: for (const element of data) {
 
       for (const elementAttribute of element.attributes) {
