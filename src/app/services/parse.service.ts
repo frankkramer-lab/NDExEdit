@@ -1263,7 +1263,7 @@ export class ParseService {
         },
         title: {
           display: false,
-          text: [attribute, lookup]
+          text: [lookup, attribute]
         },
         elements: {
           line: {
