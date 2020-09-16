@@ -1051,7 +1051,7 @@ export class ParseService {
       const equalSplit = cs.split('=');
       switch (equalSplit[0]) {
         case 'COL':
-          attribute = UtilityService.utilCleanString(equalSplit[1]);
+          attribute = equalSplit[1];
           break;
         case 'T':
           datatype = equalSplit[1];
@@ -1082,7 +1082,7 @@ export class ParseService {
 
       for (const elementAttribute of element.attributes) {
 
-        if (elementAttribute.key === attribute) {
+        if (elementAttribute.key === UtilityService.utilCleanString(attribute)) {
 
           let intervalPointer = -1;
 
