@@ -158,11 +158,11 @@
           <tbody>
           <tr *ngFor="let akv of selectedNetwork.aspectKeyValuesNodes; let akvIndex = index;">
             <td
-              *ngIf="akv.values.length !== akv.appliedTo.length && akv.datatype !== 'double' && akv.datatype !== 'integer'">
+              *ngIf="akv.values.length !== akv.appliedTo.length && akv.datatype !== 'double'">
               {{akv.name}}
             </td>
             <td
-              *ngIf="akv.values.length !== akv.appliedTo.length && akv.datatype !== 'double' && akv.datatype !== 'integer'"
+              *ngIf="akv.values.length !== akv.appliedTo.length && akv.datatype !== 'double'"
               class="float-right">
 
               <!-- mapping exists -->
@@ -191,7 +191,7 @@
                 </button>
               </span>
 
-              <button *ngIf="akv.datatype !== 'double' && akv.datatype !== 'integer'" [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'nd', akvIndex]} }]"
+              <button *ngIf="akv.datatype !== 'double'" [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'nd', akvIndex]} }]"
                       class="btn btn-outline-success ml-2"
                       data-toggle="tooltip"
                       ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"
@@ -216,11 +216,11 @@
           <tbody>
           <tr *ngFor="let akv of selectedNetwork.aspectKeyValuesEdges; let akvIndex = index;">
             <td
-              *ngIf="akv.values.length !== akv.appliedTo.length && akv.datatype !== 'double' && akv.datatype !== 'integer'">
+              *ngIf="akv.values.length !== akv.appliedTo.length && akv.datatype !== 'double'">
               {{akv.name}}
             </td>
             <td
-              *ngIf="akv.values.length !== akv.appliedTo.length && akv.datatype !== 'double' && akv.datatype !== 'integer'"
+              *ngIf="akv.values.length !== akv.appliedTo.length && akv.datatype !== 'double'"
               class="float-right">
 
               <!-- mapping exists -->
@@ -249,7 +249,7 @@
                 </button>
               </span>
 
-              <button *ngIf="akv.datatype !== 'double' && akv.datatype !== 'integer'" [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'ed', akvIndex]} }]"
+              <button *ngIf="akv.datatype !== 'double'" [routerLink]="['', { outlets: {primary: ['new', selectedNetwork.id, 'ed', akvIndex]} }]"
                       class="btn btn-outline-success ml-2"
                       data-toggle="tooltip"
                       ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"
