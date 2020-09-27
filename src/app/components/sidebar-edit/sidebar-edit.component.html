@@ -177,7 +177,7 @@
       </table>
 
       <ul *ngIf="selectedNetwork.mappings && selectedNetwork.mappings.nodesContinuous && selectedNetwork.mappings.nodesContinuous.length > 0"
-          class="list-group">
+          class="list-group mb-2">
       <span *ngFor="let nodeMap of selectedNetwork.mappings.nodesContinuous; let index = index">
         <li *ngIf="nodeMap.chartValid" class="list-group-item">
           <a (click)="displayMapping(nodeMap.chart, [], 'nc' + index)" role="button">
@@ -238,7 +238,7 @@
       </table>
 
       <ul *ngIf="selectedNetwork.mappings && selectedNetwork.mappings.edgesContinuous && selectedNetwork.mappings.edgesContinuous.length > 0"
-          class="list-group">
+          class="list-group mb-2">
       <span *ngFor="let edgeMap of selectedNetwork.mappings.edgesContinuous; let index = index">
         <li *ngIf="edgeMap.chartValid" class="list-group-item">
           <a (click)="displayMapping(edgeMap.chart, [], 'ec' + index)" role="button">
