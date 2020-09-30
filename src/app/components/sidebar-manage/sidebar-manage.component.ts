@@ -569,7 +569,7 @@ export class SidebarManageComponent {
         for (const lookup of this.utilityService.lookup(property, selector, 'cytoscape', 'ndex')) {
           const kCollection = [];
           const vCollection = [];
-          const t = dMapping.datatype;
+          const t = dMapping.datatype || 'string';
 
           for (const value of dMapping.values) {
             kCollection.push(value);
