@@ -925,12 +925,12 @@ export class DataService {
                 greater: String(continuousMapping.breakpoints[index].propertyValue)
               };
 
-
               styleObj.style[continuousMapping.cssKey] = UtilityService.utilCalculateRelativeValue(inputMap);
 
             } else if (continuousMapping.breakpoints[index] && continuousMapping.breakpoints[index].value > elementValue) {
               // case 3: element lower than the current breakpoint =>
               // calculate relative value between two breakpoints or lowest default and current breakpoint
+
               let limitLow: NeThresholdMap;
               if (index === 0) {
                 limitLow = {
@@ -955,6 +955,7 @@ export class DataService {
             } else if (index === continuousMapping.breakpoints.length && index > 0
               && elementValue > continuousMapping.breakpoints[index - 1].value) {
               // case 4: maxxed out index and elements value still greater => apply relatively greater
+
               const inputMap: NeContinuousMap = {
                 inputValue: String(elementValue),
                 lowerThreshold: String(continuousMapping.breakpoints[index - 1].value),
@@ -981,6 +982,7 @@ export class DataService {
               styles.push(styleObj);
             } else {
               network.style = styles.filter(x => x !== style).concat(DataService.addPropertyToStyle(style, styleObj));
+              network.style = UtilityService.utilOrderStylesByPriority(network.style);
             }
           }
         }
