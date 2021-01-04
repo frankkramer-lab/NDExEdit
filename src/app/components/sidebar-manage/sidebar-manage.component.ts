@@ -20,7 +20,6 @@ import {NeAspect} from '../../models/ne-aspect';
  * Component responsible for graph selection and file management
  */
 export class SidebarManageComponent {
-
   /**
    * Icon: faPaintBrush
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
@@ -669,4 +668,5 @@ export class SidebarManageComponent {
 
     return newMappings;
   }
+
 }

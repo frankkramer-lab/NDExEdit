@@ -1,10 +1,13 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
-import {NeNetwork} from '../../models/ne-network';
 import {faArrowLeft, faCheck, faEdit, faPlus, faSearch, faTimes, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {NeGroupedMappingsDiscrete} from '../../models/ne-grouped-mappings-discrete';
 import {NeMappingProperty} from '../../models/ne-mapping-property';
+import {NeMappingsType} from "../../models/ne-mappings-type";
+import {NeAspect} from "../../models/ne-aspect";
+import {UtilityService} from "../../services/utility.service";
+import {NeContinuousCollection} from "../../models/ne-continuous-collection";
 
 @Component({
   selector: 'app-main-mappings',
@@ -24,6 +27,7 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    *   <li>showLabelCheckbox</li>
    *   <li>showGradient</li>
    *   <li>showChart</li>
+   *   <li>clearSelection</li>
    * </ul>
    */
   @Output() static mappingsEmitter: EventEmitter<any> = new EventEmitter<any>();
@@ -71,10 +75,6 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    */
   showSingleDeletionDialogue = false;
   /**
-   * Selected network of type {@link NeNetwork|NeNetwork}
-   */
-  selectedNetwork: NeNetwork;
-  /**
    * Selected mapping which is displayed in the table at the top of the view
    */
   selectedMapping: NeGroupedMappingsDiscrete[] | any[];
@@ -114,21 +114,23 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
 
   /**
    * The URL rendering this view contains both the specified graph and a mapping whose details are displayed.
-   * Thus within the constructor both {@link MainMappingsComponent#selectedNetwork} and
+   * Thus within the constructor both {@link DataService#networkSelected} and
    * {@link MainMappingsComponent#selectedMapping} are set
    *
    * @param route Service to read URL
    * @param dataService Service to read and write to globally accessible data
+   * @param utilityService Service used to access shared code
    */
   constructor(
     private route: ActivatedRoute,
-    public dataService: DataService
+    public dataService: DataService,
+    public utilityService: UtilityService
   ) {
 
     this.route.paramMap.subscribe(params => {
       const networkId = params.get('id');
       if (networkId) {
-        this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
+        dataService.selectNetwork(Number(networkId));
         this.givenMapType = params.get('map').substring(0, 2);
         this.currentMappingId = params.get('map').substring(2).split('-');
         this.selectedMapping = [];
@@ -136,22 +138,22 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
         switch (this.givenMapType) {
           case 'ec':
             for (const mapIndex of this.currentMappingId) {
-              this.selectedMapping.push(this.selectedNetwork.mappings.edgesContinuous[mapIndex]);
+              this.selectedMapping.push(dataService.networkSelected.mappings.edgesContinuous[mapIndex]);
             }
             break;
           case 'nc':
             for (const mapIndex of this.currentMappingId) {
-              this.selectedMapping.push(this.selectedNetwork.mappings.nodesContinuous[mapIndex]);
+              this.selectedMapping.push(dataService.networkSelected.mappings.nodesContinuous[mapIndex]);
             }
             break;
           case 'ed':
             for (const mapIndex of this.currentMappingId) {
-              this.selectedMapping.push(this.selectedNetwork.mappings.edgesDiscrete[mapIndex]);
+              this.selectedMapping.push(dataService.networkSelected.mappings.edgesDiscrete[mapIndex]);
             }
             break;
           case 'nd':
             for (const mapIndex of this.currentMappingId) {
-              this.selectedMapping.push(this.selectedNetwork.mappings.nodesDiscrete[mapIndex]);
+              this.selectedMapping.push(dataService.networkSelected.mappings.nodesDiscrete[mapIndex]);
             }
             break;
           default:
@@ -165,7 +167,7 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    * On initialization the emitter informs its subscribers to hide the label checkbox to prevent unnecessary toggling
    */
   ngOnInit(): void {
-    MainMappingsComponent.mappingsEmitter.emit({showLabelCheckbox: false});
+    MainMappingsComponent.mappingsEmitter.emit({showLabelCheckbox: false, clearSelection: true});
   }
 
   /**
@@ -185,46 +187,46 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
   toggleGlobalRemoveDialogue(map: any = null, type: string = ''): void {
     switch (type) {
       case 'nd':
-        for (const akv of this.selectedNetwork.aspectKeyValuesNodes) {
+        for (const akv of this.dataService.networkSelected.aspectKeyValuesNodes) {
           if (akv.name === map.classifier) {
-            this.mappingToRemove.akvIndex = this.selectedNetwork.aspectKeyValuesNodes.indexOf(akv);
+            this.mappingToRemove.akvIndex = this.dataService.networkSelected.aspectKeyValuesNodes.indexOf(akv);
             break;
           }
         }
-        this.mappingToRemove.mappingId = this.selectedNetwork.mappings.nodesDiscrete.indexOf(map);
+        this.mappingToRemove.mappingId = this.dataService.networkSelected.mappings.nodesDiscrete.indexOf(map);
         break;
       case 'nc':
-        for (const akv of this.selectedNetwork.aspectKeyValuesNodes) {
+        for (const akv of this.dataService.networkSelected.aspectKeyValuesNodes) {
           if (akv.name === map.title[1]) {
-            this.mappingToRemove.akvIndex = this.selectedNetwork.aspectKeyValuesNodes.indexOf(akv);
+            this.mappingToRemove.akvIndex = this.dataService.networkSelected.aspectKeyValuesNodes.indexOf(akv);
             break;
           }
         }
-        this.mappingToRemove.mappingId = this.selectedNetwork.mappings.nodesContinuous.indexOf(map);
+        this.mappingToRemove.mappingId = this.dataService.networkSelected.mappings.nodesContinuous.indexOf(map);
         break;
       case 'ed':
-        for (const akv of this.selectedNetwork.aspectKeyValuesEdges) {
+        for (const akv of this.dataService.networkSelected.aspectKeyValuesEdges) {
           if (akv.name === map.classifier) {
-            this.mappingToRemove.akvIndex = this.selectedNetwork.aspectKeyValuesEdges.indexOf(akv);
+            this.mappingToRemove.akvIndex = this.dataService.networkSelected.aspectKeyValuesEdges.indexOf(akv);
             break;
           }
         }
-        this.mappingToRemove.mappingId = this.selectedNetwork.mappings.edgesDiscrete.indexOf(map);
+        this.mappingToRemove.mappingId = this.dataService.networkSelected.mappings.edgesDiscrete.indexOf(map);
         break;
       case 'ec':
-        for (const akv of this.selectedNetwork.aspectKeyValuesEdges) {
+        for (const akv of this.dataService.networkSelected.aspectKeyValuesEdges) {
           if (akv.name === map.title[1]) {
-            this.mappingToRemove.akvIndex = this.selectedNetwork.aspectKeyValuesEdges.indexOf(akv);
+            this.mappingToRemove.akvIndex = this.dataService.networkSelected.aspectKeyValuesEdges.indexOf(akv);
             break;
           }
         }
-        this.mappingToRemove.mappingId = this.selectedNetwork.mappings.edgesContinuous.indexOf(map);
+        this.mappingToRemove.mappingId = this.dataService.networkSelected.mappings.edgesContinuous.indexOf(map);
         break;
     }
     this.showGlobalDeletionDialogue = !this.showGlobalDeletionDialogue;
     this.mappingToRemove.map = map;
     this.mappingToRemove.type = type;
-    this.mappingToRemove.network = this.selectedNetwork.id;
+    this.mappingToRemove.network = this.dataService.networkSelected.id;
   }
 
   /**
@@ -247,19 +249,19 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
     }
     switch (mapType) {
       case 'nd':
-        this.propertyToRemove.mapReference = this.selectedNetwork.mappings.nodesDiscrete.indexOf(map);
+        this.propertyToRemove.mapReference = this.dataService.networkSelected.mappings.nodesDiscrete.indexOf(map);
         this.showSingleDeletionDialogue = true;
         break;
       case 'nc':
-        this.propertyToRemove.mapReference = this.selectedNetwork.mappings.nodesContinuous.indexOf(map);
+        this.propertyToRemove.mapReference = this.dataService.networkSelected.mappings.nodesContinuous.indexOf(map);
         this.showSingleDeletionDialogue = true;
         break;
       case 'ed':
-        this.propertyToRemove.mapReference = this.selectedNetwork.mappings.edgesDiscrete.indexOf(map);
+        this.propertyToRemove.mapReference = this.dataService.networkSelected.mappings.edgesDiscrete.indexOf(map);
         this.showSingleDeletionDialogue = true;
         break;
       case 'ec':
-        this.propertyToRemove.mapReference = this.selectedNetwork.mappings.edgesContinuous.indexOf(map);
+        this.propertyToRemove.mapReference = this.dataService.networkSelected.mappings.edgesContinuous.indexOf(map);
         this.showSingleDeletionDialogue = true;
         break;
       default:
@@ -303,7 +305,7 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
         break;
       case 'single':
         if (confirmation) {
-          this.dataService.removePropertyFromMapping(this.selectedNetwork.id, this.propertyToRemove);
+          this.dataService.removePropertyFromMapping(this.dataService.networkSelected.id, this.propertyToRemove);
           this.propertyToRemove = {
             mapReference: -1,
             attributeName: '',
@@ -314,5 +316,51 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
         this.toggleSingleRemoveDialogue();
         break;
     }
+  }
+
+  /**
+   * Fetches a list of attributes, which can be used to create a mapping of the specified type for the currently selected network.
+   *
+   * @param s Can either be 'nd', 'nc', 'ed' or 'ec'
+   */
+  public getAttributeListForCurrentNetworkAndType(s: string): NeAspect[] {
+    const typeHint: NeMappingsType = this.utilityService.getTypeHintByString(s);
+    let availableAttributes: NeAspect[];
+
+    if (typeHint.ec || typeHint.ed) {
+      availableAttributes = this.dataService.networkSelected.aspectKeyValuesEdges;
+    } else {
+      availableAttributes = this.dataService.networkSelected.aspectKeyValuesNodes;
+    }
+
+    if (typeHint.ec || typeHint.nc) {
+      availableAttributes = availableAttributes.filter(a => a.datatype === 'integer' || a.datatype === 'float' || a.datatype === 'double');
+    } else {
+      availableAttributes = availableAttributes.filter(a => a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
+    }
+
+    return availableAttributes;
+  }
+
+  /**
+   * Fetches already existing mappings of the specified type and currently selected network.
+   *
+   * @param s Can either be 'nd', 'nc', 'ed' or 'ec'
+   */
+  public getExistingMappingListForCurrentNetworkAndType(s: string): NeContinuousCollection[] | NeGroupedMappingsDiscrete[] {
+    const typeHint: NeMappingsType = this.utilityService.getTypeHintByString(s);
+    const availableMappings = this.dataService.networkSelected.mappings;
+
+    if (typeHint.nd) {
+      return availableMappings.nodesDiscrete;
+    } else if (typeHint.nc) {
+      return availableMappings.nodesContinuous;
+    } else if (typeHint.ed) {
+      return availableMappings.edgesDiscrete;
+    } else if (typeHint.ec) {
+      return availableMappings.edgesContinuous;
+    }
+
+    return [];
   }
 }

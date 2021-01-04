@@ -14,6 +14,8 @@ export interface NeContinuousCollection {
 
   /**
    * Values of this continuous mapping
+   * todo needs further research, possibly couple with refactoring MainMappingsComponent
+   * todo sometimes string array is used, needs consolidation
    */
   values?: NeStyleComponent[];
 

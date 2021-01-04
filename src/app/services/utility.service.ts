@@ -4,6 +4,7 @@ import {NeStyleComponent} from '../models/ne-style-component';
 import {NeContinuousMap} from '../models/ne-continuous-map';
 import {NeConversionMap} from '../models/ne-conversion-map';
 import {HttpClient} from '@angular/common/http';
+import {NeMappingsType} from '../models/ne-mappings-type';
 
 @Injectable({
   providedIn: 'root'
@@ -338,4 +339,49 @@ export class UtilityService {
     return mappedKeys;
   }
 
+  /**
+   * Consolidating type hints for each kind of mapping by using a model.
+   * In context of e.g. routing there is still a lot of string usage.
+   * This method will hopefully ease the transition to model standardization.
+   * @param s Can either be 'nd', 'nc', 'ed' or 'ec'
+   */
+  getTypeHintByString(s: string): NeMappingsType {
+    switch (s) {
+      case 'nd':
+        return {
+          nd: true,
+          nc: false,
+          ed: false,
+          ec: false
+        };
+      case 'nc':
+        return {
+          nd: false,
+          nc: true,
+          ed: false,
+          ec: false
+        };
+      case 'ed':
+        return {
+          nd: false,
+          nc: false,
+          ed: true,
+          ec: false
+        };
+      case 'ec':
+        return {
+          nd: false,
+          nc: false,
+          ed: false,
+          ec: true
+        };
+      default:
+        return {
+          nd: false,
+          nc: false,
+          ed: false,
+          ec: false
+        };
+    }
+  }
 }

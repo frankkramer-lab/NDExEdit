@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {faComments, faThumbsUp, faUserGraduate} from '@fortawesome/free-solid-svg-icons';
+import {DataService} from "../../services/data.service";
 
 @Component({
   selector: 'app-main-info',
@@ -30,7 +31,7 @@ export class MainInfoComponent {
    */
   faComments = faComments;
 
-  constructor() {
+  constructor(public dataService: DataService) {
 
   }
 

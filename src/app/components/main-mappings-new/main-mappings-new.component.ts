@@ -1,5 +1,4 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
-import {NeNetwork} from '../../models/ne-network';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
 import {
@@ -92,11 +91,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faRoute = faRoute;
-
-  /**
-   * The selected network of type {@link NeNetwork}
-   */
-  selectedNetwork: NeNetwork;
 
   /**
    * Property for which a mapping is to be added
@@ -195,7 +189,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
       const networkId = params.get('id');
 
       if (map && networkId) {
-        this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(networkId));
+        dataService.selectNetwork(Number(networkId));
         this.currentMappingId = map.substring(2);
         const mapType = map.substring(0, 2);
         switch (mapType) {
@@ -230,9 +224,9 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
           const propertyPointer = params.get('property');
 
           if (mapType.startsWith('n')) {
-            this.propertyToMap = this.selectedNetwork.aspectKeyValuesNodes[propertyPointer];
+            this.propertyToMap = dataService.networkSelected.aspectKeyValuesNodes[propertyPointer];
           } else {
-            this.propertyToMap = this.selectedNetwork.aspectKeyValuesEdges[propertyPointer];
+            this.propertyToMap = dataService.networkSelected.aspectKeyValuesEdges[propertyPointer];
           }
 
           if (mapType.endsWith('c')) {
@@ -256,28 +250,28 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
           switch (mapType) {
             case 'nd':
               propertyId = params.get('propertyId');
-              existingMapping = this.selectedNetwork.mappings.nodesDiscrete[mapId];
-              this.propertyToMap = this.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === existingMapping.classifier);
+              existingMapping = dataService.networkSelected.mappings.nodesDiscrete[mapId];
+              this.propertyToMap = dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === existingMapping.classifier);
               this.styleProperty = existingMapping.styleMap[propertyId].cssKey;
               this.prefillDiscreteMapping(existingMapping, Number(propertyId), true);
               break;
             case 'nc':
-              existingMapping = this.selectedNetwork.mappings.nodesContinuous[mapId];
-              this.propertyToMap = this.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === existingMapping.title[1]);
+              existingMapping = dataService.networkSelected.mappings.nodesContinuous[mapId];
+              this.propertyToMap = dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === existingMapping.title[1]);
               this.styleProperty = existingMapping.title[0];
               this.prefillContinuousMapping(existingMapping);
 
               break;
             case 'ed':
               propertyId = params.get('propertyId');
-              existingMapping = this.selectedNetwork.mappings.edgesDiscrete[mapId];
-              this.propertyToMap = this.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === existingMapping.classifier);
+              existingMapping = dataService.networkSelected.mappings.edgesDiscrete[mapId];
+              this.propertyToMap = dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === existingMapping.classifier);
               this.styleProperty = existingMapping.styleMap[propertyId].cssKey;
               this.prefillDiscreteMapping(existingMapping, Number(propertyId), false);
               break;
             case 'ec':
-              existingMapping = this.selectedNetwork.mappings.edgesContinuous[mapId];
-              this.propertyToMap = this.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === existingMapping.title[1]);
+              existingMapping = dataService.networkSelected.mappings.edgesContinuous[mapId];
+              this.propertyToMap = dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === existingMapping.title[1]);
               this.styleProperty = existingMapping.title[0];
               this.prefillContinuousMapping(existingMapping);
 
@@ -324,9 +318,9 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     if (mapping.chartValid) {
       let mappedProperty;
       if (this.mappingsType.nc) {
-        mappedProperty = this.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === mapping.title[1]);
+        mappedProperty = this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === mapping.title[1]);
       } else if (this.mappingsType.ec) {
-        mappedProperty = this.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === mapping.title[1]);
+        mappedProperty = this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === mapping.title[1]);
       }
 
       for (const label of mapping.chart.lineChartLabels) {
@@ -350,9 +344,9 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
 
       let mappedProperty;
       if (this.mappingsType.nc) {
-        mappedProperty = this.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === mapping.title[1]);
+        mappedProperty = this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === mapping.title[1]);
       } else if (this.mappingsType.ec) {
-        mappedProperty = this.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === mapping.title[1]);
+        mappedProperty = this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === mapping.title[1]);
       }
 
       for (const color of mapping.colorGradient) {
@@ -385,8 +379,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   prefillDiscreteMapping(mapping: NeGroupedMappingsDiscrete, propertyId: number, isNode: boolean): void {
     this.discreteMapping = [];
     const correspondingAkv = (isNode
-      ? this.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === mapping.classifier)
-      : this.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === mapping.classifier));
+      ? this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === mapping.classifier)
+      : this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === mapping.classifier));
 
     for (const selector of mapping.styleMap[propertyId].selectors) {
       const mapObj: NeMappingsDefinition = {
@@ -486,7 +480,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         entry.cssValue = '';
       }
     }
-    this.dataService.addMappingDiscrete(this.selectedNetwork.id, this.mappingsType.nd, this.discreteMapping);
+    this.dataService.addMappingDiscrete(this.dataService.networkSelected.id, this.mappingsType.nd, this.discreteMapping);
 
   }
 
@@ -506,7 +500,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     this.continuousMapping.breakpoints = this.continuousMapping.breakpoints.filter(x => x.value !== null);
     this.continuousMapping.breakpoints = this.continuousMapping.breakpoints.sort((a, b) => (a.value < b.value ? -1 : 1));
 
-    this.dataService.addMappingContinuous(this.selectedNetwork.id, this.mappingsType.nc, this.continuousMapping);
+    this.dataService.addMappingContinuous(this.dataService.networkSelected.id, this.mappingsType.nc, this.continuousMapping);
   }
 
   /**
@@ -518,23 +512,23 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
 
     switch (mappingType) {
       case 'nd':
-        for (const nodeMap of this.selectedNetwork.mappings.nodesDiscrete) {
+        for (const nodeMap of this.dataService.networkSelected.mappings.nodesDiscrete) {
           if (nodeMap.classifier === this.propertyToMap.name) {
-            return String(this.selectedNetwork.mappings.nodesDiscrete.indexOf(nodeMap));
+            return String(this.dataService.networkSelected.mappings.nodesDiscrete.indexOf(nodeMap));
           }
         }
-        return String(this.selectedNetwork.mappings.nodesDiscrete.length);
+        return String(this.dataService.networkSelected.mappings.nodesDiscrete.length);
       case 'nc':
-        return this.selectedNetwork.mappings.nodesContinuous.length;
+        return String(this.dataService.networkSelected.mappings.nodesContinuous.length);
       case 'ed':
-        for (const edgeMap of this.selectedNetwork.mappings.edgesDiscrete) {
+        for (const edgeMap of this.dataService.networkSelected.mappings.edgesDiscrete) {
           if (edgeMap.classifier === this.propertyToMap.name) {
-            return String(this.selectedNetwork.mappings.edgesDiscrete.indexOf(edgeMap));
+            return String(this.dataService.networkSelected.mappings.edgesDiscrete.indexOf(edgeMap));
           }
         }
-        return String(this.selectedNetwork.mappings.edgesDiscrete.length);
+        return String(this.dataService.networkSelected.mappings.edgesDiscrete.length);
       case 'ec':
-        return this.selectedNetwork.mappings.edgesContinuous.length;
+        return String(this.dataService.networkSelected.mappings.edgesContinuous.length);
     }
     return String(-1);
   }
@@ -567,9 +561,9 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   editMapping(): void {
     if (this.mappingsType.nd || this.mappingsType.ed) {
-      this.dataService.editMapping(this.selectedNetwork.id, this.discreteMapping, this.styleProperty, this.mappingsType);
+      this.dataService.editMapping(this.dataService.networkSelected.id, this.discreteMapping, this.styleProperty, this.mappingsType);
     } else {
-      this.dataService.editMapping(this.selectedNetwork.id, this.continuousMapping, this.styleProperty, this.mappingsType);
+      this.dataService.editMapping(this.dataService.networkSelected.id, this.continuousMapping, this.styleProperty, this.mappingsType);
     }
   }
 

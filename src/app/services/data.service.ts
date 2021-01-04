@@ -35,6 +35,10 @@ export class DataService {
    */
   networksDownloaded: any[] = [];
   /**
+   * Selected network of type {@link NeNetwork|NeNetwork}
+   */
+  networkSelected: NeNetwork;
+  /**
    * List of known color properties, mainly used for color previews within {@link MainMappingsNewComponent}
    */
   colorProperties: string[] = [
@@ -143,6 +147,15 @@ export class DataService {
       existingStyle.style[k] = styleObj.style[k];
     }
     return existingStyle;
+  }
+
+  /**
+   * Selecting a network
+   *
+   * @param networkId
+   */
+  public selectNetwork(networkId: number): void {
+    this.networkSelected = this.networksParsed.find(x => x.id === networkId);
   }
 
   /**
@@ -471,8 +484,10 @@ export class DataService {
         gradientValid: true,
         displayChart: false,
         title: lowest.title,
-        values: continuousMapping.mappedProperty.values
+        values: continuousMapping.mappedProperty.values // need to be NeStyleComponent[]
       };
+
+      console.log(finalizedMapping);
 
       if (isNode) {
         network.mappings.nodesContinuous = network.mappings.nodesContinuous.concat([finalizedMapping]);

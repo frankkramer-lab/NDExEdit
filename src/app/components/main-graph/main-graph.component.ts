@@ -1,5 +1,4 @@
 import {AfterViewInit, Component, OnDestroy, Renderer2} from '@angular/core';
-import {NeNetwork} from '../../models/ne-network';
 import {DataService} from '../../services/data.service';
 import {GraphService} from '../../services/graph.service';
 import {Subscription} from 'rxjs';
@@ -16,10 +15,6 @@ import {ActivatedRoute} from '@angular/router';
  */
 export class MainGraphComponent implements AfterViewInit, OnDestroy {
 
-  /**
-   * Selected network of type {@link NeNetwork|NeNetwork}
-   */
-  selectedNetwork: NeNetwork;
   /**
    * Contains DOM element for {@link https://js.cytoscape.org/|Cytoscape.js}
    */
@@ -57,7 +52,7 @@ export class MainGraphComponent implements AfterViewInit, OnDestroy {
     this.subscription = this.route.paramMap.subscribe(params => {
       const networkId = params.get('id');
       if (networkId) {
-        this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(networkId));
+        dataService.selectNetwork(Number(networkId));
       }
 
       if (this.isInitialized) {
@@ -93,10 +88,10 @@ export class MainGraphComponent implements AfterViewInit, OnDestroy {
    */
   private renderGraph(): void {
     this.cyContainer = this.renderer.selectRootElement('#cy');
-    this.graphService.render(this.cyContainer, this.selectedNetwork);
-    this.graphService.toggleLabels(this.selectedNetwork.showLabels);
+    this.graphService.render(this.cyContainer, this.dataService.networkSelected);
+    this.graphService.toggleLabels(this.dataService.networkSelected.showLabels);
 
-    console.log(this.selectedNetwork);
+    console.log(this.dataService.networkSelected);
   }
 
 }

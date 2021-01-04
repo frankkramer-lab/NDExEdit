@@ -143,7 +143,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     this.routerSubscription = this.route.paramMap.subscribe(params => {
       const networkId = params.get('id');
       if (networkId) {
-        this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
+        dataService.selectNetwork(Number(networkId));
         this.initColorHighlighting();
       }
     });
@@ -163,7 +163,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    */
   ngAfterViewInit(): void {
     this.isInitialized = true;
-    this.graphService.toggleLabels(this.selectedNetwork.showLabels);
+    this.graphService.toggleLabels(this.dataService.networkSelected.showLabels);
   }
 
   /**
@@ -205,6 +205,10 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     if (data.showChart !== null) {
       this.showChart = data.showChart;
     }
+    if (data.clearSelection !== null) {
+      this.graphService.selectedElements.nodes = [];
+      this.graphService.selectedElements.edges = [];
+    }
   }
 
   /**
@@ -213,7 +217,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    */
   toggleLabels(show: boolean): void {
     this.graphService.toggleLabels(show);
-    this.selectedNetwork.showLabels = show;
+    this.dataService.networkSelected.showLabels = show;
   }
 
   /**
@@ -301,8 +305,8 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
       'source-arrow-color': highlightEdges,
       'target-arrow-color': highlightEdges
     };
-    const styleIndex = this.selectedNetwork.style.findIndex(x => x.selector === '.custom_highlight_color');
-    this.selectedNetwork.style[styleIndex].style = colorStyle;
+    const styleIndex = this.dataService.networkSelected.style.findIndex(x => x.selector === '.custom_highlight_color');
+    this.dataService.networkSelected.style[styleIndex].style = colorStyle;
   }
 
   /**
@@ -310,7 +314,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * @private
    */
   private initColorHighlighting(): void {
-    const colorStyle = this.selectedNetwork.style.find(x => x.selector === '.custom_highlight_color');
+    const colorStyle = this.dataService.networkSelected.style.find(x => x.selector === '.custom_highlight_color');
     if (colorStyle) {
       this.highlightNodes = colorStyle.style['background-color'];
       this.highlightEdges = colorStyle.style['line-color'];

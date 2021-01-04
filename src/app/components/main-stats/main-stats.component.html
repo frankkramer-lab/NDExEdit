@@ -1,44 +1,49 @@
-<ng-container *ngIf="selectedNetwork">
+<ng-container *ngIf="dataService.networkSelected">
   <h1>{{'MAIN_STATS_TITLE' | translate}}</h1>
 
   <hr>
 
-  <h3>{{'MAIN_STATS_GRAPH_INFO_TITLE' | translate}} "{{selectedNetwork.networkInformation.name}}"</h3>
+  <h3>{{'MAIN_STATS_GRAPH_INFO_TITLE' | translate}} "{{dataService.networkSelected.networkInformation.name}}"</h3>
 
   <div class="row mt-3 p-2">
     <div class="col-3">
       <h6>{{'MAIN_STATS_GRAPH_INFO_NODES' | translate}}: {{nodeCount}}</h6>
       <h6>{{'MAIN_STATS_GRAPH_INFO_EDGES' | translate}}: {{edgeCount}}</h6>
       <h6>{{'MAIN_STATS_GRAPH_INFO_CLASSES' | translate}}: {{styleCount}}</h6>
-      <a [routerLink]="['', { outlets: {primary: ['graph', selectedNetwork.id], sidebar: ['edit', selectedNetwork.id]} }]" class="btn btn-block btn-outline-success mt-4"
-         data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_EDIT' | translate}}" placement="bottom"
-         role="button">
+      <a
+        [routerLink]="['', { outlets: {primary: ['graph', dataService.networkSelected.id], sidebar: ['edit', dataService.networkSelected.id]} }]"
+        class="btn btn-block btn-outline-success mt-4"
+        data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_EDIT' | translate}}" placement="bottom"
+        role="button">
         <fa-icon [icon]="faPaintBrush"></fa-icon>&nbsp;{{'MAIN_STATS_BTN_RENDER' | translate}}
       </a>
-      <a [routerLink]="['', { outlets: {primary: ['graph', selectedNetwork.id], sidebar: ['compare', selectedNetwork.id]} }]" class="btn btn-block btn-outline-secondary mt-2"
-         data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_COMPARE' | translate}}" placement="bottom"
-         role="button">
+      <a
+        [routerLink]="['', { outlets: {primary: ['graph', dataService.networkSelected.id], sidebar: ['compare', dataService.networkSelected.id]} }]"
+        class="btn btn-block btn-outline-secondary mt-2"
+        data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_COMPARE' | translate}}" placement="bottom"
+        role="button">
         <fa-icon [icon]="faExchangeAlt"></fa-icon>&nbsp;{{'MAIN_STATS_BTN_COMPARE' | translate}}
       </a>
     </div>
-    <div *ngIf="selectedNetwork.networkInformation.rightsholder || selectedNetwork.networkInformation.networkType || selectedNetwork.networkInformation.organism || selectedNetwork.networkInformation.description"
-         class="col-9 card">
+    <div
+      *ngIf="dataService.networkSelected.networkInformation.rightsholder || dataService.networkSelected.networkInformation.networkType || dataService.networkSelected.networkInformation.organism || dataService.networkSelected.networkInformation.description"
+      class="col-9 card">
       <div class="card-body">
-        <p *ngIf="selectedNetwork.networkInformation.rightsholder">
+        <p *ngIf="dataService.networkSelected.networkInformation.rightsholder">
           <b [innerHTML]="">{{'MAIN_STATS_GRAPH_INFO_NW_RIGHTSHOLDER' | translate}}:</b>&nbsp;
-          <span [innerHTML]="selectedNetwork.networkInformation.rightsholder"></span>
+          <span [innerHTML]="dataService.networkSelected.networkInformation.rightsholder"></span>
         </p>
-        <p *ngIf="selectedNetwork.networkInformation.networkType">
+        <p *ngIf="dataService.networkSelected.networkInformation.networkType">
           <b>{{'MAIN_STATS_GRAPH_INFO_NW_TYPE' | translate}}:</b>&nbsp;<span
-          [innerHTML]="selectedNetwork.networkInformation.networkType"></span>
+          [innerHTML]="dataService.networkSelected.networkInformation.networkType"></span>
         </p>
-        <p *ngIf="selectedNetwork.networkInformation.organism">
+        <p *ngIf="dataService.networkSelected.networkInformation.organism">
           <b>{{'MAIN_STATS_GRAPH_INFO_NW_ORGANISM' | translate}}:</b>&nbsp;<span
-          [innerHTML]="selectedNetwork.networkInformation.organism"></span>
+          [innerHTML]="dataService.networkSelected.networkInformation.organism"></span>
         </p>
-        <p *ngIf="selectedNetwork.networkInformation.description">
+        <p *ngIf="dataService.networkSelected.networkInformation.description">
           <b>{{'MAIN_STATS_GRAPH_INFO_NW_DESCRIPTION' | translate}}:</b>&nbsp;<span
-          [innerHTML]="selectedNetwork.networkInformation.description"></span>
+          [innerHTML]="dataService.networkSelected.networkInformation.description"></span>
         </p>
       </div>
     </div>
@@ -47,22 +52,23 @@
   <hr>
 
   <h3
-    *ngIf="selectedNetwork.aspectKeyValuesNodes.length > 0">{{'MAIN_STATS_GRAPH_ATTRIBUTES_NODES_TITLE' | translate}}</h3>
-  <ul *ngIf="selectedNetwork.aspectKeyValuesNodes.length > 0">
-    <li *ngFor="let aspect of selectedNetwork.aspectKeyValuesNodes">
+    *ngIf="dataService.networkSelected.aspectKeyValuesNodes.length > 0">{{'MAIN_STATS_GRAPH_ATTRIBUTES_NODES_TITLE' | translate}}</h3>
+  <ul *ngIf="dataService.networkSelected.aspectKeyValuesNodes.length > 0">
+    <li *ngFor="let aspect of dataService.networkSelected.aspectKeyValuesNodes">
       {{aspect.name}}
     </li>
   </ul>
 
   <h3
-    *ngIf="selectedNetwork.aspectKeyValuesEdges.length > 0">{{'MAIN_STATS_GRAPH_ATTRIBUTES_EDGES_TITLE' | translate}}</h3>
-  <ul *ngIf="selectedNetwork.aspectKeyValuesEdges.length > 0">
-    <li *ngFor="let aspect of selectedNetwork.aspectKeyValuesEdges">
+    *ngIf="dataService.networkSelected.aspectKeyValuesEdges.length > 0">{{'MAIN_STATS_GRAPH_ATTRIBUTES_EDGES_TITLE' | translate}}</h3>
+  <ul *ngIf="dataService.networkSelected.aspectKeyValuesEdges.length > 0">
+    <li *ngFor="let aspect of dataService.networkSelected.aspectKeyValuesEdges">
       {{aspect.name}}
     </li>
   </ul>
 
-  <hr *ngIf="selectedNetwork.aspectKeyValuesNodes.length > 0 || selectedNetwork.aspectKeyValuesEdges.length > 0">
+  <hr
+    *ngIf="dataService.networkSelected.aspectKeyValuesNodes.length > 0 || dataService.networkSelected.aspectKeyValuesEdges.length > 0">
 
 </ng-container>
 

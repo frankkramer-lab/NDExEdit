@@ -6,12 +6,14 @@
     <tr *ngFor="let network of dataService.networksParsed" class="border-bottom">
       <td class="text-left">{{network.networkInformation.name}}</td>
       <td class="text-nowrap text-right">
-        <a [routerLink]="['', { outlets: {primary: ['stats', network.id]} }]" class="btn btn-sm btn-outline-secondary mr-1" data-toggle="tooltip"
+        <a [routerLink]="['', { outlets: {primary: ['stats', network.id]} }]"
+           class="btn btn-sm btn-outline-secondary mr-1" data-toggle="tooltip"
            ngbTooltip="{{'SIDEBAR_MANAGE_TT_INFO'|translate}}" placement="left"
            role="button">
           <fa-icon [icon]="faInfo"></fa-icon>
         </a>
-        <a [routerLink]="['', { outlets: {primary: ['graph', network.id], sidebar: ['edit', network.id]} }]" class="btn btn-sm btn-outline-success mr-1" data-toggle="tooltip"
+        <a [routerLink]="['', { outlets: {primary: ['graph', network.id], sidebar: ['edit', network.id]} }]"
+           class="btn btn-sm btn-outline-success mr-1" data-toggle="tooltip"
            ngbTooltip="{{'SIDEBAR_MANAGE_TT_EDIT'|translate}}" placement="left"
            role="button">
           <fa-icon [icon]="faPaintBrush"></fa-icon>
@@ -67,7 +69,8 @@
   </h5>
   <div class="row mb-3">
     <div class="col-9 form-group mb-2">
-      <input [(ngModel)]="ndexLinkToUpload" aria-describedby="remoteNetworkHelp" class="form-control" id="remoteNetworkFile"
+      <input [(ngModel)]="ndexLinkToUpload" aria-describedby="remoteNetworkHelp" class="form-control"
+             id="remoteNetworkFile"
              placeholder="{{'SIDEBAR_MANAGE_REMOTE_FILE_EXAMPLE'|translate}}" type="text">
       <small class="form-text text-muted" id="remoteNetworkHelp">{{'SIDEBAR_MANAGE_REMOTE_FILE_TIP'|translate}}</small>
     </div>
@@ -101,7 +104,8 @@
     </div>
   </div>
 
-  <a [routerLink]="['', { outlets: {primary: ['info']} }]" class="mb-3 btn btn-block btn-outline-danger" data-toggle="tooltip"
+  <a [routerLink]="['', { outlets: {primary: ['info']} }]" class="mb-3 btn btn-block btn-outline-danger"
+     data-toggle="tooltip"
      ngbTooltip="{{'SIDEBAR_MANAGE_TT_HELP' | translate}}" placement="bottom" role="button">
     {{'SIDEBAR_MANAGE_HELP'|translate}}
   </a>

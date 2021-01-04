@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {NeNetwork} from '../../models/ne-network';
 import {DataService} from '../../services/data.service';
 import {faExchangeAlt, faPaintBrush} from '@fortawesome/free-solid-svg-icons';
 
@@ -28,11 +27,6 @@ export class MainStatsComponent {
   faExchangeAlt = faExchangeAlt;
 
   /**
-   * Selected network of type {@link NeNetwork|NeNetwork}
-   */
-  selectedNetwork: NeNetwork;
-
-  /**
    * Amount of nodes in the selected network
    */
   nodeCount = 0;
@@ -58,10 +52,9 @@ export class MainStatsComponent {
     this.route.paramMap.subscribe(params => {
       const networkId = params.get('id');
       if (networkId) {
-        this.selectedNetwork = this.dataService.networksParsed.find(x => x.id === Number(params.get('id')));
-        this.nodeCount = this.selectedNetwork.elements.filter(x => x.group === 'nodes').length;
-        this.edgeCount = this.selectedNetwork.elements.filter(x => x.group === 'edges').length;
-        this.styleCount = this.selectedNetwork.style.length - 6;
+        this.nodeCount = this.dataService.networkSelected.elements.filter(x => x.group === 'nodes').length;
+        this.edgeCount = this.dataService.networkSelected.elements.filter(x => x.group === 'edges').length;
+        this.styleCount = this.dataService.networkSelected.style.length - 6;
       }
     });
   }

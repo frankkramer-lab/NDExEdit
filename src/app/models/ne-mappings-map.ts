@@ -1,4 +1,5 @@
 import {NeGroupedMappingsDiscrete} from './ne-grouped-mappings-discrete';
+import {NeContinuousCollection} from "./ne-continuous-collection";
 
 /**
  * Collection of all types of mappings

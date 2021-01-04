@@ -21,6 +21,7 @@ import {DataService} from './services/data.service';
 import {GraphService} from './services/graph.service';
 import {ParseService} from './services/parse.service';
 import {UtilityService} from './services/utility.service';
+import {MainMappingsAvailableAttributesComponent} from './components/parts/main-mappings-available-attributes/main-mappings-available-attributes.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http);
@@ -36,7 +37,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     SidebarEditComponent,
     SidebarCompareComponent,
     MainMappingsComponent,
-    MainMappingsNewComponent
+    MainMappingsNewComponent,
+    MainMappingsAvailableAttributesComponent
   ],
   imports: [
     BrowserModule,
