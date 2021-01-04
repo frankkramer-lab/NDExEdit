@@ -243,6 +243,9 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
             this.initDiscreteMapping(mapType);
           }
 
+          console.log(this.propertyToMap, this.styleProperty);
+
+
         } else {
           // edit existing
           this.isEdit = true;
@@ -263,6 +266,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
               this.propertyToMap = this.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === existingMapping.title[1]);
               this.styleProperty = existingMapping.title[0];
               this.prefillContinuousMapping(existingMapping);
+
               break;
             case 'ed':
               propertyId = params.get('propertyId');
@@ -276,6 +280,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
               this.propertyToMap = this.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === existingMapping.title[1]);
               this.styleProperty = existingMapping.title[0];
               this.prefillContinuousMapping(existingMapping);
+
               break;
           }
         }

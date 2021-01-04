@@ -96,6 +96,7 @@ export class MainGraphComponent implements AfterViewInit, OnDestroy {
     this.graphService.render(this.cyContainer, this.selectedNetwork);
     this.graphService.toggleLabels(this.selectedNetwork.showLabels);
 
+    console.log(this.selectedNetwork);
   }
 
 }

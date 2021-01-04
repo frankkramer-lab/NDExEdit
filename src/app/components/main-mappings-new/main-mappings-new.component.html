@@ -172,7 +172,7 @@
 
       <!-- ALERT: mapping already exists -->
       <span *ngFor="let nodeMap of selectedNetwork.mappings.nodesContinuous; let mapIndex = index;">
-        <div *ngIf="nodeMap.title[1] === propertyToMap.name && nodeMap.title[0].includes(styleProperty) && !isEdit" class="alert alert-danger"
+        <div *ngIf="nodeMap.title[1] === propertyToMap.name && nodeMap.title[0] == styleProperty && !isEdit" class="alert alert-danger"
              role="alert">
           <h5>
             <button [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, 'nc' + mapIndex ]} }]" class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
@@ -465,7 +465,7 @@
 
       <!-- ALERT: mapping already exists -->
       <span *ngFor="let edgeMap of selectedNetwork.mappings.edgesContinuous; let mapIndex = index;">
-        <div *ngIf="edgeMap.title[1] === propertyToMap.name && edgeMap.title[0].includes(styleProperty) && !isEdit" class="alert alert-danger"
+        <div *ngIf="edgeMap.title[1] === propertyToMap.name && edgeMap.title[0] == styleProperty > -1 && !isEdit" class="alert alert-danger"
              role="alert">
           <h5>
             <button [routerLink]="['', { outlets: {primary: ['edit', selectedNetwork.id, 'ec' + mapIndex ]} }]" class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
