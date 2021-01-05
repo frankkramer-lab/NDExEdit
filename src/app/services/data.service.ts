@@ -779,7 +779,6 @@ export class DataService {
           existingNcMapping.chart.lineChartData[0].data[1 + i] = mappingToEdit.breakpoints[i].propertyValue;
           existingNcMapping.chart.lineChartLabels[1 + i] = mappingToEdit.breakpoints[i].value;
         }
-        existingNcMapping.chart.lineChartLabels.push('');
 
       } else if (existingNcMapping.gradientValid) {
 
