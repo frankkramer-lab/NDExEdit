@@ -299,6 +299,17 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     this.barChartLabels = this.propertyToMap.chartDiscreteDistribution.chartLabels;
     this.scatterChartData = this.propertyToMap.chartContinuousDistribution.chartData;
 
+    this.continuousThresholds.push({
+        value: this.propertyToMap.min,
+        propertyValue: '',
+        isEditable: false
+      },
+      {
+        value: this.propertyToMap.max,
+        propertyValue: '',
+        isEditable: false
+      });
+
     // avoid confusion by hiding any mappings preview in sidebar
     MainMappingsNewComponent.mappingsNewEmitter.emit({showLabelCheckbox: false});
   }
@@ -324,7 +335,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     this.continuousThresholds = [];
 
     if (mapping.chartValid) {
-      let mappedProperty;
+      let mappedProperty: NeAspect;
       if (this.mappingsType.nc) {
         mappedProperty = this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === mapping.title[1]);
       } else if (this.mappingsType.ec) {
@@ -335,7 +346,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         if (label !== '') {
           const thresholdObj: NeThresholdMap = {
             value: Number(label),
-            propertyValue: mapping.chart.lineChartData[0].data[mapping.chart.lineChartLabels.indexOf(label)]
+            propertyValue: mapping.chart.lineChartData[0].data[mapping.chart.lineChartLabels.indexOf(label)],
+            isEditable: label === mappedProperty.min || label === mappedProperty.max
           };
           this.continuousThresholds.push(thresholdObj);
         }
@@ -350,7 +362,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
 
     } else if (mapping.gradientValid) {
 
-      let mappedProperty;
+      let mappedProperty: NeAspect;
       if (this.mappingsType.nc) {
         mappedProperty = this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === mapping.title[1]);
       } else if (this.mappingsType.ec) {
@@ -361,7 +373,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         if (color.offset !== '-1' && color.offset !== '101') {
           const thresholdObj: NeThresholdMap = {
             value: Number(color.numericThreshold),
-            propertyValue: color.color
+            propertyValue: color.color,
+            isEditable: color.numericThreshold === mappedProperty.min || color.numericThreshold === mappedProperty.max
           };
           this.continuousThresholds.push(thresholdObj);
         }
@@ -559,7 +572,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   addNewThreshold(): void {
     this.continuousThresholds.push({
       value: null,
-      propertyValue: ''
+      propertyValue: '',
+      isEditable: true
     });
   }
 

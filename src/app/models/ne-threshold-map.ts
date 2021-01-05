@@ -12,4 +12,9 @@ export interface NeThresholdMap {
    * The resulting property value
    */
   propertyValue: string;
+
+  /**
+   * True, if this property can be changed by the user
+   */
+  isEditable: boolean;
 }

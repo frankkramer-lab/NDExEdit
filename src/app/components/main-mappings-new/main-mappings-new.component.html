@@ -202,6 +202,7 @@
       </div>
 
       <!-- ALERT: minimum und maximum (if available) -->
+      <!-- todo substitute with non-changeable prefill, same as greaterDefault and lowerDefault -->
       <div *ngIf="propertyToMap.min !== null && propertyToMap.max !== null" class="alert alert-info" role="alert">
         <h5>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING' | translate}}</h5>
         <p>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT' | translate}}</p>
@@ -237,7 +238,7 @@
           <label class="col-4 col-form-label"
                  for="ncDefaultLower">{{'MAIN_MAPPINGS_NEW_DEFAULT_LOW' | translate}}</label>
           <div class="col-6">
-            <input [(ngModel)]="continuousMapping.defaultLower" class="form-control" id="ncDefaultLower"
+            <input [disabled]="true" [(ngModel)]="continuousThresholds[0].propertyValue" class="form-control" id="ncDefaultLower"
                    name="ncDefaultLower" type="text"
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
           </div>
@@ -251,7 +252,7 @@
         <!-- thresholds -->
         <div *ngFor="let threshold of continuousThresholds; let index = index" class="form-group row">
           <div class="col-4">
-            <input [(ngModel)]="threshold.value" class="form-control" id="ncThreshold{{index}}"
+            <input [disabled]="!threshold.isEditable" [(ngModel)]="threshold.value" class="form-control" id="ncThreshold{{index}}"
                    name="ncThreshold{{index}}"
                    type="number"
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
@@ -281,7 +282,7 @@
           <label class="col-4 col-form-label"
                  for="ncDefaultGreater">{{'MAIN_MAPPINGS_NEW_DEFAULT_GREAT' | translate}}</label>
           <div class="col-6">
-            <input [(ngModel)]="continuousMapping.defaultGreater" class="form-control" id="ncDefaultGreater"
+            <input [disabled]="true" [(ngModel)]="continuousThresholds[1].propertyValue" class="form-control" id="ncDefaultGreater"
                    name="ncDefaultGreater" type="text"
                    value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
           </div>
