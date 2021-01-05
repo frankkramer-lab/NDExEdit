@@ -168,16 +168,12 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   continuousThresholds: NeThresholdMap[] = [];
 
   /**
-   * Existing mapping fetched from this selected network
-   */
-  mappingToEdit: any;
-
-  /**
    * Determines by URL if this component is used for editing or creating a new mapping.
    * Thus prefills the properties used in the form or prepares the new creation.
    *
    * @param route Current route
    * @param dataService Service used to find the currently selected network
+   * @param utilityService
    */
   constructor(
     private route: ActivatedRoute,
@@ -186,7 +182,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   ) {
 
     this.route.paramMap.subscribe(params => {
-      console.log(params);
       const map = params.get('map');
       const networkId = params.get('id');
 
@@ -225,7 +220,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
           // create new
           const propertyPointer = params.get('property');
 
-          // todo get list of available attributes, as done in mainMappingsCmp
           const typeHint = this.utilityService.utilGetTypeHintByString(mapType);
           let availableAttributes = [];
 
@@ -244,6 +238,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
           }
 
           this.propertyToMap = availableAttributes[propertyPointer];
+          console.log(this.propertyToMap);
 
           if (mapType.endsWith('c')) {
             this.continuousMapping = {};

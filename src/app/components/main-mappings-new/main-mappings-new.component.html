@@ -43,30 +43,19 @@
     <!-- NEW: NodesDiscrete -->
     <div [ngClass]="{active: mappingsType.nd}" aria-labelledby="newNd" class="tab-pane fade show" id="newNdForm"
          role="tabpanel">
-      <h3>{{'MAIN_MAPPINGS_NEW_ND' | translate}}</h3>
+
+      <span *ngIf="isEdit then editHeadlineNd else newHeadlineNd"></span>
+      <ng-template #editHeadlineNd><h3>{{'MAIN_MAPPINGS_EDIT_ND' | translate}}</h3></ng-template>
+      <ng-template #newHeadlineNd><h3>{{'MAIN_MAPPINGS_NEW_ND' | translate}}</h3></ng-template>
+
       <p>{{'MAIN_MAPPINGS_NEW_INSTRUCTIONS' | translate}}</p>
 
       <!-- ALERT: mapping already exists -->
-      <span *ngFor="let nodeMap of dataService.networkSelected.mappings.nodesDiscrete; let mapIndex = index;">
-        <span *ngFor="let style of nodeMap.styleMap; let propertyIndex = index;">
-          <div *ngIf="nodeMap.classifier === propertyToMap.name && style.cssKey === styleProperty && !isEdit"
-               class="alert alert-danger"
-               role="alert">
-            <h5>
-              <button
-                [routerLink]="['', { outlets: {primary: ['edit', dataService.networkSelected.id, 'nd' + mapIndex, propertyIndex ]} }]"
-                class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
-                ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
-                placement="right"
-                type="button">
-                <fa-icon [icon]="faRoute"></fa-icon>
-              </button>
-              {{'MAIN_MAPPINGS_NEW_ALREADY_EXISTS' | translate}}
-            </h5>
-            <p>{{'MAIN_MAPPINGS_NEW_EDIT_INSTEAD' | translate}}</p>
-          </div>
-        </span>
-      </span>
+      <app-alert-mapping-already-exists *ngIf="!isEdit"
+                                        [propertyToMap]="propertyToMap"
+                                        [styleProperty]="styleProperty"
+                                        [isNode]="true"
+                                        [isDiscrete]="true"></app-alert-mapping-already-exists>
 
       <!-- ALERT: distribution -->
       <div class="alert alert-info" role="alert">
@@ -178,27 +167,17 @@
     <!-- NEW: NodesContinuous -->
     <div [ngClass]="{active: mappingsType.nc}" aria-labelledby="newNc" class="tab-pane fade show" id="newNcForm"
          role="tabpanel">
-      <h3>{{'MAIN_MAPPINGS_NEW_NC' | translate}}</h3>
+      <span *ngIf="isEdit then editHeadlineNc else newHeadlineNc"></span>
+      <ng-template #editHeadlineNc><h3>{{'MAIN_MAPPINGS_EDIT_NC' | translate}}</h3></ng-template>
+      <ng-template #newHeadlineNc><h3>{{'MAIN_MAPPINGS_NEW_NC' | translate}}</h3></ng-template>
 
       <!-- ALERT: mapping already exists -->
-      <span *ngFor="let nodeMap of dataService.networkSelected.mappings.nodesContinuous; let mapIndex = index;">
-        <div *ngIf="nodeMap.title[1] === propertyToMap.name && nodeMap.title[0] == styleProperty && !isEdit"
-             class="alert alert-danger"
-             role="alert">
-          <h5>
-            <button
-              [routerLink]="['', { outlets: {primary: ['edit', dataService.networkSelected.id, 'nc' + mapIndex ]} }]"
-              class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
-              ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
-              placement="right"
-              type="button">
-              <fa-icon [icon]="faRoute"></fa-icon>
-            </button>
-            {{'MAIN_MAPPINGS_NEW_ALREADY_EXISTS' | translate}}
-          </h5>
-          <p>{{'MAIN_MAPPINGS_NEW_EDIT_INSTEAD' | translate}}</p>
-        </div>
-      </span>
+      <app-alert-mapping-already-exists *ngIf="!isEdit"
+                                        [isNode]="true"
+                                        [isDiscrete]="false"
+                                        [propertyToMap]="propertyToMap"
+                                        [styleProperty]="styleProperty">
+      </app-alert-mapping-already-exists>
 
       <!-- ALERT: distribution -->
       <div class="alert alert-info" role="alert">
@@ -360,30 +339,17 @@
     <!-- NEW: EdgesDiscrete -->
     <div [ngClass]="{active: mappingsType.ed}" aria-labelledby="newEd" class="tab-pane fade show" id="newEdForm"
          role="tabpanel">
-      <h3>{{'MAIN_MAPPINGS_NEW_ED' | translate}}</h3>
+      <span *ngIf="isEdit then editHeadlineEd else newHeadlineEd"></span>
+      <ng-template #editHeadlineEd><h3>{{'MAIN_MAPPINGS_EDIT_ED' | translate}}</h3></ng-template>
+      <ng-template #newHeadlineEd><h3>{{'MAIN_MAPPINGS_NEW_ED' | translate}}</h3></ng-template>
       <p>{{'MAIN_MAPPINGS_NEW_INSTRUCTIONS' | translate}}</p>
 
       <!-- ALERT: mapping already exists -->
-      <span *ngFor="let edgeMap of dataService.networkSelected.mappings.edgesDiscrete; let mapIndex = index">
-        <span *ngFor="let style of edgeMap.styleMap; let propertyIndex = index">
-          <div *ngIf="edgeMap.classifier === propertyToMap.name && style.cssKey === styleProperty && !isEdit"
-               class="alert alert-danger"
-               role="alert">
-            <h5>
-              <button
-                [routerLink]="['', { outlets: {primary: ['edit', dataService.networkSelected.id, 'ed' + mapIndex, propertyIndex ]} }]"
-                class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
-                ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
-                placement="right"
-                type="button">
-                <fa-icon [icon]="faRoute"></fa-icon>
-              </button>
-              {{'MAIN_MAPPINGS_NEW_ALREADY_EXISTS' | translate}}
-            </h5>
-            <p>{{'MAIN_MAPPINGS_NEW_EDIT_INSTEAD' | translate}}</p>
-          </div>
-        </span>
-      </span>
+      <app-alert-mapping-already-exists *ngIf="!isEdit"
+                                        [propertyToMap]="propertyToMap"
+                                        [styleProperty]="styleProperty"
+                                        [isDiscrete]="true"
+                                        [isNode]="false"></app-alert-mapping-already-exists>
 
       <!-- ALERT: distribution -->
       <div class="alert alert-info" role="alert">
@@ -495,27 +461,35 @@
     <!-- NEW: EdgesContinuous -->
     <div [ngClass]="{active: mappingsType.ec}" aria-labelledby="newEc" class="tab-pane fade show" id="newEcForm"
          role="tabpanel">
-      <h3>{{'MAIN_MAPPINGS_NEW_EC' | translate}}</h3>
+      <span *ngIf="isEdit then editHeadlineEc else newHeadlineEc"></span>
+      <ng-template #editHeadlineEc><h3>{{'MAIN_MAPPINGS_EDIT_EC' | translate}}</h3></ng-template>
+      <ng-template #newHeadlineEc><h3>{{'MAIN_MAPPINGS_NEW_EC' | translate}}</h3></ng-template>
 
       <!-- ALERT: mapping already exists -->
-      <span *ngFor="let edgeMap of dataService.networkSelected.mappings.edgesContinuous; let mapIndex = index;">
-        <div *ngIf="edgeMap.title[1] === propertyToMap.name && edgeMap.title[0] == styleProperty > -1 && !isEdit"
-             class="alert alert-danger"
-             role="alert">
-          <h5>
-            <button
-              [routerLink]="['', { outlets: {primary: ['edit', dataService.networkSelected.id, 'ec' + mapIndex ]} }]"
-              class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
-              ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
-              placement="right"
-              type="button">
-              <fa-icon [icon]="faRoute"></fa-icon>
-            </button>
-            {{'MAIN_MAPPINGS_NEW_ALREADY_EXISTS' | translate}}
-          </h5>
-          <p>{{'MAIN_MAPPINGS_NEW_EDIT_INSTEAD' | translate}}</p>
-        </div>
-      </span>
+      <app-alert-mapping-already-exists *ngIf="!isEdit"
+                                        [isNode]="false"
+                                        [isDiscrete]="false"
+                                        [propertyToMap]="propertyToMap"
+                                        [styleProperty]="styleProperty">
+      </app-alert-mapping-already-exists>
+<!--      <span *ngFor="let edgeMap of dataService.networkSelected.mappings.edgesContinuous; let mapIndex = index;">-->
+<!--        <div *ngIf="edgeMap.title[1] === propertyToMap.name && edgeMap.title[0] == styleProperty > -1 && !isEdit"-->
+<!--             class="alert alert-danger"-->
+<!--             role="alert">-->
+<!--          <h5>-->
+<!--            <button-->
+<!--              [routerLink]="['', { outlets: {primary: ['edit', dataService.networkSelected.id, 'ec' + mapIndex ]} }]"-->
+<!--              class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"-->
+<!--              ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"-->
+<!--              placement="right"-->
+<!--              type="button">-->
+<!--              <fa-icon [icon]="faRoute"></fa-icon>-->
+<!--            </button>-->
+<!--            {{'MAIN_MAPPINGS_NEW_ALREADY_EXISTS' | translate}}-->
+<!--          </h5>-->
+<!--          <p>{{'MAIN_MAPPINGS_NEW_EDIT_INSTEAD' | translate}}</p>-->
+<!--        </div>-->
+<!--      </span>-->
 
       <!-- ALERT: distribution -->
       <div class="alert alert-info" role="alert">

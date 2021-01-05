@@ -72,7 +72,7 @@ export class UtilityService {
     if (selector === 'node' || selector === 'edge') {
       // selectors: default
       priority = 0;
-    } else if (selector.startsWith('.') && selector.match(/[0-9]/g) === null) { // todo fix: does not apply if discrete mapping contains numbers e.g. bait_boolean_1
+    } else if (selector.startsWith('.') && selector.match(/[0-9]/g) === null) {
       // selectors: aspect specific
       priority = 1;
     } else if (selector.match(/[0-9]/g) !== null) {

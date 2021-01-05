@@ -168,7 +168,6 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     MainMappingsComponent.mappingsEmitter.emit({showLabelCheckbox: false, clearSelection: true});
-    // todo init variables as const, then bind consts instead of methods
   }
 
   /**
