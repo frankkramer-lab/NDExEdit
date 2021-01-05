@@ -114,7 +114,7 @@
       </button>
       <!-- todo edit existing mapping -->
       <button (click)="editMapping()" *ngIf="isEdit"
-              [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, mapType + '-1' ]} }]"
+              [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, mapType + mapId ]} }]"
               class="btn btn-block btn-outline-success" data-toggle="tooltip"
               ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
               placement="top"
@@ -196,7 +196,7 @@
       </button>
       <!-- todo edit existing mapping -->
       <button (click)="editMapping()" *ngIf="isEdit"
-              [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, mapType + '-1' ]} }]"
+              [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, mapType + mapId ]} }]"
               class="btn btn-block btn-outline-success" data-toggle="tooltip"
               ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
               placement="top"

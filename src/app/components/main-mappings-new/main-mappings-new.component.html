@@ -41,7 +41,7 @@
   <div class="tab-content p-2">
 
     <!-- NEW: NodesDiscrete -->
-    <div [ngClass]="{active: mappingsType.nd}" aria-labelledby="newNd" class="tab-pane fade show" id="newNdForm"
+    <div *ngIf="mappingsType.nd" [ngClass]="{active: mappingsType.nd}" aria-labelledby="newNd" class="tab-pane fade show" id="newNdForm"
          role="tabpanel">
 
       <span *ngIf="isEdit then editHeadlineNd else newHeadlineNd"></span>
@@ -83,11 +83,12 @@
                                   [styleProperty]="styleProperty"
                                   [isEdit]="isEdit"
                                   [mapType]="'nd'"
+                                  [mapId]="currentMappingId"
                                   [propertyPointer]="propertyPointer"></app-main-mappings-new-form>
     </div>
 
     <!-- NEW: NodesContinuous -->
-    <div [ngClass]="{active: mappingsType.nc}" aria-labelledby="newNc" class="tab-pane fade show" id="newNcForm"
+    <div *ngIf="mappingsType.nc" [ngClass]="{active: mappingsType.nc}" aria-labelledby="newNc" class="tab-pane fade show" id="newNcForm"
          role="tabpanel">
       <span *ngIf="isEdit then editHeadlineNc else newHeadlineNc"></span>
       <ng-template #editHeadlineNc><h3>{{'MAIN_MAPPINGS_EDIT_NC' | translate}}</h3></ng-template>
@@ -136,13 +137,14 @@
                                   [styleProperty]="styleProperty"
                                   [isEdit]="isEdit"
                                   [mapType]="'nc'"
+                                  [mapId]="currentMappingId"
                                   [propertyPointer]="propertyPointer"></app-main-mappings-new-form>
 
 
     </div>
 
     <!-- NEW: EdgesDiscrete -->
-    <div [ngClass]="{active: mappingsType.ed}" aria-labelledby="newEd" class="tab-pane fade show" id="newEdForm"
+    <div *ngIf="mappingsType.ed" [ngClass]="{active: mappingsType.ed}" aria-labelledby="newEd" class="tab-pane fade show" id="newEdForm"
          role="tabpanel">
       <span *ngIf="isEdit then editHeadlineEd else newHeadlineEd"></span>
       <ng-template #editHeadlineEd><h3>{{'MAIN_MAPPINGS_EDIT_ED' | translate}}</h3></ng-template>
@@ -182,11 +184,12 @@
                                   [styleProperty]="styleProperty"
                                   [isEdit]="isEdit"
                                   [mapType]="'ed'"
+                                  [mapId]="currentMappingId"
                                   [propertyPointer]="propertyPointer"></app-main-mappings-new-form>
     </div>
 
     <!-- NEW: EdgesContinuous -->
-    <div [ngClass]="{active: mappingsType.ec}" aria-labelledby="newEc" class="tab-pane fade show" id="newEcForm"
+    <div *ngIf="mappingsType.ec" [ngClass]="{active: mappingsType.ec}" aria-labelledby="newEc" class="tab-pane fade show" id="newEcForm"
          role="tabpanel">
       <span *ngIf="isEdit then editHeadlineEc else newHeadlineEc"></span>
       <ng-template #editHeadlineEc><h3>{{'MAIN_MAPPINGS_EDIT_EC' | translate}}</h3></ng-template>
@@ -234,6 +237,7 @@
                                   [styleProperty]="styleProperty"
                                   [isEdit]="isEdit"
                                   [mapType]="'ec'"
+                                  [mapId]="currentMappingId"
                                   [propertyPointer]="propertyPointer"></app-main-mappings-new-form>
     </div>
 
