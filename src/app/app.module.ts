@@ -23,6 +23,7 @@ import {ParseService} from './services/parse.service';
 import {UtilityService} from './services/utility.service';
 import {MainMappingsAvailableAttributesComponent} from './components/parts/main-mappings-available-attributes/main-mappings-available-attributes.component';
 import { AlertMappingAlreadyExistsComponent } from './components/parts/alert-mapping-already-exists/alert-mapping-already-exists.component';
+import { MainMappingsNewFormComponent } from './components/parts/main-mappings-new-form/main-mappings-new-form.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http);
@@ -40,7 +41,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     MainMappingsComponent,
     MainMappingsNewComponent,
     MainMappingsAvailableAttributesComponent,
-    AlertMappingAlreadyExistsComponent
+    AlertMappingAlreadyExistsComponent,
+    MainMappingsNewFormComponent
   ],
   imports: [
     BrowserModule,

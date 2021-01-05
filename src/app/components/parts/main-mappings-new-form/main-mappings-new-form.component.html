@@ -1,0 +1,126 @@
+<form *ngIf="typeHint.ec || typeHint.nc">
+  <div class="form-group row">
+    <label class="col-4 col-form-label"
+           for="{{typeHint.ec ? 'ec' : 'nc'}}CssProperty">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
+    <div class="col-6">
+      <input [(ngModel)]="styleProperty" [readOnly]="isEdit" class="form-control" id="{{typeHint.ec ? 'ec' : 'nc'}}CssProperty"
+             name="cCssProperty" type="text">
+      <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
+      <small *ngIf="needsColorValidation(styleProperty)"
+             class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
+    </div>
+    <div class="col-2 form-check">
+      <input (click)="toggleNeedsColorValidation(!needsColorValidation(styleProperty))"
+             [checked]="needsColorValidation(styleProperty)" class="form-check-input"
+             id="{{typeHint.ec ? 'ec' : 'nc'}}ColorValidation"
+             type="checkbox">
+      <label class="form-check-label" for="{{typeHint.ec ? 'ec' : 'nc'}}ColorValidation">
+        {{'MAIN_MAPPINGS_NEW_CB_COLORS' | translate}}
+      </label>
+    </div>
+  </div>
+
+  <!-- default lower -->
+  <div class="form-group row">
+    <label class="col-4 col-form-label"
+           for="{{typeHint.ec ? 'ec' : 'nc'}}DefaultLower">{{'MAIN_MAPPINGS_NEW_DEFAULT_LOW' | translate}}</label>
+    <div class="col-6">
+      <input [disabled]="true" [(ngModel)]="continuousThresholds[0].propertyValue" class="form-control"
+             id="{{typeHint.ec ? 'ec' : 'nc'}}DefaultLower"
+             name="{{typeHint.ec ? 'ec' : 'nc'}}DefaultLower" type="text"
+             value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
+    </div>
+    <span *ngIf="needsColorValidation(styleProperty)"
+          [ngStyle]="{'background-color': continuousThresholds[0].propertyValue}"
+          class="badge badge-pill border col-2">
+            &nbsp;
+          </span>
+  </div>
+
+  <!-- thresholds -->
+  <div *ngFor="let threshold of continuousThresholds; let index = index" class="form-group row">
+    <div class="col-4">
+      <input [disabled]="!threshold.isEditable" [(ngModel)]="threshold.value" class="form-control"
+             id="{{typeHint.ec ? 'ec' : 'nc'}}Threshold{{index}}"
+             name="{{typeHint.ec ? 'ec' : 'nc'}}Threshold{{index}}"
+             type="number"
+             value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
+    </div>
+    <div class="col-6">
+      <input [(ngModel)]="threshold.propertyValue" class="form-control" id="{{typeHint.ec ? 'ec' : 'nc'}}Value{{index}}"
+             name="{{typeHint.ec ? 'ec' : 'nc'}}Value{{index}}"
+             type="text">
+    </div>
+    <span *ngIf="needsColorValidation(styleProperty)" [ngStyle]="{'background-color': threshold.propertyValue}"
+          class="badge badge-pill border col-2">
+            &nbsp;
+          </span>
+  </div>
+
+  <!-- button to add more thresholds -->
+  <div class="form-group row">
+    <div class="col-10">
+      <button (click)="addNewThreshold()" class="btn btn-block btn-outline-info">
+        <fa-icon [icon]="faPlus"></fa-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- default greater -->
+  <div class="form-group row">
+    <label class="col-4 col-form-label"
+           for="{{typeHint.ec ? 'ec' : 'nc'}}DefaultGreater">{{'MAIN_MAPPINGS_NEW_DEFAULT_GREAT' | translate}}</label>
+    <div class="col-6">
+      <input [disabled]="true" [(ngModel)]="continuousThresholds[1].propertyValue" class="form-control"
+             id="{{typeHint.ec ? 'ec' : 'nc'}}DefaultGreater"
+             name="{{typeHint.ec ? 'ec' : 'nc'}}DefaultGreater" type="text"
+             value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
+    </div>
+    <span *ngIf="needsColorValidation(styleProperty)"
+          [ngStyle]="{'background-color': continuousThresholds[1].propertyValue}"
+          class="badge badge-pill border col-2">
+            &nbsp;
+          </span>
+  </div>
+
+  <!-- SUBMIT/CLEAR/ABORT -->
+  <div class="row">
+    <div class="col-4">
+      <button [routerLink]="['', { outlets: {primary: ['graph', dataService.networkSelected.id ]} }]"
+              class="btn btn-block btn-outline-danger"
+              data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_NEW_ABORT' | translate}}"
+              placement="top"
+              type="button">
+        <fa-icon [icon]="faTimes"></fa-icon>
+      </button>
+    </div>
+    <div class="col-4">
+      <button (click)="clearAllInputs()" class="btn btn-block btn-outline-warning"
+              data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_NEW_CLEAR' | translate}}"
+              placement="top"
+              type="button">
+        <fa-icon [icon]="faUndo"></fa-icon>
+      </button>
+    </div>
+    <div class="col-4">
+      <!-- create new mapping -->
+      <button (click)="submitNewContinuousMapping()" *ngIf="!isEdit"
+              [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, mapType + (getNextIdForMappingType()) ]} }]"
+              class="btn btn-block btn-outline-success" data-toggle="tooltip"
+              ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
+              placement="top"
+              type="button">
+        <fa-icon [icon]="faCheck"></fa-icon>
+      </button>
+      <!-- edit existing mapping -->
+      <button (click)="editMapping()" *ngIf="isEdit"
+              [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, mapType + '-1' ]} }]"
+              class="btn btn-block btn-outline-success" data-toggle="tooltip"
+              ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
+              placement="top"
+              type="button">
+        <fa-icon [icon]="faCheck"></fa-icon>
+      </button>
+    </div>
+  </div>
+</form>

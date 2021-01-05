@@ -168,12 +168,17 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   continuousThresholds: NeThresholdMap[] = [];
 
   /**
+   * Points to property within the possible attributes of a network's elements
+   */
+  propertyPointer: number;
+
+  /**
    * Determines by URL if this component is used for editing or creating a new mapping.
    * Thus prefills the properties used in the form or prepares the new creation.
    *
    * @param route Current route
    * @param dataService Service used to find the currently selected network
-   * @param utilityService
+   * @param utilityService Service used to access shared code
    */
   constructor(
     private route: ActivatedRoute,
@@ -218,7 +223,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         }
         if (params.get('property')) {
           // create new
-          const propertyPointer = params.get('property');
+          this.propertyPointer = Number(params.get('property'));
 
           const typeHint = this.utilityService.utilGetTypeHintByString(mapType);
           let availableAttributes = [];
@@ -237,15 +242,14 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
               .filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
           }
 
-          this.propertyToMap = availableAttributes[propertyPointer];
-          console.log(this.propertyToMap);
+          this.propertyToMap = availableAttributes[this.propertyPointer];
 
           if (mapType.endsWith('c')) {
             this.continuousMapping = {};
-            this.initContinuousMapping();
+            // this.initContinuousMapping();
           } else {
             this.discreteMapping = [];
-            this.initDiscreteMapping(mapType);
+            // this.initDiscreteMapping(mapType);
           }
 
         } else {
@@ -298,17 +302,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     this.barChartData = this.propertyToMap.chartDiscreteDistribution.chartData;
     this.barChartLabels = this.propertyToMap.chartDiscreteDistribution.chartLabels;
     this.scatterChartData = this.propertyToMap.chartContinuousDistribution.chartData;
-
-    this.continuousThresholds.push({
-        value: this.propertyToMap.min,
-        propertyValue: '',
-        isEditable: false
-      },
-      {
-        value: this.propertyToMap.max,
-        propertyValue: '',
-        isEditable: false
-      });
 
     // avoid confusion by hiding any mappings preview in sidebar
     MainMappingsNewComponent.mappingsNewEmitter.emit({showLabelCheckbox: false});
@@ -450,16 +443,17 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * Checks if the given property is in the set of defined color properties (see {@link DataService#colorProperties})
    * @param property name of the entered property
    */
-  needsColorValidation(property: string): boolean {
-    if (Array.isArray(property)) {
-      for (const p of property) {
-        if (!this.dataService.colorProperties.includes(p)) {
-          return false;
-        }
-      }
-      return true;
-    }
-    return (this.dataService.colorProperties.includes(property));
+  needsColorValidation(property: string): void {
+    console.log('someone wants colors validated? ' + property);
+    // if (Array.isArray(property)) {
+    //   for (const p of property) {
+    //     if (!this.dataService.colorProperties.includes(p)) {
+    //       return false;
+    //     }
+    //   }
+    //   return true;
+    // }
+    // return (this.dataService.colorProperties.includes(property));
   }
 
   /**
@@ -487,42 +481,43 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   submitNewDiscreteMapping(): void {
 
-    if (this.needsColorValidation(this.styleProperty) && !this.dataService.colorProperties.includes(this.styleProperty)) {
-      this.dataService.colorProperties.push(this.styleProperty);
-    } else if (!this.needsColorValidation(this.styleProperty) && this.dataService.colorProperties.includes(this.styleProperty)) {
-      this.dataService.colorProperties = this.dataService.colorProperties.filter(x => x !== this.styleProperty);
-    }
-
-    for (const entry of this.discreteMapping) {
-      entry.cssKey = this.styleProperty.trim();
-      if (entry.cssValue) {
-        entry.cssValue = entry.cssValue.trim();
-      } else {
-        entry.cssValue = '';
-      }
-    }
-    this.dataService.addMappingDiscrete(this.dataService.networkSelected.id, this.mappingsType.nd, this.discreteMapping);
+    console.log('old submit discrete');
+    // if (this.needsColorValidation(this.styleProperty) && !this.dataService.colorProperties.includes(this.styleProperty)) {
+    //   this.dataService.colorProperties.push(this.styleProperty);
+    // } else if (!this.needsColorValidation(this.styleProperty) && this.dataService.colorProperties.includes(this.styleProperty)) {
+    //   this.dataService.colorProperties = this.dataService.colorProperties.filter(x => x !== this.styleProperty);
+    // }
+    //
+    // for (const entry of this.discreteMapping) {
+    //   entry.cssKey = this.styleProperty.trim();
+    //   if (entry.cssValue) {
+    //     entry.cssValue = entry.cssValue.trim();
+    //   } else {
+    //     entry.cssValue = '';
+    //   }
+    // }
+    // this.dataService.addMappingDiscrete(this.dataService.networkSelected.id, this.mappingsType.nd, this.discreteMapping);
 
   }
 
   /**
    * Submits a new continuous mapping, adds CSS property to color properties managed in {@link GraphService}
    */
-  submitNewContinuousMapping(): void {
-
-    if (this.needsColorValidation(this.styleProperty) && !this.dataService.colorProperties.includes(this.styleProperty)) {
-      this.dataService.colorProperties.push(this.styleProperty);
-    } else if (!this.needsColorValidation(this.styleProperty) && this.dataService.colorProperties.includes(this.styleProperty)) {
-      this.dataService.colorProperties = this.dataService.colorProperties.filter(x => x !== this.styleProperty);
-    }
-
-    this.continuousMapping.cssKey = this.styleProperty;
-    this.continuousMapping.mappedProperty = this.propertyToMap;
-    this.continuousMapping.breakpoints = this.continuousMapping.breakpoints.filter(x => x.value !== null);
-    this.continuousMapping.breakpoints = this.continuousMapping.breakpoints.sort((a, b) => (a.value < b.value ? -1 : 1));
-
-    this.dataService.addMappingContinuous(this.dataService.networkSelected.id, this.mappingsType.nc, this.continuousMapping);
-  }
+  // submitNewContinuousMapping(): void {
+  //
+  //   if (this.needsColorValidation(this.styleProperty) && !this.dataService.colorProperties.includes(this.styleProperty)) {
+  //     this.dataService.colorProperties.push(this.styleProperty);
+  //   } else if (!this.needsColorValidation(this.styleProperty) && this.dataService.colorProperties.includes(this.styleProperty)) {
+  //     this.dataService.colorProperties = this.dataService.colorProperties.filter(x => x !== this.styleProperty);
+  //   }
+  //
+  //   this.continuousMapping.cssKey = this.styleProperty;
+  //   this.continuousMapping.mappedProperty = this.propertyToMap;
+  //   this.continuousMapping.breakpoints = this.continuousMapping.breakpoints.filter(x => x.value !== null);
+  //   this.continuousMapping.breakpoints = this.continuousMapping.breakpoints.sort((a, b) => (a.value < b.value ? -1 : 1));
+  //
+  //   this.dataService.addMappingContinuous(this.dataService.networkSelected.id, this.mappingsType.nc, this.continuousMapping);
+  // }
 
   /**
    * Determines and returns the index of the next (in case of editing the current) mapping for this type
@@ -554,28 +549,28 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     return String(-1);
   }
 
-  /**
-   * If the user checks the color property checkbox the color validation is enforced
-   * @param b
-   */
-  colorValidation(b: boolean): void {
-    if (this.dataService.colorProperties.includes(this.styleProperty) && !b) {
-      this.dataService.colorProperties = this.dataService.colorProperties.filter(x => x !== this.styleProperty);
-    } else if (!this.dataService.colorProperties.includes(this.styleProperty) && b) {
-      this.dataService.colorProperties.push(this.styleProperty);
-    }
-  }
+  // /**
+  //  * If the user checks the color property checkbox the color validation is enforced
+  //  * @param b
+  //  */
+  // toggleNeedsColorValidation(b: boolean): void {
+  //   if (this.dataService.colorProperties.includes(this.styleProperty) && !b) {
+  //     this.dataService.colorProperties = this.dataService.colorProperties.filter(x => x !== this.styleProperty);
+  //   } else if (!this.dataService.colorProperties.includes(this.styleProperty) && b) {
+  //     this.dataService.colorProperties.push(this.styleProperty);
+  //   }
+  // }
 
   /**
    * Adds another threshold to be used within the continuous mapping
    */
-  addNewThreshold(): void {
-    this.continuousThresholds.push({
-      value: null,
-      propertyValue: '',
-      isEditable: true
-    });
-  }
+  // addNewThreshold(): void {
+  //   this.continuousThresholds.push({
+  //     value: null,
+  //     propertyValue: '',
+  //     isEditable: true
+  //   });
+  // }
 
   /**
    * Is called on submission of and edited mapping and edits the continuous or discrete mapping
@@ -595,33 +590,34 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * @param baseType is either nd or ed and determines if a discrete node or edge mapping is to be added
    * @private
    */
-  private initDiscreteMapping(baseType: string): void {
-    for (const value of this.propertyToMap.values) {
-      const selector = '.' + (baseType.startsWith('n') ? 'node' : 'edge') + '_' + UtilityService.utilCleanString(this.propertyToMap.name) + '_' + UtilityService.utilCleanString(value);
-      const tmp: NeMappingsDefinition = {
-        col: UtilityService.utilCleanString(this.propertyToMap.name),
-        colHR: this.propertyToMap.name,
-        is: UtilityService.utilCleanString(value),
-        isHR: value,
-        selector,
-        cssKey: this.styleProperty,
-        cssValue: null,
-        priority: UtilityService.utilFindPriorityBySelector(selector),
-        datatype: null
-      };
-      this.discreteMapping.push(tmp);
-    }
-  }
+  // private initDiscreteMapping(baseType: string): void {
+  //   for (const value of this.propertyToMap.values) {
+  //     const selector = '.' + (baseType.startsWith('n') ? 'node' : 'edge') + '_'
+  //     + UtilityService.utilCleanString(this.propertyToMap.name) + '_' + UtilityService.utilCleanString(value);
+  //     const tmp: NeMappingsDefinition = {
+  //       col: UtilityService.utilCleanString(this.propertyToMap.name),
+  //       colHR: this.propertyToMap.name,
+  //       is: UtilityService.utilCleanString(value),
+  //       isHR: value,
+  //       selector,
+  //       cssKey: this.styleProperty,
+  //       cssValue: null,
+  //       priority: UtilityService.utilFindPriorityBySelector(selector),
+  //       datatype: null
+  //     };
+  //     this.discreteMapping.push(tmp);
+  //   }
+  // }
 
   /**
    * Basic init on creating a continuous mapping
    * @private
    */
-  private initContinuousMapping(): void {
-    this.continuousMapping.defaultGreater = '';
-    this.continuousMapping.defaultLower = '';
-    this.continuousMapping.breakpoints = this.continuousThresholds;
-    this.continuousMapping.cssKey = '';
-  }
+  // private initContinuousMapping(): void {
+  //   this.continuousMapping.defaultGreater = '';
+  //   this.continuousMapping.defaultLower = '';
+  //   this.continuousMapping.breakpoints = this.continuousThresholds;
+  //   this.continuousMapping.cssKey = '';
+  // }
 
 }

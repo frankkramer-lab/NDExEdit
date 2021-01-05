@@ -962,7 +962,8 @@ export class DataService {
               if (index === 0) {
                 limitLow = {
                   value: minPropertyValue,
-                  propertyValue: continuousMapping.defaultLower
+                  propertyValue: continuousMapping.defaultLower,
+                  isEditable: true // todo testing
                 };
               } else {
                 limitLow = continuousMapping.breakpoints[index - 1];
