@@ -14,10 +14,8 @@ export interface NeContinuousCollection {
 
   /**
    * Values of this continuous mapping
-   * todo needs further research, possibly couple with refactoring MainMappingsComponent
-   * todo sometimes string array is used, needs consolidation
    */
-  values?: NeStyleComponent[];
+  values?: NeStyleComponent[] | any[];
 
   /**
    * Indicates if the chart is to be displayed, otherwise the gradient is displayed

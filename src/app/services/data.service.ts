@@ -16,8 +16,8 @@ import {NeMappingsMap} from '../models/ne-mappings-map';
 import {NeStyleMap} from '../models/ne-style-map';
 import {NeMappingProperty} from '../models/ne-mapping-property';
 import {NeMappingsType} from '../models/ne-mappings-type';
-import {NeStyleComponent} from "../models/ne-style-component";
-import {NeContinuousCollection} from "../models/ne-continuous-collection";
+import {NeStyleComponent} from '../models/ne-style-component';
+import {NeContinuousCollection} from '../models/ne-continuous-collection';
 
 @Injectable({
   providedIn: 'root'
@@ -479,22 +479,15 @@ export class DataService {
       }
       colorGradient.push(greatest);
 
-      // todo create array of NeStyleComponent for values property
-      const values: NeStyleComponent[] = [];
-      console.log(continuousMapping);
-
-
-      const finalizedMapping: NeContinuousCollection = {
+      const finalizedMapping = {
         chart: null,
         chartValid: false,
         colorGradient,
         gradientValid: true,
         displayChart: false,
         title: lowest.title,
-        values: continuousMapping.mappedProperty.values // need to be NeStyleComponent[]
+        values: continuousMapping.mappedProperty.values // is converted to NeStyleComponent[] while setting continuous values
       };
-
-      console.log(finalizedMapping);
 
       if (isNode) {
         network.mappings.nodesContinuous = network.mappings.nodesContinuous.concat([finalizedMapping]);
@@ -553,7 +546,7 @@ export class DataService {
       chart.lineChartData[0].data.push(Number(continuousMapping.defaultGreater));
       chart.lineChartLabels.push(String(''));
 
-      const finalizedMapping: NeContinuousCollection = {
+      const finalizedMapping = {
         chart,
         chartValid: true,
         colorGradient: null,
@@ -903,6 +896,7 @@ export class DataService {
   ): ElementDefinition[] {
 
     const styles: NeStyle[] = network.style;
+    const styleComponentList: NeStyleComponent[] = [];
     const elements: ElementDefinition[] = network.elements;
 
     for (const element of elements) {
@@ -921,6 +915,13 @@ export class DataService {
 
             const tmpData = (isNode ? [element.data as NeNode] : [element.data as NeEdge]);
 
+            const styleComponent: NeStyleComponent = {
+              selector,
+              cssKey: '',
+              cssValue: '',
+              priority: 2
+            };
+
             const styleObj: NeStyle = {
               selector,
               style: {},
@@ -936,6 +937,8 @@ export class DataService {
             if (continuousMapping.breakpoints[index] && continuousMapping.breakpoints[index].value === elementValue) {
               // case 1: element hits breakpoint threshold => apply threshold value
               styleObj.style[continuousMapping.cssKey] = continuousMapping.breakpoints[index].propertyValue;
+              styleComponent.cssKey = continuousMapping.cssKey;
+              styleComponent.cssValue = continuousMapping.breakpoints[index].propertyValue;
 
             } else if (index === 0 && continuousMapping.breakpoints[index] && continuousMapping.breakpoints[index].value > elementValue) {
               // case 2: element is smaller than lowest threshold => apply relatively lower
@@ -947,7 +950,10 @@ export class DataService {
                 greater: String(continuousMapping.breakpoints[index].propertyValue)
               };
 
-              styleObj.style[continuousMapping.cssKey] = UtilityService.utilCalculateRelativeValue(inputMap);
+              const relativeValue = UtilityService.utilCalculateRelativeValue(inputMap);
+              styleObj.style[continuousMapping.cssKey] = relativeValue;
+              styleComponent.cssKey = continuousMapping.cssKey;
+              styleComponent.cssValue = relativeValue;
 
             } else if (continuousMapping.breakpoints[index] && continuousMapping.breakpoints[index].value > elementValue) {
               // case 3: element lower than the current breakpoint =>
@@ -972,7 +978,10 @@ export class DataService {
                 greater: String(limitHigh.propertyValue)
               };
 
-              styleObj.style[continuousMapping.cssKey] = UtilityService.utilCalculateRelativeValue(inputMap);
+              const relativeValue = UtilityService.utilCalculateRelativeValue(inputMap);
+              styleObj.style[continuousMapping.cssKey] = relativeValue;
+              styleComponent.cssKey = continuousMapping.cssKey;
+              styleComponent.cssValue = relativeValue;
 
             } else if (index === continuousMapping.breakpoints.length && index > 0
               && elementValue > continuousMapping.breakpoints[index - 1].value) {
@@ -986,7 +995,10 @@ export class DataService {
                 greater: String(continuousMapping.defaultGreater)
               };
 
-              styleObj.style[continuousMapping.cssKey] = UtilityService.utilCalculateRelativeValue(inputMap);
+              const relativeValue = UtilityService.utilCalculateRelativeValue(inputMap);
+              styleObj.style[continuousMapping.cssKey] = relativeValue;
+              styleComponent.cssKey = continuousMapping.cssKey;
+              styleComponent.cssValue = relativeValue;
 
             } else if (index === 0 && index === continuousMapping.breakpoints.length) {
               const inputMap: NeContinuousMap = {
@@ -997,8 +1009,14 @@ export class DataService {
                 greater: String(continuousMapping.defaultGreater)
               };
 
-              styleObj.style[continuousMapping.cssKey] = UtilityService.utilCalculateRelativeValue(inputMap);
+              const relativeValue = UtilityService.utilCalculateRelativeValue(inputMap);
+              styleObj.style[continuousMapping.cssKey] = relativeValue;
+              styleComponent.cssKey = continuousMapping.cssKey;
+              styleComponent.cssValue = relativeValue;
+
             }
+
+            styleComponentList.push(styleComponent);
 
             if (!style) {
               styles.push(styleObj);
@@ -1010,6 +1028,13 @@ export class DataService {
         }
       }
     }
+
+    if (isNode) {
+      network.mappings.nodesContinuous[network.mappings.nodesContinuous.length - 1].values = styleComponentList;
+    } else {
+      network.mappings.edgesContinuous[network.mappings.edgesContinuous.length - 1].values = styleComponentList;
+    }
+
     return elements;
   }
 }
