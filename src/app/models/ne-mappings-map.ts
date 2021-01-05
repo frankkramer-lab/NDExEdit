@@ -19,10 +19,10 @@ export interface NeMappingsMap {
   /**
    * Collection of continuous node mappings
    */
-  nodesContinuous: any;
+  nodesContinuous: NeContinuousCollection[];
 
   /**
    * Collection of continuous edge mappings
    */
-  edgesContinuous: any;
+  edgesContinuous: NeContinuousCollection[];
 }

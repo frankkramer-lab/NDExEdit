@@ -168,6 +168,7 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     MainMappingsComponent.mappingsEmitter.emit({showLabelCheckbox: false, clearSelection: true});
+    // todo init variables as const, then bind consts instead of methods
   }
 
   /**
@@ -324,7 +325,7 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    * @param s Can either be 'nd', 'nc', 'ed' or 'ec'
    */
   public getAttributeListForCurrentNetworkAndType(s: string): NeAspect[] {
-    const typeHint: NeMappingsType = this.utilityService.getTypeHintByString(s);
+    const typeHint: NeMappingsType = this.utilityService.utilGetTypeHintByString(s);
     let availableAttributes: NeAspect[];
 
     if (typeHint.ec || typeHint.ed) {
@@ -334,12 +335,10 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
     }
 
     if (typeHint.ec || typeHint.nc) {
-      availableAttributes = availableAttributes.filter(a => a.datatype === 'integer' || a.datatype === 'float' || a.datatype === 'double');
+      return availableAttributes.filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'float' || a.datatype === 'double'));
     } else {
-      availableAttributes = availableAttributes.filter(a => a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
+      return availableAttributes.filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
     }
-
-    return availableAttributes;
   }
 
   /**
@@ -348,7 +347,7 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    * @param s Can either be 'nd', 'nc', 'ed' or 'ec'
    */
   public getExistingMappingListForCurrentNetworkAndType(s: string): NeContinuousCollection[] | NeGroupedMappingsDiscrete[] {
-    const typeHint: NeMappingsType = this.utilityService.getTypeHintByString(s);
+    const typeHint: NeMappingsType = this.utilityService.utilGetTypeHintByString(s);
     const availableMappings = this.dataService.networkSelected.mappings;
 
     if (typeHint.nd) {

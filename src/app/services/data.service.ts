@@ -16,6 +16,8 @@ import {NeMappingsMap} from '../models/ne-mappings-map';
 import {NeStyleMap} from '../models/ne-style-map';
 import {NeMappingProperty} from '../models/ne-mapping-property';
 import {NeMappingsType} from '../models/ne-mappings-type';
+import {NeStyleComponent} from "../models/ne-style-component";
+import {NeContinuousCollection} from "../models/ne-continuous-collection";
 
 @Injectable({
   providedIn: 'root'
@@ -477,7 +479,12 @@ export class DataService {
       }
       colorGradient.push(greatest);
 
-      const finalizedMapping = {
+      // todo create array of NeStyleComponent for values property
+      const values: NeStyleComponent[] = [];
+      console.log(continuousMapping);
+
+
+      const finalizedMapping: NeContinuousCollection = {
         chart: null,
         chartValid: false,
         colorGradient,
@@ -546,7 +553,7 @@ export class DataService {
       chart.lineChartData[0].data.push(Number(continuousMapping.defaultGreater));
       chart.lineChartLabels.push(String(''));
 
-      const finalizedMapping = {
+      const finalizedMapping: NeContinuousCollection = {
         chart,
         chartValid: true,
         colorGradient: null,
@@ -658,7 +665,7 @@ export class DataService {
             selector: correspondingStyleMapNd.selectors[i],
             style: {},
             appliedTo: [],
-            priority: UtilityService.utilfindPriorityBySelector(correspondingStyleMapNd.selectors[i]),
+            priority: UtilityService.utilFindPriorityBySelector(correspondingStyleMapNd.selectors[i]),
           };
           newStyle.style[correspondingStyleMapNd.cssKey] = correspondingStyleMapNd.cssValues[i];
 
@@ -727,7 +734,7 @@ export class DataService {
             selector: correspondingStyleMapEd.selectors[i],
             style: {},
             appliedTo: [],
-            priority: UtilityService.utilfindPriorityBySelector(correspondingStyleMapEd.selectors[i]),
+            priority: UtilityService.utilFindPriorityBySelector(correspondingStyleMapEd.selectors[i]),
           };
           newStyle.style[correspondingStyleMapEd.cssKey] = correspondingStyleMapEd.cssValues[i];
 

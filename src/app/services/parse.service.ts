@@ -956,7 +956,7 @@ export class ParseService {
       }
 
       const tmpSelector = '.'.concat(elementType.concat('_'.concat(tmpObj.col.concat('_'.concat(tmpObj.is)))));
-      const priority = UtilityService.utilfindPriorityBySelector(tmpSelector);
+      const priority = UtilityService.utilFindPriorityBySelector(tmpSelector);
       tmpObj.selector = tmpSelector;
 
       let lookup: NeStyleComponent[] = [];
@@ -1088,7 +1088,7 @@ export class ParseService {
 
           const finalSelector = '.'.concat(elementType.concat('_'.concat(element.id)));
           continuousCollection.selector = finalSelector;
-          const priority = UtilityService.utilfindPriorityBySelector(finalSelector);
+          const priority = UtilityService.utilFindPriorityBySelector(finalSelector);
 
           for (let i = 0; i < (thresholds.length); i++) {
 

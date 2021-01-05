@@ -47,8 +47,7 @@
                   </button>
                 </span>
 
-        <button *ngIf="attribute.datatype === 'double' || attribute.datatype === 'integer'"
-                [routerLink]="['', { outlets: {primary: ['new', dataService.networkSelected.id, (typeHint.ec ? 'ec' : 'nc'), attributeIndex]} }]"
+        <button [routerLink]="['', { outlets: {primary: ['new', dataService.networkSelected.id, (typeHint.ec ? 'ec' : 'nc'), attributeIndex]} }]"
                 class="btn btn-outline-success ml-2"
                 data-toggle="tooltip"
                 ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"
@@ -85,7 +84,7 @@
 
         <span *ngIf="attribute.mapPointerD.length === 1">
             <button *ngIf="attribute.mapPointerD.length > 0"
-                    [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, 'ed' + attribute.mapPointerD[0]]} }]"
+                    [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, (typeHint.ed ? 'ed' : 'nd') + attribute.mapPointerD[0]]} }]"
                     class="btn btn-outline-secondary"
                     data-toggle="tooltip"
                     ngbTooltip="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}" placement="bottom"
@@ -94,8 +93,7 @@
             </button>
           </span>
 
-        <button *ngIf="attribute.datatype !== 'double'"
-                [routerLink]="['', { outlets: {primary: ['new', dataService.networkSelected.id, 'ed', attributeIndex]} }]"
+        <button [routerLink]="['', { outlets: {primary: ['new', dataService.networkSelected.id, (typeHint.ed ? 'ed' : 'nd'), attributeIndex]} }]"
                 class="btn btn-outline-success ml-2"
                 data-toggle="tooltip"
                 ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"

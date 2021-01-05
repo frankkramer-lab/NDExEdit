@@ -1,11 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {faPlus, faSearch} from '@fortawesome/free-solid-svg-icons';
-import {NeAspect} from "../../../models/ne-aspect";
-import {NeContinuousCollection} from "../../../models/ne-continuous-collection";
-import {NeGroupedMappingsDiscrete} from "../../../models/ne-grouped-mappings-discrete";
-import {DataService} from "../../../services/data.service";
-import {NeMappingsType} from "../../../models/ne-mappings-type";
-import {UtilityService} from "../../../services/utility.service";
+import {NeAspect} from '../../../models/ne-aspect';
+import {NeContinuousCollection} from '../../../models/ne-continuous-collection';
+import {NeGroupedMappingsDiscrete} from '../../../models/ne-grouped-mappings-discrete';
+import {DataService} from '../../../services/data.service';
+import {NeMappingsType} from '../../../models/ne-mappings-type';
+import {UtilityService} from '../../../services/utility.service';
 
 @Component({
   selector: 'app-main-mappings-available-attributes',
@@ -43,7 +43,7 @@ export class MainMappingsAvailableAttributesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.typeHint = this.utilityService.getTypeHintByString(this.type);
+    this.typeHint = this.utilityService.utilGetTypeHintByString(this.type);
   }
 
 }

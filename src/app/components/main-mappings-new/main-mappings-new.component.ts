@@ -181,10 +181,12 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   constructor(
     private route: ActivatedRoute,
-    public dataService: DataService
+    public dataService: DataService,
+    public utilityService: UtilityService
   ) {
 
     this.route.paramMap.subscribe(params => {
+      console.log(params);
       const map = params.get('map');
       const networkId = params.get('id');
 
@@ -223,11 +225,25 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
           // create new
           const propertyPointer = params.get('property');
 
-          if (mapType.startsWith('n')) {
-            this.propertyToMap = dataService.networkSelected.aspectKeyValuesNodes[propertyPointer];
+          // todo get list of available attributes, as done in mainMappingsCmp
+          const typeHint = this.utilityService.utilGetTypeHintByString(mapType);
+          let availableAttributes = [];
+
+          if (typeHint.ec || typeHint.ed) {
+            availableAttributes = this.dataService.networkSelected.aspectKeyValuesEdges;
           } else {
-            this.propertyToMap = dataService.networkSelected.aspectKeyValuesEdges[propertyPointer];
+            availableAttributes = this.dataService.networkSelected.aspectKeyValuesNodes;
           }
+
+          if (typeHint.ec || typeHint.nc) {
+            availableAttributes = availableAttributes
+              .filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'float' || a.datatype === 'double'));
+          } else {
+            availableAttributes = availableAttributes
+              .filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
+          }
+
+          this.propertyToMap = availableAttributes[propertyPointer];
 
           if (mapType.endsWith('c')) {
             this.continuousMapping = {};
@@ -236,9 +252,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
             this.discreteMapping = [];
             this.initDiscreteMapping(mapType);
           }
-
-          console.log(this.propertyToMap, this.styleProperty);
-
 
         } else {
           // edit existing
@@ -391,7 +404,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         selector,
         cssKey: this.styleProperty,
         cssValue: mapping.styleMap[propertyId].cssValues[mapping.styleMap[propertyId].selectors.indexOf(selector)],
-        priority: UtilityService.utilfindPriorityBySelector(selector)
+        priority: UtilityService.utilFindPriorityBySelector(selector)
       };
       this.discreteMapping.push(mapObj);
     }
@@ -409,7 +422,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
           selector,
           cssKey: this.styleProperty,
           cssValue: '',
-          priority: UtilityService.utilfindPriorityBySelector(selector)
+          priority: UtilityService.utilFindPriorityBySelector(selector)
         };
         this.discreteMapping.push(obj);
       }
@@ -584,7 +597,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         selector,
         cssKey: this.styleProperty,
         cssValue: null,
-        priority: UtilityService.utilfindPriorityBySelector(selector),
+        priority: UtilityService.utilFindPriorityBySelector(selector),
         datatype: null
       };
       this.discreteMapping.push(tmp);

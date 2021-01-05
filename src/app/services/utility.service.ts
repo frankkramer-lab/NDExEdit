@@ -66,7 +66,7 @@ export class UtilityService {
    *
    * @param selector name of the element's selector
    */
-  public static utilfindPriorityBySelector(selector: string): number {
+  public static utilFindPriorityBySelector(selector: string): number {
     let priority = -1;
 
     if (selector === 'node' || selector === 'edge') {
@@ -227,7 +227,7 @@ export class UtilityService {
       builtSelector = lookupMap.selector;
     }
 
-    const priority = UtilityService.utilfindPriorityBySelector(builtSelector);
+    const priority = UtilityService.utilFindPriorityBySelector(builtSelector);
 
     // case 1: simply applicable
     if (lookupMap && !lookupMap.conversionType) {
@@ -345,7 +345,7 @@ export class UtilityService {
    * This method will hopefully ease the transition to model standardization.
    * @param s Can either be 'nd', 'nc', 'ed' or 'ec'
    */
-  getTypeHintByString(s: string): NeMappingsType {
+  utilGetTypeHintByString(s: string): NeMappingsType {
     switch (s) {
       case 'nd':
         return {
@@ -384,4 +384,5 @@ export class UtilityService {
         };
     }
   }
+
 }
