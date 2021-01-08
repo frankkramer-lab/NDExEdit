@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, ParamMap} from '@angular/router';
 import {DataService} from '../../services/data.service';
 import {
   faArrowLeft,
@@ -99,18 +99,13 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   /**
    * Object containing the type of mapping to be added
    */
-  mappingsType: NeMappingsType = {
-    nd: false,
-    nc: false,
-    ed: false,
-    ec: false
-  };
+  typeHint: NeMappingsType = null;
 
   /**
    * Since the same component is used for adding a new and editing an existing mapping this boolean determines if
    * the component is used for editing
    */
-  isEdit = false;
+  isEdit: boolean;
 
   /**
    * True if the distribution chart for the selected property is to be shown
@@ -167,14 +162,20 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   continuousThresholds: NeThresholdMap[] = [];
 
   /**
-   * Points to property within the possible attributes of a network's elements
+   * Points to property within the possible attributes of a network's elements (for new creation)
    */
-  propertyPointer: number;
+  propertyIdNew: number;
+
+  /**
+   * Points to property within the possible attributes of a network's elements (for editing)
+   */
+  propertyIdEdit: number;
 
   /**
    * Points to already existing mapping which is to be edited
    */
   mapPointer: number;
+
 
   /**
    * Determines by URL if this component is used for editing or creating a new mapping.
@@ -191,104 +192,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   ) {
 
     this.route.paramMap.subscribe(params => {
-      const map = params.get('map');
-      const networkId = params.get('id');
+      this.initData(params);
 
-      if (map && networkId) {
-        dataService.selectNetwork(Number(networkId));
-        this.currentMappingId = map.substring(2);
-        const mapType = map.substring(0, 2);
-        switch (mapType) {
-          case 'nd':
-            this.mappingsType.nd = true;
-            this.mappingsType.nc = false;
-            this.mappingsType.ed = false;
-            this.mappingsType.ec = false;
-            break;
-          case 'nc':
-            this.mappingsType.nc = true;
-            this.mappingsType.nd = false;
-            this.mappingsType.ed = false;
-            this.mappingsType.ec = false;
-            break;
-          case 'ed':
-            this.mappingsType.ed = true;
-            this.mappingsType.nc = false;
-            this.mappingsType.nd = false;
-            this.mappingsType.ec = false;
-            break;
-          case 'ec':
-            this.mappingsType.ec = true;
-            this.mappingsType.nc = false;
-            this.mappingsType.nd = false;
-            this.mappingsType.ed = false;
-            break;
-
-        }
-        if (params.get('property')) {
-          // create new
-          this.propertyPointer = Number(params.get('property'));
-
-          const typeHint = this.utilityService.utilGetTypeHintByString(mapType);
-          let availableAttributes = [];
-
-          if (typeHint.ec || typeHint.ed) {
-            availableAttributes = this.dataService.networkSelected.aspectKeyValuesEdges;
-          } else {
-            availableAttributes = this.dataService.networkSelected.aspectKeyValuesNodes;
-          }
-
-          if (typeHint.ec || typeHint.nc) {
-            availableAttributes = availableAttributes
-              .filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'float' || a.datatype === 'double'));
-          } else {
-            availableAttributes = availableAttributes
-              .filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
-          }
-
-          this.propertyToMap = availableAttributes[this.propertyPointer];
-
-          if (mapType.endsWith('c')) {
-            this.continuousMapping = {};
-          } else {
-            this.discreteMapping = [];
-          }
-
-        } else {
-          // edit existing
-          this.isEdit = true;
-          let existingMapping;
-          let propertyId;
-          const mapId = map.substring(2);
-
-          switch (mapType) {
-            case 'nd':
-              propertyId = params.get('propertyId');
-              existingMapping = dataService.networkSelected.mappings.nodesDiscrete[mapId];
-              this.propertyToMap = dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === existingMapping.classifier);
-              this.styleProperty = existingMapping.styleMap[propertyId].cssKey;
-              break;
-            case 'nc':
-              existingMapping = dataService.networkSelected.mappings.nodesContinuous[mapId];
-              this.propertyToMap = dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === existingMapping.title[1]);
-              this.styleProperty = existingMapping.title[0];
-
-              break;
-            case 'ed':
-              propertyId = params.get('propertyId');
-              existingMapping = dataService.networkSelected.mappings.edgesDiscrete[mapId];
-              this.propertyToMap = dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === existingMapping.classifier);
-              this.styleProperty = existingMapping.styleMap[propertyId].cssKey;
-              break;
-            case 'ec':
-              existingMapping = dataService.networkSelected.mappings.edgesContinuous[mapId];
-              this.propertyToMap = dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === existingMapping.title[1]);
-              this.styleProperty = existingMapping.title[0];
-
-              break;
-          }
-        }
-      }
     });
   }
 
@@ -296,7 +201,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * Sets chart data for distribution of the selected aspect and hides the label checkbox
    */
   ngOnInit(): void {
-
     this.barChartData = this.propertyToMap.chartDiscreteDistribution.chartData;
     this.barChartLabels = this.propertyToMap.chartDiscreteDistribution.chartLabels;
     this.scatterChartData = this.propertyToMap.chartContinuousDistribution.chartData;
@@ -309,126 +213,18 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * Resets chart data and re-displays the label checkbox
    */
   ngOnDestroy(): void {
+    console.log('PARENT DESTROY');
+
     this.showDistribution = false;
     this.barChartData = [];
     this.barChartLabels = [];
     this.scatterChartData = [];
     this.continuousThresholds = [];
+    this.continuousMapping = null;
+    this.discreteMapping = null;
+    this.isEdit = null;
     MainMappingsNewComponent.mappingsNewEmitter.emit({showLabelCheckbox: true});
   }
-
-  //
-  // /**
-  //  * Prefills the continuous mapping
-  //  *
-  //  * @param mapping the mapping to be edited
-  //  */
-  // prefillContinuousMapping(mapping: any): void {
-  //   this.continuousThresholds = [];
-  //
-  //   if (mapping.chartValid) {
-  //     let mappedProperty: NeAspect;
-  //     if (this.mappingsType.nc) {
-  //       mappedProperty = this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === mapping.title[1]);
-  //     } else if (this.mappingsType.ec) {
-  //       mappedProperty = this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === mapping.title[1]);
-  //     }
-  //
-  //     for (const label of mapping.chart.lineChartLabels) {
-  //       if (label !== '') {
-  //         const thresholdObj: NeThresholdMap = {
-  //           value: Number(label),
-  //           propertyValue: mapping.chart.lineChartData[0].data[mapping.chart.lineChartLabels.indexOf(label)],
-  //           isEditable: label === mappedProperty.min || label === mappedProperty.max
-  //         };
-  //         this.continuousThresholds.push(thresholdObj);
-  //       }
-  //     }
-  //     this.continuousMapping = {
-  //       defaultGreater: mapping.chart.lineChartData[0].data[mapping.chart.lineChartData[0].data.length - 1],
-  //       defaultLower: mapping.chart.lineChartData[0].data[0],
-  //       breakpoints: this.continuousThresholds,
-  //       cssKey: this.styleProperty,
-  //       mappedProperty
-  //     };
-  //
-  //   } else if (mapping.gradientValid) {
-  //
-  //     let mappedProperty: NeAspect;
-  //     if (this.mappingsType.nc) {
-  //       mappedProperty = this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === mapping.title[1]);
-  //     } else if (this.mappingsType.ec) {
-  //       mappedProperty = this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === mapping.title[1]);
-  //     }
-  //
-  //     for (const color of mapping.colorGradient) {
-  //       if (color.offset !== '-1' && color.offset !== '101') {
-  //         const thresholdObj: NeThresholdMap = {
-  //           value: Number(color.numericThreshold),
-  //           propertyValue: color.color,
-  //           isEditable: color.numericThreshold === mappedProperty.min || color.numericThreshold === mappedProperty.max
-  //         };
-  //         this.continuousThresholds.push(thresholdObj);
-  //       }
-  //     }
-  //     this.continuousMapping = {
-  //       defaultGreater: mapping.colorGradient[mapping.colorGradient.length - 1].color,
-  //       defaultLower: mapping.colorGradient[0].color,
-  //       breakpoints: this.continuousThresholds,
-  //       cssKey: this.styleProperty,
-  //       mappedProperty
-  //     };
-  //
-  //   }
-  // }
-  //
-  // /**
-  //  * Prefills discrete mapping
-  //  *
-  //  * @param mapping the mapping to be edited
-  //  * @param propertyId id to the style property within the mapping which is to be edited
-  //  * @param isNode true if the selected mapping belongs to nodes
-  //  */
-  // prefillDiscreteMapping(mapping: NeGroupedMappingsDiscrete, propertyId: number, isNode: boolean): void {
-  //   this.discreteMapping = [];
-  //   const correspondingAkv = (isNode
-  //     ? this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === mapping.classifier)
-  //     : this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === mapping.classifier));
-  //
-  //   for (const selector of mapping.styleMap[propertyId].selectors) {
-  //     const mapObj: NeMappingsDefinition = {
-  //       col: UtilityService.utilCleanString(mapping.classifier),
-  //       colHR: mapping.classifier,
-  //       is: UtilityService.utilCleanString(mapping.values[mapping.styleMap[propertyId].selectors.indexOf(selector)]),
-  //       isHR: mapping.values[mapping.styleMap[propertyId].selectors.indexOf(selector)],
-  //       selector,
-  //       cssKey: this.styleProperty,
-  //       cssValue: mapping.styleMap[propertyId].cssValues[mapping.styleMap[propertyId].selectors.indexOf(selector)],
-  //       priority: UtilityService.utilFindPriorityBySelector(selector)
-  //     };
-  //     this.discreteMapping.push(mapObj);
-  //   }
-  //
-  //   for (const val of correspondingAkv.values) {
-  //     if (!this.discreteMapping.map(x => x.isHR).includes(val)) {
-  //       const col = UtilityService.utilCleanString(correspondingAkv.name);
-  //       const is = UtilityService.utilCleanString(val);
-  //       const selector = (isNode ? '.node_' : '.edge_') + col + '_' + is;
-  //       const obj: NeMappingsDefinition = {
-  //         col,
-  //         colHR: correspondingAkv.name,
-  //         is,
-  //         isHR: val,
-  //         selector,
-  //         cssKey: this.styleProperty,
-  //         cssValue: '',
-  //         priority: UtilityService.utilFindPriorityBySelector(selector)
-  //       };
-  //       this.discreteMapping.push(obj);
-  //     }
-  //   }
-  //
-  // }
 
   /**
    * Toggles distribution chart
@@ -443,10 +239,10 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * based on the previously set mappingstype
    */
   editMapping(): void {
-    if (this.mappingsType.nd || this.mappingsType.ed) {
-      this.dataService.editMapping(this.dataService.networkSelected.id, this.discreteMapping, this.styleProperty, this.mappingsType);
+    if (this.typeHint.nd || this.typeHint.ed) {
+      this.dataService.editMapping(this.dataService.networkSelected.id, this.discreteMapping, this.styleProperty, this.typeHint);
     } else {
-      this.dataService.editMapping(this.dataService.networkSelected.id, this.continuousMapping, this.styleProperty, this.mappingsType);
+      this.dataService.editMapping(this.dataService.networkSelected.id, this.continuousMapping, this.styleProperty, this.typeHint);
     }
   }
 
@@ -457,4 +253,93 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   setStyleProperty($event: any): void {
     this.styleProperty = $event;
   }
+
+  private initData(params: ParamMap): void {
+    const map = params.get('map');
+    const networkId = params.get('id');
+
+    if (map && networkId) {
+      this.dataService.selectNetwork(Number(networkId));
+      this.currentMappingId = map.substring(2);
+      const mapType = map.substring(0, 2);
+      this.typeHint = this.utilityService.utilGetTypeHintByString(mapType);
+
+      if (params.get('property')) {
+        // create new
+        this.isEdit = false;
+        this.initDataNew(params);
+
+      } else {
+        // edit
+        this.isEdit = true;
+        this.initDataEdit(params);
+
+      }
+    }
+  }
+
+  private initDataNew(params: ParamMap): void {
+    this.propertyIdNew = Number(params.get('property'));
+
+    let availableAttributes: any[];
+
+    if (this.typeHint.ec || this.typeHint.ed) {
+      availableAttributes = this.dataService.networkSelected.aspectKeyValuesEdges;
+    } else {
+      availableAttributes = this.dataService.networkSelected.aspectKeyValuesNodes;
+    }
+
+    if (this.typeHint.ec || this.typeHint.nc) {
+      availableAttributes = availableAttributes
+        .filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'float' || a.datatype === 'double'));
+    } else {
+      availableAttributes = availableAttributes
+        .filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
+    }
+
+    this.propertyToMap = availableAttributes[this.propertyIdNew];
+
+    if (this.typeHint.nc || this.typeHint.ec) {
+      this.continuousMapping = {};
+    } else {
+      this.discreteMapping = [];
+    }
+
+  }
+
+  private initDataEdit(params: ParamMap): void {
+    // edit existing
+    let existingMapping;
+    const mapId = params.get('map').substring(2);
+
+    switch (params.get('map').substring(0, 2)) {
+      case 'nd':
+        this.propertyIdEdit = Number(params.get('propertyId'));
+        existingMapping = this.dataService.networkSelected.mappings.nodesDiscrete[mapId];
+        this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === existingMapping.classifier);
+        this.styleProperty = existingMapping.styleMap[this.propertyIdEdit].cssKey;
+        this.discreteMapping = existingMapping;
+        break;
+      case 'nc':
+        existingMapping = this.dataService.networkSelected.mappings.nodesContinuous[mapId];
+        this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === existingMapping.title[1]);
+        this.styleProperty = existingMapping.title[0];
+        this.continuousMapping = existingMapping;
+        break;
+      case 'ed':
+        this.propertyIdEdit = Number(params.get('propertyId'));
+        existingMapping = this.dataService.networkSelected.mappings.edgesDiscrete[mapId];
+        this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === existingMapping.classifier);
+        this.styleProperty = existingMapping.styleMap[this.propertyIdEdit].cssKey;
+        this.discreteMapping = existingMapping;
+        break;
+      case 'ec':
+        existingMapping = this.dataService.networkSelected.mappings.edgesContinuous[mapId];
+        this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === existingMapping.title[1]);
+        this.styleProperty = existingMapping.title[0];
+        this.continuousMapping = existingMapping;
+        break;
+    }
+  }
 }
+

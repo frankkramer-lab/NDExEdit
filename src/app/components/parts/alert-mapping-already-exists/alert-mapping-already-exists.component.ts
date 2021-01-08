@@ -24,8 +24,6 @@ export class AlertMappingAlreadyExistsComponent implements OnInit {
   @Input() styleProperty: string;
 
   ngOnInit(): void {
-    console.log(this.propertyToMap);
-    console.log(this.styleProperty);
   }
 
 

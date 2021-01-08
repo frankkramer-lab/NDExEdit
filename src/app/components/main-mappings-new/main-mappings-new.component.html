@@ -13,25 +13,25 @@
 
   <ul class="nav nav-pills nav-fill">
     <li class="nav-item">
-      <a [ngClass]="{active: mappingsType.nd, disabled: !mappingsType.nd}" aria-controls="newNd" aria-selected="false"
+      <a [ngClass]="{active: typeHint.nd, disabled: !typeHint.nd}" aria-controls="newNd" aria-selected="false"
          class="nav-link" data-toggle="pill"
          href="#newNdForm"
          id="newNd" role="tab">{{'MAIN_MAPPINGS_NEW_TYPE_ND' | translate}}</a>
     </li>
     <li class="nav-item">
-      <a [ngClass]="{active: mappingsType.nc, disabled: !mappingsType.nc}" aria-controls="newNc" aria-selected="false"
+      <a [ngClass]="{active: typeHint.nc, disabled: !typeHint.nc}" aria-controls="newNc" aria-selected="false"
          class="nav-link" data-toggle="pill"
          href="#newNcForm"
          id="newNc" role="tab">{{'MAIN_MAPPINGS_NEW_TYPE_NC' | translate}}</a>
     </li>
     <li class="nav-item">
-      <a [ngClass]="{active: mappingsType.ed, disabled: !mappingsType.ed}" aria-controls="newEd" aria-selected="false"
+      <a [ngClass]="{active: typeHint.ed, disabled: !typeHint.ed}" aria-controls="newEd" aria-selected="false"
          class="nav-link" data-toggle="pill"
          href="#newEdForm"
          id="newEd" role="tab">{{'MAIN_MAPPINGS_NEW_TYPE_ED' | translate}}</a>
     </li>
     <li class="nav-item">
-      <a [ngClass]="{active: mappingsType.ec, disabled: !mappingsType.ec}" aria-controls="newEc" aria-selected="false"
+      <a [ngClass]="{active: typeHint.ec, disabled: !typeHint.ec}" aria-controls="newEc" aria-selected="false"
          class="nav-link" data-toggle="pill"
          href="#newEcForm"
          id="newEc" role="tab">{{'MAIN_MAPPINGS_NEW_TYPE_EC' | translate}}</a>
@@ -41,7 +41,8 @@
   <div class="tab-content p-2">
 
     <!-- NEW: NodesDiscrete -->
-    <div *ngIf="mappingsType.nd" [ngClass]="{active: mappingsType.nd}" aria-labelledby="newNd" class="tab-pane fade show" id="newNdForm"
+    <div *ngIf="typeHint.nd" [ngClass]="{active: typeHint.nd}" aria-labelledby="newNd" class="tab-pane fade show"
+         id="newNdForm"
          role="tabpanel">
 
       <span *ngIf="isEdit then editHeadlineNd else newHeadlineNd"></span>
@@ -81,14 +82,17 @@
       <!-- FORM -->
       <app-main-mappings-new-form *ngIf="discreteMapping"
                                   (stylePropertyEmitter)="setStyleProperty($event)"
-                                  [isEdit]="isEdit"
-                                  [mapType]="'nd'"
+                                  [typeHint]="typeHint"
                                   [mapId]="currentMappingId"
-                                  [propertyPointer]="propertyPointer"></app-main-mappings-new-form>
+                                  [isEdit]="isEdit"
+                                  [propertyToMap]="propertyToMap"
+                                  [propertyPointer]="propertyIdEdit"></app-main-mappings-new-form>
+
     </div>
 
     <!-- NEW: NodesContinuous -->
-    <div *ngIf="mappingsType.nc" [ngClass]="{active: mappingsType.nc}" aria-labelledby="newNc" class="tab-pane fade show" id="newNcForm"
+    <div *ngIf="typeHint.nc" [ngClass]="{active: typeHint.nc}" aria-labelledby="newNc" class="tab-pane fade show"
+         id="newNcForm"
          role="tabpanel">
       <span *ngIf="isEdit then editHeadlineNc else newHeadlineNc"></span>
       <ng-template #editHeadlineNc><h3>{{'MAIN_MAPPINGS_EDIT_NC' | translate}}</h3></ng-template>
@@ -136,15 +140,17 @@
       <app-main-mappings-new-form *ngIf="continuousMapping"
                                   (stylePropertyEmitter)="setStyleProperty($event)"
                                   [isEdit]="isEdit"
-                                  [mapType]="'nc'"
+                                  [typeHint]="typeHint"
                                   [mapId]="currentMappingId"
-                                  [propertyPointer]="propertyPointer"></app-main-mappings-new-form>
+                                  [propertyToMap]="propertyToMap"
+                                  [propertyPointer]="propertyIdEdit"></app-main-mappings-new-form>
 
 
     </div>
 
     <!-- NEW: EdgesDiscrete -->
-    <div *ngIf="mappingsType.ed" [ngClass]="{active: mappingsType.ed}" aria-labelledby="newEd" class="tab-pane fade show" id="newEdForm"
+    <div *ngIf="typeHint.ed" [ngClass]="{active: typeHint.ed}" aria-labelledby="newEd" class="tab-pane fade show"
+         id="newEdForm"
          role="tabpanel">
       <span *ngIf="isEdit then editHeadlineEd else newHeadlineEd"></span>
       <ng-template #editHeadlineEd><h3>{{'MAIN_MAPPINGS_EDIT_ED' | translate}}</h3></ng-template>
@@ -183,14 +189,17 @@
       <app-main-mappings-new-form *ngIf="discreteMapping"
                                   (stylePropertyEmitter)="setStyleProperty($event)"
                                   [isEdit]="isEdit"
-                                  [mapType]="'ed'"
+                                  [typeHint]="typeHint"
                                   [mapId]="currentMappingId"
-                                  [propertyPointer]="propertyPointer"></app-main-mappings-new-form>
+                                  [propertyToMap]="propertyToMap"
+                                  [propertyPointer]="propertyIdNew"></app-main-mappings-new-form>
     </div>
 
     <!-- NEW: EdgesContinuous -->
-    <div *ngIf="mappingsType.ec" [ngClass]="{active: mappingsType.ec}" aria-labelledby="newEc" class="tab-pane fade show" id="newEcForm"
+    <div *ngIf="typeHint.ec" [ngClass]="{active: typeHint.ec}" aria-labelledby="newEc" class="tab-pane fade show"
+         id="newEcForm"
          role="tabpanel">
+      <button (click)="this.isEdit = !this.isEdit">Flip edit</button>
       <span *ngIf="isEdit then editHeadlineEc else newHeadlineEc"></span>
       <ng-template #editHeadlineEc><h3>{{'MAIN_MAPPINGS_EDIT_EC' | translate}}</h3></ng-template>
       <ng-template #newHeadlineEc><h3>{{'MAIN_MAPPINGS_NEW_EC' | translate}}</h3></ng-template>
@@ -236,9 +245,9 @@
       <app-main-mappings-new-form *ngIf="continuousMapping"
                                   (stylePropertyEmitter)="setStyleProperty($event)"
                                   [isEdit]="isEdit"
-                                  [mapType]="'ec'"
+                                  [typeHint]="typeHint"
                                   [mapId]="currentMappingId"
-                                  [propertyPointer]="propertyPointer"></app-main-mappings-new-form>
+                                  [propertyToMap]="propertyToMap"></app-main-mappings-new-form>
     </div>
 
   </div>

@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
 import {DataService} from '../../../services/data.service';
 import {NeThresholdMap} from '../../../models/ne-threshold-map';
 import {NeContinuousThresholds} from '../../../models/ne-continuous-thresholds';
@@ -26,13 +26,17 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
 
   styleProperty: string;
 
+  mapType: string;
+
   @Output() stylePropertyEmitter = new EventEmitter<string>();
 
-  @Input() isEdit: boolean;
+  @Input() isEdit!: boolean;
 
-  @Input() mapType: string;
+  @Input() typeHint!: NeMappingsType;
 
   @Input() propertyPointer: number;
+
+  @Input() propertyToMap: NeAspect;
 
   @Input() mapId: string;
 
@@ -52,16 +56,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   discreteMapping: NeMappingsDefinition[];
 
   /**
-   * Property for which a mapping is to be added
-   */
-  propertyToMap: NeAspect;
-
-  /**
-   * Clean typing for types of mapping
-   */
-  typeHint: NeMappingsType;
-
-  /**
    * True, if all properties are available for loading
    */
   isInitialized: boolean;
@@ -70,24 +64,24 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.typeHint = this.utilityService.utilGetTypeHintByString(this.mapType);
-    let availableAttributes = [];
-
-    if (this.typeHint.ec || this.typeHint.ed) {
-      availableAttributes = this.dataService.networkSelected.aspectKeyValuesEdges;
-    } else {
-      availableAttributes = this.dataService.networkSelected.aspectKeyValuesNodes;
-    }
-
-    if (this.typeHint.ec || this.typeHint.nc) {
-      availableAttributes = availableAttributes
-        .filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'float' || a.datatype === 'double'));
-    } else {
-      availableAttributes = availableAttributes
-        .filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
-    }
-
-    this.propertyToMap = availableAttributes[this.propertyPointer];
+    this.mapType = this.utilityService.utilGetTypeLiteralByTypeHint(this.typeHint);
+    // let availableAttributes: any[];
+    //
+    // if (this.typeHint.ec || this.typeHint.ed) {
+    //   availableAttributes = this.dataService.networkSelected.aspectKeyValuesEdges;
+    // } else {
+    //   availableAttributes = this.dataService.networkSelected.aspectKeyValuesNodes;
+    // }
+    //
+    // if (this.typeHint.ec || this.typeHint.nc) {
+    //   availableAttributes = availableAttributes
+    //     .filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'float' || a.datatype === 'double'));
+    // } else {
+    //   availableAttributes = availableAttributes
+    //     .filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
+    // }
+    //
+    // this.propertyToMap = availableAttributes[this.propertyPointer];
 
     if (!this.isEdit) {
       if (this.typeHint.ec || this.typeHint.nc) {
@@ -118,6 +112,10 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.continuousThresholds = [];
+    this.continuousMapping = null;
+    this.discreteMapping = null;
+    this.styleProperty = null;
+    this.propertyPointer = null;
     this.isInitialized = false;
     this.typeHint = null;
   }
@@ -315,14 +313,11 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    */
   prefillContinuousMapping(mapping: any): void {
     this.continuousThresholds = [];
+    this.styleProperty = mapping.title[0];
 
     if (mapping.chartValid) {
-      let mappedProperty: NeAspect;
-      if (this.typeHint.nc) {
-        mappedProperty = this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === mapping.title[1]);
-      } else if (this.typeHint.ec) {
-        mappedProperty = this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === mapping.title[1]);
-      }
+
+      const mappedProperty = this.getMappedProperty(mapping);
 
       for (const label of mapping.chart.lineChartLabels) {
         if (label !== '') {
@@ -344,12 +339,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
 
     } else if (mapping.gradientValid) {
 
-      let mappedProperty: NeAspect;
-      if (this.typeHint.nc) {
-        mappedProperty = this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === mapping.title[1]);
-      } else if (this.typeHint.ec) {
-        mappedProperty = this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === mapping.title[1]);
-      }
+      const mappedProperty = this.getMappedProperty(mapping);
 
       for (const color of mapping.colorGradient) {
         if (color.offset !== '-1' && color.offset !== '101') {
@@ -373,6 +363,20 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Returns the property which is mapped by this mapping, either discrete or continuous
+   * @todo refactor to use a specific type for continuous mappings
+   * @param mapping
+   * @private
+   */
+  private getMappedProperty(mapping: any): NeAspect {
+    if (this.typeHint.nc) {
+      return this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === mapping.title[1]);
+    } else if (this.typeHint.ec) {
+      return this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === mapping.title[1]);
+    }
+  }
+
+  /**
    * Prefills discrete mapping
    *
    * @param mapping the mapping to be edited
@@ -380,7 +384,9 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * @param isNode true if the selected mapping belongs to nodes
    */
   prefillDiscreteMapping(mapping: NeGroupedMappingsDiscrete, propertyId: number, isNode: boolean): void {
+    console.log(mapping, propertyId);
     this.discreteMapping = [];
+    this.styleProperty = mapping.styleMap[propertyId].cssKey;
     const correspondingAkv = (isNode
       ? this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === mapping.classifier)
       : this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === mapping.classifier));
@@ -426,4 +432,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   emitStyleProperty(): void {
     this.stylePropertyEmitter.emit(this.styleProperty);
   }
+
 }
+

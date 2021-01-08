@@ -385,4 +385,20 @@ export class UtilityService {
     }
   }
 
+  /**
+   * Returns literal string representation for maptype
+   * @param typeHint
+   */
+  utilGetTypeLiteralByTypeHint(typeHint: NeMappingsType): string {
+    if (typeHint.nd) {
+      return 'nd';
+    } else if (typeHint.nc) {
+      return 'nc';
+    } else if (typeHint.ed) {
+      return 'ed';
+    } else if (typeHint.ec) {
+      return 'ec';
+    }
+    return '';
+  }
 }
