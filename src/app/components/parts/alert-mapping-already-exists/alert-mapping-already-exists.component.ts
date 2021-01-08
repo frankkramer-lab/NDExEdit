@@ -1,8 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {faRoute} from '@fortawesome/free-solid-svg-icons';
 import {DataService} from '../../../services/data.service';
-import {NeGroupedMappingsDiscrete} from "../../../models/ne-grouped-mappings-discrete";
-import {NeAspect} from "../../../models/ne-aspect";
+import {NeAspect} from '../../../models/ne-aspect';
 
 @Component({
   selector: 'app-alert-mapping-already-exists',
@@ -25,6 +24,9 @@ export class AlertMappingAlreadyExistsComponent implements OnInit {
   @Input() styleProperty: string;
 
   ngOnInit(): void {
+    console.log(this.propertyToMap);
+    console.log(this.styleProperty);
   }
+
 
 }

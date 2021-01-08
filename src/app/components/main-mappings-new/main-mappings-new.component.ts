@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
 import {
@@ -120,7 +120,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   /**
    * The CSS property for which the mapping is to be created or edited
    */
-  styleProperty: string;
+  @Input() styleProperty: string;
 
   /**
    * Distribution chart data for discrete aspects
@@ -448,5 +448,13 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     } else {
       this.dataService.editMapping(this.dataService.networkSelected.id, this.continuousMapping, this.styleProperty, this.mappingsType);
     }
+  }
+
+  /**
+   * Reacting to the form's styleProperty
+   * @param $event string set as styleProperty in child form
+   */
+  setStyleProperty($event: any): void {
+    this.styleProperty = $event;
   }
 }

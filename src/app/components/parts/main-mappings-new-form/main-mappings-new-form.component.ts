@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, Output, EventEmitter} from '@angular/core';
 import {DataService} from '../../../services/data.service';
 import {NeThresholdMap} from '../../../models/ne-threshold-map';
 import {NeContinuousThresholds} from '../../../models/ne-continuous-thresholds';
@@ -24,7 +24,9 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
 
   faCheck = faCheck;
 
-  @Input() styleProperty: string;
+  styleProperty: string;
+
+  @Output() stylePropertyEmitter = new EventEmitter<string>();
 
   @Input() isEdit: boolean;
 
@@ -84,8 +86,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
       availableAttributes = availableAttributes
         .filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
     }
-
-    console.log(availableAttributes, this.propertyPointer);
 
     this.propertyToMap = availableAttributes[this.propertyPointer];
 
@@ -179,13 +179,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * Submits a new continuous mapping
    */
   submitNewContinuousMapping(): void {
-
-    if (this.needsColorValidation(this.styleProperty) && !this.dataService.colorProperties.includes(this.styleProperty)) {
-      this.dataService.colorProperties.push(this.styleProperty);
-    } else if (!this.needsColorValidation(this.styleProperty) && this.dataService.colorProperties.includes(this.styleProperty)) {
-      this.dataService.colorProperties = this.dataService.colorProperties.filter(x => x !== this.styleProperty);
-    }
-
     this.continuousMapping.cssKey = this.styleProperty;
     this.continuousMapping.mappedProperty = this.propertyToMap;
     this.continuousMapping.breakpoints = this.continuousMapping.breakpoints.filter(x => x.value !== null);
@@ -202,12 +195,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    */
   submitNewDiscreteMapping(): void {
 
-    if (this.needsColorValidation(this.styleProperty) && !this.dataService.colorProperties.includes(this.styleProperty)) {
-      this.dataService.colorProperties.push(this.styleProperty);
-    } else if (!this.needsColorValidation(this.styleProperty) && this.dataService.colorProperties.includes(this.styleProperty)) {
-      this.dataService.colorProperties = this.dataService.colorProperties.filter(x => x !== this.styleProperty);
-    }
-
     for (const entry of this.discreteMapping) {
       entry.cssKey = this.styleProperty.trim();
       if (entry.cssValue) {
@@ -218,6 +205,24 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
     }
     this.dataService.addMappingDiscrete(this.dataService.networkSelected.id, this.typeHint.nd, this.discreteMapping);
 
+  }
+
+  /**
+   * Submits a new mapping and distributes the requests between discrete and continuous mappings
+   * @param isDiscrete
+   */
+  submitNewMapping(isDiscrete: boolean): void {
+
+    if (this.needsColorValidation(this.styleProperty) && !this.dataService.colorProperties.includes(this.styleProperty)) {
+      this.dataService.colorProperties.push(this.styleProperty);
+    } else if (!this.needsColorValidation(this.styleProperty) && this.dataService.colorProperties.includes(this.styleProperty)) {
+      this.dataService.colorProperties = this.dataService.colorProperties.filter(x => x !== this.styleProperty);
+    }
+    if (isDiscrete) {
+      this.submitNewDiscreteMapping();
+    } else {
+      this.submitNewContinuousMapping();
+    }
   }
 
   /**
@@ -415,4 +420,10 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
 
   }
 
+  /**
+   * Emits the new styleProperty to parent
+   */
+  emitStyleProperty(): void {
+    this.stylePropertyEmitter.emit(this.styleProperty);
+  }
 }

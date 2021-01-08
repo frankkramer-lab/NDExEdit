@@ -3,7 +3,7 @@
     <label class="col-4 col-form-label"
            for="{{typeHint.ec ? 'ec' : 'nc'}}CssProperty">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
     <div class="col-6">
-      <input [(ngModel)]="styleProperty" [readOnly]="isEdit" class="form-control" id="{{typeHint.ec ? 'ec' : 'nc'}}CssProperty"
+      <input [(ngModel)]="styleProperty" (input)="emitStyleProperty()" [readOnly]="isEdit" class="form-control" id="{{typeHint.ec ? 'ec' : 'nc'}}CssProperty"
              name="cCssProperty" type="text">
       <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
       <small *ngIf="needsColorValidation(styleProperty)"
@@ -104,7 +104,7 @@
     </div>
     <div class="col-4">
       <!-- create new mapping -->
-      <button (click)="submitNewContinuousMapping()" *ngIf="!isEdit"
+      <button (click)="submitNewMapping(false)" *ngIf="!isEdit"
               [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, mapType + (getNextIdForMappingType()) ]} }]"
               class="btn btn-block btn-outline-success" data-toggle="tooltip"
               ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
@@ -130,7 +130,7 @@
     <label class="col-4 col-form-label"
            for="{{typeHint.ed ? 'ed' : 'nd'}}CssProperty">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
     <div class="col-6">
-      <input [(ngModel)]="styleProperty" [readOnly]="isEdit" class="form-control" id="{{typeHint.ed ? 'ed' : 'nd'}}CssProperty"
+      <input [(ngModel)]="styleProperty" (input)="emitStyleProperty()" [readOnly]="isEdit" class="form-control" id="{{typeHint.ed ? 'ed' : 'nd'}}CssProperty"
              name="{{typeHint.ed ? 'ed' : 'nd'}}CssProperty" type="text">
       <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
       <small *ngIf="needsColorValidation(styleProperty)"
@@ -186,7 +186,7 @@
     </div>
     <div class="col-4">
       <!-- create new mapping -->
-      <button (click)="submitNewDiscreteMapping()" *ngIf="!isEdit"
+      <button (click)="submitNewMapping(true)" *ngIf="!isEdit"
               [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, mapType + (getNextIdForMappingType()) ]} }]"
               class="btn btn-block btn-outline-success" data-toggle="tooltip"
               ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"

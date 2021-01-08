@@ -80,7 +80,7 @@
 
       <!-- FORM -->
       <app-main-mappings-new-form *ngIf="discreteMapping"
-                                  [styleProperty]="styleProperty"
+                                  (stylePropertyEmitter)="setStyleProperty($event)"
                                   [isEdit]="isEdit"
                                   [mapType]="'nd'"
                                   [mapId]="currentMappingId"
@@ -134,7 +134,7 @@
 
       <!-- FORM -->
       <app-main-mappings-new-form *ngIf="continuousMapping"
-                                  [styleProperty]="styleProperty"
+                                  (stylePropertyEmitter)="setStyleProperty($event)"
                                   [isEdit]="isEdit"
                                   [mapType]="'nc'"
                                   [mapId]="currentMappingId"
@@ -181,7 +181,7 @@
 
       <!-- FORM -->
       <app-main-mappings-new-form *ngIf="discreteMapping"
-                                  [styleProperty]="styleProperty"
+                                  (stylePropertyEmitter)="setStyleProperty($event)"
                                   [isEdit]="isEdit"
                                   [mapType]="'ed'"
                                   [mapId]="currentMappingId"
@@ -234,7 +234,7 @@
       </div>
 
       <app-main-mappings-new-form *ngIf="continuousMapping"
-                                  [styleProperty]="styleProperty"
+                                  (stylePropertyEmitter)="setStyleProperty($event)"
                                   [isEdit]="isEdit"
                                   [mapType]="'ec'"
                                   [mapId]="currentMappingId"
