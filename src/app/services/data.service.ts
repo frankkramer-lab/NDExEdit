@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable, Output} from '@angular/core';
 import {NeNetwork} from '../models/ne-network';
 import {NeMappingsDefinition} from '../models/ne-mappings-definition';
 import {NeStyle} from '../models/ne-style';
@@ -9,7 +9,7 @@ import {NeContinuousThresholds} from '../models/ne-continuous-thresholds';
 import {NeColorGradient} from '../models/ne-color-gradient';
 import {NeContinuousMap} from '../models/ne-continuous-map';
 import {NeThresholdMap} from '../models/ne-threshold-map';
-import {NeContinuousChart} from '../models/ne-continuous-chart';
+import {NeChart} from '../models/ne-chart';
 import {ElementDefinition} from 'cytoscape';
 import {UtilityService} from './utility.service';
 import {NeMappingsMap} from '../models/ne-mappings-map';
@@ -50,6 +50,8 @@ export class DataService {
     'target-arrow-color',
     'source-arrow-color',
   ];
+
+  chartRedrawEmitter = new EventEmitter<boolean>();
 
   constructor() {
   }
@@ -507,12 +509,17 @@ export class DataService {
         }
       }
     } else {
-      const chart: NeContinuousChart = {
-        lineChartData: [{
+      const chart: NeChart = {
+        chartType: {
+          line: true,
+          bar: false,
+          scatter: false
+        },
+        chartData: [{
           data: [Number(continuousMapping.defaultLower)],
           label: continuousMapping.cssKey
         }],
-        lineChartLabels: [''],
+        chartLabels: [''],
         lineChartOptions: {
           scales: {
             yAxes: [
@@ -539,12 +546,12 @@ export class DataService {
       };
 
       for (const breakpoint of continuousMapping.breakpoints) {
-        chart.lineChartData[0].data.push(Number(breakpoint.propertyValue));
-        chart.lineChartLabels.push(String(breakpoint.value));
+        chart.chartData[0].data.push(Number(breakpoint.propertyValue));
+        chart.chartLabels.push(String(breakpoint.value));
       }
 
-      chart.lineChartData[0].data.push(Number(continuousMapping.defaultGreater));
-      chart.lineChartLabels.push(String(''));
+      chart.chartData[0].data.push(Number(continuousMapping.defaultGreater));
+      chart.chartLabels.push(String(''));
 
       const finalizedMapping = {
         chart,
@@ -772,12 +779,12 @@ export class DataService {
 
       if (existingNcMapping.chartValid) {
 
-        existingNcMapping.chart.lineChartData[0].data[0] = mappingToEdit.defaultLower;
-        existingNcMapping.chart.lineChartData[0].data[mappingToEdit.breakpoints.length + 1] = mappingToEdit.defaultGreater;
+        existingNcMapping.chart.chartData[0].data[0] = mappingToEdit.defaultLower;
+        existingNcMapping.chart.chartData[0].data[mappingToEdit.breakpoints.length + 1] = mappingToEdit.defaultGreater;
 
         for (let i = 0; i < mappingToEdit.breakpoints.length; i++) {
-          existingNcMapping.chart.lineChartData[0].data[1 + i] = mappingToEdit.breakpoints[i].propertyValue;
-          existingNcMapping.chart.lineChartLabels[1 + i] = mappingToEdit.breakpoints[i].value;
+          existingNcMapping.chart.chartData[0].data[1 + i] = mappingToEdit.breakpoints[i].propertyValue;
+          existingNcMapping.chart.chartLabels[1 + i] = mappingToEdit.breakpoints[i].value;
         }
 
       } else if (existingNcMapping.gradientValid) {
@@ -828,14 +835,14 @@ export class DataService {
 
       if (existingEcMapping.chartValid) {
         // update chart
-        existingEcMapping.chart.lineChartData[0].data[0] = mappingToEdit.defaultLower;
-        existingEcMapping.chart.lineChartData[0].data[mappingToEdit.breakpoints.length + 1] = mappingToEdit.defaultGreater;
+        existingEcMapping.chart.chartData[0].data[0] = mappingToEdit.defaultLower;
+        existingEcMapping.chart.chartData[0].data[mappingToEdit.breakpoints.length + 1] = mappingToEdit.defaultGreater;
 
         for (let i = 0; i < mappingToEdit.breakpoints.length; i++) {
-          existingEcMapping.chart.lineChartData[0].data[1 + i] = mappingToEdit.breakpoints[i].propertyValue;
-          existingEcMapping.chart.lineChartLabels[1 + i] = mappingToEdit.breakpoints[i].value;
+          existingEcMapping.chart.chartData[0].data[1 + i] = mappingToEdit.breakpoints[i].propertyValue;
+          existingEcMapping.chart.chartLabels[1 + i] = mappingToEdit.breakpoints[i].value;
         }
-        existingEcMapping.chart.lineChartLabels.push('');
+        existingEcMapping.chart.chartLabels.push('');
       } else if (existingEcMapping.gradientValid) {
 
         const min = ecAkv.min;
@@ -1036,5 +1043,13 @@ export class DataService {
     }
 
     return elements;
+  }
+
+  /**
+   * Emits a value to trigger redrawing of a displayed chart
+   * Avoids unpretty distortions of charts
+   */
+  triggerChartRedraw(): void {
+    this.chartRedrawEmitter.emit(true);
   }
 }

@@ -1,4 +1,4 @@
-import {NeContinuousChart} from './ne-continuous-chart';
+import {NeChart} from './ne-chart';
 import {NeStyleComponent} from './ne-style-component';
 import {NeColorGradient} from './ne-color-gradient';
 
@@ -10,7 +10,7 @@ export interface NeContinuousCollection {
   /**
    * Chart information for non-color continuous mappings
    */
-  chart?: NeContinuousChart;
+  chart?: NeChart;
 
   /**
    * Values of this continuous mapping

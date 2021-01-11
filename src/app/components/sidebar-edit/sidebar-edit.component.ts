@@ -10,6 +10,8 @@ import {Color, Label} from 'ng2-charts';
 import {NeColorGradient} from '../../models/ne-color-gradient';
 import {MainMappingsComponent} from '../main-mappings/main-mappings.component';
 import {MainMappingsNewComponent} from '../main-mappings-new/main-mappings-new.component';
+import {NeChart} from "../../models/ne-chart";
+import {NeChartType} from "../../models/ne-chart-type";
 
 @Component({
   selector: 'app-sidebar-edit',
@@ -94,6 +96,12 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * See {@link ParseService#buildChartData} for more details
    */
   lineChartOptions;
+
+  /**
+   * LineChartObject
+   */
+  lineChartObject: NeChart;
+
   /**
    * Default color for highlighting a lost node
    */
@@ -126,6 +134,15 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * @private
    */
   private isInitialized = false;
+
+  /**
+   * Type of chart to be displayed
+   */
+  chartType: NeChartType = {
+    line: true,
+    bar: false,
+    scatter: false
+  };
 
   /**
    * Subscribes to graph id and renders the graph if the view is already initialized
@@ -231,8 +248,8 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     if (chart !== null) {
       this.lookup = chart.lineChartOptions.title.text[0];
       this.attribute = chart.lineChartOptions.title.text[1];
-      this.lineChartData = chart.lineChartData;
-      this.lineChartLabels = chart.lineChartLabels;
+      this.lineChartData = chart.chartData;
+      this.lineChartLabels = chart.chartLabels;
       this.lineChartColors = [{
         backgroundColor: 'rgba(255,0,0,0.3)',
         borderColor: 'red',
@@ -242,6 +259,13 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
         pointHoverBorderColor: 'rgba(148,159,177,0.8)'
       }];
       this.lineChartOptions = chart.lineChartOptions;
+      this.lineChartObject = {
+        chartData: this.lineChartData,
+        chartLabels: this.lineChartLabels,
+        lineChartOptions: this.lineChartOptions,
+        lineChartColors: this.lineChartColors,
+        chartType: this.chartType
+      };
       this.showColorGradient = false;
       this.showComparison = false;
       this.showChart = true;

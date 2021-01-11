@@ -38,11 +38,11 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let entry of map.chart.lineChartData[0].data; let i = index">
+        <tr *ngFor="let entry of map.chart.chartData[0].data; let i = index">
           <td *ngIf="i === 0" colspan="2">&lt;</td>
-          <td *ngIf="i === map.chart.lineChartLabels.length - 1" colspan="2">&gt;</td>
-          <td *ngIf="i > 0 && i < map.chart.lineChartLabels.length - 1"
-              colspan="2">{{map.chart.lineChartLabels[i]}}</td>
+          <td *ngIf="i === map.chart.chartLabels.length - 1" colspan="2">&gt;</td>
+          <td *ngIf="i > 0 && i < map.chart.chartLabels.length - 1"
+              colspan="2">{{map.chart.chartLabels[i]}}</td>
           <td>{{entry}}</td>
         </tr>
         </tbody>

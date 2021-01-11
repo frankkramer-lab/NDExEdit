@@ -1,0 +1,26 @@
+<!-- Sidebar: Preview continuous mappings (non-color) -->
+<div *ngIf="chartType.line">
+  <h5>
+    <a [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, index]} }]" role="button">
+      <b>{{lookup}}</b>
+      {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
+      <b>{{attribute}}</b>
+    </a>
+  </h5>
+  <canvas [ngStyle]="{'width.%': widthPercent}"
+          [chartType]="'line'" [colors]="chartObject.lineChartColors"
+          [datasets]="chartObject.chartData"
+          [labels]="chartObject.chartLabels"
+          [legend]="true"
+          [options]="chartObject.lineChartOptions"
+          baseChart></canvas>
+</div>
+
+<!-- Create new / Edit existing continuous mappings: Distribution charts -->
+<div *ngIf="chartType.bar">
+  <canvas [ngStyle]="{'width.%': widthPercent}"
+          [chartType]="'bar'" [colors]="chartObject.lineChartColors"
+          [datasets]="chartObject.chartData"
+          [labels]="chartObject.chartLabels"
+          baseChart></canvas>
+</div>

@@ -20,6 +20,8 @@ import {NeContinuousThresholds} from '../../models/ne-continuous-thresholds';
 import {NeThresholdMap} from '../../models/ne-threshold-map';
 import {UtilityService} from '../../services/utility.service';
 import {NeMappingsType} from '../../models/ne-mappings-type';
+import {NeChartType} from "../../models/ne-chart-type";
+import {NeChart} from "../../models/ne-chart";
 
 @Component({
   selector: 'app-main-mappings-new',
@@ -113,6 +115,17 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   showDistribution = false;
 
   /**
+   * Determines which type of chart is to be displayed as distribution
+   * Since scatter diagrams are to be replaced with histograms, we don't need further distinction
+   * between discrete and continuous mappings
+   */
+  chartType: NeChartType = {
+    line: false,
+    bar: true,
+    scatter: false
+  };
+
+  /**
    * The CSS property for which the mapping is to be created or edited
    */
   @Input() styleProperty: string;
@@ -128,6 +141,11 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * Distribution chart labels for discrete aspects
    */
   barChartLabels: Label[] = [''];
+
+  /**
+   * Chart Object
+   */
+  chartObject: NeChart;
 
   /**
    * Distribution chart data for continuous aspects
@@ -171,6 +189,12 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   mapPointer: number;
 
+  /**
+   * Indicates if this new mapping or already existing mapping is discrete
+   * @private
+   */
+  private isDiscrete: boolean;
+
 
   /**
    * Determines by URL if this component is used for editing or creating a new mapping.
@@ -197,18 +221,14 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
 
     this.route.paramMap.subscribe(params => {
       this.initData(params);
-
     });
+
   }
 
   /**
-   * Sets chart data for distribution of the selected aspect and hides the label checkbox
+   * Hides the label checkbox in the sidebar, because toggling it from here has no gain at all
    */
   ngOnInit(): void {
-    this.barChartData = this.propertyToMap.chartDiscreteDistribution.chartData;
-    this.barChartLabels = this.propertyToMap.chartDiscreteDistribution.chartLabels;
-    this.scatterChartData = this.propertyToMap.chartContinuousDistribution.chartData;
-
     // avoid confusion by hiding any mappings preview in sidebar
     MainMappingsNewComponent.mappingsNewEmitter.emit({showLabelCheckbox: false});
   }
@@ -225,6 +245,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     this.continuousMapping = null;
     this.discreteMapping = null;
     this.isEdit = null;
+    this.isDiscrete = null;
     this.propertyId = null;
     MainMappingsNewComponent.mappingsNewEmitter.emit({showLabelCheckbox: true});
   }
@@ -273,6 +294,12 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
       const mapType = map.substring(0, 2);
       this.typeHint = this.utilityService.utilGetTypeHintByString(mapType);
 
+      if (this.typeHint.ec || this.typeHint.nc) {
+        this.isDiscrete = false;
+      } else {
+        this.isDiscrete = true;
+      }
+
       if (this.isEdit) {
         this.initDataEdit(params);
       } else {
@@ -298,7 +325,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
       availableAttributes = this.dataService.networkSelected.aspectKeyValuesNodes;
     }
 
-    if (this.typeHint.ec || this.typeHint.nc) {
+    if (!this.isDiscrete) {
       availableAttributes = availableAttributes
         .filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'float' || a.datatype === 'double'));
     } else {
@@ -307,6 +334,22 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     }
 
     this.propertyToMap = availableAttributes[this.propertyId];
+
+    if (this.isDiscrete) {
+      this.barChartData = this.propertyToMap.chartDiscreteDistribution.chartData;
+      this.barChartLabels = this.propertyToMap.chartDiscreteDistribution.chartLabels;
+      this.chartObject = {
+        chartData: this.barChartData,
+        chartLabels: this.barChartLabels,
+        chartType: this.chartType
+      };
+    } else {
+      this.scatterChartData = this.propertyToMap.chartContinuousDistribution.chartData;
+      this.chartObject = {
+        chartData: this.scatterChartData,
+        chartType: this.chartType
+      };
+    }
 
     if (this.typeHint.nc || this.typeHint.ec) {
       this.continuousMapping = {};

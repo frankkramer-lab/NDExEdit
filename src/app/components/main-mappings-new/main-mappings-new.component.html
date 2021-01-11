@@ -1,4 +1,4 @@
-<ng-container *ngIf="dataService.networkSelected">
+<ng-container *ngIf="dataService.networkSelected && this.propertyToMap">
 
   <h1>
     <a [routerLink]="['', { outlets: {primary: ['graph', dataService.networkSelected.id]} }]" data-toggle="tooltip"
@@ -71,13 +71,15 @@
       </div>
 
       <!-- distribution chart -->
-      <div *ngIf="showDistribution" [ngStyle]="{'width.%': 100}">
-        <canvas [chartType]="'bar'"
-                [datasets]="barChartData"
-                [labels]="barChartLabels"
-                baseChart></canvas>
-        <hr>
-      </div>
+      <app-chart *ngIf="showDistribution" [chartType]="chartType" [widthPercent]="100" [chartObject]="chartObject"></app-chart>
+
+<!--      <div *ngIf="showDistribution" [ngStyle]="{'width.%': 100}">-->
+<!--        <canvas [chartType]="'bar'"-->
+<!--                [datasets]="barChartData"-->
+<!--                [labels]="barChartLabels"-->
+<!--                baseChart></canvas>-->
+<!--        <hr>-->
+<!--      </div>-->
 
       <!-- FORM -->
       <app-main-mappings-new-form *ngIf="discreteMapping"
@@ -198,7 +200,7 @@
     <div *ngIf="typeHint.ec" [ngClass]="{active: typeHint.ec}" aria-labelledby="newEc" class="tab-pane fade show"
          id="newEcForm"
          role="tabpanel">
-      <button (click)="this.isEdit = !this.isEdit">Flip edit</button>
+
       <span *ngIf="isEdit then editHeadlineEc else newHeadlineEc"></span>
       <ng-template #editHeadlineEc><h3>{{'MAIN_MAPPINGS_EDIT_EC' | translate}}</h3></ng-template>
       <ng-template #newHeadlineEc><h3>{{'MAIN_MAPPINGS_NEW_EC' | translate}}</h3></ng-template>

@@ -85,11 +85,13 @@ export class AppComponent {
       tmpSidebar -= 10;
       this.widthMain = tmpMain;
       this.widthSidebar = tmpSidebar;
+      this.dataService.triggerChartRedraw();
     } else if (isLeft && tmpMain > 20) {
       tmpMain -= 10;
       tmpSidebar += 10;
       this.widthMain = tmpMain;
       this.widthSidebar = tmpSidebar;
+      this.dataService.triggerChartRedraw();
     }
   }
 
@@ -97,8 +99,11 @@ export class AppComponent {
    * Resets page layout to {@link AppComponent#widthMain} and {@link AppComponent#widthSidebar}
    */
   resetPageLayout(): void {
-    this.widthSidebar = 38;
-    this.widthMain = 60;
+    if (this.widthSidebar !== 38 && this.widthMain !== 60) {
+      this.widthSidebar = 38;
+      this.widthMain = 60;
+      this.dataService.triggerChartRedraw();
+    }
   }
 
   /**
