@@ -47,7 +47,7 @@
                   </button>
                 </span>
 
-        <button [routerLink]="['', { outlets: {primary: ['new', dataService.networkSelected.id, (typeHint.ec ? 'ec' : 'nc'), attributeIndex]} }]"
+        <button [routerLink]="['', { outlets: {primary: ['new', dataService.networkSelected.id, (typeHint.ec ? 'ec' : 'nc'), attributeIndex ]} }]"
                 class="btn btn-outline-success ml-2"
                 data-toggle="tooltip"
                 ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"
@@ -93,7 +93,7 @@
             </button>
           </span>
 
-        <button [routerLink]="['', { outlets: {primary: ['new', dataService.networkSelected.id, (typeHint.ed ? 'ed' : 'nd'), attributeIndex]} }]"
+        <button [routerLink]="['', { outlets: {primary: ['new', dataService.networkSelected.id, (typeHint.ed ? 'ed' : 'nd'), attributeIndex ]} }]"
                 class="btn btn-outline-success ml-2"
                 data-toggle="tooltip"
                 ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"

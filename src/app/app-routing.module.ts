@@ -50,7 +50,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'new/:id/:map/:property',
+    path: 'new/:id/:map/:propertyId',
     component: MainMappingsNewComponent,
     children: [
       {

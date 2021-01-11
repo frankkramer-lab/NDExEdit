@@ -164,12 +164,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   /**
    * Points to property within the possible attributes of a network's elements (for new creation)
    */
-  propertyIdNew: number;
-
-  /**
-   * Points to property within the possible attributes of a network's elements (for editing)
-   */
-  propertyIdEdit: number;
+  propertyId: number;
 
   /**
    * Points to already existing mapping which is to be edited
@@ -190,6 +185,15 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     public dataService: DataService,
     public utilityService: UtilityService
   ) {
+
+    switch (this.route.snapshot.url[0].path) {
+      case 'new':
+        this.isEdit = false;
+        break;
+      case 'edit':
+        this.isEdit = true;
+        break;
+    }
 
     this.route.paramMap.subscribe(params => {
       this.initData(params);
@@ -213,8 +217,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * Resets chart data and re-displays the label checkbox
    */
   ngOnDestroy(): void {
-    console.log('PARENT DESTROY');
-
     this.showDistribution = false;
     this.barChartData = [];
     this.barChartLabels = [];
@@ -223,6 +225,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     this.continuousMapping = null;
     this.discreteMapping = null;
     this.isEdit = null;
+    this.propertyId = null;
     MainMappingsNewComponent.mappingsNewEmitter.emit({showLabelCheckbox: true});
   }
 
@@ -254,6 +257,12 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     this.styleProperty = $event;
   }
 
+  /**
+   * Initializes data for either editing or creating a new mapping
+   *
+   * @param params Passed routing params
+   * @private Only needed on init
+   */
   private initData(params: ParamMap): void {
     const map = params.get('map');
     const networkId = params.get('id');
@@ -264,23 +273,23 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
       const mapType = map.substring(0, 2);
       this.typeHint = this.utilityService.utilGetTypeHintByString(mapType);
 
-      if (params.get('property')) {
-        // create new
-        this.isEdit = false;
-        this.initDataNew(params);
-
-      } else {
-        // edit
-        this.isEdit = true;
+      if (this.isEdit) {
         this.initDataEdit(params);
-
+      } else {
+        this.initDataNew(params);
       }
     }
   }
 
+  /**
+   * Initializes data for creating a new mapping
+   *
+   * @param params Passed routing parameters
+   * @private only needed on init
+   */
   private initDataNew(params: ParamMap): void {
-    this.propertyIdNew = Number(params.get('property'));
-
+    this.isEdit = false;
+    this.propertyId = Number(params.get('propertyId'));
     let availableAttributes: any[];
 
     if (this.typeHint.ec || this.typeHint.ed) {
@@ -297,7 +306,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         .filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
     }
 
-    this.propertyToMap = availableAttributes[this.propertyIdNew];
+    this.propertyToMap = availableAttributes[this.propertyId];
 
     if (this.typeHint.nc || this.typeHint.ec) {
       this.continuousMapping = {};
@@ -307,17 +316,24 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
 
   }
 
+  /**
+   * Initializes data for editing an existing mapping
+   *
+   * @param params Passed routing params
+   * @private only needed on init
+   */
   private initDataEdit(params: ParamMap): void {
     // edit existing
+    this.isEdit = true;
     let existingMapping;
     const mapId = params.get('map').substring(2);
 
     switch (params.get('map').substring(0, 2)) {
       case 'nd':
-        this.propertyIdEdit = Number(params.get('propertyId'));
+        this.propertyId = Number(params.get('propertyId'));
         existingMapping = this.dataService.networkSelected.mappings.nodesDiscrete[mapId];
         this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === existingMapping.classifier);
-        this.styleProperty = existingMapping.styleMap[this.propertyIdEdit].cssKey;
+        this.styleProperty = existingMapping.styleMap[this.propertyId].cssKey;
         this.discreteMapping = existingMapping;
         break;
       case 'nc':
@@ -327,10 +343,10 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         this.continuousMapping = existingMapping;
         break;
       case 'ed':
-        this.propertyIdEdit = Number(params.get('propertyId'));
+        this.propertyId = Number(params.get('propertyId'));
         existingMapping = this.dataService.networkSelected.mappings.edgesDiscrete[mapId];
         this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === existingMapping.classifier);
-        this.styleProperty = existingMapping.styleMap[this.propertyIdEdit].cssKey;
+        this.styleProperty = existingMapping.styleMap[this.propertyId].cssKey;
         this.discreteMapping = existingMapping;
         break;
       case 'ec':
