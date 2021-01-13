@@ -145,6 +145,8 @@
   "MAIN_MAPPINGS_NEW_EDIT_INSTEAD": "Creating a second one is usually a bad idea. Do you want to edit the existing one?",
   "MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD": "Edit existing mapping",
 
+  "MAIN_MAPPINGS_NEW_TT_HINTS_SHOW": "Show hints",
+  "MAIN_MAPPINGS_NEW_TT_HINTS_HIDE": "Hide hints",
   "MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING": "Continuous mappings are tricky!",
   "MAIN_MAPPINGS_NEW_DEFAULT_HINT_1": "Dont't let default values confuse you. They are needed for the NDEx data model, but they don't impact your mapping directly.",
   "MAIN_MAPPINGS_NEW_DEFAULT_HINT_2": "To define a consistent mapping it's recommended to set values for your attribute's minimum and maximum. You can find them as grey fields in the form below.",

@@ -119,12 +119,22 @@
 
       <!-- ALERT: minimum und maximum (if available) -->
       <div class="alert alert-info" role="alert">
-        <h5>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING' | translate}}</h5>
-        <ul>
-          <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_1' | translate}}</li>
-          <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_2' | translate}}</li>
-          <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_3' | translate}}</li>
-        </ul>
+        <button (click)="showHints = !showHints" class="btn btn-sm btn-outline-secondary mr-4"
+                data-toggle="tooltip"
+                ngbTooltip="{{(!showHints ? 'MAIN_MAPPINGS_NEW_TT_HINTS_SHOW' : 'MAIN_MAPPINGS_NEW_TT_HINTS_HIDE') | translate}}"
+                placement="right"
+                type="button">
+          <fa-icon [icon]="faQuestionCircle"></fa-icon>
+        </button>
+        <b>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING' | translate}}</b>
+
+        <div *ngIf="showHints">
+          <ul>
+            <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_1' | translate}}</li>
+            <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_2' | translate}}</li>
+            <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_3' | translate}}</li>
+          </ul>
+        </div>
       </div>
 
       <!-- FORM -->
@@ -216,12 +226,22 @@
 
       <!-- ALERT: minimum and maximum (if available) -->
       <div class="alert alert-info" role="alert">
-        <h5>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING' | translate}}</h5>
-        <ul>
-          <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_1' | translate}}</li>
-          <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_2' | translate}}</li>
-          <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_3' | translate}}</li>
-        </ul>
+        <button (click)="showHints = !showHints" class="btn btn-sm btn-outline-secondary mr-4"
+                data-toggle="tooltip"
+                ngbTooltip="{{(!showHints ? 'MAIN_MAPPINGS_NEW_TT_HINTS_SHOW' : 'MAIN_MAPPINGS_NEW_TT_HINTS_HIDE') | translate}}"
+                placement="right"
+                type="button">
+          <fa-icon [icon]="faQuestionCircle"></fa-icon>
+        </button>
+        <b>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING' | translate}}</b>
+
+        <div *ngIf="showHints">
+          <ul>
+            <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_1' | translate}}</li>
+            <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_2' | translate}}</li>
+            <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_3' | translate}}</li>
+          </ul>
+        </div>
       </div>
 
       <app-main-mappings-new-form *ngIf="continuousMapping"

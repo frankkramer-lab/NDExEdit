@@ -5,6 +5,7 @@ import {
   faArrowLeft,
   faArrowRight,
   faChartBar,
+  faQuestionCircle,
   faCheck,
   faPalette,
   faPlus,
@@ -68,7 +69,11 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * Emits changes in mappings which also have to be visible within the sidebar
    */
   @Output() static mappingsNewEmitter: EventEmitter<any> = new EventEmitter<any>();
-
+  /**
+   * Icon: faQuestionCircle
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faQuestionCircle = faQuestionCircle;
   /**
    * Icon: faArrowRight
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
@@ -144,6 +149,10 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   showDistribution = false;
 
+  /**
+   * True if the hints for continuous mappings are to be shown
+   */
+  showHints = false;
   /**
    * Determines which type of chart is to be displayed as distribution
    * Since scatter diagrams are to be replaced with histograms, we don't need further distinction

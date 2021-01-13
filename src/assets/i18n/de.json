@@ -145,6 +145,8 @@
   "MAIN_MAPPINGS_NEW_EDIT_INSTEAD": "Ein zweites Mapping anzulegen ist in der Regel nicht sinnvoll. Möchtest du dieses Mapping stattdessen bearbeiten?",
   "MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD": "Existierendes Mapping bearbeiten",
 
+  "MAIN_MAPPINGS_NEW_TT_HINTS_SHOW": "Hinweise anzeigen",
+  "MAIN_MAPPINGS_NEW_TT_HINTS_HIDE": "Hinweise verstecken",
   "MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING": "Kontinuierliche Mappings sind knifflig!",
   "MAIN_MAPPINGS_NEW_DEFAULT_HINT_1": "Lass dich von Standardwerten nicht verwirren. Die sind für das NDEx-Datenmodell nötig, beeinflussen dein Mapping aber nicht direkt.",
   "MAIN_MAPPINGS_NEW_DEFAULT_HINT_2": "Minimum und Maximum deines Attributs sollten in einem kontinuierlichen Mapping immer enthalten sein. Deshalb haben wir die schon ins Formular mit aufgenommen.",
