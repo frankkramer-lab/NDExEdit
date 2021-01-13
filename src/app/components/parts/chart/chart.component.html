@@ -25,12 +25,16 @@
           [colors]="chartObject.lineChartColors"
           baseChart></canvas>
 
-  <div *ngIf="numberOfBins" class="row">
-    <button class="col-5 mr-2 btn btn-sm btn-outline-danger" (click)="decreaseNumberOfBins()">
+<!--  todo need tooltips -->
+  <div *ngIf="numberOfBins">
+    <button class="mr-1 btn btn-sm btn-outline-danger" (click)="setNumberOfBins(numberOfBins - 1)">
       <fa-icon [icon]="faMinus"></fa-icon>
     </button>
-    <button class="col-5 btn btn-sm btn-outline-success" (click)="increaseNumberOfBins()">
+    <button class="mr-1 btn btn-sm btn-outline-success" (click)="setNumberOfBins(numberOfBins + 1)">
       <fa-icon [icon]="faPlus"></fa-icon>
+    </button>
+    <button class="btn btn-sm btn-outline-warning" (click)="setNumberOfBins(binSizeInitially)">
+      <fa-icon [icon]="faUndo"></fa-icon>
     </button>
   </div>
   <hr>

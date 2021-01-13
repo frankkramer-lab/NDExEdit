@@ -487,6 +487,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * As numbers of bins are increased or decreased, the distribution needs to be recalculated
    *
    * @param $event
    */

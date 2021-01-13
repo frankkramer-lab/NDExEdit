@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DataService} from '../../../services/data.service';
 import {NeChart} from '../../../models/ne-chart';
-import {faMinus, faPlus} from '@fortawesome/free-solid-svg-icons';
+import {faMinus, faPlus, faUndo} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-chart',
@@ -26,9 +26,13 @@ export class ChartComponent implements OnInit {
 
   @Output() binSizeEmitter = new EventEmitter<number>();
 
+  binSizeInitially: number;
+
   faPlus = faPlus;
 
   faMinus = faMinus;
+
+  faUndo = faUndo;
 
   colorChoicesFill = [
     'rgba(255,0,0,0.3)',
@@ -53,6 +57,7 @@ export class ChartComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.binSizeInitially = this.numberOfBins;
   }
 
   /**
@@ -71,13 +76,15 @@ export class ChartComponent implements OnInit {
     }];
   }
 
-  increaseNumberOfBins(): void {
-    this.numberOfBins++;
-    this.binSizeEmitter.emit(this.numberOfBins);
-  }
-
-  decreaseNumberOfBins(): void {
-    this.numberOfBins--;
+  /**
+   * Sets the number of bins for the distribution chart
+   * only if the size is changing
+   * @param newBinSize new number of bins
+   */
+  setNumberOfBins(newBinSize: number): void {
+    if (this.numberOfBins !== newBinSize) {
+      this.numberOfBins = newBinSize;
+    }
     this.binSizeEmitter.emit(this.numberOfBins);
   }
 }
