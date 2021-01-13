@@ -154,5 +154,9 @@
   "SIDEBAR_COMPARE_ABOUT_2": "NDExEdit wurde im Rahmen einer Abschlussarbeit an der Universität Augsburg entwickelt",
   "SIDEBAR_COMPARE_ABOUT_3_1": "Verbesserungsvorschläge und Nachfragen sind bei",
   "SIDEBAR_COMPARE_ABOUT_3_2": "gut aufgehoben",
-  "SIDEBAR_COMPARE_TEASER": "Vergleich zweier Netzwerke kommt demnächst!"
+  "SIDEBAR_COMPARE_TEASER": "Vergleich zweier Netzwerke kommt demnächst!",
+
+  "CHART_HISTO_INCREASE": "Bin hinzufügen",
+  "CHART_HISTO_DECREASE": "Bin entfernen",
+  "CHART_HISTO_RESET": "Bins zurücksetzen auf "
 }

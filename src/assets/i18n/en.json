@@ -154,5 +154,9 @@
   "SIDEBAR_COMPARE_ABOUT_2": "NDExEdit was developed as a bachelor thesis at University of Augsburg",
   "SIDEBAR_COMPARE_ABOUT_3_1": "Please contact",
   "SIDEBAR_COMPARE_ABOUT_3_2": "for feature requests and inquiries",
-  "SIDEBAR_COMPARE_TEASER": "Comparison tool coming soon!"
+  "SIDEBAR_COMPARE_TEASER": "Comparison tool coming soon!",
+
+  "CHART_HISTO_INCREASE": "Add bin",
+  "CHART_HISTO_DECREASE": "Remove bin",
+  "CHART_HISTO_RESET": "Reset bins to "
 }

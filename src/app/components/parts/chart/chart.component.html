@@ -25,15 +25,21 @@
           [colors]="chartObject.lineChartColors"
           baseChart></canvas>
 
-<!--  todo need tooltips -->
-  <div *ngIf="numberOfBins">
-    <button class="mr-1 btn btn-sm btn-outline-danger" (click)="setNumberOfBins(numberOfBins - 1)">
+  <!--  todo need tooltips -->
+  <div *ngIf="numberOfBins" class="row mt-1 mb-1">
+    <button class="col mr-1 btn btn-sm btn-outline-danger" (click)="setNumberOfBins(numberOfBins - 1)"
+            data-toggle="tooltip" ngbTooltip="{{'CHART_HISTO_DECREASE' | translate}}"
+            placement="bottom">
       <fa-icon [icon]="faMinus"></fa-icon>
     </button>
-    <button class="mr-1 btn btn-sm btn-outline-success" (click)="setNumberOfBins(numberOfBins + 1)">
+    <button class="col mr-1 btn btn-sm btn-outline-success" (click)="setNumberOfBins(numberOfBins + 1)"
+            data-toggle="tooltip" ngbTooltip="{{'CHART_HISTO_INCREASE' | translate}}"
+            placement="bottom">
       <fa-icon [icon]="faPlus"></fa-icon>
     </button>
-    <button class="btn btn-sm btn-outline-warning" (click)="setNumberOfBins(binSizeInitially)">
+    <button class="col btn btn-sm btn-outline-warning" (click)="setNumberOfBins(binSizeInitially)" data-toggle="tooltip"
+            ngbTooltip="{{'CHART_HISTO_RESET' | translate}} {{binSizeInitially}}"
+            placement="bottom">
       <fa-icon [icon]="faUndo"></fa-icon>
     </button>
   </div>
