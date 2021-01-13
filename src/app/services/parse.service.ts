@@ -20,6 +20,8 @@ import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete'
 import {NeContinuousCollection} from '../models/ne-continuous-collection';
 import {NeColorGradient} from '../models/ne-color-gradient';
 import {UtilityService} from './utility.service';
+import {NeChart} from "../models/ne-chart";
+import {ChartDataSets} from "chart.js";
 
 @Injectable({
   providedIn: 'root'
@@ -672,12 +674,6 @@ export class ParseService {
         akv.chartDiscreteDistribution.chartData[0].label = akv.name;
 
         akv.chartContinuousDistribution.chartLabels.push(Number(value));
-        //
-        // const index = akv.values.indexOf(value);
-        // akv.chartContinuousDistribution.chartData[0].data.push({
-        //   x: index,
-        //   y: value
-        // });
 
         for (const element of parsedData.filter(x => x.group === 'edges')) {
           for (const attribute of element.attributes) {
@@ -1243,11 +1239,15 @@ export class ParseService {
     equals: string[],
     greaters: string[],
     lookup: string[],
-    attribute: any): any {
+    attribute: any): NeChart {
 
-    const chartMappingObject: any = {
-      lineChartData: [],
-      lineChartLabels: [],
+    const chartMappingObject: NeChart = {
+      chartData: [],
+      chartType: {
+        bar: false,
+        line: true
+      },
+      chartLabels: [],
       lineChartOptions: {
         scales: {
           yAxes: [
@@ -1273,26 +1273,30 @@ export class ParseService {
       }
     };
 
-    chartMappingObject.lineChartLabels.push('');
+    chartMappingObject.chartLabels.push('');
 
     for (const th of thresholds) {
-      chartMappingObject.lineChartLabels.push(th);
+      chartMappingObject.chartLabels.push(th);
     }
 
-    chartMappingObject.lineChartLabels.push('');
+    chartMappingObject.chartLabels.push('');
+
+    const numericEquals = equals as unknown as number[];
+    const numericLowers = lowers as unknown as number[];
+    const numericGreaters = greaters as unknown as number[];
 
     for (const lu of lookup) {
-      const tmp = {
+      const tmp: ChartDataSets = {
         label: lu,
-        data: equals
+        data: numericEquals
       };
-      if (!chartMappingObject.lineChartData.includes(tmp)) {
-        chartMappingObject.lineChartData.push(tmp);
+      if (!chartMappingObject.chartData.includes(tmp)) {
+        chartMappingObject.chartData.push(tmp);
       }
     }
 
-    chartMappingObject.lineChartData[0].data.splice(0, 0, lowers[0]);
-    chartMappingObject.lineChartData[0].data.push(greaters[greaters.length - 1]);
+    chartMappingObject.chartData[0].data.splice(0, 0, numericLowers[0]);
+    chartMappingObject.chartData[0].data.push(numericGreaters[numericGreaters.length - 1]);
 
     return chartMappingObject;
   }

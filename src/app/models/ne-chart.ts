@@ -1,6 +1,6 @@
 import {ChartDataSets} from 'chart.js';
 import {Label} from 'ng2-charts';
-import {NeChartType} from "./ne-chart-type";
+import {NeChartType} from './ne-chart-type';
 
 /**
  * Represents chart data for continuous mappings which are not color mappings
@@ -31,7 +31,5 @@ export interface NeChart {
    * Optionally color specifics for displaying
    */
   lineChartColors?: any;
-
-  barChartOptions?: any;
 
 }

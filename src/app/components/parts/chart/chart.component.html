@@ -19,26 +19,25 @@
 <!-- Create new / Edit existing continuous mappings: Distribution charts -->
 <div *ngIf="chartObject.chartType.bar">
   <canvas [ngStyle]="{'width.%': widthPercent}"
-          [chartType]="'bar'"
+          [chartType]="'bar'" [colors]="chartObject.lineChartColors"
           [datasets]="chartObject.chartData"
           [labels]="chartObject.chartLabels"
-          [colors]="chartObject.lineChartColors"
           baseChart></canvas>
 
-  <!--  todo need tooltips -->
-  <div *ngIf="numberOfBins" class="row mt-1 mb-1">
-    <button class="col mr-1 btn btn-sm btn-outline-danger" (click)="setNumberOfBins(numberOfBins - 1)"
+  <!-- Allow manipulation of bins for continuous mappings -->
+  <div *ngIf="numberOfBins" class="row mt-2 mb-2 p-2">
+    <button class="col mr-2 btn btn-sm btn-outline-danger" (click)="setNumberOfBins(numberOfBins - 1)"
             data-toggle="tooltip" ngbTooltip="{{'CHART_HISTO_DECREASE' | translate}}"
             placement="bottom">
       <fa-icon [icon]="faMinus"></fa-icon>
     </button>
-    <button class="col mr-1 btn btn-sm btn-outline-success" (click)="setNumberOfBins(numberOfBins + 1)"
+    <button class="col mr-2 btn btn-sm btn-outline-success" (click)="setNumberOfBins(numberOfBins + 1)"
             data-toggle="tooltip" ngbTooltip="{{'CHART_HISTO_INCREASE' | translate}}"
             placement="bottom">
       <fa-icon [icon]="faPlus"></fa-icon>
     </button>
     <button class="col btn btn-sm btn-outline-warning" (click)="setNumberOfBins(binSizeInitially)" data-toggle="tooltip"
-            ngbTooltip="{{'CHART_HISTO_RESET' | translate}} {{binSizeInitially}}"
+            ngbTooltip="{{'CHART_HISTO_RESET' | translate}} <b>{{binSizeInitially}}</b>"
             placement="bottom">
       <fa-icon [icon]="faUndo"></fa-icon>
     </button>

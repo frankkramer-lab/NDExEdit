@@ -144,10 +144,12 @@
   "MAIN_MAPPINGS_NEW_ALREADY_EXISTS": "Ein Mapping für dieses Attribut und diese CSS-Eigenschaft existiert bereits",
   "MAIN_MAPPINGS_NEW_EDIT_INSTEAD": "Ein zweites Mapping anzulegen ist in der Regel nicht sinnvoll. Möchtest du dieses Mapping stattdessen bearbeiten?",
   "MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD": "Existierendes Mapping bearbeiten",
-  "MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING": "Standardwerte sind nicht zu unterschätzen!",
-  "MAIN_MAPPINGS_NEW_DEFAULT_HINT": "Wenn sie korrekt eingesetzt werden, haben Standardwerte keinen direkten Einfluss auf das Erschreinungsbild deines Graphen. Ihr Zweck ist es, Fälle abzudecken, die aktuell noch nicht im Graph vorkommen. Somit kannst du den Graphen nachträglich problemlos anpassen, z.B. Knoten oder Kanten hinzufügen. Es wird empfohlen, die aktuelle Spanne der Werte deines ausgewählten Attributes vollständig abzudecken - ohne sich auf die Standardwerte zu verlassen.",
-  "MAIN_MAPPINGS_NEW_CURRENT_MIN": "Aktuelles Minimum (empfohlener Schwellwert#1)",
-  "MAIN_MAPPINGS_NEW_CURRENT_MAX": "Aktuelles Maximum (empfohlener Schwellwert#2)",
+
+  "MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING": "Kontinuierliche Mappings sind knifflig!",
+  "MAIN_MAPPINGS_NEW_DEFAULT_HINT_1": "Lass dich von Standardwerten nicht verwirren. Die sind für das NDEx-Datenmodell nötig, beeinflussen dein Mapping aber nicht direkt.",
+  "MAIN_MAPPINGS_NEW_DEFAULT_HINT_2": "Minimum und Maximum deines Attributs sollten in einem kontinuierlichen Mapping immer enthalten sein. Deshalb haben wir die schon ins Formular mit aufgenommen.",
+  "MAIN_MAPPINGS_NEW_DEFAULT_HINT_3": "Schau dir das Histogramm an, um deine Daten besser kennenzulernen. Die Bin-Size kannst du mit Buttons verändern.",
+
   "SIDEBAR_COMPARE_TITLE": "Zwei Netzwerke vergleichen",
   "SIDEBAR_COMPARE_ABOUT": "Über NDExEdit",
   "SIDEBAR_COMPARE_ABOUT_1": "Gefällt dir die Anwendung bislang? Warte mal, was noch alles auf dich zukommt!",

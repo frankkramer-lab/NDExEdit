@@ -71,7 +71,7 @@
       </div>
 
       <!-- distribution chart -->
-      <app-chart *ngIf="showDistribution" [chartType]="chartType" [widthPercent]="100" [chartObject]="chartObject"></app-chart>
+      <app-chart *ngIf="showDistribution" [widthPercent]="100" [chartObject]="chartObject"></app-chart>
 
       <!-- FORM -->
       <app-main-mappings-new-form *ngIf="discreteMapping"
@@ -118,11 +118,13 @@
                  [widthPercent]="100" [numberOfBins]="binSize" (binSizeEmitter)="changeBinSize($event)"></app-chart>
 
       <!-- ALERT: minimum und maximum (if available) -->
-      <div *ngIf="propertyToMap.min !== null && propertyToMap.max !== null" class="alert alert-info" role="alert">
+      <div class="alert alert-info" role="alert">
         <h5>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING' | translate}}</h5>
-        <p>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT' | translate}}</p>
-        <p>{{'MAIN_MAPPINGS_NEW_CURRENT_MIN' | translate}}: <b>{{propertyToMap.min}}</b></p>
-        <p>{{'MAIN_MAPPINGS_NEW_CURRENT_MAX' | translate}}: <b>{{propertyToMap.max}}</b></p>
+        <ul>
+          <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_1' | translate}}</li>
+          <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_2' | translate}}</li>
+          <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_3' | translate}}</li>
+        </ul>
       </div>
 
       <!-- FORM -->
@@ -165,15 +167,8 @@
       </div>
 
       <!-- distribution chart -->
-      <app-chart *ngIf="showDistribution" [chartType]="chartType" [widthPercent]="100" [chartObject]="chartObject"></app-chart>
+      <app-chart *ngIf="showDistribution" [widthPercent]="100" [chartObject]="chartObject"></app-chart>
 
-      <!--      <div *ngIf="showDistribution" [ngStyle]="{'width.%': 100}">-->
-<!--        <canvas [chartType]="'bar'" [datasets]="barChartData"-->
-<!--                [labels]="barChartLabels"-->
-<!--                [ngStyle]="{'width.%': 100}"-->
-<!--                baseChart></canvas>-->
-<!--        <hr>-->
-<!--      </div>-->
 
       <!-- FORM -->
       <app-main-mappings-new-form *ngIf="discreteMapping"
@@ -220,11 +215,13 @@
                  [widthPercent]="100" [numberOfBins]="binSize" (binSizeEmitter)="this.changeBinSize($event)"></app-chart>
 
       <!-- ALERT: minimum and maximum (if available) -->
-      <div *ngIf="propertyToMap.min !== null && propertyToMap.max !== null" class="alert alert-info" role="alert">
+      <div class="alert alert-info" role="alert">
         <h5>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING' | translate}}</h5>
-        <p>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT' | translate}}</p>
-        <p>{{'MAIN_MAPPINGS_NEW_CURRENT_MIN' | translate}}: <b>{{propertyToMap.min}}</b></p>
-        <p>{{'MAIN_MAPPINGS_NEW_CURRENT_MAX' | translate}}: <b>{{propertyToMap.max}}</b></p>
+        <ul>
+          <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_1' | translate}}</li>
+          <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_2' | translate}}</li>
+          <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_3' | translate}}</li>
+        </ul>
       </div>
 
       <app-main-mappings-new-form *ngIf="continuousMapping"

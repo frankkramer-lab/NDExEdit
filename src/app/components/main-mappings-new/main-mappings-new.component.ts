@@ -22,7 +22,7 @@ import {UtilityService} from '../../services/utility.service';
 import {NeMappingsType} from '../../models/ne-mappings-type';
 import {NeChartType} from '../../models/ne-chart-type';
 import {NeChart} from '../../models/ne-chart';
-import {NeFrequencyCounter} from "../../models/ne-frequency-counter";
+import {NeFrequencyCounter} from '../../models/ne-frequency-counter';
 
 @Component({
   selector: 'app-main-mappings-new',
@@ -151,8 +151,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   chartType: NeChartType = {
     line: false,
-    bar: true,
-    scatter: false
+    bar: true
   };
 
   /**
@@ -255,7 +254,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     MainMappingsNewComponent.mappingsNewEmitter.emit({showLabelCheckbox: false});
     this.chartType = {
       bar: true,
-      scatter: false,
       line: false
     };
   }
@@ -274,6 +272,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     this.isEdit = null;
     this.isDiscrete = null;
     this.propertyId = null;
+    this.binSize = null;
+    this.chartObject = null;
     MainMappingsNewComponent.mappingsNewEmitter.emit({showLabelCheckbox: true});
   }
 
@@ -410,6 +410,11 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === existingMapping.title[1]);
         this.styleProperty = existingMapping.title[0];
         this.continuousMapping = existingMapping;
+        this.binSize = MainMappingsNewComponent.sturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
+        this.chartObject = this.calculateHistogramDataForBinSize(this.binSize,
+          this.propertyToMap.min,
+          this.propertyToMap.max,
+          this.propertyToMap.chartContinuousDistribution.chartLabels);
         break;
       case 'ed':
         this.propertyId = Number(params.get('propertyId'));
@@ -423,6 +428,11 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === existingMapping.title[1]);
         this.styleProperty = existingMapping.title[0];
         this.continuousMapping = existingMapping;
+        this.binSize = MainMappingsNewComponent.sturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
+        this.chartObject = this.calculateHistogramDataForBinSize(this.binSize,
+          this.propertyToMap.min,
+          this.propertyToMap.max,
+          this.propertyToMap.chartContinuousDistribution.chartLabels);
         break;
     }
   }
@@ -500,7 +510,11 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   changeBinSize($event: number): void {
     this.binSize = $event;
-    this.chartObject = this.calculateHistogramDataForBinSize(this.binSize, this.propertyToMap.min, this.propertyToMap.max, this.propertyToMap.chartContinuousDistribution.chartLabels);
+    this.chartObject = this.calculateHistogramDataForBinSize(
+      this.binSize,
+      this.propertyToMap.min,
+      this.propertyToMap.max,
+      this.propertyToMap.chartContinuousDistribution.chartLabels);
   }
 }
 

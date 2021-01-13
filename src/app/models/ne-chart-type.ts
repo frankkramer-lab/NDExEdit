@@ -12,8 +12,4 @@ export interface NeChartType {
    */
   bar: boolean;
 
-  /**
-   * Type scatter
-   */
-  scatter: boolean;
 }

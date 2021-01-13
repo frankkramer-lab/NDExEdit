@@ -20,26 +20,7 @@
              [index]="index"
              [lookup]="lookup"
              [attribute]="attribute"
-  [chartType]="chartType"
-  [widthPercent]="100"></app-chart>
-
-  <!-- chart for continuous mappings -->
-<!--  <div *ngIf="showChart">-->
-<!--    <h5>-->
-<!--      <a [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, index]} }]" role="button">-->
-<!--        <b>{{lookup}}</b>-->
-<!--        {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}-->
-<!--        <b>{{attribute}}</b>-->
-<!--      </a>-->
-<!--    </h5>-->
-<!--    <canvas [chartType]="'line'" [colors]="lineChartColors"-->
-<!--            [datasets]="lineChartData"-->
-<!--            [labels]="lineChartLabels"-->
-<!--            [legend]="true"-->
-<!--            [options]="lineChartOptions"-->
-<!--            baseChart-->
-<!--            id="mappingsChart"></canvas>-->
-<!--  </div>-->
+             [widthPercent]="100"></app-chart>
 
   <!-- color gradient for continuous mappings -->
   <div *ngIf="showColorGradient">

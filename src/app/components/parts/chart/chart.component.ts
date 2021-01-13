@@ -10,30 +10,67 @@ import {faMinus, faPlus, faUndo} from '@fortawesome/free-solid-svg-icons';
 })
 export class ChartComponent implements OnInit {
 
+  /**
+   * Name of the lookup which is part of the mapping
+   */
   @Input() lookup?: string;
 
+  /**
+   * Name of the attribute which is part of the mapping
+   */
   @Input() attribute?: string;
 
+  /**
+   * Sidebar chart displaying a preview for the continuous mapping needs a router link
+   * to the corresponding mapping, to display details.
+   * Index points to the corresponding mapping
+   */
   @Input() index?: string;
 
-  @Input() widthPercent: number;
+  /**
+   * Since height is automatically set, width can be set by parent component
+   */
+  @Input() widthPercent?: number;
 
+  /**
+   * Chart object which is to be rendered
+   */
   @Input() chartObject!: NeChart;
 
-  @Input() precision?: number;
-
+  /**
+   * Currently set number of bins
+   */
   @Input() numberOfBins?: number;
 
+  /**
+   * Triggers redraw of the chart with the new binSize to better evaluate your data
+   * for continuous mappings
+   */
   @Output() binSizeEmitter = new EventEmitter<number>();
 
+  /**
+   * Default binSize for this property
+   */
   binSizeInitially: number;
-
+  /**
+   * Icon: faPlus
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faPlus = faPlus;
-
+  /**
+   * Icon: faMinus
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faMinus = faMinus;
-
+  /**
+   * Icon: faUndo
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faUndo = faUndo;
 
+  /**
+   * Possible fills for the continuous charts, which are not color-associated mappings
+   */
   colorChoicesFill = [
     'rgba(255,0,0,0.3)',
     'rgba(0,255,0,0.3)',
@@ -43,6 +80,9 @@ export class ChartComponent implements OnInit {
     'rgba(0,255,255,0.3)'
   ];
 
+  /**
+   * Matching borders for the continuous charts, which are not color-associated mappings
+   */
   colorChoicesBorder = [
     'red',
     'green',
@@ -58,14 +98,22 @@ export class ChartComponent implements OnInit {
 
   ngOnInit(): void {
     this.binSizeInitially = this.numberOfBins;
+    this.chartObject.lineChartColors = this.getRandomColorForChart();
   }
 
   /**
    * Triggers a colorful redraw of a chart
    */
   triggerRedraw(): void {
+    this.chartObject.lineChartColors = this.getRandomColorForChart();
+  }
+
+  /**
+   * Returns a random color for a chart
+   */
+  getRandomColorForChart(): any[] {
     const rdn = Math.floor(Math.random() * 100000) % this.colorChoicesFill.length;
-    this.chartObject.lineChartColors = [{
+    return [{
       hoverBackgroundColor: this.colorChoicesFill[rdn],
       backgroundColor: this.colorChoicesFill[rdn],
       borderColor: this.colorChoicesBorder[rdn],

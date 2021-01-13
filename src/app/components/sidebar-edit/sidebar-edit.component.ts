@@ -6,12 +6,12 @@ import {Subscription} from 'rxjs';
 import {GraphService} from '../../services/graph.service';
 import {faLightbulb, faPalette} from '@fortawesome/free-solid-svg-icons';
 import {ChartDataSets} from 'chart.js';
-import {Color, Label} from 'ng2-charts';
+import {Label} from 'ng2-charts';
 import {NeColorGradient} from '../../models/ne-color-gradient';
 import {MainMappingsComponent} from '../main-mappings/main-mappings.component';
 import {MainMappingsNewComponent} from '../main-mappings-new/main-mappings-new.component';
-import {NeChart} from "../../models/ne-chart";
-import {NeChartType} from "../../models/ne-chart-type";
+import {NeChart} from '../../models/ne-chart';
+import {NeChartType} from '../../models/ne-chart-type';
 
 @Component({
   selector: 'app-sidebar-edit',
@@ -34,10 +34,6 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faLightbulb = faLightbulb;
-  /**
-   * Selected network of type {@link NeNetwork|NeNetwork}
-   */
-  selectedNetwork: NeNetwork;
   /**
    * CSS property which is mapped by {@link SidebarEditComponent#attribute|this attribute}
    */
@@ -82,15 +78,6 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * See {@link ParseService#buildChartData} for more details
    */
   lineChartLabels: Label[] = [''];
-  /**
-   * chart cosmetics used to display numeric continuous mapping
-   * See {@link ParseService#buildChartData} for more details
-   */
-  lineChartColors: Color[] = [
-    {
-      backgroundColor: 'rgba(255,0,0,0.4)',
-    }
-  ];
   /**
    * chart options used to display numeric continuous mapping
    * See {@link ParseService#buildChartData} for more details
@@ -250,20 +237,12 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
       this.attribute = chart.lineChartOptions.title.text[1];
       this.lineChartData = chart.chartData;
       this.lineChartLabels = chart.chartLabels;
-      this.lineChartColors = [{
-        backgroundColor: 'rgba(255,0,0,0.3)',
-        borderColor: 'red',
-        pointBackgroundColor: 'rgba(148,159,177,1)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-      }];
+
       this.lineChartOptions = chart.lineChartOptions;
       this.lineChartObject = {
         chartData: this.lineChartData,
         chartLabels: this.lineChartLabels,
         lineChartOptions: this.lineChartOptions,
-        lineChartColors: this.lineChartColors,
         chartType: this.chartType
       };
       this.showColorGradient = false;
