@@ -73,14 +73,6 @@
       <!-- distribution chart -->
       <app-chart *ngIf="showDistribution" [chartType]="chartType" [widthPercent]="100" [chartObject]="chartObject"></app-chart>
 
-<!--      <div *ngIf="showDistribution" [ngStyle]="{'width.%': 100}">-->
-<!--        <canvas [chartType]="'bar'"-->
-<!--                [datasets]="barChartData"-->
-<!--                [labels]="barChartLabels"-->
-<!--                baseChart></canvas>-->
-<!--        <hr>-->
-<!--      </div>-->
-
       <!-- FORM -->
       <app-main-mappings-new-form *ngIf="discreteMapping"
                                   (stylePropertyEmitter)="setStyleProperty($event)"
@@ -122,13 +114,8 @@
       </div>
 
       <!-- distribution chart -->
-      <div *ngIf="showDistribution" [ngStyle]="{'width.%': 100}">
-        <canvas [chartType]="'scatter'"
-                [datasets]="scatterChartData"
-                [labels]="scatterChartLabels"
-                baseChart></canvas>
-        <hr>
-      </div>
+      <app-chart *ngIf="showDistribution" [chartObject]="chartObject"
+                 [widthPercent]="100" [numberOfBins]="binSize" (binSizeEmitter)="changeBinSize($event)"></app-chart>
 
       <!-- ALERT: minimum und maximum (if available) -->
       <div *ngIf="propertyToMap.min !== null && propertyToMap.max !== null" class="alert alert-info" role="alert">
@@ -178,13 +165,15 @@
       </div>
 
       <!-- distribution chart -->
-      <div *ngIf="showDistribution" [ngStyle]="{'width.%': 100}">
-        <canvas [chartType]="'bar'" [datasets]="barChartData"
-                [labels]="barChartLabels"
-                [ngStyle]="{'width.%': 100}"
-                baseChart></canvas>
-        <hr>
-      </div>
+      <app-chart *ngIf="showDistribution" [chartType]="chartType" [widthPercent]="100" [chartObject]="chartObject"></app-chart>
+
+      <!--      <div *ngIf="showDistribution" [ngStyle]="{'width.%': 100}">-->
+<!--        <canvas [chartType]="'bar'" [datasets]="barChartData"-->
+<!--                [labels]="barChartLabels"-->
+<!--                [ngStyle]="{'width.%': 100}"-->
+<!--                baseChart></canvas>-->
+<!--        <hr>-->
+<!--      </div>-->
 
       <!-- FORM -->
       <app-main-mappings-new-form *ngIf="discreteMapping"
@@ -227,13 +216,8 @@
       </div>
 
       <!-- distribution chart -->
-      <div *ngIf="showDistribution" [ngStyle]="{'width.%': 100}">
-        <canvas [chartType]="'scatter'"
-                [datasets]="scatterChartData"
-                [labels]="scatterChartLabels"
-                baseChart></canvas>
-        <hr>
-      </div>
+      <app-chart *ngIf="showDistribution" [chartObject]="chartObject"
+                 [widthPercent]="100" [numberOfBins]="binSize" (binSizeEmitter)="this.changeBinSize($event)"></app-chart>
 
       <!-- ALERT: minimum and maximum (if available) -->
       <div *ngIf="propertyToMap.min !== null && propertyToMap.max !== null" class="alert alert-info" role="alert">

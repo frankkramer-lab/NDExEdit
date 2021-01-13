@@ -1,7 +1,7 @@
-import {Component, DoCheck, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DataService} from '../../../services/data.service';
-import {NeChartType} from '../../../models/ne-chart-type';
 import {NeChart} from '../../../models/ne-chart';
+import {faMinus, faPlus} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-chart',
@@ -18,9 +18,17 @@ export class ChartComponent implements OnInit {
 
   @Input() widthPercent: number;
 
-  @Input() chartType: NeChartType;
+  @Input() chartObject!: NeChart;
 
-  @Input() chartObject!: NeChart; // or other types
+  @Input() precision?: number;
+
+  @Input() numberOfBins?: number;
+
+  @Output() binSizeEmitter = new EventEmitter<number>();
+
+  faPlus = faPlus;
+
+  faMinus = faMinus;
 
   colorChoicesFill = [
     'rgba(255,0,0,0.3)',
@@ -48,7 +56,7 @@ export class ChartComponent implements OnInit {
   }
 
   /**
-   * Triggers a colorful redraw of the line chart
+   * Triggers a colorful redraw of a chart
    */
   triggerRedraw(): void {
     const rdn = Math.floor(Math.random() * 100000) % this.colorChoicesFill.length;
@@ -61,5 +69,15 @@ export class ChartComponent implements OnInit {
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: 'rgba(148,159,177,0.8)'
     }];
+  }
+
+  increaseNumberOfBins(): void {
+    this.numberOfBins++;
+    this.binSizeEmitter.emit(this.numberOfBins);
+  }
+
+  decreaseNumberOfBins(): void {
+    this.numberOfBins--;
+    this.binSizeEmitter.emit(this.numberOfBins);
   }
 }

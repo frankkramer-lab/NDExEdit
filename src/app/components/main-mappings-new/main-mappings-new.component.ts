@@ -20,8 +20,9 @@ import {NeContinuousThresholds} from '../../models/ne-continuous-thresholds';
 import {NeThresholdMap} from '../../models/ne-threshold-map';
 import {UtilityService} from '../../services/utility.service';
 import {NeMappingsType} from '../../models/ne-mappings-type';
-import {NeChartType} from "../../models/ne-chart-type";
-import {NeChart} from "../../models/ne-chart";
+import {NeChartType} from '../../models/ne-chart-type';
+import {NeChart} from '../../models/ne-chart';
+import {NeFrequencyCounter} from "../../models/ne-frequency-counter";
 
 @Component({
   selector: 'app-main-mappings-new',
@@ -33,6 +34,35 @@ import {NeChart} from "../../models/ne-chart";
  * Component responsible for creating new mappings
  */
 export class MainMappingsNewComponent implements OnInit, OnDestroy {
+
+  /**
+   * Determines by URL if this component is used for editing or creating a new mapping.
+   * Thus prefills the properties used in the form or prepares the new creation.
+   *
+   * @param route Current route
+   * @param dataService Service used to find the currently selected network
+   * @param utilityService Service used to access shared code
+   */
+  constructor(
+    private route: ActivatedRoute,
+    public dataService: DataService,
+    public utilityService: UtilityService
+  ) {
+
+    switch (this.route.snapshot.url[0].path) {
+      case 'new':
+        this.isEdit = false;
+        break;
+      case 'edit':
+        this.isEdit = true;
+        break;
+    }
+
+    this.route.paramMap.subscribe(params => {
+      this.initData(params);
+    });
+
+  }
 
   /**
    * Emits changes in mappings which also have to be visible within the sidebar
@@ -126,6 +156,18 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   };
 
   /**
+   * Defines how many bins are used to display the histogram.
+   * Initially calculated by {@link https://www.vosesoftware.com/riskwiki/Determiningthewidthofhistogrambars.php|Sturge's Rule}
+   */
+  binSize: number;
+
+  /**
+   * Calculation always leads to precision errors
+   * To fix those the user has to be able to adjust these
+   */
+  precision = 4;
+
+  /**
    * The CSS property for which the mapping is to be created or edited
    */
   @Input() styleProperty: string;
@@ -195,34 +237,14 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   private isDiscrete: boolean;
 
-
   /**
-   * Determines by URL if this component is used for editing or creating a new mapping.
-   * Thus prefills the properties used in the form or prepares the new creation.
-   *
-   * @param route Current route
-   * @param dataService Service used to find the currently selected network
-   * @param utilityService Service used to access shared code
+   * Returns the number of bins to be applied to the given set of numbers
+   * {@link https://en.wikipedia.org/wiki/Histogram#Sturges'_formula|Sturge's Rule}
+   * @param numbers list of numbers
+   * @private
    */
-  constructor(
-    private route: ActivatedRoute,
-    public dataService: DataService,
-    public utilityService: UtilityService
-  ) {
-
-    switch (this.route.snapshot.url[0].path) {
-      case 'new':
-        this.isEdit = false;
-        break;
-      case 'edit':
-        this.isEdit = true;
-        break;
-    }
-
-    this.route.paramMap.subscribe(params => {
-      this.initData(params);
-    });
-
+  private static sturgesRule(numbers: number[]): number {
+    return Math.ceil(1 + Math.log2(numbers.length));
   }
 
   /**
@@ -231,6 +253,11 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // avoid confusion by hiding any mappings preview in sidebar
     MainMappingsNewComponent.mappingsNewEmitter.emit({showLabelCheckbox: false});
+    this.chartType = {
+      bar: true,
+      scatter: false,
+      line: false
+    };
   }
 
   /**
@@ -336,20 +363,19 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     this.propertyToMap = availableAttributes[this.propertyId];
 
     if (this.isDiscrete) {
-      this.barChartData = this.propertyToMap.chartDiscreteDistribution.chartData;
-      this.barChartLabels = this.propertyToMap.chartDiscreteDistribution.chartLabels;
       this.chartObject = {
-        chartData: this.barChartData,
-        chartLabels: this.barChartLabels,
+        chartData: this.propertyToMap.chartDiscreteDistribution.chartData,
+        chartLabels: this.propertyToMap.chartDiscreteDistribution.chartLabels,
         chartType: this.chartType
       };
     } else {
-      this.scatterChartData = this.propertyToMap.chartContinuousDistribution.chartData;
-      this.chartObject = {
-        chartData: this.scatterChartData,
-        chartType: this.chartType
-      };
+      this.binSize = MainMappingsNewComponent.sturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
+      this.chartObject = this.calculateHistogramDataForBinSize(this.binSize,
+        this.propertyToMap.min,
+        this.propertyToMap.max,
+        this.propertyToMap.chartContinuousDistribution.chartLabels);
     }
+    console.log(this.chartObject);
 
     if (this.typeHint.nc || this.typeHint.ec) {
       this.continuousMapping = {};
@@ -399,6 +425,74 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         this.continuousMapping = existingMapping;
         break;
     }
+  }
+
+  /**
+   * Calculates data for the continuous distribution chart as histogram
+   * with default binSize calculated as Sturge's Rule
+   *
+   * @param binSize number of bins calculated by Sturge's Rule
+   * @param min lowest value
+   * @param max greatest value
+   * @param values list of values
+   * @private
+   */
+  private calculateHistogramDataForBinSize(binSize: number, min: number, max: number, values: number[]): NeChart {
+    const chartData = [];
+    const frequencies: NeFrequencyCounter[] = [];
+    const chartLabels = [];
+
+    if (isNaN(binSize) || isNaN(min) || isNaN(max)) {
+      console.log('Histogram data could not be calculated');
+      return {
+        chartData,
+        chartLabels,
+        chartType: this.chartType
+      };
+    }
+
+    const sizeOfBin = Number(((max - min) / binSize).toFixed(this.precision));
+
+    let intervalPointer = min;
+    while (intervalPointer < max) {
+
+      const nextThreshold = Number((intervalPointer + sizeOfBin).toFixed(this.precision));
+      frequencies.push({
+        instance: intervalPointer, // lower border
+        occurance: 0
+      });
+
+      chartLabels.push('[' + intervalPointer + ':' + nextThreshold + ']');
+      intervalPointer = nextThreshold;
+    }
+
+    for (const value of values) {
+      for (let i = 0; i < frequencies.length - 1; i++) {
+        if (value > frequencies[i].instance && value <= frequencies[i + 1].instance) {
+          frequencies[i].occurance++;
+        }
+      }
+    }
+
+    chartData.push({
+      data: frequencies.map(a => a.occurance),
+      label: this.propertyToMap.name
+    });
+
+    return {
+      chartType: this.chartType,
+      chartLabels,
+      chartData
+    };
+  }
+
+  /**
+   *
+   * @param $event
+   */
+  changeBinSize($event: number): void {
+    this.binSize = $event;
+    this.chartObject = this.calculateHistogramDataForBinSize(this.binSize, this.propertyToMap.min, this.propertyToMap.max, this.propertyToMap.chartContinuousDistribution.chartLabels);
   }
 }
 
