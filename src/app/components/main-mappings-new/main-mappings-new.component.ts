@@ -458,7 +458,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
 
       const nextThreshold = Number((intervalPointer + sizeOfBin).toFixed(this.precision));
       frequencies.push({
-        instance: intervalPointer, // lower border
+        lowerBorder: intervalPointer,
+        upperBorder: nextThreshold,
         occurance: 0
       });
 
@@ -466,10 +467,16 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
       intervalPointer = nextThreshold;
     }
 
-    for (const value of values) {
-      for (let i = 0; i < frequencies.length - 1; i++) {
-        if (value > frequencies[i].instance && value <= frequencies[i + 1].instance) {
-          frequencies[i].occurance++;
+    for (const f of frequencies) {
+      for (const value of values) {
+
+        if (value === min && frequencies.indexOf(f) === 0) {
+          f.occurance++;
+          continue;
+        }
+
+        if (value > f.lowerBorder && value <= f.upperBorder) {
+          f.occurance++;
         }
       }
     }

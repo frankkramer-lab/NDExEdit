@@ -82,9 +82,9 @@ export class ChartComponent implements OnInit {
    * @param newBinSize new number of bins
    */
   setNumberOfBins(newBinSize: number): void {
-    if (this.numberOfBins !== newBinSize) {
+    if (this.numberOfBins !== newBinSize && newBinSize > 0) {
       this.numberOfBins = newBinSize;
+      this.binSizeEmitter.emit(this.numberOfBins);
     }
-    this.binSizeEmitter.emit(this.numberOfBins);
   }
 }

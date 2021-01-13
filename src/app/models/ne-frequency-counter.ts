@@ -4,9 +4,14 @@
  */
 export interface NeFrequencyCounter {
   /**
-   * Value whose occurance is counted
+   * Lower border is needed as value to be counted
    */
-  instance: string|number;
+  lowerBorder: string|number;
+
+  /**
+   * Optionally add an upper border to indicate end of interval
+   */
+  upperBorder?: string|number;
 
   /**
    * Counter
