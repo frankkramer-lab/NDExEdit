@@ -39,6 +39,8 @@
   "MAIN_GRAPH_BTN_FIT": "Größe anpassen",
   "SIDEBAR_MANAGE_TITLE": "Verfügbare Netzwerke",
   "SIDEBAR_MANAGE_NW_NAME": "Netzwerkname",
+  "SIDEBAR_MANAGE_TT_CLIPBOARD": "UUID kopieren",
+  "SIDEBAR_MANAGE_CLIPBOARD_SUCCESSFUL": "Kopiert!",
   "SIDEBAR_MANAGE_TT_INFO": "Info über dieses Netzwerk",
   "SIDEBAR_MANAGE_TT_EDIT": "Dieses Netzwerk rendern und bearbeiten",
   "SIDEBAR_MANAGE_TT_DOWNLOAD": "Als .cx Datei herunterladen",

@@ -1,10 +1,9 @@
 import {AfterViewInit, Component, OnDestroy} from '@angular/core';
 import {DataService} from '../../services/data.service';
 import {ActivatedRoute} from '@angular/router';
-import {NeNetwork} from '../../models/ne-network';
 import {Subscription} from 'rxjs';
 import {GraphService} from '../../services/graph.service';
-import {faLightbulb, faPalette} from '@fortawesome/free-solid-svg-icons';
+import {faLightbulb, faPalette, faClone} from '@fortawesome/free-solid-svg-icons';
 import {ChartDataSets} from 'chart.js';
 import {Label} from 'ng2-charts';
 import {NeColorGradient} from '../../models/ne-color-gradient';
@@ -24,6 +23,7 @@ import {NeChartType} from '../../models/ne-chart-type';
  */
 export class SidebarEditComponent implements AfterViewInit, OnDestroy {
 
+  faClone = faClone;
   /**
    * Icon: faPalette
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
@@ -127,8 +127,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    */
   chartType: NeChartType = {
     line: true,
-    bar: false,
-    scatter: false
+    bar: false
   };
 
   /**

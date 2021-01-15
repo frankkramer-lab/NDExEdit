@@ -64,4 +64,5 @@ export interface NeNetwork {
    * Indicates if the labels are visible or not
    */
   showLabels?: boolean;
+
 }

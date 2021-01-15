@@ -1,0 +1,3076 @@
+{
+  "nodes": [
+    {
+      "data": {
+        "id": 217632,
+        "name": ""
+      },
+      "position": {
+        "x": 646.7505254633261,
+        "y": 93.92085909477109
+      }
+    },
+    {
+      "data": {
+        "id": 217633,
+        "name": ""
+      },
+      "position": {
+        "x": 646.6216926882681,
+        "y": 82.0682437894374
+      }
+    },
+    {
+      "data": {
+        "id": 217634,
+        "name": ""
+      },
+      "position": {
+        "x": 669.6028831031098,
+        "y": 93.58331722411916
+      }
+    },
+    {
+      "data": {
+        "id": 217635,
+        "name": ""
+      },
+      "position": {
+        "x": 669.4740503280518,
+        "y": 81.73070191878547
+      }
+    },
+    {
+      "data": {
+        "id": 217636,
+        "name": ""
+      },
+      "position": {
+        "x": 669.2996241221077,
+        "y": 93.72896567495603
+      }
+    },
+    {
+      "data": {
+        "id": 217637,
+        "name": ""
+      },
+      "position": {
+        "x": 651.0509634947614,
+        "y": 93.8409827742351
+      }
+    },
+    {
+      "data": {
+        "id": 217638,
+        "name": ""
+      },
+      "position": {
+        "x": 650.9221307197034,
+        "y": 93.58331722411916
+      }
+    },
+    {
+      "data": {
+        "id": 217639,
+        "name": ""
+      },
+      "position": {
+        "x": 650.9221307197034,
+        "y": 81.85953469384344
+      }
+    },
+    {
+      "data": {
+        "id": 217640,
+        "name": ""
+      },
+      "position": {
+        "x": 646.4866846003079,
+        "y": 93.9821302319176
+      }
+    },
+    {
+      "data": {
+        "id": 217641,
+        "name": ""
+      },
+      "position": {
+        "x": 627.9898967593838,
+        "y": 93.96981554929307
+      }
+    },
+    {
+      "data": {
+        "id": 217642,
+        "name": ""
+      },
+      "position": {
+        "x": 627.9898967593838,
+        "y": 93.58331722411916
+      }
+    },
+    {
+      "data": {
+        "id": 217643,
+        "name": ""
+      },
+      "position": {
+        "x": 627.8610639843258,
+        "y": 82.1172002439594
+      }
+    },
+    {
+      "data": {
+        "id": 217644,
+        "name": ""
+      },
+      "position": {
+        "x": 1256.804615587799,
+        "y": 555.1915238202382
+      }
+    },
+    {
+      "data": {
+        "id": 217645,
+        "name": ""
+      },
+      "position": {
+        "x": 620.9308665240114,
+        "y": 701.6733886550606
+      }
+    },
+    {
+      "data": {
+        "id": 217646,
+        "name": ""
+      },
+      "position": {
+        "x": 621.7324072253523,
+        "y": 154.09362025312137
+      }
+    },
+    {
+      "data": {
+        "id": 217647,
+        "name": ""
+      },
+      "position": {
+        "x": 621.4617657597333,
+        "y": 191.41297779931418
+      }
+    },
+    {
+      "data": {
+        "id": 217648,
+        "name": ""
+      },
+      "position": {
+        "x": 677.3891350129586,
+        "y": 171.6753164926957
+      }
+    },
+    {
+      "data": {
+        "id": 217649,
+        "name": ""
+      },
+      "position": {
+        "x": 660.4077952294347,
+        "y": 228.04476296247526
+      }
+    },
+    {
+      "data": {
+        "id": 217650,
+        "name": ""
+      },
+      "position": {
+        "x": 677.3087521103525,
+        "y": 143.3548167980667
+      }
+    },
+    {
+      "data": {
+        "id": 217651,
+        "name": ""
+      },
+      "position": {
+        "x": 722.1988042662971,
+        "y": 919.6875593695993
+      }
+    },
+    {
+      "data": {
+        "id": 217652,
+        "name": ""
+      },
+      "position": {
+        "x": 722.7528939760599,
+        "y": 889.3332435007712
+      }
+    },
+    {
+      "data": {
+        "id": 217653,
+        "name": ""
+      },
+      "position": {
+        "x": 782.7243090112028,
+        "y": 557.5725399180579
+      }
+    },
+    {
+      "data": {
+        "id": 217654,
+        "name": ""
+      },
+      "position": {
+        "x": 783.2783987209655,
+        "y": 527.2182240492302
+      }
+    },
+    {
+      "data": {
+        "id": 217655,
+        "name": ""
+      },
+      "position": {
+        "x": 741.9608605411253,
+        "y": 344.27560766715544
+      }
+    },
+    {
+      "data": {
+        "id": 217656,
+        "name": ""
+      },
+      "position": {
+        "x": 708.4266442987828,
+        "y": 411.84797910793685
+      }
+    },
+    {
+      "data": {
+        "id": 217657,
+        "name": ""
+      },
+      "position": {
+        "x": 676.9705572154636,
+        "y": 200.40828774379284
+      }
+    },
+    {
+      "data": {
+        "id": 217658,
+        "name": ""
+      },
+      "position": {
+        "x": 1265.4700854700895,
+        "y": 661.4102564102561
+      }
+    },
+    {
+      "data": {
+        "id": 217659,
+        "name": ""
+      },
+      "position": {
+        "x": 593.7260369868077,
+        "y": 196.2802530608629
+      }
+    },
+    {
+      "data": {
+        "id": 217660,
+        "name": ""
+      },
+      "position": {
+        "x": 673.785822749187,
+        "y": 237.86111969510733
+      }
+    },
+    {
+      "data": {
+        "id": 217661,
+        "name": ""
+      },
+      "position": {
+        "x": 718.4436310048392,
+        "y": 420.24716670025634
+      }
+    },
+    {
+      "data": {
+        "id": 217662,
+        "name": ""
+      },
+      "position": {
+        "x": 787.9454844951226,
+        "y": 175.3310445563835
+      }
+    },
+    {
+      "data": {
+        "id": 217663,
+        "name": ""
+      },
+      "position": {
+        "x": 703.6756979883462,
+        "y": 143.3548167980667
+      }
+    },
+    {
+      "data": {
+        "id": 217664,
+        "name": ""
+      },
+      "position": {
+        "x": 701.6224499269244,
+        "y": 171.67531649269574
+      }
+    },
+    {
+      "data": {
+        "id": 217665,
+        "name": ""
+      },
+      "position": {
+        "x": 709.810659461392,
+        "y": 200.40828774379284
+      }
+    },
+    {
+      "data": {
+        "id": 217666,
+        "name": ""
+      },
+      "position": {
+        "x": 806.405895893977,
+        "y": 541.145381983644
+      }
+    },
+    {
+      "data": {
+        "id": 217667,
+        "name": ""
+      },
+      "position": {
+        "x": 594.2750748889521,
+        "y": 158.12570620509325
+      }
+    },
+    {
+      "data": {
+        "id": 217668,
+        "name": ""
+      },
+      "position": {
+        "x": 636.3583603001475,
+        "y": 710.3981445054376
+      }
+    },
+    {
+      "data": {
+        "id": 217669,
+        "name": ""
+      },
+      "position": {
+        "x": 1265.8119658119695,
+        "y": 679.358974358974
+      }
+    },
+    {
+      "data": {
+        "id": 217670,
+        "name": ""
+      },
+      "position": {
+        "x": 756.8864091304669,
+        "y": 352.5603196317047
+      }
+    },
+    {
+      "data": {
+        "id": 217671,
+        "name": ""
+      },
+      "position": {
+        "x": 745.8803911490713,
+        "y": 903.2604014351853
+      }
+    },
+    {
+      "data": {
+        "id": 217672,
+        "name": ""
+      },
+      "position": {
+        "x": 660.2625069114066,
+        "y": 149.17761048103654
+      }
+    },
+    {
+      "data": {
+        "id": 217673,
+        "name": "",
+        "isgpmlshape": true,
+        "__gpml_graphid_u1": "a4fa1"
+      },
+      "position": {
+        "x": 660.4546763778324,
+        "y": 155.26071400233582
+      }
+    },
+    {
+      "data": {
+        "id": 217674,
+        "name": "",
+        "isgpmlshape": true,
+        "__gpml_graphid_u1": "f25b4"
+      },
+      "position": {
+        "x": 636.8793992044583,
+        "y": 155.332389522675
+      }
+    },
+    {
+      "data": {
+        "id": 217675,
+        "name": "",
+        "isgpmlshape": true,
+        "__gpml_graphid_u1": "fe342"
+      },
+      "position": {
+        "x": 344.9254790631653,
+        "y": 26.969481902058185
+      }
+    },
+    {
+      "data": {
+        "id": 217676,
+        "name": "",
+        "isgpmlshape": true,
+        "__gpml_graphid_u1": "adc3f"
+      },
+      "position": {
+        "x": 264.0170333569909,
+        "y": 242.7253371185237
+      }
+    },
+    {
+      "data": {
+        "id": 217677,
+        "name": "Degradation",
+        "__gpml_textlabel_u2": "Degradation",
+        "fillcolor": "#ffffff",
+        "shape": "None",
+        "borderthickness": 0,
+        "color": "#14961e",
+        "labelsize": 12,
+        "labelfont": "Arial-BoldMT",
+        "type": "Pathway",
+        "transparent": "true",
+        "height": 24.46509,
+        "__gpml_graphid_u1": "f9b1a",
+        "width": 86.22376
+      },
+      "position": {
+        "x": 572.8018008716355,
+        "y": 616.4724109878982
+      }
+    },
+    {
+      "data": {
+        "id": 217678,
+        "name": "NFKBIA",
+        "__gpml_textlabel_u2": "IkB alpha",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "NFKBIA",
+        "__gpml_xrefid_u4": "P25963",
+        "height": 21.10391,
+        "ensembl": "ENSG00000100906",
+        "__gpml_graphid_u1": "a8ae5",
+        "width": 53.64542
+      },
+      "position": {
+        "x": 636.4631447857728,
+        "y": 721.0709469392789
+      }
+    },
+    {
+      "data": {
+        "id": 217679,
+        "name": "Akt\nPathway",
+        "__gpml_textlabel_u2": "Akt\nPathway",
+        "fillcolor": "#ffffff",
+        "shape": "None",
+        "borderthickness": 0,
+        "color": "#14961e",
+        "labelsize": 12,
+        "labelfont": "Arial-BoldMT",
+        "type": "Pathway",
+        "transparent": "true",
+        "height": 34.46509,
+        "__gpml_graphid_u1": "c3d80",
+        "width": 77.29372
+      },
+      "position": {
+        "x": 577.400498887188,
+        "y": 460.5145629202667
+      }
+    },
+    {
+      "data": {
+        "id": 217680,
+        "name": "CHUK",
+        "__gpml_textlabel_u2": "IKK",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "CHUK",
+        "__gpml_xrefid_u4": "O15111",
+        "height": 21.75562,
+        "ensembl": "ENSG00000213341",
+        "__gpml_graphid_u1": "b3e91",
+        "width": 33.53395
+      },
+      "position": {
+        "x": 669.7614271739982,
+        "y": 571.7483500589822
+      }
+    },
+    {
+      "data": {
+        "id": 217681,
+        "name": "Cell Migration",
+        "__gpml_textlabel_u2": "Cell Migration",
+        "fillcolor": "#ffffff",
+        "shape": "None",
+        "borderthickness": 0,
+        "color": "#14961e",
+        "labelsize": 12,
+        "labelfont": "Arial-BoldMT",
+        "type": "Pathway",
+        "transparent": "true",
+        "height": 36.95116,
+        "__gpml_graphid_u1": "e7cfb",
+        "width": 105.5901
+      },
+      "position": {
+        "x": 295.03105590062114,
+        "y": 970.0790995659809
+      }
+    },
+    {
+      "data": {
+        "id": 217682,
+        "name": "Lamellipodia\nFormation",
+        "__gpml_textlabel_u2": "Lamellipodia\nFormation",
+        "fillcolor": "#ffffff",
+        "shape": "None",
+        "borderthickness": 0,
+        "color": "#14961e",
+        "labelsize": 12,
+        "labelfont": "Arial-BoldMT",
+        "type": "Pathway",
+        "transparent": "true",
+        "height": 38.20995,
+        "__gpml_graphid_u1": "f1a94",
+        "width": 81.03857
+      },
+      "position": {
+        "x": 295.9878482118243,
+        "y": 807.3412378041826
+      }
+    },
+    {
+      "data": {
+        "id": 217683,
+        "name": "Actin,\nStress Fibers\nand Adhesion",
+        "__gpml_textlabel_u2": "Actin,\nStress Fibers\nand Adhesion",
+        "fillcolor": "#ffffff",
+        "shape": "None",
+        "borderthickness": 0,
+        "__gpml_xrefdatasource_u3": "WikiPathways",
+        "color": "#14961e",
+        "labelsize": 12,
+        "labelfont": "Arial-BoldMT",
+        "type": "Pathway",
+        "transparent": "true",
+        "__gpml_xrefid_u4": "WP306",
+        "height": 49.73258,
+        "__gpml_graphid_u1": "a7a2c",
+        "width": 101.0937
+      },
+      "position": {
+        "x": 120.26060935747168,
+        "y": 889.9205983727954
+      }
+    },
+    {
+      "data": {
+        "id": 217684,
+        "name": "Filopodia\nFormation",
+        "__gpml_textlabel_u2": "Filopodia\nFormation",
+        "fillcolor": "#ffffff",
+        "shape": "None",
+        "borderthickness": 0,
+        "color": "#14961e",
+        "labelsize": 12,
+        "labelfont": "Arial-BoldMT",
+        "type": "Pathway",
+        "transparent": "true",
+        "height": 34.46509,
+        "__gpml_graphid_u1": "b4da8",
+        "width": 77.29372
+      },
+      "position": {
+        "x": 394.13417680356076,
+        "y": 894.5789834659631
+      }
+    },
+    {
+      "data": {
+        "id": 217685,
+        "name": "WASL",
+        "__gpml_textlabel_u2": "N-WASP",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "WASL",
+        "__gpml_xrefid_u4": "O00401",
+        "height": 23.52746,
+        "ensembl": "ENSG00000106299",
+        "__gpml_graphid_u1": "d543a",
+        "width": 53.81743
+      },
+      "position": {
+        "x": 426.0789577689159,
+        "y": 771.544778835335
+      }
+    },
+    {
+      "data": {
+        "id": 217686,
+        "name": "CDC42",
+        "__gpml_textlabel_u2": "CDC42",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "CDC42",
+        "__gpml_xrefid_u4": "P60953",
+        "height": 20.16443,
+        "ensembl": "ENSG00000070831",
+        "__gpml_graphid_u1": "ea6d3",
+        "width": 40.98893
+      },
+      "position": {
+        "x": 481.2346105105621,
+        "y": 661.941306799293
+      }
+    },
+    {
+      "data": {
+        "id": 217687,
+        "name": "VAV1",
+        "__gpml_textlabel_u2": "Vav1",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "VAV1",
+        "__gpml_xrefid_u4": "P15498",
+        "height": 19.56309,
+        "ensembl": "ENSG00000141968",
+        "__gpml_graphid_u1": "bbddf",
+        "width": 37.04683
+      },
+      "position": {
+        "x": 503.07887873439495,
+        "y": 550.1489756507883
+      }
+    },
+    {
+      "data": {
+        "id": 217688,
+        "name": "PAK1",
+        "__gpml_textlabel_u2": "PAK1",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "PAK1",
+        "__gpml_xrefid_u4": "Q13153",
+        "height": 19.56309,
+        "ensembl": "ENSG00000149269",
+        "__gpml_graphid_u1": "cc6b7",
+        "width": 37.04683
+      },
+      "position": {
+        "x": 404.06249881987554,
+        "y": 641.0649353157796
+      }
+    },
+    {
+      "data": {
+        "id": 217689,
+        "name": "ARFIP2",
+        "__gpml_textlabel_u2": "Por1\n(ARF1P2)",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "ARFIP2",
+        "__gpml_xrefid_u4": "P53365",
+        "height": 28.88641,
+        "ensembl": "ENSG00000132254",
+        "__gpml_graphid_u1": "c2a32",
+        "width": 55.05568
+      },
+      "position": {
+        "x": 238.1898088159836,
+        "y": 641.0649353157794
+      }
+    },
+    {
+      "data": {
+        "id": 217690,
+        "name": "RHOA",
+        "__gpml_textlabel_u2": "RhoA",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "RHOA",
+        "__gpml_xrefid_u4": "P61586",
+        "height": 19.56309,
+        "ensembl": "ENSG00000067560",
+        "__gpml_graphid_u1": "c4916",
+        "width": 37.04683
+      },
+      "position": {
+        "x": 177.5811241727689,
+        "y": 375.6515550398097
+      }
+    },
+    {
+      "data": {
+        "id": 217691,
+        "name": "RAC1",
+        "__gpml_textlabel_u2": "Rac1",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "RAC1",
+        "__gpml_xrefid_u4": "P63000",
+        "height": 19.56309,
+        "ensembl": "ENSG00000136238",
+        "__gpml_graphid_u1": "e47a3",
+        "width": 37.04683
+      },
+      "position": {
+        "x": 335.08705992405515,
+        "y": 531.8012365566569
+      }
+    },
+    {
+      "data": {
+        "id": 217692,
+        "name": "VAV2",
+        "__gpml_textlabel_u2": "Vav2",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "VAV2",
+        "__gpml_xrefid_u4": "P52735",
+        "height": 19.56309,
+        "ensembl": "ENSG00000160293",
+        "__gpml_graphid_u1": "c3b8a",
+        "width": 37.04683
+      },
+      "position": {
+        "x": 429.1048609611762,
+        "y": 425.35457516033085
+      }
+    },
+    {
+      "data": {
+        "id": 217693,
+        "name": "TIAM1",
+        "__gpml_textlabel_u2": "TIAM1",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "TIAM1",
+        "__gpml_xrefid_u4": "Q13009",
+        "height": 20,
+        "ensembl": "ENSG00000156299",
+        "__gpml_graphid_u1": "e6678",
+        "width": 49.41654
+      },
+      "position": {
+        "x": 301.3311572612494,
+        "y": 390.65134082924754
+      }
+    },
+    {
+      "data": {
+        "id": 217694,
+        "name": "SRC",
+        "__gpml_textlabel_u2": "c-Src",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "SRC",
+        "__gpml_xrefid_u4": "P12931",
+        "height": 30.57872,
+        "ensembl": "ENSG00000197122",
+        "__gpml_graphid_u1": "fde06",
+        "width": 54.62025
+      },
+      "position": {
+        "x": 583.1278661917005,
+        "y": 159.36843004754036
+      }
+    },
+    {
+      "data": {
+        "id": 217695,
+        "name": "PIK3R1",
+        "__gpml_textlabel_u2": "PI3K",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "PIK3R1",
+        "__gpml_xrefid_u4": "P27986",
+        "height": 30.57872,
+        "ensembl": "ENSG00000145675",
+        "__gpml_graphid_u1": "e8254",
+        "width": 54.62025
+      },
+      "position": {
+        "x": 582.3004318530307,
+        "y": 198.35816621288683
+      }
+    },
+    {
+      "data": {
+        "id": 217696,
+        "name": "Na",
+        "__gpml_textlabel_u2": "Na",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "ChEBI",
+        "color": "#0000ff",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Metabolite",
+        "transparent": "false",
+        "__gpml_xrefid_u4": "CHEBI:29101",
+        "height": 20,
+        "__gpml_graphid_u1": "a262d",
+        "width": 19.13672
+      },
+      "position": {
+        "x": 347.83927506140503,
+        "y": 249.1004644170765
+      }
+    },
+    {
+      "data": {
+        "id": 217697,
+        "name": "H+",
+        "__gpml_textlabel_u2": "H+",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "ChEBI",
+        "color": "#0000ff",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Metabolite",
+        "transparent": "false",
+        "__gpml_xrefid_u4": "CHEBI:15378",
+        "height": 20,
+        "__gpml_graphid_u1": "cfe4c",
+        "width": 19.13672
+      },
+      "position": {
+        "x": 249.84049548208353,
+        "y": 30.552418533878996
+      }
+    },
+    {
+      "data": {
+        "id": 217698,
+        "name": "\nNa+/H+\n\ne\nx\nc\nh\na\nn\ng\ne\nr",
+        "__gpml_textlabel_u2": "\nNa+/H+\n\ne\nx\nc\nh\na\nn\ng\ne\nr",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "height": 135.2459,
+        "__gpml_graphid_u1": "ea16a",
+        "width": 38.82277
+      },
+      "position": {
+        "x": 306.8381215162434,
+        "y": 131.47079301696158
+      }
+    },
+    {
+      "data": {
+        "id": 217699,
+        "name": "SRF",
+        "__gpml_textlabel_u2": "SRF",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "SRF",
+        "__gpml_xrefid_u4": "P11831",
+        "height": 27.57197,
+        "ensembl": "ENSG00000112658",
+        "__gpml_graphid_u1": "be021",
+        "width": 42.35216
+      },
+      "position": {
+        "x": 1099.448289293464,
+        "y": 914.0790813194305
+      }
+    },
+    {
+      "data": {
+        "id": 217700,
+        "name": "FOS",
+        "__gpml_textlabel_u2": "c-Fos",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "FOS",
+        "__gpml_xrefid_u4": "P01100",
+        "height": 27.57197,
+        "ensembl": "ENSG00000170345",
+        "__gpml_graphid_u1": "e8d70",
+        "width": 42.35216
+      },
+      "position": {
+        "x": 977.1797707749465,
+        "y": 923.7550072453562
+      }
+    },
+    {
+      "data": {
+        "id": 217701,
+        "name": "ELK1",
+        "__gpml_textlabel_u2": "ELK1",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "ELK1",
+        "__gpml_xrefid_u4": "P19419",
+        "height": 27.57197,
+        "ensembl": "ENSG00000126767",
+        "__gpml_graphid_u1": "fb4f9",
+        "width": 42.35216
+      },
+      "position": {
+        "x": 1035.4668078119828,
+        "y": 917.2272294675781
+      }
+    },
+    {
+      "data": {
+        "id": 217702,
+        "name": "Arachidonic acid",
+        "__gpml_textlabel_u2": "Arachidonic acid",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "HMDB",
+        "color": "#0000ff",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Metabolite",
+        "transparent": "false",
+        "__gpml_xrefid_u4": "HMDB0001043",
+        "height": 21.11224,
+        "__gpml_graphid_u1": "f08b4",
+        "width": 93.10204
+      },
+      "position": {
+        "x": 1230.3018069429495,
+        "y": 385.0362148926864
+      }
+    },
+    {
+      "data": {
+        "id": 217703,
+        "name": "[Ca2+]i",
+        "__gpml_textlabel_u2": "[Ca2+]i",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "ChEBI",
+        "color": "#0000ff",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Metabolite",
+        "transparent": "false",
+        "__gpml_xrefid_u4": "CHEBI:29108",
+        "height": 20,
+        "__gpml_graphid_u1": "d597f",
+        "width": 42
+      },
+      "position": {
+        "x": 1434.7615467630574,
+        "y": 261.7021158502255
+      }
+    },
+    {
+      "data": {
+        "id": 217704,
+        "name": "\nCa\n\nc\nh\na\nn\nn\ne\nl",
+        "__gpml_textlabel_u2": "\nCa\n\nc\nh\na\nn\nn\ne\nl",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "height": 118,
+        "__gpml_graphid_u1": "f3727",
+        "width": 24
+      },
+      "position": {
+        "x": 1390.8502400602822,
+        "y": 126.04131693350254
+      }
+    },
+    {
+      "data": {
+        "id": 217705,
+        "name": "Cell proliferation",
+        "__gpml_textlabel_u2": "Cell proliferation",
+        "fillcolor": "#ffffff",
+        "shape": "None",
+        "borderthickness": 0,
+        "color": "#14961e",
+        "labelsize": 12,
+        "labelfont": "Arial-BoldMT",
+        "type": "Pathway",
+        "transparent": "true",
+        "height": 27.60325,
+        "__gpml_graphid_u1": "f9a51",
+        "width": 111.7129
+      },
+      "position": {
+        "x": 1400.5611405342156,
+        "y": 835.2214496085646
+      }
+    },
+    {
+      "data": {
+        "id": 217706,
+        "name": "PLA2G4A",
+        "__gpml_textlabel_u2": "PLA2G4A\n(cPLA2)",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Ensembl",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "PLA2G4A",
+        "__gpml_xrefid_u4": "ENSG00000116711",
+        "height": 28.95735,
+        "ensembl": "ENSG00000116711",
+        "__gpml_graphid_u1": "aa8c7",
+        "width": 65.05078
+      },
+      "position": {
+        "x": 1387.3316212383443,
+        "y": 348.0440251257846
+      }
+    },
+    {
+      "data": {
+        "id": 217707,
+        "name": "Phospholipid\n(containing arachidonic acid)",
+        "__gpml_textlabel_u2": "Phospholipid\n(containing arachidonic acid)",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "ChEBI",
+        "color": "#0000ff",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Metabolite",
+        "transparent": "false",
+        "__gpml_xrefid_u4": "CHEBI:16247",
+        "height": 32.95918,
+        "__gpml_graphid_u1": "bf4f4",
+        "width": 143.3163
+      },
+      "position": {
+        "x": 1230.3018069429559,
+        "y": 318.9188679539103
+      }
+    },
+    {
+      "data": {
+        "id": 217708,
+        "name": "Ca2+",
+        "__gpml_textlabel_u2": "Ca2+",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "ChEBI",
+        "color": "#0000ff",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Metabolite",
+        "transparent": "false",
+        "__gpml_xrefid_u4": "CHEBI:29108",
+        "height": 20,
+        "__gpml_graphid_u1": "e2e76",
+        "width": 42
+      },
+      "position": {
+        "x": 1442.3647965937973,
+        "y": 35.72378138847861
+      }
+    },
+    {
+      "data": {
+        "id": 217709,
+        "name": "PIP2[4',5']",
+        "__gpml_textlabel_u2": "PIP2[4',5']",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "LIPID MAPS",
+        "color": "#0000ff",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Metabolite",
+        "transparent": "false",
+        "__gpml_xrefid_u4": "LMGP08010003",
+        "height": 17.54201,
+        "__gpml_graphid_u1": "d1003",
+        "width": 62.97667
+      },
+      "position": {
+        "x": 1277.131853697329,
+        "y": 136.77959949404263
+      }
+    },
+    {
+      "data": {
+        "id": 217710,
+        "name": "MT-CO2",
+        "__gpml_textlabel_u2": "COX2",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "MT-CO2",
+        "__gpml_xrefid_u4": "P00403",
+        "height": 20,
+        "ensembl": "ENSG00000198712",
+        "__gpml_graphid_u1": "dc420",
+        "width": 42.9375
+      },
+      "position": {
+        "x": 1343.963751202572,
+        "y": 456.9698661563478
+      }
+    },
+    {
+      "data": {
+        "id": 217711,
+        "name": "IP3",
+        "__gpml_textlabel_u2": "IP3",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "ChEBI",
+        "color": "#0000ff",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Metabolite",
+        "transparent": "false",
+        "__gpml_xrefid_u4": "CHEBI:16595",
+        "height": 20,
+        "__gpml_graphid_u1": "e0061",
+        "width": 33
+      },
+      "position": {
+        "x": 1344.881529353251,
+        "y": 242.4002007713981
+      }
+    },
+    {
+      "data": {
+        "id": 217712,
+        "name": "Prostaglandin I2\n(PGI2)",
+        "__gpml_textlabel_u2": "Prostaglandin I2\n(PGI2)",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "HMDB",
+        "color": "#0000ff",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Metabolite",
+        "transparent": "false",
+        "__gpml_xrefid_u4": "HMDB0001335",
+        "height": 31.91554,
+        "__gpml_graphid_u1": "f9d60",
+        "width": 80
+      },
+      "position": {
+        "x": 1448.3716076642493,
+        "y": 538.2647334197197
+      }
+    },
+    {
+      "data": {
+        "id": 217713,
+        "name": "DAG",
+        "__gpml_textlabel_u2": "DAG",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "LIPID MAPS",
+        "color": "#0000ff",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Metabolite",
+        "transparent": "false",
+        "__gpml_xrefid_u4": "LMGL02010000",
+        "height": 20,
+        "__gpml_graphid_u1": "ce636",
+        "width": 43.15126
+      },
+      "position": {
+        "x": 1256.2330313258092,
+        "y": 187.96128180140943
+      }
+    },
+    {
+      "data": {
+        "id": 217714,
+        "name": "Cyclic AMP\n(cAMP)",
+        "__gpml_textlabel_u2": "Cyclic AMP\n(cAMP)",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "HMDB",
+        "color": "#0000ff",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Metabolite",
+        "transparent": "false",
+        "__gpml_xrefid_u4": "HMDB0000058",
+        "height": 35.72783,
+        "__gpml_graphid_u1": "cbdf4",
+        "width": 63.01963
+      },
+      "position": {
+        "x": 1448.5945257414332,
+        "y": 663.6880546370187
+      }
+    },
+    {
+      "data": {
+        "id": 217715,
+        "name": "JAK1",
+        "__gpml_textlabel_u2": "JAK1",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "JAK1",
+        "__gpml_xrefid_u4": "P23458",
+        "height": 20,
+        "ensembl": "ENSG00000162434",
+        "__gpml_graphid_u1": "b8298",
+        "width": 43.06715
+      },
+      "position": {
+        "x": 676.6302749513349,
+        "y": 248.68493911430653
+      }
+    },
+    {
+      "data": {
+        "id": 217716,
+        "name": "STAT1",
+        "__gpml_textlabel_u2": "STAT1",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "STAT1",
+        "__gpml_xrefid_u4": "P42224",
+        "height": 20,
+        "ensembl": "ENSG00000115415",
+        "__gpml_graphid_u1": "fdd3f",
+        "width": 49.41654
+      },
+      "position": {
+        "x": 756.3537062445487,
+        "y": 893.3385890280608
+      }
+    },
+    {
+      "data": {
+        "id": 217717,
+        "name": "STAT3",
+        "__gpml_textlabel_u2": "STAT3",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "STAT3",
+        "__gpml_xrefid_u4": "P40763",
+        "height": 20,
+        "ensembl": "ENSG00000168610",
+        "__gpml_graphid_u1": "bd14b",
+        "width": 49.37806
+      },
+      "position": {
+        "x": 756.2545901690492,
+        "y": 912.5675402836014
+      }
+    },
+    {
+      "data": {
+        "id": 217718,
+        "name": "STAT1",
+        "__gpml_textlabel_u2": "STAT1",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "STAT1",
+        "__gpml_xrefid_u4": "P42224",
+        "height": 20,
+        "ensembl": "ENSG00000115415",
+        "__gpml_graphid_u1": "dafd5",
+        "width": 49.41654
+      },
+      "position": {
+        "x": 816.8792109894545,
+        "y": 531.22356957652
+      }
+    },
+    {
+      "data": {
+        "id": 217719,
+        "name": "STAT3",
+        "__gpml_textlabel_u2": "STAT3",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "STAT3",
+        "__gpml_xrefid_u4": "P40763",
+        "height": 20,
+        "ensembl": "ENSG00000168610",
+        "__gpml_graphid_u1": "d2628",
+        "width": 49.37806
+      },
+      "position": {
+        "x": 816.7800949139548,
+        "y": 550.4525208320601
+      }
+    },
+    {
+      "data": {
+        "id": 217720,
+        "name": "STAT3",
+        "__gpml_textlabel_u2": "STAT3",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "STAT3",
+        "__gpml_xrefid_u4": "P40763",
+        "height": 20,
+        "ensembl": "ENSG00000168610",
+        "__gpml_graphid_u1": "efacb",
+        "width": 47.96603
+      },
+      "position": {
+        "x": 718.4436310048392,
+        "y": 431.14635429257584
+      }
+    },
+    {
+      "data": {
+        "id": 217721,
+        "name": "STAT1",
+        "__gpml_textlabel_u2": "STAT1",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "STAT1",
+        "__gpml_xrefid_u4": "P42224",
+        "height": 20,
+        "ensembl": "ENSG00000115415",
+        "__gpml_graphid_u1": "ceee5",
+        "width": 49.41654
+      },
+      "position": {
+        "x": 758.6036859325117,
+        "y": 363.34503159625393
+      }
+    },
+    {
+      "data": {
+        "id": 217722,
+        "name": "NFKB1",
+        "__gpml_textlabel_u2": "NFkB",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Entrez Gene",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "NFKB1",
+        "__gpml_xrefid_u4": "4790",
+        "height": 20,
+        "ensembl": "ENSG00000109320",
+        "__gpml_graphid_u1": "cddfa",
+        "width": 45.97251
+      },
+      "position": {
+        "x": 578.8411541108077,
+        "y": 902.1289992720343
+      }
+    },
+    {
+      "data": {
+        "id": 217723,
+        "name": "PDGFA",
+        "__gpml_textlabel_u2": "P\nD\nG\nF\nA",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Entrez Gene",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "PDGFA",
+        "__gpml_xrefid_u4": "5154",
+        "height": 63.79532,
+        "ensembl": "ENSG00000197461",
+        "__gpml_graphid_u1": "eea7a",
+        "width": 16.63158
+      },
+      "position": {
+        "x": 637.2884266057393,
+        "y": 61.02174730146044
+      }
+    },
+    {
+      "data": {
+        "id": 217724,
+        "name": "HRAS",
+        "__gpml_textlabel_u2": "H-Ras-1\n(Ras)",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Entrez Gene",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "HRAS",
+        "__gpml_xrefid_u4": "3265",
+        "height": 26.37427,
+        "ensembl": "ENSG00000174775",
+        "__gpml_graphid_u1": "f1bc5",
+        "width": 44.09357
+      },
+      "position": {
+        "x": 941.2743098055205,
+        "y": 140.61403508771912
+      }
+    },
+    {
+      "data": {
+        "id": 217725,
+        "name": "MAP2K1",
+        "__gpml_textlabel_u2": "MP2K1\n(MEK 1)",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "MAP2K1",
+        "__gpml_xrefid_u4": "Q02750",
+        "height": 38.36134,
+        "ensembl": "ENSG00000169032",
+        "__gpml_graphid_u1": "e97a4",
+        "width": 49.45378
+      },
+      "position": {
+        "x": 938.4693179597404,
+        "y": 350.56787831411674
+      }
+    },
+    {
+      "data": {
+        "id": 217726,
+        "name": "PDGFB",
+        "__gpml_textlabel_u2": "PDGFB",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Entrez Gene",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "PDGFB",
+        "__gpml_xrefid_u4": "5155",
+        "height": 20,
+        "ensembl": "ENSG00000100311",
+        "__gpml_graphid_u1": "e93e3",
+        "width": 80
+      },
+      "position": {
+        "x": 545.3428473421613,
+        "y": 30.114316116444222
+      }
+    },
+    {
+      "data": {
+        "id": 217727,
+        "name": "MAP3K1",
+        "__gpml_textlabel_u2": "MAP3K1\n(MEKK1)",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "MAP3K1",
+        "__gpml_xrefid_u4": "Q13233",
+        "height": 40.46218,
+        "ensembl": "ENSG00000095015",
+        "__gpml_graphid_u1": "e7616",
+        "width": 54.70588
+      },
+      "position": {
+        "x": 960.252462151823,
+        "y": 473.16412611556257
+      }
+    },
+    {
+      "data": {
+        "id": 217728,
+        "name": "MAPK1",
+        "__gpml_textlabel_u2": "MAPK1",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Entrez Gene",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "MAPK1",
+        "__gpml_xrefid_u4": "5594",
+        "height": 20,
+        "ensembl": "ENSG00000100030",
+        "__gpml_graphid_u1": "dded5",
+        "width": 80
+      },
+      "position": {
+        "x": 1266.6666666666697,
+        "y": 687.1794871794872
+      }
+    },
+    {
+      "data": {
+        "id": 217729,
+        "name": "PDGFA",
+        "__gpml_textlabel_u2": "P\nD\nG\nF\nA",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Entrez Gene",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "PDGFA",
+        "__gpml_xrefid_u4": "5154",
+        "height": 63.79532,
+        "ensembl": "ENSG00000197461",
+        "__gpml_graphid_u1": "d941a",
+        "width": 16.63158
+      },
+      "position": {
+        "x": 660.2710626065132,
+        "y": 61.10279447394987
+      }
+    },
+    {
+      "data": {
+        "id": 217730,
+        "name": "PLCG1",
+        "__gpml_textlabel_u2": "PLCG1",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Ensembl",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "PLCG1",
+        "__gpml_xrefid_u4": "ENSG00000124181",
+        "height": 20,
+        "ensembl": "ENSG00000124181",
+        "__gpml_graphid_u1": "d82bc",
+        "width": 55.25533
+      },
+      "position": {
+        "x": 713.9149780796612,
+        "y": 143.3548167980667
+      }
+    },
+    {
+      "data": {
+        "id": 217731,
+        "name": "MAP2K4",
+        "__gpml_textlabel_u2": "MAP2K4\n(JNKK1)",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Entrez Gene",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "MAP2K4",
+        "__gpml_xrefid_u4": "6416",
+        "height": 42.56303,
+        "ensembl": "ENSG00000065559",
+        "__gpml_graphid_u1": "d7869",
+        "width": 57.85714
+      },
+      "position": {
+        "x": 1040.060725037387,
+        "y": 614.6817863303739
+      }
+    },
+    {
+      "data": {
+        "id": 217732,
+        "name": "MAPK3",
+        "__gpml_textlabel_u2": "MAPK3",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Entrez Gene",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "MAPK3",
+        "__gpml_xrefid_u4": "5595",
+        "height": 20,
+        "ensembl": "ENSG00000102882",
+        "__gpml_graphid_u1": "d4fa5",
+        "width": 80
+      },
+      "position": {
+        "x": 1266.6666666666697,
+        "y": 704.2735042735039
+      }
+    },
+    {
+      "data": {
+        "id": 217733,
+        "name": "SHC1",
+        "__gpml_textlabel_u2": "SHC1",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "SHC1",
+        "__gpml_xrefid_u4": "P29353",
+        "height": 20,
+        "ensembl": "ENSG00000160691",
+        "__gpml_graphid_u1": "d4168",
+        "width": 38.50746
+      },
+      "position": {
+        "x": 786.0646230653695,
+        "y": 166.03561161929764
+      }
+    },
+    {
+      "data": {
+        "id": 217734,
+        "name": "MAPK8",
+        "__gpml_textlabel_u2": "MAPK8\n(JNK1)",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "MAPK8",
+        "__gpml_xrefid_u4": "P45983",
+        "height": 35.21008,
+        "ensembl": "ENSG00000107643",
+        "__gpml_graphid_u1": "d1d14",
+        "width": 53.65546
+      },
+      "position": {
+        "x": 1040.341464063904,
+        "y": 722.535195724027
+      }
+    },
+    {
+      "data": {
+        "id": 217735,
+        "name": "PDGFRB",
+        "__gpml_textlabel_u2": "PDGFRB",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Ensembl",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "PDGFRB",
+        "__gpml_xrefid_u4": "ENSG00000113721",
+        "height": 20,
+        "ensembl": "ENSG00000113721",
+        "__gpml_graphid_u1": "cf58b",
+        "width": 80
+      },
+      "position": {
+        "x": 549.976366322009,
+        "y": 67.41211225997048
+      }
+    },
+    {
+      "data": {
+        "id": 217736,
+        "name": "RAF1",
+        "__gpml_textlabel_u2": "RAF1",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "RAF1",
+        "__gpml_xrefid_u4": "P04049",
+        "height": 20,
+        "ensembl": "ENSG00000132155",
+        "__gpml_graphid_u1": "c7713",
+        "width": 47.35294
+      },
+      "position": {
+        "x": 869.8939808481532,
+        "y": 286.9666471239663
+      }
+    },
+    {
+      "data": {
+        "id": 217737,
+        "name": "SOS1",
+        "__gpml_textlabel_u2": "SOS1",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "SOS1",
+        "__gpml_xrefid_u4": "Q07889",
+        "height": 19.12963,
+        "ensembl": "ENSG00000115904",
+        "__gpml_graphid_u1": "c188e",
+        "width": 39.25373
+      },
+      "position": {
+        "x": 766.6806252256956,
+        "y": 185.06166491857516
+      }
+    },
+    {
+      "data": {
+        "id": 217738,
+        "name": "PTPN11",
+        "__gpml_textlabel_u2": "SH-PTP2\n(PTN11)",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "PTPN11",
+        "__gpml_xrefid_u4": "Q06124",
+        "height": 30.80737,
+        "ensembl": "ENSG00000179295",
+        "__gpml_graphid_u1": "c148a",
+        "width": 50.57522
+      },
+      "position": {
+        "x": 712.0681567281886,
+        "y": 171.6753164926957
+      }
+    },
+    {
+      "data": {
+        "id": 217739,
+        "name": "RASA1",
+        "__gpml_textlabel_u2": "RASA1(GAP)",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Ensembl",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "RASA1",
+        "__gpml_xrefid_u4": "ENSG00000145715",
+        "height": 20.27604,
+        "ensembl": "ENSG00000145715",
+        "__gpml_graphid_u1": "b8841",
+        "width": 67.27348
+      },
+      "position": {
+        "x": 720.0140198952583,
+        "y": 200.40828774379284
+      }
+    },
+    {
+      "data": {
+        "id": 217740,
+        "name": "JUN",
+        "__gpml_textlabel_u2": "AP-1\n(c-Jun)",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "JUN",
+        "__gpml_xrefid_u4": "P05412",
+        "height": 37.31092,
+        "ensembl": "ENSG00000177606",
+        "__gpml_graphid_u1": "b7458",
+        "width": 44.20168
+      },
+      "position": {
+        "x": 915.2775956165693,
+        "y": 873.3476657099354
+      }
+    },
+    {
+      "data": {
+        "id": 217741,
+        "name": "NFKB1",
+        "__gpml_textlabel_u2": "NFkB",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "KEGG Genes",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "GeneProduct",
+        "transparent": "false",
+        "hgnc": "NFKB1",
+        "__gpml_xrefid_u4": "4790",
+        "height": 20,
+        "ensembl": "ENSG00000109320",
+        "__gpml_graphid_u1": "b713e",
+        "width": 45.97251
+      },
+      "position": {
+        "x": 687.4876340484518,
+        "y": 713.1584612694329
+      }
+    },
+    {
+      "data": {
+        "id": 217742,
+        "name": "STAT3",
+        "__gpml_textlabel_u2": "STAT3",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "STAT3",
+        "__gpml_xrefid_u4": "P40763",
+        "height": 20,
+        "ensembl": "ENSG00000168610",
+        "__gpml_graphid_u1": "ac0a0",
+        "width": 47.96603
+      },
+      "position": {
+        "x": 673.3663407469754,
+        "y": 368.0364807172311
+      }
+    },
+    {
+      "data": {
+        "id": 217743,
+        "name": "STAT1",
+        "__gpml_textlabel_u2": "STAT1",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "STAT1",
+        "__gpml_xrefid_u4": "P42224",
+        "height": 20,
+        "ensembl": "ENSG00000115415",
+        "__gpml_graphid_u1": "a8240",
+        "width": 49.41654
+      },
+      "position": {
+        "x": 622.4388892787503,
+        "y": 342.1493775791582
+      }
+    },
+    {
+      "data": {
+        "id": 217744,
+        "name": "GRB2",
+        "__gpml_textlabel_u2": "GRB2",
+        "fillcolor": "#ffffff",
+        "shape": "Rectangle",
+        "borderthickness": 1,
+        "__gpml_xrefdatasource_u3": "Uniprot-TrEMBL",
+        "color": "#000000",
+        "labelsize": 10,
+        "labelfont": "ArialMT",
+        "type": "Protein",
+        "transparent": "false",
+        "hgnc": "GRB2",
+        "__gpml_xrefid_u4": "P62993",
+        "height": 19.22352,
+        "ensembl": "ENSG00000177885",
+        "__gpml_graphid_u1": "a29c7",
+        "width": 42.98507
+      },
+      "position": {
+        "x": 807.3446721227585,
+        "y": 184.94886667833742
+      }
+    }
+  ],
+  "edges": [
+    {
+      "data": {
+        "id": "e217745",
+        "source": 217633,
+        "target": 217632,
+        "startarrow": "Line",
+        "endarrow": "Line",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000374\">relationship</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Interaction\">wikipathways:Interaction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000374"
+      }
+    },
+    {
+      "data": {
+        "id": "e217746",
+        "source": 217635,
+        "target": 217634,
+        "startarrow": "Line",
+        "endarrow": "Line",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000374\">relationship</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Interaction\">wikipathways:Interaction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000374"
+      }
+    },
+    {
+      "data": {
+        "id": "e217747",
+        "source": 217637,
+        "target": 217636,
+        "startarrow": "Line",
+        "endarrow": "Line",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000374\">relationship</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Interaction\">wikipathways:Interaction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000374"
+      }
+    },
+    {
+      "data": {
+        "id": "e217748",
+        "source": 217639,
+        "target": 217638,
+        "startarrow": "Line",
+        "endarrow": "Line",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000374\">relationship</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Interaction\">wikipathways:Interaction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000374"
+      }
+    },
+    {
+      "data": {
+        "id": "e217749",
+        "source": 217641,
+        "target": 217640,
+        "startarrow": "Line",
+        "endarrow": "Line",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000374\">relationship</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Interaction\">wikipathways:Interaction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000374"
+      }
+    },
+    {
+      "data": {
+        "id": "e217750",
+        "source": 217643,
+        "target": 217642,
+        "startarrow": "Line",
+        "endarrow": "Line",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000374\">relationship</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Interaction\">wikipathways:Interaction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000374"
+      }
+    },
+    {
+      "data": {
+        "id": "e217751",
+        "source": 217662,
+        "target": 217724,
+        "startarrow": "Line",
+        "endarrow": "Line",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000374\">relationship</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Interaction\">wikipathways:Interaction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000374"
+      }
+    },
+    {
+      "data": {
+        "id": "e217752",
+        "source": 217666,
+        "target": 217671,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217753",
+        "source": 217669,
+        "target": 217701,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217754",
+        "source": 217675,
+        "target": 217696,
+        "startarrow": "Line",
+        "endarrow": "Arrow",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000375\">process</a>, <a href=\"http://vocabularies.wikipathways.org/wp#DirectedInteraction\">wikipathways:DirectedInteraction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000375"
+      }
+    },
+    {
+      "data": {
+        "id": "e217755",
+        "source": 217676,
+        "target": 217697,
+        "startarrow": "Line",
+        "endarrow": "Arrow",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000375\">process</a>, <a href=\"http://vocabularies.wikipathways.org/wp#DirectedInteraction\">wikipathways:DirectedInteraction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000375"
+      }
+    },
+    {
+      "data": {
+        "id": "e217756",
+        "source": 217678,
+        "target": 217677,
+        "startarrow": "Line",
+        "endarrow": "Arrow",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000375\">process</a>, <a href=\"http://vocabularies.wikipathways.org/wp#DirectedInteraction\">wikipathways:DirectedInteraction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000375"
+      }
+    },
+    {
+      "data": {
+        "id": "e217757",
+        "source": 217679,
+        "target": 217680,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217758",
+        "source": 217680,
+        "target": 217741,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217759",
+        "source": 217682,
+        "target": 217681,
+        "startarrow": "Line",
+        "endarrow": "Arrow",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000375\">process</a>, <a href=\"http://vocabularies.wikipathways.org/wp#DirectedInteraction\">wikipathways:DirectedInteraction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000375"
+      }
+    },
+    {
+      "data": {
+        "id": "e217760",
+        "source": 217683,
+        "target": 217681,
+        "startarrow": "Line",
+        "endarrow": "Arrow",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000375\">process</a>, <a href=\"http://vocabularies.wikipathways.org/wp#DirectedInteraction\">wikipathways:DirectedInteraction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000375"
+      }
+    },
+    {
+      "data": {
+        "id": "e217761",
+        "source": 217684,
+        "target": 217681,
+        "startarrow": "Line",
+        "endarrow": "Arrow",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000375\">process</a>, <a href=\"http://vocabularies.wikipathways.org/wp#DirectedInteraction\">wikipathways:DirectedInteraction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000375"
+      }
+    },
+    {
+      "data": {
+        "id": "e217762",
+        "source": 217685,
+        "target": 217684,
+        "startarrow": "Line",
+        "endarrow": "Arrow",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000375\">process</a>, <a href=\"http://vocabularies.wikipathways.org/wp#DirectedInteraction\">wikipathways:DirectedInteraction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000375"
+      }
+    },
+    {
+      "data": {
+        "id": "e217763",
+        "source": 217686,
+        "target": 217685,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217764",
+        "source": 217687,
+        "target": 217686,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217765",
+        "source": 217688,
+        "target": 217682,
+        "startarrow": "Line",
+        "endarrow": "Arrow",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000375\">process</a>, <a href=\"http://vocabularies.wikipathways.org/wp#DirectedInteraction\">wikipathways:DirectedInteraction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000375"
+      }
+    },
+    {
+      "data": {
+        "id": "e217766",
+        "source": 217689,
+        "target": 217682,
+        "startarrow": "Line",
+        "endarrow": "Arrow",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000375\">process</a>, <a href=\"http://vocabularies.wikipathways.org/wp#DirectedInteraction\">wikipathways:DirectedInteraction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000375"
+      }
+    },
+    {
+      "data": {
+        "id": "e217767",
+        "source": 217690,
+        "target": 217683,
+        "startarrow": "Line",
+        "endarrow": "Arrow",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000375\">process</a>, <a href=\"http://vocabularies.wikipathways.org/wp#DirectedInteraction\">wikipathways:DirectedInteraction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000375"
+      }
+    },
+    {
+      "data": {
+        "id": "e217768",
+        "source": 217691,
+        "target": 217689,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217769",
+        "source": 217691,
+        "target": 217688,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217770",
+        "source": 217692,
+        "target": 217691,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217771",
+        "source": 217693,
+        "target": 217691,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217772",
+        "source": 217694,
+        "target": 217692,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217773",
+        "source": 217694,
+        "target": 217693,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217774",
+        "source": 217695,
+        "target": 217690,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217775",
+        "source": 217695,
+        "target": 217691,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217776",
+        "source": 217695,
+        "target": 217687,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217777",
+        "source": 217695,
+        "target": 217679,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217778",
+        "source": 217695,
+        "target": 217698,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217779",
+        "source": 217702,
+        "target": 217710,
+        "startarrow": "Line",
+        "endarrow": "Arrow",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000375\">process</a>, <a href=\"http://vocabularies.wikipathways.org/wp#DirectedInteraction\">wikipathways:DirectedInteraction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000375"
+      }
+    },
+    {
+      "data": {
+        "id": "e217780",
+        "source": 217703,
+        "target": 217705,
+        "startarrow": "Line",
+        "endarrow": "Arrow",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000375\">process</a>, <a href=\"http://vocabularies.wikipathways.org/wp#DirectedInteraction\">wikipathways:DirectedInteraction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000375"
+      }
+    },
+    {
+      "data": {
+        "id": "e217781",
+        "source": 217703,
+        "target": 217706,
+        "startarrow": "Line",
+        "endarrow": "Arrow",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000375\">process</a>, <a href=\"http://vocabularies.wikipathways.org/wp#DirectedInteraction\">wikipathways:DirectedInteraction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000375"
+      }
+    },
+    {
+      "data": {
+        "id": "e217782",
+        "source": 217704,
+        "target": 217703,
+        "startarrow": "Line",
+        "endarrow": "mim-conversion",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000182\">Conversion</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Conversion\">wikipathways:Conversion</a>, biopax:Conversion",
+        "sbotype": "SBO:0000182"
+      }
+    },
+    {
+      "data": {
+        "id": "e217783",
+        "source": 217707,
+        "target": 217702,
+        "startarrow": "Line",
+        "endarrow": "mim-conversion",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000182\">Conversion</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Conversion\">wikipathways:Conversion</a>, biopax:Conversion",
+        "sbotype": "SBO:0000182"
+      }
+    },
+    {
+      "data": {
+        "id": "e217784",
+        "source": 217708,
+        "target": 217704,
+        "startarrow": "Line",
+        "endarrow": "Line",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000374\">relationship</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Interaction\">wikipathways:Interaction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000374"
+      }
+    },
+    {
+      "data": {
+        "id": "e217785",
+        "source": 217709,
+        "target": 217711,
+        "startarrow": "Line",
+        "endarrow": "mim-conversion",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000182\">Conversion</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Conversion\">wikipathways:Conversion</a>, biopax:Conversion",
+        "sbotype": "SBO:0000182"
+      }
+    },
+    {
+      "data": {
+        "id": "e217786",
+        "source": 217709,
+        "target": 217713,
+        "startarrow": "Line",
+        "endarrow": "mim-conversion",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000182\">Conversion</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Conversion\">wikipathways:Conversion</a>, biopax:Conversion",
+        "sbotype": "SBO:0000182"
+      }
+    },
+    {
+      "data": {
+        "id": "e217787",
+        "source": 217710,
+        "target": 217712,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217788",
+        "source": 217711,
+        "target": 217703,
+        "startarrow": "Line",
+        "endarrow": "mim-binding",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000177\">Non-covalent binding</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Binding\">wikipathways:Binding</a>, biopax:MolecularInteraction",
+        "sbotype": "SBO:0000177"
+      }
+    },
+    {
+      "data": {
+        "id": "e217789",
+        "source": 217712,
+        "target": 217714,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217790",
+        "source": 217714,
+        "target": 217644,
+        "startarrow": "Line",
+        "endarrow": "mim-inhibition",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000169\">Inhibition</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Inhibition\">wikipathways:Inhibition</a>, biopax:Control",
+        "sbotype": "SBO:0000169"
+      }
+    },
+    {
+      "data": {
+        "id": "e217791",
+        "source": 217720,
+        "target": 217666,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217792",
+        "source": 217721,
+        "target": 217666,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217793",
+        "source": 217724,
+        "target": 217736,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217794",
+        "source": 217725,
+        "target": 217669,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217795",
+        "source": 217725,
+        "target": 217727,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217796",
+        "source": 217727,
+        "target": 217731,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217797",
+        "source": 217730,
+        "target": 217709,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217798",
+        "source": 217731,
+        "target": 217734,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217799",
+        "source": 217734,
+        "target": 217740,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217800",
+        "source": 217736,
+        "target": 217725,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217801",
+        "source": 217739,
+        "target": 217724,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217802",
+        "source": 217741,
+        "target": 217722,
+        "startarrow": "Line",
+        "endarrow": "Arrow",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000375\">process</a>, <a href=\"http://vocabularies.wikipathways.org/wp#DirectedInteraction\">wikipathways:DirectedInteraction</a>, biopax:Interaction",
+        "sbotype": "SBO:0000375"
+      }
+    },
+    {
+      "data": {
+        "id": "e217803",
+        "source": 217742,
+        "target": 217720,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    },
+    {
+      "data": {
+        "id": "e217804",
+        "source": 217743,
+        "target": 217721,
+        "startarrow": "Line",
+        "endarrow": "mim-stimulation",
+        "connectortype": "Straight",
+        "linethickness": 1,
+        "linestyle": "Solid",
+        "color": "#000000",
+        "type": "<a href=\"http://identifiers.org/biomodels.sbo/SBO:0000170\">Stimulation</a>, <a href=\"http://vocabularies.wikipathways.org/wp#Stimulation\">wikipathways:Stimulation</a>, biopax:Control",
+        "sbotype": "SBO:0000170"
+      }
+    }
+  ]
+}

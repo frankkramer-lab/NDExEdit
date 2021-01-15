@@ -112,7 +112,6 @@
               type="button">
         <fa-icon [icon]="faCheck"></fa-icon>
       </button>
-      <!-- todo edit existing mapping -->
       <button (click)="editMapping()" *ngIf="isEdit"
               [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, mapType + mapId ]} }]"
               class="btn btn-block btn-outline-success" data-toggle="tooltip"
@@ -194,7 +193,6 @@
               type="button">
         <fa-icon [icon]="faCheck"></fa-icon>
       </button>
-      <!-- todo edit existing mapping -->
       <button (click)="editMapping()" *ngIf="isEdit"
               [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, mapType + mapId ]} }]"
               class="btn btn-block btn-outline-success" data-toggle="tooltip"

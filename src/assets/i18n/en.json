@@ -39,6 +39,8 @@
   "MAIN_GRAPH_BTN_FIT": "Fit graph",
   "SIDEBAR_MANAGE_TITLE": "Available networks",
   "SIDEBAR_MANAGE_NW_NAME": "Network name",
+  "SIDEBAR_MANAGE_TT_CLIPBOARD": "Copy this UUID",
+  "SIDEBAR_MANAGE_CLIPBOARD_SUCCESSFUL": "Copied!",
   "SIDEBAR_MANAGE_TT_INFO": "Info about this network",
   "SIDEBAR_MANAGE_TT_EDIT": "Render and edit this network",
   "SIDEBAR_MANAGE_TT_DOWNLOAD": "Download as .cx file",

@@ -58,6 +58,7 @@ export class AppComponent {
     this.initializeTranslation();
 
     this.initDemoNetwork('DummyForTesting.cx');
+    // this.initConvertedNetwork('input-with-converted-style.cx');
   }
 
   /**
@@ -129,7 +130,6 @@ export class AppComponent {
         const parsedNetwork = this.parseService.convert(data, this.mockedFilepath + filename);
         this.dataService.networksDownloaded.push(data);
         this.dataService.networksParsed.push(parsedNetwork);
-        // console.log(this.dataService.networksParsed);
       })
       .catch(error => console.log(error));
   }

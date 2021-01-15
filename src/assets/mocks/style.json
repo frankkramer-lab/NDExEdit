@@ -1,0 +1,2209 @@
+[
+  {
+    "selector": "node",
+    "css": {
+      "text-wrap": "wrap",
+      "border-color": "rgb(204,204,204)",
+      "border-opacity": 1,
+      "border-width": 1,
+      "background-color": "rgb(255,255,255)",
+      "height": 35,
+      "color": "rgb(0,0,0)",
+      "font-family": "sans-serif",
+      "font-weight": "normal",
+      "font-size": 12,
+      "text-valign": "center",
+      "text-halign": "center",
+      "text-margin-x": 0,
+      "text-margin-y": 0,
+      "text-justification": "center",
+      "text-opacity": 1,
+      "text-max-width": 200,
+      "shape": "ellipse",
+      "width": 75,
+      "background-opacity": 1,
+      "visibility": "visible"
+    }
+  },
+  {
+    "selector": "node[color]",
+    "css": {
+      "border-color": "data(color)"
+    }
+  },
+  {
+    "selector": "node[borderthickness]",
+    "css": {
+      "border-width": "data(borderthickness)"
+    }
+  },
+  {
+    "selector": "node[fillcolor]",
+    "css": {
+      "background-color": "data(fillcolor)"
+    }
+  },
+  {
+    "selector": "node[height]",
+    "css": {
+      "height": "data(height)"
+    }
+  },
+  {
+    "selector": "node[name]",
+    "css": {
+      "content": "data(name)"
+    }
+  },
+  {
+    "selector": "node[color]",
+    "css": {
+      "color": "data(color)"
+    }
+  },
+  {
+    "selector": "node[labelfont]",
+    "css": {
+      "font-family": "data(labelfont)"
+    }
+  },
+  {
+    "selector": "node[labelsize]",
+    "css": {
+      "font-size": "data(labelsize)"
+    }
+  },
+  {
+    "selector": "node[shape = 'Hexagon']",
+    "css": {
+      "shape": "hexagon"
+    }
+  },
+  {
+    "selector": "node[shape = 'Ellipse']",
+    "css": {
+      "shape": "ellipse"
+    }
+  },
+  {
+    "selector": "node[shape = 'RoundRectangle']",
+    "css": {
+      "shape": "roundrectangle"
+    }
+  },
+  {
+    "selector": "node[shape = 'Oval']",
+    "css": {
+      "shape": "ellipse"
+    }
+  },
+  {
+    "selector": "node[shape = 'Rectangle']",
+    "css": {
+      "shape": "rectangle"
+    }
+  },
+  {
+    "selector": "node[shape = 'Triangle']",
+    "css": {
+      "shape": "triangle"
+    }
+  },
+  {
+    "selector": "node[shape = 'Pentagon']",
+    "css": {
+      "shape": "hexagon"
+    }
+  },
+  {
+    "selector": "node[shape = 'Organelle']",
+    "css": {
+      "shape": "roundrectangle"
+    }
+  },
+  {
+    "selector": "node[shape = 'Octagon']",
+    "css": {
+      "shape": "octagon"
+    }
+  },
+  {
+    "selector": "node[shape = 'RoundedRectangle']",
+    "css": {
+      "shape": "roundrectangle"
+    }
+  },
+  {
+    "selector": "node[transparent = 'true']",
+    "css": {
+      "background-opacity": 0
+    }
+  },
+  {
+    "selector": "node[transparent = 'false']",
+    "css": {
+      "background-opacity": 1
+    }
+  },
+  {
+    "selector": "node[width]",
+    "css": {
+      "width": "data(width)"
+    }
+  },
+  {
+    "selector": "node[ id = '217632' ]",
+    "css": {
+      "height": 1,
+      "shape": "rectangle",
+      "width": 1
+    }
+  },
+  {
+    "selector": "node[ id = '217633' ]",
+    "css": {
+      "height": 1,
+      "shape": "rectangle",
+      "width": 1
+    }
+  },
+  {
+    "selector": "node[ id = '217634' ]",
+    "css": {
+      "height": 1,
+      "shape": "rectangle",
+      "width": 1
+    }
+  },
+  {
+    "selector": "node[ id = '217635' ]",
+    "css": {
+      "height": 1,
+      "shape": "rectangle",
+      "width": 1
+    }
+  },
+  {
+    "selector": "node[ id = '217636' ]",
+    "css": {
+      "height": 1,
+      "shape": "rectangle",
+      "width": 1
+    }
+  },
+  {
+    "selector": "node[ id = '217637' ]",
+    "css": {
+      "height": 1,
+      "shape": "rectangle",
+      "width": 1
+    }
+  },
+  {
+    "selector": "node[ id = '217638' ]",
+    "css": {
+      "height": 1,
+      "shape": "rectangle",
+      "width": 1
+    }
+  },
+  {
+    "selector": "node[ id = '217639' ]",
+    "css": {
+      "height": 1,
+      "shape": "rectangle",
+      "width": 1
+    }
+  },
+  {
+    "selector": "node[ id = '217640' ]",
+    "css": {
+      "height": 1,
+      "shape": "rectangle",
+      "width": 1
+    }
+  },
+  {
+    "selector": "node[ id = '217641' ]",
+    "css": {
+      "height": 1,
+      "shape": "rectangle",
+      "width": 1
+    }
+  },
+  {
+    "selector": "node[ id = '217642' ]",
+    "css": {
+      "height": 1,
+      "shape": "rectangle",
+      "width": 1
+    }
+  },
+  {
+    "selector": "node[ id = '217643' ]",
+    "css": {
+      "height": 1,
+      "shape": "rectangle",
+      "width": 1
+    }
+  },
+  {
+    "selector": "node[ id = '217644' ]",
+    "css": {
+      "height": 1,
+      "shape": "rectangle",
+      "width": 1
+    }
+  },
+  {
+    "selector": "node[ id = '217645' ]",
+    "css": {
+      "border-color": "rgb(0,0,0)",
+      "border-width": 0,
+      "height": 20,
+      "content": "P",
+      "color": "rgb(0,0,0)",
+      "font-family": "Arial,Helvetica Neue,Helvetica,sans-serif",
+      "font-size": 10,
+      "background-opacity": 0,
+      "width": 22
+    }
+  },
+  {
+    "selector": "node[ id = '217646' ]",
+    "css": {
+      "border-color": "rgb(0,0,0)",
+      "border-width": 0,
+      "height": 20,
+      "content": "P",
+      "color": "rgb(0,0,0)",
+      "font-family": "Arial,Helvetica Neue,Helvetica,sans-serif",
+      "font-size": 10,
+      "background-opacity": 0,
+      "width": 22
+    }
+  },
+  {
+    "selector": "node[ id = '217647' ]",
+    "css": {
+      "border-color": "rgb(0,0,0)",
+      "border-width": 0,
+      "height": 20,
+      "content": "P",
+      "color": "rgb(0,0,0)",
+      "font-family": "Arial,Helvetica Neue,Helvetica,sans-serif",
+      "font-size": 10,
+      "background-opacity": 0,
+      "width": 22
+    }
+  },
+  {
+    "selector": "node[ id = '217648' ]",
+    "css": {
+      "border-color": "rgb(0,0,0)",
+      "border-width": 0,
+      "height": 20,
+      "content": "P",
+      "color": "rgb(0,0,0)",
+      "font-family": "Arial,Helvetica Neue,Helvetica,sans-serif",
+      "font-size": 10,
+      "background-opacity": 0,
+      "width": 22
+    }
+  },
+  {
+    "selector": "node[ id = '217649' ]",
+    "css": {
+      "border-color": "rgb(0,0,0)",
+      "border-width": 0,
+      "height": 20,
+      "content": "P",
+      "color": "rgb(0,0,0)",
+      "font-family": "Arial,Helvetica Neue,Helvetica,sans-serif",
+      "font-size": 10,
+      "background-opacity": 0,
+      "width": 22
+    }
+  },
+  {
+    "selector": "node[ id = '217650' ]",
+    "css": {
+      "border-color": "rgb(0,0,0)",
+      "border-width": 0,
+      "height": 20,
+      "content": "P",
+      "color": "rgb(0,0,0)",
+      "font-family": "Arial,Helvetica Neue,Helvetica,sans-serif",
+      "font-size": 10,
+      "background-opacity": 0,
+      "width": 22
+    }
+  },
+  {
+    "selector": "node[ id = '217651' ]",
+    "css": {
+      "border-color": "rgb(0,0,0)",
+      "border-width": 0,
+      "height": 20,
+      "content": "P",
+      "color": "rgb(0,0,0)",
+      "font-family": "Arial,Helvetica Neue,Helvetica,sans-serif",
+      "font-size": 10,
+      "background-opacity": 0,
+      "width": 22
+    }
+  },
+  {
+    "selector": "node[ id = '217652' ]",
+    "css": {
+      "border-color": "rgb(0,0,0)",
+      "border-width": 0,
+      "height": 20,
+      "content": "P",
+      "color": "rgb(0,0,0)",
+      "font-family": "Arial,Helvetica Neue,Helvetica,sans-serif",
+      "font-size": 10,
+      "background-opacity": 0,
+      "width": 22
+    }
+  },
+  {
+    "selector": "node[ id = '217653' ]",
+    "css": {
+      "border-color": "rgb(0,0,0)",
+      "border-width": 0,
+      "height": 20,
+      "content": "P",
+      "color": "rgb(0,0,0)",
+      "font-family": "Arial,Helvetica Neue,Helvetica,sans-serif",
+      "font-size": 10,
+      "background-opacity": 0,
+      "width": 22
+    }
+  },
+  {
+    "selector": "node[ id = '217654' ]",
+    "css": {
+      "border-color": "rgb(0,0,0)",
+      "border-width": 0,
+      "height": 20,
+      "content": "P",
+      "color": "rgb(0,0,0)",
+      "font-family": "Arial,Helvetica Neue,Helvetica,sans-serif",
+      "font-size": 10,
+      "background-opacity": 0,
+      "width": 22
+    }
+  },
+  {
+    "selector": "node[ id = '217655' ]",
+    "css": {
+      "border-color": "rgb(0,0,0)",
+      "border-width": 0,
+      "height": 20,
+      "content": "P",
+      "color": "rgb(0,0,0)",
+      "font-family": "Arial,Helvetica Neue,Helvetica,sans-serif",
+      "font-size": 10,
+      "background-opacity": 0,
+      "width": 22
+    }
+  },
+  {
+    "selector": "node[ id = '217656' ]",
+    "css": {
+      "border-color": "rgb(0,0,0)",
+      "border-width": 0,
+      "height": 20,
+      "content": "P",
+      "color": "rgb(0,0,0)",
+      "font-family": "Arial,Helvetica Neue,Helvetica,sans-serif",
+      "font-size": 10,
+      "background-opacity": 0,
+      "width": 22
+    }
+  },
+  {
+    "selector": "node[ id = '217657' ]",
+    "css": {
+      "border-color": "rgb(0,0,0)",
+      "border-width": 0,
+      "height": 20,
+      "content": "P",
+      "color": "rgb(0,0,0)",
+      "font-family": "Arial,Helvetica Neue,Helvetica,sans-serif",
+      "font-size": 10,
+      "background-opacity": 0,
+      "width": 22
+    }
+  },
+  {
+    "selector": "node[ id = '217658' ]",
+    "css": {
+      "border-color": "rgb(0,0,0)",
+      "border-width": 0,
+      "height": 33.93162393162409,
+      "content": "ERK1/2\n(MAPK3/MAPK1)",
+      "color": "rgb(0,0,0)",
+      "font-family": "sans-serif",
+      "font-weight": "normal",
+      "font-size": 10,
+      "background-opacity": 0,
+      "width": 81.02564102564108
+    }
+  },
+  {
+    "selector": "node[ id = '217659' ]",
+    "css": {
+      "border-color": "rgb(170,170,170)",
+      "border-width": 0,
+      "background-color": "rgb(255,255,255)",
+      "height": 50.734550523097454,
+      "color": "rgb(170,170,170)",
+      "shape": "rectangle",
+      "background-opacity": 0.09803921568627451,
+      "width": 93.47145754585131
+    }
+  },
+  {
+    "selector": "node[ id = '217660' ]",
+    "css": {
+      "border-color": "rgb(170,170,170)",
+      "border-width": 0,
+      "background-color": "rgb(255,255,255)",
+      "height": 57.64763883839839,
+      "color": "rgb(170,170,170)",
+      "shape": "rectangle",
+      "background-opacity": 0.09803921568627451,
+      "width": 64.75605503950453
+    }
+  },
+  {
+    "selector": "node[ id = '217661' ]",
+    "css": {
+      "border-color": "rgb(170,170,170)",
+      "border-width": 0,
+      "background-color": "rgb(255,255,255)",
+      "height": 57.798375184638985,
+      "color": "rgb(170,170,170)",
+      "shape": "rectangle",
+      "background-opacity": 0.09803921568627451,
+      "width": 63.96602658788697
+    }
+  },
+  {
+    "selector": "node[ id = '217662' ]",
+    "css": {
+      "border-color": "rgb(170,170,170)",
+      "border-width": 1,
+      "background-color": "rgb(180,180,100)",
+      "height": 62.5908658741717,
+      "color": "rgb(170,170,170)",
+      "shape": "octagon",
+      "background-opacity": 0.09803921568627451,
+      "width": 105.78344988213757
+    }
+  },
+  {
+    "selector": "node[ id = '217663' ]",
+    "css": {
+      "border-color": "rgb(170,170,170)",
+      "border-width": 0,
+      "background-color": "rgb(255,255,255)",
+      "height": 37.5,
+      "color": "rgb(170,170,170)",
+      "shape": "rectangle",
+      "background-opacity": 0.09803921568627451,
+      "width": 91.73389175598686
+    }
+  },
+  {
+    "selector": "node[ id = '217664' ]",
+    "css": {
+      "border-color": "rgb(170,170,170)",
+      "border-width": 0,
+      "background-color": "rgb(255,255,255)",
+      "height": 46.80736740063699,
+      "color": "rgb(170,170,170)",
+      "shape": "rectangle",
+      "background-opacity": 0.09803921568627451,
+      "width": 87.46662982793168
+    }
+  },
+  {
+    "selector": "node[ id = '217665' ]",
+    "css": {
+      "border-color": "rgb(170,170,170)",
+      "border-width": 0,
+      "background-color": "rgb(255,255,255)",
+      "height": 37.5,
+      "color": "rgb(170,170,170)",
+      "shape": "rectangle",
+      "background-opacity": 0.09803921568627451,
+      "width": 103.68020449185678
+    }
+  },
+  {
+    "selector": "node[ id = '217666' ]",
+    "css": {
+      "border-color": "rgb(170,170,170)",
+      "border-width": 1,
+      "background-color": "rgb(180,180,100)",
+      "height": 76.85431586882771,
+      "color": "rgb(170,170,170)",
+      "shape": "octagon",
+      "background-opacity": 0.09803921568627451,
+      "width": 94.36317376554848
+    }
+  },
+  {
+    "selector": "node[ id = '217667' ]",
+    "css": {
+      "border-color": "rgb(170,170,170)",
+      "border-width": 0,
+      "background-color": "rgb(255,255,255)",
+      "height": 49.06417190394379,
+      "color": "rgb(170,170,170)",
+      "shape": "rectangle",
+      "background-opacity": 0.09803921568627451,
+      "width": 92.91466467280043
+    }
+  },
+  {
+    "selector": "node[ id = '217668' ]",
+    "css": {
+      "border-color": "rgb(170,170,170)",
+      "border-width": 0,
+      "background-color": "rgb(255,255,255)",
+      "height": 58.449511700753874,
+      "color": "rgb(170,170,170)",
+      "shape": "rectangle",
+      "background-opacity": 0.09803921568627451,
+      "width": 69.85498755227195
+    }
+  },
+  {
+    "selector": "node[ id = '217669' ]",
+    "css": {
+      "border-color": "rgb(170,170,170)",
+      "border-width": 1,
+      "background-color": "rgb(180,180,100)",
+      "height": 85.82905982905982,
+      "color": "rgb(170,170,170)",
+      "shape": "rectangle",
+      "background-opacity": 0.09803921568627451,
+      "width": 97.70940170940071
+    }
+  },
+  {
+    "selector": "node[ id = '217670' ]",
+    "css": {
+      "border-color": "rgb(170,170,170)",
+      "border-width": 0,
+      "background-color": "rgb(255,255,255)",
+      "height": 57.56942392909849,
+      "color": "rgb(170,170,170)",
+      "shape": "rectangle",
+      "background-opacity": 0.09803921568627451,
+      "width": 68.85109717868318
+    }
+  },
+  {
+    "selector": "node[ id = '217671' ]",
+    "css": {
+      "border-color": "rgb(170,170,170)",
+      "border-width": 1,
+      "background-color": "rgb(180,180,100)",
+      "height": 76.85431586882805,
+      "color": "rgb(170,170,170)",
+      "shape": "octagon",
+      "background-opacity": 0.09803921568627451,
+      "width": 94.36317376554837
+    }
+  },
+  {
+    "selector": "node[ id = '217672' ]",
+    "css": {
+      "border-color": "rgb(170,170,170)",
+      "border-width": 0,
+      "background-color": "rgb(255,255,255)",
+      "height": 150.8938171245021,
+      "color": "rgb(170,170,170)",
+      "shape": "rectangle",
+      "background-opacity": 0.09803921568627451,
+      "width": 34.68075238340634
+    }
+  },
+  {
+    "selector": "node[ id = '217673' ]",
+    "css": {
+      "border-color": "rgb(0,0,0)",
+      "border-width": 1,
+      "height": 122.72761008190355,
+      "color": "rgb(0,0,0)",
+      "font-family": "Arial,Helvetica Neue,Helvetica,sans-serif",
+      "font-size": 10,
+      "shape": "rectangle",
+      "background-opacity": 0,
+      "width": 9.139009139009119
+    }
+  },
+  {
+    "selector": "node[ id = '217674' ]",
+    "css": {
+      "border-color": "rgb(0,0,0)",
+      "border-width": 1,
+      "height": 123.1663106235867,
+      "color": "rgb(0,0,0)",
+      "font-family": "Arial,Helvetica Neue,Helvetica,sans-serif",
+      "font-size": 10,
+      "shape": "rectangle",
+      "background-opacity": 0,
+      "width": 9.28206140790265
+    }
+  },
+  {
+    "selector": "node[ id = '217675' ]",
+    "css": {
+      "border-color": "rgb(0,0,0)",
+      "border-width": 0,
+      "height": 30,
+      "color": "rgb(0,0,0)",
+      "font-family": "Arial,Helvetica Neue,Helvetica,sans-serif",
+      "font-size": 10,
+      "background-opacity": 0,
+      "width": 30
+    }
+  },
+  {
+    "selector": "node[ id = '217676' ]",
+    "css": {
+      "border-color": "rgb(0,0,0)",
+      "border-width": 0,
+      "height": 30,
+      "color": "rgb(0,0,0)",
+      "font-family": "Arial,Helvetica Neue,Helvetica,sans-serif",
+      "font-size": 10,
+      "background-opacity": 0,
+      "width": 30
+    }
+  },
+  {
+    "selector": "node[ id = '217677' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217678' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217679' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217680' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217681' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217682' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217683' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217684' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217685' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217686' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217687' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217688' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217689' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217690' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217691' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217692' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217693' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217694' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217695' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217696' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217697' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217698' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217699' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217700' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217701' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217702' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217703' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217704' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217705' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217706' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217707' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217708' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217709' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217710' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217711' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217712' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217713' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217714' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217715' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217716' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217717' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217718' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217719' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217720' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217721' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217722' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217723' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217724' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217725' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217726' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217727' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217728' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217729' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217730' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217731' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217732' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217733' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217734' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217735' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217736' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217737' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217738' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217739' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217740' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217741' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217742' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217743' ]",
+    "css": {}
+  },
+  {
+    "selector": "node[ id = '217744' ]",
+    "css": {}
+  },
+  {
+    "selector": "edge",
+    "css": {
+      "curve-style": "bezier",
+      "color": "rgb(0,0,0)",
+      "font-family": "sans-serif",
+      "font-weight": "normal",
+      "font-size": 10,
+      "text-opacity": 1,
+      "line-style": "solid",
+      "source-arrow-shape": "none",
+      "target-arrow-shape": "none",
+      "opacity": 1,
+      "source-arrow-color": "rgb(64,64,64)",
+      "target-arrow-color": "rgb(64,64,64)",
+      "line-color": "rgb(64,64,64)",
+      "visibility": "visible",
+      "width": 2
+    }
+  },
+  {
+    "selector": "edge[linestyle = 'Dashed']",
+    "css": {
+      "line-style": "dashed"
+    }
+  },
+  {
+    "selector": "edge[linestyle = 'Dots']",
+    "css": {
+      "line-style": "dotted"
+    }
+  },
+  {
+    "selector": "edge[linestyle = 'Double']",
+    "css": {
+      "line-style": "solid"
+    }
+  },
+  {
+    "selector": "edge[linestyle = 'Solid']",
+    "css": {
+      "line-style": "solid"
+    }
+  },
+  {
+    "selector": "edge[startarrow = 'Arrow']",
+    "css": {
+      "source-arrow-shape": "triangle"
+    }
+  },
+  {
+    "selector": "edge[startarrow = 'mim-branching-right']",
+    "css": {
+      "source-arrow-shape": "triangle-tee"
+    }
+  },
+  {
+    "selector": "edge[startarrow = 'mim-covalent-bond']",
+    "css": {
+      "source-arrow-shape": "triangle-tee"
+    }
+  },
+  {
+    "selector": "edge[startarrow = 'mim-branching-left']",
+    "css": {
+      "source-arrow-shape": "triangle-tee"
+    }
+  },
+  {
+    "selector": "edge[startarrow = 'mim-transcription-translation']",
+    "css": {
+      "source-arrow-shape": "triangle"
+    }
+  },
+  {
+    "selector": "edge[startarrow = 'mim-binding']",
+    "css": {
+      "source-arrow-shape": "triangle"
+    }
+  },
+  {
+    "selector": "edge[startarrow = 'Line']",
+    "css": {
+      "source-arrow-shape": "none"
+    }
+  },
+  {
+    "selector": "edge[startarrow = 'mim-cleavage']",
+    "css": {
+      "source-arrow-shape": "diamond"
+    }
+  },
+  {
+    "selector": "edge[startarrow = 'mim-gap']",
+    "css": {
+      "source-arrow-shape": "triangle"
+    }
+  },
+  {
+    "selector": "edge[startarrow = 'mim-stimulation']",
+    "css": {
+      "source-arrow-shape": "triangle",
+      "source-arrow-fill": "hollow"
+    }
+  },
+  {
+    "selector": "edge[startarrow = 'mim-catalysis']",
+    "css": {
+      "source-arrow-shape": "circle",
+      "source-arrow-fill": "hollow"
+    }
+  },
+  {
+    "selector": "edge[startarrow = 'mim-inhibition']",
+    "css": {
+      "source-arrow-shape": "tee"
+    }
+  },
+  {
+    "selector": "edge[startarrow = 'TBar']",
+    "css": {
+      "source-arrow-shape": "tee"
+    }
+  },
+  {
+    "selector": "edge[startarrow = 'mim-modification']",
+    "css": {
+      "source-arrow-shape": "triangle"
+    }
+  },
+  {
+    "selector": "edge[startarrow = 'mim-necessary-stimulation']",
+    "css": {
+      "source-arrow-shape": "triangle-tee"
+    }
+  },
+  {
+    "selector": "edge[startarrow = 'mim-conversion']",
+    "css": {
+      "source-arrow-shape": "triangle"
+    }
+  },
+  {
+    "selector": "edge[endarrow = 'Arrow']",
+    "css": {
+      "target-arrow-shape": "triangle"
+    }
+  },
+  {
+    "selector": "edge[endarrow = 'mim-branching-right']",
+    "css": {
+      "target-arrow-shape": "triangle-tee"
+    }
+  },
+  {
+    "selector": "edge[endarrow = 'mim-covalent-bond']",
+    "css": {
+      "target-arrow-shape": "triangle-tee"
+    }
+  },
+  {
+    "selector": "edge[endarrow = 'mim-branching-left']",
+    "css": {
+      "target-arrow-shape": "triangle-tee"
+    }
+  },
+  {
+    "selector": "edge[endarrow = 'mim-transcription-translation']",
+    "css": {
+      "target-arrow-shape": "triangle"
+    }
+  },
+  {
+    "selector": "edge[endarrow = 'mim-binding']",
+    "css": {
+      "target-arrow-shape": "triangle"
+    }
+  },
+  {
+    "selector": "edge[endarrow = 'Line']",
+    "css": {
+      "target-arrow-shape": "none"
+    }
+  },
+  {
+    "selector": "edge[endarrow = 'mim-cleavage']",
+    "css": {
+      "target-arrow-shape": "diamond"
+    }
+  },
+  {
+    "selector": "edge[endarrow = 'mim-gap']",
+    "css": {
+      "target-arrow-shape": "triangle"
+    }
+  },
+  {
+    "selector": "edge[endarrow = 'mim-stimulation']",
+    "css": {
+      "target-arrow-shape": "triangle",
+      "target-arrow-fill": "hollow"
+    }
+  },
+  {
+    "selector": "edge[endarrow = 'mim-catalysis']",
+    "css": {
+      "target-arrow-shape": "circle",
+      "target-arrow-fill": "hollow"
+    }
+  },
+  {
+    "selector": "edge[endarrow = 'mim-inhibition']",
+    "css": {
+      "target-arrow-shape": "tee"
+    }
+  },
+  {
+    "selector": "edge[endarrow = 'TBar']",
+    "css": {
+      "target-arrow-shape": "tee"
+    }
+  },
+  {
+    "selector": "edge[endarrow = 'mim-modification']",
+    "css": {
+      "target-arrow-shape": "triangle"
+    }
+  },
+  {
+    "selector": "edge[endarrow = 'mim-necessary-stimulation']",
+    "css": {
+      "target-arrow-shape": "triangle-tee"
+    }
+  },
+  {
+    "selector": "edge[endarrow = 'mim-conversion']",
+    "css": {
+      "target-arrow-shape": "triangle"
+    }
+  },
+  {
+    "selector": "edge[color]",
+    "css": {
+      "target-arrow-color": "data(color)"
+    }
+  },
+  {
+    "selector": "edge[color]",
+    "css": {
+      "source-arrow-color": "data(color)"
+    }
+  },
+  {
+    "selector": "edge[color]",
+    "css": {
+      "line-color": "data(color)"
+    }
+  },
+  {
+    "selector": "edge[linethickness]",
+    "css": {
+      "width": "data(linethickness)"
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217745' ]",
+    "css": {
+      "width": 1
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217746' ]",
+    "css": {
+      "width": 1
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217747' ]",
+    "css": {
+      "width": 1
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217748' ]",
+    "css": {
+      "width": 1
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217749' ]",
+    "css": {
+      "width": 1
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217750' ]",
+    "css": {
+      "width": 1
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217751' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        -0.0720543828827323,
+        0.3412744671321101,
+        0.8478927685088855
+      ],
+      "control-point-distances": [
+        50.02904420062763,
+        85.24807817772962,
+        55.694062981206876
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217752' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.15696456324817049,
+        0.22428355383947285,
+        0.5673189905913021
+      ],
+      "control-point-distances": [
+        -9.632152266954023,
+        16.91937808741402,
+        26.5515303543681
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217753' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.13649527857944602,
+        0.4218542199895733,
+        0.8169566394095326
+      ],
+      "control-point-distances": [
+        -43.76683449834702,
+        25.05722876319014,
+        58.69234857322453
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217754' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        -0.0020664941968067682,
+        0.49666663279757445,
+        0.9980078359879242
+      ],
+      "control-point-distances": [
+        34.9969891992406,
+        56.45204141422363,
+        33.73817478968264
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217755' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        -0.010972959808987142,
+        0.48053451200970687,
+        0.9876562202274868
+      ],
+      "control-point-distances": [
+        34.92213409412978,
+        61.95013867160433,
+        39.28485476553584
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217756' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.19209291231168224,
+        0.5924813434283728
+      ],
+      "control-point-distances": [
+        -38.64687659743165,
+        -30.370430548988068
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217757' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.19812556650268368,
+        0.5085973714214308,
+        0.8273795354430875
+      ],
+      "control-point-distances": [
+        23.78491230802303,
+        1.0321117508846371,
+        -20.723032794461428
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217758' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.21497840287650097,
+        0.3669734020893985,
+        0.6600659975048433
+      ],
+      "control-point-distances": [
+        3.8405749123885586,
+        -8.168047748182357,
+        -17.655971208633364
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217759' ]",
+    "css": {
+      "width": 1
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217760' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.11385729557197087,
+        0.4621095659542274
+      ],
+      "control-point-distances": [
+        47.731441546796795,
+        47.43519521293475
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217761' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.22553355952734758,
+        0.5150793825036172
+      ],
+      "control-point-distances": [
+        -36.88251045684977,
+        -46.02571308366562
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217762' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.241864900435137,
+        0.42573294335357703,
+        0.663046891197794
+      ],
+      "control-point-distances": [
+        -7.982504034777166,
+        2.451108359520206,
+        11.12079324327443
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217763' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.21900368397691125,
+        0.46564107375716873,
+        0.7405165328106963
+      ],
+      "control-point-distances": [
+        -13.522546543647959,
+        2.1215176424037026,
+        16.022001085353537
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217764' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.2721962322704132,
+        0.4551118691232044,
+        0.6894168615674106
+      ],
+      "control-point-distances": [
+        3.3784882614820178,
+        5.717524416138063,
+        6.9127679819878445
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217765' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.12591469468135447,
+        0.33113303013458706,
+        0.6576717432565016
+      ],
+      "control-point-distances": [
+        -16.230073685422663,
+        9.68497637732399,
+        19.962148159946402
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217766' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.15914206688428256,
+        0.31430042444327483,
+        0.6109218911409177
+      ],
+      "control-point-distances": [
+        24.30969165837894,
+        6.647216419504218,
+        -2.3590907761158526
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217767' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.05918253076464497,
+        0.10273957102489065,
+        0.5300621618385801
+      ],
+      "control-point-distances": [
+        5.905681068328279,
+        27.571713796204655,
+        27.10388697449019
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217768' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.19465244730177975,
+        0.49619062236237627,
+        0.8106363195964607
+      ],
+      "control-point-distances": [
+        -12.830619038370374,
+        6.682870359928778,
+        24.52469275800215
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217769' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.1948975417986248,
+        0.46825846052898673,
+        0.7733609187303618
+      ],
+      "control-point-distances": [
+        15.897664465538675,
+        -2.589136525134929,
+        -18.48680099067328
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217770' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.15716949321386997,
+        0.46025088316096036,
+        0.7814959872700785
+      ],
+      "control-point-distances": [
+        -19.715228531375754,
+        1.1924209717088672,
+        15.051943307649664
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217771' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.1812427690110602,
+        0.34479793539630893,
+        0.6469659865895264
+      ],
+      "control-point-distances": [
+        18.99303826633017,
+        5.725972614484909,
+        -2.730148563900217
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217772' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.07713258280194266,
+        0.4841832495963106,
+        0.9142134192848702
+      ],
+      "control-point-distances": [
+        40.9413536257291,
+        -8.395403705722146,
+        -45.534826007561186
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217773' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.10031391854744912,
+        0.34396735359555264,
+        0.746411850527314
+      ],
+      "control-point-distances": [
+        30.014645987268292,
+        -46.686090146811374,
+        -75.87539838142136
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217774' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.06035444196474797,
+        0.4742612308526111,
+        0.9209614550607804
+      ],
+      "control-point-distances": [
+        -26.844759684239822,
+        31.43564489443673,
+        56.63933900651954
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217775' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.35703640714502083,
+        0.8191571906117913
+      ],
+      "control-point-distances": [
+        -92.87764986095794,
+        -101.24929883316274
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217776' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.09547183925804323,
+        0.17371241571839013,
+        0.5856909987102443
+      ],
+      "control-point-distances": [
+        -7.752837057765422,
+        26.49634169160631,
+        33.644163593448106
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217777' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.13359163692390602,
+        0.21051655548691633,
+        0.5727334490481091
+      ],
+      "control-point-distances": [
+        -14.312151197486225,
+        -5.41002618272663,
+        2.0939431207489934
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217778' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.16218548476270994,
+        0.24451461802600866,
+        0.5817955195647173
+      ],
+      "control-point-distances": [
+        -11.163389578543999,
+        0.18832676720118469,
+        -6.00854279882111
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217779' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.1214809154395527,
+        0.5580021609720247,
+        0.9376267238913732
+      ],
+      "control-point-distances": [
+        25.81975856408493,
+        12.327877074963748,
+        -13.256921255068153
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217780' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        -0.006320091204299226,
+        -0.006320091204299226,
+        0.8966592699936732,
+        0.8966592699936732,
+        0.9065227986830605,
+        0.9065227986830605
+      ],
+      "control-point-distances": [
+        -60.89182924759272,
+        -60.89182924759272,
+        -91.82895073664011,
+        -91.82895073664011,
+        3.202637466447514,
+        3.202637466447514
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217781' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.2669123709497654,
+        0.5607585562984582,
+        0.7739226315929645
+      ],
+      "control-point-distances": [
+        -14.443970662111216,
+        -3.2879510287382328,
+        12.234183320237024
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217782' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.527108696044157,
+        0.7079717404774725,
+        0.8443334628267566
+      ],
+      "control-point-distances": [
+        24.328358783878315,
+        9.598800318065448,
+        -7.184687703724778
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217783' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        -1.334868628627214e-13,
+        0.4999999999998374,
+        0.9999999999998846
+      ],
+      "control-point-distances": [
+        -91.65816326530626,
+        -111.65816326530944,
+        -79.10459183673858
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217784' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.17276629755046385,
+        0.37628418327464874
+      ],
+      "control-point-distances": [
+        31.494463081766874,
+        36.98943636844415
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217785' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.21349734360237493,
+        0.6122149480021926
+      ],
+      "control-point-distances": [
+        -41.76526972247107,
+        -31.212679198208672
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217786' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        -0.35207166632239456,
+        -0.060281446532430595,
+        0.6103673920087259
+      ],
+      "control-point-distances": [
+        -47.667635716093415,
+        -75.85754392214494,
+        -52.75308125429272
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217787' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.37528882959841803,
+        0.7742374295937828
+      ],
+      "control-point-distances": [
+        -38.66667882150928,
+        -38.36748047798346
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217788' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.6009031034461514,
+        0.6009031034461514,
+        0.6449883884134646,
+        0.6449883884134646
+      ],
+      "control-point-distances": [
+        -11.863020312589242,
+        -11.863020312589242,
+        7.008634063134876,
+        7.008634063134876
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217789' ]",
+    "css": {
+      "width": 1
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217790' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.20340839260387925,
+        0.652334159970251
+      ],
+      "control-point-distances": [
+        47.23347589316664,
+        43.33796364241727
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217791' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.27953053642067394,
+        0.6737847449892386
+      ],
+      "control-point-distances": [
+        46.83712674829418,
+        57.45612145635139
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217792' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.15735465259319745,
+        0.312596148035354,
+        0.5973226692417632
+      ],
+      "control-point-distances": [
+        7.789006933833326,
+        -21.490690781893036,
+        -44.360919524924185
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217793' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.26390434523131157,
+        0.26390434523131157,
+        0.4857475905289625,
+        0.4857475905289625
+      ],
+      "control-point-distances": [
+        -33.22331954185942,
+        -33.22331954185942,
+        40.84077557977275,
+        40.84077557977275
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217794' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.0786471767778282,
+        0.34869154534199187,
+        0.7613189804980363
+      ],
+      "control-point-distances": [
+        18.882137964464423,
+        -78.6145104543503,
+        -110.2500667612656
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217795' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.46795451214972106,
+        0.46795451214972106,
+        0.49855918202176785,
+        0.49855918202176785
+      ],
+      "control-point-distances": [
+        10.35317950311285,
+        10.35317950311285,
+        -11.09404154448119,
+        -11.09404154448119
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217796' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.32291132269888634,
+        0.32291132269888634,
+        0.5642059265941441,
+        0.5642059265941441
+      ],
+      "control-point-distances": [
+        29.58656490733945,
+        29.58656490733945,
+        -39.92938225668688,
+        -39.92938225668688
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217797' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.0010362620887956753,
+        0.0010362620887956753,
+        1.0008999891204406,
+        1.0008999891204406
+      ],
+      "control-point-distances": [
+        -49.9965930597187,
+        -49.9965930597187,
+        -43.42182378314746,
+        -43.42182378314746
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217798' ]",
+    "css": {
+      "width": 1
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217799' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.14774662668378397,
+        0.4300608090798727,
+        0.7802506820234104
+      ],
+      "control-point-distances": [
+        -24.004632292375042,
+        11.36313294283915,
+        35.70302546276117
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217800' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.4624209368215479,
+        0.4624209368215479
+      ],
+      "control-point-distances": [
+        46.632284922161524,
+        46.632284922161524
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217801' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        -0.1051430341937921,
+        0.3502653702083301,
+        0.8834992528942859
+      ],
+      "control-point-distances": [
+        24.706667621700444,
+        73.63175876315476,
+        56.55203702202424
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217802' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        0.11931484333508689,
+        0.3230749032796868,
+        0.7037600599446
+      ],
+      "control-point-distances": [
+        -14.952936029361457,
+        22.172846054179473,
+        37.125782083541
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217803' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        -0.40464079478839937,
+        -0.35570694657973195,
+        0.44400985705806933
+      ],
+      "control-point-distances": [
+        -7.6788633667178585,
+        -47.402014929381615,
+        -45.53543182385656
+      ]
+    }
+  },
+  {
+    "selector": "edge[ id = 'e217804' ]",
+    "css": {
+      "width": 1,
+      "curve-style": "unbundled-bezier",
+      "edge-distances": "node-position",
+      "control-point-weights": [
+        -0.03348425580349217,
+        0.4766556680997488,
+        1.0432699447581584
+      ],
+      "control-point-distances": [
+        -29.64301568614566,
+        -60.826836172158146,
+        -42.01491733486171
+      ]
+    }
+  },
+  {
+    "selector": "node:selected",
+    "css": {
+      "background-color": "rgb(255,255,0)"
+    }
+  },
+  {
+    "selector": "edge:selected",
+    "css": {
+      "source-arrow-color": "rgb(255,255,0)",
+      "line-color": "rgb(255,0,0)",
+      "target-arrow-color": "rgb(255,255,0)"
+    }
+  }
+]

@@ -18,10 +18,16 @@
            role="button">
           <fa-icon [icon]="faPaintBrush"></fa-icon>
         </a>
-        <a (click)="reconvert(network.id)" class="btn btn-sm btn-outline-info" data-toggle="tooltip"
+        <a (click)="reconvert(network.id)" class="btn btn-sm btn-outline-secondary mr-1" data-toggle="tooltip"
            ngbTooltip="{{'SIDEBAR_MANAGE_TT_DOWNLOAD'|translate}}" placement="left"
            role="button">
           <fa-icon [icon]="faFileDownload"></fa-icon>
+        </a>
+        <!-- needs to be disabled if this network does not have a uuid, bc dummy or local file -->
+        <a [hidden]="!network.networkInformation.uuid" (click)="copyUuidToClipboard(network.id)" class="btn btn-sm btn-outline-secondary" data-toggle="tooltip"
+           ngbTooltip="{{ copyToClipboardTooltip | translate }}" placement="left"
+           role="button">
+          <fa-icon [icon]="faClone"></fa-icon>
         </a>
       </td>
     </tr>
@@ -110,4 +116,3 @@
     {{'SIDEBAR_MANAGE_HELP'|translate}}
   </a>
 </div>
-

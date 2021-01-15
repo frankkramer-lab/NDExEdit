@@ -32,4 +32,9 @@ export interface NeNetworkInformation {
    * Original filename
    */
   originalFilename?: string;
+
+  /**
+   * UUID
+   */
+  uuid?: string;
 }

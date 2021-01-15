@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {faFileDownload, faFileExport, faInfo, faPaintBrush, faSave} from '@fortawesome/free-solid-svg-icons';
+import {faClone, faFileDownload, faFileExport, faInfo, faPaintBrush, faSave} from '@fortawesome/free-solid-svg-icons';
 import {DataService} from '../../services/data.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {NeMappings} from '../../models/ne-mappings';
@@ -20,6 +20,11 @@ import {NeAspect} from '../../models/ne-aspect';
  * Component responsible for graph selection and file management
  */
 export class SidebarManageComponent {
+  /**
+   * Icon: faClone
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faClone = faClone;
   /**
    * Icon: faPaintBrush
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
@@ -122,6 +127,8 @@ export class SidebarManageComponent {
    * @private
    */
   private readonly ndexPublicApiHost = 'http://public.ndexbio.org/v2/';
+
+  copyToClipboardTooltip = 'SIDEBAR_MANAGE_TT_CLIPBOARD';
 
   constructor(
     public dataService: DataService,
@@ -413,6 +420,7 @@ export class SidebarManageComponent {
     }
     this.loadingHttp = true;
     const slashSplit = this.ndexLinkToUpload.split('/');
+    const uuid = slashSplit[slashSplit.length - 1];
 
     this.http.get(this.ndexPublicApiHost + 'network/' + slashSplit[slashSplit.length - 1] + '/summary', this.options)
       .toPromise()
@@ -432,7 +440,7 @@ export class SidebarManageComponent {
 
           return;
         }
-        this.http.get(this.ndexPublicApiHost + 'network/' + slashSplit[slashSplit.length - 1], this.options)
+        this.http.get(this.ndexPublicApiHost + 'network/' + uuid, this.options)
           .toPromise()
           .then((data: any[]) => {
 
@@ -478,7 +486,10 @@ export class SidebarManageComponent {
               }
             }
             this.dataService.networksDownloaded.push(data);
-            this.dataService.networksParsed.push(this.parseService.convert(data, UtilityService.utilCleanString(networkName)));
+            this.dataService.networksParsed.push(this.parseService.convert(
+              data,
+              UtilityService.utilCleanString(networkName),
+              uuid ?? null));
             this.loadingHttp = false;
 
           })
@@ -669,4 +680,17 @@ export class SidebarManageComponent {
     return newMappings;
   }
 
+  /**
+   * Copies this network's UUID to the clipboard
+   */
+  copyUuidToClipboard(networkId: number): void {
+    const network = this.dataService.networksParsed.find(x => x.id === networkId);
+    if (network.networkInformation.uuid) {
+      navigator.clipboard.writeText(network.networkInformation.uuid);
+      this.copyToClipboardTooltip = 'SIDEBAR_MANAGE_CLIPBOARD_SUCCESSFUL';
+      window.setTimeout(() => {
+        this.copyToClipboardTooltip = 'SIDEBAR_MANAGE_TT_CLIPBOARD';
+      }, 5000);
+    }
+  }
 }

@@ -512,8 +512,7 @@ export class DataService {
       const chart: NeChart = {
         chartType: {
           line: true,
-          bar: false,
-          scatter: false
+          bar: false
         },
         chartData: [{
           data: [Number(continuousMapping.defaultLower)],
@@ -970,7 +969,7 @@ export class DataService {
                 limitLow = {
                   value: minPropertyValue,
                   propertyValue: continuousMapping.defaultLower,
-                  isEditable: true // todo testing
+                  isEditable: true
                 };
               } else {
                 limitLow = continuousMapping.breakpoints[index - 1];
