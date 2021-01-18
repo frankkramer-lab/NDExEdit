@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {faClone, faFileDownload, faFileExport, faInfo, faPaintBrush, faSave} from '@fortawesome/free-solid-svg-icons';
+import {faClone, faFileDownload, faFileExport, faInfo, faPaintBrush, faSave, faCloudDownloadAlt} from '@fortawesome/free-solid-svg-icons';
 import {DataService} from '../../services/data.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {NeMappings} from '../../models/ne-mappings';
@@ -20,6 +20,11 @@ import {NeAspect} from '../../models/ne-aspect';
  * Component responsible for graph selection and file management
  */
 export class SidebarManageComponent {
+  /**
+   * Icon: faCloudDownloadAlt
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faCloudDownloadAlt = faCloudDownloadAlt;
   /**
    * Icon: faClone
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos

@@ -51,7 +51,6 @@
   "SIDEBAR_MANAGE_LOCAL_FILE_BTN": "Hochladen",
   "SIDEBAR_MANAGE_REMOTE_FILE_LABEL": "Datei von NDEx laden",
   "SIDEBAR_MANAGE_REMOTE_FILE_TIP": "Lade ein Netzwerk über seine NDEx-URL oder seine UUID",
-  "SIDEBAR_MANAGE_REMOTE_FILE_BTN": "Laden",
   "SIDEBAR_MANAGE_REMOTE_FILE_EXAMPLE": "z.B. https://ndexbio.org/#/network/36f7d8fd-23dc-11e8-b939-0ac135e8bacf",
   "SIDEBAR_MANAGE_TT_LOCAL_FILE": "Eine lokale .cx-Datei laden",
   "SIDEBAR_MANAGE_TT_REMOTE_FILES": "Dateien von NDExBIO laden",

@@ -84,7 +84,8 @@
       <button (click)="importFromNdex()" [disabled]="loadingHttp" class="btn btn-block btn-outline-success"
               data-toggle="tooltip" ngbTooltip="{{'SIDEBAR_MANAGE_TT_REMOTE_FILES' | translate}}" placement="left"
               type="button">
-        {{'SIDEBAR_MANAGE_REMOTE_FILE_BTN'|translate}}
+
+        <fa-icon [icon]="faCloudDownloadAlt"></fa-icon>
       </button>
     </div>
   </div>
