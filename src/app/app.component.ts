@@ -26,11 +26,11 @@ export class AppComponent {
   /**
    * Main: default page layout is 60%
    */
-  widthMain = 60;
+  widthRight = 60;
   /**
    * Sidebar: default page layout is 38%
    */
-  widthSidebar = 38;
+  widthLeft = 38;
   /**
    * Path to mock-ups
    */
@@ -61,6 +61,7 @@ export class AppComponent {
 
     dataService.flipLayoutEmitter.subscribe(data => {
       this.layoutIsMainLeft = data;
+      console.log(this.layoutIsMainLeft, this.widthLeft, this.widthRight);
     });
 
     this.initializeTranslation();
@@ -86,31 +87,31 @@ export class AppComponent {
     }
 
     e.preventDefault();
-    let tmpMain = this.widthMain;
-    let tmpSidebar = this.widthSidebar;
+    let tmpMain = (this.layoutIsMainLeft) ? this.widthLeft : this.widthRight;
+    let tmpSidebar = (this.layoutIsMainLeft) ? this.widthRight : this.widthLeft;
 
     if (!isLeft && tmpSidebar > 18) {
       tmpMain += 10;
       tmpSidebar -= 10;
-      this.widthMain = tmpMain;
-      this.widthSidebar = tmpSidebar;
+      this.widthRight = tmpMain;
+      this.widthLeft = tmpSidebar;
       this.dataService.triggerChartRedraw();
     } else if (isLeft && tmpMain > 20) {
       tmpMain -= 10;
       tmpSidebar += 10;
-      this.widthMain = tmpMain;
-      this.widthSidebar = tmpSidebar;
+      this.widthRight = (this.layoutIsMainLeft) ? tmpSidebar : tmpMain;
+      this.widthLeft = (this.layoutIsMainLeft) ? tmpMain : tmpSidebar;
       this.dataService.triggerChartRedraw();
     }
   }
 
   /**
-   * Resets page layout to {@link AppComponent#widthMain} and {@link AppComponent#widthSidebar}
+   * Resets page layout to {@link AppComponent#widthRight} and {@link AppComponent#widthLeft}
    */
   resetPageLayout(): void {
-    if (this.widthSidebar !== 38 && this.widthMain !== 60) {
-      this.widthSidebar = 38;
-      this.widthMain = 60;
+    if (this.widthLeft !== 38 && this.widthRight !== 60) {
+      this.widthLeft = 38;
+      this.widthRight = 60;
       this.dataService.triggerChartRedraw();
     }
   }
