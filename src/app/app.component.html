@@ -3,12 +3,12 @@
   <div class="row">
 
     <!-- Main outlet -->
-    <div [ngClass]="(layoutIsMainLeft ? 'order-1 col-' + widthLeft : 'order-3 col-' + widthRight)">
+    <div [ngClass]="(layoutIsMainLeft ? 'order-1 w-' + widthLeft : 'order-3 w-' + widthRight)">
       <router-outlet></router-outlet>
     </div>
 
     <!-- Grey bar -->
-    <div class="order-2">
+    <div class="order-2 w-5">
       <div class="drag-bar">
         <div class="btn-group-vertical">
           <button class="btn btn-sm btn-secondary btnLayout" (click)="increaseWidthRight()">
@@ -29,9 +29,9 @@
     </div>
 
     <!-- Sidebar outlet -->
-    <div [ngClass]="(layoutIsMainLeft ? 'order-3 col-' + widthRight : 'order-1 col-' + widthLeft)">
+    <div [ngClass]="(layoutIsMainLeft ? 'order-3 w-' + widthRight : 'order-1 w-' + widthLeft)">
 
-      <ul class="nav nav-tabs mt-2 ml-1 mr-1">
+      <ul class="nav nav-tabs mt-2">
         <li class="nav-item">
           <a [routerLink]="['', { outlets: {sidebar: ['manage']} }]" class="nav-link text-black-50"
              routerLinkActive="active">{{'NAV_MANAGE'|translate}}</a>

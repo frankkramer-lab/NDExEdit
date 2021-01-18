@@ -47,11 +47,11 @@ export class AppComponent {
   /**
    * Main: default page layout is 60%
    */
-  widthRight = 8;
+  widthRight = 65;
   /**
    * Sidebar: default page layout is 38%
    */
-  widthLeft = 4;
+  widthLeft = 30;
   /**
    * Path to mock-ups
    */
@@ -122,14 +122,14 @@ export class AppComponent {
    */
   resetWidth(): void {
     if (this.layoutIsMainLeft) {
-      if (this.widthLeft !== 8 && this.widthRight !== 4) {
-        this.widthLeft = 8;
-        this.widthRight = 4;
+      if (this.widthLeft !== 65 && this.widthRight !== 30) {
+        this.widthLeft = 65;
+        this.widthRight = 30;
       }
     } else {
-      if (this.widthRight !== 8 && this.widthLeft !== 4) {
-        this.widthLeft = 4;
-        this.widthRight = 8;
+      if (this.widthRight !== 65 && this.widthLeft !== 30) {
+        this.widthLeft = 30;
+        this.widthRight = 65;
       }
     }
 
@@ -141,9 +141,9 @@ export class AppComponent {
    * Increases left part of the window
    */
   increaseWidthLeft(): void {
-    if (this.widthRight > 2) {
-      this.widthRight--;
-      this.widthLeft++;
+    if (this.widthRight > 15) {
+      this.widthRight -= 5;
+      this.widthLeft += 5;
     }
   }
 
@@ -151,9 +151,9 @@ export class AppComponent {
    * Increases right part of the window
    */
   increaseWidthRight(): void {
-    if (this.widthLeft > 2) {
-      this.widthLeft--;
-      this.widthRight++;
+    if (this.widthLeft > 15) {
+      this.widthLeft -= 5;
+      this.widthRight += 5;
     }
   }
 
@@ -161,7 +161,6 @@ export class AppComponent {
    * Flips left and right view
    */
   flipLayout(): void {
-    console.log(this.layoutIsMainLeft, this.widthLeft, this.widthRight);
     this.layoutIsMainLeft = !this.layoutIsMainLeft;
     this.dataService.flipLayoutEmitter.emit(this.layoutIsMainLeft);
   }
