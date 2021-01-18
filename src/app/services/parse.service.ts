@@ -687,6 +687,8 @@ export class ParseService {
       }
     }
 
+    const nodeCount = cyParsedData.filter(a => a.group === 'nodes').length;
+
     return {
       id: currentId,
       networkInformation,
@@ -701,7 +703,7 @@ export class ParseService {
         edgesContinuous: parsedMappingsEdgesDefault.continuous
       },
       styleConstants,
-      showLabels: false
+      showLabels: nodeCount < 300 // initially display labels, if less than x nodes
     };
   }
 
