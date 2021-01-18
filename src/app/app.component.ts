@@ -3,7 +3,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {ParseService} from './services/parse.service';
 import {DataService} from './services/data.service';
 import {HttpClient} from '@angular/common/http';
-import {faRedo, faArrowRight, faArrowLeft, faExchangeAlt} from '@fortawesome/free-solid-svg-icons';
+import {faArrowLeft, faArrowRight, faExchangeAlt, faRedo} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -47,11 +47,11 @@ export class AppComponent {
   /**
    * Main: default page layout is 60%
    */
-  widthRight = 60;
+  widthRight = 8;
   /**
    * Sidebar: default page layout is 38%
    */
-  widthLeft = 38;
+  widthLeft = 4;
   /**
    * Path to mock-ups
    */
@@ -117,29 +117,51 @@ export class AppComponent {
       .catch(error => console.log(error));
   }
 
-  resetWidht(): void {
-    if (this.widthLeft !== 38 && this.widthRight !== 60) {
-      this.widthLeft = 38;
-      this.widthRight = 60;
-      this.dataService.triggerChartRedraw();
+  /**
+   * Sets width of the main and sidebar back to 40:60 approximately
+   */
+  resetWidth(): void {
+    if (this.layoutIsMainLeft) {
+      if (this.widthLeft !== 8 && this.widthRight !== 4) {
+        this.widthLeft = 8;
+        this.widthRight = 4;
+      }
+    } else {
+      if (this.widthRight !== 8 && this.widthLeft !== 4) {
+        this.widthLeft = 4;
+        this.widthRight = 8;
+      }
     }
+
+    this.dataService.triggerChartRedraw();
+
   }
 
+  /**
+   * Increases left part of the window
+   */
   increaseWidthLeft(): void {
-    if (this.widthRight > 20) {
-      this.widthRight -= 10;
-      this.widthLeft += 10;
+    if (this.widthRight > 2) {
+      this.widthRight--;
+      this.widthLeft++;
     }
   }
 
+  /**
+   * Increases right part of the window
+   */
   increaseWidthRight(): void {
-    if (this.widthLeft > 18) {
-      this.widthLeft -= 10;
-      this.widthRight += 10;
+    if (this.widthLeft > 2) {
+      this.widthLeft--;
+      this.widthRight++;
     }
   }
 
+  /**
+   * Flips left and right view
+   */
   flipLayout(): void {
+    console.log(this.layoutIsMainLeft, this.widthLeft, this.widthRight);
     this.layoutIsMainLeft = !this.layoutIsMainLeft;
     this.dataService.flipLayoutEmitter.emit(this.layoutIsMainLeft);
   }

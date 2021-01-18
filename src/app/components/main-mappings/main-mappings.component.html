@@ -162,7 +162,8 @@
     <h3>{{'MAIN_MAPPINGS_TITLE_LIST' | translate}}</h3>
 
     <div class="row">
-      <div class="col-6">
+      <!-- todo should be responsive, input component width ... -->
+      <div class="col-xl-6 col-12">
 
         <app-main-mappings-available-attributes
           [attributeListFull]="getAttributeListForCurrentNetworkAndType('nd')"
@@ -173,7 +174,7 @@
 
       </div>
 
-      <div class="col-6">
+      <div class="col-xl-6 col-12">
 
         <app-main-mappings-available-attributes
           [attributeListFull]="getAttributeListForCurrentNetworkAndType('ed')"
@@ -183,10 +184,10 @@
         </app-main-mappings-available-attributes>
 
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col-6">
+      <div class="w-100"></div>
+
+      <div class="col-xl-6 col-12">
 
         <app-main-mappings-available-attributes
           [attributeListFull]="getAttributeListForCurrentNetworkAndType('nc')"
@@ -197,7 +198,7 @@
 
       </div>
 
-      <div class="col-6">
+      <div class="col-xl-6 col-12">
 
         <app-main-mappings-available-attributes
           [attributeListFull]="getAttributeListForCurrentNetworkAndType('ec')"

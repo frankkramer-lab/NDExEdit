@@ -1,19 +1,21 @@
-<table class="table table-borderless">
-  <thead class="border-bottom">
-  <th colspan="3">{{ headline | translate}}</th>
-  </thead>
-  <tbody>
-  <tr *ngFor="let attribute of attributeListFull; let attributeIndex = index;">
-    <td>{{ attribute.name }} </td>
-    <td class="float-right">
+<div class="table-responsive-md">
 
-      <!-- continuous mappings -->
-      <span *ngIf="typeHint.ec || typeHint.nc then continuousBlock else discreteBlock"></span>
+  <table class="table table-borderless">
+    <thead class="border-bottom">
+    <th colspan="3">{{ headline | translate}}</th>
+    </thead>
+    <tbody>
+    <tr *ngFor="let attribute of attributeListFull; let attributeIndex = index;">
+      <td>{{ attribute.name }} </td>
+      <td class="float-right">
 
-      <ng-template #continuousBlock>
+        <!-- continuous mappings -->
+        <span *ngIf="typeHint.ec || typeHint.nc then continuousBlock else discreteBlock"></span>
 
-        <!-- more than one mapping exists -->
-        <span *ngIf="attribute.mapPointerC.length > 1">
+        <ng-template #continuousBlock>
+
+          <!-- more than one mapping exists -->
+          <span *ngIf="attribute.mapPointerC.length > 1">
           <div class="btn-group" role="group">
             <div class="btn-group" role="group">
               <button aria-expanded="false" aria-haspopup="true" class="btn btn-outline-secondary dropdown-toggle"
@@ -35,8 +37,8 @@
           </div>
         </span>
 
-        <!-- exactly one mapping exists -->
-        <span *ngIf="attribute.mapPointerC.length === 1">
+          <!-- exactly one mapping exists -->
+          <span *ngIf="attribute.mapPointerC.length === 1">
                   <button *ngIf="attribute.mapPointerC.length > 0"
                           [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, (typeHint.ec ? 'ec' : 'nc') + attribute.mapPointerC[0]]} }]"
                           class="btn btn-outline-secondary"
@@ -47,18 +49,19 @@
                   </button>
                 </span>
 
-        <button [routerLink]="['', { outlets: {primary: ['new', dataService.networkSelected.id, (typeHint.ec ? 'ec' : 'nc'), attributeIndex ]} }]"
-                class="btn btn-outline-success ml-2"
-                data-toggle="tooltip"
-                ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"
-                type="button">
-          <fa-icon [icon]="faPlus"></fa-icon>
-        </button>
-      </ng-template>
+          <button
+            [routerLink]="['', { outlets: {primary: ['new', dataService.networkSelected.id, (typeHint.ec ? 'ec' : 'nc'), attributeIndex ]} }]"
+            class="btn btn-outline-success ml-2"
+            data-toggle="tooltip"
+            ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"
+            type="button">
+            <fa-icon [icon]="faPlus"></fa-icon>
+          </button>
+        </ng-template>
 
-      <ng-template #discreteBlock>
-        <!-- mapping exists -->
-        <span *ngIf="attribute.mapPointerD.length > 1">
+        <ng-template #discreteBlock>
+          <!-- mapping exists -->
+          <span *ngIf="attribute.mapPointerD.length > 1">
             <div class="btn-group" role="group">
               <div class="btn-group" role="group">
                 <button aria-expanded="false" aria-haspopup="true" class="btn btn-outline-secondary dropdown-toggle"
@@ -82,7 +85,7 @@
             </div>
           </span>
 
-        <span *ngIf="attribute.mapPointerD.length === 1">
+          <span *ngIf="attribute.mapPointerD.length === 1">
             <button *ngIf="attribute.mapPointerD.length > 0"
                     [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, (typeHint.ed ? 'ed' : 'nd') + attribute.mapPointerD[0]]} }]"
                     class="btn btn-outline-secondary"
@@ -93,15 +96,17 @@
             </button>
           </span>
 
-        <button [routerLink]="['', { outlets: {primary: ['new', dataService.networkSelected.id, (typeHint.ed ? 'ed' : 'nd'), attributeIndex ]} }]"
-                class="btn btn-outline-success ml-2"
-                data-toggle="tooltip"
-                ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"
-                type="button">
-          <fa-icon [icon]="faPlus"></fa-icon>
-        </button>
+          <button
+            [routerLink]="['', { outlets: {primary: ['new', dataService.networkSelected.id, (typeHint.ed ? 'ed' : 'nd'), attributeIndex ]} }]"
+            class="btn btn-outline-success ml-2"
+            data-toggle="tooltip"
+            ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"
+            type="button">
+            <fa-icon [icon]="faPlus"></fa-icon>
+          </button>
 
-      </ng-template>
+        </ng-template>
 
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</div>
