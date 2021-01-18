@@ -1,6 +1,5 @@
 <div class="container-fluid">
 
-
   <div [ngClass]="(layoutIsMainLeft ? 'float-left width-' + widthLeft : 'float-right width-' + widthRight)" class="pl-2">
     <router-outlet></router-outlet>
   </div>
@@ -27,8 +26,23 @@
     <router-outlet name="sidebar"></router-outlet>
   </div>
 
-  <div (click)="handleClickEvent($event, true)" (contextmenu)="handleClickEvent($event, false)"
-       class="vh-100 drag-bar float-right">&nbsp;
+  <div class="vh-100 drag-bar float-right">
+    <div class="btn-group-vertical">
+      <button class="btn btn-sm btn-secondary btnLayout" (click)="increaseWidthRight()">
+        <fa-icon [icon]="faArrowLeft"></fa-icon>
+      </button>
+      <button class="btn btn-sm btn-secondary btnLayout" (click)="increaseWidthLeft()">
+        <fa-icon [icon]="faArrowRight"></fa-icon>
+      </button>
+      <button class="btn btn-sm btn-secondary btnLayout" (click)="resetWidht()">
+        <fa-icon [icon]="faRedo"></fa-icon>
+      </button>
+      <button class="btn btn-sm btn-warning btnLayout" (click)="flipLayout()"
+              data-toggle="tooltip"
+              ngbTooltip="{{'MAIN_INFO_TT_FLIP' | translate}}" placement="bottom" role="button">
+        <fa-icon [icon]="faExchangeAlt"></fa-icon>
+      </button>
+      </div>
   </div>
 
 </div>

@@ -3,6 +3,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {ParseService} from './services/parse.service';
 import {DataService} from './services/data.service';
 import {HttpClient} from '@angular/common/http';
+import {faRedo, faArrowRight, faArrowLeft, faExchangeAlt} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,26 @@ export class AppComponent {
    * Title of the application is NDExEdit
    */
   title = 'NDExEdit';
+  /**
+   * Icon: faExchange
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faExchangeAlt = faExchangeAlt;
+  /**
+   * Icon: faExchange
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faRedo = faRedo;
+  /**
+   * Icon: faExchange
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faArrowRight = faArrowRight;
+  /**
+   * Icon: faExchange
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faArrowLeft = faArrowLeft;
   /**
    * True if main view is left
    */
@@ -61,59 +82,12 @@ export class AppComponent {
 
     dataService.flipLayoutEmitter.subscribe(data => {
       this.layoutIsMainLeft = data;
-      console.log(this.layoutIsMainLeft, this.widthLeft, this.widthRight);
     });
 
     this.initializeTranslation();
 
     this.initDemoNetwork('DummyForTesting.cx');
     // this.initConvertedNetwork('input-with-converted-style.cx');
-  }
-
-  /**
-   * Simple implementation to adjust the page layout:
-   * <ul>
-   *   <li><b>left-click</b>: main view decreases, sidebar increases</li>
-   *   <li><b>right-click</b>: main view increases, sidebar decreases</li>
-   *   <li><b>Ctrl + left-click</b></li>: resets widths, see {@link AppComponent#resetPageLayout}
-   * </ul>
-   * @param e event to fetch all pressed keys
-   * @param isLeft indicates if the direction is towards the left
-   */
-  handleClickEvent(e: MouseEvent, isLeft: boolean): void {
-    if (e.ctrlKey) {
-      this.resetPageLayout();
-      return;
-    }
-
-    e.preventDefault();
-    let tmpMain = (this.layoutIsMainLeft) ? this.widthLeft : this.widthRight;
-    let tmpSidebar = (this.layoutIsMainLeft) ? this.widthRight : this.widthLeft;
-
-    if (!isLeft && tmpSidebar > 18) {
-      tmpMain += 10;
-      tmpSidebar -= 10;
-      this.widthRight = tmpMain;
-      this.widthLeft = tmpSidebar;
-      this.dataService.triggerChartRedraw();
-    } else if (isLeft && tmpMain > 20) {
-      tmpMain -= 10;
-      tmpSidebar += 10;
-      this.widthRight = (this.layoutIsMainLeft) ? tmpSidebar : tmpMain;
-      this.widthLeft = (this.layoutIsMainLeft) ? tmpMain : tmpSidebar;
-      this.dataService.triggerChartRedraw();
-    }
-  }
-
-  /**
-   * Resets page layout to {@link AppComponent#widthRight} and {@link AppComponent#widthLeft}
-   */
-  resetPageLayout(): void {
-    if (this.widthLeft !== 38 && this.widthRight !== 60) {
-      this.widthLeft = 38;
-      this.widthRight = 60;
-      this.dataService.triggerChartRedraw();
-    }
   }
 
   /**
@@ -141,5 +115,32 @@ export class AppComponent {
         this.dataService.networksParsed.push(parsedNetwork);
       })
       .catch(error => console.log(error));
+  }
+
+  resetWidht(): void {
+    if (this.widthLeft !== 38 && this.widthRight !== 60) {
+      this.widthLeft = 38;
+      this.widthRight = 60;
+      this.dataService.triggerChartRedraw();
+    }
+  }
+
+  increaseWidthLeft(): void {
+    if (this.widthRight > 20) {
+      this.widthRight -= 10;
+      this.widthLeft += 10;
+    }
+  }
+
+  increaseWidthRight(): void {
+    if (this.widthLeft > 18) {
+      this.widthLeft -= 10;
+      this.widthRight += 10;
+    }
+  }
+
+  flipLayout(): void {
+    this.layoutIsMainLeft = !this.layoutIsMainLeft;
+    this.dataService.flipLayoutEmitter.emit(this.layoutIsMainLeft);
   }
 }

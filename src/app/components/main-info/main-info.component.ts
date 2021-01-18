@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Output} from '@angular/core';
-import {faComments, faThumbsUp, faUserGraduate, faExchangeAlt} from '@fortawesome/free-solid-svg-icons';
+import {faComments, faThumbsUp, faUserGraduate, faArrowRight, faArrowLeft, faUndo, faExchangeAlt} from '@fortawesome/free-solid-svg-icons';
 import {DataService} from '../../services/data.service';
 
 @Component({
@@ -17,10 +17,9 @@ export class MainInfoComponent {
    * Default: main view is right
    */
   layoutIsMainLeft = false;
-  /**
-   * Icon: faExchange
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
+  faArrowRight = faArrowRight;
+  faArrowLeft = faArrowLeft;
+  faUndo = faUndo;
   faExchangeAlt = faExchangeAlt;
   /**
    * Icon: faThumbsUp

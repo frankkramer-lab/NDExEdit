@@ -18,17 +18,20 @@
 <h3>{{'MAIN_INFO_LAYOUT_TITLE' | translate}}</h3>
 <p>{{'MAIN_INFO_LAYOUT_DESCRIPTION' | translate}}</p>
 <ul>
-  <li [innerHTML]="'MAIN_INFO_LAYOUT_STEP_1' | translate"></li>
-  <li [innerHTML]="'MAIN_INFO_LAYOUT_STEP_2' | translate"></li>
-  <li [innerHTML]="'MAIN_INFO_LAYOUT_STEP_3' | translate"></li>
+  <li>
+    <fa-icon [icon]="faArrowLeft"></fa-icon>
+    <fa-icon [icon]="faArrowRight"></fa-icon>
+    {{'MAIN_INFO_LAYOUT_STEP_1' | translate}}
+  </li>
+  <li>
+    <fa-icon [icon]="faUndo"></fa-icon>
+    {{'MAIN_INFO_LAYOUT_STEP_2' | translate}}
+  </li>
+  <li>
+    <fa-icon [icon]="faExchangeAlt"></fa-icon>
+    {{'MAIN_INFO_LAYOUT_STEP_3' | translate}}
+  </li>
 </ul>
-
-<!-- Flip layout -->
-<button class="btn btn-block btn-outline-secondary mr-2 ml-2" (click)="flipLayout()"
-        data-toggle="tooltip"
-        ngbTooltip="{{'MAIN_INFO_TT_FLIP' | translate}}" placement="bottom" role="button">
-  <fa-icon [icon]="faExchangeAlt"></fa-icon>
-</button>
 
 <hr>
 
