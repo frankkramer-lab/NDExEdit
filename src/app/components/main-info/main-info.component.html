@@ -23,6 +23,13 @@
   <li [innerHTML]="'MAIN_INFO_LAYOUT_STEP_3' | translate"></li>
 </ul>
 
+<!-- Flip layout -->
+<button class="btn btn-block btn-outline-secondary mr-2 ml-2" (click)="flipLayout()"
+        data-toggle="tooltip"
+        ngbTooltip="{{'MAIN_INFO_TT_FLIP' | translate}}" placement="bottom" role="button">
+  <fa-icon [icon]="faExchangeAlt"></fa-icon>
+</button>
+
 <hr>
 
 <h3>{{'MAIN_INFO_DOCUMENTATION_TITLE' | translate}}</h3>

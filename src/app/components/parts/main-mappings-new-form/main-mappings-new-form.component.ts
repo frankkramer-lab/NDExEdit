@@ -65,23 +65,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.mapType = this.utilityService.utilGetTypeLiteralByTypeHint(this.typeHint);
-    // let availableAttributes: any[];
-    //
-    // if (this.typeHint.ec || this.typeHint.ed) {
-    //   availableAttributes = this.dataService.networkSelected.aspectKeyValuesEdges;
-    // } else {
-    //   availableAttributes = this.dataService.networkSelected.aspectKeyValuesNodes;
-    // }
-    //
-    // if (this.typeHint.ec || this.typeHint.nc) {
-    //   availableAttributes = availableAttributes
-    //     .filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'float' || a.datatype === 'double'));
-    // } else {
-    //   availableAttributes = availableAttributes
-    //     .filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
-    // }
-    //
-    // this.propertyToMap = availableAttributes[this.propertyPointer];
 
     if (!this.isEdit) {
       if (this.typeHint.ec || this.typeHint.nc) {

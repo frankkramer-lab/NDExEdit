@@ -20,6 +20,10 @@ export class AppComponent {
    */
   title = 'NDExEdit';
   /**
+   * True if main view is left
+   */
+  layoutIsMainLeft = false;
+  /**
    * Main: default page layout is 60%
    */
   widthMain = 60;
@@ -54,6 +58,10 @@ export class AppComponent {
     public dataService: DataService,
     private http: HttpClient
   ) {
+
+    dataService.flipLayoutEmitter.subscribe(data => {
+      this.layoutIsMainLeft = data;
+    });
 
     this.initializeTranslation();
 

@@ -1,6 +1,6 @@
-import {Component} from '@angular/core';
-import {faComments, faThumbsUp, faUserGraduate} from '@fortawesome/free-solid-svg-icons';
-import {DataService} from "../../services/data.service";
+import {Component, EventEmitter, Output} from '@angular/core';
+import {faComments, faThumbsUp, faUserGraduate, faExchangeAlt} from '@fortawesome/free-solid-svg-icons';
+import {DataService} from '../../services/data.service';
 
 @Component({
   selector: 'app-main-info',
@@ -13,6 +13,15 @@ import {DataService} from "../../services/data.service";
  */
 export class MainInfoComponent {
 
+  /**
+   * Default: main view is right
+   */
+  layoutIsMainLeft = false;
+  /**
+   * Icon: faExchange
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faExchangeAlt = faExchangeAlt;
   /**
    * Icon: faThumbsUp
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
@@ -35,4 +44,11 @@ export class MainInfoComponent {
 
   }
 
+  /**
+   * Flips sidebar and main view
+   */
+  flipLayout(): void {
+    this.layoutIsMainLeft = !this.layoutIsMainLeft;
+    this.dataService.flipLayoutEmitter.emit(this.layoutIsMainLeft);
+  }
 }

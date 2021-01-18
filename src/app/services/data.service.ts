@@ -51,7 +51,15 @@ export class DataService {
     'source-arrow-color',
   ];
 
+  /**
+   * Toggle redraw of a chart
+   */
   chartRedrawEmitter = new EventEmitter<boolean>();
+
+  /**
+   * Toggle flipping the layout
+   */
+  flipLayoutEmitter = new EventEmitter<boolean>();
 
   constructor() {
   }
