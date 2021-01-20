@@ -1,10 +1,16 @@
 import {Injectable} from '@angular/core';
 import {NeNetwork} from '../models/ne-network';
 import * as cytoscape from 'cytoscape';
-import {CytoscapeOptions, EventObject} from 'cytoscape';
+import {EventObject} from 'cytoscape';
 import {NeNode} from '../models/ne-node';
 import {NeEdge} from '../models/ne-edge';
 import {NeSelection} from '../models/ne-selection';
+
+import 'cytoscape-cx2js';
+import {CxToJs, CyNetworkUtils} from 'cytoscape-cx2js';
+import {UtilityService} from './utility.service';
+import {DataService} from "./data.service";
+import {NeStyle} from "../models/ne-style";
 
 @Injectable({
   providedIn: 'root'
@@ -22,18 +28,15 @@ export class GraphService {
     nodes: [],
     edges: []
   };
-  /**
-   * Core belonging to the selected network
-   * @private
-   */
-  private core: cytoscape.Core;
+
   /**
    * Duration of highlighting elements in milliseconds
    * @private
    */
   private flashDuration = 2000;
 
-  constructor() {
+  constructor(private utilityService: UtilityService,
+              private dataService: DataService) {
   }
 
   /**
@@ -41,28 +44,54 @@ export class GraphService {
    * @param container DOM element where to render the graph
    * @param network network to be rendered
    */
-  render(container: HTMLElement, network: NeNetwork): cytoscape.Core {
+  render(container: HTMLElement, network: NeNetwork): void {
     this.unsubscribeFromCoreEvents();
-    this.core = cytoscape(this.interpretAsCytoscape(container, network));
-    this.core.elements('.custom_highlight_color').toggleClass('custom_highlight_color', false);
+    network.core = this.convertCxToJs(network.cx, container);
+    network.core = this.addUtilitySelectors(network.core);
     this.subscribeToCoreEvents();
-    return this.core;
   }
 
   /**
-   * Makes a network and the chosen container a valid input for the cytoscape constructor
-   * @param container DOM element where to render the graph
-   * @param network selected network
+   * Using external library to build the cytoscape core by converting the input JSON
+   * @param json CX file
+   * @param canvas HTML target
    */
-  interpretAsCytoscape(container: HTMLElement, network: NeNetwork): CytoscapeOptions {
-    return {
-      container,
-      elements: network.elements,
-      style: network.style,
-      layout: {
-        name: 'preset'
-      },
+  convertCxToJs(json: any[], canvas: HTMLElement): cytoscape.Core {
+
+    if (!json || !canvas) {
+      return null;
+    }
+
+    const startTime = new Date().getTime();
+    const utils = new CyNetworkUtils();
+    const niceCX = utils.rawCXtoNiceCX(json);
+    const conversion = new CxToJs(utils);
+
+    const attributeNameMap = {};
+    const elements = conversion.cyElementsFromNiceCX(niceCX, attributeNameMap);
+    const style = conversion.cyStyleFromNiceCX(niceCX, attributeNameMap);
+    const cyBackgroundColor = conversion.cyBackgroundColorFromNiceCX(niceCX);
+    const layout = conversion.getDefaultLayout();
+    const zoom = conversion.cyZoomFromNiceCX(niceCX);
+    const pan = conversion.cyPanFromNiceCX(niceCX);
+
+    canvas.style.backgroundColor = cyBackgroundColor;
+
+    const networkConfig: cytoscape.CytoscapeOptions = {
+      container: canvas,
+      style,
+      elements,
+      layout,
+      zoom,
+      pan
     };
+
+    const endTime = new Date().getTime();
+    console.log('Time of conversion in ms: ' + Number(endTime - startTime));
+
+    const core = cytoscape(networkConfig);
+    core.fit();
+    return core;
   }
 
   /**
@@ -72,7 +101,8 @@ export class GraphService {
    */
   highlightBySelector(selector: string): void {
     if (selector) {
-      this.core.elements(selector).flashClass('custom_highlight_color', this.flashDuration);
+      console.log(selector);
+      this.dataService.networkSelected.core.elements(selector).flashClass('custom_highlight_color', this.flashDuration);
     }
   }
 
@@ -83,7 +113,8 @@ export class GraphService {
    */
   highlightByElementId(id: string): void {
     if (id) {
-      this.core.getElementById(id).flashClass('custom_highlight_color', this.flashDuration);
+      console.log(id);
+      this.dataService.networkSelected.core.getElementById(id).flashClass('custom_highlight_color', this.flashDuration);
     }
   }
 
@@ -94,7 +125,7 @@ export class GraphService {
    * @param duration highlight duration in milliseconds
    */
   setHighlightColorAndDuration(hexColorNodes: string, hexColorEdges: string, duration: number): void {
-    const styleJson = this.core.style().json();
+    const styleJson = this.dataService.networkSelected.core.style().json();
     for (const style of styleJson) {
       if (style.selector === '.custom_highlight_color') {
         style.style = {
@@ -107,7 +138,7 @@ export class GraphService {
     }
 
     this.flashDuration = duration;
-    this.core.style(styleJson);
+    this.dataService.networkSelected.core.style(styleJson);
 
   }
 
@@ -116,14 +147,14 @@ export class GraphService {
    * @param show current status of labels
    */
   toggleLabels(show: boolean): void {
-    this.core.elements().toggleClass('hide_label', !show);
+    this.dataService.networkSelected.core.elements().toggleClass('hide_label', !show);
   }
 
   /**
    * Fits the graph to the screen width
    */
   fitGraph(): void {
-    this.core.fit();
+    this.dataService.networkSelected.core.fit();
   }
 
   /**
@@ -131,9 +162,9 @@ export class GraphService {
    * @private
    */
   private subscribeToCoreEvents(): void {
-    if (this.core) {
-      this.core.ready(() => {
-        this.core.on('select unselect', event => {
+    if (this.dataService.networkSelected.core) {
+      this.dataService.networkSelected.core.ready(() => {
+        this.dataService.networkSelected.core.on('select unselect', event => {
           this.handleEvent(event);
         });
       });
@@ -148,6 +179,7 @@ export class GraphService {
   private handleEvent(event: EventObject): void {
     switch (event.type as string) {
       case 'select':
+        console.log(event.target);
         if (event.target.isNode()) {
           this.selectedElements.nodes.push(event.target.data() as NeNode);
         } else if (event.target.isEdge()) {
@@ -155,6 +187,7 @@ export class GraphService {
         }
         break;
       case 'unselect':
+        console.log(event.target);
         if (event.target.isNode()) {
           this.selectedElements.nodes = this.selectedElements.nodes.filter(x => x.id !== event.target.data().id);
         } else if (event.target.isEdge()) {
@@ -162,6 +195,7 @@ export class GraphService {
         }
         break;
     }
+    console.log(this.selectedElements);
   }
 
   /**
@@ -169,9 +203,47 @@ export class GraphService {
    * @private
    */
   private unsubscribeFromCoreEvents(): void {
-    if (this.core) {
-      this.core.removeListener('click');
+    // if (this.core) {
+    //   this.core.removeListener('click');
+    // }
+  }
+
+
+  private addUtilitySelectors(core: cytoscape.Core): cytoscape.Core {
+
+    const styleJson: NeStyle[] = core.style().json();
+
+    for (const s of styleJson) {
+      s.priority = UtilityService.utilFindPriorityBySelector(s.selector);
     }
+
+    const styleHighlight: NeStyle = {
+      selector: '.custom_highlight_color',
+      style: {
+        'background-color': '#ff0000',
+        'line-color': '#ff0000',
+        'target-arrow-color': '#ff0000',
+        'source-arrow-color': '#ff0000'
+      },
+      priority: 4
+    };
+
+    const styleLabel: NeStyle = {
+      selector: '.hide_label',
+      style: {
+        label: ''
+      },
+      priority: 4
+    };
+
+    const orderedStyle: any[] = UtilityService
+      .utilOrderStylesByPriority(styleJson.concat([styleHighlight].concat([styleLabel])));
+
+    core.style(orderedStyle);
+    core.elements().addClass('custom_highlight_color hide_label');
+    core.elements().toggleClass('custom_highlight_color', false);
+    core.elements().toggleClass('hide_label', (core.elements('node').length > 300));
+    return core;
   }
 
 }

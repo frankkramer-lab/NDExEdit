@@ -16,6 +16,17 @@ export interface NeNetwork {
   id?: number;
 
   /**
+   * Contains the original NDEx data as JSON.
+   * Essential for conversion by library
+   */
+  cx: any[];
+
+  /**
+   * Core object which can be rendered
+   */
+  core: cytoscape.Core;
+
+  /**
    * List of nodes and edges
    */
   elements: ElementDefinition[];
@@ -29,11 +40,6 @@ export interface NeNetwork {
    * Information about this network
    */
   networkInformation?: NeNetworkInformation;
-
-  /**
-   * Core object which can be rendered
-   */
-  graph?: cytoscape.Core;
 
   /**
    * List of all available attributes
@@ -64,5 +70,4 @@ export interface NeNetwork {
    * Indicates if the labels are visible or not
    */
   showLabels?: boolean;
-
 }

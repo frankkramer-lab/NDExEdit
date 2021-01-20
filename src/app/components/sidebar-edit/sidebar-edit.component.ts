@@ -92,11 +92,11 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   /**
    * Default color for highlighting a lost node
    */
-  highlightNodes = '';
+  highlightNodes = '#ff0000';
   /**
    * Default color for highlighting a lost edge
    */
-  highlightEdges = '';
+  highlightEdges = '#ff0000';
   /**
    * Default duration for highlight a lost element, in milliseconds
    */
@@ -147,7 +147,6 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
       const networkId = params.get('id');
       if (networkId) {
         dataService.selectNetwork(Number(networkId));
-        this.initColorHighlighting();
       }
     });
 
@@ -310,17 +309,4 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     const styleIndex = this.dataService.networkSelected.style.findIndex(x => x.selector === '.custom_highlight_color');
     this.dataService.networkSelected.style[styleIndex].style = colorStyle;
   }
-
-  /**
-   * If there is network information for color highlighting this information is used
-   * @private
-   */
-  private initColorHighlighting(): void {
-    const colorStyle = this.dataService.networkSelected.style.find(x => x.selector === '.custom_highlight_color');
-    if (colorStyle) {
-      this.highlightNodes = colorStyle.style['background-color'];
-      this.highlightEdges = colorStyle.style['line-color'];
-    }
-  }
-
 }

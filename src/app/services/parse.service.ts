@@ -166,6 +166,7 @@ export class ParseService {
    * @param globalStyle target style which is used to render the graph
    */
   private static addStyles(parsedStyles: NeStyleComponent[], globalStyle: NeStyle[]): void {
+    console.log(parsedStyles, globalStyle);
     outerLoop: for (const ps of parsedStyles) {
 
       if (ps) {
@@ -471,14 +472,6 @@ export class ParseService {
     });
 
     globalStyle.push({
-      selector: '.text-wrap',
-      style: {
-        'text-wrap': 'wrap',
-      },
-      priority: 4
-    });
-
-    globalStyle.push({
       selector: '.hide_label',
       style: {
         label: '',
@@ -691,6 +684,8 @@ export class ParseService {
 
     return {
       id: currentId,
+      cx: filedata,
+      core: null,
       networkInformation,
       elements: cyParsedData,
       style: globalStyle,
@@ -706,49 +701,6 @@ export class ParseService {
       showLabels: nodeCount < 300 // initially display labels, if less than x nodes
     };
   }
-
-  convertByFiles(): Promise<NeNetwork> {
-    let style;
-    let elements;
-    let layout;
-
-    return this.http.get('/assets/mocks/style.json')
-      .toPromise()
-      .then((dataStyle: any[]) => {
-        style = dataStyle;
-
-        return this.http.get('/assets/mocks/elements.json')
-          .toPromise()
-          .then((dataElements: any[]) => {
-            elements = dataElements;
-
-            return this.http.get('/assets/mocks/layout.json')
-              .toPromise()
-              .then((dataLayout: any[]) => {
-                layout = dataLayout;
-
-                return {
-                  id: 25, // because needed for routing
-                  elements,
-                  style,
-                  networkInformation: {name: 'test'}
-                };
-
-              })
-              .catch(this.handleError);
-
-          })
-          .catch(this.handleError);
-
-      })
-      .catch(this.handleError);
-  }
-
-  handleError(e: Error): Promise<any> {
-    console.error(e);
-    return Promise.reject(e.message);
-  }
-
 
   /**
    * Method for parsing default nodes style data. See {@link NeStyleComponent|NeStyleComponent} for further info on format
