@@ -165,7 +165,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    */
   ngAfterViewInit(): void {
     this.isInitialized = true;
-    this.graphService.toggleLabels(this.dataService.networkSelected.showLabels);
+    // this.graphService.toggleLabels(!this.dataService.networkSelected.showLabels);
   }
 
   /**

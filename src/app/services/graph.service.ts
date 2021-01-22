@@ -6,11 +6,10 @@ import {NeNode} from '../models/ne-node';
 import {NeEdge} from '../models/ne-edge';
 import {NeSelection} from '../models/ne-selection';
 
-import 'cytoscape-cx2js';
-import {CxToJs, CyNetworkUtils} from 'cytoscape-cx2js';
 import {UtilityService} from './utility.service';
 import {DataService} from "./data.service";
 import {NeStyle} from "../models/ne-style";
+import {ParseService} from "./parse.service";
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +35,8 @@ export class GraphService {
   private flashDuration = 2000;
 
   constructor(private utilityService: UtilityService,
-              private dataService: DataService) {
+              private dataService: DataService,
+              private parseService: ParseService) {
   }
 
   /**
@@ -46,52 +46,15 @@ export class GraphService {
    */
   render(container: HTMLElement, network: NeNetwork): void {
     this.unsubscribeFromCoreEvents();
-    network.core = this.convertCxToJs(network.cx, container);
-    network.core = this.addUtilitySelectors(network.core);
-    this.subscribeToCoreEvents();
-  }
-
-  /**
-   * Using external library to build the cytoscape core by converting the input JSON
-   * @param json CX file
-   * @param canvas HTML target
-   */
-  convertCxToJs(json: any[], canvas: HTMLElement): cytoscape.Core {
-
-    if (!json || !canvas) {
-      return null;
+    // should be enough to return the core (?)
+    if (!network.core) {
+      network.core = this.parseService.convertCxToJs(network.cx, container);
+      network.core = this.addUtilitySelectors(network.core);
+      network.showLabels = network.core.nodes().length < 300;
     }
-
-    const startTime = new Date().getTime();
-    const utils = new CyNetworkUtils();
-    const niceCX = utils.rawCXtoNiceCX(json);
-    const conversion = new CxToJs(utils);
-
-    const attributeNameMap = {};
-    const elements = conversion.cyElementsFromNiceCX(niceCX, attributeNameMap);
-    const style = conversion.cyStyleFromNiceCX(niceCX, attributeNameMap);
-    const cyBackgroundColor = conversion.cyBackgroundColorFromNiceCX(niceCX);
-    const layout = conversion.getDefaultLayout();
-    const zoom = conversion.cyZoomFromNiceCX(niceCX);
-    const pan = conversion.cyPanFromNiceCX(niceCX);
-
-    canvas.style.backgroundColor = cyBackgroundColor;
-
-    const networkConfig: cytoscape.CytoscapeOptions = {
-      container: canvas,
-      style,
-      elements,
-      layout,
-      zoom,
-      pan
-    };
-
-    const endTime = new Date().getTime();
-    console.log('Time of conversion in ms: ' + Number(endTime - startTime));
-
-    const core = cytoscape(networkConfig);
-    core.fit();
-    return core;
+    network.showLabels = network.core.nodes().length < 300;
+    // console.log(network);
+    this.subscribeToCoreEvents();
   }
 
   /**
@@ -179,7 +142,6 @@ export class GraphService {
   private handleEvent(event: EventObject): void {
     switch (event.type as string) {
       case 'select':
-        console.log(event.target);
         if (event.target.isNode()) {
           this.selectedElements.nodes.push(event.target.data() as NeNode);
         } else if (event.target.isEdge()) {
@@ -187,7 +149,6 @@ export class GraphService {
         }
         break;
       case 'unselect':
-        console.log(event.target);
         if (event.target.isNode()) {
           this.selectedElements.nodes = this.selectedElements.nodes.filter(x => x.id !== event.target.data().id);
         } else if (event.target.isEdge()) {
@@ -195,7 +156,6 @@ export class GraphService {
         }
         break;
     }
-    console.log(this.selectedElements);
   }
 
   /**

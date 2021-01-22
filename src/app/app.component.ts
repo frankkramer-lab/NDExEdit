@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {ParseService} from './services/parse.service';
 import {DataService} from './services/data.service';
@@ -110,9 +110,9 @@ export class AppComponent {
     this.http.get(this.mockedFilepath.concat(filename))
       .toPromise()
       .then((data: any[]) => {
-        const parsedNetwork = this.parseService.convert(data, this.mockedFilepath + filename);
         this.dataService.networksDownloaded.push(data);
-        this.dataService.networksParsed.push(parsedNetwork);
+        const dummy = this.parseService.convert(data, filename);
+        this.dataService.networksParsed.push(dummy);
       })
       .catch(error => console.log(error));
   }

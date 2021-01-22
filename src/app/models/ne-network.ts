@@ -13,13 +13,18 @@ export interface NeNetwork {
   /**
    * The network's internal ID
    */
-  id?: number;
+  id: number;
 
   /**
    * Contains the original NDEx data as JSON.
    * Essential for conversion by library
    */
   cx: any[];
+
+  /**
+   * Name of original file
+   */
+  filename?: string;
 
   /**
    * Core object which can be rendered
@@ -29,12 +34,12 @@ export interface NeNetwork {
   /**
    * List of nodes and edges
    */
-  elements: ElementDefinition[];
+  elements?: ElementDefinition[];
 
   /**
    * Stylesheet
    */
-  style: Stylesheet[] | any[];
+  style?: Stylesheet[] | any[];
 
   /**
    * Information about this network
