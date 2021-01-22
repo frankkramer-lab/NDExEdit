@@ -7,9 +7,9 @@ import {NeEdge} from '../models/ne-edge';
 import {NeSelection} from '../models/ne-selection';
 
 import {UtilityService} from './utility.service';
-import {DataService} from "./data.service";
-import {NeStyle} from "../models/ne-style";
-import {ParseService} from "./parse.service";
+import {DataService} from './data.service';
+import {NeStyle} from '../models/ne-style';
+import {ParseService} from './parse.service';
 
 @Injectable({
   providedIn: 'root'
@@ -44,18 +44,22 @@ export class GraphService {
    * @param container DOM element where to render the graph
    * @param network network to be rendered
    */
-  render(container: HTMLElement, network: NeNetwork): NeNetwork {
+  render(container: HTMLElement, network: NeNetwork): Promise<NeNetwork> {
     this.unsubscribeFromCoreEvents();
 
-    const renderedNetwork = this.parseService.convert(
-      container,
-      network.cx,
-      network.filename ?? null,
-      network.networkInformation.uuid ?? null
-    );
+    return this.parseService.rebuildCoreForNetwork(network, container)
+      .then(rendered => {
+        const renderedNetwork = rendered;
+        renderedNetwork.core.fit();
+        this.subscribeToCoreEvents();
+        return renderedNetwork;
+      })
+      .catch(e => {
+        console.error(e);
+        this.subscribeToCoreEvents();
+        return network;
+      });
 
-    this.subscribeToCoreEvents();
-    return renderedNetwork;
   }
 
   /**

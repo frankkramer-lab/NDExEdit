@@ -1,4 +1,4 @@
-import {Injectable, ViewChild} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import * as cytoscape from 'cytoscape';
 import {NeStyle} from '../models/ne-style';
@@ -19,8 +19,8 @@ import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete'
 import {NeContinuousCollection} from '../models/ne-continuous-collection';
 import {NeColorGradient} from '../models/ne-color-gradient';
 import {UtilityService} from './utility.service';
-import {NeChart} from "../models/ne-chart";
-import {ChartDataSets} from "chart.js";
+import {NeChart} from '../models/ne-chart';
+import {ChartDataSets} from 'chart.js';
 
 import 'cytoscape-cx2js';
 import {CxToJs, CyNetworkUtils} from 'cytoscape-cx2js';
@@ -923,7 +923,7 @@ export class ParseService {
    * @param json CX file
    * @param canvas HTML target
    */
-  convertCxToJs(json: any[], canvas: HTMLElement): cytoscape.Core {
+  convertCxToJs(json: any[], canvas: HTMLElement): Promise<cytoscape.Core> {
 
     if (!json || !canvas) {
       console.log('Either data or canvas is missing');
@@ -959,9 +959,30 @@ export class ParseService {
     const endTime = new Date().getTime();
     console.log('Time of conversion in ms: ' + Number(endTime - startTime));
 
-    const core = cytoscape(networkConfig);
-    core.fit();
-    return core;
+    return new Promise<cytoscape.Core>(
+      (resolve, reject) => {
+        resolve(cytoscape(networkConfig));
+        reject(undefined);
+      }
+    );
+  }
+
+  /**
+   * Does not override any of the initially defined network properties.
+   * Simply recalculates the core for this network, ID is the same as before
+   * @param network Network to be recalculated
+   * @param container corresponding canvas HTML Element
+   */
+  rebuildCoreForNetwork(network: NeNetwork, container: HTMLElement): Promise<NeNetwork> {
+    return this.convertCxToJs(network.cx, container)
+      .then(core => {
+        network.core = core;
+        return network;
+      })
+      .catch(e => {
+        console.error(e);
+        return network;
+      });
   }
 
   /**
@@ -971,8 +992,9 @@ export class ParseService {
    * @param filedata data of the .cx file
    * @param filename name of original file
    * @param uuid optionally give the uuid for copy-to-clipboard-feature
+   * @param networkId id for this network
    */
-  convert(container: HTMLElement, filedata: any[], filename: string, uuid: string = null): NeNetwork {
+  convert(container: HTMLElement, filedata: any[], filename: string, uuid: string = null, networkId: number): NeNetwork {
     let networkAttributeData;
 
     filedata.forEach(obj => {
@@ -1011,15 +1033,21 @@ export class ParseService {
       }
     }
 
-    const core = this.convertCxToJs(filedata, container);
-
     const currentId = this.id;
     this.id++;
+
+    let core = null;
+    if (container) {
+      this.convertCxToJs(filedata, container)
+        .then(receivedCore => core = receivedCore)
+        .catch(e => console.error(e));
+    }
+
     return {
       id: currentId,
       cx: filedata,
       filename,
-      core,
+      core, // initially the core is null => building core only if it is to be rendered
       networkInformation,
       showLabels: false // override as soon as core is available
     };

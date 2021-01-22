@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {
   faClone,
   faCloudDownloadAlt,
@@ -36,6 +36,7 @@ export class SidebarManageComponent {
     private parseService: ParseService,
   ) {
   }
+
   /**
    * Icon: faCloudDownloadAlt
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
@@ -127,9 +128,14 @@ export class SidebarManageComponent {
    * Current file extension
    */
   invalidExtension: string;
-
+  /**
+   * Default canvas
+   */
   @ViewChild('hidden') defaultCanvas: ElementRef;
-
+  /**
+   * Counter for network id
+   */
+  networkId = 0;
   /**
    * Factor to display bytes as megabytes
    *
@@ -422,9 +428,12 @@ export class SidebarManageComponent {
       .then(data => {
         this.dataService.networksDownloaded.push(JSON.parse(data));
         this.dataService.networksParsed.push(this.parseService.convert(
-          this.defaultCanvas.nativeElement,
+          null,
           JSON.parse(data),
-          UtilityService.utilCleanString(this.fileToUpload.name)));
+          UtilityService.utilCleanString(this.fileToUpload.name),
+          null, // assuming a local file has no UUID
+          this.networkId));
+        this.networkId++;
         this.loadingFile = false;
 
       })
@@ -508,10 +517,12 @@ export class SidebarManageComponent {
             }
             this.dataService.networksDownloaded.push(data);
             this.dataService.networksParsed.push(this.parseService.convert(
-              this.defaultCanvas.nativeElement,
+              null,
               data,
               UtilityService.utilCleanString(networkName),
-              uuid ?? null));
+              uuid ?? null,
+              this.networkId));
+            this.networkId++;
             this.loadingHttp = false;
 
           })
