@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {NeNetwork} from '../models/ne-network';
-import * as cytoscape from 'cytoscape';
 import {EventObject} from 'cytoscape';
 import {NeNode} from '../models/ne-node';
 import {NeEdge} from '../models/ne-edge';
@@ -8,7 +7,6 @@ import {NeSelection} from '../models/ne-selection';
 
 import {UtilityService} from './utility.service';
 import {DataService} from './data.service';
-import {NeStyle} from '../models/ne-style';
 import {ParseService} from './parse.service';
 
 @Injectable({
@@ -51,6 +49,7 @@ export class GraphService {
       .then(rendered => {
         const renderedNetwork = rendered;
         renderedNetwork.core.fit();
+        renderedNetwork.showLabels = this.utilityService.utilShowLabels(renderedNetwork.core);
         this.subscribeToCoreEvents();
         return renderedNetwork;
       })
@@ -168,47 +167,9 @@ export class GraphService {
    * @private
    */
   private unsubscribeFromCoreEvents(): void {
-    // if (this.core) {
-    //   this.core.removeListener('click');
-    // }
-  }
-
-
-  private addUtilitySelectors(core: cytoscape.Core): cytoscape.Core {
-
-    const styleJson: NeStyle[] = core.style().json();
-
-    for (const s of styleJson) {
-      s.priority = UtilityService.utilFindPriorityBySelector(s.selector);
+    if (this.dataService.networkSelected.core) {
+      this.dataService.networkSelected.core.removeListener('click');
     }
-
-    const styleHighlight: NeStyle = {
-      selector: '.custom_highlight_color',
-      style: {
-        'background-color': '#ff0000',
-        'line-color': '#ff0000',
-        'target-arrow-color': '#ff0000',
-        'source-arrow-color': '#ff0000'
-      },
-      priority: 4
-    };
-
-    const styleLabel: NeStyle = {
-      selector: '.hide_label',
-      style: {
-        label: ''
-      },
-      priority: 4
-    };
-
-    const orderedStyle: any[] = UtilityService
-      .utilOrderStylesByPriority(styleJson.concat([styleHighlight].concat([styleLabel])));
-
-    core.style(orderedStyle);
-    core.elements().addClass('custom_highlight_color hide_label');
-    core.elements().toggleClass('custom_highlight_color', false);
-    core.elements().toggleClass('hide_label', (core.elements('node').length > 300));
-    return core;
   }
 
 }

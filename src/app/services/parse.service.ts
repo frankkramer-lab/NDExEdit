@@ -2,21 +2,8 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import * as cytoscape from 'cytoscape';
 import {NeStyle} from '../models/ne-style';
-import {NeNode} from '../models/ne-node';
-import {NeElementAttribute} from '../models/ne-element-attribute';
-import {NeEdge} from '../models/ne-edge';
-import {NePosition} from '../models/ne-position';
-import {NeStyleComponent} from '../models/ne-style-component';
-import {NeMappingsDefinition} from '../models/ne-mappings-definition';
-import {NeMappingsCollection} from '../models/ne-mappings-collection';
-import {NeMappings} from '../models/ne-mappings';
 import {NeNetworkInformation} from '../models/ne-network-information';
 import {NeNetwork} from '../models/ne-network';
-import {NeElement} from '../models/ne-element';
-import {NeContinuousMap} from '../models/ne-continuous-map';
-import {NeGlobalMappings} from '../models/ne-global-mappings';
-import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete';
-import {NeContinuousCollection} from '../models/ne-continuous-collection';
 import {NeColorGradient} from '../models/ne-color-gradient';
 import {UtilityService} from './utility.service';
 import {NeChart} from '../models/ne-chart';
@@ -41,625 +28,6 @@ export class ParseService {
   private id = 0;
 
   constructor(public http: HttpClient, private utilityService: UtilityService) {
-  }
-
-  /**
-   * Method for parsing node data. See {@link NeNode|NeNode} for further info on format
-   * @param readData input data
-   */
-  private static parseNodeData(readData: any): NeNode[] {
-    const nodeData: NeNode[] = [];
-
-    for (const entry of readData) {
-      const obj: NeNode = {
-        id: String(entry['@id']),
-        group: 'nodes',
-        name: entry.n,
-        reference: entry.r || null,
-        attributes: null,
-        classes: [],
-      };
-      nodeData.push(obj);
-    }
-    return nodeData;
-  }
-
-  /**
-   * Method for parsing node attribute data. See {@link NeElementAttribute|NeElementAttribute} for further info on format
-   * @param readData input data
-   * @param nodeData raw node data
-   */
-  private static parseNodeAttributeData(readData: any, nodeData: any): NeElementAttribute[] {
-    const nodeAttributeData: NeElementAttribute[] = [];
-
-    for (const entry of readData) {
-      const obj: NeElementAttribute = {
-        reference: String(entry.po),
-        key: UtilityService.utilCleanString(entry.n),
-        keyHR: entry.n,
-        value: UtilityService.utilCleanString(entry.v),
-        valueHR: entry.v,
-        datatype: entry.d || null
-      };
-      nodeAttributeData.push(obj);
-    }
-    return nodeAttributeData;
-  }
-
-  /**
-   * Method for parsing edge data. See {@link NeEdge|NeEdge} for further info on format
-   * @param readData input data
-   */
-  private static parseEdgeData(readData: any): NeEdge[] {
-    const edgeData: NeEdge[] = [];
-
-    for (const entry of readData) {
-      const obj: NeEdge = {
-        id: 'e'.concat(String(entry['@id'])),
-        group: 'edges',
-        name: entry.i,
-        source: String(entry.s),
-        target: String(entry.t),
-        classes: [],
-        attributes: []
-      };
-
-      if (entry.i) {
-        obj.attributes.push({
-          reference: obj.id,
-          key: 'interaction',
-          keyHR: 'interaction',
-          value: UtilityService.utilCleanString(entry.i),
-          valueHR: entry.i,
-          datatype: 'string'
-        });
-      }
-      edgeData.push(obj);
-
-    }
-    return edgeData;
-  }
-
-  /**
-   * Method for parsing edge attribute data. See {@link NeElementAttribute|NeElementAttribute} for further info on format
-   * @param readData input data
-   * @param edgeData raw edge data
-   */
-  private static parseEdgeAttributeData(readData: any, edgeData: any): NeElementAttribute[] {
-    const edgeAttributeData: NeElementAttribute[] = [];
-
-    for (const entry of readData) {
-      const obj: NeElementAttribute = {
-        reference: 'e'.concat(String(entry.po)),
-        key: UtilityService.utilCleanString(entry.n),
-        keyHR: entry.n,
-        value: UtilityService.utilCleanString(entry.v),
-        valueHR: entry.v,
-        datatype: entry.d || null
-      };
-      edgeAttributeData.push(obj);
-    }
-
-    return edgeAttributeData;
-  }
-
-  /**
-   * Method for parsing layout data. See {@link NePosition|NePosition} for further info on format
-   * @param readData input data
-   */
-  private static parseLayoutData(readData: any): NePosition[] {
-    const layoutData: NePosition[] = [];
-
-    for (const entry of readData) {
-      const obj: NePosition = {
-        reference: String(entry.node),
-        x: entry.x,
-        y: entry.y
-      };
-      layoutData.push(obj);
-    }
-    return layoutData;
-  }
-
-  /**
-   * Method to consolidate the styling of the graph
-   * @param parsedStyles styles which need to be added to an existing selector within globalStyles
-   * or for which a new selector has to be created
-   * @param globalStyle target style which is used to render the graph
-   */
-  private static addStyles(parsedStyles: NeStyleComponent[], globalStyle: NeStyle[]): void {
-    outerLoop: for (const ps of parsedStyles) {
-
-      if (ps) {
-        let found = false;
-        for (const styleObj of globalStyle) {
-          if (ps && styleObj.selector === ps.selector) {
-            found = true;
-            styleObj.style[ps.cssKey] = ps.cssValue;
-            continue outerLoop;
-          }
-        }
-
-        if (!found) {
-          const tmp: NeStyle = {
-            selector: ps.selector,
-            style: {},
-            appliedTo: [],
-            priority: ps.priority
-          };
-          tmp.style[ps.cssKey] = ps.cssValue;
-          globalStyle.push(tmp);
-        }
-      }
-    }
-  }
-
-  /**
-   * Method for parsing default nodes style data. See {@link NeStyleComponent|NeStyleComponent} for further info on format
-   * @param readData input data
-   */
-  private parseStyleNodesDefault(readData: any): NeStyleComponent[] {
-    let styleNodesDefault: NeStyleComponent[] = [];
-    const properties: any[] = readData.properties;
-
-    let useSize = false;
-    let useWidth = false;
-    let useHeight = false;
-
-    if (properties) {
-
-      for (const propKey of Object.keys(properties)) {
-
-        if (propKey === 'NODE_SIZE' && properties[propKey] !== '35.0') {
-          useSize = true;
-        } else if (propKey === 'NODE_WIDTH' && properties[propKey] !== '75.0') {
-          useWidth = true;
-        } else if (propKey === 'NODE_HEIGHT' && properties[propKey] !== '35.0') {
-          useHeight = true;
-        }
-      }
-
-      for (const propKey of Object.keys(properties)) {
-
-        if (!useWidth
-          && !useHeight
-          && !useSize) {
-          // prefer rectangular nodes for default, as in cytoscape itself
-          useWidth = true;
-        }
-
-        if (!((propKey === 'NODE_WIDTH' && !useWidth)
-          || (propKey === 'NODE_HEIGHT' && !useHeight)
-          || (propKey === 'NODE_SIZE' && !useSize))) {
-
-          if (propKey === 'NODE_SIZE') {
-            const tmpWidth = {
-              key: 'NODE_WIDTH',
-              value: properties[propKey]
-            };
-            const tmpHeight = {
-              key: 'NODE_HEIGHT',
-              value: properties[propKey]
-            };
-            const lookupWidth = this.utilityService.lookup(tmpWidth);
-            const lookupHeight = this.utilityService.lookup(tmpHeight);
-
-            styleNodesDefault = styleNodesDefault.concat(lookupWidth);
-            styleNodesDefault = styleNodesDefault.concat(lookupHeight);
-
-          } else {
-
-            const tmp = {
-              key: propKey,
-              value: properties[propKey]
-            };
-
-            const lookup = this.utilityService.lookup(tmp);
-            styleNodesDefault = styleNodesDefault.concat(lookup);
-          }
-        }
-
-      }
-    }
-    const labelData: NeStyleComponent = {
-      selector: 'node',
-      cssKey: 'label',
-      cssValue: 'data(name)',
-      priority: 0
-    };
-
-    return styleNodesDefault.concat(labelData);
-  }
-
-
-  /**
-   * Method for parsing default edge style data. See {@link NeStyleComponent|NeStyleComponent} for further info on format
-   * @param readData input data
-   */
-  private parseStyleEdgesDefault(readData: any): NeStyleComponent[] {
-    let styleEdgesDefault: NeStyleComponent[] = [];
-    const properties: any[] = readData.properties;
-
-    if (properties) {
-      for (const propKey of Object.keys(properties)) {
-        const tmp = {
-          key: propKey,
-          value: properties[propKey]
-        };
-        const lookup = this.utilityService.lookup(tmp, 'edge');
-        styleEdgesDefault = styleEdgesDefault.concat(lookup);
-      }
-    }
-    return styleEdgesDefault;
-  }
-
-  /**
-   * Method for parsing style data for specific elements. See {@link NeStyleComponent|NeStyleComponent} for further info on format
-   * @param readData input data
-   * @param elementType can either be 'node' for {@link NeNode|NeNode} or 'edge' for {@link NeEdge|NeEdge}
-   */
-  private parseStyleElements(readData: any[], elementType: string): NeStyleComponent[] {
-    let style: NeStyleComponent[] = [];
-    for (const entry of readData) {
-      const properties: any[] = entry.properties;
-      if (properties) {
-        for (const propKey of Object.keys(properties)) {
-          const tmp = {
-            key: propKey,
-            value: properties[propKey]
-          };
-
-          const lookup = this.utilityService.lookup(tmp, '.'.concat(elementType.concat('_'.concat(entry.applies_to))));
-          style = style.concat(lookup);
-
-        }
-      }
-    }
-    return style;
-  }
-
-  /**
-   * Method for parsing mappings data for nodes or edges. See {@link NeMappingsDefinition|NeMappingsDefinition} for further info on format
-   * @param readData input data
-   * @param elementType can either reference {@link NeNode|nodes} or {@link NeEdge|edges}
-   * @param data elements where these mappings are applied
-   * @returns object containing discrete, continuous and passthrough mappings, if available.
-   * See {@link NeGlobalMappings|NeGlobalMappings} for details on format
-   */
-  private parseMappingsElementsDefault(
-    readData: any,
-    elementType: string,
-    data: NeElement[]
-  ): NeGlobalMappings {
-
-    let mappingsElementsDefault: NeMappingsDefinition[] = [];
-    let mappingsElementsSpecific: NeContinuousCollection[] = [];
-
-    if (readData.mappings) {
-
-      const mappings = readData.mappings;
-      const mapKeys = Object.keys(mappings);
-
-      for (const mapKey of mapKeys) {
-
-        const currentEntry: NeMappings = {
-          key: mapKey,
-          definition: readData.mappings[mapKey].definition,
-          type: readData.mappings[mapKey].type
-        };
-
-        switch (currentEntry.type) {
-          case 'DISCRETE':
-            mappingsElementsDefault = mappingsElementsDefault.concat(this.parseMappingDiscrete(currentEntry, elementType));
-            break;
-          case 'PASSTHROUGH':
-            // no specific handling
-            break;
-          case 'CONTINUOUS':
-            const continuous = this.parseMappingContinuous(currentEntry, elementType, data);
-            mappingsElementsSpecific = mappingsElementsSpecific.concat(continuous);
-            break;
-        }
-      }
-
-      return {
-        discrete: mappingsElementsDefault,
-        continuous: mappingsElementsSpecific
-      };
-    }
-
-    return {
-      discrete: [],
-      continuous: []
-    };
-  }
-
-  /**
-   * Parses a discrete mapping
-   *
-   * @param mapping the mapping in .cx format
-   * @param elementType can either be node or edge
-   * @private
-   */
-  private parseMappingDiscrete(mapping: NeMappings, elementType: string): NeMappingsDefinition[] {
-    const mappingsElementsDefault: NeMappingsDefinition[] = [];
-
-    const tmpObj: NeMappingsDefinition = {
-      col: null,
-      colHR: null,
-      is: null,
-      isHR: null,
-      selector: null,
-      cssKey: null,
-      cssValue: null,
-      priority: -1,
-      datatype: null,
-    };
-
-    const tmpCollection: NeMappingsCollection = {
-      cssKey: null,
-      tmpK: [],
-      tmpV: []
-    };
-
-    const lookupProperty = {
-      key: mapping.key,
-      value: null,
-    };
-
-    const definition = mapping.definition.replace(/,,/g, '%');
-    const commaSplit = definition.split(',');
-    let originalCol;
-
-    for (const cs of commaSplit) {
-
-      const equalSplit = cs.split('=');
-      switch (equalSplit[0]) {
-        case 'COL':
-          tmpObj.col = UtilityService.utilCleanString(equalSplit[1]);
-          originalCol = equalSplit[1];
-          break;
-        case 'T':
-          tmpObj.datatype = equalSplit[1];
-          break;
-        case 'K':
-          tmpCollection.tmpK.splice(Number(equalSplit[1]), 0, equalSplit[2]);
-          break;
-        case 'V':
-          tmpCollection.tmpV.splice(Number(equalSplit[1]), 0, equalSplit[2]);
-          break;
-      }
-    }
-
-    for (const k of tmpCollection.tmpK) {
-      lookupProperty.value = tmpCollection.tmpV[tmpCollection.tmpK.indexOf(k)];
-      tmpObj.is = UtilityService.utilCleanString(k);
-
-      if (tmpObj.col === 'sharedinteraction') {
-        tmpObj.col = 'interaction';
-        originalCol = 'interaction';
-      }
-
-      const tmpSelector = '.'.concat(elementType.concat('_'.concat(tmpObj.col.concat('_'.concat(tmpObj.is)))));
-      const priority = UtilityService.utilFindPriorityBySelector(tmpSelector);
-      tmpObj.selector = tmpSelector;
-
-      let lookup: NeStyleComponent[] = [];
-
-      if (lookupProperty.key === 'NODE_SIZE') {
-        const lookupWidth = this.utilityService.lookup({
-          key: 'NODE_WIDTH',
-          value: lookupProperty.value
-        }, tmpSelector);
-        const lookupHeight = this.utilityService.lookup({
-          key: 'NODE_HEIGHT',
-          value: lookupProperty.value
-        }, tmpSelector);
-
-        for (const lw of lookupWidth) {
-          lookup.push(lw);
-        }
-        for (const lh of lookupHeight) {
-          lookup.push(lh);
-        }
-      } else if (lookupProperty.key === 'NODE_LABEL_POSITION') {
-        const tmpProperty = {
-          key: lookupProperty.key,
-          value: lookupProperty.value.replace(/%/g, ',')
-        };
-        lookup = this.utilityService.lookup(tmpProperty, tmpSelector);
-      } else {
-        lookup = this.utilityService.lookup(lookupProperty, tmpSelector);
-      }
-      for (const lookupStyle of lookup) {
-
-        tmpObj.cssKey = lookupStyle.cssKey;
-        tmpObj.cssValue = lookupStyle.cssValue;
-
-        if (lookupStyle.selector === tmpObj.selector && !mappingsElementsDefault.includes(tmpObj)) {
-
-          const element: NeMappingsDefinition = {
-            selector: tmpObj.selector,
-            cssValue: tmpObj.cssValue,
-            cssKey: tmpObj.cssKey,
-            is: tmpObj.is,
-            isHR: k,
-            col: tmpObj.col,
-            colHR: originalCol,
-            priority,
-            datatype: tmpObj.datatype
-          };
-
-          mappingsElementsDefault.push(element);
-        }
-      }
-    }
-    return mappingsElementsDefault;
-  }
-
-  /**
-   * Parses a continuous mapping
-   *
-   * @param mapping mapping in .cx format
-   * @param elementType can either be node or edge
-   * @param data Collection of either nodes or edges which need to be mapped by this mapping
-   * @private
-   */
-  private parseMappingContinuous(
-    mapping: NeMappings,
-    elementType: string,
-    data: NeElement[]
-  ): NeContinuousCollection {
-
-    const lookup: string[] = this.utilityService.lookupKey([mapping.key]);
-    const commaSplit = mapping.definition.split(',');
-
-    const continuousCollection: NeContinuousCollection = {
-      chart: null,
-      values: [],
-      displayChart: true,
-      colorGradient: [],
-      title: [],
-      selector: ''
-    };
-
-    let datatype;
-    let attribute;
-    let displayChart = true;
-    const thresholds = [];
-    const lowers = [];
-    const equals = [];
-    const greaters = [];
-
-    for (const cs of commaSplit) {
-
-      const equalSplit = cs.split('=');
-      switch (equalSplit[0]) {
-        case 'COL':
-          attribute = equalSplit[1];
-          break;
-        case 'T':
-          datatype = equalSplit[1];
-          break;
-        case 'L':
-          lowers.splice(Number(equalSplit[1]), 0, equalSplit[2]);
-          break;
-        case 'E':
-          equals.splice(Number(equalSplit[1]), 0, equalSplit[2]);
-          break;
-        case 'G':
-          greaters.splice(Number(equalSplit[1]), 0, equalSplit[2]);
-          break;
-        case 'OV':
-          thresholds.splice(Number(equalSplit[1]), 0, equalSplit[2]);
-          break;
-      }
-    }
-    for (let th of thresholds) {
-      if (th.includes('E')) {
-        const eSplit = th.split('E');
-        th = eSplit[0] * Math.pow(10, Number(eSplit[1]));
-      }
-    }
-
-    const buildClasses: NeStyleComponent[] = [];
-    outer: for (const element of data) {
-
-      for (const elementAttribute of element.attributes) {
-
-        if (elementAttribute.key === UtilityService.utilCleanString(attribute)) {
-
-          let intervalPointer = -1;
-
-          const finalSelector = '.'.concat(elementType.concat('_'.concat(element.id)));
-          continuousCollection.selector = finalSelector;
-          const priority = UtilityService.utilFindPriorityBySelector(finalSelector);
-
-          for (let i = 0; i < (thresholds.length); i++) {
-
-            if (Number(elementAttribute.valueHR) < Number(thresholds[i])) {
-
-              intervalPointer = i;
-              let cssValue = '';
-
-              if (intervalPointer === 0) {
-                cssValue = lowers[intervalPointer];
-                if (cssValue.startsWith('#') && displayChart) {
-                  displayChart = false;
-                }
-              } else {
-                const calculationMap: NeContinuousMap = {
-                  inputValue: elementAttribute.valueHR,
-                  lower: greaters[intervalPointer - 1],
-                  lowerThreshold: thresholds[intervalPointer - 1],
-                  greater: lowers[intervalPointer],
-                  greaterThreshold: thresholds[intervalPointer],
-                };
-                cssValue = UtilityService.utilCalculateRelativeValue(calculationMap);
-                if (cssValue.startsWith('#') && displayChart) {
-                  displayChart = false;
-
-                }
-              }
-
-              for (const lu of lookup) {
-
-                buildClasses.push({
-                  selector: finalSelector,
-                  cssKey: lu,
-                  cssValue,
-                  priority
-                });
-
-              }
-              continue outer;
-            } else if (Number(elementAttribute.valueHR) === Number(thresholds[i])) {
-
-              for (const lu of lookup) {
-                buildClasses.push({
-                  selector: finalSelector,
-                  cssKey: lu,
-                  cssValue: equals[i],
-                  priority
-                });
-                if (equals[i].startsWith('#') && displayChart) {
-                  displayChart = false;
-
-                }
-
-              }
-              continue outer;
-            }
-          }
-
-          for (const lu of lookup) {
-            buildClasses.push({
-              selector: finalSelector,
-              cssKey: lu,
-              cssValue: greaters[greaters.length - 1],
-              priority
-            });
-            if (greaters[greaters.length - 1].startsWith('#') && displayChart) {
-              displayChart = false;
-
-            }
-          }
-          continue outer;
-        }
-      }
-    }
-
-    const gradientObject = this.buildColorGradient(thresholds, lowers, equals, greaters, lookup, attribute);
-    const chartObject = this.buildChartData(thresholds, lowers, equals, greaters, lookup, attribute);
-
-    continuousCollection.values = buildClasses;
-    continuousCollection.chart = chartObject;
-    continuousCollection.colorGradient = gradientObject;
-    continuousCollection.chartValid = (displayChart && (chartObject !== null));
-    continuousCollection.gradientValid = (!displayChart && (gradientObject.length > 0));
-    continuousCollection.displayChart = displayChart;
-    continuousCollection.title = [lookup, attribute];
-    return continuousCollection;
   }
 
   /**
@@ -793,132 +161,6 @@ export class ParseService {
   }
 
   /**
-   * Groups a list of mappings by their selectors
-   * @param mappings list of mappings which all use the same selectors
-   * @private
-   */
-  private groupDiscreteMappings(mappings: NeMappingsDefinition[]): NeGroupedMappingsDiscrete[] {
-
-    const groupedMappings: NeGroupedMappingsDiscrete[] = [];
-
-    if (!mappings) {
-      return groupedMappings;
-    }
-
-    outer: for (const map of mappings) {
-      for (const gm of groupedMappings) {
-        if (gm.classifier === map.colHR) {
-          continue outer;
-        }
-      }
-      groupedMappings.push({
-        classifier: map.colHR,
-        values: [],
-        styleMap: [],
-        th: [],
-        selectors: [],
-        datatype: map.datatype
-      });
-    }
-
-    for (const map of mappings) {
-      for (const gm of groupedMappings) {
-
-        if (gm.classifier === map.colHR) {
-          let found = false;
-          for (const style of gm.styleMap) {
-            if (style.cssKey === map.cssKey) {
-              found = true;
-              if (!style.selectors.includes(map.selector)) {
-                style.cssValues.push(map.cssValue);
-                style.selectors.push(map.selector);
-                if (!gm.selectors.includes(map.selector)) {
-                  gm.selectors.push(map.selector);
-                }
-              }
-            }
-          }
-
-          if (!found) {
-            gm.th.push(map.cssKey);
-
-            if (!gm.selectors.includes(map.selector)) {
-              gm.selectors.push(map.selector);
-            }
-            gm.styleMap.push({
-              cssKey: map.cssKey,
-              cssValues: [map.cssValue],
-              selectors: [map.selector]
-            });
-          }
-
-          if (!gm.values.includes(map.isHR)) {
-            gm.values.push(map.isHR);
-          }
-        }
-      }
-    }
-
-    return groupedMappings;
-  }
-
-  /**
-   * Method specifically for determining arrows' colors on edges
-   *
-   * @param styleEdgesDefault edge styles needed to determine which color arrows need to be
-   * @private
-   */
-  private evalEdgeStyleDependencies(styleEdgesDefault: any): boolean {
-    if (styleEdgesDefault.dependencies) {
-      return styleEdgesDefault.dependencies.arrowColorMatchesEdge || false;
-    }
-  }
-
-  /**
-   * Adds the arrow color to the graph
-   *
-   * @param parsedStyles List of existing styles within this network
-   * @param arrowColorAsEdgeColor boolean if the edge color is also applied to the arrow
-   * @private
-   */
-  private addArrowColor(parsedStyles: NeStyleComponent[], arrowColorAsEdgeColor: boolean): NeStyleComponent[] {
-    for (const style of parsedStyles) {
-      if (style && style.cssKey === 'line-color' && arrowColorAsEdgeColor) {
-        const objTarget: NeStyleComponent = {
-          selector: style.selector,
-          cssKey: 'target-arrow-color',
-          cssValue: style.cssValue,
-          priority: style.priority
-        };
-        parsedStyles.push(objTarget);
-        const objSource: NeStyleComponent = {
-          selector: style.selector,
-          cssKey: 'source-arrow-color',
-          cssValue: style.cssValue,
-          priority: style.priority
-        };
-        parsedStyles.push(objSource);
-      } else if (style && style.cssKey === 'line-color') {
-        const objTarget: NeStyleComponent = {
-          selector: style.selector,
-          cssKey: 'target-arrow-color',
-          cssValue: '#000000',
-          priority: style.priority
-        };
-        parsedStyles.push(objTarget);
-        const objSource: NeStyleComponent = {
-          selector: style.selector,
-          cssKey: 'source-arrow-color',
-          cssValue: '#000000',
-          priority: style.priority
-        };
-        parsedStyles.push(objSource);
-      }
-    }
-    return parsedStyles;
-  }
-
-  /**
    * Using external library to build the cytoscape core by converting the input JSON
    * @param json CX file
    * @param canvas HTML target
@@ -927,8 +169,6 @@ export class ParseService {
 
     if (!json || !canvas) {
       console.log('Either data or canvas is missing');
-      console.log('json' + json);
-      console.log('canvas' + canvas);
       return null;
     }
 
@@ -959,12 +199,58 @@ export class ParseService {
     const endTime = new Date().getTime();
     console.log('Time of conversion in ms: ' + Number(endTime - startTime));
 
+    let core = cytoscape(networkConfig);
+    core = this.addUtilitySelectors(core);
+
     return new Promise<cytoscape.Core>(
       (resolve, reject) => {
-        resolve(cytoscape(networkConfig));
+        resolve(core);
         reject(undefined);
       }
     );
+  }
+
+  /**
+   * Utility styles, such as custom_highlight_color
+   * and hide_label are added and toggled here to the current core
+   * @param core current network's core
+   * @private
+   */
+  private addUtilitySelectors(core: cytoscape.Core): cytoscape.Core {
+
+    const styleJson: NeStyle[] = core.style().json();
+
+    for (const s of styleJson) {
+      s.priority = UtilityService.utilFindPriorityBySelector(s.selector);
+    }
+
+    const styleHighlight: NeStyle = {
+      selector: '.custom_highlight_color',
+      style: {
+        'background-color': '#ff0000',
+        'line-color': '#ff0000',
+        'target-arrow-color': '#ff0000',
+        'source-arrow-color': '#ff0000'
+      },
+      priority: 4
+    };
+
+    const styleLabel: NeStyle = {
+      selector: '.hide_label',
+      style: {
+        label: ''
+      },
+      priority: 4
+    };
+
+    const orderedStyle: any[] = UtilityService
+      .utilOrderStylesByPriority(styleJson.concat([styleHighlight].concat([styleLabel])));
+
+    core.style(orderedStyle);
+    core.elements().addClass('custom_highlight_color hide_label');
+    core.elements().toggleClass('custom_highlight_color', false);
+    core.elements().toggleClass('hide_label', (!this.utilityService.utilShowLabels(core)));
+    return core;
   }
 
   /**
@@ -994,7 +280,7 @@ export class ParseService {
    * @param uuid optionally give the uuid for copy-to-clipboard-feature
    * @param networkId id for this network
    */
-  convert(container: HTMLElement, filedata: any[], filename: string, uuid: string = null, networkId: number): NeNetwork {
+  convert(container: HTMLElement, filedata: any[], filename: string, uuid: string = null, networkId: number): Promise<NeNetwork> {
     let networkAttributeData;
 
     filedata.forEach(obj => {
@@ -1035,22 +321,43 @@ export class ParseService {
 
     const currentId = this.id;
     this.id++;
-
     let core = null;
-    if (container) {
-      this.convertCxToJs(filedata, container)
-        .then(receivedCore => core = receivedCore)
-        .catch(e => console.error(e));
-    }
 
-    return {
-      id: currentId,
-      cx: filedata,
-      filename,
-      core, // initially the core is null => building core only if it is to be rendered
-      networkInformation,
-      showLabels: false // override as soon as core is available
-    };
+    if (container) {
+      return this.convertCxToJs(filedata, container)
+        .then(receivedCore => {
+          core = receivedCore;
+          return {
+            id: currentId,
+            cx: filedata,
+            filename,
+            core,
+            networkInformation,
+            showLabels: this.utilityService.utilShowLabels(core)
+          };
+        })
+        .catch(e => {
+          console.error(e);
+          return {
+            id: currentId,
+            cx: filedata,
+            filename,
+            core,
+            networkInformation,
+            showLabels: this.utilityService.utilShowLabels(core)
+          };
+        });
+    } else {
+      return new Promise<NeNetwork>((resolve) => {
+        resolve({
+          id: currentId,
+          cx: filedata,
+          filename,
+          core,
+          networkInformation
+        });
+      });
+    }
   }
 
 }

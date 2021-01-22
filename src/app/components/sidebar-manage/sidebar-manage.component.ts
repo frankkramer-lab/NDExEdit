@@ -427,14 +427,20 @@ export class SidebarManageComponent {
     this.fileToUpload.text()
       .then(data => {
         this.dataService.networksDownloaded.push(JSON.parse(data));
-        this.dataService.networksParsed.push(this.parseService.convert(
+        this.parseService.convert(
           null,
           JSON.parse(data),
           UtilityService.utilCleanString(this.fileToUpload.name),
           null, // assuming a local file has no UUID
-          this.networkId));
-        this.networkId++;
-        this.loadingFile = false;
+          this.networkId)
+          .then(convertedNetwork => {
+            this.dataService.networksParsed.push(convertedNetwork);
+            this.networkId++;
+          })
+          .catch(e => {
+            console.log(e);
+          })
+          .finally(() => this.loadingFile = false);
 
       })
       .catch(error => console.error(error));
@@ -516,14 +522,18 @@ export class SidebarManageComponent {
               }
             }
             this.dataService.networksDownloaded.push(data);
-            this.dataService.networksParsed.push(this.parseService.convert(
+            this.parseService.convert(
               null,
               data,
               UtilityService.utilCleanString(networkName),
               uuid ?? null,
-              this.networkId));
-            this.networkId++;
-            this.loadingHttp = false;
+              this.networkId)
+              .then(convertedNetwork => {
+                this.dataService.networksParsed.push(convertedNetwork);
+                this.networkId++;
+              })
+              .catch(e => console.error(e))
+              .finally(() => this.loadingHttp = false);
 
           })
           .catch(error => console.error(error));

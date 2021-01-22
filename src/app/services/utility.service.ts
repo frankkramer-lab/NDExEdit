@@ -401,4 +401,14 @@ export class UtilityService {
     }
     return '';
   }
+
+  /**
+   * Display labels, if there are less than 300 nodes within the network
+   * To avoid discrepancies in the code, this is the method to use,
+   * instead of random hacks anywhere else.
+   * @param core network
+   */
+  utilShowLabels(core: cytoscape.Core): boolean {
+    return core.nodes().length < 300;
+  }
 }
