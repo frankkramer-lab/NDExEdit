@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, ViewChild} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import * as cytoscape from 'cytoscape';
 import {NeStyle} from '../models/ne-style';
@@ -926,6 +926,9 @@ export class ParseService {
   convertCxToJs(json: any[], canvas: HTMLElement): cytoscape.Core {
 
     if (!json || !canvas) {
+      console.log('Either data or canvas is missing');
+      console.log('json' + json);
+      console.log('canvas' + canvas);
       return null;
     }
 
@@ -964,67 +967,19 @@ export class ParseService {
   /**
    * Parses a file from .cx to cytoscape.js interpretable data
    *
+   * @param container canvas rendering the network
    * @param filedata data of the .cx file
    * @param filename name of original file
    * @param uuid optionally give the uuid for copy-to-clipboard-feature
    */
-  convert(filedata: any[], filename: string, uuid: string = null): NeNetwork {
+  convert(container: HTMLElement, filedata: any[], filename: string, uuid: string = null): NeNetwork {
     let networkAttributeData;
-    // let nodeData;
-    // let nodeAttributeData;
-    // let edgeData;
-    // let edgeAttributeData;
-    // let layoutData;
-    //
-    // let styleNetwork;
-    // let styleNodesDefault;
-    // const styleNodes = [];
-    // let styleEdgesDefault;
-    // const styleEdges = [];
 
     filedata.forEach(obj => {
       if (obj.networkAttributes) {
         networkAttributeData = obj.networkAttributes;
       }
-      // if (obj.nodes) {
-      //   nodeData = obj.nodes;
-      // }
-      // if (obj.nodeAttributes) {
-      //   nodeAttributeData = obj.nodeAttributes;
-      // }
-      // if (obj.edges) {
-      //   edgeData = obj.edges;
-      // }
-      // if (obj.edgeAttributes) {
-      //   edgeAttributeData = obj.edgeAttributes;
-      // }
-      // if (obj.cartesianLayout) {
-      //   layoutData = obj.cartesianLayout;
-      // }
-      // if (obj.cyVisualProperties) {
-      //   obj.cyVisualProperties.forEach(prop => {
-      //     switch (prop.properties_of) {
-      //       case 'network':
-      //         styleNetwork = prop;
-      //         break;
-      //       case 'nodes:default':
-      //         styleNodesDefault = prop;
-      //         break;
-      //       case 'nodes':
-      //         styleNodes.push(prop);
-      //         break;
-      //       case 'edges:default':
-      //         styleEdgesDefault = prop;
-      //         break;
-      //       case 'edges':
-      //         styleEdges.push(prop);
-      //         break;
-      //     }
-      //   });
-      // }
     });
-
-    const networkAttributes = networkAttributeData;
 
     const networkInformation: NeNetworkInformation = {
       name: '',
@@ -1036,7 +991,7 @@ export class ParseService {
       uuid
     };
 
-    for (const na of networkAttributes) {
+    for (const na of networkAttributeData) {
       switch (na.n) {
         case 'name':
           networkInformation.name = na.v;
@@ -1056,399 +1011,7 @@ export class ParseService {
       }
     }
 
-    // const parsedNodeData = ParseService.parseNodeData(nodeData || []);
-    // const parsedNodeAttributeData = ParseService.parseNodeAttributeData(nodeAttributeData || [], nodeData || []);
-    // const parsedLayoutData = ParseService.parseLayoutData(layoutData || []);
-    //
-    // for (const node of parsedNodeData) {
-    //   node.attributes = parsedNodeAttributeData.filter(x => x.reference === node.id);
-    //   node.position = parsedLayoutData.find(x => x.reference === node.id);
-    // }
-    //
-    // const parsedEdgeData = ParseService.parseEdgeData(edgeData || []);
-    // const parsedEdgeAttributeData = ParseService.parseEdgeAttributeData(edgeAttributeData || [], edgeData || []);
-    // for (const edge of parsedEdgeData) {
-    //   edge.attributes = edge.attributes.concat(parsedEdgeAttributeData.filter(x => x.reference === edge.id));
-    // }
-    //
-    // const parsedStyleNodesDefault = this.parseStyleNodesDefault(styleNodesDefault || []);
-    // const parsedStyleNodes = this.parseStyleElements(styleNodes || [], 'node');
-    // const parsedStyleEdgesDefault = this.parseStyleEdgesDefault(styleEdgesDefault || []);
-    // const parsedStyleEdges = this.parseStyleElements(styleEdges || [], 'edge');
-    //
-    // const parsedMappingsNodesDefault = this.parseMappingsElementsDefault((styleNodesDefault || []),
-    //   'node', parsedNodeData);
-    //
-    // const parsedMappingsEdgesDefault = this.parseMappingsElementsDefault((styleEdgesDefault || []),
-    //   'edge', parsedEdgeData);
-    //
-    // const arrowColorAsEdgeColor: boolean = this.evalEdgeStyleDependencies(styleEdgesDefault || []);
-    //
-    // if (parsedMappingsNodesDefault.discrete) {
-    //   for (const node of parsedNodeData) {
-    //     for (const nodeAttribute of node.attributes) {
-    //       for (const nodeMapping of parsedMappingsNodesDefault.discrete) {
-    //         const classSelector = nodeMapping.selector.substring(1);
-    //
-    //         if (nodeAttribute.key === nodeMapping.col
-    //           && nodeAttribute.value === nodeMapping.is
-    //           && !node.classes.includes(classSelector)) {
-    //           node.classes.push(classSelector);
-    //         }
-    //       }
-    //     }
-    //     for (const nodeStyle of parsedStyleNodes) {
-    //       const id = nodeStyle.selector.substring(6);
-    //       const classSelector = nodeStyle.selector.substring(1);
-    //       if (node.id === id && !node.classes.includes(classSelector)) {
-    //         node.classes.push(classSelector);
-    //       }
-    //     }
-    //     node.classes.push('custom_highlight_color');
-    //     node.classes.push('hide_label');
-    //     node.classes.push('text-wrap');
-    //   }
-    // }
-    //
-    // if (parsedMappingsEdgesDefault.discrete) {
-    //   for (const edge of parsedEdgeData) {
-    //     for (const edgeAttribute of edge.attributes) {
-    //       for (const edgeMapping of parsedMappingsEdgesDefault.discrete) {
-    //         const classSelector = edgeMapping.selector.substring(1);
-    //
-    //         if (edgeAttribute.key === edgeMapping.col
-    //           && edgeAttribute.value === edgeMapping.is
-    //           && !edge.classes.includes(classSelector)) {
-    //           edge.classes.push(classSelector);
-    //         }
-    //       }
-    //     }
-    //
-    //     for (const edgeStyle of parsedStyleEdges) {
-    //       const id = edgeStyle.selector.substring(6);
-    //       const classSelector = edgeStyle.selector.substring(1);
-    //       if (edge.id === id && !edge.classes.includes(classSelector)) {
-    //         edge.classes.push(classSelector);
-    //       }
-    //     }
-    //     edge.classes.push('custom_highlight_color');
-    //     edge.classes.push('hide_label');
-    //     edge.classes.push('text-wrap');
-    //   }
-    // }
-    //
-    // if (parsedMappingsEdgesDefault.continuous) {
-    //   for (const edgeMapping of parsedMappingsEdgesDefault.continuous) {
-    //
-    //     for (const value of edgeMapping.values) {
-    //
-    //       const id: string = value.selector.substring(6);
-    //       const classSelector = value.selector.substring(1);
-    //       const edge: NeEdge = parsedEdgeData.find(x => String(x.id) === id);
-    //
-    //       if (edge && !edge.classes.includes(classSelector)) {
-    //         edge.classes.push(classSelector);
-    //       }
-    //
-    //     }
-    //   }
-    // }
-    //
-    // if (parsedMappingsNodesDefault.continuous) {
-    //   for (const nodeMapping of parsedMappingsNodesDefault.continuous) {
-    //     for (const value of nodeMapping.values) {
-    //
-    //       const id: string = value.selector.substring(6);
-    //       const classSelector = value.selector.substring(1);
-    //       const node: NeNode = parsedNodeData.find(x => String(x.id) === id);
-    //
-    //       if (node && !node.classes.includes(classSelector)) {
-    //         node.classes.push(classSelector);
-    //       }
-    //
-    //     }
-    //   }
-    // }
-    //
-    // const parsedData = parsedNodeData.concat(parsedEdgeData);
-    // let parsedStyles = parsedStyleNodesDefault.concat(
-    //   parsedStyleEdgesDefault,
-    //   parsedMappingsEdgesDefault.discrete,
-    //   parsedMappingsNodesDefault.discrete,
-    //   parsedStyleNodes,
-    //   parsedStyleEdges
-    // );
-    //
-    // if (parsedMappingsEdgesDefault.continuous) {
-    //   for (const edgeMapping of parsedMappingsEdgesDefault.continuous) {
-    //     parsedStyles = parsedStyles.concat(edgeMapping.values);
-    //   }
-    // }
-    //
-    // if (parsedMappingsNodesDefault.continuous) {
-    //   for (const nodeMapping of parsedMappingsNodesDefault.continuous) {
-    //     parsedStyles = parsedStyles.concat(nodeMapping.values);
-    //   }
-    // }
-    //
-    // parsedStyles = this.addArrowColor(parsedStyles, arrowColorAsEdgeColor);
-    // parsedStyles = UtilityService.utilOrderStyleComponentsByPriority(parsedStyles);
-    //
-    // const globalStyle: NeStyle[] = [];
-    // const styleConstants: any = {};
-    //
-    // if (arrowColorAsEdgeColor) {
-    //   styleConstants['arrow-as-edge'] = true;
-    // }
-    //
-    // ParseService.addStyles(parsedStyles, globalStyle);
-    // const cyParsedData: ElementDefinition[] = [];
-    //
-    // for (const pd of parsedData) {
-    //
-    //   const joinedClasses = pd.classes.join(' ');
-    //   const tmp: ElementDefinition = {
-    //     data: pd,
-    //     classes: joinedClasses,
-    //     position: pd.position,
-    //     group: pd.group as ElementGroup,
-    //   };
-    //   cyParsedData.push(tmp);
-    // }
-    //
-    // for (const s of globalStyle) {
-    //   for (const pd of parsedData) {
-    //     const className = s.selector.substring(1);
-    //     if ((pd.classes.includes(className))
-    //       || (pd.group === 'edges' && s.selector === 'edge')
-    //       || (pd.group === 'nodes' && s.selector === 'node')) {
-    //       s.appliedTo.push(pd);
-    //
-    //     }
-    //   }
-    // }
-    //
-    // globalStyle.push({
-    //   selector: '.custom_highlight_color',
-    //   style: {
-    //     'background-color': '#0000ff',
-    //     'line-color': '#0000ff',
-    //     'target-arrow-color': '#0000ff',
-    //     'source-arrow-color': '#0000ff'
-    //   },
-    //   priority: 4
-    // });
-    //
-    // globalStyle.push({
-    //   selector: '.hide_label',
-    //   style: {
-    //     label: '',
-    //   },
-    //   priority: 4
-    // });
-    //
-    // const currentId = this.id;
-    // this.id++;
-    //
-    // const aspectKeyValuesNodes: NeAspect[] = [];
-    // const aspectKeyValuesEdges: NeAspect[] = [];
-    //
-    // for (const element of parsedData) {
-    //   const elementType = element.group;
-    //
-    //   for (const attribute of element.attributes) {
-    //
-    //     const aspect: NeAspect = {
-    //       name: attribute.keyHR,
-    //       values: [],
-    //       appliedTo: [],
-    //       datatype: attribute.datatype,
-    //       mapPointerD: [],
-    //       mapPointerC: [],
-    //       chartDiscreteDistribution: null,
-    //       chartContinuousDistribution: null,
-    //       min: null,
-    //       max: null
-    //     };
-    //
-    //     if (elementType === 'nodes') {
-    //       let found = false;
-    //
-    //       for (const akv of aspectKeyValuesNodes) {
-    //         if (akv.name === attribute.keyHR) {
-    //           if (!akv.values.includes(attribute.valueHR)) {
-    //             akv.values.push(attribute.valueHR);
-    //           }
-    //           akv.appliedTo.push(element);
-    //           found = true;
-    //         }
-    //       }
-    //
-    //       if (!found) {
-    //         aspect.values.push(attribute.valueHR);
-    //         aspect.appliedTo.push(element);
-    //         aspectKeyValuesNodes.push(aspect);
-    //       }
-    //     } else {
-    //       let found = false;
-    //
-    //       for (const akv of aspectKeyValuesEdges) {
-    //         if (akv.name === attribute.keyHR) {
-    //           if (!akv.values.includes(attribute.valueHR)) {
-    //             akv.values.push(attribute.valueHR);
-    //           }
-    //           akv.appliedTo.push(element);
-    //           found = true;
-    //         }
-    //       }
-    //
-    //       if (!found) {
-    //         aspect.values.push(attribute.valueHR);
-    //         aspect.appliedTo.push(element);
-    //         aspectKeyValuesEdges.push(aspect);
-    //       }
-    //     }
-    //   }
-    // }
-    //
-    // const groupedMappingsNodes: NeGroupedMappingsDiscrete[] = this.groupDiscreteMappings(parsedMappingsNodesDefault.discrete);
-    // const groupedMappingsEdges: NeGroupedMappingsDiscrete[] = this.groupDiscreteMappings(parsedMappingsEdgesDefault.discrete);
-    //
-    // for (const akv of aspectKeyValuesNodes) {
-    //
-    //   let min: number = Number.MAX_SAFE_INTEGER;
-    //   let max: number = Number.MIN_SAFE_INTEGER;
-    //
-    //   for (const value of akv.values) {
-    //     if (!isNaN(Number(value)) && Number(value) < min) {
-    //       min = Number(value);
-    //     }
-    //     if (!isNaN(Number(value)) && Number(value) > max) {
-    //       max = Number(value);
-    //     }
-    //   }
-    //
-    //   if (!isNaN(Number(min)) && Number(min) < Number.MAX_SAFE_INTEGER) {
-    //     akv.min = Number(min);
-    //   }
-    //   if (!isNaN(Number(max)) && Number(max) > Number.MIN_SAFE_INTEGER) {
-    //     akv.max = Number(max);
-    //   }
-    //
-    //   for (const nodeMap of groupedMappingsNodes) {
-    //     if (akv.name === nodeMap.classifier) {
-    //       akv.mapPointerD.push(groupedMappingsNodes.indexOf(nodeMap));
-    //
-    //     }
-    //   }
-    //
-    //   for (const contNodeMap of parsedMappingsNodesDefault.continuous) {
-    //     if (akv.name === contNodeMap.title[1]) {
-    //       akv.mapPointerC.push(parsedMappingsNodesDefault.continuous.indexOf(contNodeMap));
-    //     }
-    //   }
-    // }
-    //
-    // for (const akv of aspectKeyValuesEdges) {
-    //
-    //   let min: number = Number.MAX_SAFE_INTEGER;
-    //   let max: number = Number.MIN_SAFE_INTEGER;
-    //
-    //   for (const value of akv.values) {
-    //     if (!isNaN(Number(value)) && Number(value) < min) {
-    //       min = Number(value);
-    //     }
-    //     if (!isNaN(Number(value)) && Number(value) > max) {
-    //       max = Number(value);
-    //     }
-    //   }
-    //
-    //   if (!isNaN(Number(min)) && Number(min) < Number.MAX_SAFE_INTEGER) {
-    //     akv.min = Number(min);
-    //   }
-    //   if (!isNaN(Number(max)) && Number(max) > Number.MIN_SAFE_INTEGER) {
-    //     akv.max = Number(max);
-    //   }
-    //
-    //   for (const edgeMap of groupedMappingsEdges) {
-    //     if (akv.name === edgeMap.classifier) {
-    //       akv.mapPointerD.push(groupedMappingsEdges.indexOf(edgeMap));
-    //
-    //     }
-    //   }
-    //
-    //   for (const contEdgeMap of parsedMappingsEdgesDefault.continuous) {
-    //     if (akv.name === contEdgeMap.title[1]) {
-    //       akv.mapPointerC.push(parsedMappingsEdgesDefault.continuous.indexOf(contEdgeMap));
-    //     }
-    //   }
-    // }
-    //
-    // for (const akv of aspectKeyValuesNodes) {
-    //   akv.chartDiscreteDistribution = {
-    //     chartData: [
-    //       {data: []}
-    //     ],
-    //     chartLabels: []
-    //   };
-    //
-    //   akv.chartContinuousDistribution = {
-    //     chartData: [
-    //       {data: []}
-    //     ],
-    //     chartLabels: []
-    //   };
-    //
-    //   for (const value of akv.values) {
-    //     akv.chartDiscreteDistribution.chartLabels.push(value);
-    //     akv.chartDiscreteDistribution.chartData[0].data.push(0);
-    //     akv.chartDiscreteDistribution.chartData[0].label = akv.name;
-    //
-    //     akv.chartContinuousDistribution.chartLabels.push(Number(value));
-    //
-    //     for (const element of parsedData.filter(x => x.group === 'nodes')) {
-    //       for (const attribute of element.attributes) {
-    //         if (attribute.keyHR === akv.name && attribute.valueHR === value) {
-    //           akv.chartDiscreteDistribution.chartData[0].data[akv.chartDiscreteDistribution.chartLabels.indexOf(value)]++;
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-    //
-    // for (const akv of aspectKeyValuesEdges) {
-    //   akv.chartDiscreteDistribution = {
-    //     chartData: [
-    //       {data: [], label: akv.name}
-    //     ],
-    //     chartLabels: []
-    //   };
-    //
-    //   akv.chartContinuousDistribution = {
-    //     chartData: [
-    //       {data: []}
-    //     ],
-    //     chartLabels: []
-    //   };
-    //
-    //   for (const value of akv.values) {
-    //     akv.chartDiscreteDistribution.chartLabels.push(value);
-    //     akv.chartDiscreteDistribution.chartData[0].data.push(0);
-    //     akv.chartDiscreteDistribution.chartData[0].label = akv.name;
-    //
-    //     akv.chartContinuousDistribution.chartLabels.push(Number(value));
-    //
-    //     for (const element of parsedData.filter(x => x.group === 'edges')) {
-    //       for (const attribute of element.attributes) {
-    //         if (attribute.keyHR === akv.name && attribute.valueHR === value) {
-    //           akv.chartDiscreteDistribution.chartData[0].data[akv.chartDiscreteDistribution.chartLabels.indexOf(value)]++;
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-    //
-    // const nodeCount = cyParsedData.filter(a => a.group === 'nodes').length;
+    const core = this.convertCxToJs(filedata, container);
 
     const currentId = this.id;
     this.id++;
@@ -1456,19 +1019,8 @@ export class ParseService {
       id: currentId,
       cx: filedata,
       filename,
-      core: null, // only build core on render, because on change core has to be recalculated anyway
+      core,
       networkInformation,
-      // elements: cyParsedData,
-      // style: globalStyle,
-      // aspectKeyValuesNodes,
-      // aspectKeyValuesEdges,
-      // mappings: {
-      //   nodesDiscrete: groupedMappingsNodes,
-      //   edgesDiscrete: groupedMappingsEdges,
-      //   nodesContinuous: parsedMappingsNodesDefault.continuous,
-      //   edgesContinuous: parsedMappingsEdgesDefault.continuous
-      // },
-      // styleConstants,
       showLabels: false // override as soon as core is available
     };
   }

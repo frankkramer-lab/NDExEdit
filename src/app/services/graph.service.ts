@@ -44,17 +44,18 @@ export class GraphService {
    * @param container DOM element where to render the graph
    * @param network network to be rendered
    */
-  render(container: HTMLElement, network: NeNetwork): void {
+  render(container: HTMLElement, network: NeNetwork): NeNetwork {
     this.unsubscribeFromCoreEvents();
-    // should be enough to return the core (?)
-    if (!network.core) {
-      network.core = this.parseService.convertCxToJs(network.cx, container);
-      network.core = this.addUtilitySelectors(network.core);
-      network.showLabels = network.core.nodes().length < 300;
-    }
-    network.showLabels = network.core.nodes().length < 300;
-    // console.log(network);
+
+    const renderedNetwork = this.parseService.convert(
+      container,
+      network.cx,
+      network.filename ?? null,
+      network.networkInformation.uuid ?? null
+    );
+
     this.subscribeToCoreEvents();
+    return renderedNetwork;
   }
 
   /**

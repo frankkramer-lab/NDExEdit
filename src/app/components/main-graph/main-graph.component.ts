@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, Renderer2} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, Renderer2, ViewChild} from '@angular/core';
 import {DataService} from '../../services/data.service';
 import {GraphService} from '../../services/graph.service';
 import {Subscription} from 'rxjs';
@@ -18,7 +18,7 @@ export class MainGraphComponent implements AfterViewInit, OnDestroy {
   /**
    * Contains DOM element for {@link https://js.cytoscape.org/|Cytoscape.js}
    */
-  cyContainer: any;
+  @ViewChild('cy') cyContainer: ElementRef;
   /**
    * Main view width which needs to be specified in order to re-render the graph accordingly
    */
@@ -87,11 +87,8 @@ export class MainGraphComponent implements AfterViewInit, OnDestroy {
    * @private
    */
   private renderGraph(): void {
-    this.cyContainer = this.renderer.selectRootElement('#cy');
-    this.graphService.render(this.cyContainer, this.dataService.networkSelected);
-    console.log(this.dataService.networkSelected.core.nodes().length < 300);
-    this.graphService.toggleLabels(this.dataService.networkSelected.core.nodes().length < 300);
-
+    const renderedNetwork = this.graphService.render(this.cyContainer.nativeElement, this.dataService.networkSelected);
+    this.graphService.toggleLabels(renderedNetwork.core.nodes().length < 300);
     console.log(this.dataService.networkSelected);
   }
 

@@ -110,9 +110,9 @@ export class AppComponent {
     this.http.get(this.mockedFilepath.concat(filename))
       .toPromise()
       .then((data: any[]) => {
-        this.dataService.networksDownloaded.push(data);
-        const dummy = this.parseService.convert(data, filename);
-        this.dataService.networksParsed.push(dummy);
+        // this.dataService.networksDownloaded.push(data);
+        // const dummy = this.parseService.convert(data, filename);
+        // this.dataService.networksParsed.push(dummy);
       })
       .catch(error => console.log(error));
   }

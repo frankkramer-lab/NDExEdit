@@ -1,5 +1,13 @@
-import {Component} from '@angular/core';
-import {faClone, faFileDownload, faFileExport, faInfo, faPaintBrush, faSave, faCloudDownloadAlt} from '@fortawesome/free-solid-svg-icons';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {
+  faClone,
+  faCloudDownloadAlt,
+  faFileDownload,
+  faFileExport,
+  faInfo,
+  faPaintBrush,
+  faSave
+} from '@fortawesome/free-solid-svg-icons';
 import {DataService} from '../../services/data.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {NeMappings} from '../../models/ne-mappings';
@@ -20,6 +28,14 @@ import {NeAspect} from '../../models/ne-aspect';
  * Component responsible for graph selection and file management
  */
 export class SidebarManageComponent {
+
+  constructor(
+    public dataService: DataService,
+    private http: HttpClient,
+    private utilityService: UtilityService,
+    private parseService: ParseService,
+  ) {
+  }
   /**
    * Icon: faCloudDownloadAlt
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
@@ -111,6 +127,9 @@ export class SidebarManageComponent {
    * Current file extension
    */
   invalidExtension: string;
+
+  @ViewChild('hidden') defaultCanvas: ElementRef;
+
   /**
    * Factor to display bytes as megabytes
    *
@@ -133,15 +152,10 @@ export class SidebarManageComponent {
    */
   private readonly ndexPublicApiHost = 'http://public.ndexbio.org/v2/';
 
+  /**
+   * Tooltip for copying a UUID to clipboard
+   */
   copyToClipboardTooltip = 'SIDEBAR_MANAGE_TT_CLIPBOARD';
-
-  constructor(
-    public dataService: DataService,
-    private http: HttpClient,
-    private utilityService: UtilityService,
-    private parseService: ParseService,
-  ) {
-  }
 
   /**
    * Collapsing a continuous mapping into the definition string which can be interpreted by NDEx
@@ -407,7 +421,9 @@ export class SidebarManageComponent {
     this.fileToUpload.text()
       .then(data => {
         this.dataService.networksDownloaded.push(JSON.parse(data));
-        this.dataService.networksParsed.push(this.parseService.convert(JSON.parse(data),
+        this.dataService.networksParsed.push(this.parseService.convert(
+          this.defaultCanvas.nativeElement,
+          JSON.parse(data),
           UtilityService.utilCleanString(this.fileToUpload.name)));
         this.loadingFile = false;
 
@@ -492,6 +508,7 @@ export class SidebarManageComponent {
             }
             this.dataService.networksDownloaded.push(data);
             this.dataService.networksParsed.push(this.parseService.convert(
+              this.defaultCanvas.nativeElement,
               data,
               UtilityService.utilCleanString(networkName),
               uuid ?? null));
