@@ -93,7 +93,6 @@
 
   </div>
 
-
   <div aria-orientation="horizontal" class="nav nav-pills flex-row" id="editsNav" role="tablist">
     <a aria-controls="editsNavAspects" aria-selected="false" class="nav-link active" data-toggle="pill"
        href="#editsNavAspectsContent"
@@ -129,7 +128,7 @@
       <table
         *ngIf="dataService.networkSelected.mappings.nodesDiscrete.length > 0"
         class="table table-bordered table-responsive">
-        <tr *ngFor="let nodeMap of dataService.networkSelected.mappings.nodesDiscrete; let index">
+        <tr *ngFor="let nodeMap of dataService.networkSelected.mappings.nodesDiscrete; let index = index">
           <td>
             <a
               [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, 'nd' + index]} }]"
@@ -151,17 +150,12 @@
                   </a>
                 </td>
                 <td *ngFor="let style of nodeMap.styleMap">
-                  <span>
-                    <span *ngFor="let cssValue of style.cssValues">
-                      <span *ngIf="true">
-                        {{cssValue}}
-                        <span *ngIf="cssValue && cssValue.toString().indexOf('#') === 0"
-                              [ngStyle]="{'background-color': cssValue}"
-                              class="badge badge-pill border">&nbsp;
-                        </span>
-                      </span>
+                  <span *ngFor="let cssValue of style.cssValues">
+                    {{cssValue}}
+                    <span *ngIf="cssValue && cssValue.toString().indexOf('#') === 0"
+                          [ngStyle]="{'background-color': cssValue}"
+                          class="badge badge-pill border">&nbsp;
                     </span>
-
                   </span>
                 </td>
               </tr>
@@ -192,15 +186,15 @@
       </ul>
 
       <h5
-        *ngIf="dataService.networkSelected.mappings && (dataService.networkSelected.mappings.edgesDiscrete || dataService.networkSelected.mappings.edgesContinuous) && (dataService.networkSelected.mappings.edgesDiscrete.length > 0 || dataService.networkSelected.mappings.edgesContinuous.length > 0)">{{'SIDEBAR_EDIT_ASPECTS_EDGES' | translate}}</h5>
+        *ngIf="(dataService.networkSelected.mappings.edgesDiscrete.length > 0 || dataService.networkSelected.mappings.edgesContinuous.length > 0)">{{'SIDEBAR_EDIT_ASPECTS_EDGES' | translate}}</h5>
 
       <table
-        *ngIf="dataService.networkSelected.mappings && dataService.networkSelected.mappings.edgesDiscrete && dataService.networkSelected.mappings.edgesDiscrete.length > 0"
+        *ngIf="dataService.networkSelected.mappings.edgesDiscrete.length > 0"
         class="table table-bordered">
-        <tr *ngFor="let edgeMap of dataService.networkSelected.mappings.edgesDiscrete">
+        <tr *ngFor="let edgeMap of dataService.networkSelected.mappings.edgesDiscrete; let index = index">
           <td>
             <a
-              [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, 'ed' + dataService.networkSelected.mappings.edgesDiscrete.indexOf(edgeMap)]} }]"
+              [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, 'ed' + index]} }]"
               role="button">
               <b>{{edgeMap.classifier}}</b>
             </a>
@@ -218,15 +212,11 @@
                      role="button"><b>{{value}}</b></a>
                 </td>
                 <td *ngFor="let style of edgeMap.styleMap">
-                <span *ngIf="style.cssValues.length > i">
-
                   {{style.cssValues[i]}}
                   <span *ngIf="style.cssValues && style.cssValues[i].toString().indexOf('#') === 0"
                         [ngStyle]="{'background-color': style.cssValues[i]}"
                         class="badge badge-pill border">&nbsp;
                   </span>
-
-                </span>
                 </td>
               </tr>
             </table>
@@ -234,8 +224,7 @@
         </tr>
       </table>
 
-      <ul
-        *ngIf="dataService.networkSelected.mappings && dataService.networkSelected.mappings.edgesContinuous && dataService.networkSelected.mappings.edgesContinuous.length > 0"
+      <ul *ngIf="dataService.networkSelected.mappings.edgesContinuous.length > 0"
         class="list-group mb-2">
       <span *ngFor="let edgeMap of dataService.networkSelected.mappings.edgesContinuous; let index = index">
         <li *ngIf="edgeMap.chartValid" class="list-group-item">

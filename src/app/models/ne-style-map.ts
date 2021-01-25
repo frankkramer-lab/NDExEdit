@@ -17,4 +17,9 @@ export interface NeStyleMap {
    * List of selectors
    */
   selectors?: string[];
+
+  /**
+   * True, if mapped cssKey is a color property
+   */
+  isColor?: boolean;
 }

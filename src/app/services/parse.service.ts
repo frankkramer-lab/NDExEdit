@@ -15,8 +15,8 @@ import {DataService} from './data.service';
 import {NeMappingsMap} from '../models/ne-mappings-map';
 import {NeMappingDiscrete} from '../models/ne-mapping-discrete';
 import {NeMappingContinuous} from '../models/ne-mapping-continuous';
-import {NeGroupedMappingsDiscrete} from "../models/ne-grouped-mappings-discrete";
-import {NeStyleMap} from "../models/ne-style-map";
+import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete';
+import {NeStyleMap} from '../models/ne-style-map';
 
 @Injectable({
   providedIn: 'root'
@@ -475,7 +475,7 @@ export class ParseService {
     const mappingContinuous: NeMappingContinuous = {
       col: null,
       styleProperty,
-      type: null, // must be numeric
+      type: null,
       lowers: null,
       equals: null,
       greaters: null,
@@ -569,7 +569,8 @@ export class ParseService {
 
           const newStyle: NeStyleMap = {
             cssKey: map.styleProperty,
-            cssValues: map.values as string[]
+            cssValues: map.values as string[],
+            isColor: (map.values as string[]).filter(a => !a.startsWith('#')).length === 0
           };
 
           if (!match.styleMap.includes(newStyle) &&
@@ -585,7 +586,8 @@ export class ParseService {
 
       const style: NeStyleMap = {
         cssKey: map.styleProperty,
-        cssValues: map.values as string[]
+        cssValues: map.values as string[],
+        isColor: (map.values as string[]).filter(a => !a.startsWith('#')).length === 0
       };
       const groupedMapping: NeGroupedMappingsDiscrete = {
         classifier: map.col,

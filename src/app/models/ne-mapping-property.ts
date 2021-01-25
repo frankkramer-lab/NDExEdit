@@ -1,6 +1,8 @@
 /**
  * Represents a property within a discrete mapping
  */
+import {NeMappingsType} from "./ne-mappings-type";
+
 export interface NeMappingProperty {
   /**
    * Pointer to the discrete node or edge mapping within the list of discrete node or edge mappings
@@ -13,9 +15,9 @@ export interface NeMappingProperty {
   attributeName: string;
 
   /**
-   * Type of mapping, starting with n indicates it's a discrete node mapping
+   * Type of mapping
    */
-  mapType: string;
+  mapType: NeMappingsType;
 
   /**
    * Style object belonging to the line of mapping
