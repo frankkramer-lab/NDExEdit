@@ -280,7 +280,13 @@ export class ParseService {
    * @param uuid optionally give the uuid for copy-to-clipboard-feature
    * @param networkId id for this network
    */
-  convert(container: HTMLElement, filedata: any[], filename: string, uuid: string = null, networkId: number): Promise<NeNetwork> {
+  convert(
+    container: HTMLElement,
+    filedata: any[],
+    filename: string,
+    uuid: string = null,
+    networkId: number
+  ): Promise<NeNetwork> {
     let networkAttributeData;
 
     filedata.forEach(obj => {

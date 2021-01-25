@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {ParseService} from './services/parse.service';
 import {DataService} from './services/data.service';
@@ -87,7 +87,6 @@ export class AppComponent {
     this.initializeTranslation();
 
     this.initDemoNetwork('DummyForTesting.cx');
-    // this.initConvertedNetwork('input-with-converted-style.cx');
   }
 
   /**
@@ -110,9 +109,10 @@ export class AppComponent {
     this.http.get(this.mockedFilepath.concat(filename))
       .toPromise()
       .then((data: any[]) => {
-        // this.dataService.networksDownloaded.push(data);
-        // const dummy = this.parseService.convert(data, filename);
-        // this.dataService.networksParsed.push(dummy);
+        this.dataService.networksDownloaded.push(data);
+        this.parseService.convert(null, data, filename, '', this.dataService.nextId())
+          .then(dummy => this.dataService.networksParsed.push(dummy))
+          .catch(e => console.error(e));
       })
       .catch(error => console.log(error));
   }

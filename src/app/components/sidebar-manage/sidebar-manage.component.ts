@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {
   faClone,
   faCloudDownloadAlt,
@@ -128,14 +128,6 @@ export class SidebarManageComponent {
    * Current file extension
    */
   invalidExtension: string;
-  /**
-   * Default canvas
-   */
-  @ViewChild('hidden') defaultCanvas: ElementRef;
-  /**
-   * Counter for network id
-   */
-  networkId = 0;
   /**
    * Factor to display bytes as megabytes
    *
@@ -432,10 +424,9 @@ export class SidebarManageComponent {
           JSON.parse(data),
           UtilityService.utilCleanString(this.fileToUpload.name),
           null, // assuming a local file has no UUID
-          this.networkId)
+          this.dataService.nextId())
           .then(convertedNetwork => {
             this.dataService.networksParsed.push(convertedNetwork);
-            this.networkId++;
           })
           .catch(e => {
             console.log(e);
@@ -527,10 +518,9 @@ export class SidebarManageComponent {
               data,
               UtilityService.utilCleanString(networkName),
               uuid ?? null,
-              this.networkId)
+              this.dataService.nextId())
               .then(convertedNetwork => {
                 this.dataService.networksParsed.push(convertedNetwork);
-                this.networkId++;
               })
               .catch(e => console.error(e))
               .finally(() => this.loadingHttp = false);

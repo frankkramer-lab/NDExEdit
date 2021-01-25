@@ -1,4 +1,4 @@
-import {EventEmitter, Injectable, Output} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {NeNetwork} from '../models/ne-network';
 import {NeMappingsDefinition} from '../models/ne-mappings-definition';
 import {NeStyle} from '../models/ne-style';
@@ -17,7 +17,6 @@ import {NeStyleMap} from '../models/ne-style-map';
 import {NeMappingProperty} from '../models/ne-mapping-property';
 import {NeMappingsType} from '../models/ne-mappings-type';
 import {NeStyleComponent} from '../models/ne-style-component';
-import {NeContinuousCollection} from '../models/ne-continuous-collection';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +39,10 @@ export class DataService {
    * Selected network of type {@link NeNetwork|NeNetwork}
    */
   networkSelected: NeNetwork;
+  /**
+   * The network ID increment
+   */
+  currentNetworkId: number = 0;
   /**
    * List of known color properties, mainly used for color previews within {@link MainMappingsNewComponent}
    */
@@ -1058,5 +1061,13 @@ export class DataService {
    */
   triggerChartRedraw(): void {
     this.chartRedrawEmitter.emit(true);
+  }
+
+  /**
+   * Incrementing the network ID increment and returning it.
+   * Thus network IDs begin at 1.
+   */
+  nextId(): number {
+    return ++this.currentNetworkId;
   }
 }
