@@ -16,5 +16,5 @@ export interface NeStyleMap {
   /**
    * List of selectors
    */
-  selectors: string[];
+  selectors?: string[];
 }

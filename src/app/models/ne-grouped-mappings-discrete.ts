@@ -18,17 +18,17 @@ export interface NeGroupedMappingsDiscrete {
   /**
    * Collection of corresponding styles
    */
-  styleMap: NeStyleMap[];
+  styleMap?: NeStyleMap[];
 
   /**
    * List of table headers for displaying the mapping within sidebar
    */
-  th: string[];
+  th?: string[];
 
   /**
    * List of corresponding selectors
    */
-  selectors: string[];
+  selectors?: string[];
 
   /**
    * Datatype of mapping

@@ -167,7 +167,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
     this.continuousMapping.defaultGreater = this.continuousMapping.breakpoints[this.continuousMapping.breakpoints.length - 1].propertyValue;
     this.continuousMapping.defaultLower = this.continuousMapping.breakpoints[0].propertyValue;
 
-    this.dataService.addMappingContinuous(this.dataService.networkSelected.id, this.typeHint.nc, this.continuousMapping);
+    // this.dataService.addMappingContinuous(this.dataService.networkSelected.id, this.typeHint.nc, this.continuousMapping);
 
   }
 
@@ -184,7 +184,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
         entry.cssValue = '';
       }
     }
-    this.dataService.addMappingDiscrete(this.dataService.networkSelected.id, this.typeHint.nd, this.discreteMapping);
+    // this.dataService.addMappingDiscrete(this.dataService.networkSelected.id, this.typeHint.nd, this.discreteMapping);
 
   }
 
@@ -210,11 +210,11 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * Edits an existing mapping
    */
   editMapping(): void {
-    if (this.typeHint.nd || this.typeHint.ed) {
-      this.dataService.editMapping(this.dataService.networkSelected.id, this.discreteMapping, this.styleProperty, this.typeHint);
-    } else {
-      this.dataService.editMapping(this.dataService.networkSelected.id, this.continuousMapping, this.styleProperty, this.typeHint);
-    }
+    // if (this.typeHint.nd || this.typeHint.ed) {
+    //   this.dataService.editMapping(this.dataService.networkSelected.id, this.discreteMapping, this.styleProperty, this.typeHint);
+    // } else {
+    //   this.dataService.editMapping(this.dataService.networkSelected.id, this.continuousMapping, this.styleProperty, this.typeHint);
+    // }
   }
 
   /**
@@ -224,18 +224,18 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
     switch (this.mapType) {
       case 'nd':
         for (const nodeMap of this.dataService.networkSelected.mappings.nodesDiscrete) {
-          if (nodeMap.classifier === this.propertyToMap.name) {
-            return String(this.dataService.networkSelected.mappings.nodesDiscrete.indexOf(nodeMap));
-          }
+          // if (nodeMap.classifier === this.propertyToMap.name) {
+          //   return String(this.dataService.networkSelected.mappings.nodesDiscrete.indexOf(nodeMap));
+          // }
         }
         return String(this.dataService.networkSelected.mappings.nodesDiscrete.length);
       case 'nc':
         return String(this.dataService.networkSelected.mappings.nodesContinuous.length);
       case 'ed':
         for (const edgeMap of this.dataService.networkSelected.mappings.edgesDiscrete) {
-          if (edgeMap.classifier === this.propertyToMap.name) {
-            return String(this.dataService.networkSelected.mappings.edgesDiscrete.indexOf(edgeMap));
-          }
+          // if (edgeMap.classifier === this.propertyToMap.name) {
+          //   return String(this.dataService.networkSelected.mappings.edgesDiscrete.indexOf(edgeMap));
+          // }
         }
         return String(this.dataService.networkSelected.mappings.edgesDiscrete.length);
       case 'ec':

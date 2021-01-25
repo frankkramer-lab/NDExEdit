@@ -299,11 +299,11 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * based on the previously set mappingstype
    */
   editMapping(): void {
-    if (this.typeHint.nd || this.typeHint.ed) {
-      this.dataService.editMapping(this.dataService.networkSelected.id, this.discreteMapping, this.styleProperty, this.typeHint);
-    } else {
-      this.dataService.editMapping(this.dataService.networkSelected.id, this.continuousMapping, this.styleProperty, this.typeHint);
-    }
+    // if (this.typeHint.nd || this.typeHint.ed) {
+    //   this.dataService.editMapping(this.dataService.networkSelected.id, this.discreteMapping, this.styleProperty, this.typeHint);
+    // } else {
+    //   this.dataService.editMapping(this.dataService.networkSelected.id, this.continuousMapping, this.styleProperty, this.typeHint);
+    // }
   }
 
   /**

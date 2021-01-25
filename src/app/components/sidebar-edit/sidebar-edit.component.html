@@ -17,24 +17,22 @@
   </div>
 
   <app-chart *ngIf="showChart" [chartObject]="lineChartObject"
-             [index]="index"
-             [lookup]="lookup"
-             [attribute]="attribute"
-             [widthPercent]="100"></app-chart>
+             [index]="index" [widthPercent]="100"></app-chart>
 
   <!-- color gradient for continuous mappings -->
   <div *ngIf="showColorGradient">
     <h5>
       <a [routerLink]="['', {outlets: {primary: ['mappings', dataService.networkSelected.id, index]} }]" role="button">
-        <b>{{lookup}}</b>
+        <b>A</b>
         {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
-        <b>{{attribute}}</b>
+        <b>B</b>
       </a>
     </h5>
     <div [style.background]="gradientBackground" [style.height.px]="200" [style.width.%]="100" class="mb-3">
     </div>
   </div>
 
+  <!-- todo -->
   <div *ngIf="graphService.selectedElements.nodes.length > 0 || graphService.selectedElements.edges.length > 0">
 
     <hr>
@@ -129,12 +127,12 @@
       </h5>
 
       <table
-        *ngIf="dataService.networkSelected.mappings && dataService.networkSelected.mappings.nodesDiscrete && dataService.networkSelected.mappings.nodesDiscrete.length > 0"
-        class="table table-bordered">
-        <tr *ngFor="let nodeMap of dataService.networkSelected.mappings.nodesDiscrete">
+        *ngIf="dataService.networkSelected.mappings.nodesDiscrete.length > 0"
+        class="table table-bordered table-responsive">
+        <tr *ngFor="let nodeMap of dataService.networkSelected.mappings.nodesDiscrete; let index">
           <td>
             <a
-              [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, 'nd' + dataService.networkSelected.mappings.nodesDiscrete.indexOf(nodeMap)]} }]"
+              [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, 'nd' + index]} }]"
               role="button">
               <b>{{nodeMap.classifier}}</b>
             </a>
@@ -145,17 +143,17 @@
                 <td colspan="1">&nbsp;</td>
                 <td *ngFor="let styleProp of nodeMap.th"><b>{{styleProp}}</b></td>
               </tr>
-              <tr *ngFor="let value of nodeMap.values; let i = index">
+              <tr *ngFor="let value of nodeMap.values">
                 <td class="border-right">
-                  <a (click)="graphService.highlightBySelector(nodeMap.selectors[i])" data-toggle="tooltip"
-                     ngbTooltip="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{nodeMap.selectors[i]}}" placement="left"
+                  <a data-toggle="tooltip"
+                     ngbTooltip="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}}" placement="left"
                      role="button"><b>{{value}}</b>
                   </a>
                 </td>
                 <td *ngFor="let style of nodeMap.styleMap">
                   <span>
-                    <span *ngFor="let cssValue of style.cssValues; let k = index">
-                      <span *ngIf="style.selectors[k] == nodeMap.selectors[i]">
+                    <span *ngFor="let cssValue of style.cssValues">
+                      <span *ngIf="true">
                         {{cssValue}}
                         <span *ngIf="cssValue && cssValue.toString().indexOf('#') === 0"
                               [ngStyle]="{'background-color': cssValue}"
@@ -215,8 +213,8 @@
               </tr>
               <tr *ngFor="let value of edgeMap.values; let i = index">
                 <td class="border-right">
-                  <a (click)="graphService.highlightBySelector(edgeMap.selectors[i])" data-toggle="tooltip"
-                     ngbTooltip="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{edgeMap.selectors[i]}}" placement="left"
+                  <a data-toggle="tooltip"
+                     ngbTooltip="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}}" placement="left"
                      role="button"><b>{{value}}</b></a>
                 </td>
                 <td *ngFor="let style of edgeMap.styleMap">
@@ -273,9 +271,9 @@
       </div>
       <div *ngFor="let s of dataService.networkSelected.style" class="row border-bottom">
         <div class="col">
-          <a (click)="graphService.highlightBySelector(s.selector)" data-toggle="tooltip"
-             ngbTooltip="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}} {{s.selector}}" placement="left"
-             role="button">{{s.selector}}</a>
+          <a data-toggle="tooltip"
+             ngbTooltip="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}}" placement="left"
+             role="button">Hier steht was</a>
         </div>
         <div class="col">
             <span *ngFor="let css of s.style|keyvalue">

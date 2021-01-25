@@ -286,37 +286,37 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    * @param confirmation Determines if the deletion is executed or not
    * @param scope Can either be global or single depending on which deletion button was clicked
    */
-  confirmDeletion(confirmation: boolean, scope = 'global'): void {
-
-    switch (scope) {
-      case 'global':
-        if (confirmation) {
-          this.dataService.removeMapping(this.mappingToRemove);
-          this.selectedMapping = [];
-
-          // hide the gradient or chart currently displayed to avoid confusion
-          MainMappingsComponent.mappingsEmitter.emit({
-            showGradient: false,
-            showChart: false
-          });
-        }
-        this.toggleGlobalRemoveDialogue();
-
-        break;
-      case 'single':
-        if (confirmation) {
-          this.dataService.removePropertyFromMapping(this.dataService.networkSelected.id, this.propertyToRemove);
-          this.propertyToRemove = {
-            mapReference: -1,
-            attributeName: '',
-            mapType: '',
-            style: null
-          };
-        }
-        this.toggleSingleRemoveDialogue();
-        break;
-    }
-  }
+  // confirmDeletion(confirmation: boolean, scope = 'global'): void {
+  //
+  //   switch (scope) {
+  //     case 'global':
+  //       if (confirmation) {
+  //         this.dataService.removeMapping(this.mappingToRemove);
+  //         this.selectedMapping = [];
+  //
+  //         // hide the gradient or chart currently displayed to avoid confusion
+  //         MainMappingsComponent.mappingsEmitter.emit({
+  //           showGradient: false,
+  //           showChart: false
+  //         });
+  //       }
+  //       this.toggleGlobalRemoveDialogue();
+  //
+  //       break;
+  //     case 'single':
+  //       if (confirmation) {
+  //         this.dataService.removePropertyFromMapping(this.dataService.networkSelected.id, this.propertyToRemove);
+  //         this.propertyToRemove = {
+  //           mapReference: -1,
+  //           attributeName: '',
+  //           mapType: '',
+  //           style: null
+  //         };
+  //       }
+  //       this.toggleSingleRemoveDialogue();
+  //       break;
+  //   }
+  // }
 
   /**
    * Fetches a list of attributes, which can be used to create a mapping of the specified type for the currently selected network.

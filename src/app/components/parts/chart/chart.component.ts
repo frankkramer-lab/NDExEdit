@@ -13,12 +13,12 @@ export class ChartComponent implements OnInit {
   /**
    * Name of the lookup which is part of the mapping
    */
-  @Input() lookup?: string;
+  // @Input() lookup?: string;
 
   /**
    * Name of the attribute which is part of the mapping
    */
-  @Input() attribute?: string;
+  // @Input() attribute?: string;
 
   /**
    * Sidebar chart displaying a preview for the continuous mapping needs a router link

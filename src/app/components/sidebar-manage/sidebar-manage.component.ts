@@ -350,61 +350,61 @@ export class SidebarManageComponent {
    * @param id network's id
    */
   reconvert(id: number): void {
-    const network = this.dataService.networksParsed.find(x => x.id === id);
-    const cleanNetwork: NeNetwork = SidebarManageComponent.utilCleanoutStyles(network);
-    let mappingsNodes: NeMappings[] = [];
-    let mappingsEdges: NeMappings[] = [];
-
-    for (const nodeMap of cleanNetwork.mappings.nodesDiscrete) {
-      const availableProperties = nodeMap.styleMap.map(x => x.cssKey);
-      if (availableProperties.includes('width') && availableProperties.includes('height')) {
-        const widthMapping = nodeMap.styleMap.find(x => x.cssKey === 'width');
-        const heightMapping = nodeMap.styleMap.find(x => x.cssKey === 'height');
-        const additionalSizeMap: NeStyleMap = {
-          cssKey: 'size',
-          cssValues: [],
-          selectors: []
-        };
-        for (let i = 0; i < widthMapping.cssValues.length; i++) {
-          if (widthMapping.cssValues[i] === heightMapping.cssValues[i] && widthMapping.selectors[i] === heightMapping.selectors[i]) {
-            additionalSizeMap.cssValues.push(widthMapping.cssValues[i]);
-            additionalSizeMap.selectors.push(widthMapping.selectors[i]);
-          }
-        }
-        nodeMap.styleMap.push(additionalSizeMap);
-      }
-    }
-
-    for (const ndMapping of cleanNetwork.mappings.nodesDiscrete) {
-      const map: NeMappings[] = this.buildDiscreteMappingDefinition(ndMapping);
-      mappingsNodes = mappingsNodes.concat(map);
-    }
-
-    for (const edMapping of cleanNetwork.mappings.edgesDiscrete) {
-      const map: NeMappings[] = this.buildDiscreteMappingDefinition(edMapping);
-      mappingsEdges = mappingsEdges.concat(map);
-    }
-
-    for (const ncMapping of cleanNetwork.mappings.nodesContinuous) {
-      const map: NeMappings[] = this.buildContinuousMappingDefinition(ncMapping, cleanNetwork.aspectKeyValuesNodes);
-      mappingsNodes = mappingsNodes.concat(map);
-    }
-
-    for (const ecMapping of cleanNetwork.mappings.edgesContinuous) {
-      const map: NeMappings[] = this.buildContinuousMappingDefinition(ecMapping, cleanNetwork.aspectKeyValuesEdges);
-      mappingsEdges = mappingsEdges.concat(map);
-    }
-
-    if (cleanNetwork.networkInformation.originalFilename.startsWith('/assets/mocks')) {
-      // work with local mock-file
-      const originalFile = this.http.get(cleanNetwork.networkInformation.originalFilename)
-        .subscribe((originalData: any[]) => SidebarManageComponent
-          .buildDownloadFile(originalData, mappingsNodes, mappingsEdges, cleanNetwork));
-    } else {
-      // work with file from networksDownloaded
-      const originalData = this.dataService.networksDownloaded[id];
-      SidebarManageComponent.buildDownloadFile(originalData, mappingsNodes, mappingsEdges, cleanNetwork);
-    }
+    // const network = this.dataService.networksParsed.find(x => x.id === id);
+    // const cleanNetwork: NeNetwork = SidebarManageComponent.utilCleanoutStyles(network);
+    // let mappingsNodes: NeMappings[] = [];
+    // let mappingsEdges: NeMappings[] = [];
+    //
+    // for (const nodeMap of cleanNetwork.mappings.nodesDiscrete) {
+    //   const availableProperties = nodeMap.styleMap.map(x => x.cssKey);
+    //   if (availableProperties.includes('width') && availableProperties.includes('height')) {
+    //     const widthMapping = nodeMap.styleMap.find(x => x.cssKey === 'width');
+    //     const heightMapping = nodeMap.styleMap.find(x => x.cssKey === 'height');
+    //     const additionalSizeMap: NeStyleMap = {
+    //       cssKey: 'size',
+    //       cssValues: [],
+    //       selectors: []
+    //     };
+    //     for (let i = 0; i < widthMapping.cssValues.length; i++) {
+    //       if (widthMapping.cssValues[i] === heightMapping.cssValues[i] && widthMapping.selectors[i] === heightMapping.selectors[i]) {
+    //         additionalSizeMap.cssValues.push(widthMapping.cssValues[i]);
+    //         additionalSizeMap.selectors.push(widthMapping.selectors[i]);
+    //       }
+    //     }
+    //     nodeMap.styleMap.push(additionalSizeMap);
+    //   }
+    // }
+    //
+    // for (const ndMapping of cleanNetwork.mappings.nodesDiscrete) {
+    //   const map: NeMappings[] = this.buildDiscreteMappingDefinition(ndMapping);
+    //   mappingsNodes = mappingsNodes.concat(map);
+    // }
+    //
+    // for (const edMapping of cleanNetwork.mappings.edgesDiscrete) {
+    //   const map: NeMappings[] = this.buildDiscreteMappingDefinition(edMapping);
+    //   mappingsEdges = mappingsEdges.concat(map);
+    // }
+    //
+    // for (const ncMapping of cleanNetwork.mappings.nodesContinuous) {
+    //   const map: NeMappings[] = this.buildContinuousMappingDefinition(ncMapping, cleanNetwork.aspectKeyValuesNodes);
+    //   mappingsNodes = mappingsNodes.concat(map);
+    // }
+    //
+    // for (const ecMapping of cleanNetwork.mappings.edgesContinuous) {
+    //   const map: NeMappings[] = this.buildContinuousMappingDefinition(ecMapping, cleanNetwork.aspectKeyValuesEdges);
+    //   mappingsEdges = mappingsEdges.concat(map);
+    // }
+    //
+    // if (cleanNetwork.networkInformation.originalFilename.startsWith('/assets/mocks')) {
+    //   // work with local mock-file
+    //   const originalFile = this.http.get(cleanNetwork.networkInformation.originalFilename)
+    //     .subscribe((originalData: any[]) => SidebarManageComponent
+    //       .buildDownloadFile(originalData, mappingsNodes, mappingsEdges, cleanNetwork));
+    // } else {
+    //   // work with file from networksDownloaded
+    //   const originalData = this.dataService.networksDownloaded[id];
+    //   SidebarManageComponent.buildDownloadFile(originalData, mappingsNodes, mappingsEdges, cleanNetwork);
+    // }
   }
 
   /**
@@ -597,43 +597,44 @@ export class SidebarManageComponent {
    * @private
    */
   private buildDiscreteMappingDefinition(dMapping: NeGroupedMappingsDiscrete): NeMappings[] {
-    const newMappings: NeMappings[] = [];
-    const col = dMapping.classifier;
-
-    for (const style of dMapping.styleMap) {
-      for (const val of style.cssValues) {
-        const property = {
-          key: style.cssKey,
-          value: val
-        };
-
-        const selector = style.selectors[style.cssValues.indexOf(val)];
-
-        for (const lookup of this.utilityService.lookup(property, selector, 'cytoscape', 'ndex')) {
-          const kCollection = [];
-          const vCollection = [];
-          const t = dMapping.datatype || 'string';
-
-          for (const value of dMapping.values) {
-            kCollection.push(value);
-            vCollection.push(style.cssValues[dMapping.values.indexOf(value)]);
-          }
-
-          const newMap: NeMappings = {
-            key: lookup.cssKey,
-            type: 'DISCRETE',
-            definition: SidebarManageComponent.collapseDiscreteMappingIntoString(col, t, kCollection, vCollection)
-          };
-
-          if (newMap.definition !== ''
-            && (!newMappings.map(x => x.key).includes(newMap.key)
-              || !newMappings.map(x => x.definition).includes(newMap.definition))) {
-            newMappings.push(newMap);
-          }
-        }
-      }
-    }
-    return newMappings;
+    // const newMappings: NeMappings[] = [];
+    // const col = dMapping.classifier;
+    //
+    // for (const style of dMapping.styleMap) {
+    //   for (const val of style.cssValues) {
+    //     const property = {
+    //       key: style.cssKey,
+    //       value: val
+    //     };
+    //
+    //     const selector = style.selectors[style.cssValues.indexOf(val)];
+    //
+    //     for (const lookup of this.utilityService.lookup(property, selector, 'cytoscape', 'ndex')) {
+    //       const kCollection = [];
+    //       const vCollection = [];
+    //       const t = dMapping.datatype || 'string';
+    //
+    //       for (const value of dMapping.values) {
+    //         kCollection.push(value);
+    //         vCollection.push(style.cssValues[dMapping.values.indexOf(value)]);
+    //       }
+    //
+    //       const newMap: NeMappings = {
+    //         key: lookup.cssKey,
+    //         type: 'DISCRETE',
+    //         definition: SidebarManageComponent.collapseDiscreteMappingIntoString(col, t, kCollection, vCollection)
+    //       };
+    //
+    //       if (newMap.definition !== ''
+    //         && (!newMappings.map(x => x.key).includes(newMap.key)
+    //           || !newMappings.map(x => x.definition).includes(newMap.definition))) {
+    //         newMappings.push(newMap);
+    //       }
+    //     }
+    //   }
+    // }
+    // return newMappings;
+    return null;
   }
 
   /**
@@ -644,73 +645,74 @@ export class SidebarManageComponent {
    * @private
    */
   private buildContinuousMappingDefinition(cMapping: any, aspects: NeAspect[]): NeMappings[] {
-    const newMappings: NeMappings[] = [];
-    const col = cMapping.title[1];
-    let datatype = 'string';
-
-    for (const a of aspects) {
-      if (a.name === col && a.datatype !== null) {
-        datatype = a.datatype;
-        break;
-      }
-    }
-
-    for (const val of cMapping.values) {
-      const property = {
-        key: cMapping.title[0],
-        value: val
-      };
-
-      for (const lookup of this.utilityService.lookup(property, cMapping.selector, 'cytoscape', 'ndex')) {
-        if (cMapping.chartValid) {
-          const lCollection: string[] = [];
-          const eCollection: string[] = [];
-          const gCollection: string[] = [];
-          const ovCollection: string[] = [];
-          for (let i = 0; i < cMapping.chart.lineChartLabels.length; i++) {
-            ovCollection.push(cMapping.chart.lineChartLabels[i]);
-            lCollection.push(cMapping.chart.lineChartData[0].data[i]);
-            eCollection.push(cMapping.chart.lineChartData[0].data[i]);
-            gCollection.push(cMapping.chart.lineChartData[0].data[i]);
-          }
-
-          const defaultLower = cMapping.chart.lineChartData[0].data[0];
-          const defaultGreater = cMapping.chart.lineChartData[0].data[cMapping.chart.lineChartData[0].data.length - 1];
-
-          const newNumericMapping: NeMappings = {
-            key: lookup.cssKey,
-            type: 'CONTINUOUS',
-            definition: SidebarManageComponent.collapseContinuousMappingIntoString(col,
-              datatype, lCollection, eCollection, gCollection, ovCollection, defaultLower, defaultGreater)
-          };
-          newMappings.push(newNumericMapping);
-
-        } else if (cMapping.gradientValid) {
-          const lCollection: string[] = [];
-          const eCollection: string[] = [];
-          const gCollection: string[] = [];
-          const ovCollection: string[] = [];
-          for (const gradient of cMapping.colorGradient) {
-            ovCollection.push(gradient.numericThreshold);
-            lCollection.push(gradient.color);
-            eCollection.push(gradient.color);
-            gCollection.push(gradient.color);
-          }
-
-          const defaultLower = cMapping.colorGradient.find(x => x.offset === '-1').color;
-          const defaultGreater = cMapping.colorGradient.find(x => x.offset === '101').color;
-          const newColorMapping: NeMappings = {
-            key: lookup.cssKey,
-            type: 'CONTINUOUS',
-            definition: SidebarManageComponent.collapseContinuousMappingIntoString(col,
-              datatype, lCollection, eCollection, gCollection, ovCollection, defaultLower, defaultGreater),
-          };
-          newMappings.push(newColorMapping);
-        }
-      }
-    }
-
-    return newMappings;
+    // const newMappings: NeMappings[] = [];
+    // const col = cMapping.title[1];
+    // let datatype = 'string';
+    //
+    // for (const a of aspects) {
+    //   if (a.name === col && a.datatype !== null) {
+    //     datatype = a.datatype;
+    //     break;
+    //   }
+    // }
+    //
+    // for (const val of cMapping.values) {
+    //   const property = {
+    //     key: cMapping.title[0],
+    //     value: val
+    //   };
+    //
+    //   for (const lookup of this.utilityService.lookup(property, cMapping.selector, 'cytoscape', 'ndex')) {
+    //     if (cMapping.chartValid) {
+    //       const lCollection: string[] = [];
+    //       const eCollection: string[] = [];
+    //       const gCollection: string[] = [];
+    //       const ovCollection: string[] = [];
+    //       for (let i = 0; i < cMapping.chart.lineChartLabels.length; i++) {
+    //         ovCollection.push(cMapping.chart.lineChartLabels[i]);
+    //         lCollection.push(cMapping.chart.lineChartData[0].data[i]);
+    //         eCollection.push(cMapping.chart.lineChartData[0].data[i]);
+    //         gCollection.push(cMapping.chart.lineChartData[0].data[i]);
+    //       }
+    //
+    //       const defaultLower = cMapping.chart.lineChartData[0].data[0];
+    //       const defaultGreater = cMapping.chart.lineChartData[0].data[cMapping.chart.lineChartData[0].data.length - 1];
+    //
+    //       const newNumericMapping: NeMappings = {
+    //         key: lookup.cssKey,
+    //         type: 'CONTINUOUS',
+    //         definition: SidebarManageComponent.collapseContinuousMappingIntoString(col,
+    //           datatype, lCollection, eCollection, gCollection, ovCollection, defaultLower, defaultGreater)
+    //       };
+    //       newMappings.push(newNumericMapping);
+    //
+    //     } else if (cMapping.gradientValid) {
+    //       const lCollection: string[] = [];
+    //       const eCollection: string[] = [];
+    //       const gCollection: string[] = [];
+    //       const ovCollection: string[] = [];
+    //       for (const gradient of cMapping.colorGradient) {
+    //         ovCollection.push(gradient.numericThreshold);
+    //         lCollection.push(gradient.color);
+    //         eCollection.push(gradient.color);
+    //         gCollection.push(gradient.color);
+    //       }
+    //
+    //       const defaultLower = cMapping.colorGradient.find(x => x.offset === '-1').color;
+    //       const defaultGreater = cMapping.colorGradient.find(x => x.offset === '101').color;
+    //       const newColorMapping: NeMappings = {
+    //         key: lookup.cssKey,
+    //         type: 'CONTINUOUS',
+    //         definition: SidebarManageComponent.collapseContinuousMappingIntoString(col,
+    //           datatype, lCollection, eCollection, gCollection, ovCollection, defaultLower, defaultGreater),
+    //       };
+    //       newMappings.push(newColorMapping);
+    //     }
+    //   }
+    // }
+    //
+    // return newMappings;
+    return null;
   }
 
   /**

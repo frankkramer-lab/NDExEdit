@@ -87,6 +87,7 @@ export class AppComponent {
     this.initializeTranslation();
 
     this.initDemoNetwork('DummyForTesting.cx');
+    this.initDemoNetwork('mappings.cx');
   }
 
   /**
