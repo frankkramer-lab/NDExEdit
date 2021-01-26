@@ -8,7 +8,6 @@ import {NeColorGradient} from '../models/ne-color-gradient';
 import {UtilityService} from './utility.service';
 import {NeChart} from '../models/ne-chart';
 import {ChartDataSets} from 'chart.js';
-
 import 'cytoscape-cx2js';
 import {CxToJs, CyNetworkUtils} from 'cytoscape-cx2js';
 import {DataService} from './data.service';
@@ -29,7 +28,7 @@ export class ParseService {
 
   constructor(
     private http: HttpClient,
-    private utilityService: UtilityService,
+    public utilityService: UtilityService,
     private dataService: DataService) {
   }
 
@@ -102,32 +101,117 @@ export class ParseService {
     colorGradientCollection.push({
       color: lowers[0],
       offset: '-1',
-      numericThreshold: '-1',
-      // title: lookup.concat([attribute])
-      title: []
+      numericThreshold: '-1'
     });
     for (const th of thresholds) {
       const offset = ((Number(th) - Number(thresholds[0])) * 100 / range).toFixed(0);
       const gradient: NeColorGradient = {
         color: equals[thresholds.indexOf(th)],
         offset: String(offset).concat('%'),
-        numericThreshold: th,
-        // title: lookup.concat([attribute])
-        title: []
+        numericThreshold: th
       };
       colorGradientCollection.push(gradient);
     }
     colorGradientCollection.push({
       color: greaters[greaters.length - 1],
       offset: '101',
-      numericThreshold: '101',
-      // title: lookup.concat([attribute])
-      title: []
+      numericThreshold: '101'
     });
     return colorGradientCollection;
   }
 
+  /**
+   * Interprets a continuous mapping and elicits all their thresholds to display intuitively
+   *
+   * @param obj
+   * @param styleProperty
+   * @private
+   */
+  private parseDefinitionContinuous(obj: any, styleProperty: string): NeMappingContinuous {
 
+    if (!obj || !obj.definition || !styleProperty) {
+      console.log('No definition given');
+      return null;
+    }
+
+    const mappingContinuous: NeMappingContinuous = {
+      col: null,
+      styleProperty,
+      cleanStyleProperty: this.utilityService.utilRemovePrefix(styleProperty, ['EDGE_', 'NODE_']),
+      type: null,
+      lowers: null,
+      equals: null,
+      greaters: null,
+      thresholds: null,
+      chart: null,
+      colorGradient: null,
+      isColor: true
+    };
+
+    const tmpL = [];
+    const tmpE = [];
+    const tmpG = [];
+    const tmpOV = [];
+
+    const commaSplit = obj.definition.split(',');
+
+    for (const cs of commaSplit) {
+      const equalSplit = cs.split('=');
+
+      switch (equalSplit[0]) {
+        case 'COL':
+          mappingContinuous.col = equalSplit[1];
+          break;
+        case 'T':
+          mappingContinuous.type = equalSplit[1];
+          break;
+        case 'L':
+          if (mappingContinuous.isColor && (equalSplit[2].length !== 7 || equalSplit[2].indexOf('#') !== 0)) {
+            mappingContinuous.isColor = false;
+          }
+          tmpL.splice(equalSplit[1], 0, equalSplit[2]);
+          break;
+        case 'E':
+          if (mappingContinuous.isColor && (equalSplit[2].length !== 7 || equalSplit[2].indexOf('#') !== 0)) {
+            mappingContinuous.isColor = false;
+          }
+          tmpE.splice(equalSplit[1], 0, equalSplit[2]);
+          break;
+        case 'G':
+          if (mappingContinuous.isColor && (equalSplit[2].length !== 7 || equalSplit[2].indexOf('#') !== 0)) {
+            mappingContinuous.isColor = false;
+          }
+          tmpG.splice(equalSplit[1], 0, equalSplit[2]);
+          break;
+        case 'OV':
+          tmpOV.splice(equalSplit[1], 0, equalSplit[2]);
+          break;
+
+      }
+    }
+
+    mappingContinuous.thresholds = tmpOV;
+    mappingContinuous.lowers = tmpL;
+    mappingContinuous.equals = tmpE;
+    mappingContinuous.greaters = tmpG;
+
+    if (mappingContinuous.isColor) {
+      mappingContinuous.colorGradient = ParseService.buildColorGradient(mappingContinuous);
+      mappingContinuous.chart = null;
+    } else {
+      mappingContinuous.chart = this.buildChartData(mappingContinuous);
+      mappingContinuous.colorGradient = null;
+    }
+
+    return mappingContinuous;
+  }
+
+  /**
+   * Builds chart data based on the given continuous mapping,
+   * may only be applied to non-color mappings
+   * @param mapping continuous mapping to be displayed as chart
+   * @private
+   */
   private buildChartData(mapping: NeMappingContinuous): NeChart {
 
     const chartMappingObject: NeChart = {
@@ -147,10 +231,6 @@ export class ParseService {
               id: 'y-axis-1',
             }
           ]
-        },
-        title: {
-          display: false,
-          text: ['test1', 'test2'] // todo rework for legend
         },
         elements: {
           line: {
@@ -175,7 +255,7 @@ export class ParseService {
     const numericGreaters = mapping.greaters as unknown as number[];
 
     const tmp: ChartDataSets = {
-      label: 'Test 3',
+      label: this.utilityService.utilRemovePrefix(mapping.styleProperty, ['EDGE_', 'NODE_']),
       data: numericEquals
     };
     if (!chartMappingObject.chartData.includes(tmp)) {
@@ -200,7 +280,6 @@ export class ParseService {
       return null;
     }
 
-    const startTime = new Date().getTime();
     const utils = new CyNetworkUtils();
     const niceCX = utils.rawCXtoNiceCX(json);
     const conversion = new CxToJs(utils);
@@ -223,9 +302,6 @@ export class ParseService {
       zoom,
       pan
     };
-
-    const endTime = new Date().getTime();
-    console.log('Time of conversion in ms: ' + Number(endTime - startTime));
 
     let core = cytoscape(networkConfig);
     core = this.addUtilitySelectors(core);
@@ -432,21 +508,17 @@ export class ParseService {
                 const definition: NeMappingDiscrete = ParseService.parseDefinitionDiscrete(prop.mappings[mapKey], mapKey);
                 if (isNode) {
                   // nd
-                  tmpND.push(definition); // todo consolidate to display as one mapping
-                  // mappings.nodesDiscrete.push(definition);
-
+                  tmpND.push(definition);
                 } else {
                   // ed
-                  tmpED.push(definition); // todo consolidate to display as one mapping
-                  // mappings.edgesDiscrete.push(definition);
-
+                  tmpED.push(definition);
                 }
               } else if (isContinuous) {
                 const definition = this.parseDefinitionContinuous(prop.mappings[mapKey], mapKey);
-                if (isNode) {
+                if (isNode && isContinuous) {
                   // nc
                   mappings.nodesContinuous.push(definition);
-                } else {
+                } else if (isContinuous) {
                   // ec
                   mappings.edgesContinuous.push(definition);
                 }
@@ -457,90 +529,19 @@ export class ParseService {
       }
     }
 
-    mappings.nodesDiscrete = this.groupDiscreteMappingsByCol(tmpND);
-    mappings.edgesDiscrete = this.groupDiscreteMappingsByCol(tmpED);
+    if (tmpND.length > 0) {
+      mappings.nodesDiscrete = this.groupDiscreteMappingsByCol(tmpND);
+    } else {
+      mappings.nodesDiscrete = [];
+    }
 
-    console.log(mappings);
+    if (tmpED.length > 0) {
+      mappings.edgesDiscrete = this.groupDiscreteMappingsByCol(tmpED);
+    } else {
+      mappings.edgesDiscrete = [];
+    }
 
     return mappings;
-  }
-
-  private parseDefinitionContinuous(obj: any, styleProperty: string): any {
-
-    if (!obj || !obj.definition || !styleProperty) {
-      console.log('No definition given');
-      return [];
-    }
-
-    const mappingContinuous: NeMappingContinuous = {
-      col: null,
-      styleProperty,
-      type: null,
-      lowers: null,
-      equals: null,
-      greaters: null,
-      thresholds: null,
-      chart: null,
-      colorGradient: null,
-      isColor: true
-    };
-
-    const tmpL = [];
-    const tmpE = [];
-    const tmpG = [];
-    const tmpOV = [];
-
-    const commaSplit = obj.definition.split(',');
-
-    for (const cs of commaSplit) {
-      const equalSplit = cs.split('=');
-
-      switch (equalSplit[0]) {
-        case 'COL':
-          mappingContinuous.col = equalSplit[1];
-          break;
-        case 'T':
-          mappingContinuous.type = equalSplit[1];
-          break;
-        case 'L':
-          if (mappingContinuous.isColor && (equalSplit[2].length !== 7 || equalSplit[2].indexOf('#') !== 0)) {
-            mappingContinuous.isColor = false;
-          }
-          tmpL.splice(equalSplit[1], 0, equalSplit[2]);
-          break;
-        case 'E':
-          if (mappingContinuous.isColor && (equalSplit[2].length !== 7 || equalSplit[2].indexOf('#') !== 0)) {
-            mappingContinuous.isColor = false;
-          }
-          tmpE.splice(equalSplit[1], 0, equalSplit[2]);
-          break;
-        case 'G':
-          if (mappingContinuous.isColor && (equalSplit[2].length !== 7 || equalSplit[2].indexOf('#') !== 0)) {
-            mappingContinuous.isColor = false;
-          }
-          tmpG.splice(equalSplit[1], 0, equalSplit[2]);
-          break;
-        case 'OV':
-          tmpOV.splice(equalSplit[1], 0, equalSplit[2]);
-          break;
-
-      }
-    }
-
-    mappingContinuous.thresholds = tmpOV;
-    mappingContinuous.lowers = tmpL;
-    mappingContinuous.equals = tmpE;
-    mappingContinuous.greaters = tmpG;
-
-    if (mappingContinuous.isColor) {
-      mappingContinuous.colorGradient = ParseService.buildColorGradient(mappingContinuous);
-      mappingContinuous.chart = null;
-    } else {
-      mappingContinuous.chart = this.buildChartData(mappingContinuous);
-      mappingContinuous.colorGradient = null;
-    }
-
-    return mappingContinuous;
   }
 
   /**
@@ -582,6 +583,8 @@ export class ParseService {
           continue outer;
         }
       }
+
+      // removing prefix to improve readability of sidebar table for discrete mappings
       const displayTh = this.utilityService.utilRemovePrefix(map.styleProperty, ['NODE_', 'EDGE_']);
 
       const style: NeStyleMap = {

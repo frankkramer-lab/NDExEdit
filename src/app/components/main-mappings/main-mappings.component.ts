@@ -137,7 +137,6 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
   ) {
 
     this.route.paramMap.subscribe(params => {
-      console.log(params);
       const networkId = params.get('id');
       if (networkId) {
         dataService.selectNetwork(Number(networkId));
@@ -163,7 +162,6 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
             this.isDiscrete = true;
           }
         }
-        console.log(this.selectedDiscrete);
       }
     });
   }

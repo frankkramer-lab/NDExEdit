@@ -1,5 +1,8 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {NeNetwork} from '../models/ne-network';
+import {NeMappingContinuous} from "../models/ne-mapping-continuous";
+import {NeMappingDiscrete} from "../models/ne-mapping-discrete";
+import {UtilityService} from "./utility.service";
 
 @Injectable({
   providedIn: 'root'
@@ -47,7 +50,7 @@ export class DataService {
    */
   flipLayoutEmitter = new EventEmitter<boolean>();
 
-  constructor() {
+  constructor(private utilityService: UtilityService) {
   }
 
   // /**
@@ -1051,5 +1054,27 @@ export class DataService {
    */
   nextId(): number {
     return ++this.currentNetworkId;
+  }
+
+  /**
+   * Returns a mapping based on its ID and the currently selected network
+   * @param index string literal, e.g. 'nd0' for nodes discrete at index 0 of the current network
+   */
+  findMappingById(index: string): NeMappingContinuous | NeMappingDiscrete {
+    const typeHint = this.utilityService.utilGetTypeHintByString(index.substr(0, 2));
+    const i = index.substr(2);
+
+    if (typeHint.nd) {
+      return this.networkSelected.mappings.nodesDiscrete[i];
+    } else if (typeHint.ed) {
+      return this.networkSelected.mappings.edgesDiscrete[i];
+    } else if (typeHint.nc) {
+      return this.networkSelected.mappings.nodesContinuous[i];
+    } else if (typeHint.ec) {
+      return this.networkSelected.mappings.edgesContinuous[i];
+    } else {
+      console.log('no matching mapping found');
+      return null;
+    }
   }
 }

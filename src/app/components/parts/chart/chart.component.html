@@ -2,9 +2,9 @@
 <div *ngIf="chartObject.chartType.line">
   <h5>
     <a [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, index]} }]" role="button">
-      <b>{{lookup}}</b>
+      <b>{{mapping.cleanStyleProperty || mapping.styleProperty}}</b>
       {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
-      <b>{{attribute}}</b>
+      <b>{{mapping.col}}</b>
     </a>
   </h5>
   <canvas [ngStyle]="{'width.%': widthPercent}"

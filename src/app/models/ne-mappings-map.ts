@@ -1,6 +1,7 @@
 import {NeGroupedMappingsDiscrete} from './ne-grouped-mappings-discrete';
 import {NeContinuousCollection} from './ne-continuous-collection';
 import {NeMappingDiscrete} from "./ne-mapping-discrete";
+import {NeMappingContinuous} from "./ne-mapping-continuous";
 
 /**
  * Collection of all types of mappings
@@ -20,10 +21,10 @@ export interface NeMappingsMap {
   /**
    * Collection of continuous node mappings
    */
-  nodesContinuous: NeContinuousCollection[];
+  nodesContinuous: NeMappingContinuous[];
 
   /**
    * Collection of continuous edge mappings
    */
-  edgesContinuous: NeContinuousCollection[];
+  edgesContinuous: NeMappingContinuous[];
 }

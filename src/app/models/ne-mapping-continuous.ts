@@ -1,5 +1,5 @@
-import {NeChart} from "./ne-chart";
-import {NeColorGradient} from "./ne-color-gradient";
+import {NeChart} from './ne-chart';
+import {NeColorGradient} from './ne-color-gradient';
 
 /**
  * Format for a continuous mapping
@@ -14,6 +14,10 @@ export interface NeMappingContinuous {
    * These have to be interpretable by CX, because we render by converting CX to Cytoscape.js
    */
   styleProperty: string;
+  /**
+   * Style property without redundant prefix 'NODE_' or 'EDGE_'
+   */
+  cleanStyleProperty?: string;
   /**
    * Type of data which is mapped, should be double, integer or float
    * to be a valid continuous mapping

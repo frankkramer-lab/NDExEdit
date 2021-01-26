@@ -23,9 +23,9 @@
   <div *ngIf="showColorGradient">
     <h5>
       <a [routerLink]="['', {outlets: {primary: ['mappings', dataService.networkSelected.id, index]} }]" role="button">
-        <b>A</b>
+        <b>{{mapping.cleanStyleProperty || mapping.styleProperty}}</b>
         {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
-        <b>B</b>
+        <b>{{mapping.col}}</b>
       </a>
     </h5>
     <div [style.background]="gradientBackground" [style.height.px]="200" [style.width.%]="100" class="mb-3">
@@ -121,7 +121,7 @@
       </button>
 
       <h5
-        *ngIf="dataService.networkSelected.mappings && (dataService.networkSelected.mappings.nodesDiscrete || dataService.networkSelected.mappings.nodesContinuous) && (dataService.networkSelected.mappings.nodesDiscrete.length > 0 || dataService.networkSelected.mappings.nodesContinuous.length > 0)">
+        *ngIf="dataService.networkSelected.mappings.nodesDiscrete.length > 0 || dataService.networkSelected.mappings.nodesContinuous.length > 0">
         {{'SIDEBAR_EDIT_ASPECTS_NODES' | translate}}
       </h5>
 
@@ -165,28 +165,30 @@
       </table>
 
       <ul
-        *ngIf="dataService.networkSelected.mappings && dataService.networkSelected.mappings.nodesContinuous && dataService.networkSelected.mappings.nodesContinuous.length > 0"
+        *ngIf="dataService.networkSelected.mappings.nodesContinuous.length > 0"
         class="list-group mb-2">
       <span *ngFor="let nodeMap of dataService.networkSelected.mappings.nodesContinuous; let index = index">
-        <li *ngIf="nodeMap.chartValid" class="list-group-item">
+        <li *ngIf="!nodeMap.isColor" class="list-group-item">
           <a (click)="displayMapping(nodeMap.chart, [], 'nc' + index)" role="button">
-            <b>{{nodeMap.title[0]}}</b>
+            <b>{{nodeMap.styleProperty}}</b>
             {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
-            <b> {{nodeMap.title[1]}}</b>
+            <b> {{nodeMap.col}}</b>
           </a>
         </li>
-        <li *ngIf="nodeMap.gradientValid" class="list-group-item">
+        <li *ngIf="nodeMap.isColor" class="list-group-item">
           <a (click)="displayMapping(null, nodeMap.colorGradient, 'nc' + index)" role="button">
-            <b>{{nodeMap.title[0]}}</b>
+            <b>{{nodeMap.styleProperty}}</b>
             {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
-            <b> {{nodeMap.title[1]}}</b>
+            <b> {{nodeMap.col}}</b>
           </a>
         </li>
       </span>
       </ul>
 
       <h5
-        *ngIf="(dataService.networkSelected.mappings.edgesDiscrete.length > 0 || dataService.networkSelected.mappings.edgesContinuous.length > 0)">{{'SIDEBAR_EDIT_ASPECTS_EDGES' | translate}}</h5>
+        *ngIf="dataService.networkSelected.mappings.edgesDiscrete.length > 0 || dataService.networkSelected.mappings.edgesContinuous.length > 0">
+        {{'SIDEBAR_EDIT_ASPECTS_EDGES' | translate}}
+      </h5>
 
       <table
         *ngIf="dataService.networkSelected.mappings.edgesDiscrete.length > 0"
@@ -225,20 +227,20 @@
       </table>
 
       <ul *ngIf="dataService.networkSelected.mappings.edgesContinuous.length > 0"
-        class="list-group mb-2">
+          class="list-group mb-2">
       <span *ngFor="let edgeMap of dataService.networkSelected.mappings.edgesContinuous; let index = index">
-        <li *ngIf="edgeMap.chartValid" class="list-group-item">
+        <li *ngIf="!edgeMap.isColor" class="list-group-item">
           <a (click)="displayMapping(edgeMap.chart, [], 'ec' + index)" role="button">
-            <b>{{edgeMap.title[0]}}</b>
+            <b>{{edgeMap.styleProperty}}</b>
             {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
-            <b>{{edgeMap.title[1]}}</b>
+            <b>{{edgeMap.col}}</b>
           </a>
         </li>
-        <li *ngIf="edgeMap.gradientValid" class="list-group-item">
+        <li *ngIf="edgeMap.isColor" class="list-group-item">
           <a (click)="displayMapping(null, edgeMap.colorGradient, 'ec' + index)" role="button">
-            <b>{{edgeMap.title[0]}}</b>
+            <b>{{edgeMap.styleProperty}}</b>
             {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
-            <b>{{edgeMap.title[1]}}</b>
+            <b>{{edgeMap.col}}</b>
           </a>
         </li>
 

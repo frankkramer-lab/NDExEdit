@@ -3,7 +3,7 @@ import {DataService} from '../../services/data.service';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {GraphService} from '../../services/graph.service';
-import {faLightbulb, faPalette, faClone} from '@fortawesome/free-solid-svg-icons';
+import {faClone, faLightbulb, faPalette} from '@fortawesome/free-solid-svg-icons';
 import {ChartDataSets} from 'chart.js';
 import {Label} from 'ng2-charts';
 import {NeColorGradient} from '../../models/ne-color-gradient';
@@ -11,6 +11,9 @@ import {MainMappingsComponent} from '../main-mappings/main-mappings.component';
 import {MainMappingsNewComponent} from '../main-mappings-new/main-mappings-new.component';
 import {NeChart} from '../../models/ne-chart';
 import {NeChartType} from '../../models/ne-chart-type';
+import {NeMappingDiscrete} from "../../models/ne-mapping-discrete";
+import {NeMappingContinuous} from "../../models/ne-mapping-continuous";
+import {UtilityService} from "../../services/utility.service";
 
 @Component({
   selector: 'app-sidebar-edit',
@@ -35,14 +38,6 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    */
   faLightbulb = faLightbulb;
   /**
-   * CSS property which is mapped by {@link SidebarEditComponent#attribute|this attribute}
-   */
-  lookup: string;
-  /**
-   * attribute responsible for {@link SidebarEditComponent#lookup|this CSS property's} value
-   */
-  attribute: string;
-  /**
    * Toggles displaying the comparison of multiple selected elements
    */
   showComparison = false;
@@ -66,6 +61,10 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * Indicates which type of mapping is to be displayed
    */
   index = '';
+  /**
+   * Selected mapping matching the {@link index}
+   */
+  mapping: NeMappingDiscrete | NeMappingContinuous;
   /**
    * chart data used to display numeric continuous mapping, initialized with default values.
    * See {@link ParseService#buildChartData} for more details
@@ -140,7 +139,8 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   constructor(
     public dataService: DataService,
     private route: ActivatedRoute,
-    public graphService: GraphService
+    public graphService: GraphService,
+    private utilityService: UtilityService
   ) {
 
     this.routerSubscription = this.route.paramMap.subscribe(params => {
@@ -165,7 +165,6 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    */
   ngAfterViewInit(): void {
     this.isInitialized = true;
-    // this.graphService.toggleLabels(!this.dataService.networkSelected.showLabels);
   }
 
   /**
@@ -183,6 +182,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     this.index = '';
     this.graphService.selectedElements.nodes = [];
     this.graphService.selectedElements.edges = [];
+    this.mapping = null;
 
     if (this.mappingsSubscription) {
       this.mappingsSubscription.unsubscribe();
@@ -230,9 +230,9 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    */
   displayMapping(chart: any = null, colorGradient: NeColorGradient[] = [], index: string): void {
     this.index = index;
+    this.mapping = this.dataService.findMappingById(index);
+
     if (chart !== null) {
-      this.lookup = chart.lineChartOptions.title.text[0];
-      this.attribute = chart.lineChartOptions.title.text[1];
       this.lineChartData = chart.chartData;
       this.lineChartLabels = chart.chartLabels;
 
@@ -249,8 +249,6 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
 
     } else if (colorGradient.length > 0) {
 
-      this.lookup = colorGradient[0].title[0];
-      this.attribute = colorGradient[0].title[1];
       let color = 'linear-gradient(90deg, ';
       const tmp = [];
 
@@ -309,4 +307,5 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     const styleIndex = this.dataService.networkSelected.style.findIndex(x => x.selector === '.custom_highlight_color');
     this.dataService.networkSelected.style[styleIndex].style = colorStyle;
   }
+
 }

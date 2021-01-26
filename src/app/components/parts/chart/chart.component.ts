@@ -2,6 +2,8 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DataService} from '../../../services/data.service';
 import {NeChart} from '../../../models/ne-chart';
 import {faMinus, faPlus, faUndo} from '@fortawesome/free-solid-svg-icons';
+import {NeMappingDiscrete} from "../../../models/ne-mapping-discrete";
+import {NeMappingContinuous} from "../../../models/ne-mapping-continuous";
 
 @Component({
   selector: 'app-chart',
@@ -9,16 +11,6 @@ import {faMinus, faPlus, faUndo} from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./chart.component.scss']
 })
 export class ChartComponent implements OnInit {
-
-  /**
-   * Name of the lookup which is part of the mapping
-   */
-  // @Input() lookup?: string;
-
-  /**
-   * Name of the attribute which is part of the mapping
-   */
-  // @Input() attribute?: string;
 
   /**
    * Sidebar chart displaying a preview for the continuous mapping needs a router link
@@ -48,6 +40,10 @@ export class ChartComponent implements OnInit {
    */
   @Output() binSizeEmitter = new EventEmitter<number>();
 
+  /**
+   * Mapping to display
+   */
+  mapping: NeMappingDiscrete | NeMappingContinuous;
   /**
    * Default binSize for this property
    */
@@ -99,6 +95,7 @@ export class ChartComponent implements OnInit {
   ngOnInit(): void {
     this.binSizeInitially = this.numberOfBins;
     this.chartObject.lineChartColors = this.getRandomColorForChart();
+    this.mapping = this.dataService.findMappingById(this.index);
   }
 
   /**
