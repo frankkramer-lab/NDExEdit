@@ -170,14 +170,14 @@
       <span *ngFor="let nodeMap of dataService.networkSelected.mappings.nodesContinuous; let index = index">
         <li *ngIf="!nodeMap.isColor" class="list-group-item">
           <a (click)="displayMapping(nodeMap.chart, [], 'nc' + index)" role="button">
-            <b>{{nodeMap.styleProperty}}</b>
+            <b>{{nodeMap.cleanStyleProperty || nodeMap.styleProperty}}</b>
             {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
             <b> {{nodeMap.col}}</b>
           </a>
         </li>
         <li *ngIf="nodeMap.isColor" class="list-group-item">
           <a (click)="displayMapping(null, nodeMap.colorGradient, 'nc' + index)" role="button">
-            <b>{{nodeMap.styleProperty}}</b>
+            <b>{{nodeMap.cleanStyleProperty || nodeMap.styleProperty}}</b>
             {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
             <b> {{nodeMap.col}}</b>
           </a>
@@ -231,14 +231,14 @@
       <span *ngFor="let edgeMap of dataService.networkSelected.mappings.edgesContinuous; let index = index">
         <li *ngIf="!edgeMap.isColor" class="list-group-item">
           <a (click)="displayMapping(edgeMap.chart, [], 'ec' + index)" role="button">
-            <b>{{edgeMap.styleProperty}}</b>
+            <b>{{edgeMap.cleanStyleProperty || edgeMap.styleProperty}}</b>
             {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
             <b>{{edgeMap.col}}</b>
           </a>
         </li>
         <li *ngIf="edgeMap.isColor" class="list-group-item">
           <a (click)="displayMapping(null, edgeMap.colorGradient, 'ec' + index)" role="button">
-            <b>{{edgeMap.styleProperty}}</b>
+            <b>{{edgeMap.cleanStyleProperty || edgeMap.styleProperty}}</b>
             {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
             <b>{{edgeMap.col}}</b>
           </a>
@@ -250,6 +250,7 @@
     </div>
 
     <!-- Edit: Styles -->
+    <!-- todo remove this -->
     <div aria-labelledby="editsNavStyles" class="tab-pane fade" id="editsNavStylesContent" role="tabpanel">
 
       <div class="row border-bottom">
