@@ -52,9 +52,10 @@ export class MainStatsComponent {
     this.route.paramMap.subscribe(params => {
       const networkId = params.get('id');
       if (networkId) {
-        this.nodeCount = this.dataService.networkSelected.elements.filter(x => x.group === 'nodes').length;
-        this.edgeCount = this.dataService.networkSelected.elements.filter(x => x.group === 'edges').length;
-        this.styleCount = this.dataService.networkSelected.style.length - 6;
+        this.dataService.selectNetwork(Number(networkId));
+        // this.nodeCount = this.dataService.networkSelected.elements.filter(x => x.group === 'nodes').length;
+        // this.edgeCount = this.dataService.networkSelected.elements.filter(x => x.group === 'edges').length;
+        // this.styleCount = this.dataService.networkSelected.style.length - 6;
       }
     });
   }

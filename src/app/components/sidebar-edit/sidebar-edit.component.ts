@@ -3,7 +3,7 @@ import {DataService} from '../../services/data.service';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {GraphService} from '../../services/graph.service';
-import {faClone, faLightbulb, faPalette} from '@fortawesome/free-solid-svg-icons';
+import {faClone, faLightbulb, faPalette, faCogs} from '@fortawesome/free-solid-svg-icons';
 import {ChartDataSets} from 'chart.js';
 import {Label} from 'ng2-charts';
 import {NeColorGradient} from '../../models/ne-color-gradient';
@@ -25,7 +25,15 @@ import {UtilityService} from "../../services/utility.service";
  * Component responsible for graph editing functionality
  */
 export class SidebarEditComponent implements AfterViewInit, OnDestroy {
-
+  /**
+   * Icon: faCogs
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faCogs = faCogs;
+  /**
+   * Icon: faClone
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faClone = faClone;
   /**
    * Icon: faPalette

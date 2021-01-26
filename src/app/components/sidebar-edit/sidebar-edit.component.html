@@ -97,12 +97,14 @@
     <a aria-controls="editsNavAspects" aria-selected="false" class="nav-link active" data-toggle="pill"
        href="#editsNavAspectsContent"
        id="editsNavAspects" role="tab">{{'SIDEBAR_EDIT_ATTRIBUTES_TITLE' | translate}}</a>
-    <a aria-controls="editsNavStyles" aria-selected="false" class="nav-link" data-toggle="pill"
-       href="#editsNavStylesContent"
-       id="editsNavStyles" role="tab">{{'SIDEBAR_EDIT_STYLE_TITLE' | translate}}</a>
+    <a aria-controls="editsNavInspect" aria-selected="false" class="nav-link" data-toggle="pill"
+       href="#editsNavInspectContent"
+       id="editsNavInspect" role="tab">{{'SIDEBAR_EDIT_INSPECT_TITLE' | translate}}</a>
     <a aria-controls="editsNavHighlights" aria-selected="true" class="nav-link" data-toggle="pill"
        href="#editsNavHighlightsContent"
-       id="editsNavHighlights" role="tab">{{'SIDEBAR_EDIT_EDITING_TITLE' | translate}}</a>
+       id="editsNavHighlights" role="tab">
+      <fa-icon [icon]="faCogs"></fa-icon>
+    </a>
 
   </div>
 
@@ -127,29 +129,30 @@
 
       <table
         *ngIf="dataService.networkSelected.mappings.nodesDiscrete.length > 0"
-        class="table table-bordered table-responsive">
-        <tr *ngFor="let nodeMap of dataService.networkSelected.mappings.nodesDiscrete; let index = index">
-          <td>
-            <a
-              [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, 'nd' + index]} }]"
-              role="button">
-              <b>{{nodeMap.classifier}}</b>
-            </a>
-          </td>
-          <td>
-            <table class="table table-borderless">
-              <tr class="border-bottom">
-                <td colspan="1">&nbsp;</td>
-                <td *ngFor="let styleProp of nodeMap.th"><b>{{styleProp}}</b></td>
-              </tr>
-              <tr *ngFor="let value of nodeMap.values">
-                <td class="border-right">
-                  <a data-toggle="tooltip"
-                     ngbTooltip="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}}" placement="left"
-                     role="button"><b>{{value}}</b>
-                  </a>
-                </td>
-                <td *ngFor="let style of nodeMap.styleMap">
+        class="table-responsive">
+        <table class="table table-bordered">
+          <tr *ngFor="let nodeMap of dataService.networkSelected.mappings.nodesDiscrete; let index = index">
+            <td>
+              <a
+                [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, 'nd' + index]} }]"
+                role="button">
+                <b>{{nodeMap.classifier}}</b>
+              </a>
+            </td>
+            <td>
+              <table class="table table-borderless">
+                <tr class="border-bottom">
+                  <td colspan="1">&nbsp;</td>
+                  <td *ngFor="let styleProp of nodeMap.th"><b>{{styleProp}}</b></td>
+                </tr>
+                <tr *ngFor="let value of nodeMap.values">
+                  <td class="border-right">
+                    <a data-toggle="tooltip"
+                       ngbTooltip="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}}" placement="left"
+                       role="button"><b>{{value}}</b>
+                    </a>
+                  </td>
+                  <td *ngFor="let style of nodeMap.styleMap">
                   <span *ngFor="let cssValue of style.cssValues">
                     {{cssValue}}
                     <span *ngIf="cssValue && cssValue.toString().indexOf('#') === 0"
@@ -157,11 +160,12 @@
                           class="badge badge-pill border">&nbsp;
                     </span>
                   </span>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
       </table>
 
       <ul
@@ -192,38 +196,40 @@
 
       <table
         *ngIf="dataService.networkSelected.mappings.edgesDiscrete.length > 0"
-        class="table table-bordered">
-        <tr *ngFor="let edgeMap of dataService.networkSelected.mappings.edgesDiscrete; let index = index">
-          <td>
-            <a
-              [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, 'ed' + index]} }]"
-              role="button">
-              <b>{{edgeMap.classifier}}</b>
-            </a>
-          </td>
-          <td>
-            <table class="table table-borderless">
-              <tr class="border-bottom">
-                <td colspan="1">&nbsp;</td>
-                <td *ngFor="let styleProp of edgeMap.th"><b>{{styleProp}}</b></td>
-              </tr>
-              <tr *ngFor="let value of edgeMap.values; let i = index">
-                <td class="border-right">
-                  <a data-toggle="tooltip"
-                     ngbTooltip="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}}" placement="left"
-                     role="button"><b>{{value}}</b></a>
-                </td>
-                <td *ngFor="let style of edgeMap.styleMap">
-                  {{style.cssValues[i]}}
-                  <span *ngIf="style.cssValues && style.cssValues[i].toString().indexOf('#') === 0"
-                        [ngStyle]="{'background-color': style.cssValues[i]}"
-                        class="badge badge-pill border">&nbsp;
+        class="table-responsive">
+        <table class="table table-bordered">
+          <tr *ngFor="let edgeMap of dataService.networkSelected.mappings.edgesDiscrete; let index = index">
+            <td>
+              <a
+                [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, 'ed' + index]} }]"
+                role="button">
+                <b>{{edgeMap.classifier}}</b>
+              </a>
+            </td>
+            <td>
+              <table class="table table-borderless">
+                <tr class="border-bottom">
+                  <td colspan="1">&nbsp;</td>
+                  <td *ngFor="let styleProp of edgeMap.th"><b>{{styleProp}}</b></td>
+                </tr>
+                <tr *ngFor="let value of edgeMap.values; let i = index">
+                  <td class="border-right">
+                    <a data-toggle="tooltip"
+                       ngbTooltip="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}}" placement="left"
+                       role="button"><b>{{value}}</b></a>
+                  </td>
+                  <td *ngFor="let style of edgeMap.styleMap">
+                    {{style.cssValues[i]}}
+                    <span *ngIf="style.cssValues && style.cssValues[i].toString().indexOf('#') === 0"
+                          [ngStyle]="{'background-color': style.cssValues[i]}"
+                          class="badge badge-pill border">&nbsp;
                   </span>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
       </table>
 
       <ul *ngIf="dataService.networkSelected.mappings.edgesContinuous.length > 0"
@@ -249,35 +255,12 @@
 
     </div>
 
-    <!-- Edit: Styles -->
-    <!-- todo remove this -->
-    <div aria-labelledby="editsNavStyles" class="tab-pane fade" id="editsNavStylesContent" role="tabpanel">
-
-      <div class="row border-bottom">
-        <div class="col">
-          {{'SIDEBAR_EDIT_TH_CLASSNAME' | translate}}
-        </div>
-        <div class="col">
-          <b>{{'SIDEBAR_EDIT_TH_CSS_KEY' | translate}}</b>: {{'SIDEBAR_EDIT_TH_CSS_VALUE' | translate}}
-        </div>
-      </div>
-      <div *ngFor="let s of dataService.networkSelected.style" class="row border-bottom">
-        <div class="col">
-          <a data-toggle="tooltip"
-             ngbTooltip="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}}" placement="left"
-             role="button">Hier steht was</a>
-        </div>
-        <div class="col">
-            <span *ngFor="let css of s.style|keyvalue">
-              <b>{{css.key}}</b>: {{css.value}}
-              <span *ngIf="css.value && css.value.toString().indexOf('#') === 0"
-                    [ngStyle]="{'background-color': css.value}"
-                    class="badge badge-pill border">&nbsp;
-              </span>
-              <br>
-            </span>
-        </div>
-      </div>
+    <!-- Edit: Inspect -->
+    <div aria-labelledby="editsNavInspect" class="tab-pane fade" id="editsNavInspectContent" role="tabpanel">
+      <h1>WIP</h1>
+      <p>To highlight elements within this network, we need to extract all available attributes from nodeAttributes /
+        edgeAttributes</p>
+      <p>Also need this to fix network stats onclick info-button</p>
     </div>
 
     <!-- Edit: Highlight color -->

@@ -5,51 +5,58 @@
 
   <h3>{{'MAIN_STATS_GRAPH_INFO_TITLE' | translate}} "{{dataService.networkSelected.networkInformation.name}}"</h3>
 
-  <div class="row mt-3 p-2">
-    <div class="col-3">
-      <h6>{{'MAIN_STATS_GRAPH_INFO_NODES' | translate}}: {{nodeCount}}</h6>
-      <h6>{{'MAIN_STATS_GRAPH_INFO_EDGES' | translate}}: {{edgeCount}}</h6>
-      <h6>{{'MAIN_STATS_GRAPH_INFO_CLASSES' | translate}}: {{styleCount}}</h6>
+    <p [innerHTML]="dataService.networkSelected.networkInformation.description || 'MAIN_STATS_NO_DESCRIPTION'|translate"></p>
+  <div class="row">
+
+    <div class="col">
       <a
         [routerLink]="['', { outlets: {primary: ['graph', dataService.networkSelected.id], sidebar: ['edit', dataService.networkSelected.id]} }]"
-        class="btn btn-block btn-outline-success mt-4"
+        class="btn btn-block btn-outline-success mt-2 mb-2"
         data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_EDIT' | translate}}" placement="bottom"
         role="button">
         <fa-icon [icon]="faPaintBrush"></fa-icon>&nbsp;{{'MAIN_STATS_BTN_RENDER' | translate}}
       </a>
+    </div>
+
+    <div class="col">
+
+      <!-- todo compare diff tool, then routerlink -->
+      <!--    <a-->
+      <!--      [routerLink]="['', { outlets: {primary: ['graph', dataService.networkSelected.id], sidebar: ['compare', dataService.networkSelected.id]} }]"-->
+      <!--      class="btn btn-block btn-outline-secondary mt-2"-->
+      <!--      data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_COMPARE' | translate}}" placement="bottom"-->
+      <!--      role="button">-->
+      <!--      <fa-icon [icon]="faExchangeAlt"></fa-icon>&nbsp;{{'MAIN_STATS_BTN_COMPARE' | translate}}-->
+      <!--    </a>-->
       <a
-        [routerLink]="['', { outlets: {primary: ['graph', dataService.networkSelected.id], sidebar: ['compare', dataService.networkSelected.id]} }]"
-        class="btn btn-block btn-outline-secondary mt-2"
+        class="btn btn-block btn-outline-secondary mt-2 mb-2"
         data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_COMPARE' | translate}}" placement="bottom"
         role="button">
         <fa-icon [icon]="faExchangeAlt"></fa-icon>&nbsp;{{'MAIN_STATS_BTN_COMPARE' | translate}}
       </a>
-    </div>
-    <div
-      *ngIf="dataService.networkSelected.networkInformation.rightsholder || dataService.networkSelected.networkInformation.networkType || dataService.networkSelected.networkInformation.organism || dataService.networkSelected.networkInformation.description"
-      class="col-9 card">
-      <div class="card-body">
-        <p *ngIf="dataService.networkSelected.networkInformation.rightsholder">
-          <b [innerHTML]="">{{'MAIN_STATS_GRAPH_INFO_NW_RIGHTSHOLDER' | translate}}:</b>&nbsp;
-          <span [innerHTML]="dataService.networkSelected.networkInformation.rightsholder"></span>
-        </p>
-        <p *ngIf="dataService.networkSelected.networkInformation.networkType">
-          <b>{{'MAIN_STATS_GRAPH_INFO_NW_TYPE' | translate}}:</b>&nbsp;<span
-          [innerHTML]="dataService.networkSelected.networkInformation.networkType"></span>
-        </p>
-        <p *ngIf="dataService.networkSelected.networkInformation.organism">
-          <b>{{'MAIN_STATS_GRAPH_INFO_NW_ORGANISM' | translate}}:</b>&nbsp;<span
-          [innerHTML]="dataService.networkSelected.networkInformation.organism"></span>
-        </p>
-        <p *ngIf="dataService.networkSelected.networkInformation.description">
-          <b>{{'MAIN_STATS_GRAPH_INFO_NW_DESCRIPTION' | translate}}:</b>&nbsp;<span
-          [innerHTML]="dataService.networkSelected.networkInformation.description"></span>
-        </p>
-      </div>
+
     </div>
   </div>
 
-  <hr>
+  <div class="card">
+    <div class="card-body">
+      <p *ngIf="dataService.networkSelected.networkInformation.rightsholder">
+        <b [innerHTML]="">{{'MAIN_STATS_GRAPH_INFO_NW_RIGHTSHOLDER' | translate}}:</b>&nbsp;
+        <span [innerHTML]="dataService.networkSelected.networkInformation.rightsholder"></span>
+      </p>
+      <p *ngIf="dataService.networkSelected.networkInformation.networkType">
+        <b>{{'MAIN_STATS_GRAPH_INFO_NW_TYPE' | translate}}:</b>&nbsp;<span
+        [innerHTML]="dataService.networkSelected.networkInformation.networkType"></span>
+      </p>
+      <p *ngIf="dataService.networkSelected.networkInformation.organism">
+        <b>{{'MAIN_STATS_GRAPH_INFO_NW_ORGANISM' | translate}}:</b>&nbsp;<span
+        [innerHTML]="dataService.networkSelected.networkInformation.organism"></span>
+      </p>
+    </div>
+  </div>
+
+  <!-- todo read available attributes -->
+  <ng-container *ngIf="false">
 
   <h3
     *ngIf="dataService.networkSelected.aspectKeyValuesNodes.length > 0">{{'MAIN_STATS_GRAPH_ATTRIBUTES_NODES_TITLE' | translate}}</h3>
@@ -69,6 +76,7 @@
 
   <hr
     *ngIf="dataService.networkSelected.aspectKeyValuesNodes.length > 0 || dataService.networkSelected.aspectKeyValuesEdges.length > 0">
+  </ng-container>
 
 </ng-container>
 
