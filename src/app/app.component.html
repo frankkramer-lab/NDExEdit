@@ -1,14 +1,14 @@
-<div class="container-fluid">
+<div class="container-fluid full">
 
   <div class="row">
 
     <!-- Main outlet -->
-    <div [ngClass]="(layoutIsMainLeft ? 'order-1 p-2 w-' + widthLeft : 'order-3 p-2 w-' + widthRight)">
+    <div [ngClass]="(layoutIsMainLeft ? 'scroll order-1 p-2 w-' + widthLeft : 'scroll order-3 p-2 w-' + widthRight)">
       <router-outlet></router-outlet>
     </div>
 
     <!-- Grey bar -->
-    <div class="order-2 w-5">
+    <div id="drag-wrapper" class="order-2 w-5">
       <div class="drag-bar">
         <div class="btn-group-vertical">
           <button class="btn btn-sm btn-secondary btnLayout" (click)="increaseWidthRight()">
@@ -29,7 +29,7 @@
     </div>
 
     <!-- Sidebar outlet -->
-    <div [ngClass]="(layoutIsMainLeft ? 'order-3 w-' + widthRight : 'order-1 w-' + widthLeft)">
+    <div [ngClass]="(layoutIsMainLeft ? 'scroll order-3 w-' + widthRight : 'scroll order-1 w-' + widthLeft)">
 
       <ul class="nav nav-tabs mt-2">
         <li class="nav-item">
@@ -49,7 +49,6 @@
         </li>
       </ul>
       <router-outlet name="sidebar"></router-outlet>
-
     </div>
   </div>
 </div>
