@@ -322,20 +322,19 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    */
   public getAttributeListForCurrentNetworkAndType(s: string): NeAspect[] {
     const typeHint: NeMappingsType = this.utilityService.utilGetTypeHintByString(s);
-    const availableAttributes: NeAspect[] = [];
-    return availableAttributes;
+    let baseList: NeAspect[];
 
-    // if (typeHint.ec || typeHint.ed) {
-    //   availableAttributes = this.dataService.networkSelected.aspectKeyValuesEdges;
-    // } else {
-    //   availableAttributes = this.dataService.networkSelected.aspectKeyValuesNodes;
-    // }
-    //
-    // if (typeHint.ec || typeHint.nc) {
-    //   return availableAttributes.filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'float' || a.datatype === 'double'));
-    // } else {
-    //   return availableAttributes.filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
-    // }
+    if (typeHint.nd || typeHint.nc) {
+      baseList = this.dataService.networkSelected.aspectKeyValuesNodes;
+    } else if (typeHint.ed || typeHint.ec) {
+      baseList = this.dataService.networkSelected.aspectKeyValuesEdges;
+    }
+
+    if (typeHint.nc || typeHint.ec) {
+      return baseList.filter(a => a.datatype === 'double' || a.datatype === 'float' || a.datatype === 'integer');
+    } else {
+      return baseList.filter(a => a.datatype === 'string' || a.datatype === 'integer');
+    }
   }
 
   /**

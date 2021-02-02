@@ -8,7 +8,7 @@ export interface NeGroupedMappingsDiscrete {
   /**
    * Classifier of this mapping, e.g. "type"
    */
-  classifier: string;
+  col: string;
 
   /**
    * List of all values included in this mapping, e.g. ["drug", "protein"]

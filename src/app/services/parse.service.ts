@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import * as cytoscape from 'cytoscape';
 import {NeStyle} from '../models/ne-style';
 import {NeNetworkInformation} from '../models/ne-network-information';
@@ -10,12 +9,12 @@ import {NeChart} from '../models/ne-chart';
 import {ChartDataSets} from 'chart.js';
 import 'cytoscape-cx2js';
 import {CxToJs, CyNetworkUtils} from 'cytoscape-cx2js';
-import {DataService} from './data.service';
 import {NeMappingsMap} from '../models/ne-mappings-map';
 import {NeMappingDiscrete} from '../models/ne-mapping-discrete';
 import {NeMappingContinuous} from '../models/ne-mapping-continuous';
 import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete';
 import {NeStyleMap} from '../models/ne-style-map';
+import {NeAspect} from '../models/ne-aspect';
 
 @Injectable({
   providedIn: 'root'
@@ -27,9 +26,8 @@ import {NeStyleMap} from '../models/ne-style-map';
 export class ParseService {
 
   constructor(
-    private http: HttpClient,
-    public utilityService: UtilityService,
-    private dataService: DataService) {
+    private utilityService: UtilityService
+  ) {
   }
 
   /**
@@ -118,6 +116,72 @@ export class ParseService {
       numericThreshold: '101'
     });
     return colorGradientCollection;
+  }
+
+  /**
+   * Gathers attributes for which a mapping can be created
+   * @param attributes
+   * @param mappings
+   * @private
+   */
+  private convertAkvByFile(attributes: any, mappings: NeMappingsMap): NeAspect[] {
+    const akvs: NeAspect[] = [];
+
+    for (const attr of attributes) {
+
+      let found = false;
+
+      for (const akv of akvs) {
+        if (akv.name === attr.n) {
+          found = true;
+
+          if (!akv.values.includes(attr.v)) {
+            akv.values.push(attr.v);
+          }
+
+        }
+      }
+
+      if (!found) {
+        const tmp: NeAspect = {
+          name: attr.n,
+          values: [attr.v],
+          datatype: attr.d ?? 'string',
+          mapPointerD: [],
+          mapPointerC: []
+        };
+        akvs.push(tmp);
+      }
+    }
+
+    for (const akv of akvs) {
+
+      for (let i = 0; i < mappings.nodesDiscrete.length; i++) {
+        if (mappings.nodesDiscrete[i].col === akv.name) {
+          akv.mapPointerD.push('nd' + i);
+        }
+      }
+
+      for (let i = 0; i < mappings.edgesDiscrete.length; i++) {
+        if (mappings.edgesDiscrete[i].col === akv.name) {
+          akv.mapPointerD.push('ed' + i);
+        }
+      }
+
+      for (let i = 0; i < mappings.nodesContinuous.length; i++) {
+        if (mappings.nodesContinuous[i].col === akv.name) {
+          akv.mapPointerC.push('nc' + i);
+        }
+      }
+
+      for (let i = 0; i < mappings.edgesContinuous.length; i++) {
+        if (mappings.edgesContinuous[i].col === akv.name) {
+          akv.mapPointerC.push('ec' + i);
+        }
+      }
+    }
+
+    return akvs;
   }
 
   /**
@@ -433,6 +497,17 @@ export class ParseService {
     const id = networkId;
     const mappings = this.convertMappingsByFile(filedata);
 
+    let akvNodes: NeAspect[] = [];
+    let akvEdges: NeAspect[] = [];
+    for (const fd of filedata) {
+      if (fd.nodeAttributes) {
+        akvNodes = this.convertAkvByFile(fd.nodeAttributes, mappings);
+      }
+      if (fd.edgeAttributes) {
+        akvEdges = this.convertAkvByFile(fd.edgeAttributes, mappings);
+      }
+    }
+
     if (container) {
       return this.convertCxToJs(filedata, container)
         .then(receivedCore => {
@@ -445,6 +520,8 @@ export class ParseService {
             networkInformation,
             showLabels: this.utilityService.utilShowLabels(core),
             mappings,
+            aspectKeyValueNodes: akvNodes,
+            aspectKeyValueEdges: akvEdges
           };
         })
         .catch(e => {
@@ -456,7 +533,9 @@ export class ParseService {
             core,
             networkInformation,
             showLabels: this.utilityService.utilShowLabels(core),
-            mappings
+            mappings,
+            aspectKeyValueNodes: akvNodes,
+            aspectKeyValueEdges: akvEdges
           };
         });
     } else {
@@ -467,7 +546,9 @@ export class ParseService {
           filename,
           core,
           networkInformation,
-          mappings
+          mappings,
+          aspectKeyValuesNodes: akvNodes,
+          aspectKeyValuesEdges: akvEdges
         });
       });
     }
@@ -563,8 +644,8 @@ export class ParseService {
     outer: for (const map of mappings) {
 
       for (const item of group) {
-        if (item.classifier === map.col) {
-          const match = group.find(a => a.classifier === map.col);
+        if (item.col === map.col) {
+          const match = group.find(a => a.col === map.col);
 
           const displayThMatch = this.utilityService.utilRemovePrefix(map.styleProperty, ['NODE_', 'EDGE_']);
 
@@ -593,7 +674,7 @@ export class ParseService {
         isColor: (map.values as string[]).filter(a => !a.startsWith('#')).length === 0
       };
       const groupedMapping: NeGroupedMappingsDiscrete = {
-        classifier: map.col,
+        col: map.col,
         styleMap: [style],
         th: [displayTh],
         values: map.keys as string[],
@@ -604,6 +685,4 @@ export class ParseService {
 
     return group;
   }
-
-
 }

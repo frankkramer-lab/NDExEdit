@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {NeStyle} from '../models/ne-style';
 import {HttpClient} from '@angular/common/http';
 import {NeMappingsType} from '../models/ne-mappings-type';
+import {NeAspect} from "../models/ne-aspect";
 
 @Injectable({
   providedIn: 'root'
@@ -153,6 +154,23 @@ export class UtilityService {
       }
     }
     return input;
+  }
+
+  /**
+   * Returns a list of aspects suitable for discrete mappings
+   * @param mappings List of all available attributes
+   */
+  utilFilterForDiscrete(mappings: NeAspect[]): NeAspect[] {
+    return mappings.filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
+  }
+
+  /**
+   * Returns a list of aspects suitable for continuous mappings
+   * @param mappings List of all available attributes
+   */
+  utilFilterForContinuous(mappings: NeAspect[]): NeAspect[] {
+    return mappings.filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'float' || a.datatype === 'double'));
+
   }
 
 }

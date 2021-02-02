@@ -28,12 +28,12 @@ export interface NeAspect {
   /**
    * List of continuous mappings for this attribute
    */
-  mapPointerC?: number[];
+  mapPointerC?: string[];
 
   /**
    * List of discrete mappings for this attribute
    */
-  mapPointerD?: number[];
+  mapPointerD?: string[];
 
   /**
    * Distribution chart for discrete properties

@@ -19,7 +19,7 @@
 
       <thead>
       <tr>
-        <th>{{selectedDiscrete.classifier}}</th>
+        <th>{{selectedDiscrete.col}}</th>
         <th *ngFor="let val of selectedDiscrete.values" colspan="3">{{val}}</th>
       </tr>
       </thead>
@@ -166,7 +166,7 @@
 
       <!-- nevermind -->
       <div class="col-6">
-        <button (click)="confirmDeletion(false)" class="btn btn-block btn-outline-success">
+        <button class="btn btn-block btn-outline-success">
           <fa-icon [icon]="faTimes"></fa-icon>
           {{'MAIN_MAPPINGS_CONFIRM_DELETION_NO' | translate}}
         </button>
@@ -174,7 +174,7 @@
 
       <!-- confirm -->
       <div class="col-6">
-        <button (click)="confirmDeletion(true, 'global')"
+        <button
                 [routerLink]="['', { outlets: {primary: ['graph', dataService.networkSelected.id]} }]"
                 class="btn btn-block btn-outline-danger">
           <fa-icon [icon]="faCheck"></fa-icon>
@@ -195,7 +195,7 @@
 
       <!-- nevermind -->
       <div class="col-6">
-        <button (click)="confirmDeletion(false, 'single')" class="btn btn-block btn-outline-success">
+        <button class="btn btn-block btn-outline-success">
           <fa-icon [icon]="faTimes"></fa-icon>
           {{'MAIN_MAPPINGS_CONFIRM_DELETION_NO' | translate}}
         </button>
@@ -203,7 +203,7 @@
 
       <!-- confirm -->
       <div class="col-6">
-        <button (click)="confirmDeletion(true, 'single')"
+        <button
                 [routerLink]="['', { outlets: {primary: ['graph', dataService.networkSelected.id]} }]"
                 class="btn btn-block btn-outline-danger">
           <fa-icon [icon]="faCheck"></fa-icon>

@@ -362,11 +362,9 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     }
 
     if (!this.isDiscrete) {
-      availableAttributes = availableAttributes
-        .filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'float' || a.datatype === 'double'));
+      availableAttributes = this.utilityService.utilFilterForContinuous(availableAttributes);
     } else {
-      availableAttributes = availableAttributes
-        .filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
+      availableAttributes = this.utilityService.utilFilterForDiscrete(availableAttributes);
     }
 
     this.propertyToMap = availableAttributes[this.propertyId];
