@@ -82,6 +82,7 @@ export class AppComponent {
 
     dataService.flipLayoutEmitter.subscribe(data => {
       this.layoutIsMainLeft = data;
+      this.dataService.triggerChartRedraw();
     });
 
     this.initializeTranslation();
@@ -145,6 +146,7 @@ export class AppComponent {
     if (this.widthRight > 15) {
       this.widthRight -= 5;
       this.widthLeft += 5;
+      this.dataService.triggerChartRedraw();
     }
   }
 
@@ -155,6 +157,7 @@ export class AppComponent {
     if (this.widthLeft > 15) {
       this.widthLeft -= 5;
       this.widthRight += 5;
+      this.dataService.triggerChartRedraw();
     }
   }
 
