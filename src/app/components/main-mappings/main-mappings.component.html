@@ -79,17 +79,17 @@
       </thead>
 
       <tbody>
-      <tr *ngFor="let thresh of selectedContinuous.thresholds; let index = index">
+      <tr *ngFor="let eq of selectedContinuous.equals; let index = index">
         <ng-container [ngSwitch]="index">
-          <td *ngSwitchCase="0">< {{thresh}}</td>
-          <td *ngSwitchCase="selectedContinuous.thresholds.length - 1">> {{thresh}}</td>
-          <td *ngSwitchDefault>{{thresh}}</td>
+          <td *ngSwitchCase="0"><</td>
+          <td *ngSwitchDefault>{{selectedContinuous.thresholds[index - 1]}}</td>
+          <td *ngSwitchCase="selectedContinuous.equals.length - 1">></td>
         </ng-container>
 
         <td colspan="2">
-          {{selectedContinuous.equals[index]}}
+          {{eq}}
           <span *ngIf="selectedContinuous.isColor" class="badge-pill border"
-                [ngStyle]="{'background-color': selectedContinuous.equals[index]}">&nbsp;</span>
+                [ngStyle]="{'background-color': eq}">&nbsp;</span>
         </td>
       </tr>
       </tbody>
@@ -97,152 +97,6 @@
     </table>
 
   </ng-template>
-
-
-  <!--  <div *ngIf="false">-->
-  <!--    <span *ngFor="let map of selectedMapping; let index = index">-->
-
-  <!--      <table *ngIf="map && !map.chartValid" class="table table-bordered">-->
-  <!--        <thead>-->
-  <!--        <tr>-->
-  <!--          <th>{{map.title[1]}}</th>-->
-  <!--          <th>-->
-  <!--            <button *ngIf="typeHint.startsWith('n')"-->
-  <!--                    [routerLink]="['', { outlets: {primary: ['edit', dataService.networkSelected.id, typeHint + index ]} }]"-->
-  <!--                    class="btn btn-block btn-outline-warning"-->
-  <!--                    data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"-->
-  <!--                    placement="bottom">-->
-  <!--              <fa-icon [icon]="faEdit"></fa-icon>-->
-  <!--            </button>-->
-  <!--            <button *ngIf="typeHint.startsWith('e')"-->
-  <!--                    [routerLink]="['', { outlets: {primary: ['edit', dataService.networkSelected.id, typeHint + index ]} }]"-->
-  <!--                    class="btn btn-block btn-outline-warning"-->
-  <!--                    data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"-->
-  <!--                    placement="bottom">-->
-  <!--              <fa-icon [icon]="faEdit"></fa-icon>-->
-  <!--            </button>-->
-  <!--          </th>-->
-  <!--          <th>{{map.title[0]}}</th>-->
-  <!--        </tr>-->
-  <!--        </thead>-->
-  <!--        <tbody>-->
-  <!--        <tr *ngFor="let entry of map.chart.chartData[0].data; let i = index">-->
-  <!--          <td *ngIf="i === 0" colspan="2">&lt;</td>-->
-  <!--          <td *ngIf="i === map.chart.chartLabels.length - 1" colspan="2">&gt;</td>-->
-  <!--          <td *ngIf="i > 0 && i < map.chart.chartLabels.length - 1"-->
-  <!--              colspan="2">{{map.chart.chartLabels[i]}}</td>-->
-  <!--          <td>{{entry}}</td>-->
-  <!--        </tr>-->
-  <!--        </tbody>-->
-  <!--      </table>-->
-
-  <!--      <table *ngIf="map && map.gradientValid" class="table table-bordered">-->
-  <!--        <thead>-->
-  <!--        <tr>-->
-  <!--          <th>{{map.title[1]}}</th>-->
-  <!--          <th>-->
-  <!--            <button *ngIf="typeHint.startsWith('n')"-->
-  <!--                    [routerLink]="['', { outlets: {primary: ['edit', dataService.networkSelected.id, typeHint + dataService.networkSelected.mappings.nodesContinuous.indexOf(map) ]} }]"-->
-  <!--                    class="btn btn-block btn-outline-warning"-->
-  <!--                    data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"-->
-  <!--                    placement="bottom">-->
-  <!--              <fa-icon [icon]="faEdit"></fa-icon>-->
-  <!--            </button>-->
-  <!--            <button *ngIf="typeHint.startsWith('e')"-->
-  <!--                    [routerLink]="['', { outlets: {primary: ['edit', dataService.networkSelected.id, typeHint + dataService.networkSelected.mappings.edgesContinuous.indexOf(map) ]} }]"-->
-  <!--                    class="btn btn-block btn-outline-warning"-->
-  <!--                    data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"-->
-  <!--                    placement="bottom">-->
-  <!--              <fa-icon [icon]="faEdit"></fa-icon>-->
-  <!--            </button>-->
-  <!--          </th>-->
-  <!--          <th>{{map.title[0]}}</th>-->
-  <!--        </tr>-->
-  <!--        </thead>-->
-  <!--        <tbody>-->
-  <!--        <tr *ngFor="let entry of map.colorGradient; let i = index">-->
-  <!--          <td *ngIf="i === 0" colspan="2">&lt;</td>-->
-  <!--          <td *ngIf="i === map.colorGradient.length - 1" colspan="2">&gt;</td>-->
-  <!--          <td *ngIf="i > 0 && i < map.colorGradient.length - 1" colspan="2">-->
-  <!--            {{entry.numericThreshold}}-->
-  <!--          </td>-->
-  <!--          <td>-->
-  <!--            {{entry.color}}-->
-  <!--            <span [ngStyle]="{'background-color': entry.color}" class="badge badge-pill border">&nbsp;</span>-->
-  <!--          </td>-->
-  <!--        </tr>-->
-  <!--        </tbody>-->
-  <!--      </table>-->
-
-  <!--      <div class="table-responsive">-->
-  <!--        <table *ngIf="map && map.classifier" class="table table-bordered">-->
-  <!--          <thead>-->
-  <!--          <th colspan="3">{{map.classifier}}</th>-->
-  <!--          <th *ngFor="let value of map.values">{{value}}</th>-->
-  <!--          </thead>-->
-  <!--          <tbody>-->
-  <!--          <tr *ngFor="let style of map.styleMap" [ngClass]="{'table-info' : (propertyToRemove.style === style)}">-->
-
-  <!--            <td><b>{{style.cssKey}}</b></td>-->
-  <!--            <td>-->
-  <!--              <button *ngIf="typeHint.startsWith('n')"-->
-  <!--                      [routerLink]="['', { outlets: {primary: ['edit', dataService.networkSelected.id, typeHint + dataService.networkSelected.mappings.nodesDiscrete.indexOf(map), map.styleMap.indexOf(style) ]} }]"-->
-  <!--                      class="btn btn-block btn-outline-warning"-->
-  <!--                      data-toggle="tooltip"-->
-  <!--                      ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}" placement="bottom"-->
-  <!--                      type="button">-->
-  <!--                <fa-icon [icon]="faEdit"></fa-icon>-->
-  <!--              </button>-->
-  <!--              <button *ngIf="typeHint.startsWith('e')"-->
-  <!--                      [routerLink]="['', { outlets: {primary: ['edit', dataService.networkSelected.id, typeHint + dataService.networkSelected.mappings.edgesDiscrete.indexOf(map), map.styleMap.indexOf(style) ]} }]"-->
-  <!--                      class="btn btn-block btn-outline-warning"-->
-  <!--                      data-toggle="tooltip"-->
-  <!--                      ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}" placement="bottom"-->
-  <!--                      type="button">-->
-  <!--                <fa-icon [icon]="faEdit"></fa-icon>-->
-  <!--              </button>-->
-  <!--            </td>-->
-  <!--            <td>-->
-  <!--              <button (click)="toggleSingleRemoveDialogue(map, typeHint, style)"-->
-  <!--                      class="btn btn-block btn-outline-danger" data-toggle="tooltip"-->
-  <!--                      ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_DELETE' | translate}}" placement="bottom"-->
-  <!--                      type="button">-->
-  <!--                <fa-icon [icon]="faTrash"></fa-icon>-->
-  <!--              </button>-->
-  <!--            </td>-->
-
-  <!--            <td *ngFor="let value of map.values; let i = index">-->
-
-  <!--              {{value}} {{i}}-->
-
-  <!--&lt;!&ndash;                <span *ngFor="let styleValue of style.cssValues; let j = index">&ndash;&gt;-->
-  <!--&lt;!&ndash;                  <span *ngIf="map.selectors[i] === style.selectors[j]">&ndash;&gt;-->
-  <!--&lt;!&ndash;                      {{styleValue}}&ndash;&gt;-->
-  <!--&lt;!&ndash;                    <span *ngIf="styleValue && styleValue.toString().indexOf('#') > -1"&ndash;&gt;-->
-  <!--&lt;!&ndash;                          [ngStyle]="{'background-color': styleValue}"&ndash;&gt;-->
-  <!--&lt;!&ndash;                          class="badge badge-pill border">&nbsp;</span>&ndash;&gt;-->
-  <!--&lt;!&ndash;                    </span>&ndash;&gt;-->
-  <!--&lt;!&ndash;                  </span>&ndash;&gt;-->
-
-  <!--            </td>-->
-
-  <!--          </tr>-->
-  <!--          </tbody>-->
-  <!--        </table>-->
-  <!--      </div>-->
-
-  <!--      <div *ngIf="map && (map.classifier || map.chartValid || map.gradientValid)" class="mt-3 mb-3">-->
-  <!--        <div>-->
-  <!--          <button (click)="toggleGlobalRemoveDialogue(map, typeHint)" class="btn btn-block btn-outline-danger"-->
-  <!--                  data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_DELETE' | translate}}" placement="bottom">-->
-  <!--            <fa-icon [icon]="faTrash"></fa-icon>-->
-  <!--            {{'MAIN_MAPPINGS_DELETE' | translate}}-->
-  <!--          </button>-->
-  <!--        </div>-->
-  <!--      </div>-->
-
-  <!--    </span>-->
-  <!--  </div>-->
 
   <hr>
 
