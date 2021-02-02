@@ -125,6 +125,7 @@ export class ParseService {
    * @private
    */
   private convertAkvByFile(attributes: any, mappings: NeMappingsMap): NeAspect[] {
+    // todo needs chart data for distributions
     const akvs: NeAspect[] = [];
 
     for (const attr of attributes) {
