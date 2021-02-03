@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
 import {faExchangeAlt, faPaintBrush} from '@fortawesome/free-solid-svg-icons';
-import {UtilityService} from "../../services/utility.service";
-import {NeAspect} from "../../models/ne-aspect";
+import {UtilityService} from '../../services/utility.service';
+import {NeAspect} from '../../models/ne-aspect';
 
 @Component({
   selector: 'app-main-stats',
@@ -33,6 +33,7 @@ export class MainStatsComponent {
    *
    * @param route Service to read URL
    * @param dataService Service to read and write globally accessible data
+   * @param utilityService Service reponsible for shared code
    */
   constructor(
     public route: ActivatedRoute,

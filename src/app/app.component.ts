@@ -4,6 +4,7 @@ import {ParseService} from './services/parse.service';
 import {DataService} from './services/data.service';
 import {HttpClient} from '@angular/common/http';
 import {faArrowLeft, faArrowRight, faExchangeAlt, faRedo} from '@fortawesome/free-solid-svg-icons';
+import {UtilityService} from "./services/utility.service";
 
 @Component({
   selector: 'app-root',
@@ -71,12 +72,14 @@ export class AppComponent {
    * @param translateService Service to manage languages
    * @param parseService Service to handle parsing of mock-ups
    * @param dataService Service to read and write globally accessible data
+   * @param utilityService Service responsible for shared code
    * @param http Service to handle HTTP requests and file inputs
    */
   constructor(
     public translateService: TranslateService,
     private parseService: ParseService,
     public dataService: DataService,
+    private utilityService: UtilityService,
     private http: HttpClient
   ) {
 
@@ -99,6 +102,8 @@ export class AppComponent {
 
     const browserLang = this.translateService.getBrowserLang();
     this.translateService.use((browserLang && this.supportedLanguages.includes(browserLang)) ? browserLang : this.defaultLanguage);
+    this.translateService.get('MAIN_STATS_AXIS_BINS').subscribe(value => this.utilityService.xAxisLabel = value);
+    this.translateService.get('MAIN_STATS_AXIS_OCCURANCES').subscribe(value => this.utilityService.yAxisLabel = value);
   }
 
   /**

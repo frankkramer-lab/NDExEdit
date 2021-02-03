@@ -38,6 +38,8 @@
   "MAIN_STATS_COVERAGE_HINT": "This progress bar indicates how many nodes or edges actually have this attribute. Hopefully this helps you evaluating the distribution above.",
   "MAIN_STATS_TT_EDIT": "Render and edit this network",
   "MAIN_STATS_TT_COMPARE": "Compare this edit to another one",
+  "MAIN_STATS_AXIS_BINS": "Bins between [lowerBorder:upperBorder]",
+  "MAIN_STATS_AXIS_OCCURANCES": "# elements for attribute ",
   "MAIN_GRAPH_TITLE": "Graph",
   "MAIN_GRAPH_TT_FIT": "Fit graph to current page layout",
   "MAIN_GRAPH_BTN_FIT": "Fit graph",

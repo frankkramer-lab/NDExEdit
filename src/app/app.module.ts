@@ -26,8 +26,8 @@ import { AlertMappingAlreadyExistsComponent } from './components/parts/alert-map
 import { MainMappingsNewFormComponent } from './components/parts/main-mappings-new-form/main-mappings-new-form.component';
 import { ChartComponent } from './components/parts/chart/chart.component';
 
-export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
-  return new TranslateHttpLoader(http);
+export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 @NgModule({
@@ -53,7 +53,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
+        useFactory: (createTranslateLoader),
         deps: [HttpClient]
       }
     }),

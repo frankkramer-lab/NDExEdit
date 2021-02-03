@@ -28,16 +28,27 @@ export class DataService {
   /**
    * The network ID increment
    */
-  currentNetworkId: number = 0;
+  currentNetworkId = 0;
   /**
    * List of known color properties, mainly used for color previews within {@link MainMappingsNewComponent}
    */
   colorProperties: string[] = [
-    'background-color',
-    'border-color',
-    'line-color',
-    'target-arrow-color',
-    'source-arrow-color',
+    'NETWORK_BACKGROUND_PAINT',
+    'NODE_BORDER_PAINT',
+    'NODE_FILL_COLOR',
+    'NODE_LABEL_COLOR',
+    'NODE_PAINT',
+    'NODE_SELECTED_PAINT',
+    'EDGE_LABEL_COLOR',
+    'EDGE_PAINT',
+    'EDGE_SELECTED_PAINT',
+    'EDGE_SOURCE_ARROW_SELECTED_PAINT',
+    'EDGE_SOURCE_ARROW_UNSELECTED_PAINT',
+    'EDGE_STROKE_SELECTED_PAINT',
+    'EDGE_STROKE_UNSELECTED_PAINT',
+    'EDGE_TARGET_ARROW_SELECTED_PAINT',
+    'EDGE_TARGET_ARROW_UNSELECTED_PAINT',
+    'EDGE_UNSELECTED_PAINT'
   ];
 
   /**

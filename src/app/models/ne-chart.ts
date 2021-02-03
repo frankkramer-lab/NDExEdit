@@ -25,7 +25,7 @@ export interface NeChart {
   /**
    * Options for the chart
    */
-  lineChartOptions?: any;
+  chartOptions?: any;
 
   /**
    * Optionally color specifics for displaying

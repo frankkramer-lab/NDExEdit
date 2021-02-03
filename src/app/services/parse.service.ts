@@ -305,7 +305,7 @@ export class ParseService {
         line: true
       },
       chartLabels: [],
-      lineChartOptions: {
+      chartOptions: {
         scales: {
           yAxes: [
             {
@@ -786,7 +786,7 @@ export class ParseService {
 
     for (const akv of continuousAkvs) {
       const binSize = this.utilityService.utilSturgesRule(akv.values as unknown as number[]);
-      const chart = this.utilityService.utilCalculateHistogramDataForBinSize(binSize, akv);
+      const chart = this.utilityService.utilCalculateHistogramDataForBinSize(binSize, akv, ['OCCURANCES', 'BINS']);
       akv.chartContinuousDistribution = chart;
       akv.binSize = binSize;
       akv.coverage = this.getCoverageByChart(chart, isNode ? numberOfNodes : numberOfEdges);

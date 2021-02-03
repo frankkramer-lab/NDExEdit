@@ -302,6 +302,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   setStyleProperty($event: any): void {
     this.styleProperty = $event;
+    console.log($event);
+    console.log(this.propertyToMap);
   }
 
   /**

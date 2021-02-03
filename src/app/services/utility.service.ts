@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {NeStyle} from '../models/ne-style';
 import {HttpClient} from '@angular/common/http';
 import {NeMappingsType} from '../models/ne-mappings-type';
-import {NeAspect} from "../models/ne-aspect";
-import {NeChart} from "../models/ne-chart";
-import {NeFrequencyCounter} from "../models/ne-frequency-counter";
+import {NeAspect} from '../models/ne-aspect';
+import {NeChart} from '../models/ne-chart';
+import {NeFrequencyCounter} from '../models/ne-frequency-counter';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +14,16 @@ import {NeFrequencyCounter} from "../models/ne-frequency-counter";
  * Service for methods used within multiple components or services
  */
 export class UtilityService {
+
+  /**
+   * Label for x axis
+   */
+  xAxisLabel: string;
+
+  /**
+   * Label for y axis
+   */
+  yAxisLabel: string;
 
   /**
    * Reading lookup file data
@@ -231,9 +241,10 @@ export class UtilityService {
    *
    * @param binSize number of bins calculated by Sturge's Rule
    * @param propertyToMap Aspect which is displayed in this histogram
+   * @param axisLabels list of strings containing axis labels, if needed, 0 => x, 1 => y
    * @private
    */
-  utilCalculateHistogramDataForBinSize(binSize: number, propertyToMap: NeAspect): NeChart {
+  utilCalculateHistogramDataForBinSize(binSize: number, propertyToMap: NeAspect, axisLabels: string[] = []): NeChart {
     const chartData = [];
     const frequencies: NeFrequencyCounter[] = [];
     const chartLabels = [];
@@ -288,7 +299,7 @@ export class UtilityService {
       label: propertyToMap.name
     });
 
-    return {
+    const finalChart: NeChart = {
       chartType: {
         bar: true,
         line: false
@@ -296,6 +307,26 @@ export class UtilityService {
       chartLabels,
       chartData
     };
+
+    if (axisLabels.length > 0) {
+      finalChart.chartOptions = {
+        scales: {
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: this.xAxisLabel || ''
+            }
+          }],
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: this.yAxisLabel ? (this.yAxisLabel + propertyToMap.name) : ''
+            }
+          }]
+        }
+      };
+    }
+    return finalChart;
   }
 
   /**

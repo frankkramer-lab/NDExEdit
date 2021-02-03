@@ -38,6 +38,8 @@
   "MAIN_STATS_COVERAGE_HINT": "Dieser Balken zeigt an, wie viele Knoten bzw. Kanten dieses Attribut tatsächlich besitzen. Das soll dir helfen, den Verteilungsgraphen oben besser einschätzen zu können.",
   "MAIN_STATS_TT_EDIT": "Dieses Netzwerk rendern und bearbeiten",
   "MAIN_STATS_TT_COMPARE": "Dieses Netzwerk zu einem weiteren Netzwerk vergleichen",
+  "MAIN_STATS_AXIS_BINS": "Klassen, je zwischen [untereGrenze:obereGrenze]",
+  "MAIN_STATS_AXIS_OCCURANCES": "Anzahl Elemente des Attributs ",
   "MAIN_GRAPH_TITLE": "Graph",
   "MAIN_GRAPH_TT_FIT": "Graph an die Größe des Fensters anpassen",
   "MAIN_GRAPH_BTN_FIT": "Größe anpassen",

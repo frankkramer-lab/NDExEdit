@@ -12,16 +12,18 @@
           [datasets]="chartObject.chartData"
           [labels]="chartObject.chartLabels"
           [legend]="true"
-          [options]="chartObject.lineChartOptions"
+          [options]="chartObject.chartOptions"
           baseChart></canvas>
 </div>
 
 <!-- Create new / Edit existing continuous mappings: Distribution charts -->
 <div *ngIf="chartObject && chartObject.chartType.bar">
   <canvas [ngStyle]="{'width.%': widthPercent}"
-          [chartType]="'bar'" [colors]="chartObject.chartColors"
+          [chartType]="'bar'"
+          [colors]="chartObject.chartColors"
           [datasets]="chartObject.chartData"
           [labels]="chartObject.chartLabels"
+          [options]="chartObject.chartOptions || {}"
           baseChart></canvas>
 
   <!-- Allow manipulation of bins for continuous mappings -->
