@@ -15,6 +15,8 @@ import {NeMappingContinuous} from '../models/ne-mapping-continuous';
 import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete';
 import {NeStyleMap} from '../models/ne-style-map';
 import {NeAspect} from '../models/ne-aspect';
+import {NeChartType} from "../models/ne-chart-type";
+import {DataService} from "./data.service";
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +28,8 @@ import {NeAspect} from '../models/ne-aspect';
 export class ParseService {
 
   constructor(
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private dataService: DataService
   ) {
   }
 
@@ -125,9 +128,7 @@ export class ParseService {
    * @private
    */
   private convertAkvByFile(attributes: any, mappings: NeMappingsMap): NeAspect[] {
-    // todo needs chart data for distributions
     const akvs: NeAspect[] = [];
-
     for (const attr of attributes) {
 
       let found = false;
@@ -139,7 +140,6 @@ export class ParseService {
           if (!akv.values.includes(attr.v)) {
             akv.values.push(attr.v);
           }
-
         }
       }
 
@@ -149,13 +149,30 @@ export class ParseService {
           values: [attr.v],
           datatype: attr.d ?? 'string',
           mapPointerD: [],
-          mapPointerC: []
+          mapPointerC: [],
+          validForContinuous: false
         };
         akvs.push(tmp);
       }
     }
 
     for (const akv of akvs) {
+
+      if (this.utilityService.utilFitForContinuous(akv)) {
+        akv.validForContinuous = true;
+        let max = Number.MIN_SAFE_INTEGER;
+        let min = Number.MAX_SAFE_INTEGER;
+        for (const v of akv.values as unknown as number[]) {
+          if (v < min) {
+            min = v;
+          }
+          if (v > max) {
+            max = v;
+          }
+        }
+        akv.max = max;
+        akv.min = min;
+      }
 
       for (let i = 0; i < mappings.nodesDiscrete.length; i++) {
         if (mappings.nodesDiscrete[i].col === akv.name) {
@@ -509,6 +526,9 @@ export class ParseService {
       }
     }
 
+    akvNodes = this.buildDistributionChart(akvNodes, filedata, true);
+    akvEdges = this.buildDistributionChart(akvEdges, filedata, false);
+
     if (container) {
       return this.convertCxToJs(filedata, container)
         .then(receivedCore => {
@@ -685,5 +705,100 @@ export class ParseService {
     }
 
     return group;
+  }
+
+  /**
+   * Builds distribution charts per aspect
+   * @param akvs List of aspects for which the charts are to be built
+   * @param filedata data containing occurances for each aspect
+   * @param isNode true, if aspects are applied to nodes
+   * @private
+   */
+  private buildDistributionChart(akvs: NeAspect[], filedata: any[], isNode: boolean): NeAspect[] {
+
+    const discreteAkvs = this.utilityService.utilFilterForDiscrete(akvs);
+    const continuousAkvs = this.utilityService.utilFilterForContinuous(akvs);
+    let numberOfNodes;
+    let numberOfEdges;
+
+    for (const fd of filedata) {
+      if (fd.metaData) {
+        for (const md of fd.metaData) {
+          if (md.name === 'nodes') {
+            numberOfNodes = md.elementCount;
+          }
+          if (md.name === 'edges') {
+            numberOfEdges = md.elementCount;
+          }
+        }
+      }
+    }
+
+    const chartType: NeChartType = {
+      bar: true,
+      line: false
+    };
+
+    for (const akv of discreteAkvs) {
+
+      const chartData: ChartDataSets[] = [{
+        data: [],
+        label: akv.name
+      }];
+
+      const chart: NeChart = {
+        chartColors: this.utilityService.utilGetRandomColorForChart(),
+        chartData,
+        chartLabels: akv.values,
+        chartType
+      };
+
+      for (const v of akv.values) {
+        let vCount = 0;
+
+        for (const fd of filedata) {
+          if (isNode) {
+            if (fd.nodeAttributes) {
+              for (const na of fd.nodeAttributes) {
+                if (na.n === akv.name && na.v === v) {
+                  vCount++;
+                }
+              }
+            }
+          } else {
+            if (fd.edgeAttributes) {
+              for (const ea of fd.edgeAttributes) {
+                if (ea.n === akv.name && ea.v === v) {
+                  vCount++;
+                }
+              }
+            }
+          }
+        }
+        chart.chartData[0].data.push(vCount);
+      }
+      akv.chartDiscreteDistribution = chart;
+      akv.coverage = this.getCoverageByChart(chart, isNode ? numberOfNodes : numberOfEdges);
+    }
+
+    for (const akv of continuousAkvs) {
+      const binSize = this.utilityService.utilSturgesRule(akv.values as unknown as number[]);
+      const chart = this.utilityService.utilCalculateHistogramDataForBinSize(binSize, akv);
+      akv.chartContinuousDistribution = chart;
+      akv.coverage = this.getCoverageByChart(chart, isNode ? numberOfNodes : numberOfEdges);
+    }
+    return discreteAkvs.concat(continuousAkvs);
+  }
+
+  /**
+   * Calculates percentage of element coverage per aspect
+   * @param chart Chart containing occurance counts for each aspect
+   * @param elementCount number of nodes or edges
+   * @private
+   */
+  private getCoverageByChart(chart: NeChart, elementCount: any): string {
+    const tmpData = chart.chartData[0].data as number[];
+    const sum = this.utilityService.utilSum(tmpData);
+    return ((sum / elementCount) * 100).toFixed(0);
   }
 }

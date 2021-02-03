@@ -5,10 +5,10 @@ import {
   faArrowLeft,
   faArrowRight,
   faChartBar,
-  faQuestionCircle,
   faCheck,
   faPalette,
   faPlus,
+  faQuestionCircle,
   faRoute,
   faTimes,
   faUndo
@@ -23,7 +23,6 @@ import {UtilityService} from '../../services/utility.service';
 import {NeMappingsType} from '../../models/ne-mappings-type';
 import {NeChartType} from '../../models/ne-chart-type';
 import {NeChart} from '../../models/ne-chart';
-import {NeFrequencyCounter} from '../../models/ne-frequency-counter';
 
 @Component({
   selector: 'app-main-mappings-new',
@@ -245,15 +244,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   private isDiscrete: boolean;
 
-  /**
-   * Returns the number of bins to be applied to the given set of numbers
-   * {@link https://en.wikipedia.org/wiki/Histogram#Sturges'_formula|Sturge's Rule}
-   * @param numbers list of numbers
-   * @private
-   */
-  private static sturgesRule(numbers: number[]): number {
-    return Math.ceil(1 + Math.log2(numbers.length));
-  }
 
   /**
    * Hides the label checkbox in the sidebar, because toggling it from here has no gain at all
@@ -376,11 +366,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         chartType: this.chartType
       };
     } else {
-      this.binSize = MainMappingsNewComponent.sturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
-      this.chartObject = this.calculateHistogramDataForBinSize(this.binSize,
-        this.propertyToMap.min,
-        this.propertyToMap.max,
-        this.propertyToMap.chartContinuousDistribution.chartLabels);
+      this.binSize = this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
+      this.chartObject = this.utilityService.utilCalculateHistogramDataForBinSize(this.binSize, this.propertyToMap);
     }
     console.log(this.chartObject);
 
@@ -417,11 +404,9 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === existingMapping.title[1]);
         this.styleProperty = existingMapping.title[0];
         this.continuousMapping = existingMapping;
-        this.binSize = MainMappingsNewComponent.sturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
-        this.chartObject = this.calculateHistogramDataForBinSize(this.binSize,
-          this.propertyToMap.min,
-          this.propertyToMap.max,
-          this.propertyToMap.chartContinuousDistribution.chartLabels);
+        this.binSize = this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
+        this.chartObject = this.utilityService.utilCalculateHistogramDataForBinSize(this.binSize,
+          this.propertyToMap);
         break;
       case 'ed':
         this.propertyId = Number(params.get('propertyId'));
@@ -435,79 +420,11 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === existingMapping.title[1]);
         this.styleProperty = existingMapping.title[0];
         this.continuousMapping = existingMapping;
-        this.binSize = MainMappingsNewComponent.sturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
-        this.chartObject = this.calculateHistogramDataForBinSize(this.binSize,
-          this.propertyToMap.min,
-          this.propertyToMap.max,
-          this.propertyToMap.chartContinuousDistribution.chartLabels);
+        this.binSize = this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
+        this.chartObject = this.utilityService.utilCalculateHistogramDataForBinSize(this.binSize,
+          this.propertyToMap);
         break;
     }
-  }
-
-  /**
-   * Calculates data for the continuous distribution chart as histogram
-   * with default binSize calculated as Sturge's Rule
-   *
-   * @param binSize number of bins calculated by Sturge's Rule
-   * @param min lowest value
-   * @param max greatest value
-   * @param values list of values
-   * @private
-   */
-  private calculateHistogramDataForBinSize(binSize: number, min: number, max: number, values: number[]): NeChart {
-    const chartData = [];
-    const frequencies: NeFrequencyCounter[] = [];
-    const chartLabels = [];
-
-    if (isNaN(binSize) || isNaN(min) || isNaN(max)) {
-      console.log('Histogram data could not be calculated');
-      return {
-        chartData,
-        chartLabels,
-        chartType: this.chartType
-      };
-    }
-
-    const sizeOfBin = Number(((max - min) / binSize).toFixed(this.precision));
-
-    let intervalPointer = min;
-    while (intervalPointer < max) {
-
-      const nextThreshold = Number((intervalPointer + sizeOfBin).toFixed(this.precision));
-      frequencies.push({
-        lowerBorder: intervalPointer,
-        upperBorder: nextThreshold,
-        occurance: 0
-      });
-
-      chartLabels.push('[' + intervalPointer + ':' + nextThreshold + ']');
-      intervalPointer = nextThreshold;
-    }
-
-    for (const f of frequencies) {
-      for (const value of values) {
-
-        if (value === min && frequencies.indexOf(f) === 0) {
-          f.occurance++;
-          continue;
-        }
-
-        if (value > f.lowerBorder && value <= f.upperBorder) {
-          f.occurance++;
-        }
-      }
-    }
-
-    chartData.push({
-      data: frequencies.map(a => a.occurance),
-      label: this.propertyToMap.name
-    });
-
-    return {
-      chartType: this.chartType,
-      chartLabels,
-      chartData
-    };
   }
 
   /**
@@ -517,11 +434,9 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   changeBinSize($event: number): void {
     this.binSize = $event;
-    this.chartObject = this.calculateHistogramDataForBinSize(
+    this.chartObject = this.utilityService.utilCalculateHistogramDataForBinSize(
       this.binSize,
-      this.propertyToMap.min,
-      this.propertyToMap.max,
-      this.propertyToMap.chartContinuousDistribution.chartLabels);
+      this.propertyToMap);
   }
 }
 

@@ -371,13 +371,13 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
     this.discreteMapping = [];
     this.styleProperty = mapping.styleMap[propertyId].cssKey;
     const correspondingAkv = (isNode
-      ? this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === mapping.classifier)
-      : this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === mapping.classifier));
+      ? this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === mapping.col)
+      : this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === mapping.col));
 
     for (const selector of mapping.styleMap[propertyId].selectors) {
       const mapObj: NeMappingsDefinition = {
-        col: UtilityService.utilCleanString(mapping.classifier),
-        colHR: mapping.classifier,
+        col: UtilityService.utilCleanString(mapping.col),
+        colHR: mapping.col,
         is: UtilityService.utilCleanString(mapping.values[mapping.styleMap[propertyId].selectors.indexOf(selector)]),
         isHR: mapping.values[mapping.styleMap[propertyId].selectors.indexOf(selector)],
         selector,

@@ -30,6 +30,6 @@ export interface NeChart {
   /**
    * Optionally color specifics for displaying
    */
-  lineChartColors?: any;
+  chartColors?: any;
 
 }

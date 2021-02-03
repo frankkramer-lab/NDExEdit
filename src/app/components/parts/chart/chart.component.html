@@ -1,5 +1,5 @@
 <!-- Sidebar: Preview continuous mappings (non-color) -->
-<div *ngIf="chartObject.chartType.line">
+<div *ngIf="chartObject && chartObject.chartType.line">
   <h5>
     <a [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, index]} }]" role="button">
       <b>{{mapping.cleanStyleProperty || mapping.styleProperty}}</b>
@@ -8,7 +8,7 @@
     </a>
   </h5>
   <canvas [ngStyle]="{'width.%': widthPercent}"
-          [chartType]="'line'" [colors]="chartObject.lineChartColors"
+          [chartType]="'line'" [colors]="chartObject.chartColors"
           [datasets]="chartObject.chartData"
           [labels]="chartObject.chartLabels"
           [legend]="true"
@@ -17,9 +17,9 @@
 </div>
 
 <!-- Create new / Edit existing continuous mappings: Distribution charts -->
-<div *ngIf="chartObject.chartType.bar">
+<div *ngIf="chartObject && chartObject.chartType.bar">
   <canvas [ngStyle]="{'width.%': widthPercent}"
-          [chartType]="'bar'" [colors]="chartObject.lineChartColors"
+          [chartType]="'bar'" [colors]="chartObject.chartColors"
           [datasets]="chartObject.chartData"
           [labels]="chartObject.chartLabels"
           baseChart></canvas>

@@ -3,6 +3,8 @@ import {NeStyle} from '../models/ne-style';
 import {HttpClient} from '@angular/common/http';
 import {NeMappingsType} from '../models/ne-mappings-type';
 import {NeAspect} from "../models/ne-aspect";
+import {NeChart} from "../models/ne-chart";
+import {NeFrequencyCounter} from "../models/ne-frequency-counter";
 
 @Injectable({
   providedIn: 'root'
@@ -158,19 +160,153 @@ export class UtilityService {
 
   /**
    * Returns a list of aspects suitable for discrete mappings
-   * @param mappings List of all available attributes
+   * @param aspects List of all available attributes
    */
-  utilFilterForDiscrete(mappings: NeAspect[]): NeAspect[] {
-    return mappings.filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
+  utilFilterForDiscrete(aspects: NeAspect[]): NeAspect[] {
+    return aspects.filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
   }
 
   /**
    * Returns a list of aspects suitable for continuous mappings
-   * @param mappings List of all available attributes
+   * @param aspects List of all available attributes
    */
-  utilFilterForContinuous(mappings: NeAspect[]): NeAspect[] {
-    return mappings.filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'float' || a.datatype === 'double'));
+  utilFilterForContinuous(aspects: NeAspect[]): NeAspect[] {
+    return aspects.filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'float' || a.datatype === 'double'));
 
   }
 
+  /**
+   * Returns a random color for a chart
+   */
+  utilGetRandomColorForChart(): any[] {
+
+    const colorChoicesFill = [
+      'rgba(255,0,0,0.3)',
+      'rgba(0,255,0,0.3)',
+      'rgba(0,0,255,0.3)',
+      'rgba(255,255,0,0.3)',
+      'rgba(255,0,255,0.3)',
+      'rgba(0,255,255,0.3)'
+    ];
+
+    const colorChoicesBorder = [
+      'red',
+      'green',
+      'blue',
+      'yellow',
+      'pink',
+      'teal'
+    ];
+    const rdn = Math.floor(Math.random() * 100000) % colorChoicesFill.length;
+    return [{
+      hoverBackgroundColor: colorChoicesFill[rdn],
+      backgroundColor: colorChoicesFill[rdn],
+      borderColor: colorChoicesBorder[rdn],
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    }];
+  }
+
+
+  /**
+   * Returns the number of bins to be applied to the given set of numbers
+   * {@link https://en.wikipedia.org/wiki/Histogram#Sturges'_formula|Sturge's Rule}
+   * @param numbers list of numbers
+   * @private
+   */
+  utilSturgesRule(numbers: number[]): number {
+    return Math.ceil(1 + Math.log2(numbers.length));
+  }
+
+
+  /**
+   * Calculates data for the continuous distribution chart as histogram
+   * with default binSize calculated as Sturge's Rule
+   *
+   * @param binSize number of bins calculated by Sturge's Rule
+   * @param propertyToMap Aspect which is displayed in this histogram
+   * @private
+   */
+  utilCalculateHistogramDataForBinSize(binSize: number, propertyToMap: NeAspect): NeChart {
+    const chartData = [];
+    const frequencies: NeFrequencyCounter[] = [];
+    const chartLabels = [];
+
+    if (isNaN(binSize) || isNaN(propertyToMap.min) || isNaN(propertyToMap.max)) {
+      console.log('Histogram data could not be calculated');
+      return {
+        chartData,
+        chartLabels,
+        chartType: {
+          line: false,
+          bar: true
+        }
+      };
+    }
+    const min = Number(propertyToMap.min);
+    const max = Number(propertyToMap.max);
+    const values = propertyToMap.values as unknown as number[];
+
+    const sizeOfBin = Number(((max - min) / binSize).toFixed(4));
+
+    let intervalPointer = min;
+    while (intervalPointer < max) {
+
+      const nextThreshold = Number((intervalPointer + sizeOfBin).toFixed(4));
+      frequencies.push({
+        lowerBorder: intervalPointer,
+        upperBorder: nextThreshold,
+        occurance: 0
+      });
+
+      chartLabels.push('[' + intervalPointer + ':' + nextThreshold + ']');
+      intervalPointer = nextThreshold;
+    }
+
+    for (const f of frequencies) {
+      for (const value of values) {
+
+        if (value === min && frequencies.indexOf(f) === 0) {
+          f.occurance++;
+          continue;
+        }
+
+        if (value > f.lowerBorder && value <= f.upperBorder) {
+          f.occurance++;
+        }
+      }
+    }
+
+    chartData.push({
+      data: frequencies.map(a => a.occurance),
+      label: propertyToMap.name
+    });
+
+    return {
+      chartType: {
+        bar: true,
+        line: false
+      },
+      chartLabels,
+      chartData
+    };
+  }
+
+  /**
+   * Returns true if this akv may be used as continuous property
+   * @param akv Aspect whose datatype is to be evaluated
+   */
+  utilFitForContinuous(akv: NeAspect): boolean {
+    return (akv.datatype === 'integer' || akv.datatype === 'double' || akv.datatype === 'float');
+  }
+
+  /**
+   * Calculates sum of the list of numbers
+   * @param numbers List of numbers to be reduced
+   */
+  utilSum(numbers: number[]): number {
+    return numbers.reduce((acc, curr) => acc + curr);
+  }
 }

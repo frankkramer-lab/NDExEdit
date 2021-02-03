@@ -54,4 +54,20 @@ export interface NeAspect {
    * Maximum for numeric values
    */
   max?: number;
+
+  /**
+   * Initial size of bins for histogram distribution
+   */
+  binSize?: number;
+
+  /**
+   * True, if this aspect may be used for a continuous mapping and has a histogram distribution
+   */
+  validForContinuous?: boolean;
+
+  /**
+   * Indicates how many fitting elements have this aspect, e.g. 10 nodes in a network, 9 of which have aspect "A" results in 90% coverage.
+   * This value is always between 0 and 100.
+   */
+  coverage?: string;
 }

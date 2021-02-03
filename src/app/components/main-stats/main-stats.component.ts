@@ -25,23 +25,6 @@ export class MainStatsComponent {
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faExchangeAlt = faExchangeAlt;
-
-  /**
-   * Amount of nodes in the selected network
-   */
-  nodeCount = 0;
-
-  /**
-   * Amount of edges in the selected network
-   */
-  edgeCount = 0;
-
-  /**
-   * Amount of style classes in the selected network (not counting the three utility classes added by NDExEdit);
-   * also not counting the three default classes needed for Cytoscape.js
-   */
-  styleCount = 0;
-
   /**
    * Subscribes to graph id and renders the graph if the view is already initialized
    *
@@ -53,9 +36,6 @@ export class MainStatsComponent {
       const networkId = params.get('id');
       if (networkId) {
         this.dataService.selectNetwork(Number(networkId));
-        // this.nodeCount = this.dataService.networkSelected.elements.filter(x => x.group === 'nodes').length;
-        // this.edgeCount = this.dataService.networkSelected.elements.filter(x => x.group === 'edges').length;
-        // this.styleCount = this.dataService.networkSelected.style.length - 6;
       }
     });
   }

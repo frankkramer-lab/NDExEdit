@@ -32,8 +32,10 @@
   "MAIN_STATS_GRAPH_INFO_NW_DESCRIPTION": "Description",
   "MAIN_STATS_BTN_RENDER": "Render and edit",
   "MAIN_STATS_BTN_COMPARE": "Compare",
-  "MAIN_STATS_GRAPH_ATTRIBUTES_EDGES_TITLE": "Attributes for edges",
-  "MAIN_STATS_GRAPH_ATTRIBUTES_NODES_TITLE": "Attributes for nodes",
+  "MAIN_STATS_GRAPH_ATTRIBUTES_TITLE": "Attributes",
+  "MAIN_STATS_DISTRIBUTION_TITLE": "Distribution chart",
+  "MAIN_STATS_COVERAGE_TITLE": "Coverage",
+  "MAIN_STATS_COVERAGE_HINT": "This progress bar indicates how many nodes or edges actually have this attribute. Hopefully this helps you evaluating the distribution above.",
   "MAIN_STATS_TT_EDIT": "Render and edit this network",
   "MAIN_STATS_TT_COMPARE": "Compare this edit to another one",
   "MAIN_GRAPH_TITLE": "Graph",
@@ -146,7 +148,6 @@
   "MAIN_MAPPINGS_NEW_ALREADY_EXISTS": "A mapping for this attribute-css-combination already exists",
   "MAIN_MAPPINGS_NEW_EDIT_INSTEAD": "Creating a second one is usually a bad idea. Do you want to edit the existing one?",
   "MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD": "Edit existing mapping",
-
   "MAIN_MAPPINGS_NEW_TT_HINTS_SHOW": "Show hints",
   "MAIN_MAPPINGS_NEW_TT_HINTS_HIDE": "Hide hints",
   "MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING": "Continuous mappings are tricky!",
@@ -160,7 +161,6 @@
   "SIDEBAR_COMPARE_ABOUT_3_1": "Please contact",
   "SIDEBAR_COMPARE_ABOUT_3_2": "for feature requests and inquiries",
   "SIDEBAR_COMPARE_TEASER": "Comparison tool coming soon!",
-
   "CHART_HISTO_INCREASE": "Add bin",
   "CHART_HISTO_DECREASE": "Remove bin",
   "CHART_HISTO_RESET": "Reset bins to "

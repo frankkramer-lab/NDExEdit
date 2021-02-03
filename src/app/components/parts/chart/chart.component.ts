@@ -4,6 +4,7 @@ import {NeChart} from '../../../models/ne-chart';
 import {faMinus, faPlus, faUndo} from '@fortawesome/free-solid-svg-icons';
 import {NeMappingDiscrete} from "../../../models/ne-mapping-discrete";
 import {NeMappingContinuous} from "../../../models/ne-mapping-continuous";
+import {UtilityService} from "../../../services/utility.service";
 
 @Component({
   selector: 'app-chart',
@@ -64,61 +65,27 @@ export class ChartComponent implements OnInit {
    */
   faUndo = faUndo;
 
-  /**
-   * Possible fills for the continuous charts, which are not color-associated mappings
-   */
-  colorChoicesFill = [
-    'rgba(255,0,0,0.3)',
-    'rgba(0,255,0,0.3)',
-    'rgba(0,0,255,0.3)',
-    'rgba(255,255,0,0.3)',
-    'rgba(255,0,255,0.3)',
-    'rgba(0,255,255,0.3)'
-  ];
 
-  /**
-   * Matching borders for the continuous charts, which are not color-associated mappings
-   */
-  colorChoicesBorder = [
-    'red',
-    'green',
-    'blue',
-    'yellow',
-    'pink',
-    'teal'
-  ];
-
-  constructor(public dataService: DataService) {
+  constructor(
+    public dataService: DataService,
+    private utilityService: UtilityService
+  ) {
     dataService.chartRedrawEmitter.subscribe(value => this.triggerRedraw());
   }
 
   ngOnInit(): void {
     this.binSizeInitially = this.numberOfBins;
-    this.chartObject.lineChartColors = this.getRandomColorForChart();
-    this.mapping = this.dataService.findMappingById(this.index);
+    this.chartObject.chartColors = this.utilityService.utilGetRandomColorForChart();
+    if (this.index) {
+      this.mapping = this.dataService.findMappingById(this.index);
+    }
   }
 
   /**
    * Triggers a colorful redraw of a chart
    */
   triggerRedraw(): void {
-    this.chartObject.lineChartColors = this.getRandomColorForChart();
-  }
-
-  /**
-   * Returns a random color for a chart
-   */
-  getRandomColorForChart(): any[] {
-    const rdn = Math.floor(Math.random() * 100000) % this.colorChoicesFill.length;
-    return [{
-      hoverBackgroundColor: this.colorChoicesFill[rdn],
-      backgroundColor: this.colorChoicesFill[rdn],
-      borderColor: this.colorChoicesBorder[rdn],
-      pointBackgroundColor: 'rgba(148,159,177,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-    }];
+    this.chartObject.chartColors = this.utilityService.utilGetRandomColorForChart();
   }
 
   /**

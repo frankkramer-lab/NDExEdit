@@ -5,7 +5,8 @@
 
   <h3>{{'MAIN_STATS_GRAPH_INFO_TITLE' | translate}} "{{dataService.networkSelected.networkInformation.name}}"</h3>
 
-    <p [innerHTML]="dataService.networkSelected.networkInformation.description || 'MAIN_STATS_NO_DESCRIPTION'|translate"></p>
+  <p
+    [innerHTML]="dataService.networkSelected.networkInformation.description || 'MAIN_STATS_NO_DESCRIPTION'|translate"></p>
   <div class="row">
 
     <div class="col">
@@ -28,12 +29,12 @@
       <!--      role="button">-->
       <!--      <fa-icon [icon]="faExchangeAlt"></fa-icon>&nbsp;{{'MAIN_STATS_BTN_COMPARE' | translate}}-->
       <!--    </a>-->
-      <a
+      <button
         class="btn btn-block btn-outline-secondary mt-2 mb-2"
         data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_COMPARE' | translate}}" placement="bottom"
-        role="button">
+        [disabled]="true">
         <fa-icon [icon]="faExchangeAlt"></fa-icon>&nbsp;{{'MAIN_STATS_BTN_COMPARE' | translate}}
-      </a>
+      </button>
 
     </div>
   </div>
@@ -55,27 +56,61 @@
     </div>
   </div>
 
-  <!-- todo read available attributes -->
-  <ng-container *ngIf="false">
+  <ng-container
+    *ngIf="dataService.networkSelected.aspectKeyValuesEdges.length > 0 || dataService.networkSelected.aspectKeyValuesNodes.length > 0">
 
-  <h3
-    *ngIf="dataService.networkSelected.aspectKeyValuesNodes.length > 0">{{'MAIN_STATS_GRAPH_ATTRIBUTES_NODES_TITLE' | translate}}</h3>
-  <ul *ngIf="dataService.networkSelected.aspectKeyValuesNodes.length > 0">
-    <li *ngFor="let aspect of dataService.networkSelected.aspectKeyValuesNodes">
-      {{aspect.name}}
-    </li>
-  </ul>
+    <h3 class="mt-2">{{'MAIN_STATS_GRAPH_ATTRIBUTES_TITLE' | translate}}</h3>
 
-  <h3
-    *ngIf="dataService.networkSelected.aspectKeyValuesEdges.length > 0">{{'MAIN_STATS_GRAPH_ATTRIBUTES_EDGES_TITLE' | translate}}</h3>
-  <ul *ngIf="dataService.networkSelected.aspectKeyValuesEdges.length > 0">
-    <li *ngFor="let aspect of dataService.networkSelected.aspectKeyValuesEdges">
-      {{aspect.name}}
-    </li>
-  </ul>
+    <div class="row mt-2 mb-2">
 
-  <hr
-    *ngIf="dataService.networkSelected.aspectKeyValuesNodes.length > 0 || dataService.networkSelected.aspectKeyValuesEdges.length > 0">
+      <div class="col-4">
+        <div class="list-group" id="list-tab" role="tablist">
+
+          <a
+            *ngFor="let akv of dataService.networkSelected.aspectKeyValuesNodes.concat(dataService.networkSelected.aspectKeyValuesEdges); let index = index"
+            class="list-group-item list-group-item-action" id="list-{{index}}-list" data-toggle="list"
+            href="#list-{{index}}" role="tab" aria-controls="{{index}}">
+            {{akv.name}}
+          </a>
+        </div>
+      </div>
+      <div class="col-8">
+        <div class="tab-content" id="nav-tabContent">
+          <div
+            *ngFor="let akv of dataService.networkSelected.aspectKeyValuesNodes.concat(dataService.networkSelected.aspectKeyValuesEdges); let index = index"
+            class="tab-pane fade" id="list-{{index}}" role="tabpanel" aria-labelledby="list-{{index}}-list">
+
+            <!-- distribution -->
+            <h5>{{'MAIN_STATS_DISTRIBUTION_TITLE' | translate}}</h5>
+            <app-chart *ngIf="akv.validForContinuous"
+                       [numberOfBins]="akv.binSize"
+                       [chartObject]="akv.chartContinuousDistribution"></app-chart>
+
+            <app-chart *ngIf="!akv.validForContinuous"
+                       [chartObject]="akv.chartDiscreteDistribution"></app-chart>
+            <!-- todo binSize changer -->
+
+            <!-- aspect coverage -->
+
+            <h5>
+              {{'MAIN_STATS_COVERAGE_TITLE' | translate}}
+              <span class="badge badge-pill border" [ngClass]="akv.coverage < 25 ? 'bg-warning' : (akv.coverage < 75 ? 'bg-primary' : 'bg-success')">{{akv.coverage}} %</span>
+            </h5>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" style="width: {{akv.coverage}}%"
+                   aria-valuenow="{{akv.coverage}}" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <small>{{'MAIN_STATS_COVERAGE_HINT' | translate}}</small>
+
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <hr>
+
   </ng-container>
 
 </ng-container>
