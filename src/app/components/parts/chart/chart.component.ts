@@ -75,7 +75,9 @@ export class ChartComponent implements OnInit {
 
   ngOnInit(): void {
     this.binSizeInitially = this.numberOfBins;
-    this.chartObject.chartColors = this.utilityService.utilGetRandomColorForChart();
+    if (this.chartObject) {
+      this.chartObject.chartColors = this.utilityService.utilGetRandomColorForChart();
+    }
     if (this.index) {
       this.mapping = this.dataService.findMappingById(this.index);
     }

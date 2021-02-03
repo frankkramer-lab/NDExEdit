@@ -82,26 +82,28 @@
 
             <!-- distribution -->
             <h5>{{'MAIN_STATS_DISTRIBUTION_TITLE' | translate}}</h5>
-            <app-chart *ngIf="akv.validForContinuous"
+            <app-chart *ngIf="akv.chartContinuousDistribution"
                        [numberOfBins]="akv.binSize"
-                       [chartObject]="akv.chartContinuousDistribution"></app-chart>
+                       [chartObject]="akv.chartContinuousDistribution"
+                       (binSizeEmitter)="setBinSize($event, akv)"></app-chart>
 
-            <app-chart *ngIf="!akv.validForContinuous"
+            <app-chart *ngIf="akv.chartDiscreteDistribution"
                        [chartObject]="akv.chartDiscreteDistribution"></app-chart>
-            <!-- todo binSize changer -->
 
             <!-- aspect coverage -->
-
             <h5>
               {{'MAIN_STATS_COVERAGE_TITLE' | translate}}
-              <span class="badge badge-pill border" [ngClass]="akv.coverage < 25 ? 'bg-warning' : (akv.coverage < 75 ? 'bg-primary' : 'bg-success')">{{akv.coverage}} %</span>
+              <span class="badge badge-pill border"
+                    [ngClass]="akv.coverage < 25 ? 'bg-warning' : (akv.coverage < 75 ? 'bg-primary' : 'bg-success')">
+                {{akv.coverage}} %
+              </span>
             </h5>
+
             <div class="progress">
-              <div class="progress-bar" role="progressbar" style="width: {{akv.coverage}}%"
+              <div class="progress-bar" role="progressbar" [ngStyle]="{'width.%': akv.coverage}"
                    aria-valuenow="{{akv.coverage}}" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
             <small>{{'MAIN_STATS_COVERAGE_HINT' | translate}}</small>
-
 
           </div>
         </div>

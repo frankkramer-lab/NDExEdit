@@ -134,7 +134,9 @@ export class ParseService {
       let found = false;
 
       for (const akv of akvs) {
+
         if (akv.name === attr.n) {
+
           found = true;
 
           if (!akv.values.includes(attr.v)) {
@@ -717,7 +719,8 @@ export class ParseService {
   private buildDistributionChart(akvs: NeAspect[], filedata: any[], isNode: boolean): NeAspect[] {
 
     const discreteAkvs = this.utilityService.utilFilterForDiscrete(akvs);
-    const continuousAkvs = this.utilityService.utilFilterForContinuous(akvs);
+    const continuousAkvs = this.utilityService.utilFilterForContinuous(akvs, true);
+
     let numberOfNodes;
     let numberOfEdges;
 
@@ -785,6 +788,7 @@ export class ParseService {
       const binSize = this.utilityService.utilSturgesRule(akv.values as unknown as number[]);
       const chart = this.utilityService.utilCalculateHistogramDataForBinSize(binSize, akv);
       akv.chartContinuousDistribution = chart;
+      akv.binSize = binSize;
       akv.coverage = this.getCoverageByChart(chart, isNode ? numberOfNodes : numberOfEdges);
     }
     return discreteAkvs.concat(continuousAkvs);

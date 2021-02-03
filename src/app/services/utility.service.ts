@@ -169,8 +169,12 @@ export class UtilityService {
   /**
    * Returns a list of aspects suitable for continuous mappings
    * @param aspects List of all available attributes
+   * @param strict If true, do not treat integer as numeric property, should only be handled as discrete attribute
    */
-  utilFilterForContinuous(aspects: NeAspect[]): NeAspect[] {
+  utilFilterForContinuous(aspects: NeAspect[], strict: boolean = false): NeAspect[] {
+    if (strict) {
+      return aspects.filter(a => a.datatype && (a.datatype === 'float' || a.datatype === 'double'));
+    }
     return aspects.filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'float' || a.datatype === 'double'));
 
   }
