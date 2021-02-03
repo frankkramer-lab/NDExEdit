@@ -5,6 +5,8 @@ import {NeMappingsType} from '../models/ne-mappings-type';
 import {NeAspect} from '../models/ne-aspect';
 import {NeChart} from '../models/ne-chart';
 import {NeFrequencyCounter} from '../models/ne-frequency-counter';
+import {NeGroupedMappingsDiscrete} from "../models/ne-grouped-mappings-discrete";
+import {NeMappingDiscrete} from "../models/ne-mapping-discrete";
 
 @Injectable({
   providedIn: 'root'
@@ -343,5 +345,23 @@ export class UtilityService {
    */
   utilSum(numbers: number[]): number {
     return numbers.reduce((acc, curr) => acc + curr);
+  }
+
+  /**
+   * Extracts a singular discrete mapping from a collection of multiple discrete mappings to the same attribute
+   * @param mapping grouped discrete mapping
+   * @param index points to the index within this mapping's style map
+   */
+  utilExtractDiscreteFromGroupedDiscrete(mapping: NeGroupedMappingsDiscrete, index: number): NeMappingDiscrete {
+    const singularMapping: NeMappingDiscrete = {
+      keys: [], // todo check for what do i need keys
+      col: mapping.col,
+      styleProperty: mapping.styleMap[index].cssKey,
+      type: mapping.datatype,
+      values: mapping.styleMap[index].cssValues
+    };
+
+    return singularMapping;
+
   }
 }

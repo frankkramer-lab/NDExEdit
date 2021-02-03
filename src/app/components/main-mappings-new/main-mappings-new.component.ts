@@ -13,16 +13,17 @@ import {
   faTimes,
   faUndo
 } from '@fortawesome/free-solid-svg-icons';
-import {NeMappingsDefinition} from '../../models/ne-mappings-definition';
 import {NeAspect} from '../../models/ne-aspect';
 import {ChartDataSets} from 'chart.js';
 import {Label} from 'ng2-charts';
-import {NeContinuousThresholds} from '../../models/ne-continuous-thresholds';
 import {NeThresholdMap} from '../../models/ne-threshold-map';
 import {UtilityService} from '../../services/utility.service';
 import {NeMappingsType} from '../../models/ne-mappings-type';
 import {NeChartType} from '../../models/ne-chart-type';
 import {NeChart} from '../../models/ne-chart';
+import {NeGroupedMappingsDiscrete} from '../../models/ne-grouped-mappings-discrete';
+import {NeMappingDiscrete} from '../../models/ne-mapping-discrete';
+import {NeMappingContinuous} from '../../models/ne-mapping-continuous';
 
 @Component({
   selector: 'app-main-mappings-new',
@@ -216,12 +217,12 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   /**
    * Newly created or existing discrete mapping to be edited
    */
-  discreteMapping: NeMappingsDefinition[];
+  discreteMapping: NeMappingDiscrete;
 
   /**
    * Newly created or existing continuous mapping to be edited
    */
-  continuousMapping: NeContinuousThresholds;
+  continuousMapping: NeMappingContinuous;
 
   /**
    * Thresholds that belong to this {@link MainMappingsNewComponent#continuousMapping}
@@ -374,9 +375,9 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     console.log(this.chartObject);
 
     if (this.typeHint.nc || this.typeHint.ec) {
-      this.continuousMapping = {};
+      this.continuousMapping = null;
     } else {
-      this.discreteMapping = [];
+      this.discreteMapping = null;
     }
 
   }
@@ -390,38 +391,40 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   private initDataEdit(params: ParamMap): void {
     // edit existing
     this.isEdit = true;
-    let existingMapping;
+    let existingDiscreteMapping: NeGroupedMappingsDiscrete;
+    let existingContinuousMapping: NeMappingContinuous;
     const mapId = params.get('map').substring(2);
 
+    console.log(params);
     switch (params.get('map').substring(0, 2)) {
       case 'nd':
         this.propertyId = Number(params.get('propertyId'));
-        existingMapping = this.dataService.networkSelected.mappings.nodesDiscrete[mapId];
-        this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === existingMapping.classifier);
-        this.styleProperty = existingMapping.styleMap[this.propertyId].cssKey;
-        this.discreteMapping = existingMapping;
+        existingDiscreteMapping = this.dataService.networkSelected.mappings.nodesDiscrete[mapId];
+        this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === existingDiscreteMapping.col);
+        this.styleProperty = existingDiscreteMapping.styleMap[this.propertyId].cssKey;
+        this.discreteMapping = this.utilityService.utilExtractDiscreteFromGroupedDiscrete(existingDiscreteMapping, Number(this.propertyId));
         break;
       case 'nc':
-        existingMapping = this.dataService.networkSelected.mappings.nodesContinuous[mapId];
-        this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === existingMapping.title[1]);
-        this.styleProperty = existingMapping.title[0];
-        this.continuousMapping = existingMapping;
+        existingContinuousMapping = this.dataService.networkSelected.mappings.nodesContinuous[mapId];
+        this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === existingContinuousMapping.col);
+        this.styleProperty = existingContinuousMapping.styleProperty;
+        this.continuousMapping = existingContinuousMapping;
         this.binSize = this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
         this.chartObject = this.utilityService.utilCalculateHistogramDataForBinSize(this.binSize,
           this.propertyToMap);
         break;
       case 'ed':
         this.propertyId = Number(params.get('propertyId'));
-        existingMapping = this.dataService.networkSelected.mappings.edgesDiscrete[mapId];
-        this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === existingMapping.classifier);
-        this.styleProperty = existingMapping.styleMap[this.propertyId].cssKey;
-        this.discreteMapping = existingMapping;
+        existingDiscreteMapping = this.dataService.networkSelected.mappings.edgesDiscrete[mapId];
+        this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === existingDiscreteMapping.col);
+        this.styleProperty = existingDiscreteMapping.styleMap[this.propertyId].cssKey;
+        this.discreteMapping = this.utilityService.utilExtractDiscreteFromGroupedDiscrete(existingDiscreteMapping, Number(this.propertyId));
         break;
       case 'ec':
-        existingMapping = this.dataService.networkSelected.mappings.edgesContinuous[mapId];
-        this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === existingMapping.title[1]);
-        this.styleProperty = existingMapping.title[0];
-        this.continuousMapping = existingMapping;
+        existingContinuousMapping = this.dataService.networkSelected.mappings.edgesContinuous[mapId];
+        this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === existingContinuousMapping.col);
+        this.styleProperty = existingContinuousMapping.styleProperty;
+        this.continuousMapping = existingContinuousMapping;
         this.binSize = this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
         this.chartObject = this.utilityService.utilCalculateHistogramDataForBinSize(this.binSize,
           this.propertyToMap);

@@ -1,6 +1,3 @@
-<div class="bg-danger">WARNING</div>
-
-
 <ng-container *ngIf="isDiscrete then discreteBlock else continuousBlock"></ng-container>
 
 <ng-template #discreteBlock>
@@ -9,7 +6,7 @@
     <!-- ND -->
     <span *ngFor="let mapping of dataService.networkSelected.mappings.nodesDiscrete; let mapIndex = index;">
       <span *ngFor="let style of mapping.styleMap; let propertyIndex = index;">
-        <div *ngIf="mapping.classifier === propertyToMap.name && style.cssKey === styleProperty"
+        <div *ngIf="mapping.col === propertyToMap.name && style.cssKey === styleProperty"
              class="alert alert-danger"
              role="alert">
           <h5>
@@ -33,7 +30,7 @@
     <!-- ED -->
     <span *ngFor="let mapping of dataService.networkSelected.mappings.edgesDiscrete; let mapIndex = index;">
       <span *ngFor="let style of mapping.styleMap; let propertyIndex = index;">
-        <div *ngIf="mapping.classifier === propertyToMap.name && style.cssKey === styleProperty"
+        <div *ngIf="mapping.col === propertyToMap.name && style.cssKey === styleProperty"
              class="alert alert-danger"
              role="alert">
           <h5>
@@ -59,7 +56,7 @@
   <ng-container *ngIf="isNode">
     <!-- NC -->
     <span *ngFor="let nodeMap of dataService.networkSelected.mappings.nodesContinuous; let mapIndex = index;">
-        <div *ngIf="nodeMap.title[1] === propertyToMap.name && nodeMap.title[0] == styleProperty"
+        <div *ngIf="nodeMap.col === propertyToMap.name && nodeMap.styleProperty == styleProperty"
              class="alert alert-danger"
              role="alert">
           <h5>
@@ -81,8 +78,8 @@
 
   <ng-container *ngIf="!isNode">
     <!-- EC -->
-    <span *ngFor="let nodeMap of dataService.networkSelected.mappings.edgesContinuous; let mapIndex = index;">
-        <div *ngIf="nodeMap.title[1] === propertyToMap.name && nodeMap.title[0] == styleProperty"
+    <span *ngFor="let edgeMap of dataService.networkSelected.mappings.edgesContinuous; let mapIndex = index;">
+        <div *ngIf="edgeMap.col === propertyToMap.name && edgeMap.styleProperty == styleProperty"
              class="alert alert-danger"
              role="alert">
           <h5>
