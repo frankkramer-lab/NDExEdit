@@ -69,7 +69,7 @@ export class GraphService {
   highlightBySelector(selector: string): void {
     if (selector) {
       console.log(selector);
-      this.dataService.networkSelected.core.elements(selector).flashClass('custom_highlight_color', this.flashDuration);
+      this.dataService.selectedNetwork.core.elements(selector).flashClass('custom_highlight_color', this.flashDuration);
     }
   }
 
@@ -81,7 +81,7 @@ export class GraphService {
   highlightByElementId(id: string): void {
     if (id) {
       console.log(id);
-      this.dataService.networkSelected.core.getElementById(id).flashClass('custom_highlight_color', this.flashDuration);
+      this.dataService.selectedNetwork.core.getElementById(id).flashClass('custom_highlight_color', this.flashDuration);
     }
   }
 
@@ -92,7 +92,7 @@ export class GraphService {
    * @param duration highlight duration in milliseconds
    */
   setHighlightColorAndDuration(hexColorNodes: string, hexColorEdges: string, duration: number): void {
-    const styleJson = this.dataService.networkSelected.core.style().json();
+    const styleJson = this.dataService.selectedNetwork.core.style().json();
     for (const style of styleJson) {
       if (style.selector === '.custom_highlight_color') {
         style.style = {
@@ -105,7 +105,7 @@ export class GraphService {
     }
 
     this.flashDuration = duration;
-    this.dataService.networkSelected.core.style(styleJson);
+    this.dataService.selectedNetwork.core.style(styleJson);
 
   }
 
@@ -114,14 +114,14 @@ export class GraphService {
    * @param show current status of labels
    */
   toggleLabels(show: boolean): void {
-    this.dataService.networkSelected.core.elements().toggleClass('hide_label', !show);
+    this.dataService.selectedNetwork.core.elements().toggleClass('hide_label', !show);
   }
 
   /**
    * Fits the graph to the screen width
    */
   fitGraph(): void {
-    this.dataService.networkSelected.core.fit();
+    this.dataService.selectedNetwork.core.fit();
   }
 
   /**
@@ -129,9 +129,9 @@ export class GraphService {
    * @private
    */
   private subscribeToCoreEvents(): void {
-    if (this.dataService.networkSelected.core) {
-      this.dataService.networkSelected.core.ready(() => {
-        this.dataService.networkSelected.core.on('select unselect', event => {
+    if (this.dataService.selectedNetwork.core) {
+      this.dataService.selectedNetwork.core.ready(() => {
+        this.dataService.selectedNetwork.core.on('select unselect', event => {
           this.handleEvent(event);
         });
       });
@@ -167,8 +167,8 @@ export class GraphService {
    * @private
    */
   private unsubscribeFromCoreEvents(): void {
-    if (this.dataService.networkSelected.core) {
-      this.dataService.networkSelected.core.removeListener('click');
+    if (this.dataService.selectedNetwork.core) {
+      this.dataService.selectedNetwork.core.removeListener('click');
     }
   }
 

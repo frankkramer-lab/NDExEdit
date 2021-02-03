@@ -349,9 +349,9 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     let availableAttributes: any[];
 
     if (this.typeHint.ec || this.typeHint.ed) {
-      availableAttributes = this.dataService.networkSelected.aspectKeyValuesEdges;
+      availableAttributes = this.dataService.selectedNetwork.aspectKeyValuesEdges;
     } else {
-      availableAttributes = this.dataService.networkSelected.aspectKeyValuesNodes;
+      availableAttributes = this.dataService.selectedNetwork.aspectKeyValuesNodes;
     }
 
     if (!this.isDiscrete) {
@@ -399,14 +399,14 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     switch (params.get('map').substring(0, 2)) {
       case 'nd':
         this.propertyId = Number(params.get('propertyId'));
-        existingDiscreteMapping = this.dataService.networkSelected.mappings.nodesDiscrete[mapId];
-        this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === existingDiscreteMapping.col);
+        existingDiscreteMapping = this.dataService.selectedNetwork.mappings.nodesDiscrete[mapId];
+        this.propertyToMap = this.dataService.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === existingDiscreteMapping.col);
         this.styleProperty = existingDiscreteMapping.styleMap[this.propertyId].cssKey;
         this.discreteMapping = this.utilityService.utilExtractDiscreteFromGroupedDiscrete(existingDiscreteMapping, Number(this.propertyId));
         break;
       case 'nc':
-        existingContinuousMapping = this.dataService.networkSelected.mappings.nodesContinuous[mapId];
-        this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === existingContinuousMapping.col);
+        existingContinuousMapping = this.dataService.selectedNetwork.mappings.nodesContinuous[mapId];
+        this.propertyToMap = this.dataService.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === existingContinuousMapping.col);
         this.styleProperty = existingContinuousMapping.styleProperty;
         this.continuousMapping = existingContinuousMapping;
         this.binSize = this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
@@ -415,14 +415,14 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         break;
       case 'ed':
         this.propertyId = Number(params.get('propertyId'));
-        existingDiscreteMapping = this.dataService.networkSelected.mappings.edgesDiscrete[mapId];
-        this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === existingDiscreteMapping.col);
+        existingDiscreteMapping = this.dataService.selectedNetwork.mappings.edgesDiscrete[mapId];
+        this.propertyToMap = this.dataService.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === existingDiscreteMapping.col);
         this.styleProperty = existingDiscreteMapping.styleMap[this.propertyId].cssKey;
         this.discreteMapping = this.utilityService.utilExtractDiscreteFromGroupedDiscrete(existingDiscreteMapping, Number(this.propertyId));
         break;
       case 'ec':
-        existingContinuousMapping = this.dataService.networkSelected.mappings.edgesContinuous[mapId];
-        this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === existingContinuousMapping.col);
+        existingContinuousMapping = this.dataService.selectedNetwork.mappings.edgesContinuous[mapId];
+        this.propertyToMap = this.dataService.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === existingContinuousMapping.col);
         this.styleProperty = existingContinuousMapping.styleProperty;
         this.continuousMapping = existingContinuousMapping;
         this.binSize = this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);

@@ -24,13 +24,13 @@
               </button>
               <div aria-labelledby="cDetailsGroup" class="dropdown-menu">
                 <a *ngFor="let cDetail of attribute.mapPointerC; let i = index;"
-                   [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, attribute.mapPointerC[i]]} }]"
+                   [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, attribute.mapPointerC[i]]} }]"
                    class="dropdown-item">
                   <span *ngIf="typeHint.ec then ecBlock else ncBlock"></span>
                   <ng-template
-                    #ecBlock>{{ dataService.networkSelected.mappings.edgesContinuous[i].cleanStyleProperty }}</ng-template>
+                    #ecBlock>{{ dataService.selectedNetwork.mappings.edgesContinuous[i].cleanStyleProperty }}</ng-template>
                   <ng-template
-                    #ncBlock>{{ dataService.networkSelected.mappings.nodesContinuous[i].cleanStyleProperty }}</ng-template>
+                    #ncBlock>{{ dataService.selectedNetwork.mappings.nodesContinuous[i].cleanStyleProperty }}</ng-template>
                 </a>
               </div>
             </div>
@@ -40,7 +40,7 @@
           <!-- exactly one mapping exists -->
           <span *ngIf="attribute.mapPointerC.length === 1">
                   <button *ngIf="attribute.mapPointerC.length > 0"
-                          [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, attribute.mapPointerC[0]]} }]"
+                          [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, attribute.mapPointerC[0]]} }]"
                           class="btn btn-outline-secondary"
                           data-toggle="tooltip"
                           ngbTooltip="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}" placement="bottom"
@@ -50,7 +50,7 @@
                 </span>
 
           <button
-            [routerLink]="['', { outlets: {primary: ['new', dataService.networkSelected.id, (typeHint.ec ? 'ec' : 'nc'), attributeIndex ]} }]"
+            [routerLink]="['', { outlets: {primary: ['new', dataService.selectedNetwork.id, (typeHint.ec ? 'ec' : 'nc'), attributeIndex ]} }]"
             class="btn btn-outline-success ml-2"
             data-toggle="tooltip"
             ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"
@@ -70,14 +70,14 @@
                 </button>
                 <div aria-labelledby="dDetailsGroup" class="dropdown-menu">
                   <a *ngFor="let dDetail of attribute.mapPointerD; let i = index;"
-                     [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, attribute.mapPointerD[i]]} }]"
+                     [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, attribute.mapPointerD[i]]} }]"
                      class="dropdown-item">
                     <span *ngIf="typeHint.ed then edBlock else ndBlock"></span>
                     <ng-template #edBlock>
-                      {{dataService.networkSelected.mappings.edgesDiscrete[i].classifier}}
+                      {{dataService.selectedNetwork.mappings.edgesDiscrete[i].classifier}}
                     </ng-template>
                     <ng-template #ndBlock>
-                      {{dataService.networkSelected.mappings.nodesDiscrete[i].classifier}}
+                      {{dataService.selectedNetwork.mappings.nodesDiscrete[i].classifier}}
                     </ng-template>
                   </a>
                 </div>
@@ -87,7 +87,7 @@
 
           <span *ngIf="attribute.mapPointerD.length === 1">
             <button *ngIf="attribute.mapPointerD.length > 0"
-                    [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, attribute.mapPointerD[0]]} }]"
+                    [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, attribute.mapPointerD[0]]} }]"
                     class="btn btn-outline-secondary"
                     data-toggle="tooltip"
                     ngbTooltip="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}" placement="bottom"
@@ -97,7 +97,7 @@
           </span>
 
           <button
-            [routerLink]="['', { outlets: {primary: ['new', dataService.networkSelected.id, (typeHint.ed ? 'ed' : 'nd'), attributeIndex ]} }]"
+            [routerLink]="['', { outlets: {primary: ['new', dataService.selectedNetwork.id, (typeHint.ed ? 'ed' : 'nd'), attributeIndex ]} }]"
             class="btn btn-outline-success ml-2"
             data-toggle="tooltip"
             ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"

@@ -1,17 +1,17 @@
-<ng-container *ngIf="dataService.networkSelected">
+<ng-container *ngIf="dataService.selectedNetwork">
 
   <h1>
-    <a [routerLink]="['', { outlets: {primary: ['graph', dataService.networkSelected.id]} }]" data-toggle="tooltip"
+    <a [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]" data-toggle="tooltip"
        ngbTooltip="{{'MAIN_MAPPINGS_GRAPH' | translate}}" placement="right"
        role="button">
       <fa-icon [icon]="faArrowLeft"></fa-icon>
     </a>
-    {{dataService.networkSelected.networkInformation.name}}
+    {{dataService.selectedNetwork.networkInformation.name}}
   </h1>
 
   <hr>
 
-  <span *ngIf="isDiscrete then discreteOverview else continuousOverview"></span>
+  <span *ngIf="(dataService.selectedTypeHint.nd || dataService.selectedTypeHint.ed) then discreteOverview else continuousOverview"></span>
 
   <ng-template #discreteOverview>
 
@@ -19,13 +19,14 @@
 
       <thead>
       <tr>
-        <th>{{selectedDiscrete.col}}</th>
-        <th *ngFor="let val of selectedDiscrete.values" colspan="3">{{val}}</th>
+        <th>{{dataService.selectedDiscreteMapping.col}}</th>
+        <th *ngFor="let val of dataService.selectedDiscreteMapping.values" colspan="3">{{val}}</th>
       </tr>
       </thead>
 
       <tbody>
-      <tr *ngFor="let style of selectedDiscrete.styleMap">
+      <tr *ngFor="let style of dataService.selectedDiscreteMapping.styleMap; let styleIndex = index"
+          [ngClass]="(style === dataService.selectedDiscreteMappingProperty) ? 'table-danger' : ''">
         <td>{{style.cssKey}}</td>
         <td *ngFor="let val of style.cssValues">
           {{val}}
@@ -40,7 +41,7 @@
         </td>
         <!-- DELETE -->
         <td>
-          <button [disabled]="true" class="btn btn-block btn-outline-danger">
+          <button (click)="toggleSingleRemoveDialogue(styleIndex)" class="btn btn-block btn-outline-danger">
             <fa-icon [icon]="faTrash"></fa-icon>
           </button>
         </td>
@@ -48,8 +49,7 @@
       </tbody>
     </table>
 
-    <button [disabled]="true"
-            (click)="toggleGlobalRemoveDialogue(selectedDiscrete, typeHint)"
+    <button (click)="toggleGlobalRemoveDialogue(selectedDiscrete, typeHint)"
             class="btn btn-block btn-outline-danger"
             data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_DELETE' | translate}}"
             placement="bottom">
@@ -175,7 +175,7 @@
       <!-- confirm -->
       <div class="col-6">
         <button
-                [routerLink]="['', { outlets: {primary: ['graph', dataService.networkSelected.id]} }]"
+                [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]"
                 class="btn btn-block btn-outline-danger">
           <fa-icon [icon]="faCheck"></fa-icon>
           {{'MAIN_MAPPINGS_CONFIRM_DELETION_YES' | translate}}
@@ -195,7 +195,7 @@
 
       <!-- nevermind -->
       <div class="col-6">
-        <button class="btn btn-block btn-outline-success">
+        <button (click)="confirmDeletion(false, 'single')" class="btn btn-block btn-outline-success">
           <fa-icon [icon]="faTimes"></fa-icon>
           {{'MAIN_MAPPINGS_CONFIRM_DELETION_NO' | translate}}
         </button>
@@ -204,7 +204,7 @@
       <!-- confirm -->
       <div class="col-6">
         <button
-                [routerLink]="['', { outlets: {primary: ['graph', dataService.networkSelected.id]} }]"
+                [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]"
                 class="btn btn-block btn-outline-danger">
           <fa-icon [icon]="faCheck"></fa-icon>
           {{'MAIN_MAPPINGS_CONFIRM_DELETION_YES' | translate}}

@@ -227,7 +227,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    */
   toggleLabels(show: boolean): void {
     this.graphService.toggleLabels(show);
-    this.dataService.networkSelected.showLabels = show;
+    this.dataService.selectedNetwork.showLabels = show;
   }
 
   /**
@@ -312,8 +312,8 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
       'source-arrow-color': highlightEdges,
       'target-arrow-color': highlightEdges
     };
-    const styleIndex = this.dataService.networkSelected.style.findIndex(x => x.selector === '.custom_highlight_color');
-    this.dataService.networkSelected.style[styleIndex].style = colorStyle;
+    const styleIndex = this.dataService.selectedNetwork.style.findIndex(x => x.selector === '.custom_highlight_color');
+    this.dataService.selectedNetwork.style[styleIndex].style = colorStyle;
   }
 
 }

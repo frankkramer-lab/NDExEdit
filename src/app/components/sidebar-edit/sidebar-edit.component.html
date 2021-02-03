@@ -1,15 +1,15 @@
 <div class="p-2">
 
   <h5
-    *ngIf="dataService.networkSelected.networkInformation.description">{{'SIDEBAR_EDIT_DESCRIPTION_TITLE' | translate}}</h5>
+    *ngIf="dataService.selectedNetwork.networkInformation.description">{{'SIDEBAR_EDIT_DESCRIPTION_TITLE' | translate}}</h5>
 
-  <div *ngIf="dataService.networkSelected.networkInformation.description">
-    <p [innerHTML]="dataService.networkSelected.networkInformation.description"></p>
+  <div *ngIf="dataService.selectedNetwork.networkInformation.description">
+    <p [innerHTML]="dataService.selectedNetwork.networkInformation.description"></p>
   </div>
 
   <div *ngIf="showLabelCheckbox" class="form-check mb-2">
-    <input (click)="toggleLabels(!dataService.networkSelected.showLabels)"
-           [checked]="dataService.networkSelected.showLabels" class="form-check-input" id="showLabels"
+    <input (click)="toggleLabels(!dataService.selectedNetwork.showLabels)"
+           [checked]="dataService.selectedNetwork.showLabels" class="form-check-input" id="showLabels"
            type="checkbox">
     <label class="form-check-label" for="showLabels">
       {{'SIDEBAR_EDIT_CB_LABELS' | translate}}
@@ -22,7 +22,7 @@
   <!-- color gradient for continuous mappings -->
   <div *ngIf="showColorGradient">
     <h5>
-      <a [routerLink]="['', {outlets: {primary: ['mappings', dataService.networkSelected.id, index]} }]" role="button">
+      <a [routerLink]="['', {outlets: {primary: ['mappings', dataService.selectedNetwork.id, index]} }]" role="button">
         <b>{{mapping.cleanStyleProperty || mapping.styleProperty}}</b>
         {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
         <b>{{mapping.col}}</b>
@@ -52,7 +52,7 @@
             </a>
           </td>
         </tr>
-        <tr *ngFor="let akvn of dataService.networkSelected.aspectKeyValuesNodes">
+        <tr *ngFor="let akvn of dataService.selectedNetwork.aspectKeyValuesNodes">
           <td><b>{{akvn.name}}</b></td>
           <td *ngFor="let node of graphService.selectedElements.nodes">
             <span *ngFor="let attribute of node.attributes">
@@ -78,7 +78,7 @@
             </a>
           </td>
         </tr>
-        <tr *ngFor="let akve of dataService.networkSelected.aspectKeyValuesEdges">
+        <tr *ngFor="let akve of dataService.selectedNetwork.aspectKeyValuesEdges">
           <td><b>{{akve.name}}</b></td>
           <td *ngFor="let edge of graphService.selectedElements.edges">
             <span *ngFor="let attribute of edge.attributes">
@@ -114,7 +114,7 @@
     <div aria-labelledby="editsNavAspects" class="tab-pane fade show active" id="editsNavAspectsContent"
          role="tabpanel">
 
-      <button [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, -1]} }]"
+      <button [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, -1]} }]"
               class="btn btn-lg btn-block btn-success mt-2 mb-2" data-toggle="tooltip"
               ngbTooltip="{{'SIDEBAR_EDIT_TT_MANAGE_MAPPINGS' | translate}}"
               placement="bottom">
@@ -123,18 +123,18 @@
       </button>
 
       <h5
-        *ngIf="dataService.networkSelected.mappings.nodesDiscrete.length > 0 || dataService.networkSelected.mappings.nodesContinuous.length > 0">
+        *ngIf="dataService.selectedNetwork.mappings.nodesDiscrete.length > 0 || dataService.selectedNetwork.mappings.nodesContinuous.length > 0">
         {{'SIDEBAR_EDIT_ASPECTS_NODES' | translate}}
       </h5>
 
       <table
-        *ngIf="dataService.networkSelected.mappings.nodesDiscrete.length > 0"
+        *ngIf="dataService.selectedNetwork.mappings.nodesDiscrete.length > 0"
         class="table-responsive">
         <table class="table table-bordered">
-          <tr *ngFor="let nodeMap of dataService.networkSelected.mappings.nodesDiscrete; let index = index">
+          <tr *ngFor="let nodeMap of dataService.selectedNetwork.mappings.nodesDiscrete; let index = index">
             <td>
               <a
-                [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, 'nd' + index]} }]"
+                [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, 'nd' + index]} }]"
                 role="button">
                 <b>{{nodeMap.col}}</b>
               </a>
@@ -169,9 +169,9 @@
       </table>
 
       <ul
-        *ngIf="dataService.networkSelected.mappings.nodesContinuous.length > 0"
+        *ngIf="dataService.selectedNetwork.mappings.nodesContinuous.length > 0"
         class="list-group mb-2">
-      <span *ngFor="let nodeMap of dataService.networkSelected.mappings.nodesContinuous; let index = index">
+      <span *ngFor="let nodeMap of dataService.selectedNetwork.mappings.nodesContinuous; let index = index">
         <li *ngIf="!nodeMap.isColor" class="list-group-item">
           <a (click)="displayMapping(nodeMap.chart, [], 'nc' + index)" role="button">
             <b>{{nodeMap.cleanStyleProperty || nodeMap.styleProperty}}</b>
@@ -190,18 +190,18 @@
       </ul>
 
       <h5
-        *ngIf="dataService.networkSelected.mappings.edgesDiscrete.length > 0 || dataService.networkSelected.mappings.edgesContinuous.length > 0">
+        *ngIf="dataService.selectedNetwork.mappings.edgesDiscrete.length > 0 || dataService.selectedNetwork.mappings.edgesContinuous.length > 0">
         {{'SIDEBAR_EDIT_ASPECTS_EDGES' | translate}}
       </h5>
 
       <table
-        *ngIf="dataService.networkSelected.mappings.edgesDiscrete.length > 0"
+        *ngIf="dataService.selectedNetwork.mappings.edgesDiscrete.length > 0"
         class="table-responsive">
         <table class="table table-bordered">
-          <tr *ngFor="let edgeMap of dataService.networkSelected.mappings.edgesDiscrete; let index = index">
+          <tr *ngFor="let edgeMap of dataService.selectedNetwork.mappings.edgesDiscrete; let index = index">
             <td>
               <a
-                [routerLink]="['', { outlets: {primary: ['mappings', dataService.networkSelected.id, 'ed' + index]} }]"
+                [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, 'ed' + index]} }]"
                 role="button">
                 <b>{{edgeMap.col}}</b>
               </a>
@@ -232,9 +232,9 @@
         </table>
       </table>
 
-      <ul *ngIf="dataService.networkSelected.mappings.edgesContinuous.length > 0"
+      <ul *ngIf="dataService.selectedNetwork.mappings.edgesContinuous.length > 0"
           class="list-group mb-2">
-      <span *ngFor="let edgeMap of dataService.networkSelected.mappings.edgesContinuous; let index = index">
+      <span *ngFor="let edgeMap of dataService.selectedNetwork.mappings.edgesContinuous; let index = index">
         <li *ngIf="!edgeMap.isColor" class="list-group-item">
           <a (click)="displayMapping(edgeMap.chart, [], 'ec' + index)" role="button">
             <b>{{edgeMap.cleanStyleProperty || edgeMap.styleProperty}}</b>

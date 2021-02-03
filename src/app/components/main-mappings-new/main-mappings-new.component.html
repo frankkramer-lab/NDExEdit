@@ -1,12 +1,12 @@
-<ng-container *ngIf="dataService.networkSelected && this.propertyToMap">
+<ng-container *ngIf="dataService.selectedNetwork && this.propertyToMap">
 
   <h1>
-    <a [routerLink]="['', { outlets: {primary: ['graph', dataService.networkSelected.id]} }]" data-toggle="tooltip"
+    <a [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]" data-toggle="tooltip"
        ngbTooltip="{{'MAIN_MAPPINGS_GRAPH' | translate}}" placement="right"
        role="button">
       <fa-icon [icon]="faArrowLeft"></fa-icon>
     </a>
-    {{dataService.networkSelected.networkInformation.name}}
+    {{dataService.selectedNetwork.networkInformation.name}}
   </h1>
 
   <hr>

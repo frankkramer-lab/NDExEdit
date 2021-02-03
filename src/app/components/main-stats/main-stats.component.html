@@ -1,17 +1,17 @@
-<ng-container *ngIf="dataService.networkSelected">
+<ng-container *ngIf="dataService.selectedNetwork">
   <h1>{{'MAIN_STATS_TITLE' | translate}}</h1>
 
   <hr>
 
-  <h3>{{'MAIN_STATS_GRAPH_INFO_TITLE' | translate}} "{{dataService.networkSelected.networkInformation.name}}"</h3>
+  <h3>{{'MAIN_STATS_GRAPH_INFO_TITLE' | translate}} "{{dataService.selectedNetwork.networkInformation.name}}"</h3>
 
   <p
-    [innerHTML]="dataService.networkSelected.networkInformation.description || 'MAIN_STATS_NO_DESCRIPTION'|translate"></p>
+    [innerHTML]="dataService.selectedNetwork.networkInformation.description || 'MAIN_STATS_NO_DESCRIPTION'|translate"></p>
   <div class="row">
 
     <div class="col">
       <a
-        [routerLink]="['', { outlets: {primary: ['graph', dataService.networkSelected.id], sidebar: ['edit', dataService.networkSelected.id]} }]"
+        [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id], sidebar: ['edit', dataService.selectedNetwork.id]} }]"
         class="btn btn-block btn-outline-success mt-2 mb-2"
         data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_EDIT' | translate}}" placement="bottom"
         role="button">
@@ -41,23 +41,23 @@
 
   <div class="card">
     <div class="card-body">
-      <p *ngIf="dataService.networkSelected.networkInformation.rightsholder">
+      <p *ngIf="dataService.selectedNetwork.networkInformation.rightsholder">
         <b [innerHTML]="">{{'MAIN_STATS_GRAPH_INFO_NW_RIGHTSHOLDER' | translate}}:</b>&nbsp;
-        <span [innerHTML]="dataService.networkSelected.networkInformation.rightsholder"></span>
+        <span [innerHTML]="dataService.selectedNetwork.networkInformation.rightsholder"></span>
       </p>
-      <p *ngIf="dataService.networkSelected.networkInformation.networkType">
+      <p *ngIf="dataService.selectedNetwork.networkInformation.networkType">
         <b>{{'MAIN_STATS_GRAPH_INFO_NW_TYPE' | translate}}:</b>&nbsp;<span
-        [innerHTML]="dataService.networkSelected.networkInformation.networkType"></span>
+        [innerHTML]="dataService.selectedNetwork.networkInformation.networkType"></span>
       </p>
-      <p *ngIf="dataService.networkSelected.networkInformation.organism">
+      <p *ngIf="dataService.selectedNetwork.networkInformation.organism">
         <b>{{'MAIN_STATS_GRAPH_INFO_NW_ORGANISM' | translate}}:</b>&nbsp;<span
-        [innerHTML]="dataService.networkSelected.networkInformation.organism"></span>
+        [innerHTML]="dataService.selectedNetwork.networkInformation.organism"></span>
       </p>
     </div>
   </div>
 
   <ng-container
-    *ngIf="dataService.networkSelected.aspectKeyValuesEdges.length > 0 || dataService.networkSelected.aspectKeyValuesNodes.length > 0">
+    *ngIf="dataService.selectedNetwork.aspectKeyValuesEdges.length > 0 || dataService.selectedNetwork.aspectKeyValuesNodes.length > 0">
 
     <h3 class="mt-2">{{'MAIN_STATS_GRAPH_ATTRIBUTES_TITLE' | translate}}</h3>
 
@@ -67,7 +67,7 @@
         <div class="list-group" id="list-tab" role="tablist">
 
           <a
-            *ngFor="let akv of dataService.networkSelected.aspectKeyValuesNodes.concat(dataService.networkSelected.aspectKeyValuesEdges); let index = index"
+            *ngFor="let akv of dataService.selectedNetwork.aspectKeyValuesNodes.concat(dataService.selectedNetwork.aspectKeyValuesEdges); let index = index"
             class="list-group-item list-group-item-action" id="list-{{index}}-list" data-toggle="list"
             href="#list-{{index}}" role="tab" aria-controls="{{index}}">
             {{akv.name}}
@@ -77,7 +77,7 @@
       <div class="col-8">
         <div class="tab-content" id="nav-tabContent">
           <div
-            *ngFor="let akv of dataService.networkSelected.aspectKeyValuesNodes.concat(dataService.networkSelected.aspectKeyValuesEdges); let index = index"
+            *ngFor="let akv of dataService.selectedNetwork.aspectKeyValuesNodes.concat(dataService.selectedNetwork.aspectKeyValuesEdges); let index = index"
             class="tab-pane fade" id="list-{{index}}" role="tabpanel" aria-labelledby="list-{{index}}-list">
 
             <!-- distribution -->

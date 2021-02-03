@@ -1,8 +1,12 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {NeNetwork} from '../models/ne-network';
-import {NeMappingContinuous} from "../models/ne-mapping-continuous";
-import {NeMappingDiscrete} from "../models/ne-mapping-discrete";
-import {UtilityService} from "./utility.service";
+import {NeMappingContinuous} from '../models/ne-mapping-continuous';
+import {NeMappingDiscrete} from '../models/ne-mapping-discrete';
+import {UtilityService} from './utility.service';
+import {NeAspect} from '../models/ne-aspect';
+import {NeGroupedMappingsDiscrete} from "../models/ne-grouped-mappings-discrete";
+import {NeStyleMap} from "../models/ne-style-map";
+import {NeMappingsType} from "../models/ne-mappings-type";
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +28,23 @@ export class DataService {
   /**
    * Selected network of type {@link NeNetwork|NeNetwork}
    */
-  networkSelected: NeNetwork;
+  selectedNetwork: NeNetwork;
+  /**
+   * Selected discrete mapping of type {@link NeGroupedMappingsDiscrete}
+   */
+  selectedDiscreteMapping: NeGroupedMappingsDiscrete;
+  /**
+   * Selected continuous mapping of type {@link NeMappingContinuous}
+   */
+  selectedContinuousMapping: NeMappingContinuous;
+  /**
+   * Selected discrete mapping property of type {@link NeStyleMap}
+   */
+  selectedDiscreteMappingProperty: NeStyleMap;
+  /**
+   * On selection of a mapping this typehint is set
+   */
+  selectedTypeHint: NeMappingsType;
   /**
    * The network ID increment
    */
@@ -167,7 +187,7 @@ export class DataService {
    * @param networkId
    */
   public selectNetwork(networkId: number): void {
-    this.networkSelected = this.networksParsed.find(x => x.id === networkId);
+    this.selectedNetwork = this.networksParsed.find(x => x.id === networkId);
   }
 
   /**
@@ -600,25 +620,25 @@ export class DataService {
    * @param id The network's id
    * @param property Property to remove
    */
-  // removePropertyFromMapping(id: number, property: NeMappingProperty): void {
-  //   const network = this.getNetworkById(id);
-  //   const isNode = property.mapType.startsWith('n');
-  //   const mapping: NeGroupedMappingsDiscrete = isNode
-  //     ? network.mappings.nodesDiscrete[property.mapReference]
-  //     : network.mappings.edgesDiscrete[property.mapReference];
-  //
-  //   mapping.th = mapping.th.filter(x => x !== property.style.cssKey);
-  //   mapping.styleMap = mapping.styleMap.filter(x => x !== property.style);
-  //
-  //   for (const selector of mapping.selectors) {
-  //     for (const s of network.style) {
-  //       if (s.selector === selector) {
-  //         delete s.style[property.style.cssKey];
-  //
-  //       }
-  //     }
-  //   }
-  // }
+  removePropertyFromMapping(id: number, property: NeAspect): void {
+    const network = this.getNetworkById(id);
+    // const isNode = property.mapType.startsWith('n');
+    // const mapping: NeGroupedMappingsDiscrete = isNode
+    //   ? network.mappings.nodesDiscrete[property.mapReference]
+    //   : network.mappings.edgesDiscrete[property.mapReference];
+    //
+    // mapping.th = mapping.th.filter(x => x !== property.style.cssKey);
+    // mapping.styleMap = mapping.styleMap.filter(x => x !== property.style);
+    //
+    // for (const selector of mapping.selectors) {
+    //   for (const s of network.style) {
+    //     if (s.selector === selector) {
+    //       delete s.style[property.style.cssKey];
+    //
+    //     }
+    //   }
+    // }
+  }
 
   /**
    * Edits an existing mapping, usable for both discrete and contiuous mappings
@@ -1076,16 +1096,57 @@ export class DataService {
     const i = index.substr(2);
 
     if (typeHint.nd) {
-      return this.networkSelected.mappings.nodesDiscrete[i];
+      return this.selectedNetwork.mappings.nodesDiscrete[i];
     } else if (typeHint.ed) {
-      return this.networkSelected.mappings.edgesDiscrete[i];
+      return this.selectedNetwork.mappings.edgesDiscrete[i];
     } else if (typeHint.nc) {
-      return this.networkSelected.mappings.nodesContinuous[i];
+      return this.selectedNetwork.mappings.nodesContinuous[i];
     } else if (typeHint.ec) {
-      return this.networkSelected.mappings.edgesContinuous[i];
+      return this.selectedNetwork.mappings.edgesContinuous[i];
     } else {
       console.log('no matching mapping found');
       return null;
     }
+  }
+
+  /**
+   * Selects a discrete or continuous mapping based on a typehint
+   * @param mapHint hint containing both typehint and id
+   */
+  selectMapping(mapHint: string): void {
+    this.selectedTypeHint = this.utilityService.utilGetTypeHintByString(mapHint.substr(0, 2));
+    const mapId = mapHint.substr(2);
+    if (this.selectedTypeHint.nd) {
+      this.selectedDiscreteMapping = this.selectedNetwork.mappings.nodesDiscrete[mapId];
+      this.selectedContinuousMapping = null;
+    } else if (this.selectedTypeHint.ed) {
+      this.selectedDiscreteMapping = this.selectedNetwork.mappings.edgesDiscrete[mapId];
+      this.selectedContinuousMapping = null;
+    } else if (this.selectedTypeHint.nc) {
+      this.selectedContinuousMapping = this.selectedNetwork.mappings.nodesContinuous[mapId];
+      this.selectedDiscreteMapping = null;
+    } else if (this.selectedTypeHint.ec) {
+      this.selectedContinuousMapping = this.selectedNetwork.mappings.edgesContinuous[mapId];
+      this.selectedDiscreteMapping = null;
+    }
+  }
+
+  /**
+   * Selects a property within a grouped discrete mapping
+   * @param propertyId id of the specified style
+   */
+  selectDiscreteMappingProperty(propertyId): void {
+    if (!this.selectedDiscreteMapping) {
+      console.log('No discrete mapping selected');
+      return;
+    }
+    this.selectedDiscreteMappingProperty = this.selectedDiscreteMapping.styleMap[propertyId];
+  }
+
+  /**
+   * Resets a selected discrete mapping property
+   */
+  resetDiscreteMappingPropertySelection(): void {
+    this.selectedDiscreteMappingProperty = null;
   }
 }

@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {NeStyle} from '../models/ne-style';
-import {HttpClient} from '@angular/common/http';
 import {NeMappingsType} from '../models/ne-mappings-type';
 import {NeAspect} from '../models/ne-aspect';
 import {NeChart} from '../models/ne-chart';
@@ -27,12 +26,7 @@ export class UtilityService {
    */
   yAxisLabel: string;
 
-  /**
-   * Reading lookup file data
-   *
-   * @param http
-   */
-  constructor(private http: HttpClient) {
+  constructor() {
   }
 
   /**

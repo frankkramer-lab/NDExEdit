@@ -77,16 +77,16 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
     } else {
       let existingMapping;
       if (this.typeHint.nd) {
-        existingMapping = this.dataService.networkSelected.mappings.nodesDiscrete[this.mapId];
+        existingMapping = this.dataService.selectedNetwork.mappings.nodesDiscrete[this.mapId];
         this.prefillDiscreteMapping(existingMapping, this.propertyPointer, true);
       } else if (this.typeHint.ed) {
-        existingMapping = this.dataService.networkSelected.mappings.edgesDiscrete[this.mapId];
+        existingMapping = this.dataService.selectedNetwork.mappings.edgesDiscrete[this.mapId];
         this.prefillDiscreteMapping(existingMapping, this.propertyPointer, false);
       } else if (this.typeHint.ec) {
-        existingMapping = this.dataService.networkSelected.mappings.edgesContinuous[this.mapId];
+        existingMapping = this.dataService.selectedNetwork.mappings.edgesContinuous[this.mapId];
         this.prefillContinuousMapping(existingMapping);
       } else if (this.typeHint.nc) {
-        existingMapping = this.dataService.networkSelected.mappings.nodesContinuous[this.mapId];
+        existingMapping = this.dataService.selectedNetwork.mappings.nodesContinuous[this.mapId];
         this.prefillContinuousMapping(existingMapping);
       }
     }
@@ -223,23 +223,23 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   getNextIdForMappingType(): string {
     switch (this.mapType) {
       case 'nd':
-        for (const nodeMap of this.dataService.networkSelected.mappings.nodesDiscrete) {
+        for (const nodeMap of this.dataService.selectedNetwork.mappings.nodesDiscrete) {
           // if (nodeMap.classifier === this.propertyToMap.name) {
           //   return String(this.dataService.networkSelected.mappings.nodesDiscrete.indexOf(nodeMap));
           // }
         }
-        return String(this.dataService.networkSelected.mappings.nodesDiscrete.length);
+        return String(this.dataService.selectedNetwork.mappings.nodesDiscrete.length);
       case 'nc':
-        return String(this.dataService.networkSelected.mappings.nodesContinuous.length);
+        return String(this.dataService.selectedNetwork.mappings.nodesContinuous.length);
       case 'ed':
-        for (const edgeMap of this.dataService.networkSelected.mappings.edgesDiscrete) {
+        for (const edgeMap of this.dataService.selectedNetwork.mappings.edgesDiscrete) {
           // if (edgeMap.classifier === this.propertyToMap.name) {
           //   return String(this.dataService.networkSelected.mappings.edgesDiscrete.indexOf(edgeMap));
           // }
         }
-        return String(this.dataService.networkSelected.mappings.edgesDiscrete.length);
+        return String(this.dataService.selectedNetwork.mappings.edgesDiscrete.length);
       case 'ec':
-        return String(this.dataService.networkSelected.mappings.edgesContinuous.length);
+        return String(this.dataService.selectedNetwork.mappings.edgesContinuous.length);
     }
     return String(-1);
   }
@@ -353,9 +353,9 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    */
   private getMappedProperty(mapping: any): NeAspect {
     if (this.typeHint.nc) {
-      return this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === mapping.title[1]);
+      return this.dataService.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === mapping.title[1]);
     } else if (this.typeHint.ec) {
-      return this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === mapping.title[1]);
+      return this.dataService.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === mapping.title[1]);
     }
   }
 
@@ -371,8 +371,8 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
     this.discreteMapping = [];
     this.styleProperty = mapping.styleMap[propertyId].cssKey;
     const correspondingAkv = (isNode
-      ? this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === mapping.col)
-      : this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === mapping.col));
+      ? this.dataService.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === mapping.col)
+      : this.dataService.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === mapping.col));
 
     for (const selector of mapping.styleMap[propertyId].selectors) {
       const mapObj: NeMappingsDefinition = {

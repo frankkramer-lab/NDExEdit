@@ -2,6 +2,7 @@
  * Represents a property within a discrete mapping
  */
 import {NeMappingsType} from "./ne-mappings-type";
+import {NeStyleMap} from "./ne-style-map";
 
 export interface NeMappingProperty {
   /**
@@ -22,5 +23,5 @@ export interface NeMappingProperty {
   /**
    * Style object belonging to the line of mapping
    */
-  style?: any;
+  style?: NeStyleMap;
 }
