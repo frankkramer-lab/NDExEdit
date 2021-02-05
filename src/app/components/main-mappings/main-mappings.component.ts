@@ -141,11 +141,11 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
           console.log('No mapping selected, creating a new one?');
         } else {
 
-          // this.currentMappingId = map.substr(2);
           this.dataService.selectMapping(map);
         }
       }
     });
+
   }
 
   /**
@@ -222,8 +222,8 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
       this.showSingleDeletionDialogue = false;
       this.dataService.resetDiscreteMappingPropertySelection();
     } else {
-      this.showSingleDeletionDialogue = true;
       this.dataService.selectDiscreteMappingProperty(propertyId);
+      this.showSingleDeletionDialogue = true;
     }
   }
 
@@ -256,6 +256,8 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
         break;
       case 'single':
         if (confirmation) {
+          this.dataService.removePropertyFromMapping();
+          // this.dataService.selectDiscreteMappingProperty(null);
           // this.dataService.removePropertyFromMapping(this.dataService.networkSelected.id, );
           // this.propertyToRemove = {
           //   mapReference: -1,

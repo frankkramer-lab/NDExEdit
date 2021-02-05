@@ -3,7 +3,6 @@ import {NeNetwork} from '../models/ne-network';
 import {NeMappingContinuous} from '../models/ne-mapping-continuous';
 import {NeMappingDiscrete} from '../models/ne-mapping-discrete';
 import {UtilityService} from './utility.service';
-import {NeAspect} from '../models/ne-aspect';
 import {NeGroupedMappingsDiscrete} from "../models/ne-grouped-mappings-discrete";
 import {NeStyleMap} from "../models/ne-style-map";
 import {NeMappingsType} from "../models/ne-mappings-type";
@@ -45,10 +44,15 @@ export class DataService {
    * On selection of a mapping this typehint is set
    */
   selectedTypeHint: NeMappingsType;
+
+  /**
+   * Canvas used to display a network
+   */
+  canvas: HTMLElement;
   /**
    * The network ID increment
    */
-  currentNetworkId = 0;
+  currentNetworkId = -1;
   /**
    * List of known color properties, mainly used for color previews within {@link MainMappingsNewComponent}
    */
@@ -81,7 +85,14 @@ export class DataService {
    */
   flipLayoutEmitter = new EventEmitter<boolean>();
 
-  constructor(private utilityService: UtilityService) {
+  /**
+   * Toggle rebuild of the network's core for rendering
+   */
+  networkChangedEmitter = new EventEmitter<NeNetwork>();
+
+  constructor(
+    private utilityService: UtilityService
+  ) {
   }
 
   // /**
@@ -615,29 +626,33 @@ export class DataService {
   // }
 
   /**
-   * Removing a property from an existing mapping can only be executed for discrete mappings
-   *
-   * @param id The network's id
-   * @param property Property to remove
+   * Removing a property from an existing mapping can only be executed for discrete mappings.
+   * It works directly on the cx data and triggers the core rebuild.
    */
-  removePropertyFromMapping(id: number, property: NeAspect): void {
-    const network = this.getNetworkById(id);
-    // const isNode = property.mapType.startsWith('n');
-    // const mapping: NeGroupedMappingsDiscrete = isNode
-    //   ? network.mappings.nodesDiscrete[property.mapReference]
-    //   : network.mappings.edgesDiscrete[property.mapReference];
-    //
-    // mapping.th = mapping.th.filter(x => x !== property.style.cssKey);
-    // mapping.styleMap = mapping.styleMap.filter(x => x !== property.style);
-    //
-    // for (const selector of mapping.selectors) {
-    //   for (const s of network.style) {
-    //     if (s.selector === selector) {
-    //       delete s.style[property.style.cssKey];
-    //
-    //     }
-    //   }
-    // }
+  removePropertyFromMapping(): void {
+    const mappingName = this.selectedDiscreteMappingProperty.cssKey;
+    const isNode = this.selectedTypeHint.nd;
+
+    for (const fd of this.selectedNetwork.cx) {
+      if (fd.cyVisualProperties) {
+        for (const cvp of fd.cyVisualProperties) {
+          if (isNode && cvp.properties_of === 'nodes:default' && cvp.mappings) {
+            if (cvp.mappings[mappingName]) {
+              delete cvp.mappings[mappingName];
+              break;
+            }
+
+          } else if (!isNode && cvp.properties_of === 'edges:default' && cvp.mappings) {
+            if (cvp.mappings[mappingName]) {
+              delete cvp.mappings[mappingName];
+              break;
+            }
+          }
+        }
+      }
+    }
+    this.triggerNetworkCoreBuild();
+
   }
 
   /**
@@ -1132,10 +1147,16 @@ export class DataService {
   }
 
   /**
-   * Selects a property within a grouped discrete mapping
-   * @param propertyId id of the specified style
+   * Selects a property within a grouped discrete mapping.
+   * Call this with null to unselect the currently selected mapping property.
+   * @param propertyId id of the specified style, or null to unselect
    */
-  selectDiscreteMappingProperty(propertyId): void {
+  selectDiscreteMappingProperty(propertyId: number): void {
+    if (propertyId === null) {
+      this.selectedDiscreteMappingProperty = null;
+      return;
+    }
+
     if (!this.selectedDiscreteMapping) {
       console.log('No discrete mapping selected');
       return;
@@ -1149,4 +1170,23 @@ export class DataService {
   resetDiscreteMappingPropertySelection(): void {
     this.selectedDiscreteMappingProperty = null;
   }
+
+  /**
+   * Emits the currently changed network
+   * @private
+   */
+  private triggerNetworkCoreBuild(): void {
+    this.networkChangedEmitter.emit(this.selectedNetwork);
+  }
+
+  /**
+   * Defines the canvas to be used to render a network
+   * @param nativeElement HTML element used as canvas
+   */
+  setCanvas(nativeElement: any): void {
+    if (nativeElement) {
+      this.canvas = nativeElement;
+    }
+  }
+
 }

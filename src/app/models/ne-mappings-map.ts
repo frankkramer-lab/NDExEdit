@@ -11,12 +11,12 @@ export interface NeMappingsMap {
   /**
    * Collection of discrete node mappings
    */
-  nodesDiscrete: NeGroupedMappingsDiscrete[] | NeMappingDiscrete[];
+  nodesDiscrete: NeGroupedMappingsDiscrete[];
 
   /**
    * Collection of discrete edge mappings
    */
-  edgesDiscrete: NeGroupedMappingsDiscrete[] | NeMappingDiscrete[];
+  edgesDiscrete: NeGroupedMappingsDiscrete[];
 
   /**
    * Collection of continuous node mappings

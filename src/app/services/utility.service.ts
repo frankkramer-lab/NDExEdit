@@ -347,15 +347,13 @@ export class UtilityService {
    * @param index points to the index within this mapping's style map
    */
   utilExtractDiscreteFromGroupedDiscrete(mapping: NeGroupedMappingsDiscrete, index: number): NeMappingDiscrete {
-    const singularMapping: NeMappingDiscrete = {
+    return {
       keys: [], // todo check for what do i need keys
       col: mapping.col,
       styleProperty: mapping.styleMap[index].cssKey,
       type: mapping.datatype,
       values: mapping.styleMap[index].cssValues
     };
-
-    return singularMapping;
 
   }
 }

@@ -445,10 +445,13 @@ export class ParseService {
    * Does not override any of the initially defined network properties.
    * Simply recalculates the core for this network, ID is the same as before
    * @param network Network to be recalculated
-   * @param container corresponding canvas HTML Element
    */
-  rebuildCoreForNetwork(network: NeNetwork, container: HTMLElement): Promise<NeNetwork> {
-    return this.convertCxToJs(network.cx, container)
+  rebuildCoreForNetwork(network: NeNetwork): Promise<NeNetwork> {
+    if (!this.dataService.canvas) {
+      console.log('No canvas specified!');
+      return null;
+    }
+    return this.convertCxToJs(network.cx, this.dataService.canvas)
       .then(core => {
         network.core = core;
         return network;

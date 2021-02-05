@@ -11,7 +11,8 @@
 
   <hr>
 
-  <span *ngIf="(dataService.selectedTypeHint.nd || dataService.selectedTypeHint.ed) then discreteOverview else continuousOverview"></span>
+  <span
+    *ngIf="(dataService.selectedTypeHint.nd || dataService.selectedTypeHint.ed) then discreteOverview else continuousOverview"></span>
 
   <ng-template #discreteOverview>
 
@@ -26,7 +27,7 @@
 
       <tbody>
       <tr *ngFor="let style of dataService.selectedDiscreteMapping.styleMap; let styleIndex = index"
-          [ngClass]="(style === dataService.selectedDiscreteMappingProperty) ? 'table-danger' : ''">
+          [ngClass]="(style === dataService.selectedDiscreteMappingProperty) ? 'table-danger' : 'table-info'">
         <td>{{style.cssKey}}</td>
         <td *ngFor="let val of style.cssValues">
           {{val}}
@@ -49,7 +50,7 @@
       </tbody>
     </table>
 
-    <button (click)="toggleGlobalRemoveDialogue(selectedDiscrete, typeHint)"
+    <button (click)="toggleGlobalRemoveDialogue(dataService.selectedDiscreteMapping, typeHint)"
             class="btn btn-block btn-outline-danger"
             data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_DELETE' | translate}}"
             placement="bottom">
@@ -65,8 +66,8 @@
 
       <thead>
       <tr>
-        <th>{{selectedContinuous.col}}</th>
-        <th>{{selectedContinuous.styleProperty}}</th>
+        <th>{{dataService.selectedContinuousMapping.col}}</th>
+        <th>{{dataService.selectedContinuousMapping.styleProperty}}</th>
 
         <!-- EDIT -->
         <th>
@@ -79,16 +80,16 @@
       </thead>
 
       <tbody>
-      <tr *ngFor="let eq of selectedContinuous.equals; let index = index">
+      <tr *ngFor="let eq of dataService.selectedContinuousMapping.equals; let index = index">
         <ng-container [ngSwitch]="index">
           <td *ngSwitchCase="0"><</td>
-          <td *ngSwitchDefault>{{selectedContinuous.thresholds[index - 1]}}</td>
-          <td *ngSwitchCase="selectedContinuous.equals.length - 1">></td>
+          <td *ngSwitchDefault>{{dataService.selectedContinuousMapping.thresholds[index - 1]}}</td>
+          <td *ngSwitchCase="dataService.selectedContinuousMapping.equals.length - 1">></td>
         </ng-container>
 
         <td colspan="2">
           {{eq}}
-          <span *ngIf="selectedContinuous.isColor" class="badge-pill border"
+          <span *ngIf="dataService.selectedContinuousMapping.isColor" class="badge-pill border"
                 [ngStyle]="{'background-color': eq}">&nbsp;</span>
         </td>
       </tr>
@@ -175,8 +176,8 @@
       <!-- confirm -->
       <div class="col-6">
         <button
-                [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]"
-                class="btn btn-block btn-outline-danger">
+          [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]"
+          class="btn btn-block btn-outline-danger">
           <fa-icon [icon]="faCheck"></fa-icon>
           {{'MAIN_MAPPINGS_CONFIRM_DELETION_YES' | translate}}
         </button>
@@ -203,9 +204,9 @@
 
       <!-- confirm -->
       <div class="col-6">
-        <button
-                [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]"
-                class="btn btn-block btn-outline-danger">
+        <button (click)="confirmDeletion(true, 'single')"
+          [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]"
+          class="btn btn-block btn-outline-danger">
           <fa-icon [icon]="faCheck"></fa-icon>
           {{'MAIN_MAPPINGS_CONFIRM_DELETION_YES' | translate}}
         </button>

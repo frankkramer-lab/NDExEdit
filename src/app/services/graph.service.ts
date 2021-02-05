@@ -32,20 +32,26 @@ export class GraphService {
    */
   private flashDuration = 2000;
 
-  constructor(private utilityService: UtilityService,
-              private dataService: DataService,
-              private parseService: ParseService) {
+  constructor(
+    private utilityService: UtilityService,
+    private dataService: DataService,
+    private parseService: ParseService
+  ) {
+    dataService.networkChangedEmitter.subscribe(network => {
+      this.render(network)
+        .then(rendered => console.log(rendered))
+        .catch(e => console.error(e));
+    });
   }
 
   /**
    * Renders the selected network
-   * @param container DOM element where to render the graph
    * @param network network to be rendered
    */
-  render(container: HTMLElement, network: NeNetwork): Promise<NeNetwork> {
+  render(network: NeNetwork): Promise<NeNetwork> {
     this.unsubscribeFromCoreEvents();
 
-    return this.parseService.rebuildCoreForNetwork(network, container)
+    return this.parseService.rebuildCoreForNetwork(network)
       .then(rendered => {
         const renderedNetwork = rendered;
         renderedNetwork.core.fit();
