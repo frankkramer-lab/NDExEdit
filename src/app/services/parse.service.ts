@@ -31,6 +31,11 @@ export class ParseService {
     private utilityService: UtilityService,
     private dataService: DataService
   ) {
+    dataService.networkChangedEmitter.subscribe(network => {
+      console.log('starting rebuilding ...');
+      dataService.selectedNetwork.mappings = this.convertMappingsByFile(network.cx);
+      console.log('finished');
+    });
   }
 
   /**

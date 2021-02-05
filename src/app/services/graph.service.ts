@@ -39,7 +39,7 @@ export class GraphService {
   ) {
     dataService.networkChangedEmitter.subscribe(network => {
       this.render(network)
-        .then(rendered => console.log(rendered))
+        .then()
         .catch(e => console.error(e));
     });
   }

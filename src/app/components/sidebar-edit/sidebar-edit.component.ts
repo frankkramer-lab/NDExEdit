@@ -148,7 +148,6 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     public dataService: DataService,
     private route: ActivatedRoute,
     public graphService: GraphService,
-    private utilityService: UtilityService
   ) {
 
     this.routerSubscription = this.route.paramMap.subscribe(params => {
@@ -165,6 +164,10 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     this.mappingsNewSubscription = MainMappingsNewComponent.mappingsNewEmitter.subscribe(data => {
       this.handleViewChanges(data);
     });
+
+    // this.dataService.networkChangedEmitter.subscribe(network => {
+    //   console.log('Network changed reached sidebar');
+    // });
   }
 
   /**

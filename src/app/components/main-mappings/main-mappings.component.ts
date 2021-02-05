@@ -3,13 +3,10 @@ import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
 import {faArrowLeft, faCheck, faEdit, faPlus, faSearch, faTimes, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {NeGroupedMappingsDiscrete} from '../../models/ne-grouped-mappings-discrete';
-import {NeMappingProperty} from '../../models/ne-mapping-property';
 import {NeMappingsType} from '../../models/ne-mappings-type';
 import {NeAspect} from '../../models/ne-aspect';
 import {UtilityService} from '../../services/utility.service';
 import {NeContinuousCollection} from '../../models/ne-continuous-collection';
-import {NeMappingContinuous} from '../../models/ne-mapping-continuous';
-import {NeStyleMap} from "../../models/ne-style-map";
 
 @Component({
   selector: 'app-main-mappings',
@@ -159,9 +156,8 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy(): void {
     MainMappingsComponent.mappingsEmitter.emit({showLabelCheckbox: true});
-    // this.selectedDiscrete = null;
-    // this.selectedContinuous = null;
-    // this.isDiscrete = null;
+    this.showSingleDeletionDialogue = false;
+    this.showGlobalDeletionDialogue = false;
   }
 
   /**
@@ -176,14 +172,6 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
     }
     this.showSingleDeletionDialogue = false;
     this.showGlobalDeletionDialogue = true;
-  }
-
-  /**
-   * Hides all remove dialogues
-   */
-  hideRemoveDialogues(): void {
-    this.showGlobalDeletionDialogue = false;
-    this.showSingleDeletionDialogue = false;
   }
 
   /**
@@ -216,13 +204,11 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
         if (confirmation && (this.dataService.selectedDiscreteMapping || this.dataService.selectedContinuousMapping)) {
           this.dataService.removeMapping();
 
-          // hide the gradient or chart currently displayed to avoid confusion
           MainMappingsComponent.mappingsEmitter.emit({
             showGradient: false,
             showChart: false
           });
         }
-        this.toggleGlobalRemoveDialogue();
 
         break;
       case 'single':
