@@ -50,7 +50,7 @@
       </tbody>
     </table>
 
-    <button (click)="toggleGlobalRemoveDialogue(dataService.selectedDiscreteMapping, typeHint)"
+    <button (click)="toggleGlobalRemoveDialogue()"
             class="btn btn-block btn-outline-danger"
             data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_DELETE' | translate}}"
             placement="bottom">
@@ -96,6 +96,14 @@
       </tbody>
 
     </table>
+
+    <button (click)="toggleGlobalRemoveDialogue()"
+            class="btn btn-block btn-outline-danger"
+            data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_DELETE' | translate}}"
+            placement="bottom">
+      <fa-icon [icon]="faTrash"></fa-icon>
+      {{'MAIN_MAPPINGS_DELETE' | translate}}
+    </button>
 
   </ng-template>
 
@@ -175,7 +183,7 @@
 
       <!-- confirm -->
       <div class="col-6">
-        <button
+        <button (click)="confirmDeletion(true, 'global')"
           [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]"
           class="btn btn-block btn-outline-danger">
           <fa-icon [icon]="faCheck"></fa-icon>

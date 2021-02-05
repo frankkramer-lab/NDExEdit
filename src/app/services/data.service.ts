@@ -209,151 +209,57 @@ export class DataService {
     return this.networksParsed.find(x => x.id === id);
   }
 
-  // /**
-  //  * Removes a mapping completely
-  //  * @param map The specified discrete mappping
-  //  */
-  // removeMapping(map: any): void {
-  //
-  //   const network = this.getNetworkById(map.network);
-  //
-  //   switch (map.type) {
-  //     case 'nd':
-  //       const ndSelectors = network.mappings.nodesDiscrete[map.mappingId].selectors;
-  //       network.mappings.nodesDiscrete.splice(map.mappingId, 1);
-  //       const ndNewStyle = network.style.filter(x => !ndSelectors.includes(x.selector));
-  //
-  //       for (const selector of ndSelectors) {
-  //         const className = selector.substring(1);
-  //         for (const element of network.elements) {
-  //
-  //           if (element.classes.includes(className)) {
-  //             element.data.classes = element.data.classes.filter(x => x !== className);
-  //             element.classes = element.classes.replace(className, '').trim();
-  //           }
-  //         }
-  //       }
-  //
-  //       network.style = ndNewStyle;
-  //       network.aspectKeyValuesNodes[map.akvIndex].mapPointerD = network
-  //         .aspectKeyValuesNodes[map.akvIndex]
-  //         .mapPointerD
-  //         .filter(x => x !== map.mappingId);
-  //
-  //       for (const akv of network.aspectKeyValuesNodes) {
-  //         akv.mapPointerD = akv.mapPointerD.map(x => x > map.mappingId ? --x : x);
-  //       }
-  //       break;
-  //
-  //     case 'nc':
-  //       const nodeAkvs = network.aspectKeyValuesNodes;
-  //       const nodeElements = network.elements;
-  //       const nodeStyle = network.style;
-  //       let updatedNodeStyle = nodeStyle;
-  //
-  //       for (const s of nodeStyle) {
-  //         for (const node of nodeElements) {
-  //
-  //           if (node.group === 'nodes') {
-  //             const currentSelector = '.node_' + node.data.id;
-  //
-  //             if (s.selector === currentSelector) {
-  //               delete s.style[map.map.title[0]];
-  //
-  //               if (Object.keys(s.style).length === 0) {
-  //                 updatedNodeStyle = updatedNodeStyle.filter(x => x !== s);
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //
-  //       if (nodeAkvs[map.akvIndex].mapPointerC.includes(map.mappingId)) {
-  //         nodeAkvs[map.akvIndex].mapPointerC = nodeAkvs[map.akvIndex].mapPointerC.filter(x => x !== map.mappingId);
-  //       }
-  //
-  //       network.style = updatedNodeStyle;
-  //       network.elements = nodeElements;
-  //       network.aspectKeyValuesNodes = nodeAkvs;
-  //       network.mappings.nodesContinuous
-  //         = network.mappings.nodesContinuous.filter(x => network.mappings.nodesContinuous.indexOf(x) !== map.mappingId);
-  //
-  //       for (const akv of network.aspectKeyValuesNodes) {
-  //         akv.mapPointerC = akv.mapPointerC.map(x => x > map.mappingId ? --x : x);
-  //       }
-  //
-  //       this.networksParsed = this.networksParsed.filter(x => x.id !== map.network).concat(network);
-  //       break;
-  //
-  //     case 'ed':
-  //
-  //       const edSelectors = network.mappings.edgesDiscrete[map.mappingId].selectors;
-  //       network.mappings.edgesDiscrete.splice(map.mappingId, 1);
-  //       const edNewStyle = network.style.filter(x => !edSelectors.includes(x.selector));
-  //
-  //       for (const selector of edSelectors) {
-  //         const className = selector.substring(1);
-  //         for (const element of network.elements) {
-  //
-  //           if (element.classes.includes(className)) {
-  //             element.classes = element.classes.replace(className, '').trim();
-  //           }
-  //         }
-  //       }
-  //
-  //       network.style = edNewStyle;
-  //       network.aspectKeyValuesEdges[map.akvIndex].mapPointerD = network
-  //         .aspectKeyValuesEdges[map.akvIndex]
-  //         .mapPointerD
-  //         .filter(x => x !== map.mappingId);
-  //
-  //       for (const akv of network.aspectKeyValuesEdges) {
-  //         akv.mapPointerD = akv.mapPointerD.map(x => x > map.mappingId ? --x : x);
-  //       }
-  //       break;
-  //
-  //     case 'ec':
-  //
-  //       const edgeAkvs = network.aspectKeyValuesEdges;
-  //       const edgeElements = network.elements;
-  //       const edgeStyle = network.style;
-  //       let updatedEdgeStyle = edgeStyle;
-  //
-  //       for (const s of edgeStyle) {
-  //         for (const edge of edgeElements) {
-  //
-  //           if (edge.group === 'edges') {
-  //             const currentSelector = '.edge_' + edge.data.id;
-  //
-  //             if (s.selector === currentSelector) {
-  //               delete s.style[map.map.title[0]];
-  //
-  //               if (Object.keys(s.style).length === 0) {
-  //                 updatedEdgeStyle = updatedEdgeStyle.filter(x => x !== s);
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //
-  //       if (edgeAkvs[map.akvIndex].mapPointerC.includes(map.mappingId)) {
-  //         edgeAkvs[map.akvIndex].mapPointerC = edgeAkvs[map.akvIndex].mapPointerC.filter(x => x !== map.mappingId);
-  //       }
-  //
-  //       network.style = updatedEdgeStyle;
-  //       network.elements = edgeElements;
-  //       network.aspectKeyValuesEdges = edgeAkvs;
-  //       network.mappings.edgesContinuous
-  //         = network.mappings.edgesContinuous.filter(x => network.mappings.edgesContinuous.indexOf(x) !== map.mappingId);
-  //
-  //       for (const akv of network.aspectKeyValuesEdges) {
-  //         akv.mapPointerC = akv.mapPointerC.map(x => x > map.mappingId ? --x : x);
-  //       }
-  //
-  //       this.networksParsed = this.networksParsed.filter(x => x.id !== map.network).concat(network);
-  //       break;
-  //   }
-  // }
+  /**
+   * Removes a mapping completely
+   */
+  removeMapping(): void {
+
+    let col: string;
+    let isDiscrete: boolean;
+    const isNode = this.selectedTypeHint.nd || this.selectedTypeHint.nc;
+
+    if (this.selectedTypeHint.nd || this.selectedTypeHint.ed) {
+      col = this.selectedDiscreteMapping.col;
+      isDiscrete = true;
+    } else {
+      col = this.selectedContinuousMapping.col;
+      isDiscrete = false;
+    }
+
+    for (const fd of this.selectedNetwork.cx) {
+      if (fd.cyVisualProperties) {
+        for (const cvp of fd.cyVisualProperties) {
+          if (isNode && cvp.properties_of === 'nodes:default' && cvp.mappings) {
+
+            for (const key of Object.keys(cvp.mappings)) {
+
+              const keyCol = this.utilityService.utilExtractColByMappingString(cvp.mappings[key].definition);
+              if (keyCol === col) {
+                delete cvp.mappings[key];
+              }
+            }
+
+          } else if (!isNode && cvp.properties_of === 'edges:default' && cvp.mappings) {
+            for (const key of Object.keys(cvp.mappings)) {
+
+              const keyCol = this.utilityService.utilExtractColByMappingString(cvp.mappings[key].definition);
+              if (keyCol === col) {
+                delete cvp.mappings[key];
+              }
+            }
+          }
+        }
+      }
+    }
+
+    this.triggerNetworkCoreBuild();
+    if (isDiscrete) {
+      this.selectedDiscreteMapping = null;
+      this.selectedDiscreteMappingProperty = null;
+    } else {
+      this.selectedContinuousMapping = null;
+    }
+  }
 
   // /**
   //  * Adds a new mapping to an already parsed network
@@ -1129,6 +1035,7 @@ export class DataService {
    * @param mapHint hint containing both typehint and id
    */
   selectMapping(mapHint: string): void {
+    console.log('SELECTING MAPPING ' + mapHint);
     this.selectedTypeHint = this.utilityService.utilGetTypeHintByString(mapHint.substr(0, 2));
     const mapId = mapHint.substr(2);
     if (this.selectedTypeHint.nd) {
@@ -1144,6 +1051,7 @@ export class DataService {
       this.selectedContinuousMapping = this.selectedNetwork.mappings.edgesContinuous[mapId];
       this.selectedDiscreteMapping = null;
     }
+    console.log(this.selectedContinuousMapping, this.selectedDiscreteMapping);
   }
 
   /**

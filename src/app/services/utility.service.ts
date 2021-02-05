@@ -356,4 +356,13 @@ export class UtilityService {
     };
 
   }
+
+  /**
+   * Extracts the column by which this mapping is built.
+   * @param mapping Unintuitive string, e.g. "COL=Bait_Boolean,T=integer,K=0=1,V=0=Dialog,,plain,,14"
+   */
+  utilExtractColByMappingString(mapping: string): string {
+    const regex = new RegExp('COL=(.*?),');
+    return mapping.match(regex)[1];
+  }
 }

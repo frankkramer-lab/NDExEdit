@@ -140,7 +140,6 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
         if (map === '-1') {
           console.log('No mapping selected, creating a new one?');
         } else {
-
           this.dataService.selectMapping(map);
         }
       }
@@ -169,48 +168,22 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    * Toggles the dialogue to confirm deletion of an existing mapping. Selects the mapping to be deleted by
    * overriding {@link MainMappingsComponent#mappingToRemove}
    *
-   * @param map Single mapping which is to be deleted
-   * @param type As specified by {@link MainMappingsComponent#typeHint}
    */
-  toggleGlobalRemoveDialogue(map: any = null, type: NeMappingsType = null): void {
-    // if (type.nd) {
-    //
-    //   for (const akv of this.dataService.selectedNetwork.aspectKeyValuesNodes) {
-    //     if (akv.name === map.classifier) {
-    //       this.mappingToRemove.akvIndex = this.dataService.selectedNetwork.aspectKeyValuesNodes.indexOf(akv);
-    //       break;
-    //     }
-    //   }
-    //   this.mappingToRemove.mappingId = this.dataService.selectedNetwork.mappings.nodesDiscrete.indexOf(map);
-    // } else if (type.nc) {
-    //   for (const akv of this.dataService.selectedNetwork.aspectKeyValuesNodes) {
-    //     if (akv.name === map.title[1]) {
-    //       this.mappingToRemove.akvIndex = this.dataService.selectedNetwork.aspectKeyValuesNodes.indexOf(akv);
-    //       break;
-    //     }
-    //   }
-    //   this.mappingToRemove.mappingId = this.dataService.selectedNetwork.mappings.nodesContinuous.indexOf(map);
-    // } else if (type.ed) {
-    //   for (const akv of this.dataService.selectedNetwork.aspectKeyValuesEdges) {
-    //     if (akv.name === map.classifier) {
-    //       this.mappingToRemove.akvIndex = this.dataService.selectedNetwork.aspectKeyValuesEdges.indexOf(akv);
-    //       break;
-    //     }
-    //   }
-    //   this.mappingToRemove.mappingId = this.dataService.selectedNetwork.mappings.edgesDiscrete.indexOf(map);
-    // } else if (type.ec) {
-    //   for (const akv of this.dataService.selectedNetwork.aspectKeyValuesEdges) {
-    //     if (akv.name === map.title[1]) {
-    //       this.mappingToRemove.akvIndex = this.dataService.selectedNetwork.aspectKeyValuesEdges.indexOf(akv);
-    //       break;
-    //     }
-    //   }
-    //   this.mappingToRemove.mappingId = this.dataService.selectedNetwork.mappings.edgesContinuous.indexOf(map);
-    // }
-    // this.showGlobalDeletionDialogue = !this.showGlobalDeletionDialogue;
-    // this.mappingToRemove.map = map;
-    // this.mappingToRemove.type = type;
-    // this.mappingToRemove.network = this.dataService.selectedNetwork.id;
+  toggleGlobalRemoveDialogue(): void {
+    if (!this.dataService.selectedContinuousMapping && !this.dataService.selectedDiscreteMapping) {
+      console.log('No mapping selected which could be removed');
+      return;
+    }
+    this.showSingleDeletionDialogue = false;
+    this.showGlobalDeletionDialogue = true;
+  }
+
+  /**
+   * Hides all remove dialogues
+   */
+  hideRemoveDialogues(): void {
+    this.showGlobalDeletionDialogue = false;
+    this.showSingleDeletionDialogue = false;
   }
 
   /**
@@ -240,10 +213,8 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
 
     switch (scope) {
       case 'global':
-        if (confirmation) {
-          // this.dataService.removeMapping(this.mappingToRemove);
-          // this.selectedDiscrete = null;
-          // this.selectedContinuous = null;
+        if (confirmation && (this.dataService.selectedDiscreteMapping || this.dataService.selectedContinuousMapping)) {
+          this.dataService.removeMapping();
 
           // hide the gradient or chart currently displayed to avoid confusion
           MainMappingsComponent.mappingsEmitter.emit({
@@ -257,15 +228,6 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
       case 'single':
         if (confirmation) {
           this.dataService.removePropertyFromMapping();
-          // this.dataService.selectDiscreteMappingProperty(null);
-          // this.dataService.removePropertyFromMapping(this.dataService.networkSelected.id, );
-          // this.propertyToRemove = {
-          //   mapReference: -1,
-          //   attributeName: '',
-          //   mapType: null,
-          //   style: null
-          // };
-          // this.styleToRemove = null;
         }
         this.toggleSingleRemoveDialogue();
         break;
