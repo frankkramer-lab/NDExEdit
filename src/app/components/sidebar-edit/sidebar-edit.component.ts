@@ -247,7 +247,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
       this.lineChartData = chart.chartData;
       this.lineChartLabels = chart.chartLabels;
 
-      this.lineChartOptions = chart.lineChartOptions;
+      this.lineChartOptions = chart.chartOptions;
       this.lineChartObject = {
         chartData: this.lineChartData,
         chartLabels: this.lineChartLabels,
