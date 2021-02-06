@@ -140,7 +140,6 @@
   "MAIN_MAPPINGS_NEW_TT_DISTRIBUTION": "Verteilung der Ausprägungen für dieses Attribut",
   "MAIN_MAPPINGS_NEW_CSS_HINT": "Gib den Namen einer CSS Eigenschaft ein, die entsprechend der Attributausprägungen verändert werden soll",
   "MAIN_MAPPINGS_NEW_COLOR_PREVIEW": "Vorschau für die gesetzten Farbwerte",
-  "MAIN_MAPPINGS_NEW_COLOR_HINT": "Farben müssen mit # anfangen und mit sechs Zeichen spezifiziert sein",
   "MAIN_MAPPINGS_NEW_SUBMIT": "Neues Mapping speichern",
   "MAIN_MAPPINGS_NEW_ABORT": "Abbrechen und zurück zum Graph",
   "MAIN_MAPPINGS_NEW_CLEAR": "Alle Felder zurücksetzen",

@@ -3,9 +3,9 @@ import {NeNetwork} from '../models/ne-network';
 import {NeMappingContinuous} from '../models/ne-mapping-continuous';
 import {NeMappingDiscrete} from '../models/ne-mapping-discrete';
 import {UtilityService} from './utility.service';
-import {NeGroupedMappingsDiscrete} from "../models/ne-grouped-mappings-discrete";
-import {NeStyleMap} from "../models/ne-style-map";
-import {NeMappingsType} from "../models/ne-mappings-type";
+import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete';
+import {NeStyleMap} from '../models/ne-style-map';
+import {NeMappingsType} from '../models/ne-mappings-type';
 
 @Injectable({
   providedIn: 'root'
@@ -73,6 +73,104 @@ export class DataService {
     'EDGE_TARGET_ARROW_SELECTED_PAINT',
     'EDGE_TARGET_ARROW_UNSELECTED_PAINT',
     'EDGE_UNSELECTED_PAINT'
+  ];
+
+  /**
+   * List of known node properties
+   */
+  nodeProperties = [
+    'COMPOUND_NODE_PADDING',
+    'COMPOUND_NODE_SHAPE',
+    'NODE_BORDER_PAINT',
+    'NODE_BORDER_STROKE',
+    'NODE_BORDER_TRANSPARENCY',
+    'NODE_BORDER_WIDTH',
+    'NODE_CUSTOMGRAPHICS_1',
+    'NODE_CUSTOMGRAPHICS_2',
+    'NODE_CUSTOMGRAPHICS_3',
+    'NODE_CUSTOMGRAPHICS_4',
+    'NODE_CUSTOMGRAPHICS_5',
+    'NODE_CUSTOMGRAPHICS_6',
+    'NODE_CUSTOMGRAPHICS_7',
+    'NODE_CUSTOMGRAPHICS_8',
+    'NODE_CUSTOMGRAPHICS_9',
+    'NODE_CUSTOMGRAPHICS_POSITION_1',
+    'NODE_CUSTOMGRAPHICS_POSITION_2',
+    'NODE_CUSTOMGRAPHICS_POSITION_3',
+    'NODE_CUSTOMGRAPHICS_POSITION_4',
+    'NODE_CUSTOMGRAPHICS_POSITION_5',
+    'NODE_CUSTOMGRAPHICS_POSITION_6',
+    'NODE_CUSTOMGRAPHICS_POSITION_7',
+    'NODE_CUSTOMGRAPHICS_POSITION_8',
+    'NODE_CUSTOMGRAPHICS_POSITION_9',
+    'NODE_CUSTOMGRAPHICS_SIZE_1',
+    'NODE_CUSTOMGRAPHICS_SIZE_2',
+    'NODE_CUSTOMGRAPHICS_SIZE_3',
+    'NODE_CUSTOMGRAPHICS_SIZE_4',
+    'NODE_CUSTOMGRAPHICS_SIZE_5',
+    'NODE_CUSTOMGRAPHICS_SIZE_6',
+    'NODE_CUSTOMGRAPHICS_SIZE_7',
+    'NODE_CUSTOMGRAPHICS_SIZE_8',
+    'NODE_CUSTOMGRAPHICS_SIZE_9',
+    'NODE_CUSTOMPAINT_1',
+    'NODE_CUSTOMPAINT_2',
+    'NODE_CUSTOMPAINT_3',
+    'NODE_CUSTOMPAINT_4',
+    'NODE_CUSTOMPAINT_5',
+    'NODE_CUSTOMPAINT_6',
+    'NODE_CUSTOMPAINT_7',
+    'NODE_CUSTOMPAINT_8',
+    'NODE_CUSTOMPAINT_9',
+    'NODE_DEPTH',
+    'NODE_FILL_COLOR',
+    'NODE_HEIGHT',
+    'NODE_LABEL_COLOR',
+    'NODE_LABEL_FONT_FACE',
+    'NODE_LABEL_FONT_SIZE',
+    'NODE_LABEL_POSITION',
+    'NODE_LABEL_TRANSPARENCY',
+    'NODE_LABEL_WIDTH',
+    'NODE_NESTED_NETWORK_IMAGE_VISIBLE',
+    'NODE_PAINT',
+    'NODE_SELECTED',
+    'NODE_SELECTED_PAINT',
+    'NODE_SHAPE',
+    'NODE_SIZE',
+    'NODE_TRANSPARENCY',
+    'NODE_VISIBLE',
+    'NODE_WIDTH',
+    'NODE_X_LOCATION',
+    'NODE_Y_LOCATION',
+    'NODE_Z_LOCATION',
+  ];
+  /**
+   * List of known edge properties
+   */
+  edgeProperties = [
+    'EDGE_CURVED',
+    'EDGE_LABEL_COLOR',
+    'EDGE_LABEL_FONT_FACE',
+    'EDGE_LABEL_FONT_SIZE',
+    'EDGE_LABEL_TRANSPARENCY',
+    'EDGE_LABEL_WIDTH',
+    'EDGE_LINE_TYPE',
+    'EDGE_PAINT',
+    'EDGE_SELECTED',
+    'EDGE_SELECTED_PAINT',
+    'EDGE_SOURCE_ARROW_SELECTED_PAINT',
+    'EDGE_SOURCE_ARROW_SHAPE',
+    'EDGE_SOURCE_ARROW_SIZE',
+    'EDGE_SOURCE_ARROW_UNSELECTED_PAINT',
+    'EDGE_STROKE_SELECTED_PAINT',
+    'EDGE_STROKE_UNSELECTED_PAINT',
+    'EDGE_TARGET_ARROW_SELECTED_PAINT',
+    'EDGE_TARGET_ARROW_SHAPE',
+    'EDGE_TARGET_ARROW_SIZE',
+    'EDGE_TARGET_ARROW_UNSELECTED_PAINT',
+    'EDGE_TRANSPARENCY',
+    'EDGE_UNSELECTED_PAINT',
+    'EDGE_VISIBLE',
+    'EDGE_WIDTH'
   ];
 
   /**
@@ -1077,6 +1175,14 @@ export class DataService {
    */
   resetDiscreteMappingPropertySelection(): void {
     this.selectedDiscreteMappingProperty = null;
+  }
+
+  /**
+   * Resets continuous and discrete mapping selection
+   */
+  resetAnyMappingSelection(): void {
+    this.selectedDiscreteMapping = null;
+    this.selectedContinuousMapping = null;
   }
 
   /**

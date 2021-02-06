@@ -134,9 +134,7 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
         dataService.selectNetwork(Number(networkId));
 
         const map = params.get('map');
-        if (map === '-1') {
-          console.log('No mapping selected, creating a new one?');
-        } else {
+        if (map !== '-1') {
           this.dataService.selectMapping(map);
         }
       }

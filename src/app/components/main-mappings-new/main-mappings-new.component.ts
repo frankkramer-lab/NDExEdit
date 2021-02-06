@@ -290,6 +290,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * based on the previously set mappingstype
    */
   editMapping(): void {
+    console.log('editing?');
     // if (this.typeHint.nd || this.typeHint.ed) {
     //   this.dataService.editMapping(this.dataService.networkSelected.id, this.discreteMapping, this.styleProperty, this.typeHint);
     // } else {
@@ -303,8 +304,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   setStyleProperty($event: any): void {
     this.styleProperty = $event;
-    console.log($event);
-    console.log(this.propertyToMap);
   }
 
   /**
@@ -345,6 +344,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   private initDataNew(params: ParamMap): void {
     this.isEdit = false;
+    this.dataService.resetAnyMappingSelection();
+
     this.propertyId = Number(params.get('propertyId'));
     let availableAttributes: any[];
 
@@ -356,30 +357,48 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
 
     if (!this.isDiscrete) {
       availableAttributes = this.utilityService.utilFilterForContinuous(availableAttributes);
+      this.continuousMapping = {
+        chart: undefined,
+        cleanStyleProperty: '',
+        col: '',
+        colorGradient: [],
+        equals: undefined,
+        greaters: undefined,
+        isColor: false,
+        lowers: undefined,
+        styleProperty: '',
+        thresholds: undefined,
+        type: ''
+      };
     } else {
       availableAttributes = this.utilityService.utilFilterForDiscrete(availableAttributes);
+      this.discreteMapping = {
+        col: '',
+        keys: undefined,
+        styleProperty: '',
+        type: '',
+        values: undefined
+      };
     }
 
     this.propertyToMap = availableAttributes[this.propertyId];
 
-    if (this.isDiscrete) {
-      this.chartObject = {
-        chartData: this.propertyToMap.chartDiscreteDistribution.chartData,
-        chartLabels: this.propertyToMap.chartDiscreteDistribution.chartLabels,
-        chartType: this.chartType
-      };
-    } else {
-      this.binSize = this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
-      this.chartObject = this.utilityService.utilCalculateHistogramDataForBinSize(this.binSize, this.propertyToMap);
-    }
-    console.log(this.chartObject);
+    // if (this.isDiscrete) {
+    //   this.chartObject = {
+    //     chartData: this.propertyToMap.chartDiscreteDistribution.chartData,
+    //     chartLabels: this.propertyToMap.chartDiscreteDistribution.chartLabels,
+    //     chartType: this.chartType
+    //   };
+    // } else {
+    //   this.binSize = this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
+    //   this.chartObject = this.utilityService.utilCalculateHistogramDataForBinSize(this.binSize, this.propertyToMap);
+    // }
 
-    if (this.typeHint.nc || this.typeHint.ec) {
+    if (this.isDiscrete) {
       this.continuousMapping = null;
     } else {
       this.discreteMapping = null;
     }
-
   }
 
   /**

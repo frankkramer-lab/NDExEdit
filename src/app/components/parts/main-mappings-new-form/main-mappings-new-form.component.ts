@@ -15,29 +15,57 @@ import {NeGroupedMappingsDiscrete} from '../../../models/ne-grouped-mappings-dis
   styleUrls: ['./main-mappings-new-form.component.scss']
 })
 export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
-
+  /**
+   * Icon: faPlus
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faPlus = faPlus;
-
+  /**
+   * Icon: faTimes
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faTimes = faTimes;
-
+  /**
+   * Icon: faUndo
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faUndo = faUndo;
-
+  /**
+   * Icon: faCheck
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faCheck = faCheck;
-
+  /**
+   * Style property to be mapped
+   */
   styleProperty: string;
-
+  /**
+   * Type of map, e.g. 'nd' for discrete node mapping
+   */
   mapType: string;
-
+  /**
+   * To update a parent, what the user entered as style property, this needs to be emitted
+   */
   @Output() stylePropertyEmitter = new EventEmitter<string>();
-
+  /**
+   * Essential attribute, determining edit view from creating a new mapping
+   */
   @Input() isEdit!: boolean;
-
+  /**
+   * Typehint in a more standardised format
+   */
   @Input() typeHint!: NeMappingsType;
-
+  /**
+   * Points to the property of attributes available for a mapping
+   */
   @Input() propertyPointer: number;
-
+  /**
+   * Aspect which is to be mapped
+   */
   @Input() propertyToMap: NeAspect;
-
+  /**
+   * ID of a map being edited
+   */
   @Input() mapId: string;
 
   /**

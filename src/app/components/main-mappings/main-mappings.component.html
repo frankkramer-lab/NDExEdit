@@ -11,8 +11,10 @@
 
   <hr>
 
-  <span
+  <span *ngIf="dataService.selectedTypeHint">
+    <span
     *ngIf="(dataService.selectedTypeHint.nd || dataService.selectedTypeHint.ed) then discreteOverview else continuousOverview"></span>
+  </span>
 
   <ng-template #discreteOverview>
 
@@ -107,7 +109,7 @@
 
   </ng-template>
 
-  <hr>
+  <hr *ngIf="dataService.selectedTypeHint">
 
   <!-- SHOW LIST -->
   <div *ngIf="!showGlobalDeletionDialogue && !showSingleDeletionDialogue">

@@ -3,11 +3,10 @@
     <label class="col-4 col-form-label"
            for="{{typeHint.ec ? 'ec' : 'nc'}}CssProperty">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
     <div class="col-6">
-      <input [(ngModel)]="styleProperty" (input)="emitStyleProperty()" [readOnly]="isEdit" class="form-control" id="{{typeHint.ec ? 'ec' : 'nc'}}CssProperty"
+      <input [(ngModel)]="styleProperty" (input)="emitStyleProperty()" [readOnly]="isEdit" class="form-control"
+             id="{{typeHint.ec ? 'ec' : 'nc'}}CssProperty"
              name="cCssProperty" type="text">
       <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
-      <small *ngIf="needsColorValidation(styleProperty)"
-             class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
     </div>
     <div class="col-2 form-check">
       <input (click)="toggleNeedsColorValidation(!needsColorValidation(styleProperty))"
@@ -24,43 +23,47 @@
   <div class="form-group row">
     <label class="col-4 col-form-label"
            for="{{typeHint.ec ? 'ec' : 'nc'}}DefaultLower">{{'MAIN_MAPPINGS_NEW_DEFAULT_LOW' | translate}}</label>
-    <div class="col-6">
-      <input [disabled]="true" [(ngModel)]="continuousThresholds[0].propertyValue" class="form-control"
+    <div class="col-8">
+      <input [disabled]="true" [(ngModel)]="continuousThresholds[0].propertyValue"
+             class="form-control"
              id="{{typeHint.ec ? 'ec' : 'nc'}}DefaultLower"
-             name="{{typeHint.ec ? 'ec' : 'nc'}}DefaultLower" type="text"
+             name="{{typeHint.ec ? 'ec' : 'nc'}}DefaultLower"
+             type="text"
              value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
     </div>
-    <span *ngIf="needsColorValidation(styleProperty)"
-          [ngStyle]="{'background-color': continuousThresholds[0].propertyValue}"
-          class="badge badge-pill border col-2">
-            &nbsp;
-          </span>
   </div>
 
   <!-- thresholds -->
   <div *ngFor="let threshold of continuousThresholds; let index = index" class="form-group row">
     <div class="col-4">
-      <input [disabled]="!threshold.isEditable" [(ngModel)]="threshold.value" class="form-control"
+      <input [disabled]="!threshold.isEditable" [(ngModel)]="threshold.value"
+             class="form-control"
              id="{{typeHint.ec ? 'ec' : 'nc'}}Threshold{{index}}"
              name="{{typeHint.ec ? 'ec' : 'nc'}}Threshold{{index}}"
              type="number"
              value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
     </div>
-    <div class="col-6">
-      <input [(ngModel)]="threshold.propertyValue" class="form-control" id="{{typeHint.ec ? 'ec' : 'nc'}}Value{{index}}"
+    <div class="col-8">
+      <input *ngIf="!needsColorValidation(styleProperty)" [(ngModel)]="threshold.propertyValue"
+             class="form-control"
+             id="{{typeHint.ec ? 'ec' : 'nc'}}Value{{index}}"
              name="{{typeHint.ec ? 'ec' : 'nc'}}Value{{index}}"
              type="text">
+      <input *ngIf="needsColorValidation(styleProperty)" [(ngModel)]="threshold.propertyValue"
+             type="color"
+             class="form-control form-control-color"
+             id="colorContinuous{{index}}"
+             name="colorContinuous{{index}}"
+             value="{{threshold.propertyValue}}">
     </div>
-    <span *ngIf="needsColorValidation(styleProperty)" [ngStyle]="{'background-color': threshold.propertyValue}"
-          class="badge badge-pill border col-2">
-            &nbsp;
-          </span>
+
   </div>
 
   <!-- button to add more thresholds -->
   <div class="form-group row">
-    <div class="col-10">
-      <button (click)="addNewThreshold()" class="btn btn-block btn-outline-info">
+    <div class="col-12">
+      <button (click)="addNewThreshold()"
+              class="btn btn-block btn-outline-info">
         <fa-icon [icon]="faPlus"></fa-icon>
       </button>
     </div>
@@ -70,17 +73,14 @@
   <div class="form-group row">
     <label class="col-4 col-form-label"
            for="{{typeHint.ec ? 'ec' : 'nc'}}DefaultGreater">{{'MAIN_MAPPINGS_NEW_DEFAULT_GREAT' | translate}}</label>
-    <div class="col-6">
-      <input [disabled]="true" [(ngModel)]="continuousThresholds[1].propertyValue" class="form-control"
+    <div class="col-8">
+      <input [disabled]="true" [(ngModel)]="continuousThresholds[1].propertyValue"
+             class="form-control"
              id="{{typeHint.ec ? 'ec' : 'nc'}}DefaultGreater"
-             name="{{typeHint.ec ? 'ec' : 'nc'}}DefaultGreater" type="text"
+             name="{{typeHint.ec ? 'ec' : 'nc'}}DefaultGreater"
+             type="text"
              value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
     </div>
-    <span *ngIf="needsColorValidation(styleProperty)"
-          [ngStyle]="{'background-color': continuousThresholds[1].propertyValue}"
-          class="badge badge-pill border col-2">
-            &nbsp;
-          </span>
   </div>
 
   <!-- SUBMIT/CLEAR/ABORT -->
@@ -129,11 +129,10 @@
     <label class="col-4 col-form-label"
            for="{{typeHint.ed ? 'ed' : 'nd'}}CssProperty">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
     <div class="col-6">
-      <input [(ngModel)]="styleProperty" (input)="emitStyleProperty()" [readOnly]="isEdit" class="form-control" id="{{typeHint.ed ? 'ed' : 'nd'}}CssProperty"
+      <input [(ngModel)]="styleProperty" (input)="emitStyleProperty()" [readOnly]="isEdit" class="form-control"
+             id="{{typeHint.ed ? 'ed' : 'nd'}}CssProperty"
              name="{{typeHint.ed ? 'ed' : 'nd'}}CssProperty" type="text">
       <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
-      <small *ngIf="needsColorValidation(styleProperty)"
-             class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_HINT' | translate}}</small>
     </div>
 
     <div class="col-2 form-check">
@@ -153,15 +152,20 @@
   <!-- values and input fields for each value -->
   <div *ngFor="let entry of discreteMapping; let index = index" class="form-group row">
     <label class="col-4 col-form-label" for="{{typeHint.ed ? 'ed' : 'nd'}}{{index}}">{{entry.isHR}}</label>
-    <div class="col-6">
-      <input [(ngModel)]="discreteMapping[index].cssValue" class="form-control" id="{{typeHint.ed ? 'ed' : 'nd'}}{{index}}"
+    <div class="col-8">
+      <input *ngIf="!needsColorValidation(styleProperty)"
+             [(ngModel)]="discreteMapping[index].cssValue"
+             class="form-control"
+             id="{{typeHint.ed ? 'ed' : 'nd'}}{{index}}"
              name="ed{{index}}" type="text"
              value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
+      <input *ngIf="needsColorValidation(styleProperty)" [(ngModel)]="discreteMapping[index].cssValue"
+             type="color"
+             class="form-control form-control-color"
+             id="colorDiscrete{{index}}"
+             name="colorDiscrete{{index}}"
+             value="{{discreteMapping[index].cssValue}}">
     </div>
-    <span *ngIf="needsColorValidation(styleProperty)" [ngStyle]="{'background-color': entry.cssValue}"
-          class="badge badge-pill border col-2">
-                &nbsp;
-              </span>
   </div>
 
   <!-- SUBMIT/CLEAR/ABORT -->
