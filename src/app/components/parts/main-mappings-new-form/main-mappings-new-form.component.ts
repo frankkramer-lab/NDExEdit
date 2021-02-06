@@ -1,13 +1,13 @@
-import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {DataService} from '../../../services/data.service';
 import {NeThresholdMap} from '../../../models/ne-threshold-map';
-import {NeContinuousThresholds} from '../../../models/ne-continuous-thresholds';
 import {faCheck, faPlus, faTimes, faUndo} from '@fortawesome/free-solid-svg-icons';
 import {UtilityService} from '../../../services/utility.service';
 import {NeMappingsType} from '../../../models/ne-mappings-type';
 import {NeAspect} from '../../../models/ne-aspect';
-import {NeMappingsDefinition} from '../../../models/ne-mappings-definition';
 import {NeGroupedMappingsDiscrete} from '../../../models/ne-grouped-mappings-discrete';
+import {NeMappingContinuous} from '../../../models/ne-mapping-continuous';
+import {NeStyleMap} from '../../../models/ne-style-map';
 
 @Component({
   selector: 'app-main-mappings-new-form',
@@ -76,13 +76,16 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   /**
    * Newly created or existing continuous mapping to be edited
    */
-  continuousMapping: NeContinuousThresholds;
+  continuousMapping: NeMappingContinuous;
 
   /**
    * Newly created or existing discrete mapping to be edited
    */
-  discreteMapping: NeMappingsDefinition[];
-
+  discreteMapping: NeGroupedMappingsDiscrete;
+  /**
+   * Newly created style for a discrete mapping or style currently being edited
+   */
+  discreteMappingProperty: NeStyleMap;
   /**
    * True, if all properties are available for loading
    */
@@ -96,11 +99,9 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
 
     if (!this.isEdit) {
       if (this.typeHint.ec || this.typeHint.nc) {
-        this.continuousMapping = {};
         this.initContinuousMapping();
       } else {
-        this.discreteMapping = [];
-        this.initDiscreteMapping(this.typeHint);
+        this.initDiscreteMapping();
       }
     } else {
       let existingMapping;
@@ -166,21 +167,24 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * Clears all inputs for a mapping except the non-manipulatables of a continuous mapping
    */
   clearAllInputs(): void {
+    this.styleProperty = '';
     if (this.discreteMapping) {
-      for (const entry of this.discreteMapping) {
-        entry.cssValue = '';
-      }
+      this.discreteMapping.styleMap[0].cssValues = [];
     }
 
     if (this.continuousMapping) {
-      this.continuousMapping.defaultLower = '';
-      this.continuousMapping.defaultGreater = '';
-      for (const breakpoint of this.continuousMapping.breakpoints) {
-        if (breakpoint.isEditable) {
-          breakpoint.value = null;
-        }
-        breakpoint.propertyValue = '';
-      }
+      this.continuousMapping.thresholds = [];
+      this.continuousMapping.equals = [];
+      this.continuousMapping.lowers = [];
+      this.continuousMapping.greaters = [];
+      // this.continuousMapping.defaultLower = '';
+      // this.continuousMapping.defaultGreater = '';
+      // for (const breakpoint of this.continuousMapping.breakpoints) {
+      //   if (breakpoint.isEditable) {
+      //     breakpoint.value = null;
+      //   }
+      //   breakpoint.propertyValue = '';
+      // }
     }
   }
 
@@ -188,12 +192,15 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * Submits a new continuous mapping
    */
   submitNewContinuousMapping(): void {
-    this.continuousMapping.cssKey = this.styleProperty;
-    this.continuousMapping.mappedProperty = this.propertyToMap;
-    this.continuousMapping.breakpoints = this.continuousMapping.breakpoints.filter(x => x.value !== null);
-    this.continuousMapping.breakpoints = this.continuousMapping.breakpoints.sort((a, b) => (a.value < b.value ? -1 : 1));
-    this.continuousMapping.defaultGreater = this.continuousMapping.breakpoints[this.continuousMapping.breakpoints.length - 1].propertyValue;
-    this.continuousMapping.defaultLower = this.continuousMapping.breakpoints[0].propertyValue;
+    // todo
+
+
+    // this.continuousMapping.cssKey = this.styleProperty;
+    // this.continuousMapping.mappedProperty = this.propertyToMap;
+    // this.continuousMapping.breakpoints = this.continuousMapping.breakpoints.filter(x => x.value !== null);
+    // this.continuousMapping.breakpoints = this.continuousMapping.breakpoints.sort((a, b) => (a.value < b.value ? -1 : 1));
+    // this.continuousMapping.defaultGreater = this.continuousMapping.breakpoints[this.continuousMapping.breakpoints.length - 1].propertyValue;
+    // this.continuousMapping.defaultLower = this.continuousMapping.breakpoints[0].propertyValue;
 
     // this.dataService.addMappingContinuous(this.dataService.networkSelected.id, this.typeHint.nc, this.continuousMapping);
 
@@ -203,15 +210,16 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * Submits a new discrete mapping, adds CSS property to color properties managed in {@link GraphService}
    */
   submitNewDiscreteMapping(): void {
+    // todo
 
-    for (const entry of this.discreteMapping) {
-      entry.cssKey = this.styleProperty.trim();
-      if (entry.cssValue) {
-        entry.cssValue = entry.cssValue.trim();
-      } else {
-        entry.cssValue = '';
-      }
-    }
+    // for (const entry of this.discreteMapping) {
+    //   entry.cssKey = this.styleProperty.trim();
+    //   if (entry.cssValue) {
+    //     entry.cssValue = entry.cssValue.trim();
+    //   } else {
+    //     entry.cssValue = '';
+    //   }
+    // }
     // this.dataService.addMappingDiscrete(this.dataService.networkSelected.id, this.typeHint.nd, this.discreteMapping);
 
   }
@@ -222,11 +230,13 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    */
   submitNewMapping(isDiscrete: boolean): void {
 
+    // handles color property management
     if (this.needsColorValidation(this.styleProperty) && !this.dataService.colorProperties.includes(this.styleProperty)) {
       this.dataService.colorProperties.push(this.styleProperty);
     } else if (!this.needsColorValidation(this.styleProperty) && this.dataService.colorProperties.includes(this.styleProperty)) {
       this.dataService.colorProperties = this.dataService.colorProperties.filter(x => x !== this.styleProperty);
     }
+
     if (isDiscrete) {
       this.submitNewDiscreteMapping();
     } else {
@@ -277,43 +287,71 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * @private
    */
   private initContinuousMapping(): void {
-    this.continuousThresholds.push({
-        value: this.propertyToMap.min,
-        propertyValue: '',
-        isEditable: false
-      },
-      {
-        value: this.propertyToMap.max,
-        propertyValue: '',
-        isEditable: false
-      });
-    this.continuousMapping.breakpoints = this.continuousThresholds;
-    this.continuousMapping.cssKey = '';
+    this.continuousMapping = {
+      chart: undefined,
+      cleanStyleProperty: '',
+      col: '',
+      colorGradient: [],
+      equals: [],
+      greaters: [],
+      isColor: false,
+      lowers: [],
+      styleProperty: '',
+      thresholds: [],
+      type: ''
+    };
+    // this.continuousThresholds.push({
+    //     value: this.propertyToMap.min,
+    //     propertyValue: '',
+    //     isEditable: false
+    //   },
+    //   {
+    //     value: this.propertyToMap.max,
+    //     propertyValue: '',
+    //     isEditable: false
+    //   });
+    // this.continuousMapping.breakpoints = this.continuousThresholds;
+    // this.continuousMapping.cssKey = '';
   }
 
   /**
    * Initializes a discrete mapping
-   * @param typeHint needed to build matching selectors for the classes which are later applied to the elements
    * @private
    */
-  private initDiscreteMapping(typeHint: NeMappingsType): void {
-    for (const value of this.propertyToMap.values) {
-      const selector = '.' + ((typeHint.nd || typeHint.nc) ? 'node' : 'edge')
-        + '_' + UtilityService.utilCleanString(this.propertyToMap.name)
-        + '_' + UtilityService.utilCleanString(value);
-      const tmp: NeMappingsDefinition = {
-        col: UtilityService.utilCleanString(this.propertyToMap.name),
-        colHR: this.propertyToMap.name,
-        is: UtilityService.utilCleanString(value),
-        isHR: value,
-        selector,
-        cssKey: this.styleProperty,
-        cssValue: null,
-        priority: UtilityService.utilFindPriorityBySelector(selector),
-        datatype: null
-      };
-      this.discreteMapping.push(tmp);
-    }
+  private initDiscreteMapping(): void {
+    // index innerhalb kategorie (zb 'nd') // aspect // null => überschreiben
+    console.log(this.propertyPointer, this.propertyToMap, this.discreteMappingProperty);
+    this.discreteMappingProperty = {
+      cssKey: '',
+      cssValues: [],
+      isColor: false
+    };
+    this.discreteMapping = {
+      col: '',
+      datatype: '',
+      styleMap: [this.discreteMappingProperty],
+      th: [],
+      values: this.propertyToMap.values
+    };
+
+
+    // for (const value of this.propertyToMap.values) {
+    //   const selector = '.' + ((typeHint.nd || typeHint.nc) ? 'node' : 'edge')
+    //     + '_' + UtilityService.utilCleanString(this.propertyToMap.name)
+    //     + '_' + UtilityService.utilCleanString(value);
+    //   const tmp: NeMappingsDefinition = {
+    //     col: UtilityService.utilCleanString(this.propertyToMap.name),
+    //     colHR: this.propertyToMap.name,
+    //     is: UtilityService.utilCleanString(value),
+    //     isHR: value,
+    //     selector,
+    //     cssKey: this.styleProperty,
+    //     cssValue: null,
+    //     priority: UtilityService.utilFindPriorityBySelector(selector),
+    //     datatype: null
+    //   };
+    //   this.discreteMapping.push(tmp);
+    // }
   }
 
 
@@ -323,54 +361,54 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * @param mapping the mapping to be edited
    */
   prefillContinuousMapping(mapping: any): void {
-    this.continuousThresholds = [];
-    this.styleProperty = mapping.title[0];
-
-    if (mapping.chartValid) {
-
-      const mappedProperty = this.getMappedProperty(mapping);
-
-      for (const label of mapping.chart.lineChartLabels) {
-        if (label !== '') {
-          const thresholdObj: NeThresholdMap = {
-            value: Number(label),
-            propertyValue: mapping.chart.lineChartData[0].data[mapping.chart.lineChartLabels.indexOf(label)],
-            isEditable: label === mappedProperty.min || label === mappedProperty.max
-          };
-          this.continuousThresholds.push(thresholdObj);
-        }
-      }
-      this.continuousMapping = {
-        defaultGreater: mapping.chart.lineChartData[0].data[mapping.chart.lineChartData[0].data.length - 1],
-        defaultLower: mapping.chart.lineChartData[0].data[0],
-        breakpoints: this.continuousThresholds,
-        cssKey: this.styleProperty,
-        mappedProperty
-      };
-
-    } else if (mapping.gradientValid) {
-
-      const mappedProperty = this.getMappedProperty(mapping);
-
-      for (const color of mapping.colorGradient) {
-        if (color.offset !== '-1' && color.offset !== '101') {
-          const thresholdObj: NeThresholdMap = {
-            value: Number(color.numericThreshold),
-            propertyValue: color.color,
-            isEditable: color.numericThreshold === mappedProperty.min || color.numericThreshold === mappedProperty.max
-          };
-          this.continuousThresholds.push(thresholdObj);
-        }
-      }
-      this.continuousMapping = {
-        defaultGreater: mapping.colorGradient[mapping.colorGradient.length - 1].color,
-        defaultLower: mapping.colorGradient[0].color,
-        breakpoints: this.continuousThresholds,
-        cssKey: this.styleProperty,
-        mappedProperty
-      };
-
-    }
+    // this.continuousThresholds = [];
+    // this.styleProperty = mapping.title[0];
+    //
+    // if (mapping.chartValid) {
+    //
+    //   const mappedProperty = this.getMappedProperty(mapping);
+    //
+    //   for (const label of mapping.chart.lineChartLabels) {
+    //     if (label !== '') {
+    //       const thresholdObj: NeThresholdMap = {
+    //         value: Number(label),
+    //         propertyValue: mapping.chart.lineChartData[0].data[mapping.chart.lineChartLabels.indexOf(label)],
+    //         isEditable: label === mappedProperty.min || label === mappedProperty.max
+    //       };
+    //       this.continuousThresholds.push(thresholdObj);
+    //     }
+    //   }
+    //   this.continuousMapping = {
+    //     defaultGreater: mapping.chart.lineChartData[0].data[mapping.chart.lineChartData[0].data.length - 1],
+    //     defaultLower: mapping.chart.lineChartData[0].data[0],
+    //     breakpoints: this.continuousThresholds,
+    //     cssKey: this.styleProperty,
+    //     mappedProperty
+    //   };
+    //
+    // } else if (mapping.gradientValid) {
+    //
+    //   const mappedProperty = this.getMappedProperty(mapping);
+    //
+    //   for (const color of mapping.colorGradient) {
+    //     if (color.offset !== '-1' && color.offset !== '101') {
+    //       const thresholdObj: NeThresholdMap = {
+    //         value: Number(color.numericThreshold),
+    //         propertyValue: color.color,
+    //         isEditable: color.numericThreshold === mappedProperty.min || color.numericThreshold === mappedProperty.max
+    //       };
+    //       this.continuousThresholds.push(thresholdObj);
+    //     }
+    //   }
+    //   this.continuousMapping = {
+    //     defaultGreater: mapping.colorGradient[mapping.colorGradient.length - 1].color,
+    //     defaultLower: mapping.colorGradient[0].color,
+    //     breakpoints: this.continuousThresholds,
+    //     cssKey: this.styleProperty,
+    //     mappedProperty
+    //   };
+    //
+    // }
   }
 
   /**
@@ -395,45 +433,45 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * @param isNode true if the selected mapping belongs to nodes
    */
   prefillDiscreteMapping(mapping: NeGroupedMappingsDiscrete, propertyId: number, isNode: boolean): void {
-    console.log(mapping, propertyId);
-    this.discreteMapping = [];
-    this.styleProperty = mapping.styleMap[propertyId].cssKey;
-    const correspondingAkv = (isNode
-      ? this.dataService.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === mapping.col)
-      : this.dataService.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === mapping.col));
-
-    for (const selector of mapping.styleMap[propertyId].selectors) {
-      const mapObj: NeMappingsDefinition = {
-        col: UtilityService.utilCleanString(mapping.col),
-        colHR: mapping.col,
-        is: UtilityService.utilCleanString(mapping.values[mapping.styleMap[propertyId].selectors.indexOf(selector)]),
-        isHR: mapping.values[mapping.styleMap[propertyId].selectors.indexOf(selector)],
-        selector,
-        cssKey: this.styleProperty,
-        cssValue: mapping.styleMap[propertyId].cssValues[mapping.styleMap[propertyId].selectors.indexOf(selector)],
-        priority: UtilityService.utilFindPriorityBySelector(selector)
-      };
-      this.discreteMapping.push(mapObj);
-    }
-
-    for (const val of correspondingAkv.values) {
-      if (!this.discreteMapping.map(x => x.isHR).includes(val)) {
-        const col = UtilityService.utilCleanString(correspondingAkv.name);
-        const is = UtilityService.utilCleanString(val);
-        const selector = (isNode ? '.node_' : '.edge_') + col + '_' + is;
-        const obj: NeMappingsDefinition = {
-          col,
-          colHR: correspondingAkv.name,
-          is,
-          isHR: val,
-          selector,
-          cssKey: this.styleProperty,
-          cssValue: '',
-          priority: UtilityService.utilFindPriorityBySelector(selector)
-        };
-        this.discreteMapping.push(obj);
-      }
-    }
+    // console.log(mapping, propertyId);
+    // this.discreteMapping = [];
+    // this.styleProperty = mapping.styleMap[propertyId].cssKey;
+    // const correspondingAkv = (isNode
+    //   ? this.dataService.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === mapping.col)
+    //   : this.dataService.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === mapping.col));
+    //
+    // for (const selector of mapping.styleMap[propertyId].selectors) {
+    //   const mapObj: NeMappingsDefinition = {
+    //     col: UtilityService.utilCleanString(mapping.col),
+    //     colHR: mapping.col,
+    //     is: UtilityService.utilCleanString(mapping.values[mapping.styleMap[propertyId].selectors.indexOf(selector)]),
+    //     isHR: mapping.values[mapping.styleMap[propertyId].selectors.indexOf(selector)],
+    //     selector,
+    //     cssKey: this.styleProperty,
+    //     cssValue: mapping.styleMap[propertyId].cssValues[mapping.styleMap[propertyId].selectors.indexOf(selector)],
+    //     priority: UtilityService.utilFindPriorityBySelector(selector)
+    //   };
+    //   this.discreteMapping.push(mapObj);
+    // }
+    //
+    // for (const val of correspondingAkv.values) {
+    //   if (!this.discreteMapping.map(x => x.isHR).includes(val)) {
+    //     const col = UtilityService.utilCleanString(correspondingAkv.name);
+    //     const is = UtilityService.utilCleanString(val);
+    //     const selector = (isNode ? '.node_' : '.edge_') + col + '_' + is;
+    //     const obj: NeMappingsDefinition = {
+    //       col,
+    //       colHR: correspondingAkv.name,
+    //       is,
+    //       isHR: val,
+    //       selector,
+    //       cssKey: this.styleProperty,
+    //       cssValue: '',
+    //       priority: UtilityService.utilFindPriorityBySelector(selector)
+    //     };
+    //     this.discreteMapping.push(obj);
+    //   }
+    // }
 
   }
 

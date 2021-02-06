@@ -129,7 +129,8 @@
     <label class="col-4 col-form-label"
            for="{{typeHint.ed ? 'ed' : 'nd'}}CssProperty">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
     <div class="col-6">
-      <input [(ngModel)]="styleProperty" (input)="emitStyleProperty()" [readOnly]="isEdit" class="form-control"
+      <input [(ngModel)]="styleProperty" (input)="emitStyleProperty()"
+             [readOnly]="isEdit" class="form-control"
              id="{{typeHint.ed ? 'ed' : 'nd'}}CssProperty"
              name="{{typeHint.ed ? 'ed' : 'nd'}}CssProperty" type="text">
       <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
@@ -150,21 +151,22 @@
   <hr>
 
   <!-- values and input fields for each value -->
-  <div *ngFor="let entry of discreteMapping; let index = index" class="form-group row">
-    <label class="col-4 col-form-label" for="{{typeHint.ed ? 'ed' : 'nd'}}{{index}}">{{entry.isHR}}</label>
+  <div *ngFor="let entry of discreteMapping.values; let index = index" class="form-group row">
+    <label class="col-4 col-form-label" for="{{typeHint.ed ? 'ed' : 'nd'}}{{index}}">{{entry}}</label>
     <div class="col-8">
       <input *ngIf="!needsColorValidation(styleProperty)"
-             [(ngModel)]="discreteMapping[index].cssValue"
+             [(ngModel)]="discreteMapping.styleMap[propertyPointer].cssValues[index]"
              class="form-control"
              id="{{typeHint.ed ? 'ed' : 'nd'}}{{index}}"
              name="ed{{index}}" type="text"
              value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
-      <input *ngIf="needsColorValidation(styleProperty)" [(ngModel)]="discreteMapping[index].cssValue"
+      <input *ngIf="needsColorValidation(styleProperty)"
+             [(ngModel)]="discreteMapping.styleMap[propertyPointer].cssValues[index]"
              type="color"
              class="form-control form-control-color"
              id="colorDiscrete{{index}}"
              name="colorDiscrete{{index}}"
-             value="{{discreteMapping[index].cssValue}}">
+             value="{{discreteMapping.styleMap[propertyPointer].cssValues[index]}}">
     </div>
   </div>
 
