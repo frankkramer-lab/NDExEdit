@@ -27,7 +27,7 @@
 
       <tbody>
       <tr *ngFor="let style of dataService.selectedDiscreteMapping.styleMap; let styleIndex = index"
-          [ngClass]="(style === dataService.selectedDiscreteMappingProperty) ? 'table-danger' : 'table-info'">
+          [ngClass]="(style === dataService.selectedDiscreteMappingProperty) ? 'table-danger' : ''">
         <td>{{style.cssKey}}</td>
         <td *ngFor="let val of style.cssValues">
           {{val}}
