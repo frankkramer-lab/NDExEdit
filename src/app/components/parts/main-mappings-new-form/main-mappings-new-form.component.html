@@ -1,225 +1,217 @@
-<!--<ng-container *ngIf="isInitialized then content else loading"></ng-container>-->
+<!-- continuous form -->
+<form *ngIf="typeHint.ec || typeHint.nc">
+  <div class="form-group row">
+    <label class="col-4 col-form-label"
+           for="{{typeHint.ec ? 'ec' : 'nc'}}CssProperty">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
+    <div class="col-6">
+      <input [(ngModel)]="styleProperty" (input)="emitStyleProperty()" [readOnly]="isEdit" class="form-control"
+             id="{{typeHint.ec ? 'ec' : 'nc'}}CssProperty"
+             name="cCssProperty" type="text">
+      <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
+    </div>
+    <div class="col-2 form-check">
+      <input (click)="toggleNeedsColorValidation(!needsColorValidation(styleProperty))"
+             [checked]="needsColorValidation(styleProperty)" class="form-check-input"
+             id="{{typeHint.ec ? 'ec' : 'nc'}}ColorValidation"
+             type="checkbox">
+      <label class="form-check-label" for="{{typeHint.ec ? 'ec' : 'nc'}}ColorValidation">
+        {{'MAIN_MAPPINGS_NEW_CB_COLORS' | translate}}
+      </label>
+    </div>
+  </div>
 
-<!--<ng-template #content>-->
-  <!-- continuous form -->
-  <form *ngIf="typeHint.ec || typeHint.nc">
-    <div class="form-group row">
-      <label class="col-4 col-form-label"
-             for="{{typeHint.ec ? 'ec' : 'nc'}}CssProperty">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
-      <div class="col-6">
-        <input [(ngModel)]="styleProperty" (input)="emitStyleProperty()" [readOnly]="isEdit" class="form-control"
-               id="{{typeHint.ec ? 'ec' : 'nc'}}CssProperty"
-               name="cCssProperty" type="text">
-        <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
-      </div>
-      <div class="col-2 form-check">
-        <input (click)="toggleNeedsColorValidation(!needsColorValidation(styleProperty))"
-               [checked]="needsColorValidation(styleProperty)" class="form-check-input"
-               id="{{typeHint.ec ? 'ec' : 'nc'}}ColorValidation"
-               type="checkbox">
-        <label class="form-check-label" for="{{typeHint.ec ? 'ec' : 'nc'}}ColorValidation">
-          {{'MAIN_MAPPINGS_NEW_CB_COLORS' | translate}}
-        </label>
-      </div>
+  <!-- default lower -->
+  <div class="form-group row">
+    <label class="col-4 col-form-label"
+           for="{{typeHint.ec ? 'ec' : 'nc'}}DefaultLower">{{'MAIN_MAPPINGS_NEW_DEFAULT_LOW' | translate}}</label>
+    <div class="col-8">
+      <input [disabled]="true" [(ngModel)]="thresholds[0].propertyValue"
+             class="form-control"
+             id="{{typeHint.ec ? 'ec' : 'nc'}}DefaultLower"
+             name="{{typeHint.ec ? 'ec' : 'nc'}}DefaultLower"
+             type="text"
+             value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
+    </div>
+  </div>
+
+  <!-- thresholds -->
+  <div *ngFor="let threshold of thresholds; let index = index" class="form-group row">
+    <div class="col-4">
+      <input [disabled]="!threshold.isEditable" [(ngModel)]="threshold.value"
+             class="form-control"
+             id="{{typeHint.ec ? 'ec' : 'nc'}}Threshold{{index}}"
+             name="{{typeHint.ec ? 'ec' : 'nc'}}Threshold{{index}}"
+             type="number"
+             value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
+    </div>
+    <div class="col-8">
+      <input *ngIf="!needsColorValidation(styleProperty)" [(ngModel)]="threshold.propertyValue"
+             class="form-control"
+             id="{{typeHint.ec ? 'ec' : 'nc'}}Value{{index}}"
+             name="{{typeHint.ec ? 'ec' : 'nc'}}Value{{index}}"
+             type="text">
+      <input *ngIf="needsColorValidation(styleProperty)" [(ngModel)]="threshold.propertyValue"
+             type="color"
+             class="form-control form-control-color"
+             id="colorContinuous{{index}}"
+             name="colorContinuous{{index}}"
+             value="{{threshold.propertyValue}}">
     </div>
 
-    <!-- default lower -->
-    <div class="form-group row">
-<!--      <label class="col-4 col-form-label"-->
-<!--             for="{{typeHint.ec ? 'ec' : 'nc'}}DefaultLower">{{'MAIN_MAPPINGS_NEW_DEFAULT_LOW' | translate}}</label>-->
-      <div class="col-8">
-<!--        <input [disabled]="true" [(ngModel)]="continuousThresholds[0].propertyValue"-->
-<!--               class="form-control"-->
-<!--               id="{{typeHint.ec ? 'ec' : 'nc'}}DefaultLower"-->
-<!--               name="{{typeHint.ec ? 'ec' : 'nc'}}DefaultLower"-->
-<!--               type="text"-->
-<!--               value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">-->
-      </div>
+  </div>
+
+  <!-- button to add more thresholds -->
+  <div class="form-group row">
+    <div class="col-12">
+      <button (click)="addNewThreshold()"
+              class="btn btn-block btn-outline-info">
+        <fa-icon [icon]="faPlus"></fa-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- default greater -->
+  <div class="form-group row">
+    <label class="col-4 col-form-label"
+           for="{{typeHint.ec ? 'ec' : 'nc'}}DefaultGreater">{{'MAIN_MAPPINGS_NEW_DEFAULT_GREAT' | translate}}</label>
+    <div class="col-8">
+      <input [disabled]="true" [(ngModel)]="thresholds[1].propertyValue"
+             class="form-control"
+             id="{{typeHint.ec ? 'ec' : 'nc'}}DefaultGreater"
+             name="{{typeHint.ec ? 'ec' : 'nc'}}DefaultGreater"
+             type="text"
+             value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
+    </div>
+  </div>
+
+  <!-- SUBMIT/CLEAR/ABORT -->
+  <div class="row">
+    <div class="col-4">
+      <button [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id ]} }]"
+              class="btn btn-block btn-outline-danger"
+              data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_NEW_ABORT' | translate}}"
+              placement="top"
+              type="button">
+        <fa-icon [icon]="faTimes"></fa-icon>
+      </button>
+    </div>
+    <div class="col-4">
+      <button (click)="clearAllInputs()" class="btn btn-block btn-outline-warning"
+              data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_NEW_CLEAR' | translate}}"
+              placement="top"
+              type="button">
+        <fa-icon [icon]="faUndo"></fa-icon>
+      </button>
+    </div>
+    <div class="col-4">
+      <!-- create new mapping -->
+      <button (click)="submitNewMapping()" *ngIf="!isEdit"
+              [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, mapType + (getNextIdForMappingType()) ]} }]"
+              class="btn btn-block btn-outline-success" data-toggle="tooltip"
+              ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
+              placement="top"
+              type="button">
+        <fa-icon [icon]="faCheck"></fa-icon>
+      </button>
+      <!--        <button (click)="editMapping()" *ngIf="isEdit"-->
+      <!--                [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, mapType + mapId ]} }]"-->
+      <!--                class="btn btn-block btn-outline-success" data-toggle="tooltip"-->
+      <!--                ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"-->
+      <!--                placement="top"-->
+      <!--                type="button">-->
+      <!--          <fa-icon [icon]="faCheck"></fa-icon>-->
+      <!--        </button>-->
+    </div>
+  </div>
+</form>
+
+<!-- discrete form -->
+<form *ngIf="typeHint.nd || typeHint.ed">
+  <div class="form-group row">
+    <label class="col-4 col-form-label"
+           for="{{typeHint.ed ? 'ed' : 'nd'}}CssProperty">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
+    <div class="col-6">
+      <input [(ngModel)]="styleProperty" (input)="emitStyleProperty()"
+             [readOnly]="isEdit" class="form-control"
+             id="{{typeHint.ed ? 'ed' : 'nd'}}CssProperty"
+             name="{{typeHint.ed ? 'ed' : 'nd'}}CssProperty" type="text">
+      <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
     </div>
 
-    <!-- thresholds -->
-<!--    <div *ngFor="let threshold of continuousThresholds; let index = index" class="form-group row">-->
-<!--      <div class="col-4">-->
-<!--        <input [disabled]="!threshold.isEditable" [(ngModel)]="threshold.value"-->
-<!--               class="form-control"-->
-<!--               id="{{typeHint.ec ? 'ec' : 'nc'}}Threshold{{index}}"-->
-<!--               name="{{typeHint.ec ? 'ec' : 'nc'}}Threshold{{index}}"-->
-<!--               type="number"-->
-<!--               value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">-->
-<!--      </div>-->
-<!--      <div class="col-8">-->
-<!--        <input *ngIf="!needsColorValidation(styleProperty)" [(ngModel)]="threshold.propertyValue"-->
-<!--               class="form-control"-->
-<!--               id="{{typeHint.ec ? 'ec' : 'nc'}}Value{{index}}"-->
-<!--               name="{{typeHint.ec ? 'ec' : 'nc'}}Value{{index}}"-->
-<!--               type="text">-->
-<!--        <input *ngIf="needsColorValidation(styleProperty)" [(ngModel)]="threshold.propertyValue"-->
-<!--               type="color"-->
-<!--               class="form-control form-control-color"-->
-<!--               id="colorContinuous{{index}}"-->
-<!--               name="colorContinuous{{index}}"-->
-<!--               value="{{threshold.propertyValue}}">-->
-<!--      </div>-->
-
-<!--    </div>-->
-
-    <!-- button to add more thresholds -->
-    <div class="form-group row">
-      <div class="col-12">
-        <button (click)="addNewThreshold()"
-                class="btn btn-block btn-outline-info">
-          <fa-icon [icon]="faPlus"></fa-icon>
-        </button>
-      </div>
+    <div class="col-2 form-check">
+      <input (click)="toggleNeedsColorValidation(!needsColorValidation(styleProperty))"
+             [checked]="needsColorValidation(styleProperty)" class="form-check-input"
+             id="{{typeHint.ed ? 'ed' : 'nd'}}ColorValidation"
+             type="checkbox">
+      <label class="form-check-label" for="{{typeHint.ed ? 'ed' : 'nd'}}ColorValidation">
+        {{'MAIN_MAPPINGS_NEW_CB_COLORS' | translate}}
+      </label>
     </div>
 
-    <!-- default greater -->
-    <div class="form-group row">
-<!--      <label class="col-4 col-form-label"-->
-<!--             for="{{typeHint.ec ? 'ec' : 'nc'}}DefaultGreater">{{'MAIN_MAPPINGS_NEW_DEFAULT_GREAT' | translate}}</label>-->
-      <div class="col-8">
-<!--        <input [disabled]="true" [(ngModel)]="continuousThresholds[1].propertyValue"-->
-<!--               class="form-control"-->
-<!--               id="{{typeHint.ec ? 'ec' : 'nc'}}DefaultGreater"-->
-<!--               name="{{typeHint.ec ? 'ec' : 'nc'}}DefaultGreater"-->
-<!--               type="text"-->
-<!--               value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">-->
-      </div>
+  </div>
+
+  <hr>
+
+  <!-- values and input fields for each value -->
+  <div *ngFor="let entry of propertyToMap.values; let index = index" class="form-group row">
+    <label class="col-4 col-form-label" for="{{typeHint.ed ? 'ed' : 'nd'}}{{index}}">{{entry}}</label>
+    <div class="col-8">
+      <input *ngIf="!needsColorValidation(styleProperty)"
+             [(ngModel)]="mappingDiscrete.values[index]"
+             class="form-control"
+             id="{{typeHint.ed ? 'ed' : 'nd'}}{{index}}"
+             name="ed{{index}}" type="text"
+             value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
+      <input *ngIf="needsColorValidation(styleProperty)"
+             [(ngModel)]="mappingDiscrete.values[index]"
+             type="color"
+             class="form-control form-control-color"
+             id="colorDiscrete{{index}}"
+             name="colorDiscrete{{index}}"
+             value="{{mappingDiscrete.values[index]}}">
     </div>
+  </div>
 
-    <!-- SUBMIT/CLEAR/ABORT -->
-    <div class="row">
-      <div class="col-4">
-        <button [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id ]} }]"
-                class="btn btn-block btn-outline-danger"
-                data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_NEW_ABORT' | translate}}"
-                placement="top"
-                type="button">
-          <fa-icon [icon]="faTimes"></fa-icon>
-        </button>
-      </div>
-      <div class="col-4">
-        <button (click)="clearAllInputs()" class="btn btn-block btn-outline-warning"
-                data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_NEW_CLEAR' | translate}}"
-                placement="top"
-                type="button">
-          <fa-icon [icon]="faUndo"></fa-icon>
-        </button>
-      </div>
-      <div class="col-4">
-        <!-- create new mapping -->
-        <button (click)="submitNewMapping()" *ngIf="!isEdit"
-                [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, mapType + (getNextIdForMappingType()) ]} }]"
-                class="btn btn-block btn-outline-success" data-toggle="tooltip"
-                ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
-                placement="top"
-                type="button">
-          <fa-icon [icon]="faCheck"></fa-icon>
-        </button>
-<!--        <button (click)="editMapping()" *ngIf="isEdit"-->
-<!--                [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, mapType + mapId ]} }]"-->
-<!--                class="btn btn-block btn-outline-success" data-toggle="tooltip"-->
-<!--                ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"-->
-<!--                placement="top"-->
-<!--                type="button">-->
-<!--          <fa-icon [icon]="faCheck"></fa-icon>-->
-<!--        </button>-->
-      </div>
+  <!-- SUBMIT/CLEAR/ABORT -->
+  <div class="row">
+    <div class="col-4">
+      <button [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id ]} }]"
+              class="btn btn-block btn-outline-danger"
+              data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_NEW_ABORT' | translate}}"
+              placement="top"
+              type="button">
+        <fa-icon [icon]="faTimes"></fa-icon>
+      </button>
     </div>
-  </form>
-
-  <!-- discrete form -->
-  <form *ngIf="typeHint.nd || typeHint.ed">
-    <div class="form-group row">
-      <label class="col-4 col-form-label"
-             for="{{typeHint.ed ? 'ed' : 'nd'}}CssProperty">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
-      <div class="col-6">
-        <input [(ngModel)]="styleProperty" (input)="emitStyleProperty()"
-               [readOnly]="isEdit" class="form-control"
-               id="{{typeHint.ed ? 'ed' : 'nd'}}CssProperty"
-               name="{{typeHint.ed ? 'ed' : 'nd'}}CssProperty" type="text">
-        <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
-      </div>
-
-      <div class="col-2 form-check">
-        <input (click)="toggleNeedsColorValidation(!needsColorValidation(styleProperty))"
-               [checked]="needsColorValidation(styleProperty)" class="form-check-input"
-               id="{{typeHint.ed ? 'ed' : 'nd'}}ColorValidation"
-               type="checkbox">
-        <label class="form-check-label" for="{{typeHint.ed ? 'ed' : 'nd'}}ColorValidation">
-          {{'MAIN_MAPPINGS_NEW_CB_COLORS' | translate}}
-        </label>
-      </div>
-
+    <div class="col-4">
+      <button (click)="clearAllInputs()" class="btn btn-block btn-outline-warning"
+              data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_NEW_CLEAR' | translate}}"
+              placement="top"
+              type="button">
+        <fa-icon [icon]="faUndo"></fa-icon>
+      </button>
     </div>
-
-    <hr>
-
-    <!-- values and input fields for each value -->
-    <div *ngFor="let entry of propertyToMap.values; let index = index" class="form-group row">
-      <label class="col-4 col-form-label" for="{{typeHint.ed ? 'ed' : 'nd'}}{{index}}">{{entry}}</label>
-      <div class="col-8">
-        <input *ngIf="!needsColorValidation(styleProperty)"
-               [(ngModel)]="mappingDiscrete.values[index]"
-               class="form-control"
-               id="{{typeHint.ed ? 'ed' : 'nd'}}{{index}}"
-               name="ed{{index}}" type="text"
-               value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
-        <input *ngIf="needsColorValidation(styleProperty)"
-               [(ngModel)]="mappingDiscrete.values[index]"
-               type="color"
-               class="form-control form-control-color"
-               id="colorDiscrete{{index}}"
-               name="colorDiscrete{{index}}"
-               value="{{mappingDiscrete.values[index]}}">
-      </div>
+    <div class="col-4">
+      <!-- create new mapping -->
+      <button (click)="submitNewMapping()" *ngIf="!isEdit"
+              [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, mapType + (getNextIdForMappingType()) ]} }]"
+              class="btn btn-block btn-outline-success" data-toggle="tooltip"
+              ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
+              placement="top"
+              type="button">
+        <fa-icon [icon]="faCheck"></fa-icon>
+      </button>
+      <!--        <button (click)="editMapping()" *ngIf="isEdit"-->
+      <!--                [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, mapType + mapId ]} }]"-->
+      <!--                class="btn btn-block btn-outline-success" data-toggle="tooltip"-->
+      <!--                ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"-->
+      <!--                placement="top"-->
+      <!--                type="button">-->
+      <!--          <fa-icon [icon]="faCheck"></fa-icon>-->
+      <!--        </button>-->
     </div>
+  </div>
 
-    <!-- SUBMIT/CLEAR/ABORT -->
-    <div class="row">
-      <div class="col-4">
-        <button [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id ]} }]"
-                class="btn btn-block btn-outline-danger"
-                data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_NEW_ABORT' | translate}}"
-                placement="top"
-                type="button">
-          <fa-icon [icon]="faTimes"></fa-icon>
-        </button>
-      </div>
-      <div class="col-4">
-        <button (click)="clearAllInputs()" class="btn btn-block btn-outline-warning"
-                data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_NEW_CLEAR' | translate}}"
-                placement="top"
-                type="button">
-          <fa-icon [icon]="faUndo"></fa-icon>
-        </button>
-      </div>
-      <div class="col-4">
-        <!-- create new mapping -->
-        <button (click)="submitNewMapping()" *ngIf="!isEdit"
-                [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, mapType + (getNextIdForMappingType()) ]} }]"
-                class="btn btn-block btn-outline-success" data-toggle="tooltip"
-                ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
-                placement="top"
-                type="button">
-          <fa-icon [icon]="faCheck"></fa-icon>
-        </button>
-<!--        <button (click)="editMapping()" *ngIf="isEdit"-->
-<!--                [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, mapType + mapId ]} }]"-->
-<!--                class="btn btn-block btn-outline-success" data-toggle="tooltip"-->
-<!--                ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"-->
-<!--                placement="top"-->
-<!--                type="button">-->
-<!--          <fa-icon [icon]="faCheck"></fa-icon>-->
-<!--        </button>-->
-      </div>
-    </div>
+</form>
 
-  </form>
-
-<!--</ng-template>-->
-
-<!--<ng-template #loading>-->
-
-<!--</ng-template>-->
 

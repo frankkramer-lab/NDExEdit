@@ -6,7 +6,8 @@ import {NeMappingsType} from '../../../models/ne-mappings-type';
 import {NeAspect} from '../../../models/ne-aspect';
 import {NeGroupedMappingsDiscrete} from '../../../models/ne-grouped-mappings-discrete';
 import {NeMappingContinuous} from '../../../models/ne-mapping-continuous';
-import {NeMappingDiscrete} from "../../../models/ne-mapping-discrete";
+import {NeMappingDiscrete} from '../../../models/ne-mapping-discrete';
+import {NeThresholdMap} from "../../../models/ne-threshold-map";
 
 @Component({
   selector: 'app-main-mappings-new-form',
@@ -43,6 +44,12 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    */
   mapType: string;
   /**
+   * List of thresholds for a continuous mapping,
+   * always containing at least 2 entries (default lowest and greatest).
+   * Otherwise a continuous mapping does not make any sense.
+   */
+  thresholds: NeThresholdMap[];
+  /**
    * To update a parent, what the user entered as style property, this needs to be emitted
    */
   @Output() stylePropertyEmitter = new EventEmitter<string>();
@@ -76,8 +83,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
     if (!this.isEdit) {
       if (this.typeHint.ec || this.typeHint.nc) {
         this.initContinuousMapping();
-      } else {
-        this.initDiscreteMapping();
       }
     } else {
       // let existingMapping;
@@ -132,11 +137,11 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * Adds a new threshold to a continuous mapping
    */
   public addNewThreshold(): void {
-    // this.continuousThresholds.push({
-    //   value: null,
-    //   propertyValue: '',
-    //   isEditable: true
-    // });
+    this.thresholds.push({
+      value: null,
+      propertyValue: '',
+      isEditable: true
+    });
   }
 
   /**
@@ -262,57 +267,21 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * @private
    */
   private initContinuousMapping(): void {
-    // this.continuousMapping = {
-    //   chart: undefined,
-    //   cleanStyleProperty: '',
-    //   col: '',
-    //   colorGradient: [],
-    //   equals: [],
-    //   greaters: [],
-    //   isColor: false,
-    //   lowers: [],
-    //   styleProperty: '',
-    //   thresholds: [],
-    //   type: ''
-    // };
-    // this.continuousThresholds.push({
-    //     value: this.propertyToMap.min,
-    //     propertyValue: '',
-    //     isEditable: false
-    //   },
-    //   {
-    //     value: this.propertyToMap.max,
-    //     propertyValue: '',
-    //     isEditable: false
-    //   });
-    // this.continuousMapping.breakpoints = this.continuousThresholds;
-    // this.continuousMapping.cssKey = '';
-  }
-
-  /**
-   * Initializes a discrete mapping
-   * @private
-   */
-  private initDiscreteMapping(): void {
-    // todo check, does a mapping for this property pointer already exist? => yes, if this.propertyToMap.mapPointerD.length enthält diese MapId
-
-    // for (const value of this.propertyToMap.values) {
-    //   const selector = '.' + ((typeHint.nd || typeHint.nc) ? 'node' : 'edge')
-    //     + '_' + UtilityService.utilCleanString(this.propertyToMap.name)
-    //     + '_' + UtilityService.utilCleanString(value);
-    //   const tmp: NeMappingsDefinition = {
-    //     col: UtilityService.utilCleanString(this.propertyToMap.name),
-    //     colHR: this.propertyToMap.name,
-    //     is: UtilityService.utilCleanString(value),
-    //     isHR: value,
-    //     selector,
-    //     cssKey: this.styleProperty,
-    //     cssValue: null,
-    //     priority: UtilityService.utilFindPriorityBySelector(selector),
-    //     datatype: null
-    //   };
-    //   this.discreteMapping.push(tmp);
-    // }
+    this.thresholds = [
+      {
+        propertyValue: null,
+        value: null,
+        isEditable: false
+      },
+      {
+        propertyValue: null,
+        value: null,
+        isEditable: false
+      },
+    ];
+    this.mappingContinuous.thresholds = this.thresholds.map(a => a.value);
+    this.mappingContinuous.equals = this.thresholds.map(a => a.propertyValue);
+    console.log(this.mappingContinuous);
   }
 
 

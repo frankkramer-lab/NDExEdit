@@ -355,7 +355,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     if (!this.isDiscrete) {
       availableAttributes = this.utilityService.utilFilterForContinuous(availableAttributes);
       this.propertyToMap = availableAttributes[this.propertyId];
-      this.chartObject = this.propertyToMap.chartContinuousDistribution;
+      this.chartObject = (this.propertyToMap.datatype === 'integer' ? this.propertyToMap.chartDiscreteDistribution : this.propertyToMap.chartContinuousDistribution);
       this.continuousMapping = {
         chart: undefined,
         cleanStyleProperty: '',
@@ -366,8 +366,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         isColor: false,
         lowers: undefined,
         styleProperty: '',
-        thresholds: undefined,
-        type: ''
+        thresholds: [],
+        type: this.propertyToMap.datatype
       };
     } else {
       availableAttributes = this.utilityService.utilFilterForDiscrete(availableAttributes);
@@ -384,13 +384,13 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     }
 
     this.propertyToMap = availableAttributes[this.propertyId];
-    console.log(this.propertyToMap);
 
     if (this.isDiscrete) {
       this.continuousMapping = null;
     } else {
       this.discreteMapping = null;
     }
+    console.log(this.chartObject);
   }
 
   /**

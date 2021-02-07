@@ -136,6 +136,8 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
         const map = params.get('map');
         if (map !== '-1') {
           this.dataService.selectMapping(map);
+        } else {
+          this.dataService.resetAnyMappingSelection();
         }
       }
     });

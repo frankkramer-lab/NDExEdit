@@ -1133,7 +1133,6 @@ export class DataService {
    * @param mapHint hint containing both typehint and id
    */
   selectMapping(mapHint: string): void {
-    console.log('SELECTING MAPPING ' + mapHint);
     this.selectedTypeHint = this.utilityService.utilGetTypeHintByString(mapHint.substr(0, 2));
     const mapId = mapHint.substr(2);
     if (this.selectedTypeHint.nd) {
@@ -1149,7 +1148,8 @@ export class DataService {
       this.selectedContinuousMapping = this.selectedNetwork.mappings.edgesContinuous[mapId];
       this.selectedDiscreteMapping = null;
     }
-    console.log(this.selectedContinuousMapping, this.selectedDiscreteMapping);
+    console.log(mapHint);
+    console.log(this.selectedTypeHint);
   }
 
   /**
@@ -1183,6 +1183,7 @@ export class DataService {
   resetAnyMappingSelection(): void {
     this.selectedDiscreteMapping = null;
     this.selectedContinuousMapping = null;
+    this.selectedTypeHint = null;
   }
 
   /**
