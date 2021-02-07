@@ -279,6 +279,7 @@
       <div class="form-row">
         <label for="highlightNodesHex">{{'SIDEBAR_EDIT_LABEL_HEX_NODE' | translate}}</label>
         <input [(ngModel)]="highlightNodes"
+               (change)="setHighlightColorAndDuration()"
                type="color"
                class="form-control form-control-color"
                id="highlightNodesHex"
@@ -298,6 +299,7 @@
       <div class="form-row">
         <label for="highlightDuration">{{'SIDEBAR_EDIT_LABEL_DURATION' | translate}}</label>
         <input [(ngModel)]="highlightDuration" class="form-control mb-2" id="highlightDuration" min="0"
+               (change)="setHighlightColorAndDuration()"
                name="highlightDuration"
                placeholder="2000"
                step="100" type="number">
