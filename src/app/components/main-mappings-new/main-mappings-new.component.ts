@@ -313,13 +313,10 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * @private Only needed on init
    */
   private initData(params: ParamMap): void {
-    const map = params.get('map');
-    const networkId = params.get('id');
+    const mapType = params.get('map');
+    this.propertyId = Number(params.get('propertyId'));
 
-    if (map && networkId) {
-      this.dataService.selectNetwork(Number(networkId));
-      this.currentMappingId = map.substring(2);
-      const mapType = map.substring(0, 2);
+    if (mapType) {
       this.typeHint = this.utilityService.utilGetTypeHintByString(mapType);
 
       if (this.typeHint.ec || this.typeHint.nc) {
@@ -343,10 +340,10 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * @private only needed on init
    */
   private initDataNew(params: ParamMap): void {
+
     this.isEdit = false;
     this.dataService.resetAnyMappingSelection();
 
-    this.propertyId = Number(params.get('propertyId'));
     let availableAttributes: any[];
 
     if (this.typeHint.ec || this.typeHint.ed) {
@@ -357,10 +354,12 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
 
     if (!this.isDiscrete) {
       availableAttributes = this.utilityService.utilFilterForContinuous(availableAttributes);
+      this.propertyToMap = availableAttributes[this.propertyId];
+      this.chartObject = this.propertyToMap.chartContinuousDistribution;
       this.continuousMapping = {
         chart: undefined,
         cleanStyleProperty: '',
-        col: '',
+        col: this.propertyToMap.name,
         colorGradient: [],
         equals: undefined,
         greaters: undefined,
@@ -372,27 +371,20 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
       };
     } else {
       availableAttributes = this.utilityService.utilFilterForDiscrete(availableAttributes);
+      this.propertyToMap = availableAttributes[this.propertyId];
+      this.chartObject = this.propertyToMap.chartDiscreteDistribution;
+      const values: string[] = new Array<string>(this.propertyToMap.values.length);
       this.discreteMapping = {
-        col: '',
-        keys: undefined,
+        col: this.propertyToMap.name,
+        keys: [],
         styleProperty: '',
-        type: '',
-        values: undefined
+        type: this.propertyToMap.datatype,
+        values
       };
     }
 
     this.propertyToMap = availableAttributes[this.propertyId];
-
-    // if (this.isDiscrete) {
-    //   this.chartObject = {
-    //     chartData: this.propertyToMap.chartDiscreteDistribution.chartData,
-    //     chartLabels: this.propertyToMap.chartDiscreteDistribution.chartLabels,
-    //     chartType: this.chartType
-    //   };
-    // } else {
-    //   this.binSize = this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
-    //   this.chartObject = this.utilityService.utilCalculateHistogramDataForBinSize(this.binSize, this.propertyToMap);
-    // }
+    console.log(this.propertyToMap);
 
     if (this.isDiscrete) {
       this.continuousMapping = null;
@@ -414,7 +406,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     let existingContinuousMapping: NeMappingContinuous;
     const mapId = params.get('map').substring(2);
 
-    console.log(params);
     switch (params.get('map').substring(0, 2)) {
       case 'nd':
         this.propertyId = Number(params.get('propertyId'));
@@ -422,6 +413,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         this.propertyToMap = this.dataService.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === existingDiscreteMapping.col);
         this.styleProperty = existingDiscreteMapping.styleMap[this.propertyId].cssKey;
         this.discreteMapping = this.utilityService.utilExtractDiscreteFromGroupedDiscrete(existingDiscreteMapping, Number(this.propertyId));
+        this.chartObject = this.propertyToMap.chartDiscreteDistribution;
         break;
       case 'nc':
         existingContinuousMapping = this.dataService.selectedNetwork.mappings.nodesContinuous[mapId];
@@ -429,8 +421,9 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         this.styleProperty = existingContinuousMapping.styleProperty;
         this.continuousMapping = existingContinuousMapping;
         this.binSize = this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
-        this.chartObject = this.utilityService.utilCalculateHistogramDataForBinSize(this.binSize,
-          this.propertyToMap);
+        // this.chartObject = this.utilityService.utilCalculateHistogramDataForBinSize(this.binSize,
+        //   this.propertyToMap);
+        this.chartObject = this.continuousMapping.chart;
         break;
       case 'ed':
         this.propertyId = Number(params.get('propertyId'));
@@ -438,6 +431,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         this.propertyToMap = this.dataService.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === existingDiscreteMapping.col);
         this.styleProperty = existingDiscreteMapping.styleMap[this.propertyId].cssKey;
         this.discreteMapping = this.utilityService.utilExtractDiscreteFromGroupedDiscrete(existingDiscreteMapping, Number(this.propertyId));
+        this.chartObject = this.propertyToMap.chartDiscreteDistribution;
         break;
       case 'ec':
         existingContinuousMapping = this.dataService.selectedNetwork.mappings.edgesContinuous[mapId];
@@ -445,8 +439,9 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         this.styleProperty = existingContinuousMapping.styleProperty;
         this.continuousMapping = existingContinuousMapping;
         this.binSize = this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
-        this.chartObject = this.utilityService.utilCalculateHistogramDataForBinSize(this.binSize,
-          this.propertyToMap);
+        // this.chartObject = this.utilityService.utilCalculateHistogramDataForBinSize(this.binSize,
+        //   this.propertyToMap);
+        this.chartObject = this.continuousMapping.chart;
         break;
     }
   }

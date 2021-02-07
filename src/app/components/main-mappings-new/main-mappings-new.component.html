@@ -77,10 +77,8 @@
       <app-main-mappings-new-form *ngIf="discreteMapping"
                                   (stylePropertyEmitter)="setStyleProperty($event)"
                                   [typeHint]="typeHint"
-                                  [mapId]="currentMappingId"
-                                  [isEdit]="isEdit"
-                                  [propertyToMap]="propertyToMap"
-                                  [propertyPointer]="propertyId"></app-main-mappings-new-form>
+                                  [mappingDiscrete]="discreteMapping"
+                                  [propertyToMap]="propertyToMap"></app-main-mappings-new-form>
 
     </div>
 
@@ -183,11 +181,9 @@
       <!-- FORM -->
       <app-main-mappings-new-form *ngIf="discreteMapping"
                                   (stylePropertyEmitter)="setStyleProperty($event)"
-                                  [isEdit]="isEdit"
                                   [typeHint]="typeHint"
-                                  [mapId]="currentMappingId"
-                                  [propertyToMap]="propertyToMap"
-                                  [propertyPointer]="propertyId"></app-main-mappings-new-form>
+                                  [mappingDiscrete]="discreteMapping"
+                                  [propertyToMap]="propertyToMap"></app-main-mappings-new-form>
     </div>
 
     <!-- NEW: EdgesContinuous -->
@@ -222,7 +218,8 @@
 
       <!-- distribution chart -->
       <app-chart *ngIf="showDistribution" [chartObject]="chartObject"
-                 [widthPercent]="100" [numberOfBins]="binSize" (binSizeEmitter)="this.changeBinSize($event)"></app-chart>
+                 [widthPercent]="100" [numberOfBins]="binSize"
+                 (binSizeEmitter)="this.changeBinSize($event)"></app-chart>
 
       <!-- ALERT: minimum and maximum (if available) -->
       <div class="alert alert-info" role="alert">

@@ -50,7 +50,7 @@
                 </span>
 
           <button
-            [routerLink]="['', { outlets: {primary: ['new', dataService.selectedNetwork.id, (typeHint.ec ? 'ec' : 'nc'), attributeIndex ]} }]"
+            [routerLink]="['', { outlets: {primary: ['new', (typeHint.ec ? 'ec' : 'nc'), attributeIndex ]} }]"
             class="btn btn-outline-success ml-2"
             data-toggle="tooltip"
             ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"
@@ -74,10 +74,10 @@
                      class="dropdown-item">
                     <span *ngIf="typeHint.ed then edBlock else ndBlock"></span>
                     <ng-template #edBlock>
-                      {{dataService.selectedNetwork.mappings.edgesDiscrete[i].classifier}}
+                      {{dataService.selectedNetwork.mappings.edgesDiscrete[i].col}}
                     </ng-template>
                     <ng-template #ndBlock>
-                      {{dataService.selectedNetwork.mappings.nodesDiscrete[i].classifier}}
+                      {{dataService.selectedNetwork.mappings.nodesDiscrete[i].col}}
                     </ng-template>
                   </a>
                 </div>
@@ -97,7 +97,7 @@
           </span>
 
           <button
-            [routerLink]="['', { outlets: {primary: ['new', dataService.selectedNetwork.id, (typeHint.ed ? 'ed' : 'nd'), attributeIndex ]} }]"
+            [routerLink]="['', { outlets: {primary: ['new', (typeHint.ed ? 'ed' : 'nd'), attributeIndex ]} }]"
             class="btn btn-outline-success ml-2"
             data-toggle="tooltip"
             ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"
