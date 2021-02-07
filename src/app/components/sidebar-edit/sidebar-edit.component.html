@@ -277,25 +277,23 @@
       </div>
 
       <div class="form-row">
-
         <label for="highlightNodesHex">{{'SIDEBAR_EDIT_LABEL_HEX_NODE' | translate}}</label>
-        <input [(ngModel)]="highlightNodes" class="form-control mb-2 col-10" id="highlightNodesHex"
+        <input [(ngModel)]="highlightNodes"
+               type="color"
+               class="form-control form-control-color"
+               id="highlightNodesHex"
                name="highlightNodesHex"
-               placeholder="#ff0000" type="text">
-        <span [ngStyle]="{'background-color': highlightNodes}" class="ml-2 mb-2 col badge badge-pill border">
-          &nbsp;
-        </span>
-
+               value="{{highlightNodes}}">
       </div>
       <div class="form-row">
-
         <label for="highlightEdgesHex">{{'SIDEBAR_EDIT_LABEL_HEX_EDGE' | translate}}</label>
-        <input [(ngModel)]="highlightEdges" class="form-control mb-2 col-10" id="highlightEdgesHex"
+        <input [(ngModel)]="highlightEdges"
+               (change)="setHighlightColorAndDuration()"
+               type="color"
+               class="form-control form-control-color"
+               id="highlightEdgesHex"
                name="highlightEdgesHex"
-               placeholder="#ff0000" type="text">
-        <span [ngStyle]="{'background-color': highlightEdges}" class="ml-2 mb-2 col badge badge-pill border">
-          &nbsp;
-        </span>
+               value="{{highlightEdges}}">
       </div>
       <div class="form-row">
         <label for="highlightDuration">{{'SIDEBAR_EDIT_LABEL_DURATION' | translate}}</label>
@@ -303,11 +301,6 @@
                name="highlightDuration"
                placeholder="2000"
                step="100" type="number">
-
-        <button (click)="setHighlightColorAndDuration(highlightNodes, highlightEdges, highlightDuration)"
-                class="btn btn-outline-success btn-block mb-3"
-                type="button">
-          {{'SIDEBAR_EDIT_BTN_SUBMIT' | translate}}</button>
 
       </div>
     </div>

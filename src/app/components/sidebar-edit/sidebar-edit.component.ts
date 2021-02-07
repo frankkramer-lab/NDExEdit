@@ -13,7 +13,6 @@ import {NeChart} from '../../models/ne-chart';
 import {NeChartType} from '../../models/ne-chart-type';
 import {NeMappingDiscrete} from "../../models/ne-mapping-discrete";
 import {NeMappingContinuous} from "../../models/ne-mapping-continuous";
-import {UtilityService} from "../../services/utility.service";
 
 @Component({
   selector: 'app-sidebar-edit',
@@ -165,9 +164,6 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
       this.handleViewChanges(data);
     });
 
-    // this.dataService.networkChangedEmitter.subscribe(network => {
-    //   console.log('Network changed reached sidebar');
-    // });
   }
 
   /**
@@ -302,21 +298,9 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   /**
    * Overrides the network's style property with the given color codes, duration will be reset if the view is
    * destroyed and reinitialized, because this is not stored within the network
-   *
-   * @param highlightNodes color to highlight the nodes
-   * @param highlightEdges color to highlight the edges
-   * @param highlightDuration duration to highlight each element in milliseconds
    */
-  setHighlightColorAndDuration(highlightNodes: string, highlightEdges: string, highlightDuration: number): void {
-    this.graphService.setHighlightColorAndDuration(highlightNodes, highlightEdges, highlightDuration);
-    const colorStyle = {
-      'background-color': highlightNodes,
-      'line-color': highlightEdges,
-      'source-arrow-color': highlightEdges,
-      'target-arrow-color': highlightEdges
-    };
-    const styleIndex = this.dataService.selectedNetwork.style.findIndex(x => x.selector === '.custom_highlight_color');
-    this.dataService.selectedNetwork.style[styleIndex].style = colorStyle;
+  setHighlightColorAndDuration(): void {
+    this.graphService.setHighlightColorAndDuration(this.highlightNodes, this.highlightEdges, this.highlightDuration);
   }
 
 }

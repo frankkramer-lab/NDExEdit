@@ -49,7 +49,7 @@
              class="form-control"
              id="{{typeHint.ec ? 'ec' : 'nc'}}Value{{index}}"
              name="{{typeHint.ec ? 'ec' : 'nc'}}Value{{index}}"
-             type="text">
+             type="number">
       <input *ngIf="needsColorValidation(styleProperty)" [(ngModel)]="threshold.propertyValue"
              type="color"
              class="form-control form-control-color"

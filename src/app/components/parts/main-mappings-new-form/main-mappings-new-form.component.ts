@@ -7,7 +7,7 @@ import {NeAspect} from '../../../models/ne-aspect';
 import {NeGroupedMappingsDiscrete} from '../../../models/ne-grouped-mappings-discrete';
 import {NeMappingContinuous} from '../../../models/ne-mapping-continuous';
 import {NeMappingDiscrete} from '../../../models/ne-mapping-discrete';
-import {NeThresholdMap} from "../../../models/ne-threshold-map";
+import {NeThresholdMap} from '../../../models/ne-threshold-map';
 
 @Component({
   selector: 'app-main-mappings-new-form',
@@ -149,24 +149,27 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    */
   clearAllInputs(): void {
     this.styleProperty = '';
-    // if (this.discreteMapping) {
-    //   this.discreteMapping.values = [];
-    // }
 
-    // if (this.continuousMapping) {
-    //   this.continuousMapping.thresholds = [];
-    //   this.continuousMapping.equals = [];
-    //   this.continuousMapping.lowers = [];
-    //   this.continuousMapping.greaters = [];
-    //   // this.continuousMapping.defaultLower = '';
-    //   // this.continuousMapping.defaultGreater = '';
-    //   // for (const breakpoint of this.continuousMapping.breakpoints) {
-    //   //   if (breakpoint.isEditable) {
-    //   //     breakpoint.value = null;
-    //   //   }
-    //   //   breakpoint.propertyValue = '';
-    //   // }
-    // }
+    if (this.mappingDiscrete) {
+      this.mappingDiscrete.values = [];
+    }
+
+    if (this.mappingContinuous) {
+      this.thresholds = [
+        {
+          value: this.propertyToMap.min || null,
+          propertyValue: null,
+          isEditable: false
+        },
+        {
+          value: this.propertyToMap.max || null,
+          propertyValue: null,
+          isEditable: false
+        },
+      ];
+      this.mappingContinuous.thresholds = this.thresholds.map(a => a.value);
+      this.mappingContinuous.equals = this.thresholds.map(a => a.propertyValue);
+    }
   }
 
   /**
@@ -267,15 +270,30 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * @private
    */
   private initContinuousMapping(): void {
+
+    this.mappingContinuous = {
+      chart: undefined,
+      cleanStyleProperty: '',
+      col: this.propertyToMap.name || '',
+      colorGradient: [],
+      equals: undefined,
+      greaters: undefined,
+      isColor: false,
+      lowers: undefined,
+      styleProperty: '',
+      thresholds: undefined,
+      type: this.propertyToMap.datatype || 'string'
+    };
+
     this.thresholds = [
       {
         propertyValue: null,
-        value: null,
+        value: this.propertyToMap.min || null,
         isEditable: false
       },
       {
         propertyValue: null,
-        value: null,
+        value: this.propertyToMap.max || null,
         isEditable: false
       },
     ];

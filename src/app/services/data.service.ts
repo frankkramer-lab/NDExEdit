@@ -1148,8 +1148,6 @@ export class DataService {
       this.selectedContinuousMapping = this.selectedNetwork.mappings.edgesContinuous[mapId];
       this.selectedDiscreteMapping = null;
     }
-    console.log(mapHint);
-    console.log(this.selectedTypeHint);
   }
 
   /**

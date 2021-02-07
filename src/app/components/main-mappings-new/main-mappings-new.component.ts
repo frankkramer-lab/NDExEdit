@@ -390,7 +390,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     } else {
       this.discreteMapping = null;
     }
-    console.log(this.chartObject);
   }
 
   /**
