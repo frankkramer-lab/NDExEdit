@@ -6,6 +6,7 @@ import {UtilityService} from './utility.service';
 import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete';
 import {NeStyleMap} from '../models/ne-style-map';
 import {NeMappingsType} from '../models/ne-mappings-type';
+import {NeAspect} from '../models/ne-aspect';
 
 @Injectable({
   providedIn: 'root'
@@ -359,118 +360,171 @@ export class DataService {
     }
   }
 
-  // /**
-  //  * Adds a new mapping to an already parsed network
-  //  * @param id The network's id
-  //  * @param isNode Indicates if the type to which the mapping belongs is a {@link NeNode|node}
-  //  * @param discreteMapping The specified mapping which is filled in {@link MainMappingsNewComponent}
-  //  */
-  // addMappingDiscrete(id: number, isNode: boolean, discreteMapping: NeMappingsDefinition[]): void {
-  //   const network = this.getNetworkById(id);
-  //   const styles: NeStyle[] = network.style;
-  //   const elements = network.elements;
-  //
-  //   for (const map of discreteMapping) {
-  //
-  //     if (map.cssValue !== '') {
-  //
-  //       const styleProperty = {};
-  //       styleProperty[map.cssKey] = map.cssValue;
-  //       const styleMap: NeStyle = {
-  //         selector: map.selector,
-  //         style: styleProperty,
-  //         appliedTo: [],
-  //         priority: map.priority
-  //       };
-  //
-  //       for (const element of elements) {
-  //         for (const attribute of element.data.attributes) {
-  //           if (attribute.key === map.col && attribute.value === map.is && !element.data.classes.includes(map.selector.substring(1))) {
-  //             element.data.classes.push(map.selector.substring(1));
-  //             element.classes = element.data.classes.join(' ');
-  //             if (isNode && !styleMap.appliedTo.includes(element.data as NeNode)) {
-  //               styleMap.appliedTo.push(element.data as NeNode);
-  //               break;
-  //             } else if (!styleMap.appliedTo.includes(element.data as NeEdge)) {
-  //               styleMap.appliedTo.push(element.data as NeEdge);
-  //               break;
-  //             }
-  //           } else if (attribute.key === map.col) {
-  //             const tmpSelector = (isNode ? 'node_' : 'edge_') + attribute.key + '_' + attribute.value;
-  //             if (!element.data.classes.includes(tmpSelector)) {
-  //               element.data.classes.push(tmpSelector);
-  //               element.classes = element.data.classes.join(' ');
-  //             }
-  //           }
-  //         }
-  //       }
-  //       if (!styles.includes(styleMap)) {
-  //         let found = false;
-  //         for (const s of styles) {
-  //           if (s.selector === styleMap.selector) {
-  //             found = true;
-  //             s.style[map.cssKey] = map.cssValue;
-  //           }
-  //         }
-  //         if (!found) {
-  //           styles.push(styleMap);
-  //         }
-  //       }
-  //     }
-  //   }
-  //
-  //   network.style = UtilityService.utilOrderStylesByPriority(styles);
-  //   network.elements = elements;
-  //
-  //   if (isNode) {
-  //     // check if we need to update mappointers
-  //     let changeMapPointerNodes = true;
-  //     for (const nodeMap of network.mappings.nodesDiscrete) {
-  //       if (nodeMap.classifier === discreteMapping[0].colHR) {
-  //         changeMapPointerNodes = false;
-  //         break;
-  //       }
-  //     }
-  //
-  //     if (changeMapPointerNodes) {
-  //       for (const akv of network.aspectKeyValuesNodes) {
-  //         if (akv.name === discreteMapping[0].colHR
-  //           && !akv.mapPointerD.includes(network.mappings.nodesDiscrete.length)) {
-  //           akv.mapPointerD.push(network.mappings.nodesDiscrete.length);
-  //         }
-  //       }
-  //     }
-  //
-  //
-  //   } else {
-  //     let changeMapPointerEdges = true;
-  //
-  //     for (const edgeMap of network.mappings.edgesDiscrete) {
-  //       if (edgeMap.classifier === discreteMapping[0].colHR) {
-  //         changeMapPointerEdges = false;
-  //         break;
-  //       }
-  //     }
-  //
-  //     if (changeMapPointerEdges) {
-  //       for (const akv of network.aspectKeyValuesEdges) {
-  //         if (akv.name === discreteMapping[0].colHR && !akv.mapPointerD.includes(network.mappings.edgesDiscrete.length)) {
-  //           akv.mapPointerD.push(network.mappings.edgesDiscrete.length);
-  //         }
-  //       }
-  //     }
-  //
-  //   }
-  //
-  //   const newlyGroupedMappings = DataService.updateMappings(discreteMapping, network.mappings, isNode);
-  //   if (isNode) {
-  //     network.mappings.nodesDiscrete = newlyGroupedMappings;
-  //   } else {
-  //     network.mappings.edgesDiscrete = newlyGroupedMappings;
-  //   }
-  //
-  //   this.networksParsed = this.networksParsed.filter(x => x.id !== id).concat(network);
-  // }
+  /**
+   * Returns ID of a discrete mapping, which suits the specified property
+   * @param mappings
+   * @param property
+   */
+  findDiscreteMappingForProperty(mappings: NeGroupedMappingsDiscrete[], property: NeAspect): number {
+    for (let i = 0; i < mappings.length; i++) {
+      const map = mappings[i];
+      if (map.col === property.name) {
+        // this.dataService.selectMapping(this.mapType + i); // can only be selected, if mapping was inserted!
+        return mappings.indexOf(map);
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Adds a new mapping to an already parsed network
+   */
+  addMappingDiscrete(mapping: NeMappingDiscrete, property: NeAspect, typeHint: NeMappingsType): void {
+
+    if (typeHint.nc || typeHint.ec) {
+      console.log('Continuous mapping should not be added as a discrete mapping');
+      return;
+    }
+
+    let mappings;
+    if (typeHint.nd) {
+      mappings = this.selectedNetwork.mappings.nodesDiscrete;
+    } else if (typeHint.ed) {
+      mappings = this.selectedNetwork.mappings.edgesDiscrete;
+    }
+
+    const existingMappingId = this.findDiscreteMappingForProperty(mappings, property);
+    if (existingMappingId !== null) {
+      // a mapping for this property exists => add to this grouped mapping
+      // make sure no redundant mapping is added
+      for (const style of mappings[existingMappingId].styleMap) {
+        if (style.cssKey === property.name) {
+          console.log('a mapping for this style already exists');
+          return;
+        }
+      }
+
+      // add to existing
+      const newStyle: NeStyleMap = {
+        cssKey: property.name,
+        cssValues: mapping.values as string[],
+        isColor: this.colorProperties.includes(property.name) // todo does that work properly?
+      };
+
+      mappings[existingMappingId].styleMap.push(newStyle);
+
+      console.log(mappings);
+
+      // todo update mapPointers within aspect
+
+    }
+
+
+    //   const network = this.getNetworkById(id);
+    //   const styles: NeStyle[] = network.style;
+    //   const elements = network.elements;
+    //
+    //   for (const map of discreteMapping) {
+    //
+    //     if (map.cssValue !== '') {
+    //
+    //       const styleProperty = {};
+    //       styleProperty[map.cssKey] = map.cssValue;
+    //       const styleMap: NeStyle = {
+    //         selector: map.selector,
+    //         style: styleProperty,
+    //         appliedTo: [],
+    //         priority: map.priority
+    //       };
+    //
+    //       for (const element of elements) {
+    //         for (const attribute of element.data.attributes) {
+    //           if (attribute.key === map.col && attribute.value === map.is && !element.data.classes.includes(map.selector.substring(1))) {
+    //             element.data.classes.push(map.selector.substring(1));
+    //             element.classes = element.data.classes.join(' ');
+    //             if (isNode && !styleMap.appliedTo.includes(element.data as NeNode)) {
+    //               styleMap.appliedTo.push(element.data as NeNode);
+    //               break;
+    //             } else if (!styleMap.appliedTo.includes(element.data as NeEdge)) {
+    //               styleMap.appliedTo.push(element.data as NeEdge);
+    //               break;
+    //             }
+    //           } else if (attribute.key === map.col) {
+    //             const tmpSelector = (isNode ? 'node_' : 'edge_') + attribute.key + '_' + attribute.value;
+    //             if (!element.data.classes.includes(tmpSelector)) {
+    //               element.data.classes.push(tmpSelector);
+    //               element.classes = element.data.classes.join(' ');
+    //             }
+    //           }
+    //         }
+    //       }
+    //       if (!styles.includes(styleMap)) {
+    //         let found = false;
+    //         for (const s of styles) {
+    //           if (s.selector === styleMap.selector) {
+    //             found = true;
+    //             s.style[map.cssKey] = map.cssValue;
+    //           }
+    //         }
+    //         if (!found) {
+    //           styles.push(styleMap);
+    //         }
+    //       }
+    //     }
+    //   }
+    //
+    //   network.style = UtilityService.utilOrderStylesByPriority(styles);
+    //   network.elements = elements;
+    //
+    //   if (isNode) {
+    //     // check if we need to update mappointers
+    //     let changeMapPointerNodes = true;
+    //     for (const nodeMap of network.mappings.nodesDiscrete) {
+    //       if (nodeMap.classifier === discreteMapping[0].colHR) {
+    //         changeMapPointerNodes = false;
+    //         break;
+    //       }
+    //     }
+    //
+    //     if (changeMapPointerNodes) {
+    //       for (const akv of network.aspectKeyValuesNodes) {
+    //         if (akv.name === discreteMapping[0].colHR
+    //           && !akv.mapPointerD.includes(network.mappings.nodesDiscrete.length)) {
+    //           akv.mapPointerD.push(network.mappings.nodesDiscrete.length);
+    //         }
+    //       }
+    //     }
+    //
+    //
+    //   } else {
+    //     let changeMapPointerEdges = true;
+    //
+    //     for (const edgeMap of network.mappings.edgesDiscrete) {
+    //       if (edgeMap.classifier === discreteMapping[0].colHR) {
+    //         changeMapPointerEdges = false;
+    //         break;
+    //       }
+    //     }
+    //
+    //     if (changeMapPointerEdges) {
+    //       for (const akv of network.aspectKeyValuesEdges) {
+    //         if (akv.name === discreteMapping[0].colHR && !akv.mapPointerD.includes(network.mappings.edgesDiscrete.length)) {
+    //           akv.mapPointerD.push(network.mappings.edgesDiscrete.length);
+    //         }
+    //       }
+    //     }
+    //
+    //   }
+    //
+    //   const newlyGroupedMappings = DataService.updateMappings(discreteMapping, network.mappings, isNode);
+    //   if (isNode) {
+    //     network.mappings.nodesDiscrete = newlyGroupedMappings;
+    //   } else {
+    //     network.mappings.edgesDiscrete = newlyGroupedMappings;
+    //   }
+    //
+    //   this.networksParsed = this.networksParsed.filter(x => x.id !== id).concat(network);
+  }
 
   // /**
   //  * Adds a continuous mapping to the graph

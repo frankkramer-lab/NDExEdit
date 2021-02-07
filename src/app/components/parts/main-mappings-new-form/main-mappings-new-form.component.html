@@ -175,6 +175,7 @@
   <!-- SUBMIT/CLEAR/ABORT -->
   <div class="row">
     <div class="col-4">
+      <!-- abort -->
       <button [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id ]} }]"
               class="btn btn-block btn-outline-danger"
               data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_NEW_ABORT' | translate}}"
@@ -184,6 +185,7 @@
       </button>
     </div>
     <div class="col-4">
+      <!-- clear -->
       <button (click)="clearAllInputs()" class="btn btn-block btn-outline-warning"
               data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_NEW_CLEAR' | translate}}"
               placement="top"
@@ -192,7 +194,7 @@
       </button>
     </div>
     <div class="col-4">
-      <!-- create new mapping -->
+      <!-- submit -->
       <button (click)="submitNewMapping()" *ngIf="!isEdit"
               [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, mapType + (getNextIdForMappingType()) ]} }]"
               class="btn btn-block btn-outline-success" data-toggle="tooltip"

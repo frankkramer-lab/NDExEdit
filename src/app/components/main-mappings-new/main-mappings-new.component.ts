@@ -376,7 +376,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
       const values: string[] = new Array<string>(this.propertyToMap.values.length);
       this.discreteMapping = {
         col: this.propertyToMap.name,
-        keys: [],
+        keys: this.propertyToMap.values,
         styleProperty: '',
         type: this.propertyToMap.datatype,
         values

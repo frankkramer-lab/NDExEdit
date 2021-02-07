@@ -196,6 +196,9 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   submitNewDiscreteMapping(): void {
     // todo
 
+    this.mappingDiscrete.styleProperty = this.styleProperty;
+    this.dataService.addMappingDiscrete(this.mappingDiscrete, this.propertyToMap, this.typeHint);
+
     // for (const entry of this.discreteMapping) {
     //   entry.cssKey = this.styleProperty.trim();
     //   if (entry.cssValue) {
@@ -244,26 +247,38 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   getNextIdForMappingType(): string {
     switch (this.mapType) {
       case 'nd':
-        for (const nodeMap of this.dataService.selectedNetwork.mappings.nodesDiscrete) {
-          // if (nodeMap.classifier === this.propertyToMap.name) {
-          //   return String(this.dataService.networkSelected.mappings.nodesDiscrete.indexOf(nodeMap));
-          // }
-        }
-        return String(this.dataService.selectedNetwork.mappings.nodesDiscrete.length);
+        return String(this.dataService.findDiscreteMappingForProperty(this.dataService.selectedNetwork.mappings.nodesDiscrete, this.propertyToMap))
+          || String(this.dataService.selectedNetwork.mappings.nodesDiscrete.length);
       case 'nc':
+        // this.dataService.selectMapping(this.mapType + this.dataService.selectedNetwork.mappings.nodesContinuous.length);
         return String(this.dataService.selectedNetwork.mappings.nodesContinuous.length);
       case 'ed':
-        for (const edgeMap of this.dataService.selectedNetwork.mappings.edgesDiscrete) {
-          // if (edgeMap.classifier === this.propertyToMap.name) {
-          //   return String(this.dataService.networkSelected.mappings.edgesDiscrete.indexOf(edgeMap));
-          // }
-        }
-        return String(this.dataService.selectedNetwork.mappings.edgesDiscrete.length);
+        return String(this.dataService.findDiscreteMappingForProperty(this.dataService.selectedNetwork.mappings.edgesDiscrete, this.propertyToMap))
+          || String(this.dataService.selectedNetwork.mappings.edgesDiscrete.length);
       case 'ec':
+        // this.dataService.selectMapping(this.mapType + this.dataService.selectedNetwork.mappings.edgesContinuous.length);
         return String(this.dataService.selectedNetwork.mappings.edgesContinuous.length);
     }
     return String(-1);
   }
+
+  /**
+   * A new discrete mapping has to be matched to already existing mapping for the same property, if possible.
+   * That's why we try to find an already existing discrete mapping, that has the same property.
+   *
+   * @param mappings List of already existing mappings
+   * @private
+   */
+  // private findDiscreteMappingForThisProperty(mappings: NeGroupedMappingsDiscrete[]): string {
+  //   for (let i = 0; i < mappings.length; i++) {
+  //     const map = mappings[i];
+  //     if (map.col === this.propertyToMap.name) {
+  //       // this.dataService.selectMapping(this.mapType + i); // can only be selected, if mapping was inserted!
+  //       return String(mappings.indexOf(map));
+  //     }
+  //   }
+  //   return null;
+  // }
 
   /**
    * Initializes a continuous mapping
@@ -299,7 +314,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
     ];
     this.mappingContinuous.thresholds = this.thresholds.map(a => a.value);
     this.mappingContinuous.equals = this.thresholds.map(a => a.propertyValue);
-    console.log(this.mappingContinuous);
   }
 
 
