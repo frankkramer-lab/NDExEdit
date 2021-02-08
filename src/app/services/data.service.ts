@@ -17,6 +17,11 @@ import {NeAspect} from '../models/ne-aspect';
  */
 export class DataService {
 
+  constructor(
+    private utilityService: UtilityService
+  ) {
+  }
+
   /**
    * List of networks available to be rendered within the app
    */
@@ -189,9 +194,20 @@ export class DataService {
    */
   networkChangedEmitter = new EventEmitter<NeNetwork>();
 
-  constructor(
-    private utilityService: UtilityService
-  ) {
+  /**
+   * Builds the definition string for a discrete mapping
+   * @param mapping Discrete mapping to be condensed into a string
+   * @private
+   */
+  private static buildDiscreteMappingDefinition(mapping: NeMappingDiscrete): string {
+    let definition = 'COL=' + mapping.col + ',T=' + mapping.type || 'string';
+    for (let i = 0; i < mapping.keys.length; i++) {
+      if (mapping.keys[i] !== null && mapping.values[i] !== null) {
+        definition += ',K=' + i + '=' + mapping.keys[i];
+        definition += ',V=' + i + '=' + mapping.values[i];
+      }
+    }
+    return definition;
   }
 
   // /**
@@ -379,151 +395,46 @@ export class DataService {
   /**
    * Adds a new mapping to an already parsed network
    */
-  addMappingDiscrete(mapping: NeMappingDiscrete, property: NeAspect, typeHint: NeMappingsType): void {
+  addMappingDiscrete(newMapping: NeMappingDiscrete, property: NeAspect, typeHint: NeMappingsType): void {
 
     if (typeHint.nc || typeHint.ec) {
       console.log('Continuous mapping should not be added as a discrete mapping');
       return;
     }
 
-    let mappings;
-    if (typeHint.nd) {
-      mappings = this.selectedNetwork.mappings.nodesDiscrete;
-    } else if (typeHint.ed) {
-      mappings = this.selectedNetwork.mappings.edgesDiscrete;
-    }
+    const nameOfProperty = newMapping.styleProperty;
 
-    const existingMappingId = this.findDiscreteMappingForProperty(mappings, property);
-    if (existingMappingId !== null) {
-      // a mapping for this property exists => add to this grouped mapping
-      // make sure no redundant mapping is added
-      for (const style of mappings[existingMappingId].styleMap) {
-        if (style.cssKey === property.name) {
-          console.log('a mapping for this style already exists');
-          return;
+    for (const entry of this.selectedNetwork.cx) {
+      if (entry.cyVisualProperties) {
+        for (const item of entry.cyVisualProperties) {
+
+          // todo insert 'mappings' if it does not exists => creating a new mapping
+
+          if (typeHint.nd
+            && (item.properties_of === 'nodes' || item.properties_of === 'nodes:default')
+            && item.mappings
+            && !item.mappings[nameOfProperty]) {
+            item.mappings[nameOfProperty] = {
+              definition: DataService.buildDiscreteMappingDefinition(newMapping),
+              type: 'DISCRETE'
+            };
+          } else if (typeHint.ed
+            && (item.properties_of === 'edges' || item.properties_of === 'edges:default')
+            && item.mappings
+            && !item.mappings[nameOfProperty]) {
+            item.mappings[nameOfProperty] = {
+              definition: DataService.buildDiscreteMappingDefinition(newMapping),
+              type: 'DISCRETE'
+            };
+          }
         }
       }
-
-      // add to existing
-      const newStyle: NeStyleMap = {
-        cssKey: property.name,
-        cssValues: mapping.values as string[],
-        isColor: this.colorProperties.includes(property.name) // todo does that work properly?
-      };
-
-      mappings[existingMappingId].styleMap.push(newStyle);
-
-      console.log(mappings);
-
-      // todo update mapPointers within aspect
-
     }
+    this.triggerNetworkCoreBuild();
+
+    console.log(this.selectedNetwork.cx);
 
 
-    //   const network = this.getNetworkById(id);
-    //   const styles: NeStyle[] = network.style;
-    //   const elements = network.elements;
-    //
-    //   for (const map of discreteMapping) {
-    //
-    //     if (map.cssValue !== '') {
-    //
-    //       const styleProperty = {};
-    //       styleProperty[map.cssKey] = map.cssValue;
-    //       const styleMap: NeStyle = {
-    //         selector: map.selector,
-    //         style: styleProperty,
-    //         appliedTo: [],
-    //         priority: map.priority
-    //       };
-    //
-    //       for (const element of elements) {
-    //         for (const attribute of element.data.attributes) {
-    //           if (attribute.key === map.col && attribute.value === map.is && !element.data.classes.includes(map.selector.substring(1))) {
-    //             element.data.classes.push(map.selector.substring(1));
-    //             element.classes = element.data.classes.join(' ');
-    //             if (isNode && !styleMap.appliedTo.includes(element.data as NeNode)) {
-    //               styleMap.appliedTo.push(element.data as NeNode);
-    //               break;
-    //             } else if (!styleMap.appliedTo.includes(element.data as NeEdge)) {
-    //               styleMap.appliedTo.push(element.data as NeEdge);
-    //               break;
-    //             }
-    //           } else if (attribute.key === map.col) {
-    //             const tmpSelector = (isNode ? 'node_' : 'edge_') + attribute.key + '_' + attribute.value;
-    //             if (!element.data.classes.includes(tmpSelector)) {
-    //               element.data.classes.push(tmpSelector);
-    //               element.classes = element.data.classes.join(' ');
-    //             }
-    //           }
-    //         }
-    //       }
-    //       if (!styles.includes(styleMap)) {
-    //         let found = false;
-    //         for (const s of styles) {
-    //           if (s.selector === styleMap.selector) {
-    //             found = true;
-    //             s.style[map.cssKey] = map.cssValue;
-    //           }
-    //         }
-    //         if (!found) {
-    //           styles.push(styleMap);
-    //         }
-    //       }
-    //     }
-    //   }
-    //
-    //   network.style = UtilityService.utilOrderStylesByPriority(styles);
-    //   network.elements = elements;
-    //
-    //   if (isNode) {
-    //     // check if we need to update mappointers
-    //     let changeMapPointerNodes = true;
-    //     for (const nodeMap of network.mappings.nodesDiscrete) {
-    //       if (nodeMap.classifier === discreteMapping[0].colHR) {
-    //         changeMapPointerNodes = false;
-    //         break;
-    //       }
-    //     }
-    //
-    //     if (changeMapPointerNodes) {
-    //       for (const akv of network.aspectKeyValuesNodes) {
-    //         if (akv.name === discreteMapping[0].colHR
-    //           && !akv.mapPointerD.includes(network.mappings.nodesDiscrete.length)) {
-    //           akv.mapPointerD.push(network.mappings.nodesDiscrete.length);
-    //         }
-    //       }
-    //     }
-    //
-    //
-    //   } else {
-    //     let changeMapPointerEdges = true;
-    //
-    //     for (const edgeMap of network.mappings.edgesDiscrete) {
-    //       if (edgeMap.classifier === discreteMapping[0].colHR) {
-    //         changeMapPointerEdges = false;
-    //         break;
-    //       }
-    //     }
-    //
-    //     if (changeMapPointerEdges) {
-    //       for (const akv of network.aspectKeyValuesEdges) {
-    //         if (akv.name === discreteMapping[0].colHR && !akv.mapPointerD.includes(network.mappings.edgesDiscrete.length)) {
-    //           akv.mapPointerD.push(network.mappings.edgesDiscrete.length);
-    //         }
-    //       }
-    //     }
-    //
-    //   }
-    //
-    //   const newlyGroupedMappings = DataService.updateMappings(discreteMapping, network.mappings, isNode);
-    //   if (isNode) {
-    //     network.mappings.nodesDiscrete = newlyGroupedMappings;
-    //   } else {
-    //     network.mappings.edgesDiscrete = newlyGroupedMappings;
-    //   }
-    //
-    //   this.networksParsed = this.networksParsed.filter(x => x.id !== id).concat(network);
   }
 
   // /**
@@ -1256,4 +1167,49 @@ export class DataService {
     }
   }
 
+  /**
+   * Updates an existing mapping, as it adds the newly defined mapping to the already existing one.
+   * Thus already existing style maps may need to be changed and table headers for preview need to be updated.
+   *
+   * @param existingMapping Collection of already existing mappings, aggregated as one
+   * @param newMapping Newly created mapping, which is to be added
+   * @param property Property for which this mapping was created
+   * @private
+   */
+  private updateExistingMapping(
+    existingMapping: NeGroupedMappingsDiscrete,
+    newMapping: NeMappingDiscrete,
+    property: NeAspect
+  ): NeGroupedMappingsDiscrete {
+
+    for (let i = 0; i < newMapping.keys.length; i++) {
+      if (existingMapping.values[i] !== newMapping.keys[i]) {
+        console.log('index discrepancy! updating all existing style mappings ...');
+        for (const s of existingMapping.styleMap) {
+          s.cssValues.splice(i, 0, '');
+        }
+        existingMapping.values.splice(i, 0, newMapping.keys[i] as string);
+      }
+    }
+
+    const newStyle: NeStyleMap = {
+      cssKey: newMapping.styleProperty,
+      cssValues: [],
+      isColor: this.colorProperties.includes(newMapping.styleProperty)
+    };
+
+    for (const value of existingMapping.values) {
+      for (let i = 0; i < newMapping.keys.length; i++) {
+        if (value === newMapping.keys[i]) {
+          newStyle.cssValues.splice(i, 0, newMapping.values[i] as string);
+        }
+      }
+    }
+
+    existingMapping.styleMap.push(newStyle);
+    existingMapping.th.push(this.utilityService.utilRemovePrefix(newMapping.styleProperty, ['NODE_', 'EDGE_']));
+
+    console.log(existingMapping);
+    return existingMapping;
+  }
 }

@@ -11,7 +11,7 @@
              role="alert">
           <h5>
             <button
-              [routerLink]="['', { outlets: {primary: ['edit', dataService.selectedNetwork.id, 'nd' + mapIndex, propertyIndex ]} }]"
+              [routerLink]="['', { outlets: {primary: ['edit', 'nd' + mapIndex, propertyIndex ]} }]"
               class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
               ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
               placement="right"
@@ -35,7 +35,7 @@
              role="alert">
           <h5>
             <button
-              [routerLink]="['', { outlets: {primary: ['edit', dataService.selectedNetwork.id, 'ed' + mapIndex, propertyIndex ]} }]"
+              [routerLink]="['', { outlets: {primary: ['edit', 'ed' + mapIndex, propertyIndex ]} }]"
               class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
               ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
               placement="right"
@@ -61,7 +61,7 @@
              role="alert">
           <h5>
             <button
-              [routerLink]="['', { outlets: {primary: ['edit', dataService.selectedNetwork.id, 'nc' + mapIndex ]} }]"
+              [routerLink]="['', { outlets: {primary: ['edit', 'nc' + mapIndex ]} }]"
               class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
               ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
               placement="right"
@@ -84,7 +84,7 @@
              role="alert">
           <h5>
             <button
-              [routerLink]="['', { outlets: {primary: ['edit', dataService.selectedNetwork.id, 'ec' + mapIndex ]} }]"
+              [routerLink]="['', { outlets: {primary: ['edit', 'ec' + mapIndex ]} }]"
               class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
               ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
               placement="right"

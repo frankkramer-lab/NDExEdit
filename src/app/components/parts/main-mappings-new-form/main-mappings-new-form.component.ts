@@ -216,6 +216,9 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    */
   submitNewMapping(): void {
 
+    console.log(this.needsColorValidation(this.styleProperty));
+    console.log(this.dataService.colorProperties.includes(this.styleProperty));
+
     // handles color property management
     if (this.needsColorValidation(this.styleProperty) && !this.dataService.colorProperties.includes(this.styleProperty)) {
       this.dataService.colorProperties.push(this.styleProperty);

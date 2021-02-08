@@ -105,8 +105,9 @@
     </div>
     <div class="col-4">
       <!-- create new mapping -->
+<!--      [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, mapType + (getNextIdForMappingType()) ]} }]"-->
+
       <button (click)="submitNewMapping()" *ngIf="!isEdit"
-              [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, mapType + (getNextIdForMappingType()) ]} }]"
               class="btn btn-block btn-outline-success" data-toggle="tooltip"
               ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
               placement="top"
