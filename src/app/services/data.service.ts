@@ -408,20 +408,15 @@ export class DataService {
       if (entry.cyVisualProperties) {
         for (const item of entry.cyVisualProperties) {
 
-          // todo insert 'mappings' if it does not exists => creating a new mapping
+          if (!item.mappings && item.properties_of !== 'network') {
+            item.mappings = {};
+            continue;
+          }
 
-          if (typeHint.nd
-            && (item.properties_of === 'nodes' || item.properties_of === 'nodes:default')
-            && item.mappings
-            && !item.mappings[nameOfProperty]) {
-            item.mappings[nameOfProperty] = {
-              definition: DataService.buildDiscreteMappingDefinition(newMapping),
-              type: 'DISCRETE'
-            };
-          } else if (typeHint.ed
-            && (item.properties_of === 'edges' || item.properties_of === 'edges:default')
-            && item.mappings
-            && !item.mappings[nameOfProperty]) {
+          if (item.mappings && !item.mappings[nameOfProperty]
+            && ((typeHint.nd && (item.properties_of === 'nodes' || item.properties_of === 'nodes:default'))
+              || (typeHint.ed && (item.properties_of === 'edges' || item.properties_of === 'edges:default')))
+          ) {
             item.mappings[nameOfProperty] = {
               definition: DataService.buildDiscreteMappingDefinition(newMapping),
               type: 'DISCRETE'
@@ -431,9 +426,6 @@ export class DataService {
       }
     }
     this.triggerNetworkCoreBuild();
-
-    console.log(this.selectedNetwork.cx);
-
 
   }
 
@@ -1167,49 +1159,4 @@ export class DataService {
     }
   }
 
-  /**
-   * Updates an existing mapping, as it adds the newly defined mapping to the already existing one.
-   * Thus already existing style maps may need to be changed and table headers for preview need to be updated.
-   *
-   * @param existingMapping Collection of already existing mappings, aggregated as one
-   * @param newMapping Newly created mapping, which is to be added
-   * @param property Property for which this mapping was created
-   * @private
-   */
-  private updateExistingMapping(
-    existingMapping: NeGroupedMappingsDiscrete,
-    newMapping: NeMappingDiscrete,
-    property: NeAspect
-  ): NeGroupedMappingsDiscrete {
-
-    for (let i = 0; i < newMapping.keys.length; i++) {
-      if (existingMapping.values[i] !== newMapping.keys[i]) {
-        console.log('index discrepancy! updating all existing style mappings ...');
-        for (const s of existingMapping.styleMap) {
-          s.cssValues.splice(i, 0, '');
-        }
-        existingMapping.values.splice(i, 0, newMapping.keys[i] as string);
-      }
-    }
-
-    const newStyle: NeStyleMap = {
-      cssKey: newMapping.styleProperty,
-      cssValues: [],
-      isColor: this.colorProperties.includes(newMapping.styleProperty)
-    };
-
-    for (const value of existingMapping.values) {
-      for (let i = 0; i < newMapping.keys.length; i++) {
-        if (value === newMapping.keys[i]) {
-          newStyle.cssValues.splice(i, 0, newMapping.values[i] as string);
-        }
-      }
-    }
-
-    existingMapping.styleMap.push(newStyle);
-    existingMapping.th.push(this.utilityService.utilRemovePrefix(newMapping.styleProperty, ['NODE_', 'EDGE_']));
-
-    console.log(existingMapping);
-    return existingMapping;
-  }
 }

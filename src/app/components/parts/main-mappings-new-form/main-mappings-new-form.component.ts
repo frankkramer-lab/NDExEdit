@@ -198,17 +198,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
 
     this.mappingDiscrete.styleProperty = this.styleProperty;
     this.dataService.addMappingDiscrete(this.mappingDiscrete, this.propertyToMap, this.typeHint);
-
-    // for (const entry of this.discreteMapping) {
-    //   entry.cssKey = this.styleProperty.trim();
-    //   if (entry.cssValue) {
-    //     entry.cssValue = entry.cssValue.trim();
-    //   } else {
-    //     entry.cssValue = '';
-    //   }
-    // }
-    // this.dataService.addMappingDiscrete(this.dataService.networkSelected.id, this.typeHint.nd, this.discreteMapping);
-
   }
 
   /**

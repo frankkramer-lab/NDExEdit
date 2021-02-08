@@ -158,6 +158,8 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
     MainMappingsComponent.mappingsEmitter.emit({showLabelCheckbox: true});
     this.showSingleDeletionDialogue = false;
     this.showGlobalDeletionDialogue = false;
+    this.dataService.resetAnyMappingSelection();
+    this.dataService.resetDiscreteMappingPropertySelection();
   }
 
   /**

@@ -672,25 +672,45 @@ export class ParseService {
 
     outer: for (const map of mappings) {
 
+      console.log(map);
+
       for (const item of group) {
-        if (item.col === map.col) {
-          const match = group.find(a => a.col === map.col);
+
+        if (item.col === map.col) { // col of new item is group item col
 
           const displayThMatch = this.utilityService.utilRemovePrefix(map.styleProperty, ['NODE_', 'EDGE_']);
-
           const newStyle: NeStyleMap = {
             cssKey: map.styleProperty,
             cssValues: map.values as string[],
             isColor: (map.values as string[]).filter(a => !a.startsWith('#')).length === 0
           };
 
-          if (!match.styleMap.includes(newStyle) &&
-            !match.th.includes(displayThMatch)) {
-            match.styleMap.push(newStyle);
-            match.th.push(displayThMatch);
-          }
+          // todo insert into existing values (ausprägungen)
+          // todo insert into existing styleMap
+          // todo insert into existing th
 
-          continue outer;
+
+          //     if (!item.styleMap.includes(newStyle) &&
+          //       !item.th.includes(displayThMatch)) {
+          //
+          //       newKey: for (const newVal of map.keys) {
+          //
+          //         for (const groupVal of item.values) {
+          //           if (groupVal === newVal) {
+          //             const pointer = item.values.indexOf(groupVal);
+          //             item.values.splice(pointer, 0, newVal);
+          //             item.styleMap.splice(pointer, 0, newStyle);
+          //             item.th.splice(pointer, 0, displayThMatch);
+          //             continue newKey;
+          //           }
+          //         }
+          //         item.values.push(newVal as string);
+          //         item.styleMap.push(newStyle);
+          //         item.th.push(displayThMatch);
+          //       }
+          //     }
+          //
+          //     continue outer;
         }
       }
 
@@ -700,8 +720,9 @@ export class ParseService {
       const style: NeStyleMap = {
         cssKey: map.styleProperty,
         cssValues: map.values as string[],
-        isColor: (map.values as string[]).filter(a => !a.startsWith('#')).length === 0
+        isColor: (map.values as string[]).filter(a => !a.startsWith('#')).length === 0 // color property, if no value starts with '#'
       };
+
       const groupedMapping: NeGroupedMappingsDiscrete = {
         col: map.col,
         styleMap: [style],
@@ -712,6 +733,7 @@ export class ParseService {
       group.push(groupedMapping);
     }
 
+    console.log(group);
     return group;
   }
 
