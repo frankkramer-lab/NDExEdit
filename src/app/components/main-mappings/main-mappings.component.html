@@ -13,44 +13,83 @@
 
   <span *ngIf="dataService.selectedTypeHint">
     <span
-    *ngIf="(dataService.selectedTypeHint.nd || dataService.selectedTypeHint.ed) then discreteOverview else continuousOverview"></span>
+      *ngIf="(dataService.selectedTypeHint.nd || dataService.selectedTypeHint.ed) then discreteOverview else continuousOverview"></span>
   </span>
 
   <ng-template #discreteOverview>
 
     <table class="table table-bordered">
-
       <thead>
       <tr>
-        <th>{{dataService.selectedDiscreteMapping.col}}</th>
-        <th *ngFor="let val of dataService.selectedDiscreteMapping.values; let valueIndex = index">{{val}}</th>
+        <th>{{dataService.selectedDiscreteMappingProperty}}</th>
+        <th *ngFor="let is of dataService.selectedDiscreteMapping|isByCol : dataService.selectedDiscreteMappingProperty">
+          {{is}}
+        </th>
       </tr>
       </thead>
 
       <tbody>
-      <tr *ngFor="let style of dataService.selectedDiscreteMapping.styleMap; let styleIndex = index"
-          [ngClass]="(style === dataService.selectedDiscreteMappingProperty) ? 'table-danger' : ''">
-        <td>{{style.cssKey}}</td>
-        <td *ngFor="let val of style.cssValues">
-          {{val}}
-          <span *ngIf="style.isColor" class="badge-pill badge border"
-                [ngStyle]="{'background-color': val}">&nbsp;</span>
-        </td>
-        <!-- EDIT -->
+      <tr
+        *ngFor="let styleProperty of dataService.selectedDiscreteMapping|stylePropertiesByCol : dataService.selectedDiscreteMappingProperty; let styleIndex = index">
+        <td>{{styleProperty}}</td>
+
+        <ng-template
+          *ngFor="let is of dataService.selectedDiscreteMapping|isByCol : dataService.selectedDiscreteMappingProperty">
+          <td>{{dataService.selectedDiscreteMapping|styleValueByColAndKey : dataService.selectedDiscreteMappingProperty : styleProperty : is}}</td>
+          <span *ngIf="styleProperty.startsWith('#')" class="badge badge-pill border"
+                [ngStyle]="{'': dataService.selectedDiscreteMapping|styleValueByColAndKey : dataService.selectedDiscreteMappingProperty : styleProperty : is}">
+        </span>
+        </ng-template>
+
         <td>
-          <button [disabled]="true" class="btn btn-block btn-outline-warning">
+          <button class="btn btn-outline-warning" [disabled]="true">
             <fa-icon [icon]="faEdit"></fa-icon>
           </button>
         </td>
-        <!-- DELETE -->
         <td>
-          <button (click)="toggleSingleRemoveDialogue(styleIndex)" class="btn btn-block btn-outline-danger">
+          <button class="btn btn-outline-danger" (click)="toggleSingleRemoveDialogue(styleIndex)">
             <fa-icon [icon]="faTrash"></fa-icon>
           </button>
         </td>
+
       </tr>
       </tbody>
+
     </table>
+
+    <!--    <table class="table table-bordered">-->
+
+    <!--      <thead>-->
+    <!--      <tr>-->
+    <!--        <th>{{dataService.selectedDiscreteMapping.col}}</th>-->
+    <!--        <th *ngFor="let val of dataService.selectedDiscreteMapping.values; let valueIndex = index">{{val}}</th>-->
+    <!--      </tr>-->
+    <!--      </thead>-->
+
+    <!--      <tbody>-->
+    <!--      <tr *ngFor="let style of dataService.selectedDiscreteMapping.styleMap; let styleIndex = index"-->
+    <!--          [ngClass]="(style === dataService.selectedDiscreteMappingProperty) ? 'table-danger' : ''">-->
+    <!--        <td>{{style.cssKey}}</td>-->
+    <!--        <td *ngFor="let val of style.cssValues">-->
+    <!--          {{val}}-->
+    <!--          <span *ngIf="style.isColor" class="badge-pill badge border"-->
+    <!--                [ngStyle]="{'background-color': val}">&nbsp;</span>-->
+    <!--        </td>-->
+    <!--        &lt;!&ndash; EDIT &ndash;&gt;-->
+    <!--        <td>-->
+    <!--          <button [disabled]="true" class="btn btn-block btn-outline-warning">-->
+    <!--            <fa-icon [icon]="faEdit"></fa-icon>-->
+    <!--          </button>-->
+    <!--        </td>-->
+    <!--        &lt;!&ndash; DELETE &ndash;&gt;-->
+    <!--        <td>-->
+    <!--          <button (click)="toggleSingleRemoveDialogue(styleIndex)" class="btn btn-block btn-outline-danger">-->
+    <!--            <fa-icon [icon]="faTrash"></fa-icon>-->
+    <!--          </button>-->
+    <!--        </td>-->
+    <!--      </tr>-->
+    <!--      </tbody>-->
+    <!--    </table>-->
 
     <button (click)="toggleGlobalRemoveDialogue()"
             class="btn btn-block btn-outline-danger"
@@ -186,8 +225,8 @@
       <!-- confirm -->
       <div class="col-6">
         <button (click)="confirmDeletion(true, 'global')"
-          [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]"
-          class="btn btn-block btn-outline-danger">
+                [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]"
+                class="btn btn-block btn-outline-danger">
           <fa-icon [icon]="faCheck"></fa-icon>
           {{'MAIN_MAPPINGS_CONFIRM_DELETION_YES' | translate}}
         </button>
@@ -215,8 +254,8 @@
       <!-- confirm -->
       <div class="col-6">
         <button (click)="confirmDeletion(true, 'single')"
-          [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]"
-          class="btn btn-block btn-outline-danger">
+                [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]"
+                class="btn btn-block btn-outline-danger">
           <fa-icon [icon]="faCheck"></fa-icon>
           {{'MAIN_MAPPINGS_CONFIRM_DELETION_YES' | translate}}
         </button>

@@ -37,7 +37,7 @@ export class DataService {
   /**
    * Selected discrete mapping of type {@link NeGroupedMappingsDiscrete}
    */
-  selectedDiscreteMapping: NeGroupedMappingsDiscrete;
+  selectedDiscreteMapping: NeMappingDiscrete[];
   /**
    * Selected continuous mapping of type {@link NeMappingContinuous}
    */
@@ -45,7 +45,7 @@ export class DataService {
   /**
    * Selected discrete mapping property of type {@link NeStyleMap}
    */
-  selectedDiscreteMappingProperty: NeStyleMap;
+  selectedDiscreteMappingProperty: string;
   /**
    * On selection of a mapping this typehint is set
    */
@@ -334,7 +334,7 @@ export class DataService {
     const isNode = this.selectedTypeHint.nd || this.selectedTypeHint.nc;
 
     if (this.selectedTypeHint.nd || this.selectedTypeHint.ed) {
-      col = this.selectedDiscreteMapping.col;
+      col = this.selectedDiscreteMapping[0].col;
       isDiscrete = true;
     } else {
       col = this.selectedContinuousMapping.col;
@@ -591,21 +591,21 @@ export class DataService {
    * It works directly on the cx data and triggers the core rebuild.
    */
   removePropertyFromMapping(): void {
-    const mappingName = this.selectedDiscreteMappingProperty.cssKey;
+    // const mappingName = this.selectedDiscreteMappingProperty.cssKey;
     const isNode = this.selectedTypeHint.nd;
 
     for (const fd of this.selectedNetwork.cx) {
       if (fd.cyVisualProperties) {
         for (const cvp of fd.cyVisualProperties) {
           if (isNode && cvp.properties_of === 'nodes:default' && cvp.mappings) {
-            if (cvp.mappings[mappingName]) {
-              delete cvp.mappings[mappingName];
+            if (cvp.mappings[this.selectedDiscreteMappingProperty]) {
+              delete cvp.mappings[this.selectedDiscreteMappingProperty];
               break;
             }
 
           } else if (!isNode && cvp.properties_of === 'edges:default' && cvp.mappings) {
-            if (cvp.mappings[mappingName]) {
-              delete cvp.mappings[mappingName];
+            if (cvp.mappings[this.selectedDiscreteMappingProperty]) {
+              delete cvp.mappings[this.selectedDiscreteMappingProperty];
               break;
             }
           }
@@ -1088,22 +1088,38 @@ export class DataService {
   /**
    * Selects a discrete or continuous mapping based on a typehint
    * @param mapHint hint containing both typehint and id
+   * @param col property needs to be specified when selecting a discrete mapping
    */
-  selectMapping(mapHint: string): void {
+  selectMapping(mapHint: string, col: string = null): void {
     this.selectedTypeHint = this.utilityService.utilGetTypeHintByString(mapHint.substr(0, 2));
-    const mapId = mapHint.substr(2);
-    if (this.selectedTypeHint.nd) {
-      this.selectedDiscreteMapping = this.selectedNetwork.mappings.nodesDiscrete[mapId];
-      this.selectedContinuousMapping = null;
-    } else if (this.selectedTypeHint.ed) {
-      this.selectedDiscreteMapping = this.selectedNetwork.mappings.edgesDiscrete[mapId];
-      this.selectedContinuousMapping = null;
-    } else if (this.selectedTypeHint.nc) {
-      this.selectedContinuousMapping = this.selectedNetwork.mappings.nodesContinuous[mapId];
-      this.selectedDiscreteMapping = null;
-    } else if (this.selectedTypeHint.ec) {
-      this.selectedContinuousMapping = this.selectedNetwork.mappings.edgesContinuous[mapId];
-      this.selectedDiscreteMapping = null;
+
+    if (col === null) {
+      // continuous mapping does not need property
+      const mapId = mapHint.substr(2);
+
+      if (this.selectedTypeHint.nc) {
+        this.selectedContinuousMapping = this.selectedNetwork.mappings.nodesContinuous[mapId];
+        this.selectedDiscreteMapping = null;
+      } else if (this.selectedTypeHint.ec) {
+        this.selectedContinuousMapping = this.selectedNetwork.mappings.edgesContinuous[mapId];
+        this.selectedDiscreteMapping = null;
+      }
+    } else {
+      const selectedDiscrete: NeMappingDiscrete[] = [];
+
+      if (this.selectedTypeHint.nd) {
+        for (const nd of this.selectedNetwork.mappings.nodesDiscrete) {
+          if (nd.col === col && !selectedDiscrete.includes(nd)) {
+            selectedDiscrete.push(nd);
+          }
+        }
+      } else if (this.selectedTypeHint.ed) {
+        for (const ed of this.selectedNetwork.mappings.edgesDiscrete) {
+          if (ed.col === col && !selectedDiscrete.includes(ed)) {
+            selectedDiscrete.push(ed);
+          }
+        }
+      }
     }
   }
 
@@ -1122,7 +1138,7 @@ export class DataService {
       console.log('No discrete mapping selected');
       return;
     }
-    this.selectedDiscreteMappingProperty = this.selectedDiscreteMapping.styleMap[propertyId];
+    this.selectedDiscreteMappingProperty = this.selectedDiscreteMapping[propertyId].styleProperty;
   }
 
   /**

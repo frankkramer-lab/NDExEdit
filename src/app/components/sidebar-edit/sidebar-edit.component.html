@@ -22,7 +22,7 @@
   <!-- color gradient for continuous mappings -->
   <div *ngIf="showColorGradient">
     <h5>
-      <a [routerLink]="['', {outlets: {primary: ['mappings', dataService.selectedNetwork.id, index]} }]" role="button">
+      <a [routerLink]="['', {outlets: {primary: ['mappings', index]} }]" role="button">
         <b>{{mapping.cleanStyleProperty || mapping.styleProperty}}</b>
         {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
         <b>{{mapping.col}}</b>
@@ -115,7 +115,7 @@
     <div aria-labelledby="editsNavAspects" class="tab-pane fade show active" id="editsNavAspectsContent"
          role="tabpanel">
 
-      <button [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, -1]} }]"
+      <button [routerLink]="['', { outlets: {primary: ['mappings', -1]} }]"
               class="btn btn-lg btn-block btn-success mt-2 mb-2" data-toggle="tooltip"
               ngbTooltip="{{'SIDEBAR_EDIT_TT_MANAGE_MAPPINGS' | translate}}"
               placement="bottom">
@@ -137,7 +137,7 @@
 
           <td>
             <a
-              [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, 'nd' + colIndex]} }]"
+              [routerLink]="['', { outlets: {primary: ['mappings', 'nd' + colIndex, nodeCol]} }]"
               role="button">
               <b>{{nodeCol}}</b>
             </a>
@@ -213,7 +213,7 @@
 
           <td>
             <a
-              [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, 'ed' + colIndex]} }]"
+              [routerLink]="['', { outlets: {primary: ['mappings', 'ed' + colIndex, edgeCol]} }]"
               role="button">
               <b>{{edgeCol}}</b>
             </a>

@@ -5,6 +5,7 @@ import {NeMappingDiscrete} from '../models/ne-mapping-discrete';
 export class StylePropertiesByCol implements PipeTransform {
   transform(mappings: NeMappingDiscrete[], col: string): string[] {
 
+    console.log(mappings);
     const styleProperties: string[] = [];
 
     for (const map of mappings) {

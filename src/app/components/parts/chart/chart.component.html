@@ -1,7 +1,7 @@
 <!-- Sidebar: Preview continuous mappings (non-color) -->
 <div *ngIf="chartObject && chartObject.chartType.line">
   <h5>
-    <a [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, index]} }]" role="button">
+    <a [routerLink]="['', { outlets: {primary: ['mappings', index]} }]" role="button">
       <b>{{mapping.cleanStyleProperty || mapping.styleProperty}}</b>
       {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
       <b>{{mapping.col}}</b>

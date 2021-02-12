@@ -129,16 +129,11 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
   ) {
 
     this.route.paramMap.subscribe(params => {
-      const networkId = params.get('id');
-      if (networkId) {
-        dataService.selectNetwork(Number(networkId));
-
-        const map = params.get('map');
-        if (map !== '-1') {
-          this.dataService.selectMapping(map);
-        } else {
-          this.dataService.resetAnyMappingSelection();
-        }
+      const map = params.get('map');
+      if (map !== '-1') {
+        this.dataService.selectMapping(map, params.get('col'));
+      } else {
+        this.dataService.resetAnyMappingSelection();
       }
     });
 
