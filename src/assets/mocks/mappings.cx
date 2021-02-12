@@ -25565,7 +25565,7 @@
         "mappings": {
           "NODE_FILL_COLOR": {
             "type": "DISCRETE",
-            "definition": "COL=Bait_Boolean,T=integer,K=0=1,V=0=#FF3333"
+            "definition": "COL=Bait_Boolean,T=integer,K=0=1,V=0=#FF3333,K=1=0,V=1=#00ff33"
           },
           "NODE_LABEL": {
             "type": "PASSTHROUGH",

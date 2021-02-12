@@ -22,9 +22,14 @@ import {GraphService} from './services/graph.service';
 import {ParseService} from './services/parse.service';
 import {UtilityService} from './services/utility.service';
 import {MainMappingsAvailableAttributesComponent} from './components/parts/main-mappings-available-attributes/main-mappings-available-attributes.component';
-import { AlertMappingAlreadyExistsComponent } from './components/parts/alert-mapping-already-exists/alert-mapping-already-exists.component';
-import { MainMappingsNewFormComponent } from './components/parts/main-mappings-new-form/main-mappings-new-form.component';
-import { ChartComponent } from './components/parts/chart/chart.component';
+import {AlertMappingAlreadyExistsComponent} from './components/parts/alert-mapping-already-exists/alert-mapping-already-exists.component';
+import {MainMappingsNewFormComponent} from './components/parts/main-mappings-new-form/main-mappings-new-form.component';
+import {ChartComponent} from './components/parts/chart/chart.component';
+import {UniqueColsPipe} from './pipes/uniqueCols.pipe';
+import {IsByColPipe} from './pipes/isByCol.pipe';
+import {StylePropertiesByCol} from './pipes/stylePropertiesByCol.pipe';
+import {StyleValueByColAndKeyPipe} from './pipes/styleValueByColAndKey.pipe';
+import {ShortPipe} from './pipes/short.pipe';
 
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -44,7 +49,12 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     MainMappingsAvailableAttributesComponent,
     AlertMappingAlreadyExistsComponent,
     MainMappingsNewFormComponent,
-    ChartComponent
+    ChartComponent,
+    UniqueColsPipe,
+    IsByColPipe,
+    StylePropertiesByCol,
+    StyleValueByColAndKeyPipe,
+    ShortPipe
   ],
   imports: [
     BrowserModule,

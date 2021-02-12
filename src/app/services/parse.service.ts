@@ -13,10 +13,10 @@ import {NeMappingsMap} from '../models/ne-mappings-map';
 import {NeMappingDiscrete} from '../models/ne-mapping-discrete';
 import {NeMappingContinuous} from '../models/ne-mapping-continuous';
 import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete';
-import {NeStyleMap} from '../models/ne-style-map';
 import {NeAspect} from '../models/ne-aspect';
-import {NeChartType} from "../models/ne-chart-type";
-import {DataService} from "./data.service";
+import {NeChartType} from '../models/ne-chart-type';
+import {DataService} from './data.service';
+import {NeStyleMap} from "../models/ne-style-map";
 
 @Injectable({
   providedIn: 'root'
@@ -639,17 +639,8 @@ export class ParseService {
       }
     }
 
-    if (tmpND.length > 0) {
-      mappings.nodesDiscrete = this.groupDiscreteMappingsByCol(tmpND);
-    } else {
-      mappings.nodesDiscrete = [];
-    }
-
-    if (tmpED.length > 0) {
-      mappings.edgesDiscrete = this.groupDiscreteMappingsByCol(tmpED);
-    } else {
-      mappings.edgesDiscrete = [];
-    }
+    mappings.nodesDiscrete = tmpND;
+    mappings.edgesDiscrete = tmpED;
 
     return mappings;
   }
@@ -667,73 +658,58 @@ export class ParseService {
       return [];
     }
 
-    // todo needs testing for complex discrete mappings (same styleProperties => different node/edge attribute)
+    console.log(mappings);
+
     const group: NeGroupedMappingsDiscrete[] = [];
 
-    outer: for (const map of mappings) {
+    for (const newItem of mappings) {
+      let found = false;
+      for (const groupItem of group) {
 
-      console.log(map);
+        if (groupItem.col === newItem.col) {
+          found = true;
 
-      for (const item of group) {
-
-        if (item.col === map.col) { // col of new item is group item col
-
-          const displayThMatch = this.utilityService.utilRemovePrefix(map.styleProperty, ['NODE_', 'EDGE_']);
           const newStyle: NeStyleMap = {
-            cssKey: map.styleProperty,
-            cssValues: map.values as string[],
-            isColor: (map.values as string[]).filter(a => !a.startsWith('#')).length === 0
+            attributeValues: newItem.keys as string[],
+            cssKey: newItem.styleProperty,
+            cssValues: newItem.values as string[],
+            isColor: (newItem.values as string[]).filter(a => !a.startsWith('#')).length === 0
           };
 
-          // todo insert into existing values (ausprägungen)
-          // todo insert into existing styleMap
-          // todo insert into existing th
+          groupItem.styleMap.push(newStyle);
+          groupItem.th.push(this.utilityService.utilRemovePrefix(newItem.styleProperty, ['NODE_', 'EDGE_']));
 
-
-          //     if (!item.styleMap.includes(newStyle) &&
-          //       !item.th.includes(displayThMatch)) {
-          //
-          //       newKey: for (const newVal of map.keys) {
-          //
-          //         for (const groupVal of item.values) {
-          //           if (groupVal === newVal) {
-          //             const pointer = item.values.indexOf(groupVal);
-          //             item.values.splice(pointer, 0, newVal);
-          //             item.styleMap.splice(pointer, 0, newStyle);
-          //             item.th.splice(pointer, 0, displayThMatch);
-          //             continue newKey;
-          //           }
-          //         }
-          //         item.values.push(newVal as string);
-          //         item.styleMap.push(newStyle);
-          //         item.th.push(displayThMatch);
-          //       }
-          //     }
-          //
-          //     continue outer;
+          for (const k of newItem.keys) {
+            if (!groupItem.values.includes(k as string)) {
+              groupItem.values.push(k as string);
+            }
+          }
         }
       }
 
-      // removing prefix to improve readability of sidebar table for discrete mappings
-      const displayTh = this.utilityService.utilRemovePrefix(map.styleProperty, ['NODE_', 'EDGE_']);
+      if (!found) {
+        // no COL matched => build new group
+        const newStyle: NeStyleMap = {
+          attributeValues: newItem.keys as string[],
+          cssKey: newItem.styleProperty,
+          cssValues: newItem.values as string[],
+          isColor: (newItem.values as string[]).filter(a => !a.startsWith('#')).length === 0
+        };
 
-      const style: NeStyleMap = {
-        cssKey: map.styleProperty,
-        cssValues: map.values as string[],
-        isColor: (map.values as string[]).filter(a => !a.startsWith('#')).length === 0 // color property, if no value starts with '#'
-      };
+        const newGroup: NeGroupedMappingsDiscrete = {
+          col: newItem.col,
+          datatype: newItem.type,
+          styleMap: [newStyle],
+          th: [this.utilityService.utilRemovePrefix(newItem.styleProperty, ['NODE_', 'EDGE_'])],
+          values: newItem.keys as string[]
+        };
 
-      const groupedMapping: NeGroupedMappingsDiscrete = {
-        col: map.col,
-        styleMap: [style],
-        th: [displayTh],
-        values: map.keys as string[],
-        datatype: map.type
-      };
-      group.push(groupedMapping);
+        if (!group.includes(newGroup)) {
+          group.push(newGroup);
+        }
+      }
     }
 
-    console.log(group);
     return group;
   }
 
@@ -832,5 +808,24 @@ export class ParseService {
     const tmpData = chart.chartData[0].data as number[];
     const sum = this.utilityService.utilSum(tmpData);
     return ((sum / elementCount) * 100).toFixed(0);
+  }
+
+  private consolidateAttributePointer(mapping: NeGroupedMappingsDiscrete): NeGroupedMappingsDiscrete {
+    console.log(mapping);
+    const setAttributeValues = [];
+
+    for (const style of mapping.styleMap) {
+      for (const av of style.attributeValues) {
+        if (!setAttributeValues.includes(av)) {
+          setAttributeValues.push(av);
+        }
+      }
+    }
+
+    mapping.values = setAttributeValues;
+
+
+    console.log(mapping);
+    return mapping;
   }
 }

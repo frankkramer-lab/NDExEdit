@@ -18,10 +18,10 @@ export interface NeMappingDiscrete {
   /**
    * List of keys defining a discrete threshold, e.g. "protein" for property "type" of a node
    */
-  keys: string[] | number[];
+  keys: string[];
   /**
    * Applied value for the key in keys, e.g. "#ff0000" for NODE_FILL_COLOR, when "type" of a node is "protein".
    * Thus keys and values always need to be of the same length to cross reference correctly
    */
-  values: string[] | number[];
+  values: string[];
 }

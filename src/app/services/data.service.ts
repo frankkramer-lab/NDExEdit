@@ -381,7 +381,7 @@ export class DataService {
    * @param mappings
    * @param property
    */
-  findDiscreteMappingForProperty(mappings: NeGroupedMappingsDiscrete[], property: NeAspect): number {
+  findDiscreteMappingForProperty(mappings: NeMappingDiscrete[], property: NeAspect): number {
     for (let i = 0; i < mappings.length; i++) {
       const map = mappings[i];
       if (map.col === property.name) {

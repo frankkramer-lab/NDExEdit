@@ -14,6 +14,11 @@ export interface NeStyleMap {
   cssValues: string[];
 
   /**
+   * List of strings indicating which style value belongs to which attribute value
+   */
+  attributeValues?: string[];
+
+  /**
    * List of selectors
    */
   selectors?: string[];

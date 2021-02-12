@@ -194,9 +194,17 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * Submits a new discrete mapping, adds CSS property to color properties managed in {@link GraphService}
    */
   submitNewDiscreteMapping(): void {
-    // todo
 
+    const tmp = this.mappingDiscrete.keys;
+    for (let i = 0; i < tmp.length; i++) {
+      if (this.mappingDiscrete.values[i] === undefined) {
+        this.mappingDiscrete.keys.splice(i, 1);
+        this.mappingDiscrete.values.splice(i, 1);
+      }
+    }
     this.mappingDiscrete.styleProperty = this.styleProperty;
+
+    console.log(this.mappingDiscrete);
     this.dataService.addMappingDiscrete(this.mappingDiscrete, this.propertyToMap, this.typeHint);
   }
 

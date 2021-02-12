@@ -23,7 +23,7 @@
       <thead>
       <tr>
         <th>{{dataService.selectedDiscreteMapping.col}}</th>
-        <th *ngFor="let val of dataService.selectedDiscreteMapping.values">{{val}}</th>
+        <th *ngFor="let val of dataService.selectedDiscreteMapping.values; let valueIndex = index">{{val}}</th>
       </tr>
       </thead>
 
