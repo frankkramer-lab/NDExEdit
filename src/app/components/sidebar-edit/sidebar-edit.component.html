@@ -226,19 +226,21 @@
                 <td>&nbsp;</td>
                 <td
                   *ngFor="let styleProperty of dataService.selectedNetwork.mappings.edgesDiscrete|stylePropertiesByCol: edgeCol">
-                  <b>{{styleProperty.cssKey|short}}</b>
+                  <b>{{styleProperty|short}}</b>
                 </td>
               </tr>
 
               <tr
                 *ngFor="let is of dataService.selectedNetwork.mappings.edgesDiscrete|isByCol: edgeCol; let isIndex = index">
                 <td class="border-right">{{is}}</td>
-                <td
-                  *ngFor="let styleProperty of dataService.selectedNetwork.mappings.edgesDiscrete|stylePropertiesByCol: edgeCol">
-                  {{styleProperty.cssValues[isIndex]}}
-                  <span *ngIf="styleProperty.isColor"
-                        [ngStyle]="{'background-color': styleProperty.cssValues[isIndex]}"
-                        class="badge badge-pill border">
+
+                <td *ngFor="let styleProperty of dataService.selectedNetwork.mappings.edgesDiscrete|stylePropertiesByCol: edgeCol">
+                  {{dataService.selectedNetwork.mappings.edgesDiscrete|styleValueByColAndKey: edgeCol : styleProperty : is}}
+                  <span
+                    [ngStyle]="{'background-color': dataService.selectedNetwork.mappings.edgesDiscrete|styleValueByColAndKey: edgeCol : styleProperty : is}"
+                    [ngClass]="((dataService.selectedNetwork.mappings.edgesDiscrete|styleValueByColAndKey: edgeCol : styleProperty : is) !== null
+                    && (dataService.selectedNetwork.mappings.edgesDiscrete|styleValueByColAndKey: edgeCol : styleProperty : is).startsWith('#')
+                    ? 'badge badge-pill border' : 'd-none')">
                       &nbsp;
                     </span>
                 </td>
@@ -248,7 +250,9 @@
           </td>
 
         </tr>
+
       </table>
+
 
       <!-- EC -->
       <ul *ngIf="dataService.selectedNetwork.mappings.edgesContinuous.length > 0"
