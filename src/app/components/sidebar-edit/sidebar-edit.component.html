@@ -93,6 +93,7 @@
 
   </div>
 
+  <!-- NAV -->
   <div aria-orientation="horizontal" class="nav nav-pills flex-row" id="editsNav" role="tablist">
     <a aria-controls="editsNavAspects" aria-selected="false" class="nav-link active" data-toggle="pill"
        href="#editsNavAspectsContent"
@@ -127,6 +128,7 @@
         {{'SIDEBAR_EDIT_ASPECTS_NODES' | translate}}
       </h5>
 
+      <!-- ND -->
       <table
         *ngIf="dataService.selectedNetwork.mappings.nodesDiscrete.length > 0"
         class="table-responsive table table-bordered">
@@ -148,19 +150,21 @@
                 <td>&nbsp;</td>
                 <td
                   *ngFor="let styleProperty of dataService.selectedNetwork.mappings.nodesDiscrete|stylePropertiesByCol: nodeCol">
-                  <b>{{styleProperty.cssKey|short}}</b>
+                  <b>{{styleProperty|short}}</b>
                 </td>
               </tr>
 
               <tr
                 *ngFor="let is of dataService.selectedNetwork.mappings.nodesDiscrete|isByCol: nodeCol; let isIndex = index">
                 <td class="border-right">{{is}}</td>
-                <td
-                  *ngFor="let styleProperty of dataService.selectedNetwork.mappings.nodesDiscrete|stylePropertiesByCol: nodeCol">
-                  {{styleProperty.cssValues[isIndex]}}
-                  <span *ngIf="styleProperty.isColor"
-                        [ngStyle]="{'background-color': styleProperty.cssValues[isIndex]}"
-                        class="badge badge-pill border">
+
+                <td *ngFor="let styleProperty of dataService.selectedNetwork.mappings.nodesDiscrete|stylePropertiesByCol: nodeCol">
+                  {{dataService.selectedNetwork.mappings.nodesDiscrete|styleValueByColAndKey: nodeCol : styleProperty : is}}
+                  <span
+                    [ngStyle]="{'background-color': dataService.selectedNetwork.mappings.nodesDiscrete|styleValueByColAndKey: nodeCol : styleProperty : is}"
+                    [ngClass]="((dataService.selectedNetwork.mappings.nodesDiscrete|styleValueByColAndKey: nodeCol : styleProperty : is) !== null
+                    && (dataService.selectedNetwork.mappings.nodesDiscrete|styleValueByColAndKey: nodeCol : styleProperty : is).startsWith('#')
+                    ? 'badge badge-pill border' : 'd-none')">
                       &nbsp;
                     </span>
                 </td>
@@ -171,43 +175,9 @@
 
         </tr>
 
-
-        <!--          <tr *ngFor="let nodeMap of dataService.selectedNetwork.mappings.nodesDiscrete; let index = index">-->
-        <!--            <td>-->
-        <!--              <a-->
-        <!--                [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, 'nd' + index]} }]"-->
-        <!--                role="button">-->
-        <!--                <b>{{nodeMap.col}}</b>-->
-        <!--              </a>-->
-        <!--            </td>-->
-        <!--            <td>-->
-        <!--              <table class="table table-borderless">-->
-        <!--                <tr class="border-bottom">-->
-        <!--                  <td colspan="1">&nbsp;</td>-->
-        <!--                  <td *ngFor="let styleProp of nodeMap.th"><b>{{styleProp}}</b></td>-->
-        <!--                </tr>-->
-        <!--                <tr *ngFor="let value of nodeMap.values">-->
-        <!--                  <td class="border-right">-->
-        <!--                    <a data-toggle="tooltip"-->
-        <!--                       ngbTooltip="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}}" placement="left"-->
-        <!--                       role="button"><b>{{value}}</b>-->
-        <!--                    </a>-->
-        <!--                  </td>-->
-        <!--                  <td *ngFor="let style of nodeMap.styleMap">-->
-        <!--                  <span *ngFor="let cssValue of style.cssValues">-->
-        <!--                    {{cssValue}}-->
-        <!--                    <span *ngIf="cssValue && cssValue.toString().indexOf('#') === 0"-->
-        <!--                          [ngStyle]="{'background-color': cssValue}"-->
-        <!--                          class="badge badge-pill border">&nbsp;-->
-        <!--                    </span>-->
-        <!--                  </span>-->
-        <!--                  </td>-->
-        <!--                </tr>-->
-        <!--              </table>-->
-        <!--            </td>-->
-        <!--          </tr>-->
       </table>
 
+      <!-- NC -->
       <ul
         *ngIf="dataService.selectedNetwork.mappings.nodesContinuous.length > 0"
         class="list-group mb-2">
@@ -234,44 +204,53 @@
         {{'SIDEBAR_EDIT_ASPECTS_EDGES' | translate}}
       </h5>
 
+      <!-- ED -->
       <table
         *ngIf="dataService.selectedNetwork.mappings.edgesDiscrete.length > 0"
-        class="table-responsive">
-        <table class="table table-bordered">
-          <tr *ngFor="let edgeMap of dataService.selectedNetwork.mappings.edgesDiscrete; let index = index">
-            <td>
-              <a
-                [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, 'ed' + index]} }]"
-                role="button">
-                <b>{{edgeMap.col}}</b>
-              </a>
-            </td>
-            <td>
-              <table class="table table-borderless">
-                <tr class="border-bottom">
-                  <td colspan="1">&nbsp;</td>
-                  <td *ngFor="let styleProp of edgeMap.th"><b>{{styleProp}}</b></td>
-                </tr>
-                <tr *ngFor="let value of edgeMap.values; let i = index">
-                  <td class="border-right">
-                    <a data-toggle="tooltip"
-                       ngbTooltip="{{'SIDEBAR_EDIT_TT_SELECTOR' | translate}}" placement="left"
-                       role="button"><b>{{value}}</b></a>
-                  </td>
-                  <td *ngFor="let style of edgeMap.styleMap">
-                    {{style.cssValues[i]}}
-                    <span *ngIf="style.cssValues && style.cssValues[i].toString().indexOf('#') === 0"
-                          [ngStyle]="{'background-color': style.cssValues[i]}"
-                          class="badge badge-pill border">&nbsp;
-                  </span>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
+        class="table-responsive table table-bordered">
+
+        <tr *ngFor="let edgeCol of dataService.selectedNetwork.mappings.edgesDiscrete|uniqueCols; let colIndex = index">
+
+          <td>
+            <a
+              [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, 'ed' + colIndex]} }]"
+              role="button">
+              <b>{{edgeCol}}</b>
+            </a>
+          </td>
+
+          <td>
+            <table class="table table-borderless">
+
+              <tr class="border-bottom">
+                <td>&nbsp;</td>
+                <td
+                  *ngFor="let styleProperty of dataService.selectedNetwork.mappings.edgesDiscrete|stylePropertiesByCol: edgeCol">
+                  <b>{{styleProperty.cssKey|short}}</b>
+                </td>
+              </tr>
+
+              <tr
+                *ngFor="let is of dataService.selectedNetwork.mappings.edgesDiscrete|isByCol: edgeCol; let isIndex = index">
+                <td class="border-right">{{is}}</td>
+                <td
+                  *ngFor="let styleProperty of dataService.selectedNetwork.mappings.edgesDiscrete|stylePropertiesByCol: edgeCol">
+                  {{styleProperty.cssValues[isIndex]}}
+                  <span *ngIf="styleProperty.isColor"
+                        [ngStyle]="{'background-color': styleProperty.cssValues[isIndex]}"
+                        class="badge badge-pill border">
+                      &nbsp;
+                    </span>
+                </td>
+              </tr>
+
+            </table>
+          </td>
+
+        </tr>
       </table>
 
+      <!-- EC -->
       <ul *ngIf="dataService.selectedNetwork.mappings.edgesContinuous.length > 0"
           class="list-group mb-2">
       <span *ngFor="let edgeMap of dataService.selectedNetwork.mappings.edgesContinuous; let index = index">
