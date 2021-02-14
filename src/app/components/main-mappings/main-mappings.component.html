@@ -11,17 +11,8 @@
 
   <hr>
 
-  <ng-template
-    *ngIf="(dataService.selectedDiscreteMapping || dataService.selectedContinuousMapping) then details else loading"></ng-template>
+  <div *ngIf="(dataService.selectedDiscreteMapping && (dataService.selectedTypeHint.nd || dataService.selectedTypeHint.ed))">
 
-  <ng-template class="text-center" #loading>
-    <div class="spinner-grow" role="status"></div>
-  </ng-template>
-
-  <ng-template #details
-               *ngIf="dataService.selectedContinuousMapping then continuousOverview else discreteOverview"></ng-template>
-
-  <ng-template #discreteOverview>
     <table class="table table-bordered">
       <thead>
       <tr>
@@ -73,9 +64,9 @@
       {{'MAIN_MAPPINGS_DELETE' | translate}}
     </button>
 
-  </ng-template>
+  </div>
 
-  <ng-template #continuousOverview>
+  <div *ngIf="(dataService.selectedContinuousMapping && (dataService.selectedTypeHint.nc || dataService.selectedTypeHint.ec))">
 
     <table class="table table-bordered">
 
@@ -139,8 +130,7 @@
       {{'MAIN_MAPPINGS_DELETE' | translate}}
     </button>
 
-  </ng-template>
-
+  </div>
 
   <hr *ngIf="dataService.selectedTypeHint">
 

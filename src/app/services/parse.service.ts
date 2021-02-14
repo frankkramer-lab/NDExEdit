@@ -293,7 +293,6 @@ export class ParseService {
       mappingContinuous.colorGradient = null;
     }
 
-    console.log(mappingContinuous);
     return mappingContinuous;
   }
 

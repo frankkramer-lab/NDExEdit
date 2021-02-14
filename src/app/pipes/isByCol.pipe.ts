@@ -7,6 +7,10 @@ export class IsByColPipe implements PipeTransform {
   transform(mappings: NeMappingDiscrete[], col: string): string[] {
     const is: string[] = [];
 
+    if (!mappings) {
+      return [];
+    }
+
     for (const map of mappings) {
       if (map.col === col) {
         for (const key of map.keys) {

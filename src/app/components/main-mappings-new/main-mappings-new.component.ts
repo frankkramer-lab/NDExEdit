@@ -420,8 +420,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         this.styleProperty = existingContinuousMapping.styleProperty;
         this.continuousMapping = existingContinuousMapping;
         this.binSize = this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
-        // this.chartObject = this.utilityService.utilCalculateHistogramDataForBinSize(this.binSize,
-        //   this.propertyToMap);
+        console.log(this.binSize);
         this.chartObject = this.continuousMapping.chart;
         break;
       case 'ed':
@@ -438,8 +437,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         this.styleProperty = existingContinuousMapping.styleProperty;
         this.continuousMapping = existingContinuousMapping;
         this.binSize = this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
-        // this.chartObject = this.utilityService.utilCalculateHistogramDataForBinSize(this.binSize,
-        //   this.propertyToMap);
+        console.log(this.binSize);
         this.chartObject = this.continuousMapping.chart;
         break;
     }

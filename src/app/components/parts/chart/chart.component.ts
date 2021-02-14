@@ -2,9 +2,9 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DataService} from '../../../services/data.service';
 import {NeChart} from '../../../models/ne-chart';
 import {faMinus, faPlus, faUndo} from '@fortawesome/free-solid-svg-icons';
-import {NeMappingDiscrete} from "../../../models/ne-mapping-discrete";
-import {NeMappingContinuous} from "../../../models/ne-mapping-continuous";
-import {UtilityService} from "../../../services/utility.service";
+import {NeMappingDiscrete} from '../../../models/ne-mapping-discrete';
+import {NeMappingContinuous} from '../../../models/ne-mapping-continuous';
+import {UtilityService} from '../../../services/utility.service';
 
 @Component({
   selector: 'app-chart',
@@ -81,6 +81,7 @@ export class ChartComponent implements OnInit {
     if (this.index) {
       this.mapping = this.dataService.findMappingById(this.index);
     }
+    console.log(this.numberOfBins);
   }
 
   /**

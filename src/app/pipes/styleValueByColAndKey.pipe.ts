@@ -5,6 +5,11 @@ import {NeMappingDiscrete} from '../models/ne-mapping-discrete';
 export class StyleValueByColAndKeyPipe implements PipeTransform {
 
   transform(mappings: NeMappingDiscrete[], col: string, style: string, is: string): string {
+
+    if (!mappings) {
+      return '';
+    }
+
     for (const map of mappings) {
       if (map.col === col && map.styleProperty === style) {
 

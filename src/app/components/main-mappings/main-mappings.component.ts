@@ -73,34 +73,6 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    * Displays deletion dialogue for a single property within a mapping
    */
   showSingleDeletionDialogue = false;
-  /**
-   * Selected discrete mapping which is displayed in the table at the top of the view
-   */
-  // selectedDiscrete: NeGroupedMappingsDiscrete;
-  /**
-   * Selected continuous mapping which is displayed in the table at the top of the view
-   */
-  // selectedContinuous: NeMappingContinuous;
-  /**
-   * True, if the displayed details belong to a discrete mapping, necessary for type-safety
-   */
-  // isDiscrete: boolean;
-  /**
-   * Id of the currently selected mapping
-   */
-  // currentMappingId: string;
-  /**
-   * Mapping to be removed which is overridden as soon as the user selects a mapping to delete
-   */
-  // mappingToRemove = {
-  //   map: null,
-  //   type: null,
-  //   network: -1,
-  //   mappingId: -1,
-  //   akvIndex: -1,
-  // };
-  //
-  // styleToRemove: NeStyleMap;
 
   /**
    * Can be one of the following types:
@@ -142,8 +114,10 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
         // continuous mapping
         this.dataService.selectMapping(null, null, mapId);
       } else {
+        console.log('NO STUFF SELECTED');
         // general overview (mapId === '-1')
         this.dataService.resetAnyMappingSelection();
+        this.dataService.resetDiscreteMappingPropertySelection();
       }
     });
 
