@@ -196,8 +196,16 @@
     </div>
     <div class="col-4">
       <!-- submit -->
-      <button (click)="submitNewMapping()" *ngIf="!isEdit"
-              [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, mapType + (getNextIdForMappingType()) ]} }]"
+      <button (click)="submitNewMapping()" *ngIf="!isEdit && mapType.endsWith('d')"
+              [routerLink]="['', { outlets: {primary: ['mappings', mapType, mappingDiscrete.col ]} }]"
+              class="btn btn-block btn-outline-success" data-toggle="tooltip"
+              ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
+              placement="top"
+              type="button">
+        <fa-icon [icon]="faCheck"></fa-icon>
+      </button>
+      <button (click)="submitNewMapping()" *ngIf="!isEdit && mapType.endsWith('c')"
+              [routerLink]="['', { outlets: {primary: ['mappings', mapType + getNextIdForMappingType() ]} }]"
               class="btn btn-block btn-outline-success" data-toggle="tooltip"
               ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
               placement="top"

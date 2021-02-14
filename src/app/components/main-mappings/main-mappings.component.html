@@ -36,14 +36,14 @@
 
       <tbody>
       <tr [ngClass]="dataService.selectedForDeletion === styleProperty ? 'table-danger' : ''"
-        *ngFor="let styleProperty of dataService.selectedDiscreteMapping|stylePropertiesByCol : dataService.selectedDiscreteMappingProperty; let styleIndex = index">
+          *ngFor="let styleProperty of dataService.selectedDiscreteMapping|stylePropertiesByCol : dataService.selectedDiscreteMappingProperty; let styleIndex = index">
         <td>{{styleProperty}}</td>
 
         <td
           *ngFor="let is of dataService.selectedDiscreteMapping|isByCol : dataService.selectedDiscreteMappingProperty">
-          <span>{{dataService.selectedDiscreteMapping|styleValueByColAndKey : dataService.selectedDiscreteMappingProperty : styleProperty : is}}</span>
-          <span *ngIf="styleProperty.startsWith('#')" class="badge badge-pill border"
-                [ngStyle]="{'': dataService.selectedDiscreteMapping|styleValueByColAndKey : dataService.selectedDiscreteMappingProperty : styleProperty : is}">
+          <span #tmp>{{dataService.selectedDiscreteMapping|styleValueByColAndKey : dataService.selectedDiscreteMappingProperty : styleProperty : is}}</span>
+          <span *ngIf="tmp.innerHTML.startsWith('#')" class="badge badge-pill border"
+                [ngStyle]="{'background-color': dataService.selectedDiscreteMapping|styleValueByColAndKey : dataService.selectedDiscreteMappingProperty : styleProperty : is}">
             &nbsp;
           </span>
         </td>
