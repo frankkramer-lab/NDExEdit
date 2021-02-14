@@ -198,8 +198,9 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
     const tmp = this.mappingDiscrete.keys;
     for (let i = 0; i < tmp.length; i++) {
       if (this.mappingDiscrete.values[i] === undefined) {
-        this.mappingDiscrete.keys.splice(i, 1);
-        this.mappingDiscrete.values.splice(i, 1);
+        console.log(this.mappingDiscrete);
+        // this.mappingDiscrete.keys.splice(i, 1);
+        // this.mappingDiscrete.values.splice(i, 1);
       }
     }
     this.mappingDiscrete.styleProperty = this.styleProperty;
