@@ -40,7 +40,17 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'mappings/:map/:col',
+    path: 'mappings/:mapHint/:col',
+    component: MainMappingsComponent,
+    children: [
+      {
+        path: '',
+        component: MainInfoComponent
+      }
+    ]
+  },
+  {
+    path: 'mappings/:mapId',
     component: MainMappingsComponent,
     children: [
       {

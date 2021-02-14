@@ -4,7 +4,6 @@ import {NeMappingContinuous} from '../models/ne-mapping-continuous';
 import {NeMappingDiscrete} from '../models/ne-mapping-discrete';
 import {UtilityService} from './utility.service';
 import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete';
-import {NeStyleMap} from '../models/ne-style-map';
 import {NeMappingsType} from '../models/ne-mappings-type';
 import {NeAspect} from '../models/ne-aspect';
 
@@ -43,9 +42,13 @@ export class DataService {
    */
   selectedContinuousMapping: NeMappingContinuous;
   /**
-   * Selected discrete mapping property of type {@link NeStyleMap}
+   * Selected discrete mapping property
    */
   selectedDiscreteMappingProperty: string;
+  /**
+   * Name of a property which is to be deleted
+   */
+  selectedForDeletion: string;
   /**
    * On selection of a mapping this typehint is set
    */
@@ -591,21 +594,20 @@ export class DataService {
    * It works directly on the cx data and triggers the core rebuild.
    */
   removePropertyFromMapping(): void {
-    // const mappingName = this.selectedDiscreteMappingProperty.cssKey;
     const isNode = this.selectedTypeHint.nd;
 
     for (const fd of this.selectedNetwork.cx) {
       if (fd.cyVisualProperties) {
         for (const cvp of fd.cyVisualProperties) {
           if (isNode && cvp.properties_of === 'nodes:default' && cvp.mappings) {
-            if (cvp.mappings[this.selectedDiscreteMappingProperty]) {
-              delete cvp.mappings[this.selectedDiscreteMappingProperty];
+            if (cvp.mappings[this.selectedForDeletion]) {
+              delete cvp.mappings[this.selectedForDeletion];
               break;
             }
 
           } else if (!isNode && cvp.properties_of === 'edges:default' && cvp.mappings) {
-            if (cvp.mappings[this.selectedDiscreteMappingProperty]) {
-              delete cvp.mappings[this.selectedDiscreteMappingProperty];
+            if (cvp.mappings[this.selectedForDeletion]) {
+              delete cvp.mappings[this.selectedForDeletion];
               break;
             }
           }
@@ -1087,39 +1089,52 @@ export class DataService {
 
   /**
    * Selects a discrete or continuous mapping based on a typehint
-   * @param mapHint hint containing both typehint and id
-   * @param col property needs to be specified when selecting a discrete mapping
+   * @param mapHint [DISCRETE] hint containing typehint
+   * @param col [DISCRETE] property needs to be specified when selecting a discrete mapping
+   * @param mapId [CONTINUOUS] string containing both typehint and id for continuous mappings
    */
-  selectMapping(mapHint: string, col: string = null): void {
-    this.selectedTypeHint = this.utilityService.utilGetTypeHintByString(mapHint.substr(0, 2));
+  selectMapping(mapHint: string = null, col: string = null, mapId: string = null): void {
 
-    if (col === null) {
+    if (mapId !== null) {
       // continuous mapping does not need property
-      const mapId = mapHint.substr(2);
+      this.selectedTypeHint = this.utilityService.utilGetTypeHintByString(mapId.substr(0, 2));
+      const pointer = Number(mapId.substr(2));
 
       if (this.selectedTypeHint.nc) {
-        this.selectedContinuousMapping = this.selectedNetwork.mappings.nodesContinuous[mapId];
-        this.selectedDiscreteMapping = null;
+        this.selectedContinuousMapping = this.selectedNetwork.mappings.nodesContinuous[pointer];
       } else if (this.selectedTypeHint.ec) {
-        this.selectedContinuousMapping = this.selectedNetwork.mappings.edgesContinuous[mapId];
-        this.selectedDiscreteMapping = null;
+        this.selectedContinuousMapping = this.selectedNetwork.mappings.edgesContinuous[pointer];
       }
+      this.selectedDiscreteMapping = null;
+      this.selectedDiscreteMappingProperty = null;
+      console.log(this.selectedContinuousMapping);
+
     } else {
+
+      this.selectedTypeHint = this.utilityService.utilGetTypeHintByString(mapHint);
       const selectedDiscrete: NeMappingDiscrete[] = [];
 
       if (this.selectedTypeHint.nd) {
         for (const nd of this.selectedNetwork.mappings.nodesDiscrete) {
           if (nd.col === col && !selectedDiscrete.includes(nd)) {
+            if (this.selectedDiscreteMappingProperty !== nd.col) {
+              this.selectedDiscreteMappingProperty = nd.col;
+            }
             selectedDiscrete.push(nd);
           }
         }
       } else if (this.selectedTypeHint.ed) {
         for (const ed of this.selectedNetwork.mappings.edgesDiscrete) {
           if (ed.col === col && !selectedDiscrete.includes(ed)) {
+            if (this.selectedDiscreteMappingProperty !== ed.col) {
+              this.selectedDiscreteMappingProperty = ed.col;
+            }
             selectedDiscrete.push(ed);
           }
         }
       }
+      this.selectedDiscreteMapping = selectedDiscrete;
+      this.selectedContinuousMapping = null;
     }
   }
 
@@ -1128,17 +1143,35 @@ export class DataService {
    * Call this with null to unselect the currently selected mapping property.
    * @param propertyId id of the specified style, or null to unselect
    */
-  selectDiscreteMappingProperty(propertyId: number): void {
+  // selectDiscreteMappingProperty(propertyId: number): void {
+  //   if (propertyId === null) {
+  //     this.selectedDiscreteMappingProperty = null;
+  //     return;
+  //   }
+  //
+  //   if (!this.selectedDiscreteMapping) {
+  //     console.log('No discrete mapping selected');
+  //     return;
+  //   }
+  //   this.selectedDiscreteMappingProperty = this.selectedDiscreteMapping[propertyId].styleProperty;
+  // }
+
+  /**
+   * Selects a property within a discrete mapping for deletion.
+   * A discrete mapping has to be active for this to work
+   * @param propertyId points to the id within the discrete mapping to be deleted
+   */
+  selectPropertyForDeletion(propertyId: number = null): void {
     if (propertyId === null) {
-      this.selectedDiscreteMappingProperty = null;
+      this.selectedForDeletion = null;
       return;
     }
 
     if (!this.selectedDiscreteMapping) {
-      console.log('No discrete mapping selected');
+      console.log('No discrete mapping selected to delete property with ID: ' + propertyId);
       return;
     }
-    this.selectedDiscreteMappingProperty = this.selectedDiscreteMapping[propertyId].styleProperty;
+    this.selectedForDeletion = this.selectedDiscreteMapping[propertyId].styleProperty;
   }
 
   /**

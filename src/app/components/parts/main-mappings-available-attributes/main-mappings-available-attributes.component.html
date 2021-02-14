@@ -24,7 +24,7 @@
               </button>
               <div aria-labelledby="cDetailsGroup" class="dropdown-menu">
                 <a *ngFor="let cDetail of attribute.mapPointerC; let i = index;"
-                   [routerLink]="['', { outlets: {primary: ['mappings', attribute.mapPointerC[i], attribute.name]} }]"
+                   [routerLink]="['', { outlets: {primary: ['mappings', attribute.mapPointerC[i]]} }]"
                    class="dropdown-item">
                   <span *ngIf="typeHint.ec then ecBlock else ncBlock"></span>
                   <ng-template
@@ -40,7 +40,7 @@
           <!-- exactly one mapping exists -->
           <span *ngIf="attribute.mapPointerC.length === 1">
                   <button *ngIf="attribute.mapPointerC.length > 0"
-                          [routerLink]="['', { outlets: {primary: ['mappings', attribute.mapPointerC[0], attribute.name]} }]"
+                          [routerLink]="['', { outlets: {primary: ['mappings', attribute.mapPointerC[0]]} }]"
                           class="btn btn-outline-secondary"
                           data-toggle="tooltip"
                           ngbTooltip="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}" placement="bottom"
@@ -60,41 +60,15 @@
         </ng-template>
 
         <ng-template #discreteBlock>
-          <!-- mapping exists -->
-          <span *ngIf="attribute.mapPointerD.length > 1">
-            <div class="btn-group" role="group">
-              <div class="btn-group" role="group">
-                <button aria-expanded="false" aria-haspopup="true" class="btn btn-outline-secondary dropdown-toggle"
-                        data-toggle="dropdown" id="dDetailsGroup" type="button">
-                  <fa-icon [icon]="faSearch"></fa-icon>
-                </button>
-                <div aria-labelledby="dDetailsGroup" class="dropdown-menu">
-                  <a *ngFor="let dDetail of attribute.mapPointerD; let i = index;"
-                     [routerLink]="['', { outlets: {primary: ['mappings', attribute.mapPointerD[i], attribute.name]} }]"
-                     class="dropdown-item">
-                    <span *ngIf="typeHint.ed then edBlock else ndBlock"></span>
-                    <ng-template #edBlock>
-                      {{dataService.selectedNetwork.mappings.edgesDiscrete[i].col}}
-                    </ng-template>
-                    <ng-template #ndBlock>
-                      {{dataService.selectedNetwork.mappings.nodesDiscrete[i].col}}
-                    </ng-template>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </span>
 
-          <span *ngIf="attribute.mapPointerD.length === 1">
-            <button *ngIf="attribute.mapPointerD.length > 0"
-                    [routerLink]="['', { outlets: {primary: ['mappings', attribute.mapPointerD[0], attribute.name]} }]"
-                    class="btn btn-outline-secondary"
-                    data-toggle="tooltip"
-                    ngbTooltip="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}" placement="bottom"
-                    type="button">
-              <fa-icon [icon]="faSearch"></fa-icon>
-            </button>
-          </span>
+          <button *ngIf="attribute.mapPointerD.length > 0"
+                  [routerLink]="['', { outlets: {primary: ['mappings', attribute.mapPointerD[0].substr(0,2), attribute.name]} }]"
+                  class="btn btn-outline-secondary"
+                  data-toggle="tooltip"
+                  ngbTooltip="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}" placement="bottom"
+                  type="button">
+            <fa-icon [icon]="faSearch"></fa-icon>
+          </button>
 
           <button
             [routerLink]="['', { outlets: {primary: ['new', (typeHint.ed ? 'ed' : 'nd'), attributeIndex ]} }]"

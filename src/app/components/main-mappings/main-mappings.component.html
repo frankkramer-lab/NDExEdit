@@ -11,35 +11,42 @@
 
   <hr>
 
-  <span *ngIf="dataService.selectedTypeHint">
-    <span
-      *ngIf="(dataService.selectedTypeHint.nd || dataService.selectedTypeHint.ed) then discreteOverview else continuousOverview"></span>
-  </span>
+  <ng-template
+    *ngIf="(dataService.selectedDiscreteMapping || dataService.selectedContinuousMapping) then details else loading"></ng-template>
+
+  <ng-template class="text-center" #loading>
+    <div class="spinner-grow" role="status"></div>
+  </ng-template>
+
+  <ng-template #details
+               *ngIf="dataService.selectedContinuousMapping then continuousOverview else discreteOverview"></ng-template>
 
   <ng-template #discreteOverview>
-
     <table class="table table-bordered">
       <thead>
       <tr>
         <th>{{dataService.selectedDiscreteMappingProperty}}</th>
-        <th *ngFor="let is of dataService.selectedDiscreteMapping|isByCol : dataService.selectedDiscreteMappingProperty">
+        <th
+          *ngFor="let is of dataService.selectedDiscreteMapping|isByCol : dataService.selectedDiscreteMappingProperty">
           {{is}}
         </th>
+        <th colspan="2">&nbsp;</th>
       </tr>
       </thead>
 
       <tbody>
-      <tr
+      <tr [ngClass]="dataService.selectedForDeletion === styleProperty ? 'table-danger' : ''"
         *ngFor="let styleProperty of dataService.selectedDiscreteMapping|stylePropertiesByCol : dataService.selectedDiscreteMappingProperty; let styleIndex = index">
         <td>{{styleProperty}}</td>
 
-        <ng-template
+        <td
           *ngFor="let is of dataService.selectedDiscreteMapping|isByCol : dataService.selectedDiscreteMappingProperty">
-          <td>{{dataService.selectedDiscreteMapping|styleValueByColAndKey : dataService.selectedDiscreteMappingProperty : styleProperty : is}}</td>
+          <span>{{dataService.selectedDiscreteMapping|styleValueByColAndKey : dataService.selectedDiscreteMappingProperty : styleProperty : is}}</span>
           <span *ngIf="styleProperty.startsWith('#')" class="badge badge-pill border"
                 [ngStyle]="{'': dataService.selectedDiscreteMapping|styleValueByColAndKey : dataService.selectedDiscreteMappingProperty : styleProperty : is}">
-        </span>
-        </ng-template>
+            &nbsp;
+          </span>
+        </td>
 
         <td>
           <button class="btn btn-outline-warning" [disabled]="true">
@@ -57,40 +64,6 @@
 
     </table>
 
-    <!--    <table class="table table-bordered">-->
-
-    <!--      <thead>-->
-    <!--      <tr>-->
-    <!--        <th>{{dataService.selectedDiscreteMapping.col}}</th>-->
-    <!--        <th *ngFor="let val of dataService.selectedDiscreteMapping.values; let valueIndex = index">{{val}}</th>-->
-    <!--      </tr>-->
-    <!--      </thead>-->
-
-    <!--      <tbody>-->
-    <!--      <tr *ngFor="let style of dataService.selectedDiscreteMapping.styleMap; let styleIndex = index"-->
-    <!--          [ngClass]="(style === dataService.selectedDiscreteMappingProperty) ? 'table-danger' : ''">-->
-    <!--        <td>{{style.cssKey}}</td>-->
-    <!--        <td *ngFor="let val of style.cssValues">-->
-    <!--          {{val}}-->
-    <!--          <span *ngIf="style.isColor" class="badge-pill badge border"-->
-    <!--                [ngStyle]="{'background-color': val}">&nbsp;</span>-->
-    <!--        </td>-->
-    <!--        &lt;!&ndash; EDIT &ndash;&gt;-->
-    <!--        <td>-->
-    <!--          <button [disabled]="true" class="btn btn-block btn-outline-warning">-->
-    <!--            <fa-icon [icon]="faEdit"></fa-icon>-->
-    <!--          </button>-->
-    <!--        </td>-->
-    <!--        &lt;!&ndash; DELETE &ndash;&gt;-->
-    <!--        <td>-->
-    <!--          <button (click)="toggleSingleRemoveDialogue(styleIndex)" class="btn btn-block btn-outline-danger">-->
-    <!--            <fa-icon [icon]="faTrash"></fa-icon>-->
-    <!--          </button>-->
-    <!--        </td>-->
-    <!--      </tr>-->
-    <!--      </tbody>-->
-    <!--    </table>-->
-
     <button (click)="toggleGlobalRemoveDialogue()"
             class="btn btn-block btn-outline-danger"
             data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_DELETE' | translate}}"
@@ -103,6 +76,7 @@
 
   <ng-template #continuousOverview>
 
+    CONTINUOUS
     <table class="table table-bordered">
 
       <thead>
@@ -147,6 +121,7 @@
     </button>
 
   </ng-template>
+
 
   <hr *ngIf="dataService.selectedTypeHint">
 

@@ -129,10 +129,20 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
   ) {
 
     this.route.paramMap.subscribe(params => {
-      const map = params.get('map');
-      if (map !== '-1') {
-        this.dataService.selectMapping(map, params.get('col'));
+      console.log(params);
+
+      const mapHint = params.get('mapHint');
+      const mapId = params.get('mapId');
+      const col = params.get('col');
+
+      if (mapHint !== null && col !== null) {
+        // discrete mapping
+        this.dataService.selectMapping(mapHint, col);
+      } else if (mapId !== '-1') {
+        // continuous mapping
+        this.dataService.selectMapping(null, null, mapId);
       } else {
+        // general overview (mapId === '-1')
         this.dataService.resetAnyMappingSelection();
       }
     });
@@ -178,9 +188,9 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
   toggleSingleRemoveDialogue(propertyId: number = null): void {
     if (propertyId === null) {
       this.showSingleDeletionDialogue = false;
-      this.dataService.resetDiscreteMappingPropertySelection();
+      this.dataService.selectPropertyForDeletion();
     } else {
-      this.dataService.selectDiscreteMappingProperty(propertyId);
+      this.dataService.selectPropertyForDeletion(propertyId);
       this.showSingleDeletionDialogue = true;
     }
   }
