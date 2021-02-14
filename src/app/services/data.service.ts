@@ -333,15 +333,40 @@ export class DataService {
   removeMapping(): void {
 
     let col: string;
-    let isDiscrete: boolean;
+    const isDiscrete = this.selectedTypeHint.nd || this.selectedTypeHint.ed;
     const isNode = this.selectedTypeHint.nd || this.selectedTypeHint.nc;
 
     if (this.selectedTypeHint.nd || this.selectedTypeHint.ed) {
       col = this.selectedDiscreteMapping[0].col;
-      isDiscrete = true;
     } else {
       col = this.selectedContinuousMapping.col;
-      isDiscrete = false;
+    }
+
+    // todo test this, as soon as multiple adding continuous mapping works again
+    if (isNode) {
+      for (const nodeAspect of this.selectedNetwork.aspectKeyValuesNodes) {
+        if (nodeAspect.name === col) {
+          if (isDiscrete) {
+            nodeAspect.mapPointerD = [];
+          } else {
+            const mapIndex = this.selectedNetwork.mappings.nodesContinuous.indexOf(this.selectedContinuousMapping);
+            nodeAspect.mapPointerC = nodeAspect.mapPointerC.filter(a => a !== 'nc' + mapIndex);
+            console.log(nodeAspect);
+          }
+        }
+      }
+    } else {
+      for (const edgeAspect of this.selectedNetwork.aspectKeyValuesEdges) {
+        if (edgeAspect.name === col) {
+          if (isDiscrete) {
+            edgeAspect.mapPointerD = [];
+          } else {
+            const mapIndex = this.selectedNetwork.mappings.edgesContinuous.indexOf(this.selectedContinuousMapping);
+            edgeAspect.mapPointerC = edgeAspect.mapPointerC.filter(a => a !== 'ec' + mapIndex);
+            console.log(edgeAspect);
+          }
+        }
+      }
     }
 
     for (const fd of this.selectedNetwork.cx) {

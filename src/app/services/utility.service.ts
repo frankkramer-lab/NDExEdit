@@ -4,8 +4,8 @@ import {NeMappingsType} from '../models/ne-mappings-type';
 import {NeAspect} from '../models/ne-aspect';
 import {NeChart} from '../models/ne-chart';
 import {NeFrequencyCounter} from '../models/ne-frequency-counter';
-import {NeGroupedMappingsDiscrete} from "../models/ne-grouped-mappings-discrete";
-import {NeMappingDiscrete} from "../models/ne-mapping-discrete";
+import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete';
+import {NeMappingDiscrete} from '../models/ne-mapping-discrete';
 
 @Injectable({
   providedIn: 'root'
@@ -322,7 +322,6 @@ export class UtilityService {
         }
       };
     }
-    console.log(finalChart);
     return finalChart;
   }
 
@@ -348,8 +347,9 @@ export class UtilityService {
    * @param index points to the index within this mapping's style map
    */
   utilExtractDiscreteFromGroupedDiscrete(mapping: NeGroupedMappingsDiscrete, index: number): NeMappingDiscrete {
+    // todo remove this when editing, because NeGroupedMappingsDiscrete is going to be unnecessary
     return {
-      keys: [], // todo check for what do i need keys
+      keys: [],
       col: mapping.col,
       styleProperty: mapping.styleMap[index].cssKey,
       type: mapping.datatype,

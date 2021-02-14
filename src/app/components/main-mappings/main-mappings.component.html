@@ -11,7 +11,8 @@
 
   <hr>
 
-  <div *ngIf="(dataService.selectedDiscreteMapping && (dataService.selectedTypeHint.nd || dataService.selectedTypeHint.ed))">
+  <div
+    *ngIf="(dataService.selectedDiscreteMapping && (dataService.selectedTypeHint.nd || dataService.selectedTypeHint.ed))">
 
     <table class="table table-bordered">
       <thead>
@@ -66,7 +67,8 @@
 
   </div>
 
-  <div *ngIf="(dataService.selectedContinuousMapping && (dataService.selectedTypeHint.nc || dataService.selectedTypeHint.ec))">
+  <div
+    *ngIf="(dataService.selectedContinuousMapping && (dataService.selectedTypeHint.nc || dataService.selectedTypeHint.ec))">
 
     <table class="table table-bordered">
 
@@ -200,7 +202,7 @@
 
       <!-- nevermind -->
       <div class="col-6">
-        <button class="btn btn-block btn-outline-success">
+        <button (click)="confirmDeletion(false, 'global')" class="btn btn-block btn-outline-success">
           <fa-icon [icon]="faTimes"></fa-icon>
           {{'MAIN_MAPPINGS_CONFIRM_DELETION_NO' | translate}}
         </button>

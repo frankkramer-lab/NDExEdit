@@ -101,7 +101,6 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
   ) {
 
     this.route.paramMap.subscribe(params => {
-      console.log(params);
 
       const mapHint = params.get('mapHint');
       const mapId = params.get('mapId');
@@ -141,8 +140,7 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Toggles the dialogue to confirm deletion of an existing mapping. Selects the mapping to be deleted by
-   * overriding {@link MainMappingsComponent#mappingToRemove}
+   * Toggles the dialogue to confirm deletion of an existing mapping.
    *
    */
   toggleGlobalRemoveDialogue(): void {
@@ -150,6 +148,7 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
       console.log('No mapping selected which could be removed');
       return;
     }
+    this.dataService.selectPropertyForDeletion();
     this.showSingleDeletionDialogue = false;
     this.showGlobalDeletionDialogue = true;
   }
@@ -161,10 +160,12 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
   toggleSingleRemoveDialogue(propertyId: number = null): void {
     if (propertyId === null) {
       this.showSingleDeletionDialogue = false;
+      this.showGlobalDeletionDialogue = false;
       this.dataService.selectPropertyForDeletion();
     } else {
       this.dataService.selectPropertyForDeletion(propertyId);
       this.showSingleDeletionDialogue = true;
+      this.showGlobalDeletionDialogue = false;
     }
   }
 
@@ -189,7 +190,7 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
             showChart: false
           });
         }
-
+        this.showGlobalDeletionDialogue = false;
         break;
       case 'single':
         if (confirmation) {
