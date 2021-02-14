@@ -92,6 +92,7 @@ export class ParseService {
    * @private
    */
   private static buildColorGradient(mapping: NeMappingContinuous): NeColorGradient[] {
+
     const thresholds = mapping.thresholds as string[];
     const lowers = mapping.lowers as string[];
     const greaters = mapping.greaters as string[];
@@ -121,6 +122,7 @@ export class ParseService {
       offset: '101',
       numericThreshold: '101'
     });
+
     return colorGradientCollection;
   }
 
@@ -243,6 +245,7 @@ export class ParseService {
     const commaSplit = obj.definition.split(',');
 
     for (const cs of commaSplit) {
+
       const equalSplit = cs.split('=');
 
       switch (equalSplit[0]) {
@@ -290,6 +293,7 @@ export class ParseService {
       mappingContinuous.colorGradient = null;
     }
 
+    console.log(mappingContinuous);
     return mappingContinuous;
   }
 
@@ -337,14 +341,15 @@ export class ParseService {
 
     chartMappingObject.chartLabels.push('');
 
-    const numericEquals = mapping.equals as unknown as number[];
-    const numericLowers = mapping.lowers as unknown as number[];
-    const numericGreaters = mapping.greaters as unknown as number[];
+    const numericEquals = [].concat(mapping.equals as unknown as number[]);
+    const numericLowers = [].concat(mapping.lowers as unknown as number[]);
+    const numericGreaters = [].concat(mapping.greaters as unknown as number[]);
 
     const tmp: ChartDataSets = {
       label: this.utilityService.utilRemovePrefix(mapping.styleProperty, ['EDGE_', 'NODE_']),
       data: numericEquals
     };
+
     if (!chartMappingObject.chartData.includes(tmp)) {
       chartMappingObject.chartData.push(tmp);
     }
@@ -652,66 +657,66 @@ export class ParseService {
    * @param mappings List of discrete mappings
    * @private
    */
-  private groupDiscreteMappingsByCol(mappings: NeMappingDiscrete[]): NeGroupedMappingsDiscrete[] {
-    if (!mappings || mappings.length === 0) {
-      console.log('No mappings to group');
-      return [];
-    }
-
-    console.log(mappings);
-
-    const group: NeGroupedMappingsDiscrete[] = [];
-
-    for (const newItem of mappings) {
-      let found = false;
-      for (const groupItem of group) {
-
-        if (groupItem.col === newItem.col) {
-          found = true;
-
-          const newStyle: NeStyleMap = {
-            attributeValues: newItem.keys as string[],
-            cssKey: newItem.styleProperty,
-            cssValues: newItem.values as string[],
-            isColor: (newItem.values as string[]).filter(a => !a.startsWith('#')).length === 0
-          };
-
-          groupItem.styleMap.push(newStyle);
-          groupItem.th.push(this.utilityService.utilRemovePrefix(newItem.styleProperty, ['NODE_', 'EDGE_']));
-
-          for (const k of newItem.keys) {
-            if (!groupItem.values.includes(k as string)) {
-              groupItem.values.push(k as string);
-            }
-          }
-        }
-      }
-
-      if (!found) {
-        // no COL matched => build new group
-        const newStyle: NeStyleMap = {
-          attributeValues: newItem.keys as string[],
-          cssKey: newItem.styleProperty,
-          cssValues: newItem.values as string[],
-          isColor: (newItem.values as string[]).filter(a => !a.startsWith('#')).length === 0
-        };
-
-        const newGroup: NeGroupedMappingsDiscrete = {
-          col: newItem.col,
-          datatype: newItem.type,
-          styleMap: [newStyle],
-          th: [this.utilityService.utilRemovePrefix(newItem.styleProperty, ['NODE_', 'EDGE_'])],
-          values: newItem.keys as string[]
-        };
-
-        if (!group.includes(newGroup)) {
-          group.push(newGroup);
-        }
-      }
-    }
-
-    return group;
-  }
+  // private groupDiscreteMappingsByCol(mappings: NeMappingDiscrete[]): NeGroupedMappingsDiscrete[] {
+  //   if (!mappings || mappings.length === 0) {
+  //     console.log('No mappings to group');
+  //     return [];
+  //   }
+  //
+  //   console.log(mappings);
+  //
+  //   const group: NeGroupedMappingsDiscrete[] = [];
+  //
+  //   for (const newItem of mappings) {
+  //     let found = false;
+  //     for (const groupItem of group) {
+  //
+  //       if (groupItem.col === newItem.col) {
+  //         found = true;
+  //
+  //         const newStyle: NeStyleMap = {
+  //           attributeValues: newItem.keys as string[],
+  //           cssKey: newItem.styleProperty,
+  //           cssValues: newItem.values as string[],
+  //           isColor: (newItem.values as string[]).filter(a => !a.startsWith('#')).length === 0
+  //         };
+  //
+  //         groupItem.styleMap.push(newStyle);
+  //         groupItem.th.push(this.utilityService.utilRemovePrefix(newItem.styleProperty, ['NODE_', 'EDGE_']));
+  //
+  //         for (const k of newItem.keys) {
+  //           if (!groupItem.values.includes(k as string)) {
+  //             groupItem.values.push(k as string);
+  //           }
+  //         }
+  //       }
+  //     }
+  //
+  //     if (!found) {
+  //       // no COL matched => build new group
+  //       const newStyle: NeStyleMap = {
+  //         attributeValues: newItem.keys as string[],
+  //         cssKey: newItem.styleProperty,
+  //         cssValues: newItem.values as string[],
+  //         isColor: (newItem.values as string[]).filter(a => !a.startsWith('#')).length === 0
+  //       };
+  //
+  //       const newGroup: NeGroupedMappingsDiscrete = {
+  //         col: newItem.col,
+  //         datatype: newItem.type,
+  //         styleMap: [newStyle],
+  //         th: [this.utilityService.utilRemovePrefix(newItem.styleProperty, ['NODE_', 'EDGE_'])],
+  //         values: newItem.keys as string[]
+  //       };
+  //
+  //       if (!group.includes(newGroup)) {
+  //         group.push(newGroup);
+  //       }
+  //     }
+  //   }
+  //
+  //   return group;
+  // }
 
   /**
    * Builds distribution charts per aspect

@@ -41,7 +41,8 @@
 
         <td
           *ngFor="let is of dataService.selectedDiscreteMapping|isByCol : dataService.selectedDiscreteMappingProperty">
-          <span #tmp>{{dataService.selectedDiscreteMapping|styleValueByColAndKey : dataService.selectedDiscreteMappingProperty : styleProperty : is}}</span>
+          <span
+            #tmp>{{dataService.selectedDiscreteMapping|styleValueByColAndKey : dataService.selectedDiscreteMappingProperty : styleProperty : is}}</span>
           <span *ngIf="tmp.innerHTML.startsWith('#')" class="badge badge-pill border"
                 [ngStyle]="{'background-color': dataService.selectedDiscreteMapping|styleValueByColAndKey : dataService.selectedDiscreteMappingProperty : styleProperty : is}">
             &nbsp;
@@ -76,7 +77,6 @@
 
   <ng-template #continuousOverview>
 
-    CONTINUOUS
     <table class="table table-bordered">
 
       <thead>
@@ -95,19 +95,38 @@
       </thead>
 
       <tbody>
-      <tr *ngFor="let eq of dataService.selectedContinuousMapping.equals; let index = index">
-        <ng-container [ngSwitch]="index">
-          <td *ngSwitchCase="0"><</td>
-          <td *ngSwitchDefault>{{dataService.selectedContinuousMapping.thresholds[index - 1]}}</td>
-          <td *ngSwitchCase="dataService.selectedContinuousMapping.equals.length - 1">></td>
-        </ng-container>
+      <tr>
+        <!-- default lower -->
+        <td><</td>
+        <td colspan="2">
+          <span #defaultLower>
+            {{dataService.selectedContinuousMapping.lowers[0]}}
+          </span>
+          <span *ngIf="dataService.selectedContinuousMapping.isColor" class="badge-pill border"
+                [ngStyle]="{'background-color': defaultLower.innerHTML || ''}">&nbsp;</span>
+        </td>
+      </tr>
 
+      <tr *ngFor="let eq of dataService.selectedContinuousMapping.equals; let index = index">
+        <td>{{dataService.selectedContinuousMapping.thresholds[index]}}</td>
         <td colspan="2">
           {{eq}}
           <span *ngIf="dataService.selectedContinuousMapping.isColor" class="badge-pill border"
                 [ngStyle]="{'background-color': eq}">&nbsp;</span>
         </td>
       </tr>
+      <tr>
+        <!-- default greater -->
+        <td>></td>
+        <td colspan="2">
+          <span #defaultGreater>
+            {{dataService.selectedContinuousMapping.greaters[dataService.selectedContinuousMapping.greaters.length - 1]}}
+          </span>
+          <span *ngIf="dataService.selectedContinuousMapping.isColor" class="badge-pill border"
+                [ngStyle]="{'background-color': defaultGreater.innerHTML || ''}">&nbsp;</span>
+        </td>
+      </tr>
+
       </tbody>
 
     </table>

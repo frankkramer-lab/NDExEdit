@@ -194,18 +194,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * Submits a new discrete mapping, adds CSS property to color properties managed in {@link GraphService}
    */
   submitNewDiscreteMapping(): void {
-
-    const tmp = this.mappingDiscrete.keys;
-    for (let i = 0; i < tmp.length; i++) {
-      if (this.mappingDiscrete.values[i] === undefined) {
-        console.log(this.mappingDiscrete);
-        // this.mappingDiscrete.keys.splice(i, 1);
-        // this.mappingDiscrete.values.splice(i, 1);
-      }
-    }
     this.mappingDiscrete.styleProperty = this.styleProperty;
-
-    console.log(this.mappingDiscrete);
     this.dataService.addMappingDiscrete(this.mappingDiscrete, this.propertyToMap, this.typeHint);
   }
 
@@ -213,9 +202,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * Submits a new mapping and distributes the requests between discrete and continuous mappings
    */
   submitNewMapping(): void {
-
-    console.log(this.needsColorValidation(this.styleProperty));
-    console.log(this.dataService.colorProperties.includes(this.styleProperty));
 
     // handles color property management
     if (this.needsColorValidation(this.styleProperty) && !this.dataService.colorProperties.includes(this.styleProperty)) {
@@ -251,35 +237,15 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
         return String(this.dataService.findDiscreteMappingForProperty(this.dataService.selectedNetwork.mappings.nodesDiscrete, this.propertyToMap))
           || String(this.dataService.selectedNetwork.mappings.nodesDiscrete.length);
       case 'nc':
-        // this.dataService.selectMapping(this.mapType + this.dataService.selectedNetwork.mappings.nodesContinuous.length);
         return String(this.dataService.selectedNetwork.mappings.nodesContinuous.length);
       case 'ed':
         return String(this.dataService.findDiscreteMappingForProperty(this.dataService.selectedNetwork.mappings.edgesDiscrete, this.propertyToMap))
           || String(this.dataService.selectedNetwork.mappings.edgesDiscrete.length);
       case 'ec':
-        // this.dataService.selectMapping(this.mapType + this.dataService.selectedNetwork.mappings.edgesContinuous.length);
         return String(this.dataService.selectedNetwork.mappings.edgesContinuous.length);
     }
     return String(-1);
   }
-
-  /**
-   * A new discrete mapping has to be matched to already existing mapping for the same property, if possible.
-   * That's why we try to find an already existing discrete mapping, that has the same property.
-   *
-   * @param mappings List of already existing mappings
-   * @private
-   */
-  // private findDiscreteMappingForThisProperty(mappings: NeGroupedMappingsDiscrete[]): string {
-  //   for (let i = 0; i < mappings.length; i++) {
-  //     const map = mappings[i];
-  //     if (map.col === this.propertyToMap.name) {
-  //       // this.dataService.selectMapping(this.mapType + i); // can only be selected, if mapping was inserted!
-  //       return String(mappings.indexOf(map));
-  //     }
-  //   }
-  //   return null;
-  // }
 
   /**
    * Initializes a continuous mapping
