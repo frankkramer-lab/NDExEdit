@@ -322,6 +322,7 @@ export class UtilityService {
         }
       };
     }
+    console.log(finalChart);
     return finalChart;
   }
 

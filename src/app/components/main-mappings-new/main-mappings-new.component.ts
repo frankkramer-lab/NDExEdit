@@ -355,7 +355,14 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     if (!this.isDiscrete) {
       availableAttributes = this.utilityService.utilFilterForContinuous(availableAttributes);
       this.propertyToMap = availableAttributes[this.propertyId];
-      this.chartObject = (this.propertyToMap.datatype === 'integer' ? this.propertyToMap.chartDiscreteDistribution : this.propertyToMap.chartContinuousDistribution);
+      this.chartObject = (this.propertyToMap.datatype === 'integer'
+        ? this.propertyToMap.chartDiscreteDistribution
+        : this.propertyToMap.chartContinuousDistribution);
+
+      this.binSize = (this.propertyToMap.datatype === 'integer')
+        ? null
+        : this.utilityService.utilSturgesRule(this.chartObject.chartLabels as unknown as number[]);
+
       this.continuousMapping = {
         chart: undefined,
         cleanStyleProperty: '',
@@ -373,6 +380,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
       availableAttributes = this.utilityService.utilFilterForDiscrete(availableAttributes);
       this.propertyToMap = availableAttributes[this.propertyId];
       this.chartObject = this.propertyToMap.chartDiscreteDistribution;
+
       const values: string[] = new Array<string>(this.propertyToMap.values.length);
       this.discreteMapping = {
         col: this.propertyToMap.name,
@@ -419,9 +427,12 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         this.propertyToMap = this.dataService.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === existingContinuousMapping.col);
         this.styleProperty = existingContinuousMapping.styleProperty;
         this.continuousMapping = existingContinuousMapping;
-        this.binSize = this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
-        console.log(this.binSize);
+
+        this.binSize = (this.propertyToMap.datatype === 'integer')
+          ? this.utilityService.utilSturgesRule(this.propertyToMap.chartDiscreteDistribution.chartLabels as unknown as number[])
+          : this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
         this.chartObject = this.continuousMapping.chart;
+
         break;
       case 'ed':
         this.propertyId = Number(params.get('propertyId'));
@@ -436,8 +447,10 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         this.propertyToMap = this.dataService.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === existingContinuousMapping.col);
         this.styleProperty = existingContinuousMapping.styleProperty;
         this.continuousMapping = existingContinuousMapping;
-        this.binSize = this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
-        console.log(this.binSize);
+
+        this.binSize = (this.propertyToMap.datatype === 'integer')
+          ? this.utilityService.utilSturgesRule(this.propertyToMap.chartDiscreteDistribution.chartLabels as unknown as number[])
+          : this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
         this.chartObject = this.continuousMapping.chart;
         break;
     }

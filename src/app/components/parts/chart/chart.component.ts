@@ -81,7 +81,6 @@ export class ChartComponent implements OnInit {
     if (this.index) {
       this.mapping = this.dataService.findMappingById(this.index);
     }
-    console.log(this.numberOfBins);
   }
 
   /**

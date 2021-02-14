@@ -114,7 +114,6 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
         // continuous mapping
         this.dataService.selectMapping(null, null, mapId);
       } else {
-        console.log('NO STUFF SELECTED');
         // general overview (mapId === '-1')
         this.dataService.resetAnyMappingSelection();
         this.dataService.resetDiscreteMappingPropertySelection();
