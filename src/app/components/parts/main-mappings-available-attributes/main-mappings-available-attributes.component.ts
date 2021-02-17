@@ -6,6 +6,8 @@ import {NeGroupedMappingsDiscrete} from '../../../models/ne-grouped-mappings-dis
 import {DataService} from '../../../services/data.service';
 import {NeMappingsType} from '../../../models/ne-mappings-type';
 import {UtilityService} from '../../../services/utility.service';
+import {NeMappingDiscrete} from "../../../models/ne-mapping-discrete";
+import {NeMappingPassthrough} from "../../../models/ne-mapping-passthrough";
 
 @Component({
   selector: 'app-main-mappings-available-attributes',
@@ -30,7 +32,7 @@ export class MainMappingsAvailableAttributesComponent implements OnInit {
 
   @Input() attributeListFull: NeAspect[];
 
-  @Input() mappings: NeContinuousCollection[] | NeGroupedMappingsDiscrete[];
+  @Input() mappings: NeContinuousCollection[] | NeMappingDiscrete[] | NeMappingPassthrough[];
 
   @Input() type: string;
 

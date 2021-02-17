@@ -36,6 +36,11 @@ export interface NeAspect {
   mapPointerD?: string[];
 
   /**
+   * List of passthrough mappings for this attribute
+   */
+  mapPointerP?: string[];
+
+  /**
    * Distribution chart for discrete properties
    */
   chartDiscreteDistribution?: any;

@@ -11,6 +11,26 @@
 
   <hr>
 
+  <!-- PASSTHROUGH -->
+  <div
+    *ngIf="(dataService.selectedPassthroughMapping && (dataService.selectedTypeHint.np || dataService.selectedTypeHint.ep))">
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th>{{'MAIN_MAPPINGS_TH_COL' | translate}}</th>
+        <th>{{'MAIN_MAPPINGS_TH_STYLE' | translate}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>{{dataService.selectedPassthroughMapping.col}}</td>
+        <td>{{dataService.selectedPassthroughMapping.styleProperty}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- DISCRETE -->
   <div
     *ngIf="(dataService.selectedDiscreteMapping && (dataService.selectedTypeHint.nd || dataService.selectedTypeHint.ed))">
 
@@ -67,6 +87,7 @@
 
   </div>
 
+  <!-- CONTINUOUS -->
   <div
     *ngIf="(dataService.selectedContinuousMapping && (dataService.selectedTypeHint.nc || dataService.selectedTypeHint.ec))">
 
@@ -143,6 +164,7 @@
 
     <div class="row">
       <!-- todo should be responsive, input component width ... -->
+      <!-- ND -->
       <div class="col-xl-6 col-12">
 
         <app-main-mappings-available-attributes
@@ -153,7 +175,7 @@
         </app-main-mappings-available-attributes>
 
       </div>
-
+      <!-- ED -->
       <div class="col-xl-6 col-12">
 
         <app-main-mappings-available-attributes
@@ -167,6 +189,7 @@
 
       <div class="w-100"></div>
 
+      <!-- NC -->
       <div class="col-xl-6 col-12">
 
         <app-main-mappings-available-attributes
@@ -177,7 +200,7 @@
         </app-main-mappings-available-attributes>
 
       </div>
-
+      <!-- EC -->
       <div class="col-xl-6 col-12">
 
         <app-main-mappings-available-attributes
@@ -188,6 +211,34 @@
         </app-main-mappings-available-attributes>
 
       </div>
+    </div>
+
+    <h3>{{'MAIN_MAPPINGS_TITLE_PASSTHROUGH' | translate}}</h3>
+
+    <div class="row">
+
+      <div class="col-xl-6 col-12">
+
+        <app-main-mappings-available-attributes
+          [attributeListFull]="getAttributeListForCurrentNetworkAndType('np')"
+          [headline]="'MAIN_MAPPINGS_TITLE_NODES_PASSTHROUGH'"
+          [mappings]="getExistingMappingListForCurrentNetworkAndType('np')"
+          [type]="'np'">
+        </app-main-mappings-available-attributes>
+
+      </div>
+
+      <div class="col-xl-6 col-12">
+
+        <app-main-mappings-available-attributes
+          [attributeListFull]="getAttributeListForCurrentNetworkAndType('ep')"
+          [headline]="'MAIN_MAPPINGS_TITLE_EDGES_PASSTHROUGH'"
+          [mappings]="getExistingMappingListForCurrentNetworkAndType('ep')"
+          [type]="'e<p'">
+        </app-main-mappings-available-attributes>
+
+      </div>
+
     </div>
 
   </div>

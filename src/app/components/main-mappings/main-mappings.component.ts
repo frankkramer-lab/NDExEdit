@@ -2,11 +2,12 @@ import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core'
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
 import {faArrowLeft, faCheck, faEdit, faPlus, faSearch, faTimes, faTrash} from '@fortawesome/free-solid-svg-icons';
-import {NeGroupedMappingsDiscrete} from '../../models/ne-grouped-mappings-discrete';
 import {NeMappingsType} from '../../models/ne-mappings-type';
 import {NeAspect} from '../../models/ne-aspect';
 import {UtilityService} from '../../services/utility.service';
 import {NeContinuousCollection} from '../../models/ne-continuous-collection';
+import {NeMappingDiscrete} from '../../models/ne-mapping-discrete';
+import {NeMappingPassthrough} from '../../models/ne-mapping-passthrough';
 
 @Component({
   selector: 'app-main-mappings',
@@ -110,7 +111,7 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
         // discrete mapping
         this.dataService.selectMapping(mapHint, col);
       } else if (mapId !== '-1') {
-        // continuous mapping
+        // continuous or passthrough mapping
         this.dataService.selectMapping(null, null, mapId);
       } else {
         // general overview (mapId === '-1')
@@ -210,16 +211,18 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
     const typeHint: NeMappingsType = this.utilityService.utilGetTypeHintByString(s);
     let baseList: NeAspect[];
 
-    if (typeHint.nd || typeHint.nc) {
+    if (typeHint.nd || typeHint.nc || typeHint.np) {
       baseList = this.dataService.selectedNetwork.aspectKeyValuesNodes;
-    } else if (typeHint.ed || typeHint.ec) {
+    } else if (typeHint.ed || typeHint.ec || typeHint.ep) {
       baseList = this.dataService.selectedNetwork.aspectKeyValuesEdges;
     }
 
     if (typeHint.nc || typeHint.ec) {
       return baseList.filter(a => a.datatype === 'double' || a.datatype === 'float' || a.datatype === 'integer');
-    } else {
+    } else if (typeHint.nd || typeHint.ed) {
       return baseList.filter(a => a.datatype === 'string' || a.datatype === 'integer');
+    } else {
+      return baseList; // assuming all attributes are valid for a passthrough mapping
     }
   }
 
@@ -228,7 +231,10 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    *
    * @param s Can either be 'nd', 'nc', 'ed' or 'ec'
    */
-  public getExistingMappingListForCurrentNetworkAndType(s: string): NeContinuousCollection[] | NeGroupedMappingsDiscrete[] {
+  public getExistingMappingListForCurrentNetworkAndType(s: string):
+    NeContinuousCollection[] |
+    NeMappingDiscrete[] |
+    NeMappingPassthrough[] {
     const typeHint: NeMappingsType = this.utilityService.utilGetTypeHintByString(s);
     const availableMappings = this.dataService.selectedNetwork.mappings;
 
@@ -240,6 +246,10 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
       return availableMappings.edgesDiscrete;
     } else if (typeHint.ec) {
       return availableMappings.edgesContinuous;
+    } else if (typeHint.np) {
+      return availableMappings.nodesPassthrough;
+    } else if (typeHint.ep) {
+      return availableMappings.edgesPassthrough;
     }
 
     return [];

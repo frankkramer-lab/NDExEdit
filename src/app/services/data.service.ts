@@ -6,6 +6,7 @@ import {UtilityService} from './utility.service';
 import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete';
 import {NeMappingsType} from '../models/ne-mappings-type';
 import {NeAspect} from '../models/ne-aspect';
+import {NeMappingPassthrough} from "../models/ne-mapping-passthrough";
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +42,10 @@ export class DataService {
    * Selected continuous mapping of type {@link NeMappingContinuous}
    */
   selectedContinuousMapping: NeMappingContinuous;
+  /**
+   * Selected passthrough mapping of type {@link NeMappingPassthrough}
+   */
+  selectedPassthroughMapping: NeMappingPassthrough;
   /**
    * Selected discrete mapping property
    */
@@ -334,12 +339,15 @@ export class DataService {
 
     let col: string;
     const isDiscrete = this.selectedTypeHint.nd || this.selectedTypeHint.ed;
-    const isNode = this.selectedTypeHint.nd || this.selectedTypeHint.nc;
+    const isContinuous = this.selectedTypeHint.nc || this.selectedTypeHint.ec;
+    const isNode = this.selectedTypeHint.nd || this.selectedTypeHint.nc || this.selectedTypeHint.np;
 
-    if (this.selectedTypeHint.nd || this.selectedTypeHint.ed) {
+    if (isDiscrete) {
       col = this.selectedDiscreteMapping[0].col;
-    } else {
+    } else if (isContinuous) {
       col = this.selectedContinuousMapping.col;
+    } else {
+      col = this.selectedPassthroughMapping.col;
     }
 
     // todo test this, as soon as multiple adding continuous mapping works again
@@ -348,9 +356,13 @@ export class DataService {
         if (nodeAspect.name === col) {
           if (isDiscrete) {
             nodeAspect.mapPointerD = [];
-          } else {
+          } else if (isContinuous) {
             const mapIndex = this.selectedNetwork.mappings.nodesContinuous.indexOf(this.selectedContinuousMapping);
             nodeAspect.mapPointerC = nodeAspect.mapPointerC.filter(a => a !== 'nc' + mapIndex);
+            console.log(nodeAspect);
+          } else {
+            const mapIndex = this.selectedNetwork.mappings.nodesPassthrough.indexOf(this.selectedPassthroughMapping);
+            nodeAspect.mapPointerP = nodeAspect.mapPointerP.filter(a => a !== 'np' + mapIndex);
             console.log(nodeAspect);
           }
         }
@@ -360,9 +372,13 @@ export class DataService {
         if (edgeAspect.name === col) {
           if (isDiscrete) {
             edgeAspect.mapPointerD = [];
-          } else {
+          } else if (isContinuous) {
             const mapIndex = this.selectedNetwork.mappings.edgesContinuous.indexOf(this.selectedContinuousMapping);
             edgeAspect.mapPointerC = edgeAspect.mapPointerC.filter(a => a !== 'ec' + mapIndex);
+            console.log(edgeAspect);
+          } else {
+            const mapIndex = this.selectedNetwork.mappings.edgesPassthrough.indexOf(this.selectedPassthroughMapping);
+            edgeAspect.mapPointerP = edgeAspect.mapPointerP.filter(a => a !== 'ep' + mapIndex);
             console.log(edgeAspect);
           }
         }
@@ -399,8 +415,10 @@ export class DataService {
     if (isDiscrete) {
       this.selectedDiscreteMapping = null;
       this.selectedDiscreteMappingProperty = null;
-    } else {
+    } else if (isContinuous) {
       this.selectedContinuousMapping = null;
+    } else {
+      this.selectedPassthroughMapping = null;
     }
   }
 
@@ -1121,18 +1139,27 @@ export class DataService {
   selectMapping(mapHint: string = null, col: string = null, mapId: string = null): void {
 
     if (mapId !== null) {
-      // continuous mapping does not need property
+      // continuous or passthrough mapping do not need property
       this.selectedTypeHint = this.utilityService.utilGetTypeHintByString(mapId.substr(0, 2));
       const pointer = Number(mapId.substr(2));
 
       if (this.selectedTypeHint.nc) {
         this.selectedContinuousMapping = this.selectedNetwork.mappings.nodesContinuous[pointer];
+        this.selectedPassthroughMapping = null;
       } else if (this.selectedTypeHint.ec) {
         this.selectedContinuousMapping = this.selectedNetwork.mappings.edgesContinuous[pointer];
+        this.selectedPassthroughMapping = null;
+      } else if (this.selectedTypeHint.np) {
+        this.selectedPassthroughMapping = this.selectedNetwork.mappings.nodesPassthrough[pointer];
+        this.selectedContinuousMapping = null;
+      } else if (this.selectedTypeHint.ep) {
+        this.selectedPassthroughMapping = this.selectedNetwork.mappings.edgesPassthrough[pointer];
+        this.selectedContinuousMapping = null;
       }
+
       this.selectedDiscreteMapping = null;
       this.selectedDiscreteMappingProperty = null;
-      console.log(this.selectedContinuousMapping);
+      console.log(this.selectedContinuousMapping, this.selectedPassthroughMapping);
 
     } else {
 
@@ -1162,24 +1189,6 @@ export class DataService {
       this.selectedContinuousMapping = null;
     }
   }
-
-  /**
-   * Selects a property within a grouped discrete mapping.
-   * Call this with null to unselect the currently selected mapping property.
-   * @param propertyId id of the specified style, or null to unselect
-   */
-  // selectDiscreteMappingProperty(propertyId: number): void {
-  //   if (propertyId === null) {
-  //     this.selectedDiscreteMappingProperty = null;
-  //     return;
-  //   }
-  //
-  //   if (!this.selectedDiscreteMapping) {
-  //     console.log('No discrete mapping selected');
-  //     return;
-  //   }
-  //   this.selectedDiscreteMappingProperty = this.selectedDiscreteMapping[propertyId].styleProperty;
-  // }
 
   /**
    * Selects a property within a discrete mapping for deletion.

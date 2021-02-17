@@ -12,11 +12,10 @@ import {CxToJs, CyNetworkUtils} from 'cytoscape-cx2js';
 import {NeMappingsMap} from '../models/ne-mappings-map';
 import {NeMappingDiscrete} from '../models/ne-mapping-discrete';
 import {NeMappingContinuous} from '../models/ne-mapping-continuous';
-import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete';
 import {NeAspect} from '../models/ne-aspect';
 import {NeChartType} from '../models/ne-chart-type';
 import {DataService} from './data.service';
-import {NeStyleMap} from "../models/ne-style-map";
+import {NeMappingPassthrough} from '../models/ne-mapping-passthrough';
 
 @Injectable({
   providedIn: 'root'
@@ -40,8 +39,8 @@ export class ParseService {
    * Creates a discrete mapping object based on the definition string.
    * Keys and values are always considered to be strings
    *
-   * @param obj Contains type and definition
-   * @param styleProperty Name of the style property
+   * @param obj JSON containing the mapping's definition
+   * @param styleProperty Name of the property which is used for this mapping
    * @private
    */
   private static parseDefinitionDiscrete(obj: any, styleProperty: string): NeMappingDiscrete {
@@ -157,6 +156,7 @@ export class ParseService {
           datatype: attr.d ?? 'string',
           mapPointerD: [],
           mapPointerC: [],
+          mapPointerP: [],
           validForContinuous: false
         };
         akvs.push(tmp);
@@ -204,6 +204,18 @@ export class ParseService {
           akv.mapPointerC.push('ec' + i);
         }
       }
+
+      for (let i = 0; i < mappings.nodesPassthrough.length; i++) {
+        if (mappings.nodesPassthrough[i].col === akv.name) {
+          akv.mapPointerP.push('np' + i);
+        }
+      }
+
+      for (let i = 0; i < mappings.edgesPassthrough.length; i++) {
+        if (mappings.edgesPassthrough[i].col === akv.name) {
+          akv.mapPointerP.push('ep' + i);
+        }
+      }
     }
 
     return akvs;
@@ -212,8 +224,8 @@ export class ParseService {
   /**
    * Interprets a continuous mapping and elicits all their thresholds to display intuitively
    *
-   * @param obj
-   * @param styleProperty
+   * @param obj JSON containing the mapping's definition
+   * @param styleProperty Name of the property which is used for this mapping
    * @private
    */
   private parseDefinitionContinuous(obj: any, styleProperty: string): NeMappingContinuous {
@@ -294,6 +306,26 @@ export class ParseService {
     }
 
     return mappingContinuous;
+  }
+
+  /**
+   * Interprets a passthrough mapping and elicits col and style property
+   *
+   * @param obj JSON containing the mapping's definition
+   * @param styleProperty Name of the property which is used for this mapping
+   * @private
+   */
+  private parseDefinitionPassthrough(obj: any, styleProperty: string): NeMappingPassthrough {
+
+    if (!obj || !obj.definition || !styleProperty) {
+      console.log('No definition given');
+      return null;
+    }
+
+    return {
+      col: this.utilityService.utilExtractColByMappingString(obj.definition),
+      styleProperty
+    };
   }
 
   /**
@@ -600,11 +632,10 @@ export class ParseService {
       nodesDiscrete: [],
       nodesContinuous: [],
       edgesDiscrete: [],
-      edgesContinuous: []
+      edgesContinuous: [],
+      nodesPassthrough: [],
+      edgesPassthrough: []
     };
-
-    const tmpND: NeMappingDiscrete[] = [];
-    const tmpED: NeMappingDiscrete[] = [];
 
     for (const fd of filedata) {
 
@@ -617,24 +648,31 @@ export class ParseService {
             for (const mapKey of Object.keys(prop.mappings)) {
               const isDiscrete = prop.mappings[mapKey].type === 'DISCRETE';
               const isContinuous = prop.mappings[mapKey].type === 'CONTINUOUS';
+              const isPassthrough = prop.mappings[mapKey].type === 'PASSTHROUGH';
 
               if (isDiscrete) {
                 const definition: NeMappingDiscrete = ParseService.parseDefinitionDiscrete(prop.mappings[mapKey], mapKey);
                 if (isNode) {
                   // nd
-                  tmpND.push(definition);
+                  mappings.nodesDiscrete.push(definition);
                 } else {
                   // ed
-                  tmpED.push(definition);
+                  mappings.edgesDiscrete.push(definition);
                 }
               } else if (isContinuous) {
                 const definition = this.parseDefinitionContinuous(prop.mappings[mapKey], mapKey);
-                if (isNode && isContinuous) {
+                if (isNode) {
                   // nc
                   mappings.nodesContinuous.push(definition);
-                } else if (isContinuous) {
+                } else {
                   // ec
                   mappings.edgesContinuous.push(definition);
+                }
+              } else if (isPassthrough) {
+                if (isNode) {
+                  mappings.nodesPassthrough.push(this.parseDefinitionPassthrough(prop.mappings[mapKey], mapKey));
+                } else {
+                  mappings.edgesPassthrough.push(this.parseDefinitionPassthrough(prop.mappings[mapKey], mapKey));
                 }
               }
             }
@@ -643,79 +681,8 @@ export class ParseService {
       }
     }
 
-    mappings.nodesDiscrete = tmpND;
-    mappings.edgesDiscrete = tmpED;
-
     return mappings;
   }
-
-  /**
-   * Groups a list of discrete mappings to be displayed as a singular mappping.
-   * Facilitates why a specific node is displayed a certain way, instead of
-   * inspecting each mapping separately
-   * @param mappings List of discrete mappings
-   * @private
-   */
-  // private groupDiscreteMappingsByCol(mappings: NeMappingDiscrete[]): NeGroupedMappingsDiscrete[] {
-  //   if (!mappings || mappings.length === 0) {
-  //     console.log('No mappings to group');
-  //     return [];
-  //   }
-  //
-  //   console.log(mappings);
-  //
-  //   const group: NeGroupedMappingsDiscrete[] = [];
-  //
-  //   for (const newItem of mappings) {
-  //     let found = false;
-  //     for (const groupItem of group) {
-  //
-  //       if (groupItem.col === newItem.col) {
-  //         found = true;
-  //
-  //         const newStyle: NeStyleMap = {
-  //           attributeValues: newItem.keys as string[],
-  //           cssKey: newItem.styleProperty,
-  //           cssValues: newItem.values as string[],
-  //           isColor: (newItem.values as string[]).filter(a => !a.startsWith('#')).length === 0
-  //         };
-  //
-  //         groupItem.styleMap.push(newStyle);
-  //         groupItem.th.push(this.utilityService.utilRemovePrefix(newItem.styleProperty, ['NODE_', 'EDGE_']));
-  //
-  //         for (const k of newItem.keys) {
-  //           if (!groupItem.values.includes(k as string)) {
-  //             groupItem.values.push(k as string);
-  //           }
-  //         }
-  //       }
-  //     }
-  //
-  //     if (!found) {
-  //       // no COL matched => build new group
-  //       const newStyle: NeStyleMap = {
-  //         attributeValues: newItem.keys as string[],
-  //         cssKey: newItem.styleProperty,
-  //         cssValues: newItem.values as string[],
-  //         isColor: (newItem.values as string[]).filter(a => !a.startsWith('#')).length === 0
-  //       };
-  //
-  //       const newGroup: NeGroupedMappingsDiscrete = {
-  //         col: newItem.col,
-  //         datatype: newItem.type,
-  //         styleMap: [newStyle],
-  //         th: [this.utilityService.utilRemovePrefix(newItem.styleProperty, ['NODE_', 'EDGE_'])],
-  //         values: newItem.keys as string[]
-  //       };
-  //
-  //       if (!group.includes(newGroup)) {
-  //         group.push(newGroup);
-  //       }
-  //     }
-  //   }
-  //
-  //   return group;
-  // }
 
   /**
    * Builds distribution charts per aspect
@@ -814,22 +781,4 @@ export class ParseService {
     return ((sum / elementCount) * 100).toFixed(0);
   }
 
-  private consolidateAttributePointer(mapping: NeGroupedMappingsDiscrete): NeGroupedMappingsDiscrete {
-    console.log(mapping);
-    const setAttributeValues = [];
-
-    for (const style of mapping.styleMap) {
-      for (const av of style.attributeValues) {
-        if (!setAttributeValues.includes(av)) {
-          setAttributeValues.push(av);
-        }
-      }
-    }
-
-    mapping.values = setAttributeValues;
-
-
-    console.log(mapping);
-    return mapping;
-  }
 }

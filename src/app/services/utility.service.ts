@@ -4,8 +4,6 @@ import {NeMappingsType} from '../models/ne-mappings-type';
 import {NeAspect} from '../models/ne-aspect';
 import {NeChart} from '../models/ne-chart';
 import {NeFrequencyCounter} from '../models/ne-frequency-counter';
-import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete';
-import {NeMappingDiscrete} from '../models/ne-mapping-discrete';
 
 @Injectable({
   providedIn: 'root'
@@ -89,36 +87,64 @@ export class UtilityService {
         return {
           nd: true,
           nc: false,
+          np: false,
           ed: false,
-          ec: false
+          ec: false,
+          ep: false
         };
       case 'nc':
         return {
           nd: false,
           nc: true,
+          np: false,
           ed: false,
-          ec: false
+          ec: false,
+          ep: false
         };
       case 'ed':
         return {
           nd: false,
           nc: false,
+          np: false,
           ed: true,
-          ec: false
+          ec: false,
+          ep: false
         };
       case 'ec':
         return {
           nd: false,
           nc: false,
+          np: false,
           ed: false,
-          ec: true
+          ec: true,
+          ep: false
+        };
+      case 'np':
+        return {
+          nd: false,
+          nc: false,
+          np: true,
+          ed: false,
+          ec: false,
+          ep: false
+        };
+      case 'ep':
+        return {
+          nd: false,
+          nc: false,
+          np: false,
+          ed: false,
+          ec: false,
+          ep: true
         };
       default:
         return {
           nd: false,
           nc: false,
+          np: false,
           ed: false,
-          ec: false
+          ec: false,
+          ep: false
         };
     }
   }
@@ -136,6 +162,10 @@ export class UtilityService {
       return 'ed';
     } else if (typeHint.ec) {
       return 'ec';
+    } else if (typeHint.np) {
+      return 'np';
+    } else if (typeHint.ep) {
+      return 'ep';
     }
     return '';
   }
@@ -346,17 +376,17 @@ export class UtilityService {
    * @param mapping grouped discrete mapping
    * @param index points to the index within this mapping's style map
    */
-  utilExtractDiscreteFromGroupedDiscrete(mapping: NeGroupedMappingsDiscrete, index: number): NeMappingDiscrete {
-    // todo remove this when editing, because NeGroupedMappingsDiscrete is going to be unnecessary
-    return {
-      keys: [],
-      col: mapping.col,
-      styleProperty: mapping.styleMap[index].cssKey,
-      type: mapping.datatype,
-      values: mapping.styleMap[index].cssValues
-    };
-
-  }
+  // utilExtractDiscreteFromGroupedDiscrete(mapping: NeGroupedMappingsDiscrete, index: number): NeMappingDiscrete {
+  //   // todo remove this when editing, because NeGroupedMappingsDiscrete is going to be unnecessary
+  //   return {
+  //     keys: [],
+  //     col: mapping.col,
+  //     styleProperty: mapping.styleMap[index].cssKey,
+  //     type: mapping.datatype,
+  //     values: mapping.styleMap[index].cssValues
+  //   };
+  //
+  // }
 
   /**
    * Extracts the column by which this mapping is built.
@@ -366,4 +396,5 @@ export class UtilityService {
     const regex = new RegExp('COL=(.*?),');
     return mapping.match(regex)[1];
   }
+
 }

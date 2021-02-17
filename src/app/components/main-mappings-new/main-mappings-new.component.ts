@@ -244,6 +244,16 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * @private
    */
   private isDiscrete: boolean;
+  /**
+   * Indicates if this new mapping or already existing mapping is continuous
+   * @private
+   */
+  private isContinuous: boolean;
+  /**
+   * Indicates if this new mapping or already existing mapping is passthrough
+   * @private
+   */
+  private isPassthrough: boolean;
 
 
   /**
@@ -319,11 +329,9 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     if (mapType) {
       this.typeHint = this.utilityService.utilGetTypeHintByString(mapType);
 
-      if (this.typeHint.ec || this.typeHint.nc) {
-        this.isDiscrete = false;
-      } else {
-        this.isDiscrete = true;
-      }
+      this.isContinuous = this.typeHint.ec || this.typeHint.nc;
+      this.isDiscrete = this.typeHint.nd || this.typeHint.ed;
+      this.isPassthrough = this.typeHint.np || this.typeHint.ep;
 
       if (this.isEdit) {
         this.initDataEdit(params);
@@ -346,13 +354,13 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
 
     let availableAttributes: any[];
 
-    if (this.typeHint.ec || this.typeHint.ed) {
+    if (this.typeHint.ec || this.typeHint.ed || this.typeHint.ep) {
       availableAttributes = this.dataService.selectedNetwork.aspectKeyValuesEdges;
     } else {
       availableAttributes = this.dataService.selectedNetwork.aspectKeyValuesNodes;
     }
 
-    if (!this.isDiscrete) {
+    if (this.isContinuous) {
       availableAttributes = this.utilityService.utilFilterForContinuous(availableAttributes);
       this.propertyToMap = availableAttributes[this.propertyId];
       this.chartObject = (this.propertyToMap.datatype === 'integer'
@@ -376,7 +384,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         thresholds: [],
         type: this.propertyToMap.datatype
       };
-    } else {
+    } else if (this.isDiscrete) {
       availableAttributes = this.utilityService.utilFilterForDiscrete(availableAttributes);
       this.propertyToMap = availableAttributes[this.propertyId];
       this.chartObject = this.propertyToMap.chartDiscreteDistribution;
@@ -389,6 +397,9 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         type: this.propertyToMap.datatype,
         values
       };
+    } else {
+      // todo create new passthrough mapping
+      console.log('new passthrough mapping');
     }
 
     this.propertyToMap = availableAttributes[this.propertyId];
@@ -413,47 +424,47 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     let existingContinuousMapping: NeMappingContinuous;
     const mapId = params.get('map').substring(2);
 
-    switch (params.get('map').substring(0, 2)) {
-      case 'nd':
-        this.propertyId = Number(params.get('propertyId'));
-        existingDiscreteMapping = this.dataService.selectedNetwork.mappings.nodesDiscrete[mapId];
-        this.propertyToMap = this.dataService.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === existingDiscreteMapping.col);
-        this.styleProperty = existingDiscreteMapping.styleMap[this.propertyId].cssKey;
-        this.discreteMapping = this.utilityService.utilExtractDiscreteFromGroupedDiscrete(existingDiscreteMapping, Number(this.propertyId));
-        this.chartObject = this.propertyToMap.chartDiscreteDistribution;
-        break;
-      case 'nc':
-        existingContinuousMapping = this.dataService.selectedNetwork.mappings.nodesContinuous[mapId];
-        this.propertyToMap = this.dataService.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === existingContinuousMapping.col);
-        this.styleProperty = existingContinuousMapping.styleProperty;
-        this.continuousMapping = existingContinuousMapping;
-
-        this.binSize = (this.propertyToMap.datatype === 'integer')
-          ? this.utilityService.utilSturgesRule(this.propertyToMap.chartDiscreteDistribution.chartLabels as unknown as number[])
-          : this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
-        this.chartObject = this.continuousMapping.chart;
-
-        break;
-      case 'ed':
-        this.propertyId = Number(params.get('propertyId'));
-        existingDiscreteMapping = this.dataService.selectedNetwork.mappings.edgesDiscrete[mapId];
-        this.propertyToMap = this.dataService.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === existingDiscreteMapping.col);
-        this.styleProperty = existingDiscreteMapping.styleMap[this.propertyId].cssKey;
-        this.discreteMapping = this.utilityService.utilExtractDiscreteFromGroupedDiscrete(existingDiscreteMapping, Number(this.propertyId));
-        this.chartObject = this.propertyToMap.chartDiscreteDistribution;
-        break;
-      case 'ec':
-        existingContinuousMapping = this.dataService.selectedNetwork.mappings.edgesContinuous[mapId];
-        this.propertyToMap = this.dataService.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === existingContinuousMapping.col);
-        this.styleProperty = existingContinuousMapping.styleProperty;
-        this.continuousMapping = existingContinuousMapping;
-
-        this.binSize = (this.propertyToMap.datatype === 'integer')
-          ? this.utilityService.utilSturgesRule(this.propertyToMap.chartDiscreteDistribution.chartLabels as unknown as number[])
-          : this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
-        this.chartObject = this.continuousMapping.chart;
-        break;
-    }
+    // switch (params.get('map').substring(0, 2)) {
+    //   case 'nd':
+    //     this.propertyId = Number(params.get('propertyId'));
+    //     existingDiscreteMapping = this.dataService.selectedNetwork.mappings.nodesDiscrete[mapId];
+    //     this.propertyToMap = this.dataService.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === existingDiscreteMapping.col);
+    //     this.styleProperty = existingDiscreteMapping.styleMap[this.propertyId].cssKey;
+    //     this.discreteMapping = this.utilityService.utilExtractDiscreteFromGroupedDiscrete(existingDiscreteMapping, Number(this.propertyId));
+    //     this.chartObject = this.propertyToMap.chartDiscreteDistribution;
+    //     break;
+    //   case 'nc':
+    //     existingContinuousMapping = this.dataService.selectedNetwork.mappings.nodesContinuous[mapId];
+    //     this.propertyToMap = this.dataService.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === existingContinuousMapping.col);
+    //     this.styleProperty = existingContinuousMapping.styleProperty;
+    //     this.continuousMapping = existingContinuousMapping;
+    //
+    //     this.binSize = (this.propertyToMap.datatype === 'integer')
+    //       ? this.utilityService.utilSturgesRule(this.propertyToMap.chartDiscreteDistribution.chartLabels as unknown as number[])
+    //       : this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
+    //     this.chartObject = this.continuousMapping.chart;
+    //
+    //     break;
+    //   case 'ed':
+    //     this.propertyId = Number(params.get('propertyId'));
+    //     existingDiscreteMapping = this.dataService.selectedNetwork.mappings.edgesDiscrete[mapId];
+    //     this.propertyToMap = this.dataService.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === existingDiscreteMapping.col);
+    //     this.styleProperty = existingDiscreteMapping.styleMap[this.propertyId].cssKey;
+    //     this.discreteMapping = this.utilityService.utilExtractDiscreteFromGroupedDiscrete(existingDiscreteMapping, Number(this.propertyId));
+    //     this.chartObject = this.propertyToMap.chartDiscreteDistribution;
+    //     break;
+    //   case 'ec':
+    //     existingContinuousMapping = this.dataService.selectedNetwork.mappings.edgesContinuous[mapId];
+    //     this.propertyToMap = this.dataService.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === existingContinuousMapping.col);
+    //     this.styleProperty = existingContinuousMapping.styleProperty;
+    //     this.continuousMapping = existingContinuousMapping;
+    //
+    //     this.binSize = (this.propertyToMap.datatype === 'integer')
+    //       ? this.utilityService.utilSturgesRule(this.propertyToMap.chartDiscreteDistribution.chartLabels as unknown as number[])
+    //       : this.utilityService.utilSturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
+    //     this.chartObject = this.continuousMapping.chart;
+    //     break;
+    // }
   }
 
   /**

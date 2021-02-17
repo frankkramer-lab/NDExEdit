@@ -2,53 +2,49 @@
 
   <table class="table table-borderless">
     <thead class="border-bottom">
-    <th colspan="3">{{ headline | translate}}</th>
+    <tr>
+      <th colspan="3">{{ headline | translate}}</th>
+    </tr>
     </thead>
     <tbody>
+
     <tr *ngFor="let attribute of attributeListFull; let attributeIndex = index;">
       <td>{{ attribute.name }} </td>
+
       <td class="float-right">
 
-        <!-- continuous mappings -->
-        <span *ngIf="typeHint.ec || typeHint.nc then continuousBlock else discreteBlock"></span>
-
-        <ng-template #continuousBlock>
+        <span *ngIf="typeHint.ec || typeHint.nc">
 
           <!-- more than one mapping exists -->
-          <span *ngIf="attribute.mapPointerC.length > 1">
-          <div class="btn-group" role="group">
+          <div *ngIf="attribute.mapPointerC.length > 1">
             <div class="btn-group" role="group">
-              <button aria-expanded="false" aria-haspopup="true" class="btn btn-outline-secondary dropdown-toggle"
-                      data-toggle="dropdown" id="cDetailsGroup" type="button">
-                <fa-icon [icon]="faSearch"></fa-icon>
-              </button>
-              <div aria-labelledby="cDetailsGroup" class="dropdown-menu">
-                <a *ngFor="let cDetail of attribute.mapPointerC; let i = index;"
-                   [routerLink]="['', { outlets: {primary: ['mappings', cDetail]} }]"
-                   class="dropdown-item">
-                  <span *ngIf="typeHint.ec then ecBlock else ncBlock"></span>
-                  <ng-template
-                    #ecBlock>{{ dataService.getMappingByHintAndId(cDetail).styleProperty }}</ng-template>
-                  <ng-template
-                    #ncBlock>{{ dataService.getMappingByHintAndId(cDetail).styleProperty }}</ng-template>
-                </a>
+              <div class="btn-group" role="group">
+                <button aria-expanded="false" aria-haspopup="true" class="btn btn-outline-secondary dropdown-toggle"
+                        data-toggle="dropdown" id="cDetailsGroup" type="button">
+                  <fa-icon [icon]="faSearch"></fa-icon>
+                </button>
+                <div aria-labelledby="cDetailsGroup" class="dropdown-menu">
+                  <a *ngFor="let cDetail of attribute.mapPointerC; let i = index;"
+                     [routerLink]="['', { outlets: {primary: ['mappings', cDetail]} }]"
+                     class="dropdown-item">
+                    {{ dataService.getMappingByHintAndId(cDetail).styleProperty }}
+                  </a>
+                </div>
               </div>
             </div>
           </div>
-        </span>
 
           <!-- exactly one mapping exists -->
-          <span *ngIf="attribute.mapPointerC.length === 1">
-                  <button *ngIf="attribute.mapPointerC.length > 0"
-                          [routerLink]="['', { outlets: {primary: ['mappings', attribute.mapPointerC[0]]} }]"
-                          class="btn btn-outline-secondary"
-                          data-toggle="tooltip"
-                          ngbTooltip="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}" placement="bottom"
-                          type="button">
-                    <fa-icon [icon]="faSearch"></fa-icon>
-                  </button>
-                </span>
+          <button *ngIf="attribute.mapPointerC.length === 1"
+                  [routerLink]="['', { outlets: {primary: ['mappings', attribute.mapPointerC[0]]} }]"
+                  class="btn btn-outline-secondary"
+                  data-toggle="tooltip"
+                  ngbTooltip="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}" placement="bottom"
+                  type="button">
+            <fa-icon [icon]="faSearch"></fa-icon>
+          </button>
 
+          <!-- new -->
           <button
             [routerLink]="['', { outlets: {primary: ['new', (typeHint.ec ? 'ec' : 'nc'), attributeIndex ]} }]"
             class="btn btn-outline-success ml-2"
@@ -57,10 +53,11 @@
             type="button">
             <fa-icon [icon]="faPlus"></fa-icon>
           </button>
-        </ng-template>
+        </span>
 
-        <ng-template #discreteBlock>
+        <span *ngIf="typeHint.nd || typeHint.ed">
 
+          <!-- exists -->
           <button *ngIf="attribute.mapPointerD.length > 0"
                   [routerLink]="['', { outlets: {primary: ['mappings', attribute.mapPointerD[0].substr(0,2), attribute.name]} }]"
                   class="btn btn-outline-secondary"
@@ -70,6 +67,7 @@
             <fa-icon [icon]="faSearch"></fa-icon>
           </button>
 
+          <!-- new -->
           <button
             [routerLink]="['', { outlets: {primary: ['new', (typeHint.ed ? 'ed' : 'nd'), attributeIndex ]} }]"
             class="btn btn-outline-success ml-2"
@@ -79,7 +77,50 @@
             <fa-icon [icon]="faPlus"></fa-icon>
           </button>
 
-        </ng-template>
+        </span>
+
+        <span *ngIf="typeHint.np || typeHint.ep">
+
+          <!-- more than one mapping exists -->
+          <div *ngIf="attribute.mapPointerP.length > 1">
+            <div class="btn-group" role="group">
+              <div class="btn-group" role="group">
+                <button aria-expanded="false" aria-haspopup="true" class="btn btn-outline-secondary dropdown-toggle"
+                        data-toggle="dropdown" id="pDetailsGroup" type="button">
+                  <fa-icon [icon]="faSearch"></fa-icon>
+                </button>
+                <div aria-labelledby="pDetailsGroup" class="dropdown-menu">
+                  <a *ngFor="let pDetail of attribute.mapPointerP; let i = index;"
+                     [routerLink]="['', { outlets: {primary: ['mappings', pDetail]} }]"
+                     class="dropdown-item">
+                    {{ dataService.getMappingByHintAndId(pDetail).styleProperty }}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- exactly one mapping exists -->
+          <button *ngIf="attribute.mapPointerP.length === 1"
+                  [routerLink]="['', { outlets: {primary: ['mappings', attribute.mapPointerP[0]]} }]"
+                  class="btn btn-outline-secondary"
+                  data-toggle="tooltip"
+                  ngbTooltip="{{'MAIN_MAPPINGS_TT_MAP_DETAILS' | translate}}" placement="bottom"
+                  type="button">
+          <fa-icon [icon]="faSearch"></fa-icon>
+          </button>
+
+          <!-- new -->
+          <button
+            [routerLink]="['', { outlets: {primary: ['new', (typeHint.np ? 'np' : 'ep'), attributeIndex ]} }]"
+            class="btn btn-outline-success ml-2"
+            data-toggle="tooltip"
+            ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"
+            type="button">
+            <fa-icon [icon]="faPlus"></fa-icon>
+          </button>
+
+        </span>
 
     </tbody>
   </table>
