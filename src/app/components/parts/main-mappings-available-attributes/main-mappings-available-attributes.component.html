@@ -15,7 +15,6 @@
         <ng-template #continuousBlock>
 
           <!-- more than one mapping exists -->
-          <!-- todo needs debugging, bc does not work properly -->
           <span *ngIf="attribute.mapPointerC.length > 1">
           <div class="btn-group" role="group">
             <div class="btn-group" role="group">
@@ -25,13 +24,13 @@
               </button>
               <div aria-labelledby="cDetailsGroup" class="dropdown-menu">
                 <a *ngFor="let cDetail of attribute.mapPointerC; let i = index;"
-                   [routerLink]="['', { outlets: {primary: ['mappings', attribute.mapPointerC[i]]} }]"
+                   [routerLink]="['', { outlets: {primary: ['mappings', cDetail]} }]"
                    class="dropdown-item">
                   <span *ngIf="typeHint.ec then ecBlock else ncBlock"></span>
                   <ng-template
-                    #ecBlock>{{ dataService.selectedNetwork.mappings.edgesContinuous[i].cleanStyleProperty }}</ng-template>
+                    #ecBlock>{{ dataService.getMappingByHintAndId(cDetail).styleProperty }}</ng-template>
                   <ng-template
-                    #ncBlock>{{ dataService.selectedNetwork.mappings.nodesContinuous[i].cleanStyleProperty }}</ng-template>
+                    #ncBlock>{{ dataService.getMappingByHintAndId(cDetail).styleProperty }}</ng-template>
                 </a>
               </div>
             </div>

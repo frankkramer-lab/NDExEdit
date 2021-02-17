@@ -1233,4 +1233,23 @@ export class DataService {
     }
   }
 
+  /**
+   * Returns the mapping belonging to this typehint with id, e.g. 'nd0' returns the discrete node mapping on index 0
+   * @param hintWithId string containing both typehint and id
+   */
+  getMappingByHintAndId(hintWithId: string): NeMappingDiscrete | NeMappingContinuous {
+    const hintString = hintWithId.substring(0, 2);
+    const id = hintWithId.substring(2);
+    const typeHint = this.utilityService.utilGetTypeHintByString(hintString);
+    if (typeHint.nd) {
+      return this.selectedNetwork.mappings.nodesDiscrete[id];
+    } else if (typeHint.nc) {
+      return this.selectedNetwork.mappings.nodesContinuous[id];
+    } else if (typeHint.ed) {
+      return this.selectedNetwork.mappings.edgesDiscrete[id];
+    } else if (typeHint.ec) {
+      return this.selectedNetwork.mappings.edgesContinuous[id];
+    }
+  }
+
 }
