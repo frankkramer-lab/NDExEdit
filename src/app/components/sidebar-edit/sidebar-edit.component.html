@@ -73,29 +73,6 @@
         </tr>
         </tbody>
 
-
-        <!--        <span *ngFor="let node of graphService.selectedElements.nodes; let elementIndex = index">-->
-        <!--          <tr *ngIf="elementIndex === 0">-->
-        <!--            <td>&nbsp;</td>-->
-        <!--            <td *ngFor="let node of graphService.selectedElements.nodes">-->
-        <!--              <a (click)="graphService.highlightByElementId(node.id)" data-toggle="tooltip"-->
-        <!--                 ngbTooltip="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_NODE' | translate}} {{node.id}}" placement="left"-->
-        <!--                 role="button">-->
-        <!--                <b>{{node.name}} ({{node.id}})</b>-->
-        <!--              </a>-->
-        <!--            </td>-->
-        <!--          </tr>-->
-
-        <!--          <tr *ngFor="let attribute of node|attributesByElement">-->
-        <!--            <span *ngFor="let node of graphService.selectedElements.nodes; let elementIndex = index">-->
-        <!--              <td *ngIf="elementIndex === 0">{{attribute}}</td>-->
-        <!--              <td>{{attribute|attributeValueByElement : node}}</td>-->
-        <!--            </span>-->
-        <!--          </tr>-->
-
-        <!--        </span>-->
-
-
       </table>
     </div>
 
@@ -103,26 +80,40 @@
     <h5 *ngIf="graphService.selectedElements.edges.length > 0">{{'SIDEBAR_EDIT_COMPARISON_EDGES' | translate}}</h5>
 
     <div *ngIf="graphService.selectedElements.edges.length > 0" class="table-responsive">
+
       <table class="table table-bordered">
+
+        <thead>
         <tr>
-          <td>&nbsp;</td>
           <td *ngFor="let edge of graphService.selectedElements.edges">
             <a (click)="graphService.highlightByElementId(edge.id)" data-toggle="tooltip"
-               ngbTooltip="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_EDGE' | translate}} {{edge.id}}" placement="left"
+               ngbTooltip="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_NODE' | translate}} {{edge.id}}" placement="left"
                role="button">
-              <b>{{edge.name}} ({{edge.id}})</b>
+              <b class="float-right">{{edge.name}} ({{edge.id}})</b>
             </a>
           </td>
         </tr>
-        <tr *ngFor="let akve of dataService.selectedNetwork.aspectKeyValuesEdges">
-          <td><b>{{akve.name}}</b></td>
-          <td *ngFor="let edge of graphService.selectedElements.edges">
-            <span *ngFor="let attribute of edge.attributes">
-              <span *ngIf="attribute.keyHR === akve.name">{{attribute.valueHR}}</span>
-            </span>
+        </thead>
+
+        <tbody>
+        <tr>
+          <td *ngFor="let edge of graphService.selectedElements.edges; let elementIndex = index">
+
+            <table class="table table-borderless">
+
+              <tr *ngFor="let attribute of edge|attributesByElement">
+                <td *ngIf="elementIndex === 0" colspan="2"><b>{{attribute}}</b></td>
+                <td>{{attribute|attributeValueByElement : edge}}</td>
+              </tr>
+
+            </table>
+
           </td>
         </tr>
+        </tbody>
+
       </table>
+
     </div>
 
     <hr *ngIf="graphService.selectedElements.edges.length > 0">
