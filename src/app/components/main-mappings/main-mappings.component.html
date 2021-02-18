@@ -163,7 +163,7 @@
     <h3>{{'MAIN_MAPPINGS_TITLE_LIST' | translate}}</h3>
 
     <div class="row">
-      <!-- todo should be responsive, input component width ... -->
+
       <!-- ND -->
       <div class="col-xl-6 col-12">
 
@@ -187,7 +187,9 @@
 
       </div>
 
-      <div class="w-100"></div>
+      <!-- break -->
+      <div class="w-100 border-bottom mb-3 mt-3"></div>
+      <hr>
 
       <!-- NC -->
       <div class="col-xl-6 col-12">
@@ -211,12 +213,11 @@
         </app-main-mappings-available-attributes>
 
       </div>
-    </div>
 
-    <h3>{{'MAIN_MAPPINGS_TITLE_PASSTHROUGH' | translate}}</h3>
+      <!-- break -->
+      <div class="w-100 border-bottom mb-3 mt-3"></div>
 
-    <div class="row">
-
+      <!-- NP -->
       <div class="col-xl-6 col-12">
 
         <app-main-mappings-available-attributes
@@ -227,14 +228,14 @@
         </app-main-mappings-available-attributes>
 
       </div>
-
+      <!-- EP -->
       <div class="col-xl-6 col-12">
 
         <app-main-mappings-available-attributes
           [attributeListFull]="getAttributeListForCurrentNetworkAndType('ep')"
           [headline]="'MAIN_MAPPINGS_TITLE_EDGES_PASSTHROUGH'"
           [mappings]="getExistingMappingListForCurrentNetworkAndType('ep')"
-          [type]="'e<p'">
+          [type]="'ep'">
         </app-main-mappings-available-attributes>
 
       </div>

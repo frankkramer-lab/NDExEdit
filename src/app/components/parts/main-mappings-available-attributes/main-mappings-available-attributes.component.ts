@@ -27,15 +27,25 @@ export class MainMappingsAvailableAttributesComponent implements OnInit {
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faPlus = faPlus;
-
+  /**
+   * Headline for this list
+   */
   @Input() headline: string;
-
+  /**
+   * List of properties ready for mapping
+   */
   @Input() attributeListFull: NeAspect[];
-
+  /**
+   * List of already existing mappings for the list of properties
+   */
   @Input() mappings: NeContinuousCollection[] | NeMappingDiscrete[] | NeMappingPassthrough[];
-
+  /**
+   * Indicating type of mappings, e.g. 'nd'
+   */
   @Input() type: string;
-
+  /**
+   * Standardized format for mapping types
+   */
   typeHint: NeMappingsType;
 
   constructor(
