@@ -30,6 +30,8 @@ import {IsByColPipe} from './pipes/isByCol.pipe';
 import {StylePropertiesByCol} from './pipes/stylePropertiesByCol.pipe';
 import {StyleValueByColAndKeyPipe} from './pipes/styleValueByColAndKey.pipe';
 import {ShortPipe} from './pipes/short.pipe';
+import {AttributesByElementPipe} from "./pipes/attributesByElement.pipe";
+import {AttributeValueByElementPipe} from "./pipes/attributeValueByElement.pipe";
 
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -54,6 +56,8 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     IsByColPipe,
     StylePropertiesByCol,
     StyleValueByColAndKeyPipe,
+    AttributesByElementPipe,
+    AttributeValueByElementPipe,
     ShortPipe
   ],
   imports: [

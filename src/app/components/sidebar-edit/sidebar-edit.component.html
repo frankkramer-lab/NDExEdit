@@ -41,25 +41,61 @@
     <h5 *ngIf="graphService.selectedElements.nodes.length > 0">{{'SIDEBAR_EDIT_COMPARISON_NODES' | translate}}</h5>
 
     <div *ngIf="graphService.selectedElements.nodes.length > 0" class="table-responsive">
+
       <table class="table table-bordered">
+
+        <thead>
         <tr>
-          <td>&nbsp;</td>
           <td *ngFor="let node of graphService.selectedElements.nodes">
             <a (click)="graphService.highlightByElementId(node.id)" data-toggle="tooltip"
                ngbTooltip="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_NODE' | translate}} {{node.id}}" placement="left"
                role="button">
-              <b>{{node.name}} ({{node.id}})</b>
+              <b class="float-right">{{node.name}} ({{node.id}})</b>
             </a>
           </td>
         </tr>
-        <tr *ngFor="let akvn of dataService.selectedNetwork.aspectKeyValuesNodes">
-          <td><b>{{akvn.name}}</b></td>
-          <td *ngFor="let node of graphService.selectedElements.nodes">
-            <span *ngFor="let attribute of node.attributes">
-              <span *ngIf="attribute.keyHR === akvn.name">{{attribute.valueHR}}</span>
-            </span>
+        </thead>
+
+        <tbody>
+        <tr>
+          <td *ngFor="let node of graphService.selectedElements.nodes; let elementIndex = index">
+
+            <table class="table table-borderless">
+
+              <tr *ngFor="let attribute of node|attributesByElement">
+                <td *ngIf="elementIndex === 0" colspan="2"><b>{{attribute}}</b></td>
+                <td>{{attribute|attributeValueByElement : node}}</td>
+              </tr>
+
+            </table>
+
           </td>
         </tr>
+        </tbody>
+
+
+        <!--        <span *ngFor="let node of graphService.selectedElements.nodes; let elementIndex = index">-->
+        <!--          <tr *ngIf="elementIndex === 0">-->
+        <!--            <td>&nbsp;</td>-->
+        <!--            <td *ngFor="let node of graphService.selectedElements.nodes">-->
+        <!--              <a (click)="graphService.highlightByElementId(node.id)" data-toggle="tooltip"-->
+        <!--                 ngbTooltip="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_NODE' | translate}} {{node.id}}" placement="left"-->
+        <!--                 role="button">-->
+        <!--                <b>{{node.name}} ({{node.id}})</b>-->
+        <!--              </a>-->
+        <!--            </td>-->
+        <!--          </tr>-->
+
+        <!--          <tr *ngFor="let attribute of node|attributesByElement">-->
+        <!--            <span *ngFor="let node of graphService.selectedElements.nodes; let elementIndex = index">-->
+        <!--              <td *ngIf="elementIndex === 0">{{attribute}}</td>-->
+        <!--              <td>{{attribute|attributeValueByElement : node}}</td>-->
+        <!--            </span>-->
+        <!--          </tr>-->
+
+        <!--        </span>-->
+
+
       </table>
     </div>
 
@@ -279,7 +315,6 @@
         </tr>
 
       </table>
-
 
       <!-- EC -->
       <ul *ngIf="dataService.selectedNetwork.mappings.edgesContinuous.length > 0"

@@ -61,7 +61,7 @@ export class GraphService {
       })
       .catch(e => {
         console.error(e);
-        this.subscribeToCoreEvents();
+        console.log('Not subscribing to core events due to errors!');
         return network;
       });
 
@@ -157,6 +157,7 @@ export class GraphService {
         } else if (event.target.isEdge()) {
           this.selectedElements.edges.push(event.target.data() as NeEdge);
         }
+        console.log(this.selectedElements);
         break;
       case 'unselect':
         if (event.target.isNode()) {
@@ -164,6 +165,7 @@ export class GraphService {
         } else if (event.target.isEdge()) {
           this.selectedElements.edges = this.selectedElements.edges.filter(x => x.id !== event.target.data().id);
         }
+        console.log(this.selectedElements);
         break;
     }
   }
