@@ -11,8 +11,8 @@ import {MainMappingsComponent} from '../main-mappings/main-mappings.component';
 import {MainMappingsNewComponent} from '../main-mappings-new/main-mappings-new.component';
 import {NeChart} from '../../models/ne-chart';
 import {NeChartType} from '../../models/ne-chart-type';
-import {NeMappingDiscrete} from "../../models/ne-mapping-discrete";
-import {NeMappingContinuous} from "../../models/ne-mapping-continuous";
+import {NeMappingDiscrete} from '../../models/ne-mapping-discrete';
+import {NeMappingContinuous} from '../../models/ne-mapping-continuous';
 
 @Component({
   selector: 'app-sidebar-edit',
