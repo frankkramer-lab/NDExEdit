@@ -210,7 +210,6 @@ export class ParseService {
       }
 
       for (let i = 0; i < mappings.edgesContinuous.length; i++) {
-        console.log(akv, mappings.edgesContinuous[i]);
         if (mappings.edgesContinuous[i].col === akv.name) {
           akv.mapPointerC.push('ec' + i);
         }
