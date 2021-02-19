@@ -176,8 +176,18 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * Submits a new continuous mapping
    */
   submitNewContinuousMapping(): void {
-    // todo
+    this.thresholds = this.thresholds.sort((a, b) => Number(a.value) > Number(b.value) ? 1 : -1);
 
+    this.mappingContinuous.thresholds = this.thresholds.map(a => String(a.value));
+    this.mappingContinuous.equals = this.thresholds.map(a => String(a.propertyValue));
+
+    // trying
+    this.mappingContinuous.greaters = this.mappingContinuous.equals;
+    this.mappingContinuous.lowers = this.mappingContinuous.equals;
+
+    console.log(this.mappingContinuous);
+
+    this.dataService.addMappingContinuous(this.mappingContinuous, this.styleProperty, this.typeHint);
 
     // this.continuousMapping.cssKey = this.styleProperty;
     // this.continuousMapping.mappedProperty = this.propertyToMap;

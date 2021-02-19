@@ -32,6 +32,16 @@ export class ParseService {
   ) {
     dataService.networkChangedEmitter.subscribe(network => {
       dataService.selectedNetwork.mappings = this.convertMappingsByFile(network.cx);
+
+      // rework mapPointers
+      for (const fd of network.cx) {
+        if (fd.nodeAttributes) {
+          dataService.selectedNetwork.aspectKeyValuesNodes = this.convertAkvByFile(fd.nodeAttributes, dataService.selectedNetwork.mappings);
+        }
+        if (fd.edgeAttributes) {
+          dataService.selectedNetwork.aspectKeyValuesEdges = this.convertAkvByFile(fd.edgeAttributes, dataService.selectedNetwork.mappings);
+        }
+      }
     });
   }
 
@@ -200,6 +210,7 @@ export class ParseService {
       }
 
       for (let i = 0; i < mappings.edgesContinuous.length; i++) {
+        console.log(akv, mappings.edgesContinuous[i]);
         if (mappings.edgesContinuous[i].col === akv.name) {
           akv.mapPointerC.push('ec' + i);
         }
@@ -561,6 +572,7 @@ export class ParseService {
 
     let akvNodes: NeAspect[] = [];
     let akvEdges: NeAspect[] = [];
+
     for (const fd of filedata) {
       if (fd.nodeAttributes) {
         akvNodes = this.convertAkvByFile(fd.nodeAttributes, mappings);
@@ -778,7 +790,10 @@ export class ParseService {
   private getCoverageByChart(chart: NeChart, elementCount: any): string {
     const tmpData = chart.chartData[0].data as number[];
     const sum = this.utilityService.utilSum(tmpData);
-    return ((sum / elementCount) * 100).toFixed(0);
+    if (sum !== null) {
+      return ((sum / elementCount) * 100).toFixed(0);
+    }
+    return null;
   }
 
 }

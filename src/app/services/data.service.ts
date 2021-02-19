@@ -218,6 +218,18 @@ export class DataService {
     return definition;
   }
 
+  private static buildContinuousMappingDefinition(mapping: NeMappingContinuous, styleProperty: string): string {
+    let definition = 'COL=' + mapping.col + ',T=' + mapping.type;
+
+    for (let i = 0; i < mapping.thresholds.length; i++) {
+      definition += ',L=' + i + '=' + mapping.equals[i];
+      definition += ',E=' + i + '=' + mapping.equals[i];
+      definition += ',G=' + i + '=' + mapping.equals[i];
+      definition += ',OV=' + i + '=' + mapping.thresholds[i];
+    }
+    return definition;
+  }
+
   // /**
   //  * After adding a discrete mapping all newly set values have to be aggregated into a nicely displayable mapping
   //  *
@@ -443,8 +455,8 @@ export class DataService {
    */
   addMappingDiscrete(newMapping: NeMappingDiscrete, property: NeAspect, typeHint: NeMappingsType): void {
 
-    if (typeHint.nc || typeHint.ec) {
-      console.log('Continuous mapping should not be added as a discrete mapping');
+    if (typeHint.nc || typeHint.ec || typeHint.np || typeHint.ep) {
+      console.log('Continuous or passthrough mapping cannot be added as a discrete mapping');
       return;
     }
 
@@ -475,162 +487,43 @@ export class DataService {
 
   }
 
-  // /**
-  //  * Adds a continuous mapping to the graph
-  //  *
-  //  * @param id the network's ID
-  //  * @param isNode True, if the mapping applies to nodes, false if the mapping applies to edges
-  //  * @param continuousMapping newly created mapping
-  //  */
-  // addMappingContinuous(id: number, isNode: boolean, continuousMapping: NeContinuousThresholds): void {
-  //   const network = this.getNetworkById(id);
-  //   const styles: NeStyle[] = network.style;
-  //
-  //   const minPropertyValue: number = continuousMapping.mappedProperty.min;
-  //   const maxPropertyValue: number = continuousMapping.mappedProperty.max;
-  //
-  //   if (this.colorProperties.includes(continuousMapping.cssKey)) {
-  //
-  //     const colorGradient: NeColorGradient[] = [];
-  //
-  //     const lowestColor = String(continuousMapping.defaultLower);
-  //     const lowest: NeColorGradient = {
-  //       numericThreshold: String(Number.MIN_SAFE_INTEGER),
-  //       offset: '-1',
-  //       color: lowestColor,
-  //       title: [continuousMapping.cssKey, continuousMapping.mappedProperty.name]
-  //     };
-  //
-  //     colorGradient.push(lowest);
-  //
-  //     const greatestColor = String(continuousMapping.defaultGreater);
-  //     const greatest: NeColorGradient = {
-  //       numericThreshold: String(Number.MAX_SAFE_INTEGER),
-  //       offset: '101',
-  //       color: greatestColor,
-  //       title: [continuousMapping.cssKey, continuousMapping.mappedProperty.name]
-  //     };
-  //
-  //     const range = maxPropertyValue - minPropertyValue;
-  //
-  //     for (const breakpoint of continuousMapping.breakpoints) {
-  //       const diffToLowest = breakpoint.value - minPropertyValue;
-  //       const offset = diffToLowest * 100 / range;
-  //
-  //       const tmp: NeColorGradient = {
-  //         numericThreshold: String(breakpoint.value),
-  //         color: breakpoint.propertyValue,
-  //         offset: String(offset.toFixed(0)) + '%',
-  //         title: [continuousMapping.cssKey, continuousMapping.mappedProperty.name]
-  //       };
-  //       colorGradient.push(tmp);
-  //     }
-  //     colorGradient.push(greatest);
-  //
-  //     const finalizedMapping = {
-  //       chart: null,
-  //       chartValid: false,
-  //       colorGradient,
-  //       gradientValid: true,
-  //       displayChart: false,
-  //       title: lowest.title,
-  //       values: continuousMapping.mappedProperty.values // is converted to NeStyleComponent[] while setting continuous values
-  //     };
-  //
-  //     if (isNode) {
-  //       network.mappings.nodesContinuous = network.mappings.nodesContinuous.concat([finalizedMapping]);
-  //       for (const akv of network.aspectKeyValuesNodes) {
-  //         if (akv.name === continuousMapping.mappedProperty.name
-  //           && !akv.mapPointerC.includes(network.mappings.nodesContinuous.length - 1)) {
-  //           akv.mapPointerC.push(network.mappings.nodesContinuous.length - 1);
-  //         }
-  //       }
-  //     } else {
-  //       network.mappings.edgesContinuous = network.mappings.edgesContinuous.concat([finalizedMapping]);
-  //       for (const akv of network.aspectKeyValuesEdges) {
-  //         if (akv.name === continuousMapping.mappedProperty.name
-  //           && !akv.mapPointerC.includes(network.mappings.edgesContinuous.length - 1)) {
-  //           akv.mapPointerC.push(network.mappings.edgesContinuous.length - 1);
-  //         }
-  //       }
-  //     }
-  //   } else {
-  //     const chart: NeChart = {
-  //       chartType: {
-  //         line: true,
-  //         bar: false
-  //       },
-  //       chartData: [{
-  //         data: [Number(continuousMapping.defaultLower)],
-  //         label: continuousMapping.cssKey
-  //       }],
-  //       chartLabels: [''],
-  //       lineChartOptions: {
-  //         scales: {
-  //           yAxes: [
-  //             {
-  //               type: 'linear',
-  //               display: true,
-  //               position: 'left',
-  //               id: 'y-axis-1',
-  //             }
-  //           ]
-  //         },
-  //         title: {
-  //           display: false,
-  //           text: [continuousMapping.cssKey, continuousMapping.mappedProperty.name]
-  //         },
-  //         elements: {
-  //           line: {
-  //             tension: 0
-  //           }
-  //         },
-  //         responsive: true,
-  //         maintainAspectRatio: true
-  //       }
-  //     };
-  //
-  //     for (const breakpoint of continuousMapping.breakpoints) {
-  //       chart.chartData[0].data.push(Number(breakpoint.propertyValue));
-  //       chart.chartLabels.push(String(breakpoint.value));
-  //     }
-  //
-  //     chart.chartData[0].data.push(Number(continuousMapping.defaultGreater));
-  //     chart.chartLabels.push(String(''));
-  //
-  //     const finalizedMapping = {
-  //       chart,
-  //       chartValid: true,
-  //       colorGradient: null,
-  //       gradientValid: false,
-  //       displayChart: true,
-  //       title: [continuousMapping.cssKey, continuousMapping.mappedProperty.name],
-  //       values: continuousMapping.mappedProperty.values
-  //     };
-  //
-  //     if (isNode) {
-  //       network.mappings.nodesContinuous = network.mappings.nodesContinuous.concat([finalizedMapping]);
-  //       for (const akv of network.aspectKeyValuesNodes) {
-  //         if (akv.name === continuousMapping.mappedProperty.name
-  //           && !akv.mapPointerC.includes(network.mappings.nodesContinuous.length - 1)) {
-  //           akv.mapPointerC.push(network.mappings.nodesContinuous.length - 1);
-  //         }
-  //       }
-  //     } else {
-  //       network.mappings.edgesContinuous = network.mappings.edgesContinuous.concat([finalizedMapping]);
-  //       for (const akv of network.aspectKeyValuesEdges) {
-  //         if (akv.name === continuousMapping.mappedProperty.name
-  //           && !akv.mapPointerC.includes(network.mappings.edgesContinuous.length - 1)) {
-  //           akv.mapPointerC.push(network.mappings.edgesContinuous.length - 1);
-  //         }
-  //       }
-  //     }
-  //   }
-  //
-  //   network.elements = this.updateElementsContinuously(isNode, continuousMapping, network, minPropertyValue, maxPropertyValue);
-  //   network.style = UtilityService.utilOrderStylesByPriority(styles);
-  //   this.networksParsed = this.networksParsed.filter(x => x.id !== id).concat(network);
-  // }
+
+  /**
+   *
+   * @param mapping
+   * @param styleProperty
+   * @param typeHint
+   */
+  addMappingContinuous(mapping: NeMappingContinuous, styleProperty: string, typeHint: NeMappingsType): void {
+    if (typeHint.nd || typeHint.ed || typeHint.np || typeHint.ep) {
+      console.log('Discrete or passthrough mapping cannot be added as a continuous mapping');
+      return;
+    }
+
+    for (const entry of this.selectedNetwork.cx) {
+      if (entry.cyVisualProperties) {
+        for (const item of entry.cyVisualProperties) {
+
+          if (!item.mappings && item.properties_of !== 'network') {
+            item.mappings = {};
+            continue;
+          }
+
+          if (item.mappings && !item.mappings[styleProperty]
+            && ((typeHint.nc && (item.properties_of === 'nodes' || item.properties_of === 'nodes:default'))
+              || (typeHint.ec && (item.properties_of === 'edges' || item.properties_of === 'edges:default')))
+          ) {
+            item.mappings[styleProperty] = {
+              definition: DataService.buildContinuousMappingDefinition(mapping, styleProperty),
+              type: 'CONTINUOUS'
+            };
+          }
+        }
+      }
+    }
+    this.triggerNetworkCoreBuild();
+
+  }
 
   /**
    * Removing a property from an existing mapping can only be executed for discrete mappings.
@@ -1258,7 +1151,10 @@ export class DataService {
       return this.selectedNetwork.mappings.edgesDiscrete[id];
     } else if (typeHint.ec) {
       return this.selectedNetwork.mappings.edgesContinuous[id];
+    } else if (typeHint.np) {
+      return this.selectedNetwork.mappings.nodesPassthrough[id];
+    } else if (typeHint.ep) {
+      return this.selectedNetwork.mappings.edgesPassthrough[id];
     }
   }
-
 }

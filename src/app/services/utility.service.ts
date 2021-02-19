@@ -368,7 +368,10 @@ export class UtilityService {
    * @param numbers List of numbers to be reduced
    */
   utilSum(numbers: number[]): number {
-    return numbers.reduce((acc, curr) => acc + curr);
+    if (numbers.length > 0) {
+      return numbers.reduce((acc, curr) => acc + curr);
+    }
+    return null;
   }
 
   /**

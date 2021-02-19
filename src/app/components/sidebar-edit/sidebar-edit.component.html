@@ -32,7 +32,6 @@
     </div>
   </div>
 
-  <!-- todo -->
   <div *ngIf="graphService.selectedElements.nodes.length > 0 || graphService.selectedElements.edges.length > 0">
 
     <hr>
@@ -64,7 +63,7 @@
 
               <tr *ngFor="let attribute of node|attributesByElement">
                 <td *ngIf="elementIndex === 0" colspan="2"><b>{{attribute}}</b></td>
-                <td>{{attribute|attributeValueByElement : node}}</td>
+                <td class="w-100">{{attribute|attributeValueByElement : node}}</td>
               </tr>
 
             </table>
@@ -74,6 +73,7 @@
         </tbody>
 
       </table>
+
     </div>
 
     <!-- Display selected edges -->
@@ -103,7 +103,7 @@
 
               <tr *ngFor="let attribute of edge|attributesByElement">
                 <td *ngIf="elementIndex === 0" colspan="2"><b>{{attribute}}</b></td>
-                <td>{{attribute|attributeValueByElement : edge}}</td>
+                <td class="w-100">{{attribute|attributeValueByElement : edge}}</td>
               </tr>
 
             </table>
@@ -246,7 +246,8 @@
       </h5>
 
       <!-- EP -->
-      <table class="table table-bordered">
+      <table class="table table-bordered" data-toggle="tooltip"
+             ngbTooltip="{{'SIDEBAR_EDIT_TT_PASSTHROUGH' | translate}}" placement="top">
         <tr *ngFor="let ep of dataService.selectedNetwork.mappings.edgesPassthrough; let epIndex = index">
           <td>
             <a [routerLink]="['', { outlets: {primary: ['mappings', 'np' +  epIndex]} }]" role="button">

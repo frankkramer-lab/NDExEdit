@@ -104,14 +104,14 @@
       </button>
     </div>
     <div class="col-4">
-      <!-- create new mapping -->
-<!--      [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, mapType + (getNextIdForMappingType()) ]} }]"-->
 
-      <button (click)="submitNewMapping()" *ngIf="!isEdit"
-              class="btn btn-block btn-outline-success" data-toggle="tooltip"
-              ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
-              placement="top"
-              type="button">
+      <button
+        [routerLink]="['', { outlets: {primary: ['mappings', mapType + (getNextIdForMappingType()) ]} }]"
+        (click)="submitNewMapping()" *ngIf="!isEdit"
+        class="btn btn-block btn-outline-success" data-toggle="tooltip"
+        ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
+        placement="top"
+        type="button">
         <fa-icon [icon]="faCheck"></fa-icon>
       </button>
       <!--        <button (click)="editMapping()" *ngIf="isEdit"-->
