@@ -229,7 +229,7 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
   /**
    * Fetches already existing mappings of the specified type and currently selected network.
    *
-   * @param s Can either be 'nd', 'nc', 'ed' or 'ec'
+   * @param s Can either be 'nd', 'nc', 'np', 'ed', 'ec' or 'ep'
    */
   public getExistingMappingListForCurrentNetworkAndType(s: string):
     NeContinuousCollection[] |

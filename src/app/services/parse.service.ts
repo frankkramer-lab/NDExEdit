@@ -39,7 +39,7 @@ export class ParseService {
           dataService.selectedNetwork.aspectKeyValuesNodes = this.convertAkvByFile(fd.nodeAttributes, dataService.selectedNetwork.mappings);
         }
         if (fd.edgeAttributes) {
-          dataService.selectedNetwork.aspectKeyValuesEdges = this.convertAkvByFile(fd.edgeAttributes, dataService.selectedNetwork.mappings);
+          dataService.selectedNetwork.aspectKeyValuesEdges = this.convertAkvByFile(fd.edgeAttributes, dataService.selectedNetwork.mappings, false);
         }
       }
     });
@@ -136,12 +136,88 @@ export class ParseService {
   }
 
   /**
-   * Gathers attributes for which a mapping can be created
-   * @param attributes
+   * Builds aspects which need specific handling, according to CX documentation those are
+   * <ul>
+   *   <li>node name</li>
+   *   <li>node represents</li>
+   *   <li>edge interaction</li>
+   * </ul>
+   * @param aspects
+   * @param key
    * @param mappings
    * @private
    */
-  private convertAkvByFile(attributes: any, mappings: NeMappingsMap): NeAspect[] {
+  private static buildAspectByCx(aspects: any[], key: string, mappings: NeMappingsMap): NeAspect {
+    const isNode = (key === 'r' || key === 'n');
+    let name;
+    switch (key) {
+      case 'r':
+        name = 'represents';
+        break;
+      case 'n':
+        name = 'name';
+        break;
+      case 'i':
+        name = 'interaction';
+        break;
+    }
+
+    const newAspect: NeAspect = {
+      chartDiscreteDistribution: undefined,
+      coverage: '',
+      datatype: 'string',
+      mapPointerC: [],
+      mapPointerD: [],
+      mapPointerP: [],
+      name,
+      validForContinuous: false,
+      values: []
+    };
+
+    for (const a of aspects) {
+      if (!newAspect.values.includes(a[key])) {
+        newAspect.values.push(a[key]);
+      }
+    }
+
+    // no need to eval continuous mappings
+    if (isNode) {
+      for (let i = 0; i < mappings.nodesPassthrough.length; i++) {
+        if ((mappings.nodesPassthrough[i].col === 'name' && key === 'n')
+          || (mappings.nodesPassthrough[i].col === 'represents' && key === 'r')) {
+          newAspect.mapPointerP.push('np' + i);
+        }
+      }
+      for (let i = 0; i < mappings.nodesDiscrete.length; i++) {
+        if ((mappings.nodesDiscrete[i].col === 'name' && key === 'n')
+          || (mappings.nodesDiscrete[i].col === 'represents' && key === 'r')) {
+          newAspect.mapPointerD.push('nd' + i);
+        }
+      }
+    } else {
+      for (let i = 0; i < mappings.edgesPassthrough.length; i++) {
+        if (mappings.edgesPassthrough[i].col === 'interaction' && key === 'i') {
+          newAspect.mapPointerP.push('ep' + i);
+        }
+      }
+      for (let i = 0; i < mappings.edgesDiscrete.length; i++) {
+        if (mappings.edgesDiscrete[i].col === 'interaction' && key === 'i') {
+          newAspect.mapPointerD.push('ed' + i);
+        }
+      }
+    }
+
+    return newAspect;
+  }
+
+  /**
+   * Gathers attributes for which a mapping can be created
+   * @param attributes
+   * @param mappings
+   * @param isNode
+   * @private
+   */
+  private convertAkvByFile(attributes: any, mappings: NeMappingsMap, isNode: boolean = true): NeAspect[] {
     const akvs: NeAspect[] = [];
     for (const attr of attributes) {
 
@@ -191,39 +267,41 @@ export class ParseService {
         akv.min = min;
       }
 
-      for (let i = 0; i < mappings.nodesDiscrete.length; i++) {
-        if (mappings.nodesDiscrete[i].col === akv.name) {
-          akv.mapPointerD.push('nd' + i);
+      if (isNode) {
+        for (let i = 0; i < mappings.nodesDiscrete.length; i++) {
+          if (mappings.nodesDiscrete[i].col === akv.name) {
+            akv.mapPointerD.push('nd' + i);
+          }
         }
-      }
-
-      for (let i = 0; i < mappings.edgesDiscrete.length; i++) {
-        if (mappings.edgesDiscrete[i].col === akv.name) {
-          akv.mapPointerD.push('ed' + i);
+        if (akv.validForContinuous) {
+          for (let i = 0; i < mappings.nodesContinuous.length; i++) {
+            if (mappings.nodesContinuous[i].col === akv.name) {
+              akv.mapPointerC.push('nc' + i);
+            }
+          }
         }
-      }
-
-      for (let i = 0; i < mappings.nodesContinuous.length; i++) {
-        if (mappings.nodesContinuous[i].col === akv.name) {
-          akv.mapPointerC.push('nc' + i);
+        for (let i = 0; i < mappings.nodesPassthrough.length; i++) {
+          if (mappings.nodesPassthrough[i].col === akv.name) {
+            akv.mapPointerP.push('np' + i);
+          }
         }
-      }
-
-      for (let i = 0; i < mappings.edgesContinuous.length; i++) {
-        if (mappings.edgesContinuous[i].col === akv.name) {
-          akv.mapPointerC.push('ec' + i);
+      } else {
+        for (let i = 0; i < mappings.edgesDiscrete.length; i++) {
+          if (mappings.edgesDiscrete[i].col === akv.name) {
+            akv.mapPointerD.push('ed' + i);
+          }
         }
-      }
-
-      for (let i = 0; i < mappings.nodesPassthrough.length; i++) {
-        if (mappings.nodesPassthrough[i].col === akv.name) {
-          akv.mapPointerP.push('np' + i);
+        if (akv.validForContinuous) {
+          for (let i = 0; i < mappings.edgesContinuous.length; i++) {
+            if (mappings.edgesContinuous[i].col === akv.name) {
+              akv.mapPointerC.push('ec' + i);
+            }
+          }
         }
-      }
-
-      for (let i = 0; i < mappings.edgesPassthrough.length; i++) {
-        if (mappings.edgesPassthrough[i].col === akv.name) {
-          akv.mapPointerP.push('ep' + i);
+        for (let i = 0; i < mappings.edgesPassthrough.length; i++) {
+          if (mappings.edgesPassthrough[i].col === akv.name) {
+            akv.mapPointerP.push('ep' + i);
+          }
         }
       }
     }
@@ -577,7 +655,20 @@ export class ParseService {
         akvNodes = this.convertAkvByFile(fd.nodeAttributes, mappings);
       }
       if (fd.edgeAttributes) {
-        akvEdges = this.convertAkvByFile(fd.edgeAttributes, mappings);
+        akvEdges = this.convertAkvByFile(fd.edgeAttributes, mappings, false);
+      }
+      if (fd.nodes) {
+        if (akvNodes.filter(a => a.name === 'name').length === 0) {
+          akvNodes.push(ParseService.buildAspectByCx(fd.nodes, 'n', mappings));
+        }
+        if (akvNodes.filter(a => a.name === 'represents').length === 0) {
+          akvNodes.push(ParseService.buildAspectByCx(fd.nodes, 'r', mappings));
+        }
+      }
+      if (fd.edges) {
+        if (akvEdges.filter(a => a.name === 'interaction').length === 0) {
+          akvEdges.push(ParseService.buildAspectByCx(fd.edges, 'i', mappings));
+        }
       }
     }
 
@@ -794,5 +885,4 @@ export class ParseService {
     }
     return null;
   }
-
 }
