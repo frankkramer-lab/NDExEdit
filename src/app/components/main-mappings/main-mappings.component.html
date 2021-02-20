@@ -13,7 +13,7 @@
 
   <!-- PASSTHROUGH -->
   <div
-    *ngIf="(dataService.selectedPassthroughMapping && (dataService.selectedTypeHint.np || dataService.selectedTypeHint.ep))">
+    *ngIf="dataService.selectedPassthroughMapping">
     <table class="table table-bordered">
       <thead>
       <tr>
@@ -32,7 +32,7 @@
 
   <!-- DISCRETE -->
   <div
-    *ngIf="(dataService.selectedDiscreteMapping && (dataService.selectedTypeHint.nd || dataService.selectedTypeHint.ed))">
+    *ngIf="dataService.selectedDiscreteMapping">
 
     <div class="table-responsive">
 
@@ -92,7 +92,7 @@
 
   <!-- CONTINUOUS -->
   <div
-    *ngIf="(dataService.selectedContinuousMapping && (dataService.selectedTypeHint.nc || dataService.selectedTypeHint.ec))">
+    *ngIf="dataService.selectedContinuousMapping">
 
     <table class="table table-bordered">
 

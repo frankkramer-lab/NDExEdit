@@ -791,11 +791,12 @@ export class ParseService {
    * @param akvs List of aspects for which the charts are to be built
    * @param filedata data containing occurances for each aspect
    * @param isNode true, if aspects are applied to nodes
+   * @param specialKey indicates, that nodes or edges should be evaluated, based on the key. This is necessary for the 'interaction' / 'name' properties
    * @private
    */
-  private buildDistributionChart(akvs: NeAspect[], filedata: any[], isNode: boolean): NeAspect[] {
+  private buildDistributionChart(akvs: NeAspect[], filedata: any[], isNode: boolean, specialKey: string = null): NeAspect[] {
 
-    const discreteAkvs = this.utilityService.utilFilterForDiscrete(akvs);
+    const discreteAkvs = this.utilityService.utilFilterForDiscrete(akvs); // includes passthrough valid properties
     const continuousAkvs = this.utilityService.utilFilterForContinuous(akvs, true);
 
     let numberOfNodes;
@@ -838,6 +839,20 @@ export class ParseService {
 
         for (const fd of filedata) {
           if (isNode) {
+
+            // handle 'name' or 'represents'
+            if (akv.name === 'name' || akv.name === 'represents') {
+              if (fd.nodes) {
+                for (const n of fd.nodes) {
+                  if (akv.name === 'name' && n.n && n.n === v) {
+                    vCount++;
+                  } else if (akv.name === 'represents' && n.r && n.r === v) {
+                    vCount++;
+                  }
+                }
+              }
+            }
+
             if (fd.nodeAttributes) {
               for (const na of fd.nodeAttributes) {
                 if (na.n === akv.name && na.v === v) {
@@ -846,6 +861,18 @@ export class ParseService {
               }
             }
           } else {
+
+            // handle 'interaction'
+            if (akv.name === 'interaction') {
+              if (fd.edges) {
+                for (const e of fd.edges) {
+                  if (e.i && e.i === v) {
+                    vCount++;
+                  }
+                }
+              }
+            }
+
             if (fd.edgeAttributes) {
               for (const ea of fd.edgeAttributes) {
                 if (ea.n === akv.name && ea.v === v) {

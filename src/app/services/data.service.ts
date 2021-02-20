@@ -550,6 +550,7 @@ export class DataService {
         }
       }
     }
+
     this.triggerNetworkCoreBuild();
 
   }
