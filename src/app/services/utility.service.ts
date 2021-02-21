@@ -199,7 +199,6 @@ export class UtilityService {
    * @param aspects List of all available attributes
    */
   utilFilterForDiscrete(aspects: NeAspect[]): NeAspect[] {
-    console.log(aspects, aspects.filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null));
     return aspects.filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
   }
 
