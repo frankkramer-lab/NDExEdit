@@ -250,7 +250,7 @@
              ngbTooltip="{{'SIDEBAR_EDIT_TT_PASSTHROUGH' | translate}}" placement="top">
         <tr *ngFor="let ep of dataService.selectedNetwork.mappings.edgesPassthrough; let epIndex = index">
           <td>
-            <a [routerLink]="['', { outlets: {primary: ['mappings', 'np' +  epIndex]} }]" role="button">
+            <a [routerLink]="['', { outlets: {primary: ['mappings', 'ep' +  epIndex]} }]" role="button">
               <b>{{ep.col}}</b>
             </a>
           </td>

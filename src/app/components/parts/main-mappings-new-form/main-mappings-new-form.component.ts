@@ -8,6 +8,7 @@ import {NeGroupedMappingsDiscrete} from '../../../models/ne-grouped-mappings-dis
 import {NeMappingContinuous} from '../../../models/ne-mapping-continuous';
 import {NeMappingDiscrete} from '../../../models/ne-mapping-discrete';
 import {NeThresholdMap} from '../../../models/ne-threshold-map';
+import {NeMappingPassthrough} from "../../../models/ne-mapping-passthrough";
 
 @Component({
   selector: 'app-main-mappings-new-form',
@@ -69,6 +70,10 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * Continuous mapping
    */
   @Input() mappingContinuous: NeMappingContinuous;
+  /**
+   * Passthrough mapping
+   */
+  @Input() mappingPassthrough: NeMappingPassthrough;
   /**
    * Aspect which is to be mapped
    */
@@ -170,6 +175,10 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
       this.mappingContinuous.thresholds = this.thresholds.map(a => a.value);
       this.mappingContinuous.equals = this.thresholds.map(a => a.propertyValue);
     }
+
+    if (this.mappingPassthrough) {
+      this.mappingPassthrough.styleProperty = '';
+    }
   }
 
   /**
@@ -205,7 +214,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    */
   submitNewDiscreteMapping(): void {
     this.mappingDiscrete.styleProperty = this.styleProperty;
-    this.dataService.addMappingDiscrete(this.mappingDiscrete, this.propertyToMap, this.typeHint);
+    this.dataService.addMappingDiscrete(this.mappingDiscrete, this.typeHint);
   }
 
   /**
@@ -222,8 +231,10 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
 
     if (this.typeHint.nd || this.typeHint.ed) {
       this.submitNewDiscreteMapping();
-    } else {
+    } else if (this.typeHint.nc || this.typeHint.ec) {
       this.submitNewContinuousMapping();
+    } else {
+      this.submitNewPassthroughMapping();
     }
   }
 
@@ -248,11 +259,15 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
           || String(this.dataService.selectedNetwork.mappings.nodesDiscrete.length);
       case 'nc':
         return String(this.dataService.selectedNetwork.mappings.nodesContinuous.length);
+      case 'np':
+        return String(this.dataService.selectedNetwork.mappings.nodesPassthrough.length);
       case 'ed':
         return String(this.dataService.findDiscreteMappingForProperty(this.dataService.selectedNetwork.mappings.edgesDiscrete, this.propertyToMap))
           || String(this.dataService.selectedNetwork.mappings.edgesDiscrete.length);
       case 'ec':
         return String(this.dataService.selectedNetwork.mappings.edgesContinuous.length);
+      case 'ep':
+        return String(this.dataService.selectedNetwork.mappings.edgesPassthrough.length);
     }
     return String(-1);
   }
@@ -421,5 +436,12 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
     this.stylePropertyEmitter.emit(this.styleProperty);
   }
 
+  /**
+   * Submits a new discrete mapping, adds CSS property to color properties managed in {@link GraphService}
+   */
+  private submitNewPassthroughMapping(): void {
+    this.mappingPassthrough.styleProperty = this.styleProperty;
+    this.dataService.addMappingPassthrough(this.mappingPassthrough, this.typeHint);
+  }
 }
 

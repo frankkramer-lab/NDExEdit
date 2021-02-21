@@ -21,9 +21,9 @@ import {UtilityService} from '../../services/utility.service';
 import {NeMappingsType} from '../../models/ne-mappings-type';
 import {NeChartType} from '../../models/ne-chart-type';
 import {NeChart} from '../../models/ne-chart';
-import {NeGroupedMappingsDiscrete} from '../../models/ne-grouped-mappings-discrete';
 import {NeMappingDiscrete} from '../../models/ne-mapping-discrete';
 import {NeMappingContinuous} from '../../models/ne-mapping-continuous';
+import {NeMappingPassthrough} from "../../models/ne-mapping-passthrough";
 
 @Component({
   selector: 'app-main-mappings-new',
@@ -230,6 +230,11 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   continuousThresholds: NeThresholdMap[] = [];
 
   /**
+   * Newly created passthrough mapping
+   */
+  passthroughMapping: NeMappingPassthrough;
+
+  /**
    * Points to property within the possible attributes of a network's elements (for new creation)
    */
   propertyId: number;
@@ -360,9 +365,11 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
       availableAttributes = this.dataService.selectedNetwork.aspectKeyValuesNodes;
     }
 
+
     if (this.isContinuous) {
       availableAttributes = this.utilityService.utilFilterForContinuous(availableAttributes);
       this.propertyToMap = availableAttributes[this.propertyId];
+
       this.chartObject = (this.propertyToMap.datatype === 'integer'
         ? this.propertyToMap.chartDiscreteDistribution
         : this.propertyToMap.chartContinuousDistribution);
@@ -387,6 +394,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     } else if (this.isDiscrete) {
       availableAttributes = this.utilityService.utilFilterForDiscrete(availableAttributes);
       this.propertyToMap = availableAttributes[this.propertyId];
+
       this.chartObject = this.propertyToMap.chartDiscreteDistribution;
 
       const values: string[] = new Array<string>(this.propertyToMap.values.length);
@@ -398,16 +406,24 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         values
       };
     } else {
-      // todo create new passthrough mapping
-      console.log('new passthrough mapping');
-    }
+      this.propertyToMap = availableAttributes[this.propertyId];
 
-    this.propertyToMap = availableAttributes[this.propertyId];
+      this.passthroughMapping = {
+        col: this.propertyToMap.name,
+        styleProperty: ''
+      };
+      console.log(this.passthroughMapping);
+    }
 
     if (this.isDiscrete) {
       this.continuousMapping = null;
+      this.passthroughMapping = null;
+    } else if (this.isContinuous) {
+      this.discreteMapping = null;
+      this.passthroughMapping = null;
     } else {
       this.discreteMapping = null;
+      this.continuousMapping = null;
     }
   }
 
@@ -420,7 +436,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   private initDataEdit(params: ParamMap): void {
     // edit existing
     this.isEdit = true;
-    let existingDiscreteMapping: NeGroupedMappingsDiscrete;
+    let existingDiscreteMapping: NeMappingDiscrete[];
     let existingContinuousMapping: NeMappingContinuous;
     const mapId = params.get('map').substring(2);
 

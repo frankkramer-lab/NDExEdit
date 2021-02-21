@@ -6,7 +6,7 @@ import {UtilityService} from './utility.service';
 import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete';
 import {NeMappingsType} from '../models/ne-mappings-type';
 import {NeAspect} from '../models/ne-aspect';
-import {NeMappingPassthrough} from "../models/ne-mapping-passthrough";
+import {NeMappingPassthrough} from '../models/ne-mapping-passthrough';
 
 @Injectable({
   providedIn: 'root'
@@ -218,7 +218,12 @@ export class DataService {
     return definition;
   }
 
-  private static buildContinuousMappingDefinition(mapping: NeMappingContinuous, styleProperty: string): string {
+  /**
+   * Builds the definition string for a continuous mapping
+   * @param mapping Continuous mapping to be condensed into a string
+   * @private
+   */
+  private static buildContinuousMappingDefinition(mapping: NeMappingContinuous): string {
     let definition = 'COL=' + mapping.col + ',T=' + mapping.type;
 
     for (let i = 0; i < mapping.thresholds.length; i++) {
@@ -228,6 +233,15 @@ export class DataService {
       definition += ',OV=' + i + '=' + mapping.thresholds[i];
     }
     return definition;
+  }
+
+  /**
+   * Builds the definition string for a passthrough mapping
+   * @param mapping Passthrough mapping to be condensed into a string
+   * @private
+   */
+  private static buildPassthroughMappingDefinition(mapping: NeMappingPassthrough): string {
+    return 'COL=' + mapping.col + ',T=string';
   }
 
   // /**
@@ -451,16 +465,19 @@ export class DataService {
   }
 
   /**
-   * Adds a new mapping to an already parsed network
+   * Adds a discrete mapping to the selected network
+   *
+   * @param mapping New mapping
+   * @param typeHint Type of newly created mapping
    */
-  addMappingDiscrete(newMapping: NeMappingDiscrete, property: NeAspect, typeHint: NeMappingsType): void {
+  addMappingDiscrete(mapping: NeMappingDiscrete, typeHint: NeMappingsType): void {
 
     if (typeHint.nc || typeHint.ec || typeHint.np || typeHint.ep) {
       console.log('Continuous or passthrough mapping cannot be added as a discrete mapping');
       return;
     }
 
-    const nameOfProperty = newMapping.styleProperty;
+    const nameOfProperty = mapping.styleProperty;
 
     for (const entry of this.selectedNetwork.cx) {
       if (entry.cyVisualProperties) {
@@ -476,7 +493,7 @@ export class DataService {
               || (typeHint.ed && (item.properties_of === 'edges' || item.properties_of === 'edges:default')))
           ) {
             item.mappings[nameOfProperty] = {
-              definition: DataService.buildDiscreteMappingDefinition(newMapping),
+              definition: DataService.buildDiscreteMappingDefinition(mapping),
               type: 'DISCRETE'
             };
           }
@@ -489,10 +506,11 @@ export class DataService {
 
 
   /**
+   * Adds a continuous mapping to the selected network
    *
-   * @param mapping
-   * @param styleProperty
-   * @param typeHint
+   * @param mapping New mapping
+   * @param styleProperty Mapped style property
+   * @param typeHint Type of newly created mapping
    */
   addMappingContinuous(mapping: NeMappingContinuous, styleProperty: string, typeHint: NeMappingsType): void {
     if (typeHint.nd || typeHint.ed || typeHint.np || typeHint.ep) {
@@ -514,9 +532,94 @@ export class DataService {
               || (typeHint.ec && (item.properties_of === 'edges' || item.properties_of === 'edges:default')))
           ) {
             item.mappings[styleProperty] = {
-              definition: DataService.buildContinuousMappingDefinition(mapping, styleProperty),
+              definition: DataService.buildContinuousMappingDefinition(mapping),
               type: 'CONTINUOUS'
             };
+          }
+        }
+      }
+    }
+    this.triggerNetworkCoreBuild();
+
+  }
+
+  /**
+   * Adds a passthrough mapping to the selected network
+   *
+   * @param mappingPassthrough New mapping
+   * @param typeHint Type of newly created mapping
+   */
+  addMappingPassthrough(mappingPassthrough: NeMappingPassthrough, typeHint: NeMappingsType): void {
+
+    if (typeHint.nd || typeHint.ed || typeHint.nc || typeHint.ec) {
+      console.log('Discrete or continuous mapping cannot be added as a passthrough mapping');
+      return;
+    }
+
+    console.log(this.selectedNetwork.mappings.nodesPassthrough);
+    console.log(mappingPassthrough);
+
+    const mappingDefinition = DataService.buildPassthroughMappingDefinition(mappingPassthrough);
+
+    if (typeHint.np) {
+
+      if (this.selectedNetwork.mappings.nodesPassthrough.some(a => a.col === mappingPassthrough.col
+        && a.styleProperty === mappingPassthrough.styleProperty)) {
+
+        console.log('This combination of col and style property exists for a passthrough node mapping!');
+        return;
+
+      } else {
+
+        for (const fd of this.selectedNetwork.cx) {
+          if (fd.cyVisualProperties) {
+            for (const cy of fd.cyVisualProperties) {
+              console.log(cy);
+              if (cy.properties_of === 'nodes:default') {
+                if (!cy.mappings) {
+                  cy.mappings = {};
+                }
+
+                if (cy.mappings[mappingPassthrough.styleProperty]) {
+                  console.log('Overriding existing properties is not intended. Aborting ...');
+                  return;
+                }
+
+                cy.mappings[mappingPassthrough.styleProperty] = {
+                  type: 'PASSTHROUGH',
+                  definition: mappingDefinition
+                };
+
+              }
+            }
+          }
+        }
+      }
+
+    } else if (typeHint.ep) {
+
+      if (this.selectedNetwork.mappings.edgesPassthrough.some(a => a.col === mappingPassthrough.col
+        && a.styleProperty === mappingPassthrough.styleProperty)) {
+        console.log('This combination of col and style property exists for a passthrough node mapping!');
+        return;
+
+      } else {
+
+        for (const fd of this.selectedNetwork.cx) {
+          if (fd.cyVisualProperties) {
+            for (const cy of fd.cyVisualProperties) {
+              if (cy.properties_of === 'edges:default') {
+                if (!cy.mappings) {
+                  cy.mappings = {};
+                }
+                if (!cy.mappings[mappingPassthrough.styleProperty]) {
+                  cy.mappings[mappingPassthrough.styleProperty] = {
+                    type: 'PASSTHROUGH',
+                    definition: mappingDefinition
+                  };
+                }
+              }
+            }
           }
         }
       }
@@ -1159,4 +1262,6 @@ export class DataService {
       return this.selectedNetwork.mappings.edgesPassthrough[id];
     }
   }
+
+
 }
