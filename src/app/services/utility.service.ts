@@ -15,9 +15,14 @@ import {NeFrequencyCounter} from '../models/ne-frequency-counter';
 export class UtilityService {
 
   /**
-   * Label for x axis
+   * Label for continuous x axis
    */
-  xAxisLabel: string;
+  xAxisContinuousLabel: string;
+
+  /**
+   * Label for discrete / passthrough x axis
+   */
+  xAxisDiscreteLabel: string;
 
   /**
    * Label for y axis
@@ -340,7 +345,7 @@ export class UtilityService {
           xAxes: [{
             scaleLabel: {
               display: true,
-              labelString: this.xAxisLabel || ''
+              labelString: this.xAxisContinuousLabel || ''
             }
           }],
           yAxes: [{

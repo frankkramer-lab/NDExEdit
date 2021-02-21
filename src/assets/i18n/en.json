@@ -39,6 +39,7 @@
   "MAIN_STATS_TT_EDIT": "Render and edit this network",
   "MAIN_STATS_TT_COMPARE": "Compare this edit to another one",
   "MAIN_STATS_AXIS_BINS": "Bins between [lowerBorder:upperBorder]",
+  "MAIN_STATS_AXIS_NAMES": "Existing values",
   "MAIN_STATS_AXIS_OCCURANCES": "# elements for attribute ",
   "MAIN_GRAPH_TITLE": "Graph",
   "MAIN_GRAPH_TT_FIT": "Fit graph to current page layout",

@@ -1081,6 +1081,7 @@ export class DataService {
       }
       this.selectedDiscreteMapping = selectedDiscrete;
       this.selectedContinuousMapping = null;
+      this.selectedPassthroughMapping = null;
     }
   }
 

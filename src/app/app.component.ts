@@ -102,8 +102,9 @@ export class AppComponent {
 
     const browserLang = this.translateService.getBrowserLang();
     this.translateService.use((browserLang && this.supportedLanguages.includes(browserLang)) ? browserLang : this.defaultLanguage);
-    this.translateService.get('MAIN_STATS_AXIS_BINS').subscribe(value => this.utilityService.xAxisLabel = value);
+    this.translateService.get('MAIN_STATS_AXIS_BINS').subscribe(value => this.utilityService.xAxisContinuousLabel = value);
     this.translateService.get('MAIN_STATS_AXIS_OCCURANCES').subscribe(value => this.utilityService.yAxisLabel = value);
+    this.translateService.get('MAIN_STATS_AXIS_NAMES').subscribe(value => this.utilityService.xAxisDiscreteLabel = value);
   }
 
   /**

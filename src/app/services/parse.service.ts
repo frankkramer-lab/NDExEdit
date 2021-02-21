@@ -33,13 +33,39 @@ export class ParseService {
     dataService.networkChangedEmitter.subscribe(network => {
       dataService.selectedNetwork.mappings = this.convertMappingsByFile(network.cx);
 
+      let akvNodes: NeAspect[] = [];
+      let akvEdges: NeAspect[] = [];
+
       // rework mapPointers
       for (const fd of network.cx) {
         if (fd.nodeAttributes) {
-          dataService.selectedNetwork.aspectKeyValuesNodes = this.convertAkvByFile(fd.nodeAttributes, dataService.selectedNetwork.mappings);
+          akvNodes = akvNodes.concat(this.convertAkvByFile(fd.nodeAttributes, dataService.selectedNetwork.mappings));
         }
         if (fd.edgeAttributes) {
-          dataService.selectedNetwork.aspectKeyValuesEdges = this.convertAkvByFile(fd.edgeAttributes, dataService.selectedNetwork.mappings, false);
+          akvEdges = akvEdges.concat(this.convertAkvByFile(fd.edgeAttributes, dataService.selectedNetwork.mappings, false));
+        }
+        if (fd.nodes) {
+          if (akvNodes.every(a => a.name !== 'name')) {
+            const newAspect = ParseService.buildAspectByCx(fd.nodes, 'n', dataService.selectedNetwork.mappings);
+            if (newAspect) {
+              akvNodes.push(newAspect);
+            }
+          }
+          if (akvNodes.every(a => a.name !== 'represents')) {
+            const newAspect = ParseService.buildAspectByCx(fd.nodes, 'r', dataService.selectedNetwork.mappings);
+            if (newAspect) {
+              akvNodes.push(newAspect);
+            }
+          }
+        }
+        if (fd.edges) {
+          if (akvEdges.every(a => a.name !== 'interaction')) {
+            const newAspect = ParseService.buildAspectByCx(fd.edges, 'i', dataService.selectedNetwork.mappings);
+            if (newAspect) {
+              akvEdges.push(newAspect);
+
+            }
+          }
         }
       }
     });
@@ -221,12 +247,9 @@ export class ParseService {
     const akvs: NeAspect[] = [];
 
     for (const attr of attributes) {
-
       let found = false;
 
       for (const akv of akvs) {
-
-
         if (akv.name === attr.n) {
           found = true;
 
@@ -652,21 +675,22 @@ export class ParseService {
     let akvEdges: NeAspect[] = [];
 
     for (const fd of filedata) {
+
       if (fd.nodeAttributes) {
-        akvNodes.concat(this.convertAkvByFile(fd.nodeAttributes, mappings));
-        console.log(akvNodes);
+        akvNodes = akvNodes.concat(this.convertAkvByFile(fd.nodeAttributes, mappings));
       }
       if (fd.edgeAttributes) {
-        akvEdges.concat(this.convertAkvByFile(fd.edgeAttributes, mappings, false));
+        akvEdges = akvEdges.concat(this.convertAkvByFile(fd.edgeAttributes, mappings, false));
       }
+
       if (fd.nodes) {
-        if (!akvNodes.some(a => a.name === 'name')) {
+        if (akvNodes.every(a => a.name !== 'name')) {
           const newAspect = ParseService.buildAspectByCx(fd.nodes, 'n', mappings);
           if (newAspect) {
             akvNodes.push(newAspect);
           }
         }
-        if (!akvNodes.some(a => a.name === 'represents')) {
+        if (akvNodes.every(a => a.name !== 'represents')) {
           const newAspect = ParseService.buildAspectByCx(fd.nodes, 'r', mappings);
           if (newAspect) {
             akvNodes.push(newAspect);
@@ -674,7 +698,7 @@ export class ParseService {
         }
       }
       if (fd.edges) {
-        if (!akvEdges.some(a => a.name === 'interaction')) {
+        if (akvEdges.every(a => a.name !== 'interaction')) {
           const newAspect = ParseService.buildAspectByCx(fd.edges, 'i', mappings);
           if (newAspect) {
             akvEdges.push(newAspect);
@@ -843,7 +867,23 @@ export class ParseService {
         chartColors: this.utilityService.utilGetRandomColorForChart(),
         chartData,
         chartLabels: akv.values,
-        chartType
+        chartType,
+        chartOptions: {
+          scales: {
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: this.utilityService.xAxisDiscreteLabel || ''
+              }
+            }],
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: (this.utilityService.yAxisLabel + akv.name) || ''
+              }
+            }]
+          }
+        }
       };
 
       for (const v of akv.values) {
@@ -895,7 +935,6 @@ export class ParseService {
       akv.chartDiscreteDistribution = chart;
       akv.coverage = this.getCoverageByChart(chart, isNode ? numberOfNodes : numberOfEdges);
     }
-
 
     for (const akv of continuousAkvs) {
       const binSize = this.utilityService.utilSturgesRule(akv.values as unknown as number[]);
