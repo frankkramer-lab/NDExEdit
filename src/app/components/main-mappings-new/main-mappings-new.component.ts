@@ -494,5 +494,12 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
       this.binSize,
       this.propertyToMap);
   }
+
+  /**
+   * Returns the continuously updated style property
+   */
+  getCurrentStyleProperty(): string {
+    return this.styleProperty;
+  }
 }
 

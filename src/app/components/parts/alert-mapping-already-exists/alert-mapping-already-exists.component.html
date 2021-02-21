@@ -1,84 +1,73 @@
-<ng-container *ngIf="isDiscrete then discreteBlock else continuousBlock"></ng-container>
+<!-- ND -->
+<span *ngIf="typeHint.nd">
+  <span *ngFor="let mapping of dataService.selectedNetwork.mappings.nodesDiscrete; let mapIndex = index;">
+    <div *ngIf="mapping.col === propertyToMap.name && mapping.styleProperty === styleProperty"
+         class="alert alert-danger"
+         role="alert">
+      <h5>
+        <button
+          [routerLink]="['', { outlets: {primary: ['edit', 'nd' + mapIndex, mapping.col ]} }]"
+          class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
+          ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
+          placement="right"
+          type="button">
+          <fa-icon [icon]="faRoute"></fa-icon>
+        </button>
+        {{'MAIN_MAPPINGS_NEW_ALREADY_EXISTS' | translate}}
+      </h5>
+      <p>{{'MAIN_MAPPINGS_NEW_EDIT_INSTEAD' | translate}}</p>
+    </div>
+  </span>
+</span>
 
-<ng-template #discreteBlock>
+<!-- ED -->
+<span *ngIf="typeHint.ed">
+  <span *ngFor="let mapping of dataService.selectedNetwork.mappings.edgesDiscrete; let mapIndex = index;">
+    <div *ngIf="mapping.col === propertyToMap.name && mapping.styleProperty === styleProperty"
+         class="alert alert-danger"
+         role="alert">
+      <h5>
+        <button
+          [routerLink]="['', { outlets: {primary: ['edit', 'ed' + mapIndex, mapping.col ]} }]"
+          class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
+          ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
+          placement="right"
+          type="button">
+          <fa-icon [icon]="faRoute"></fa-icon>
+        </button>
+        {{'MAIN_MAPPINGS_NEW_ALREADY_EXISTS' | translate}}
+      </h5>
+      <p>{{'MAIN_MAPPINGS_NEW_EDIT_INSTEAD' | translate}}</p>
+    </div>
+  </span>
+</span>
 
-  <ng-container *ngIf="isNode">
-    <!-- ND -->
-    <span *ngFor="let mapping of dataService.selectedNetwork.mappings.nodesDiscrete; let mapIndex = index;">
-      <span *ngFor="let style of mapping.styleMap; let propertyIndex = index;">
-        <div *ngIf="mapping.col === propertyToMap.name && style.cssKey === styleProperty"
-             class="alert alert-danger"
-             role="alert">
-          <h5>
-            <button
-              [routerLink]="['', { outlets: {primary: ['edit', 'nd' + mapIndex, propertyIndex ]} }]"
-              class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
-              ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
-              placement="right"
-              type="button">
-              <fa-icon [icon]="faRoute"></fa-icon>
-            </button>
-            {{'MAIN_MAPPINGS_NEW_ALREADY_EXISTS' | translate}}
-          </h5>
-          <p>{{'MAIN_MAPPINGS_NEW_EDIT_INSTEAD' | translate}}</p>
-        </div>
-      </span>
+<!-- NC -->
+<span *ngIf="typeHint.nc">
+  <span *ngFor="let nodeMap of dataService.selectedNetwork.mappings.nodesContinuous; let mapIndex = index;">
+      <div *ngIf="nodeMap.col === propertyToMap.name && nodeMap.styleProperty == styleProperty"
+           class="alert alert-danger"
+           role="alert">
+        <h5>
+          <button
+            [routerLink]="['', { outlets: {primary: ['edit', 'nc' + mapIndex ]} }]"
+            class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
+            ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
+            placement="right"
+            type="button">
+            <fa-icon [icon]="faRoute"></fa-icon>
+          </button>
+          {{'MAIN_MAPPINGS_NEW_ALREADY_EXISTS' | translate}}
+        </h5>
+        <p>{{'MAIN_MAPPINGS_NEW_EDIT_INSTEAD' | translate}}</p>
+      </div>
     </span>
-  </ng-container>
 
-  <ng-container *ngIf="!isNode">
-    <!-- ED -->
-    <span *ngFor="let mapping of dataService.selectedNetwork.mappings.edgesDiscrete; let mapIndex = index;">
-      <span *ngFor="let style of mapping.styleMap; let propertyIndex = index;">
-        <div *ngIf="mapping.col === propertyToMap.name && style.cssKey === styleProperty"
-             class="alert alert-danger"
-             role="alert">
-          <h5>
-            <button
-              [routerLink]="['', { outlets: {primary: ['edit', 'ed' + mapIndex, propertyIndex ]} }]"
-              class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
-              ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
-              placement="right"
-              type="button">
-              <fa-icon [icon]="faRoute"></fa-icon>
-            </button>
-            {{'MAIN_MAPPINGS_NEW_ALREADY_EXISTS' | translate}}
-          </h5>
-          <p>{{'MAIN_MAPPINGS_NEW_EDIT_INSTEAD' | translate}}</p>
-        </div>
-      </span>
-    </span>
-  </ng-container>
+</span>
 
-</ng-template>
-
-<ng-template #continuousBlock>
-  <ng-container *ngIf="isNode">
-    <!-- NC -->
-    <span *ngFor="let nodeMap of dataService.selectedNetwork.mappings.nodesContinuous; let mapIndex = index;">
-        <div *ngIf="nodeMap.col === propertyToMap.name && nodeMap.styleProperty == styleProperty"
-             class="alert alert-danger"
-             role="alert">
-          <h5>
-            <button
-              [routerLink]="['', { outlets: {primary: ['edit', 'nc' + mapIndex ]} }]"
-              class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
-              ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
-              placement="right"
-              type="button">
-              <fa-icon [icon]="faRoute"></fa-icon>
-            </button>
-            {{'MAIN_MAPPINGS_NEW_ALREADY_EXISTS' | translate}}
-          </h5>
-          <p>{{'MAIN_MAPPINGS_NEW_EDIT_INSTEAD' | translate}}</p>
-        </div>
-      </span>
-
-  </ng-container>
-
-  <ng-container *ngIf="!isNode">
-    <!-- EC -->
-    <span *ngFor="let edgeMap of dataService.selectedNetwork.mappings.edgesContinuous; let mapIndex = index;">
+<!-- EC -->
+<span *ngIf="typeHint.ec">
+  <span *ngFor="let edgeMap of dataService.selectedNetwork.mappings.edgesContinuous; let mapIndex = index;">
         <div *ngIf="edgeMap.col === propertyToMap.name && edgeMap.styleProperty == styleProperty"
              class="alert alert-danger"
              role="alert">
@@ -96,5 +85,48 @@
           <p>{{'MAIN_MAPPINGS_NEW_EDIT_INSTEAD' | translate}}</p>
         </div>
       </span>
-  </ng-container>
-</ng-template>
+</span>
+
+<!-- NP -->
+<span *ngIf="typeHint.np">
+  <span *ngFor="let nodeMap of dataService.selectedNetwork.mappings.nodesPassthrough; let mapIndex = index;">
+    <div *ngIf="nodeMap.styleProperty === styleProperty"
+         class="alert alert-danger"
+         role="alert">
+      <h5>
+        <button
+          [routerLink]="['', { outlets: {primary: ['edit', 'np' + mapIndex ]} }]"
+          class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
+          ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
+          placement="right"
+          type="button">
+          <fa-icon [icon]="faRoute"></fa-icon>
+        </button>
+        {{'MAIN_MAPPINGS_NEW_ALREADY_EXISTS' | translate}}
+      </h5>
+      <p>{{'MAIN_MAPPINGS_NEW_EDIT_INSTEAD' | translate}}</p>
+    </div>
+  </span>
+</span>
+
+<!-- EP -->
+<span *ngIf="typeHint.ep">
+  <span *ngFor="let edgeMap of dataService.selectedNetwork.mappings.edgesPassthrough; let mapIndex = index;">
+    <div *ngIf="edgeMap.styleProperty === styleProperty"
+         class="alert alert-danger"
+         role="alert">
+      <h5>
+        <button
+          [routerLink]="['', { outlets: {primary: ['edit', 'ep' + mapIndex ]} }]"
+          class="btn btn-sm btn-outline-secondary mr-4 float-left" data-toggle="tooltip"
+          ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD' | translate}}"
+          placement="right"
+          type="button">
+          <fa-icon [icon]="faRoute"></fa-icon>
+        </button>
+        {{'MAIN_MAPPINGS_NEW_ALREADY_EXISTS' | translate}}
+      </h5>
+      <p>{{'MAIN_MAPPINGS_NEW_EDIT_INSTEAD' | translate}}</p>
+    </div>
+  </span>
+</span>

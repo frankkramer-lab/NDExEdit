@@ -11,300 +11,243 @@
 
   <hr>
 
-  <ul class="nav nav-pills nav-fill">
-    <li class="nav-item">
-      <a [ngClass]="{active: typeHint.nd, disabled: !typeHint.nd}" aria-controls="newNd" aria-selected="false"
-         class="nav-link" data-toggle="pill"
-         href="#newNdForm"
-         id="newNd" role="tab">{{'MAIN_MAPPINGS_NEW_TYPE_ND' | translate}}</a>
-    </li>
-    <li class="nav-item">
-      <a [ngClass]="{active: typeHint.nc, disabled: !typeHint.nc}" aria-controls="newNc" aria-selected="false"
-         class="nav-link" data-toggle="pill"
-         href="#newNcForm"
-         id="newNc" role="tab">{{'MAIN_MAPPINGS_NEW_TYPE_NC' | translate}}</a>
-    </li>
-    <li class="nav-item">
-      <a [ngClass]="{active: typeHint.np, disabled: !typeHint.np}" aria-controls="newNp" aria-selected="false"
-         class="nav-link" data-toggle="pill"
-         href="#newNpForm"
-         id="newNp" role="tab">{{'MAIN_MAPPINGS_NEW_TYPE_NP' | translate}}</a>
-    </li>
-    <li class="nav-item">
-      <a [ngClass]="{active: typeHint.ed, disabled: !typeHint.ed}" aria-controls="newEd" aria-selected="false"
-         class="nav-link" data-toggle="pill"
-         href="#newEdForm"
-         id="newEd" role="tab">{{'MAIN_MAPPINGS_NEW_TYPE_ED' | translate}}</a>
-    </li>
-    <li class="nav-item">
-      <a [ngClass]="{active: typeHint.ec, disabled: !typeHint.ec}" aria-controls="newEc" aria-selected="false"
-         class="nav-link" data-toggle="pill"
-         href="#newEcForm"
-         id="newEc" role="tab">{{'MAIN_MAPPINGS_NEW_TYPE_EC' | translate}}</a>
-    </li>
-    <li class="nav-item">
-      <a [ngClass]="{active: typeHint.ep, disabled: !typeHint.ep}" aria-controls="newEp" aria-selected="false"
-         class="nav-link" data-toggle="pill"
-         href="#newEpForm"
-         id="newEp" role="tab">{{'MAIN_MAPPINGS_NEW_TYPE_EP' | translate}}</a>
-    </li>
-  </ul>
+  <!-- NEW: NodesDiscrete -->
+  <div *ngIf="typeHint.nd">
 
-  <div class="tab-content p-2">
+    <span *ngIf="isEdit then editHeadlineNd else newHeadlineNd"></span>
+    <ng-template #editHeadlineNd><h3>{{'MAIN_MAPPINGS_EDIT_ND' | translate}}</h3></ng-template>
+    <ng-template #newHeadlineNd><h3>{{'MAIN_MAPPINGS_NEW_ND' | translate}}</h3></ng-template>
 
-    <!-- NEW: NodesDiscrete -->
-    <div *ngIf="typeHint.nd" [ngClass]="{active: typeHint.nd}" aria-labelledby="newNd" class="tab-pane fade show"
-         id="newNdForm"
-         role="tabpanel">
+    <p>{{'MAIN_MAPPINGS_NEW_INSTRUCTIONS' | translate}}</p>
 
-      <span *ngIf="isEdit then editHeadlineNd else newHeadlineNd"></span>
-      <ng-template #editHeadlineNd><h3>{{'MAIN_MAPPINGS_EDIT_ND' | translate}}</h3></ng-template>
-      <ng-template #newHeadlineNd><h3>{{'MAIN_MAPPINGS_NEW_ND' | translate}}</h3></ng-template>
+    <!-- ALERT: mapping already exists -->
+    <app-alert-mapping-already-exists *ngIf="!isEdit"
+                                      [typeHint]="typeHint"
+                                      [propertyToMap]="propertyToMap"
+                                      [styleProperty]="getCurrentStyleProperty()"></app-alert-mapping-already-exists>
 
-      <p>{{'MAIN_MAPPINGS_NEW_INSTRUCTIONS' | translate}}</p>
-
-      <!-- ALERT: mapping already exists -->
-      <app-alert-mapping-already-exists *ngIf="!isEdit"
-                                        [propertyToMap]="propertyToMap"
-                                        [styleProperty]="styleProperty"
-                                        [isNode]="true"
-                                        [isDiscrete]="true"></app-alert-mapping-already-exists>
-
-      <!-- ALERT: distribution -->
-      <div class="alert alert-info" role="alert">
-        <button (click)="toggleDistributionChart(!showDistribution)" class="btn btn-sm btn-outline-secondary mr-4"
-                data-toggle="tooltip"
-                ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
-                placement="right"
-                type="button">
-          <fa-icon [icon]="faChartBar"></fa-icon>
-        </button>
-        {{'MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE' | translate}}: <b>{{propertyToMap.name}}</b>
-      </div>
-
-      <!-- distribution chart -->
-      <app-chart *ngIf="showDistribution" [widthPercent]="100" [chartObject]="chartObject"></app-chart>
-
-      <!-- FORM -->
-      <app-main-mappings-new-form *ngIf="discreteMapping"
-                                  (stylePropertyEmitter)="setStyleProperty($event)"
-                                  [typeHint]="typeHint"
-                                  [mappingDiscrete]="discreteMapping"
-                                  [propertyToMap]="propertyToMap"></app-main-mappings-new-form>
-
+    <!-- ALERT: distribution -->
+    <div class="alert alert-info" role="alert">
+      <button (click)="toggleDistributionChart(!showDistribution)" class="btn btn-sm btn-outline-secondary mr-4"
+              data-toggle="tooltip"
+              ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
+              placement="right"
+              type="button">
+        <fa-icon [icon]="faChartBar"></fa-icon>
+      </button>
+      {{'MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE' | translate}}: <b>{{propertyToMap.name}}</b>
     </div>
 
-    <!-- NEW: NodesContinuous -->
-    <div *ngIf="typeHint.nc" [ngClass]="{active: typeHint.nc}" aria-labelledby="newNc" class="tab-pane fade show"
-         id="newNcForm"
-         role="tabpanel">
-      <span *ngIf="isEdit then editHeadlineNc else newHeadlineNc"></span>
-      <ng-template #editHeadlineNc><h3>{{'MAIN_MAPPINGS_EDIT_NC' | translate}}</h3></ng-template>
-      <ng-template #newHeadlineNc><h3>{{'MAIN_MAPPINGS_NEW_NC' | translate}}</h3></ng-template>
+    <!-- distribution chart -->
+    <app-chart *ngIf="showDistribution" [widthPercent]="100" [chartObject]="chartObject"></app-chart>
 
-      <!-- ALERT: mapping already exists -->
-      <app-alert-mapping-already-exists *ngIf="!isEdit"
-                                        [isNode]="true"
-                                        [isDiscrete]="false"
-                                        [propertyToMap]="propertyToMap"
-                                        [styleProperty]="styleProperty">
-      </app-alert-mapping-already-exists>
-
-      <!-- ALERT: distribution -->
-      <div class="alert alert-info" role="alert">
-
-        <button (click)="toggleDistributionChart(!showDistribution)" class="btn btn-sm btn-outline-secondary mr-4"
-                data-toggle="tooltip"
-                ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
-                placement="right"
-                type="button">
-          <fa-icon [icon]="faChartBar"></fa-icon>
-        </button>
-        {{'MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE' | translate}}: <b>{{propertyToMap.name}}</b>
-      </div>
-
-      <!-- distribution chart -->
-      <app-chart *ngIf="showDistribution" [chartObject]="chartObject"
-                 [widthPercent]="100" [numberOfBins]="binSize" (binSizeEmitter)="changeBinSize($event)"></app-chart>
-
-      <!-- ALERT: minimum und maximum (if available) -->
-      <div class="alert alert-info" role="alert">
-        <button (click)="showHints = !showHints" class="btn btn-sm btn-outline-secondary mr-4"
-                data-toggle="tooltip"
-                ngbTooltip="{{(!showHints ? 'MAIN_MAPPINGS_NEW_TT_HINTS_SHOW' : 'MAIN_MAPPINGS_NEW_TT_HINTS_HIDE') | translate}}"
-                placement="right"
-                type="button">
-          <fa-icon [icon]="faQuestionCircle"></fa-icon>
-        </button>
-        <b>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING' | translate}}</b>
-
-        <div *ngIf="showHints">
-          <ul>
-            <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_1' | translate}}</li>
-            <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_2' | translate}}</li>
-            <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_3' | translate}}</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- FORM -->
-      <app-main-mappings-new-form *ngIf="continuousMapping"
-                                  (stylePropertyEmitter)="setStyleProperty($event)"
-                                  [isEdit]="isEdit"
-                                  [typeHint]="typeHint"
-                                  [propertyToMap]="propertyToMap"
-                                  [mappingContinuous]="continuousMapping"></app-main-mappings-new-form>
-
-    </div>
-
-    <!-- todo NEW: NodesPassthrough -->
-    <div *ngIf="typeHint.np" [ngClass]="{active: typeHint.np}" aria-labelledby="newNp" class="tab-pane fade show"
-         id="newNpForm"
-         role="tabpanel">
-      <span *ngIf="isEdit then editHeadlineNp else newHeadlineNp"></span>
-      <ng-template #editHeadlineNp><h3>{{'MAIN_MAPPINGS_EDIT_NP' | translate}}</h3></ng-template>
-      <ng-template #newHeadlineNp><h3>{{'MAIN_MAPPINGS_NEW_NP' | translate}}</h3></ng-template>
-
-      <!-- ALERT: mapping already exists -->
-      <app-alert-mapping-already-exists *ngIf="!isEdit"
-                                        [isNode]="true"
-                                        [isDiscrete]="false"
-                                        [propertyToMap]="propertyToMap"
-                                        [styleProperty]="styleProperty">
-      </app-alert-mapping-already-exists>
-
-      <!-- ALERT: distribution -->
-      <div class="alert alert-info" role="alert">
-
-        <button (click)="toggleDistributionChart(!showDistribution)" class="btn btn-sm btn-outline-secondary mr-4"
-                data-toggle="tooltip"
-                ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
-                placement="right"
-                type="button">
-          <fa-icon [icon]="faChartBar"></fa-icon>
-        </button>
-        {{'MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE' | translate}}: <b>{{propertyToMap.name}}</b>
-      </div>
-
-      <!-- distribution chart -->
-      <app-chart *ngIf="showDistribution" [chartObject]="chartObject"
-                 [widthPercent]="100"></app-chart>
-
-      <!-- FORM -->
-      <app-main-mappings-new-form *ngIf="passthroughMapping"
-                                  (stylePropertyEmitter)="setStyleProperty($event)"
-                                  [isEdit]="isEdit"
-                                  [typeHint]="typeHint"
-                                  [propertyToMap]="propertyToMap"
-                                  [mappingPassthrough]="passthroughMapping"></app-main-mappings-new-form>
-
-    </div>
-
-    <!-- NEW: EdgesDiscrete -->
-    <div *ngIf="typeHint.ed" [ngClass]="{active: typeHint.ed}" aria-labelledby="newEd" class="tab-pane fade show"
-         id="newEdForm"
-         role="tabpanel">
-      <span *ngIf="isEdit then editHeadlineEd else newHeadlineEd"></span>
-      <ng-template #editHeadlineEd><h3>{{'MAIN_MAPPINGS_EDIT_ED' | translate}}</h3></ng-template>
-      <ng-template #newHeadlineEd><h3>{{'MAIN_MAPPINGS_NEW_ED' | translate}}</h3></ng-template>
-      <p>{{'MAIN_MAPPINGS_NEW_INSTRUCTIONS' | translate}}</p>
-
-      <!-- ALERT: mapping already exists -->
-      <app-alert-mapping-already-exists *ngIf="!isEdit"
-                                        [propertyToMap]="propertyToMap"
-                                        [styleProperty]="styleProperty"
-                                        [isDiscrete]="true"
-                                        [isNode]="false"></app-alert-mapping-already-exists>
-
-      <!-- ALERT: distribution -->
-      <div class="alert alert-info" role="alert">
-        <button (click)="toggleDistributionChart(!showDistribution)" class="btn btn-sm btn-outline-secondary mr-4"
-                data-toggle="tooltip"
-                ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
-                placement="right"
-                type="button">
-          <fa-icon [icon]="faChartBar"></fa-icon>
-        </button>
-        {{'MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE' | translate}}: <b>{{propertyToMap.name}}</b>
-      </div>
-
-      <!-- distribution chart -->
-      <app-chart *ngIf="showDistribution" [widthPercent]="100" [chartObject]="chartObject"></app-chart>
-
-
-      <!-- FORM -->
-      <app-main-mappings-new-form *ngIf="discreteMapping"
-                                  (stylePropertyEmitter)="setStyleProperty($event)"
-                                  [typeHint]="typeHint"
-                                  [mappingDiscrete]="discreteMapping"
-                                  [propertyToMap]="propertyToMap"></app-main-mappings-new-form>
-    </div>
-
-    <!-- NEW: EdgesContinuous -->
-    <div *ngIf="typeHint.ec" [ngClass]="{active: typeHint.ec}" aria-labelledby="newEc" class="tab-pane fade show"
-         id="newEcForm"
-         role="tabpanel">
-
-      <span *ngIf="isEdit then editHeadlineEc else newHeadlineEc"></span>
-      <ng-template #editHeadlineEc><h3>{{'MAIN_MAPPINGS_EDIT_EC' | translate}}</h3></ng-template>
-      <ng-template #newHeadlineEc><h3>{{'MAIN_MAPPINGS_NEW_EC' | translate}}</h3></ng-template>
-
-      <!-- ALERT: mapping already exists -->
-      <app-alert-mapping-already-exists *ngIf="!isEdit"
-                                        [isNode]="false"
-                                        [isDiscrete]="false"
-                                        [propertyToMap]="propertyToMap"
-                                        [styleProperty]="styleProperty">
-      </app-alert-mapping-already-exists>
-
-      <!-- ALERT: distribution -->
-      <div class="alert alert-info" role="alert">
-
-        <button (click)="toggleDistributionChart(!showDistribution)" class="btn btn-sm btn-outline-secondary mr-4"
-                data-toggle="tooltip"
-                ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
-                placement="right"
-                type="button">
-          <fa-icon [icon]="faChartBar"></fa-icon>
-        </button>
-        {{'MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE' | translate}}: <b>{{propertyToMap.name}}</b>
-      </div>
-
-      <!-- distribution chart -->
-      <app-chart *ngIf="showDistribution" [chartObject]="chartObject"
-                 [widthPercent]="100" [numberOfBins]="binSize"
-                 (binSizeEmitter)="this.changeBinSize($event)"></app-chart>
-
-      <!-- ALERT: minimum and maximum (if available) -->
-      <div class="alert alert-info" role="alert">
-        <button (click)="showHints = !showHints" class="btn btn-sm btn-outline-secondary mr-4"
-                data-toggle="tooltip"
-                ngbTooltip="{{(!showHints ? 'MAIN_MAPPINGS_NEW_TT_HINTS_SHOW' : 'MAIN_MAPPINGS_NEW_TT_HINTS_HIDE') | translate}}"
-                placement="right"
-                type="button">
-          <fa-icon [icon]="faQuestionCircle"></fa-icon>
-        </button>
-        <b>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING' | translate}}</b>
-
-        <div *ngIf="showHints">
-          <ul>
-            <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_1' | translate}}</li>
-            <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_2' | translate}}</li>
-            <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_3' | translate}}</li>
-          </ul>
-        </div>
-      </div>
-
-      <app-main-mappings-new-form *ngIf="continuousMapping"
-                                  (stylePropertyEmitter)="setStyleProperty($event)"
-                                  [isEdit]="isEdit"
-                                  [typeHint]="typeHint"
-                                  [propertyToMap]="propertyToMap"></app-main-mappings-new-form>
-    </div>
-
-    <!-- todo NEW: EdgesPassthrough -->
+    <!-- FORM -->
+    <app-main-mappings-new-form *ngIf="discreteMapping"
+                                (stylePropertyEmitter)="setStyleProperty($event)"
+                                [typeHint]="typeHint"
+                                [mappingDiscrete]="discreteMapping"
+                                [propertyToMap]="propertyToMap"></app-main-mappings-new-form>
 
   </div>
+
+  <!-- NEW: NodesContinuous -->
+  <div *ngIf="typeHint.nc">
+    <span *ngIf="isEdit then editHeadlineNc else newHeadlineNc"></span>
+    <ng-template #editHeadlineNc><h3>{{'MAIN_MAPPINGS_EDIT_NC' | translate}}</h3></ng-template>
+    <ng-template #newHeadlineNc><h3>{{'MAIN_MAPPINGS_NEW_NC' | translate}}</h3></ng-template>
+
+    <!-- ALERT: mapping already exists -->
+    <app-alert-mapping-already-exists *ngIf="!isEdit"
+                                      [typeHint]="typeHint"
+                                      [propertyToMap]="propertyToMap"
+                                      [styleProperty]="styleProperty">
+    </app-alert-mapping-already-exists>
+
+    <!-- ALERT: distribution -->
+    <div class="alert alert-info" role="alert">
+
+      <button (click)="toggleDistributionChart(!showDistribution)" class="btn btn-sm btn-outline-secondary mr-4"
+              data-toggle="tooltip"
+              ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
+              placement="right"
+              type="button">
+        <fa-icon [icon]="faChartBar"></fa-icon>
+      </button>
+      {{'MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE' | translate}}: <b>{{propertyToMap.name}}</b>
+    </div>
+
+    <!-- distribution chart -->
+    <app-chart *ngIf="showDistribution" [chartObject]="chartObject"
+               [widthPercent]="100" [numberOfBins]="binSize" (binSizeEmitter)="changeBinSize($event)"></app-chart>
+
+    <!-- ALERT: minimum und maximum (if available) -->
+    <div class="alert alert-info" role="alert">
+      <button (click)="showHints = !showHints" class="btn btn-sm btn-outline-secondary mr-4"
+              data-toggle="tooltip"
+              ngbTooltip="{{(!showHints ? 'MAIN_MAPPINGS_NEW_TT_HINTS_SHOW' : 'MAIN_MAPPINGS_NEW_TT_HINTS_HIDE') | translate}}"
+              placement="right"
+              type="button">
+        <fa-icon [icon]="faQuestionCircle"></fa-icon>
+      </button>
+      <b>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING' | translate}}</b>
+
+      <div *ngIf="showHints">
+        <ul>
+          <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_1' | translate}}</li>
+          <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_2' | translate}}</li>
+          <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_3' | translate}}</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <app-main-mappings-new-form *ngIf="continuousMapping"
+                                (stylePropertyEmitter)="setStyleProperty($event)"
+                                [isEdit]="isEdit"
+                                [typeHint]="typeHint"
+                                [propertyToMap]="propertyToMap"
+                                [mappingContinuous]="continuousMapping"></app-main-mappings-new-form>
+
+  </div>
+
+  <!-- todo NEW: NodesPassthrough -->
+  <div *ngIf="typeHint.np">
+    <span *ngIf="isEdit then editHeadlineNp else newHeadlineNp"></span>
+    <ng-template #editHeadlineNp><h3>{{'MAIN_MAPPINGS_EDIT_NP' | translate}}</h3></ng-template>
+    <ng-template #newHeadlineNp><h3>{{'MAIN_MAPPINGS_NEW_NP' | translate}}</h3></ng-template>
+
+    <!-- ALERT: mapping already exists -->
+    <app-alert-mapping-already-exists *ngIf="!isEdit"
+                                      [typeHint]="typeHint"
+                                      [propertyToMap]="propertyToMap"
+                                      [styleProperty]="styleProperty">
+    </app-alert-mapping-already-exists>
+
+    <!-- ALERT: distribution -->
+    <div class="alert alert-info" role="alert">
+
+      <button (click)="toggleDistributionChart(!showDistribution)" class="btn btn-sm btn-outline-secondary mr-4"
+              data-toggle="tooltip"
+              ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
+              placement="right"
+              type="button">
+        <fa-icon [icon]="faChartBar"></fa-icon>
+      </button>
+      {{'MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE' | translate}}: <b>{{propertyToMap.name}}</b>
+    </div>
+
+    <!-- distribution chart -->
+    <app-chart *ngIf="showDistribution" [chartObject]="chartObject"
+               [widthPercent]="100"></app-chart>
+
+    <!-- FORM -->
+    <app-main-mappings-new-form *ngIf="passthroughMapping"
+                                (stylePropertyEmitter)="setStyleProperty($event)"
+                                [alreadyExists]=""
+                                [isEdit]="isEdit"
+                                [typeHint]="typeHint"
+                                [propertyToMap]="propertyToMap"
+                                [mappingPassthrough]="passthroughMapping"></app-main-mappings-new-form>
+
+  </div>
+
+  <!-- NEW: EdgesDiscrete -->
+  <div *ngIf="typeHint.ed">
+    <span *ngIf="isEdit then editHeadlineEd else newHeadlineEd"></span>
+    <ng-template #editHeadlineEd><h3>{{'MAIN_MAPPINGS_EDIT_ED' | translate}}</h3></ng-template>
+    <ng-template #newHeadlineEd><h3>{{'MAIN_MAPPINGS_NEW_ED' | translate}}</h3></ng-template>
+    <p>{{'MAIN_MAPPINGS_NEW_INSTRUCTIONS' | translate}}</p>
+
+    <!-- ALERT: mapping already exists -->
+    <app-alert-mapping-already-exists *ngIf="!isEdit"
+                                      [typeHint]="typeHint"
+                                      [propertyToMap]="propertyToMap"
+                                      [styleProperty]="styleProperty"></app-alert-mapping-already-exists>
+
+    <!-- ALERT: distribution -->
+    <div class="alert alert-info" role="alert">
+      <button (click)="toggleDistributionChart(!showDistribution)" class="btn btn-sm btn-outline-secondary mr-4"
+              data-toggle="tooltip"
+              ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
+              placement="right"
+              type="button">
+        <fa-icon [icon]="faChartBar"></fa-icon>
+      </button>
+      {{'MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE' | translate}}: <b>{{propertyToMap.name}}</b>
+    </div>
+
+    <!-- distribution chart -->
+    <app-chart *ngIf="showDistribution" [widthPercent]="100" [chartObject]="chartObject"></app-chart>
+
+
+    <!-- FORM -->
+    <app-main-mappings-new-form *ngIf="discreteMapping"
+                                (stylePropertyEmitter)="setStyleProperty($event)"
+                                [typeHint]="typeHint"
+                                [mappingDiscrete]="discreteMapping"
+                                [propertyToMap]="propertyToMap"></app-main-mappings-new-form>
+  </div>
+
+  <!-- NEW: EdgesContinuous -->
+  <div *ngIf="typeHint.ec">
+
+    <span *ngIf="isEdit then editHeadlineEc else newHeadlineEc"></span>
+    <ng-template #editHeadlineEc><h3>{{'MAIN_MAPPINGS_EDIT_EC' | translate}}</h3></ng-template>
+    <ng-template #newHeadlineEc><h3>{{'MAIN_MAPPINGS_NEW_EC' | translate}}</h3></ng-template>
+
+    <!-- ALERT: mapping already exists -->
+    <app-alert-mapping-already-exists *ngIf="!isEdit"
+                                      [typeHint]="typeHint"
+                                      [propertyToMap]="propertyToMap"
+                                      [styleProperty]="styleProperty">
+    </app-alert-mapping-already-exists>
+
+    <!-- ALERT: distribution -->
+    <div class="alert alert-info" role="alert">
+
+      <button (click)="toggleDistributionChart(!showDistribution)" class="btn btn-sm btn-outline-secondary mr-4"
+              data-toggle="tooltip"
+              ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
+              placement="right"
+              type="button">
+        <fa-icon [icon]="faChartBar"></fa-icon>
+      </button>
+      {{'MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE' | translate}}: <b>{{propertyToMap.name}}</b>
+    </div>
+
+    <!-- distribution chart -->
+    <app-chart *ngIf="showDistribution" [chartObject]="chartObject"
+               [widthPercent]="100" [numberOfBins]="binSize"
+               (binSizeEmitter)="this.changeBinSize($event)"></app-chart>
+
+    <!-- ALERT: minimum and maximum (if available) -->
+    <div class="alert alert-info" role="alert">
+      <button (click)="showHints = !showHints" class="btn btn-sm btn-outline-secondary mr-4"
+              data-toggle="tooltip"
+              ngbTooltip="{{(!showHints ? 'MAIN_MAPPINGS_NEW_TT_HINTS_SHOW' : 'MAIN_MAPPINGS_NEW_TT_HINTS_HIDE') | translate}}"
+              placement="right"
+              type="button">
+        <fa-icon [icon]="faQuestionCircle"></fa-icon>
+      </button>
+      <b>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING' | translate}}</b>
+
+      <div *ngIf="showHints">
+        <ul>
+          <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_1' | translate}}</li>
+          <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_2' | translate}}</li>
+          <li>{{'MAIN_MAPPINGS_NEW_DEFAULT_HINT_3' | translate}}</li>
+        </ul>
+      </div>
+    </div>
+
+    <app-main-mappings-new-form *ngIf="continuousMapping"
+                                (stylePropertyEmitter)="setStyleProperty($event)"
+                                [isEdit]="isEdit"
+                                [typeHint]="typeHint"
+                                [propertyToMap]="propertyToMap"></app-main-mappings-new-form>
+  </div>
+
+  <!-- todo NEW: EdgesPassthrough -->
 
 
 </ng-container>

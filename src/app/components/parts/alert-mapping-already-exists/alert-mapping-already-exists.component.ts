@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {faRoute} from '@fortawesome/free-solid-svg-icons';
 import {DataService} from '../../../services/data.service';
 import {NeAspect} from '../../../models/ne-aspect';
+import {NeMappingsType} from "../../../models/ne-mappings-type";
 
 @Component({
   selector: 'app-alert-mapping-already-exists',
@@ -15,9 +16,7 @@ export class AlertMappingAlreadyExistsComponent implements OnInit {
   constructor(public dataService: DataService) {
   }
 
-  @Input() isDiscrete: boolean;
-
-  @Input() isNode: boolean;
+  @Input() typeHint: NeMappingsType;
 
   @Input() propertyToMap: NeAspect;
 

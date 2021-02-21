@@ -51,6 +51,12 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    */
   thresholds: NeThresholdMap[];
   /**
+   * True, if a mapping for this attribute-style-combination already exists.
+   * In case of a passthrough mapping this is true, if a passthrough mapping for this style (not considering the data source) exists.
+   * Used to disable the submit button.
+   */
+  @Input() alreadyExists = false;
+  /**
    * To update a parent, what the user entered as style property, this needs to be emitted
    */
   @Output() stylePropertyEmitter = new EventEmitter<string>();
@@ -109,13 +115,9 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // this.continuousThresholds = [];
-    // this.continuousMapping = null;
-    // this.discreteMapping = null;
     this.styleProperty = null;
-    // this.propertyPointer = null;
-    // this.isInitialized = false;
     this.typeHint = null;
+    this.alreadyExists = false;
   }
 
   /**
@@ -154,6 +156,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    */
   clearAllInputs(): void {
     this.styleProperty = '';
+    this.alreadyExists = false;
 
     if (this.mappingDiscrete) {
       this.mappingDiscrete.values = [];
@@ -434,6 +437,45 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    */
   emitStyleProperty(): void {
     this.stylePropertyEmitter.emit(this.styleProperty);
+    this.alreadyExists = false;
+
+    if (this.typeHint.nd) {
+      for (const mapping of this.dataService.selectedNetwork.mappings.nodesDiscrete) {
+        if (mapping.col === this.propertyToMap.name && mapping.styleProperty === this.styleProperty) {
+          this.alreadyExists = true;
+        }
+      }
+    } else if (this.typeHint.nc) {
+      for (const mapping of this.dataService.selectedNetwork.mappings.nodesContinuous) {
+        if (mapping.col === this.propertyToMap.name && mapping.styleProperty === this.styleProperty) {
+          this.alreadyExists = true;
+        }
+      }
+    } else if (this.typeHint.np) {
+      for (const mapping of this.dataService.selectedNetwork.mappings.nodesPassthrough) {
+        if (mapping.styleProperty === this.styleProperty) {
+          this.alreadyExists = true;
+        }
+      }
+    } else if (this.typeHint.ed) {
+      for (const mapping of this.dataService.selectedNetwork.mappings.edgesDiscrete) {
+        if (mapping.col === this.propertyToMap.name && mapping.styleProperty === this.styleProperty) {
+          this.alreadyExists = true;
+        }
+      }
+    } else if (this.typeHint.ec) {
+      for (const mapping of this.dataService.selectedNetwork.mappings.edgesContinuous) {
+        if (mapping.col === this.propertyToMap.name && mapping.styleProperty === this.styleProperty) {
+          this.alreadyExists = true;
+        }
+      }
+    } else if (this.typeHint.ep) {
+      for (const mapping of this.dataService.selectedNetwork.mappings.edgesPassthrough) {
+        if (mapping.styleProperty === this.styleProperty) {
+          this.alreadyExists = true;
+        }
+      }
+    }
   }
 
   /**
