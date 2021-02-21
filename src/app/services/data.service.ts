@@ -3,7 +3,6 @@ import {NeNetwork} from '../models/ne-network';
 import {NeMappingContinuous} from '../models/ne-mapping-continuous';
 import {NeMappingDiscrete} from '../models/ne-mapping-discrete';
 import {UtilityService} from './utility.service';
-import {NeGroupedMappingsDiscrete} from '../models/ne-grouped-mappings-discrete';
 import {NeMappingsType} from '../models/ne-mappings-type';
 import {NeAspect} from '../models/ne-aspect';
 import {NeMappingPassthrough} from '../models/ne-mapping-passthrough';

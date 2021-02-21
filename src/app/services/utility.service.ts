@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-import {NeStyle} from '../models/ne-style';
 import {NeMappingsType} from '../models/ne-mappings-type';
 import {NeAspect} from '../models/ne-aspect';
 import {NeChart} from '../models/ne-chart';
 import {NeFrequencyCounter} from '../models/ne-frequency-counter';
+import {NeStyle} from '../models/ne-style';
 
 @Injectable({
   providedIn: 'root'

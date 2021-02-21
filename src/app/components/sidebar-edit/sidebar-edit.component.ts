@@ -3,7 +3,7 @@ import {DataService} from '../../services/data.service';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {GraphService} from '../../services/graph.service';
-import {faClone, faLightbulb, faPalette, faCogs} from '@fortawesome/free-solid-svg-icons';
+import {faClone, faCogs, faLightbulb, faPalette} from '@fortawesome/free-solid-svg-icons';
 import {ChartDataSets} from 'chart.js';
 import {Label} from 'ng2-charts';
 import {NeColorGradient} from '../../models/ne-color-gradient';
@@ -13,6 +13,9 @@ import {NeChart} from '../../models/ne-chart';
 import {NeChartType} from '../../models/ne-chart-type';
 import {NeMappingDiscrete} from '../../models/ne-mapping-discrete';
 import {NeMappingContinuous} from '../../models/ne-mapping-continuous';
+import {NeHighlightForm} from "../../models/ne-highlight-form";
+import {NeAspect} from "../../models/ne-aspect";
+import {UtilityService} from "../../services/utility.service";
 
 @Component({
   selector: 'app-sidebar-edit',
@@ -108,6 +111,12 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    */
   highlightDuration = 2000;
   /**
+   * List of user defined inspections,
+   * e.g. 'Highlight all nodes, where 'Bait_boolean' = 1'
+   */
+  highlightListDefinition: NeHighlightForm[] = [];
+
+  /**
    * Ensures that only a graph is rendered if the id is specified within the URL
    * @private
    */
@@ -142,11 +151,13 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * @param dataService Service to read and write globally accessible data
    * @param route Service to read URL
    * @param graphService Service for graph manipulations
+   * @param utilityService
    */
   constructor(
     public dataService: DataService,
     private route: ActivatedRoute,
     public graphService: GraphService,
+    private utilityService: UtilityService
   ) {
 
     this.routerSubscription = this.route.paramMap.subscribe(params => {
@@ -301,6 +312,13 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    */
   setHighlightColorAndDuration(): void {
     this.graphService.setHighlightColorAndDuration(this.highlightNodes, this.highlightEdges, this.highlightDuration);
+  }
+
+  getAvailablePropertiesByType(type: string): NeAspect[] {
+    if (type === 'node') {
+      return this.dataService.selectedNetwork.aspectKeyValuesNodes;
+    }
+    return this.dataService.selectedNetwork.aspectKeyValuesEdges;
   }
 
 }

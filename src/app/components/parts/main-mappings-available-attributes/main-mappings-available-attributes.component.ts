@@ -1,13 +1,12 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {faPlus, faSearch} from '@fortawesome/free-solid-svg-icons';
 import {NeAspect} from '../../../models/ne-aspect';
-import {NeContinuousCollection} from '../../../models/ne-continuous-collection';
-import {NeGroupedMappingsDiscrete} from '../../../models/ne-grouped-mappings-discrete';
 import {DataService} from '../../../services/data.service';
 import {NeMappingsType} from '../../../models/ne-mappings-type';
 import {UtilityService} from '../../../services/utility.service';
-import {NeMappingDiscrete} from "../../../models/ne-mapping-discrete";
-import {NeMappingPassthrough} from "../../../models/ne-mapping-passthrough";
+import {NeMappingDiscrete} from '../../../models/ne-mapping-discrete';
+import {NeMappingPassthrough} from '../../../models/ne-mapping-passthrough';
+import {NeMappingContinuous} from '../../../models/ne-mapping-continuous';
 
 @Component({
   selector: 'app-main-mappings-available-attributes',
@@ -38,7 +37,7 @@ export class MainMappingsAvailableAttributesComponent implements OnInit {
   /**
    * List of already existing mappings for the list of properties
    */
-  @Input() mappings: NeContinuousCollection[] | NeMappingDiscrete[] | NeMappingPassthrough[];
+  @Input() mappings: NeMappingContinuous | NeMappingDiscrete[] | NeMappingPassthrough;
   /**
    * Indicating type of mappings, e.g. 'nd'
    */

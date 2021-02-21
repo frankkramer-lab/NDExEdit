@@ -1,7 +1,6 @@
 import {NeNetworkInformation} from './ne-network-information';
 import * as cytoscape from 'cytoscape';
 import {ElementDefinition, Stylesheet} from 'cytoscape';
-import {NeElementAttribute} from './ne-element-attribute';
 import {NeAspect} from './ne-aspect';
 import {NeMappingsMap} from './ne-mappings-map';
 
@@ -45,11 +44,6 @@ export interface NeNetwork {
    * Information about this network
    */
   networkInformation?: NeNetworkInformation;
-
-  /**
-   * List of all available attributes
-   */
-  aspects?: NeElementAttribute[];
 
   /**
    * List of all attributes for nodes and their associations to other objects

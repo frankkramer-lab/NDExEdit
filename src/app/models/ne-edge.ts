@@ -1,5 +1,4 @@
 import {NeElement} from './ne-element';
-import {NeElementAttribute} from './ne-element-attribute';
 
 /**
  * Type based on {@link NeElement} describing edges
@@ -34,7 +33,7 @@ export interface NeEdge extends NeElement {
   /**
    * {@inheritdoc}
    */
-  attributes?: NeElementAttribute[];
+  // attributes?: NeElementAttribute[];
 
   /**
    * {@inheritdoc}

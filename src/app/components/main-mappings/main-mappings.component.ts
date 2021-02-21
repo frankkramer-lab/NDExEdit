@@ -5,9 +5,9 @@ import {faArrowLeft, faCheck, faEdit, faPlus, faSearch, faTimes, faTrash} from '
 import {NeMappingsType} from '../../models/ne-mappings-type';
 import {NeAspect} from '../../models/ne-aspect';
 import {UtilityService} from '../../services/utility.service';
-import {NeContinuousCollection} from '../../models/ne-continuous-collection';
 import {NeMappingDiscrete} from '../../models/ne-mapping-discrete';
 import {NeMappingPassthrough} from '../../models/ne-mapping-passthrough';
+import {NeMappingContinuous} from "../../models/ne-mapping-continuous";
 
 @Component({
   selector: 'app-main-mappings',
@@ -232,7 +232,7 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    * @param s Can either be 'nd', 'nc', 'np', 'ed', 'ec' or 'ep'
    */
   public getExistingMappingListForCurrentNetworkAndType(s: string):
-    NeContinuousCollection[] |
+    NeMappingContinuous[] |
     NeMappingDiscrete[] |
     NeMappingPassthrough[] {
     const typeHint: NeMappingsType = this.utilityService.utilGetTypeHintByString(s);

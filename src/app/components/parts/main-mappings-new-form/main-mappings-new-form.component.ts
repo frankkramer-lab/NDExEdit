@@ -4,11 +4,10 @@ import {faCheck, faPlus, faTimes, faUndo} from '@fortawesome/free-solid-svg-icon
 import {UtilityService} from '../../../services/utility.service';
 import {NeMappingsType} from '../../../models/ne-mappings-type';
 import {NeAspect} from '../../../models/ne-aspect';
-import {NeGroupedMappingsDiscrete} from '../../../models/ne-grouped-mappings-discrete';
 import {NeMappingContinuous} from '../../../models/ne-mapping-continuous';
 import {NeMappingDiscrete} from '../../../models/ne-mapping-discrete';
 import {NeThresholdMap} from '../../../models/ne-threshold-map';
-import {NeMappingPassthrough} from "../../../models/ne-mapping-passthrough";
+import {NeMappingPassthrough} from '../../../models/ne-mapping-passthrough';
 
 @Component({
   selector: 'app-main-mappings-new-form',
@@ -389,7 +388,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * @param propertyId id to the style property within the mapping which is to be edited
    * @param isNode true if the selected mapping belongs to nodes
    */
-  prefillDiscreteMapping(mapping: NeGroupedMappingsDiscrete, propertyId: number, isNode: boolean): void {
+  prefillDiscreteMapping(mapping: NeMappingDiscrete[], propertyId: number, isNode: boolean): void {
     // console.log(mapping, propertyId);
     // this.discreteMapping = [];
     // this.styleProperty = mapping.styleMap[propertyId].cssKey;

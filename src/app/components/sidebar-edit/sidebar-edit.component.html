@@ -334,10 +334,53 @@
 
     <!-- Edit: Inspect -->
     <div aria-labelledby="editsNavInspect" class="tab-pane fade" id="editsNavInspectContent" role="tabpanel">
-      <h1>WIP</h1>
-      <p>To highlight elements within this network, we need to extract all available attributes from nodeAttributes /
-        edgeAttributes</p>
-      <p>Also need this to fix network stats onclick info-button</p>
+      <h5>WIP</h5>
+
+      <div class="row">
+
+        <!-- TYPE -->
+        <div class="col mr-1">
+          <div class="btn-group-vertical btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-outline-secondary active">
+              <input type="radio" name="type" id="typeNode" #typeNode autocomplete="off" checked> N
+            </label>
+            <label class="btn btn-outline-secondary">
+              <input type="radio" name="type" id="typeEdge" autocomplete="off"> E
+            </label>
+          </div>
+        </div>
+
+        <!-- PROPERTY -->
+        <div class="col mr-1">
+
+          <!-- NODES -->
+          <div *ngIf="typeNode.checked"
+               class="btn-group-vertical btn-group-toggle" data-toggle="buttons">
+
+            <label class="btn btn-outline-secondary" *ngFor="let property of getAvailablePropertiesByType('node')">
+              <input type="radio" name="type" id="node_{{property.name}}" autocomplete="off">
+              {{property.name}}
+            </label>
+          </div>
+
+          <!-- EDGES -->
+          <div *ngIf="!typeNode.checked"
+               class="btn-group-vertical btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-outline-secondary" *ngFor="let property of getAvailablePropertiesByType('edge')">
+              <input type="radio" name="type" id="edge_{{property.name}}" autocomplete="off">
+              {{property.name}}
+            </label>
+          </div>
+
+        </div>
+
+        <!-- COMPARATOR -->
+        <div class="col mr-1">
+
+        </div>
+
+      </div>
+
     </div>
 
     <!-- Edit: Highlight color -->

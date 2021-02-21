@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import * as cytoscape from 'cytoscape';
-import {NeStyle} from '../models/ne-style';
 import {NeNetworkInformation} from '../models/ne-network-information';
 import {NeNetwork} from '../models/ne-network';
 import {NeColorGradient} from '../models/ne-color-gradient';
@@ -16,6 +15,7 @@ import {NeAspect} from '../models/ne-aspect';
 import {NeChartType} from '../models/ne-chart-type';
 import {DataService} from './data.service';
 import {NeMappingPassthrough} from '../models/ne-mapping-passthrough';
+import {NeStyle} from "../models/ne-style";
 
 @Injectable({
   providedIn: 'root'
