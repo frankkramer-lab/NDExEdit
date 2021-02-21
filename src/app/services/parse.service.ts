@@ -175,7 +175,7 @@ export class ParseService {
     };
 
     for (const a of aspects) {
-      if (!newAspect.values.includes(a[key])) {
+      if (a[key] && !newAspect.values.includes(a[key])) {
         newAspect.values.push(a[key]);
       }
     }
@@ -207,7 +207,7 @@ export class ParseService {
       }
     }
 
-    return newAspect;
+    return newAspect.values.length === 0 ? null : newAspect;
   }
 
   /**
@@ -219,14 +219,15 @@ export class ParseService {
    */
   private convertAkvByFile(attributes: any, mappings: NeMappingsMap, isNode: boolean = true): NeAspect[] {
     const akvs: NeAspect[] = [];
+
     for (const attr of attributes) {
 
       let found = false;
 
       for (const akv of akvs) {
 
-        if (akv.name === attr.n) {
 
+        if (akv.name === attr.n) {
           found = true;
 
           if (!akv.values.includes(attr.v)) {
@@ -652,22 +653,33 @@ export class ParseService {
 
     for (const fd of filedata) {
       if (fd.nodeAttributes) {
-        akvNodes = this.convertAkvByFile(fd.nodeAttributes, mappings);
+        akvNodes.concat(this.convertAkvByFile(fd.nodeAttributes, mappings));
+        console.log(akvNodes);
       }
       if (fd.edgeAttributes) {
-        akvEdges = this.convertAkvByFile(fd.edgeAttributes, mappings, false);
+        akvEdges.concat(this.convertAkvByFile(fd.edgeAttributes, mappings, false));
       }
       if (fd.nodes) {
-        if (akvNodes.filter(a => a.name === 'name').length === 0) {
-          akvNodes.push(ParseService.buildAspectByCx(fd.nodes, 'n', mappings));
+        if (!akvNodes.some(a => a.name === 'name')) {
+          const newAspect = ParseService.buildAspectByCx(fd.nodes, 'n', mappings);
+          if (newAspect) {
+            akvNodes.push(newAspect);
+          }
         }
-        if (akvNodes.filter(a => a.name === 'represents').length === 0) {
-          akvNodes.push(ParseService.buildAspectByCx(fd.nodes, 'r', mappings));
+        if (!akvNodes.some(a => a.name === 'represents')) {
+          const newAspect = ParseService.buildAspectByCx(fd.nodes, 'r', mappings);
+          if (newAspect) {
+            akvNodes.push(newAspect);
+          }
         }
       }
       if (fd.edges) {
-        if (akvEdges.filter(a => a.name === 'interaction').length === 0) {
-          akvEdges.push(ParseService.buildAspectByCx(fd.edges, 'i', mappings));
+        if (!akvEdges.some(a => a.name === 'interaction')) {
+          const newAspect = ParseService.buildAspectByCx(fd.edges, 'i', mappings);
+          if (newAspect) {
+            akvEdges.push(newAspect);
+
+          }
         }
       }
     }
@@ -841,14 +853,12 @@ export class ParseService {
           if (isNode) {
 
             // handle 'name' or 'represents'
-            if (akv.name === 'name' || akv.name === 'represents') {
-              if (fd.nodes) {
-                for (const n of fd.nodes) {
-                  if (akv.name === 'name' && n.n && n.n === v) {
-                    vCount++;
-                  } else if (akv.name === 'represents' && n.r && n.r === v) {
-                    vCount++;
-                  }
+            if (fd.nodes && (akv.name === 'name' || akv.name === 'represents')) {
+              for (const n of fd.nodes) {
+                if (akv.name === 'name' && n.n && n.n === v) {
+                  vCount++;
+                } else if (akv.name === 'represents' && n.r && n.r === v) {
+                  vCount++;
                 }
               }
             }
@@ -863,12 +873,10 @@ export class ParseService {
           } else {
 
             // handle 'interaction'
-            if (akv.name === 'interaction') {
-              if (fd.edges) {
-                for (const e of fd.edges) {
-                  if (e.i && e.i === v) {
-                    vCount++;
-                  }
+            if (fd.edges && akv.name === 'interaction') {
+              for (const e of fd.edges) {
+                if (e.i && e.i === v) {
+                  vCount++;
                 }
               }
             }
@@ -888,6 +896,7 @@ export class ParseService {
       akv.coverage = this.getCoverageByChart(chart, isNode ? numberOfNodes : numberOfEdges);
     }
 
+
     for (const akv of continuousAkvs) {
       const binSize = this.utilityService.utilSturgesRule(akv.values as unknown as number[]);
       const chart = this.utilityService.utilCalculateHistogramDataForBinSize(binSize, akv, ['OCCURANCES', 'BINS']);
@@ -895,6 +904,7 @@ export class ParseService {
       akv.binSize = binSize;
       akv.coverage = this.getCoverageByChart(chart, isNode ? numberOfNodes : numberOfEdges);
     }
+
     return discreteAkvs.concat(continuousAkvs);
   }
 
