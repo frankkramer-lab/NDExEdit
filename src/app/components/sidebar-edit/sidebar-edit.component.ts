@@ -3,7 +3,7 @@ import {DataService} from '../../services/data.service';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {GraphService} from '../../services/graph.service';
-import {faCheck, faClone, faCogs, faLightbulb, faPalette} from '@fortawesome/free-solid-svg-icons';
+import {faCheck, faClone, faCogs, faLightbulb, faPalette, faMagic} from '@fortawesome/free-solid-svg-icons';
 import {ChartDataSets} from 'chart.js';
 import {Label} from 'ng2-charts';
 import {NeColorGradient} from '../../models/ne-color-gradient';
@@ -32,6 +32,11 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faCogs = faCogs;
+  /**
+   * Icon: faMagic
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faMagic = faMagic;
   /**
    * Icon: faClone
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
@@ -176,7 +181,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     public dataService: DataService,
     private route: ActivatedRoute,
     public graphService: GraphService,
-    private utilityService: UtilityService
+    public utilityService: UtilityService
   ) {
 
     this.routerSubscription = this.route.paramMap.subscribe(params => {
@@ -333,14 +338,23 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     this.graphService.setHighlightColorAndDuration(this.highlightNodes, this.highlightEdges, this.highlightDuration);
   }
 
+  /**
+   * Returns attributes related to nodes or edges
+   * @param type
+   */
   getAvailablePropertiesByType(type: string): NeAspect[] {
-    if (type === 'node') {
+    if (type === 'SIDEBAR_EDIT_INSPECT_TYPE_NODE') {
       return this.dataService.selectedNetwork.aspectKeyValuesNodes;
     }
     return this.dataService.selectedNetwork.aspectKeyValuesEdges;
   }
 
-  selectProperty(property: NeAspect): void {
+  /**
+   * Adds the property to the highlight definition the user is currently defining
+   * @param property
+   * @param isNode
+   */
+  selectProperty(property: NeAspect, isNode: boolean): void {
     this.highlightDefinition.property = property;
 
     if (this.utilityService.utilFitForContinuous(property)) {
@@ -350,13 +364,20 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     } else {
       this.highlightDefinitionDatatype = 'text';
     }
+    this.highlightDefinition.type = isNode ? 'SIDEBAR_EDIT_INSPECT_TYPE_NODE' : 'SIDEBAR_EDIT_INSPECT_TYPE_EDGE';
   }
 
+  /**
+   * Submits a definition to the list of definitions the user wants to highlight
+   */
   addHighlightDefinitionToList(): void {
     this.highlightListDefinition.push(this.highlightDefinition);
     this.highlightDefinition = {property: undefined, type: ''};
   }
 
+  /**
+   * On changing the type of a definition we need to clear the form
+   */
   clearLaterFields(): void {
     this.highlightDefinitionDatatype = null;
   }

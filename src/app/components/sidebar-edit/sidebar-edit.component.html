@@ -334,7 +334,25 @@
 
     <!-- Edit: Inspect -->
     <div aria-labelledby="editsNavInspect" class="tab-pane fade" id="editsNavInspectContent" role="tabpanel">
-      <h5>WIP</h5>
+      <p>{{'SIDEBAR_EDIT_INSPECT_TITLE_HINT' | translate}}</p>
+
+      <table class="table">
+        <tr *ngFor="let def of highlightListDefinition">
+          <td>{{def.type | translate}}</td>
+          <td>{{def.property.name}}</td>
+          <td *ngIf="def.rangeLower && def.rangeUpper">
+            {{'SIDEBAR_EDIT_INSPECT_RANGE_LOWER' | translate}} {{def.rangeLower}} {{'SIDEBAR_EDIT_INSPECT_RANGE_UPPER' | translate}} {{def.rangeUpper}}
+          </td>
+          <td *ngIf="def.sameAs">{{'SIDEBAR_EDIT_INSPECT_SAME' | translate}} {{def.sameAs}}</td>
+          <td>
+            <button class="btn btn-outline-primary">
+              <fa-icon [icon]="faMagic"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </table>
+
+      <hr *ngIf="highlightListDefinition.length > 0">
 
       <div class="row">
 
@@ -345,11 +363,13 @@
 
             <label class="btn btn-outline-secondary active">
               <input type="radio" name="type" id="typeNode" #typeNode autocomplete="off"
-                     [defaultChecked]="true" (click)="clearLaterFields()">N
+                     [defaultChecked]="true" (click)="clearLaterFields()">
+              {{'SIDEBAR_EDIT_INSPECT_TYPE_NODE' | translate}}
             </label>
 
             <label class="btn btn-outline-secondary">
-              <input type="radio" name="type" id="typeEdge" autocomplete="off" (click)="clearLaterFields()">E
+              <input type="radio" name="type" id="typeEdge" autocomplete="off" (click)="clearLaterFields()">
+              {{'SIDEBAR_EDIT_INSPECT_TYPE_EDGE' | translate}}
             </label>
 
           </div>
@@ -363,9 +383,9 @@
                class="btn-group-vertical btn-group-toggle"
                data-toggle="buttons">
 
-            <label class="btn btn-outline-secondary" *ngFor="let property of getAvailablePropertiesByType('node')">
+            <label class="btn btn-outline-secondary" *ngFor="let property of getAvailablePropertiesByType('SIDEBAR_EDIT_INSPECT_TYPE_NODE')">
               <input type="radio" name="node_{{property.name}}" id="node_{{property.name}}" autocomplete="off"
-                     (click)="selectProperty(property)">
+                     (click)="selectProperty(property, typeNode.checked)">
               {{property.name}}
             </label>
 
@@ -376,9 +396,9 @@
                class="btn-group-vertical btn-group-toggle"
                data-toggle="buttons">
 
-            <label class="btn btn-outline-secondary" *ngFor="let property of getAvailablePropertiesByType('edge')">
+            <label class="btn btn-outline-secondary" *ngFor="let property of getAvailablePropertiesByType('SIDEBAR_EDIT_INSPECT_TYPE_EDGE')">
               <input type="radio" name="edge_{{property.name}}" id="edge_{{property.name}}" autocomplete="off"
-                     (click)="selectProperty(property)">
+                     (click)="selectProperty(property, typeNode.checked)">
               {{property.name}}
             </label>
 
@@ -387,28 +407,28 @@
         </div>
 
         <!-- COMPARATOR -->
-        <div class="col-4" *ngIf="highlightDefinition && highlightDefinition.property">
+        <div class="col-4">
 
           <form *ngIf="highlightDefinitionDatatype === 'numeric'">
             <div class="form-group">
-              <label for="numericLower">WIP lower border</label>
-              <input type="number" class="form-control" name="numericLower" id="numericLower" placeholder="WIP lower"
+              <label for="numericLower">{{'SIDEBAR_EDIT_INSPECT_RANGE_LOWER' | translate}}</label>
+              <input type="number" class="form-control" name="numericLower" id="numericLower" placeholder="0"
                      [(ngModel)]="highlightDefinition.rangeLower">
             </div>
           </form>
 
           <form *ngIf="highlightDefinitionDatatype === 'numeric'">
             <div class="form-group">
-              <label for="numericUpper">WIP upper border</label>
-              <input type="number" class="form-control" name="numericUpper" id="numericUpper" placeholder="WIP upper"
+              <label for="numericUpper">{{'SIDEBAR_EDIT_INSPECT_RANGE_UPPER' | translate}}</label>
+              <input type="number" class="form-control" name="numericUpper" id="numericUpper" placeholder="0"
                      [(ngModel)]="highlightDefinition.rangeUpper">
             </div>
           </form>
 
           <form *ngIf="highlightDefinitionDatatype === 'text'">
             <div class="form-group">
-              <label for="nonNumeric">WIP non numeric</label>
-              <input type="text" class="form-control" name="nonNumeric" id="nonNumeric" placeholder="WIP non numeric"
+              <label for="nonNumeric">{{'SIDEBAR_EDIT_INSPECT_SAME_LABEL' | translate}}</label>
+              <input type="text" class="form-control" name="nonNumeric" id="nonNumeric" placeholder="Test"
                      [(ngModel)]="highlightDefinition.sameAs">
             </div>
           </form>
