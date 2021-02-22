@@ -339,46 +339,90 @@
       <div class="row">
 
         <!-- TYPE -->
-        <div class="col mr-1">
-          <div class="btn-group-vertical btn-group-toggle" data-toggle="buttons">
+        <div class="col-2">
+          <div class="btn-group-vertical btn-group-toggle"
+               data-toggle="buttons">
+
             <label class="btn btn-outline-secondary active">
-              <input type="radio" name="type" id="typeNode" #typeNode autocomplete="off" checked> N
+              <input type="radio" name="type" id="typeNode" #typeNode autocomplete="off"
+                     [defaultChecked]="true" (click)="clearLaterFields()">N
             </label>
+
             <label class="btn btn-outline-secondary">
-              <input type="radio" name="type" id="typeEdge" autocomplete="off"> E
+              <input type="radio" name="type" id="typeEdge" autocomplete="off" (click)="clearLaterFields()">E
             </label>
+
           </div>
         </div>
 
         <!-- PROPERTY -->
-        <div class="col mr-1">
+        <div class="col-4">
 
           <!-- NODES -->
           <div *ngIf="typeNode.checked"
-               class="btn-group-vertical btn-group-toggle" data-toggle="buttons">
+               class="btn-group-vertical btn-group-toggle"
+               data-toggle="buttons">
 
             <label class="btn btn-outline-secondary" *ngFor="let property of getAvailablePropertiesByType('node')">
-              <input type="radio" name="type" id="node_{{property.name}}" autocomplete="off">
+              <input type="radio" name="node_{{property.name}}" id="node_{{property.name}}" autocomplete="off"
+                     (click)="selectProperty(property)">
               {{property.name}}
             </label>
+
           </div>
 
           <!-- EDGES -->
           <div *ngIf="!typeNode.checked"
-               class="btn-group-vertical btn-group-toggle" data-toggle="buttons">
+               class="btn-group-vertical btn-group-toggle"
+               data-toggle="buttons">
+
             <label class="btn btn-outline-secondary" *ngFor="let property of getAvailablePropertiesByType('edge')">
-              <input type="radio" name="type" id="edge_{{property.name}}" autocomplete="off">
+              <input type="radio" name="edge_{{property.name}}" id="edge_{{property.name}}" autocomplete="off"
+                     (click)="selectProperty(property)">
               {{property.name}}
             </label>
+
           </div>
 
         </div>
 
         <!-- COMPARATOR -->
-        <div class="col mr-1">
+        <div class="col-4" *ngIf="highlightDefinition && highlightDefinition.property">
+
+          <form *ngIf="highlightDefinitionDatatype === 'numeric'">
+            <div class="form-group">
+              <label for="numericLower">WIP lower border</label>
+              <input type="number" class="form-control" name="numericLower" id="numericLower" placeholder="WIP lower"
+                     [(ngModel)]="highlightDefinition.rangeLower">
+            </div>
+          </form>
+
+          <form *ngIf="highlightDefinitionDatatype === 'numeric'">
+            <div class="form-group">
+              <label for="numericUpper">WIP upper border</label>
+              <input type="number" class="form-control" name="numericUpper" id="numericUpper" placeholder="WIP upper"
+                     [(ngModel)]="highlightDefinition.rangeUpper">
+            </div>
+          </form>
+
+          <form *ngIf="highlightDefinitionDatatype === 'text'">
+            <div class="form-group">
+              <label for="nonNumeric">WIP non numeric</label>
+              <input type="text" class="form-control" name="nonNumeric" id="nonNumeric" placeholder="WIP non numeric"
+                     [(ngModel)]="highlightDefinition.sameAs">
+            </div>
+          </form>
 
         </div>
 
+        <!-- SUBMIT -->
+
+        <div class="col-2">
+          <button class="btn btn-block btn-outline-success" (click)="addHighlightDefinitionToList()"
+                  [disabled]="!highlightDefinition.sameAs && (!highlightDefinition.rangeUpper || !highlightDefinition.rangeLower)">
+            <fa-icon [icon]="faCheck"></fa-icon>
+          </button>
+        </div>
       </div>
 
     </div>

@@ -3,7 +3,7 @@ import {DataService} from '../../services/data.service';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {GraphService} from '../../services/graph.service';
-import {faClone, faCogs, faLightbulb, faPalette} from '@fortawesome/free-solid-svg-icons';
+import {faCheck, faClone, faCogs, faLightbulb, faPalette} from '@fortawesome/free-solid-svg-icons';
 import {ChartDataSets} from 'chart.js';
 import {Label} from 'ng2-charts';
 import {NeColorGradient} from '../../models/ne-color-gradient';
@@ -13,9 +13,9 @@ import {NeChart} from '../../models/ne-chart';
 import {NeChartType} from '../../models/ne-chart-type';
 import {NeMappingDiscrete} from '../../models/ne-mapping-discrete';
 import {NeMappingContinuous} from '../../models/ne-mapping-continuous';
-import {NeHighlightForm} from "../../models/ne-highlight-form";
-import {NeAspect} from "../../models/ne-aspect";
-import {UtilityService} from "../../services/utility.service";
+import {NeHighlightForm} from '../../models/ne-highlight-form';
+import {NeAspect} from '../../models/ne-aspect';
+import {UtilityService} from '../../services/utility.service';
 
 @Component({
   selector: 'app-sidebar-edit',
@@ -47,6 +47,11 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faLightbulb = faLightbulb;
+  /**
+   * Icon: faCheck
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faCheck = faCheck;
   /**
    * Toggles displaying the comparison of multiple selected elements
    */
@@ -115,6 +120,20 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * e.g. 'Highlight all nodes, where 'Bait_boolean' = 1'
    */
   highlightListDefinition: NeHighlightForm[] = [];
+  /**
+   * Currently user defined inspection
+   */
+  highlightDefinition: NeHighlightForm = {
+    property: null,
+    type: ''
+  };
+
+  /**
+   * 'numeric' or 'text', where 'numeric' indicates that a property should be selected based on min and max thresholds.
+   * 'text' indicates, that a discrete value for the chosen property is needed.
+   * Integer based properties should be treated as numeric.
+   */
+  highlightDefinitionDatatype: string;
 
   /**
    * Ensures that only a graph is rendered if the id is specified within the URL
@@ -321,4 +340,24 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     return this.dataService.selectedNetwork.aspectKeyValuesEdges;
   }
 
+  selectProperty(property: NeAspect): void {
+    this.highlightDefinition.property = property;
+
+    if (this.utilityService.utilFitForContinuous(property)) {
+      this.highlightDefinitionDatatype = 'numeric';
+      this.highlightDefinition.rangeLower = property.min;
+      this.highlightDefinition.rangeUpper = property.max;
+    } else {
+      this.highlightDefinitionDatatype = 'text';
+    }
+  }
+
+  addHighlightDefinitionToList(): void {
+    this.highlightListDefinition.push(this.highlightDefinition);
+    this.highlightDefinition = {property: undefined, type: ''};
+  }
+
+  clearLaterFields(): void {
+    this.highlightDefinitionDatatype = null;
+  }
 }
