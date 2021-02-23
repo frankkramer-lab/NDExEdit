@@ -412,7 +412,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         col: this.propertyToMap.name,
         styleProperty: ''
       };
-      console.log(this.passthroughMapping);
     }
 
     if (this.isDiscrete) {
@@ -434,6 +433,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * @private only needed on init
    */
   private initDataEdit(params: ParamMap): void {
+    console.log(params);
     // edit existing
     this.isEdit = true;
     let existingDiscreteMapping: NeMappingDiscrete[];

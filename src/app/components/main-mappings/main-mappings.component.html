@@ -14,7 +14,7 @@
   <!-- PASSTHROUGH -->
   <div
     *ngIf="dataService.selectedPassthroughMapping">
-    <table class="table table-bordered">
+    <table class="table">
       <thead>
       <tr>
         <th>{{'MAIN_MAPPINGS_TH_COL' | translate}}</th>
@@ -28,6 +28,15 @@
       </tr>
       </tbody>
     </table>
+
+    <button (click)="toggleGlobalRemoveDialogue()"
+            class="btn btn-block btn-outline-danger"
+            data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_DELETE' | translate}}"
+            placement="bottom">
+      <fa-icon [icon]="faTrash"></fa-icon>
+      {{'MAIN_MAPPINGS_DELETE' | translate}}
+    </button>
+
   </div>
 
   <!-- DISCRETE -->
@@ -36,7 +45,7 @@
 
     <div class="table-responsive">
 
-      <table class="table table-bordered">
+      <table class="table">
         <thead>
         <tr>
           <th>{{dataService.selectedDiscreteMappingProperty}}</th>
@@ -64,12 +73,13 @@
           </td>
 
           <td>
-            <button class="btn btn-outline-warning" [disabled]="true">
+            <button class="btn btn-outline-warning"
+                    [routerLink]="['', { outlets: {primary: ['edit', mapHint + styleIndex]} }]">
               <fa-icon [icon]="faEdit"></fa-icon>
             </button>
           </td>
           <td>
-            <button class="btn btn-outline-danger" (click)="toggleSingleRemoveDialogue(styleIndex)">
+            <button class="btn btn-outline-danger" (click)="toggleRemoveDiscreteSingle(styleIndex)">
               <fa-icon [icon]="faTrash"></fa-icon>
             </button>
           </td>
@@ -94,7 +104,7 @@
   <div
     *ngIf="dataService.selectedContinuousMapping">
 
-    <table class="table table-bordered">
+    <table class="table">
 
       <thead>
       <tr>
@@ -103,7 +113,8 @@
 
         <!-- EDIT -->
         <th>
-          <button [disabled]="true" class="btn btn-block btn-outline-warning">
+          <button class="btn btn-block btn-outline-warning"
+                  [routerLink]="['', { outlets: {primary: ['edit', mapId]} }]">
             <fa-icon [icon]="faEdit"></fa-icon>
           </button>
         </th>
@@ -257,7 +268,7 @@
 
       <!-- nevermind -->
       <div class="col-6">
-        <button (click)="confirmDeletion(false, 'global')" class="btn btn-block btn-outline-success">
+        <button (click)="confirmDeletionGlobal(false)" class="btn btn-block btn-outline-success">
           <fa-icon [icon]="faTimes"></fa-icon>
           {{'MAIN_MAPPINGS_CONFIRM_DELETION_NO' | translate}}
         </button>
@@ -265,7 +276,7 @@
 
       <!-- confirm -->
       <div class="col-6">
-        <button (click)="confirmDeletion(true, 'global')"
+        <button (click)="confirmDeletionGlobal(true)"
                 [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]"
                 class="btn btn-block btn-outline-danger">
           <fa-icon [icon]="faCheck"></fa-icon>
@@ -286,7 +297,7 @@
 
       <!-- nevermind -->
       <div class="col-6">
-        <button (click)="confirmDeletion(false, 'single')" class="btn btn-block btn-outline-success">
+        <button (click)="confirmDeletionSingle(false)" class="btn btn-block btn-outline-success">
           <fa-icon [icon]="faTimes"></fa-icon>
           {{'MAIN_MAPPINGS_CONFIRM_DELETION_NO' | translate}}
         </button>
@@ -294,7 +305,7 @@
 
       <!-- confirm -->
       <div class="col-6">
-        <button (click)="confirmDeletion(true, 'single')"
+        <button (click)="confirmDeletionSingle(true)"
                 [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]"
                 class="btn btn-block btn-outline-danger">
           <fa-icon [icon]="faCheck"></fa-icon>

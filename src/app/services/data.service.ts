@@ -34,7 +34,7 @@ export class DataService {
    */
   selectedNetwork: NeNetwork;
   /**
-   * Selected discrete mapping of type {@link NeGroupedMappingsDiscrete}
+   * Selected discrete mappings of type {@link NeMappingDiscrete}
    */
   selectedDiscreteMapping: NeMappingDiscrete[];
   /**
@@ -361,6 +361,9 @@ export class DataService {
    * Removes a mapping completely
    */
   removeMapping(): void {
+
+    // todo needs to apply to Passthrough mappings too!
+
 
     let col: string;
     const isDiscrete = this.selectedTypeHint.nd || this.selectedTypeHint.ed;

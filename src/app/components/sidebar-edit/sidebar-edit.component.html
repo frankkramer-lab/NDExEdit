@@ -41,7 +41,7 @@
 
     <div *ngIf="graphService.selectedElements.nodes.length > 0" class="table-responsive">
 
-      <table class="table table-bordered">
+      <table class="table">
 
         <thead>
         <tr>
@@ -81,7 +81,7 @@
 
     <div *ngIf="graphService.selectedElements.edges.length > 0" class="table-responsive">
 
-      <table class="table table-bordered">
+      <table class="table">
 
         <thead>
         <tr>
@@ -156,7 +156,7 @@
       </h5>
 
       <!-- NP -->
-      <table class="table table-bordered" data-toggle="tooltip"
+      <table class="table" data-toggle="tooltip"
              ngbTooltip="{{'SIDEBAR_EDIT_TT_PASSTHROUGH' | translate}}" placement="top">
         <tr *ngFor="let np of dataService.selectedNetwork.mappings.nodesPassthrough; let npIndex = index">
           <td>
@@ -171,7 +171,7 @@
       <!-- ND -->
       <table
         *ngIf="dataService.selectedNetwork.mappings.nodesDiscrete.length > 0"
-        class="table-responsive table table-bordered">
+        class="table-responsive table">
 
         <tr *ngFor="let nodeCol of dataService.selectedNetwork.mappings.nodesDiscrete|uniqueCols; let colIndex = index">
 
@@ -246,7 +246,7 @@
       </h5>
 
       <!-- EP -->
-      <table class="table table-bordered" data-toggle="tooltip"
+      <table class="table" data-toggle="tooltip"
              ngbTooltip="{{'SIDEBAR_EDIT_TT_PASSTHROUGH' | translate}}" placement="top">
         <tr *ngFor="let ep of dataService.selectedNetwork.mappings.edgesPassthrough; let epIndex = index">
           <td>
@@ -261,7 +261,7 @@
       <!-- ED -->
       <table
         *ngIf="dataService.selectedNetwork.mappings.edgesDiscrete.length > 0"
-        class="table-responsive table table-bordered">
+        class="table-responsive table">
 
         <tr *ngFor="let edgeCol of dataService.selectedNetwork.mappings.edgesDiscrete|uniqueCols; let colIndex = index">
 

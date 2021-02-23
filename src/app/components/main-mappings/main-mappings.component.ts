@@ -7,7 +7,7 @@ import {NeAspect} from '../../models/ne-aspect';
 import {UtilityService} from '../../services/utility.service';
 import {NeMappingDiscrete} from '../../models/ne-mapping-discrete';
 import {NeMappingPassthrough} from '../../models/ne-mapping-passthrough';
-import {NeMappingContinuous} from "../../models/ne-mapping-continuous";
+import {NeMappingContinuous} from '../../models/ne-mapping-continuous';
 
 @Component({
   selector: 'app-main-mappings',
@@ -80,16 +80,26 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    * <ul>
    *   <li><b>nd</b>: discrete node mapping</li>
    *   <li><b>nc</b>: continuous node mapping</li>
+   *   <li><b>np</b>: passthrough node mapping</li>
    *   <li><b>ed</b>: discrete edge mapping</li>
    *   <li><b>ec</b>: continuous edge mapping</li>
+   *   <li><b>ep</b>: passthrough edge mapping</li>
    * </ul>
    */
   typeHint: NeMappingsType;
 
   /**
+   * Index pointing to position of a mapping within the corresponding list of mappings
+   */
+  mapId: string;
+
+  /**
+   * Without any numeric index, only string based representation of the typehint
+   */
+  mapHint: string;
+
+  /**
    * The URL rendering this view contains both the specified graph and a mapping whose details are displayed.
-   * Thus within the constructor both {@link DataService#selectedNetwork} and
-   * {@link MainMappingsComponent#selectedMapping} are set
    *
    * @param route Service to read URL
    * @param dataService Service to read and write to globally accessible data
@@ -109,9 +119,11 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
 
       if (mapHint !== null && col !== null) {
         // discrete mapping
+        this.mapHint = mapHint;
         this.dataService.selectMapping(mapHint, col);
       } else if (mapId !== '-1') {
         // continuous or passthrough mapping
+        this.mapId = mapId;
         this.dataService.selectMapping(null, null, mapId);
       } else {
         // general overview (mapId === '-1')
@@ -141,13 +153,11 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Toggles the dialogue to confirm deletion of an existing mapping.
-   *
+   * Toggles a global remove dialogue
    */
   toggleGlobalRemoveDialogue(): void {
-    if (!this.dataService.selectedContinuousMapping && !this.dataService.selectedDiscreteMapping) {
-      console.log('No mapping selected which could be removed');
-      return;
+    if (!(this.dataService.selectedDiscreteMapping || this.dataService.selectedContinuousMapping || this.dataService.selectedPassthroughMapping)) {
+      console.log('No mapping selected which could be deleted!');
     }
     this.dataService.selectPropertyForDeletion();
     this.showSingleDeletionDialogue = false;
@@ -155,57 +165,57 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Toggles the dialogue to confirm deletion of a property from an existing mapping.
-   * @param propertyId points to the style within a grouped discrete mapping
+   * Dialog toggle:
+   * Remove discrete by specific style.
+   * May only be used for discrete mappings
+   *
+   * @param styleIndex Points to the style to be removed
    */
-  toggleSingleRemoveDialogue(propertyId: number = null): void {
-    if (propertyId === null) {
-      this.showSingleDeletionDialogue = false;
-      this.showGlobalDeletionDialogue = false;
-      this.dataService.selectPropertyForDeletion();
-    } else {
-      this.dataService.selectPropertyForDeletion(propertyId);
-      this.showSingleDeletionDialogue = true;
-      this.showGlobalDeletionDialogue = false;
+  toggleRemoveDiscreteSingle(styleIndex: number): void {
+    if (!this.dataService.selectedDiscreteMapping) {
+      console.log('No discrete mapping selected!');
     }
+    this.dataService.selectPropertyForDeletion(styleIndex);
+    this.showSingleDeletionDialogue = true;
+    this.showGlobalDeletionDialogue = false;
   }
 
   /**
-   * On confirmation the deletion of the mapping or a selected property is executed and
-   * instead of the confirmation dialogue the list of
-   * existing mappings reappears.
-   * When not confirming the deletion merely the dialogue is hidden again.
-   *
-   * @param confirmation Determines if the deletion is executed or not
-   * @param scope Can either be global or single depending on which deletion button was clicked
+   * Confirms or denies a global deletion of a mapping
+   * @param confirmed true, if deletion is to be executed
    */
-  confirmDeletion(confirmation: boolean, scope = 'global'): void {
+  confirmDeletionGlobal(confirmed: boolean): void {
+    if (confirmed && (this.dataService.selectedDiscreteMapping
+      || this.dataService.selectedContinuousMapping
+      || this.dataService.selectedPassthroughMapping)) {
+      this.dataService.removeMapping();
 
-    switch (scope) {
-      case 'global':
-        if (confirmation && (this.dataService.selectedDiscreteMapping || this.dataService.selectedContinuousMapping)) {
-          this.dataService.removeMapping();
-
-          MainMappingsComponent.mappingsEmitter.emit({
-            showGradient: false,
-            showChart: false
-          });
-        }
-        this.showGlobalDeletionDialogue = false;
-        break;
-      case 'single':
-        if (confirmation) {
-          this.dataService.removePropertyFromMapping();
-        }
-        this.toggleSingleRemoveDialogue();
-        break;
+      MainMappingsComponent.mappingsEmitter.emit({
+        showGradient: false,
+        showChart: false
+      });
     }
+
+    this.showGlobalDeletionDialogue = false;
+    this.showSingleDeletionDialogue = false;
+  }
+
+  /**
+   * Confirms or denies a single deletion of a mapping's property
+   * @param confirmed true, if deletion is to be executed
+   */
+  confirmDeletionSingle(confirmed: boolean): void {
+    if (confirmed) {
+      this.dataService.removePropertyFromMapping();
+    }
+    this.showSingleDeletionDialogue = false;
+    this.showGlobalDeletionDialogue = false;
   }
 
   /**
    * Fetches a list of attributes, which can be used to create a mapping of the specified type for the currently selected network.
    *
-   * @param s Can either be 'nd', 'nc', 'ed' or 'ec'
+   * @param s Can either be 'nd', 'nc', 'np', 'ed', 'ec' or 'ep'
    */
   public getAttributeListForCurrentNetworkAndType(s: string): NeAspect[] {
     const typeHint: NeMappingsType = this.utilityService.utilGetTypeHintByString(s);
