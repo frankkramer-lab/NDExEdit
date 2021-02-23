@@ -69,18 +69,6 @@ export class GraphService {
   }
 
   /**
-   * Flashes the application internal style class on elements with the given selector
-   *
-   * @param selector selector by which elements are to be highlighted
-   */
-  highlightBySelector(selector: string): void {
-    if (selector) {
-      console.log('Remove highlight by selector ' + selector);
-      this.dataService.selectedNetwork.core.elements(selector).flashClass('custom_highlight_color', this.flashDuration);
-    }
-  }
-
-  /**
    * Flashes the application internal style class on specific elements
    *
    * @param id the element's id
@@ -88,7 +76,6 @@ export class GraphService {
   highlightByElementId(id: string): void {
     if (id) {
       const selection = this.dataService.selectedNetwork.core.filter('#' + id);
-      console.log(selection);
       selection.flashClass('custom_highlight_color', this.flashDuration);
     }
   }
@@ -118,8 +105,6 @@ export class GraphService {
     const first = prefix + property.name.toLowerCase() + ' >= ' + lower + ']';
     const second = prefix + property.name.toLowerCase() + ' <= ' + upper + ']';
 
-    console.log(first + second);
-
     const selection = this.dataService.selectedNetwork.core.elements(first + second);
     selection.flashClass('custom_highlight_color', this.flashDuration);
   }
@@ -133,7 +118,6 @@ export class GraphService {
    * @param sameAs value the element's property needs to have in order to be highlighted
    */
   highlightByElementSameAs(type: string, property: NeAspect, sameAs: string): void {
-    console.log(type, property.name, sameAs);
 
     let prefix;
     if (type === 'node') {
@@ -143,8 +127,6 @@ export class GraphService {
     }
 
     const definition = prefix + property.name.toLowerCase() + ' = "' + sameAs + '"]';
-
-    console.log(definition);
 
     const selection = this.dataService.selectedNetwork.core.elements(definition);
     selection.flashClass('custom_highlight_color', this.flashDuration);
