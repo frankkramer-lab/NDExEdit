@@ -1133,7 +1133,7 @@ export class DataService {
    * Selects a discrete or continuous mapping based on a typehint
    * @param mapHint [DISCRETE] hint containing typehint
    * @param col [DISCRETE] property needs to be specified when selecting a discrete mapping
-   * @param mapId [CONTINUOUS] string containing both typehint and id for continuous mappings
+   * @param mapId [CONTINUOUS|PASSTHROUGH] string containing both typehint and id for continuous mappings
    */
   selectMapping(mapHint: string = null, col: string = null, mapId: string = null): void {
 
@@ -1158,7 +1158,6 @@ export class DataService {
 
       this.selectedDiscreteMapping = null;
       this.selectedDiscreteMappingProperty = null;
-      console.log(this.selectedContinuousMapping, this.selectedPassthroughMapping);
 
     } else {
 

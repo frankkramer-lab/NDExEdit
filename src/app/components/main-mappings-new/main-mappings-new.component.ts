@@ -329,17 +329,19 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   private initData(params: ParamMap): void {
     const mapType = params.get('map');
-    this.propertyId = Number(params.get('propertyId'));
 
     if (mapType) {
-      this.typeHint = this.utilityService.utilGetTypeHintByString(mapType);
+      const type = mapType.substring(0, 2);
+      const index = mapType.substring(2);
+
+      this.typeHint = this.utilityService.utilGetTypeHintByString(type);
 
       this.isContinuous = this.typeHint.ec || this.typeHint.nc;
       this.isDiscrete = this.typeHint.nd || this.typeHint.ed;
       this.isPassthrough = this.typeHint.np || this.typeHint.ep;
 
       if (this.isEdit) {
-        this.initDataEdit(params);
+        this.initDataEdit(Number(index));
       } else {
         this.initDataNew(params);
       }
@@ -429,16 +431,41 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   /**
    * Initializes data for editing an existing mapping
    *
-   * @param params Passed routing params
+   * index number pointing to index of a mapping or property for a collection of discrete mappings
    * @private only needed on init
    */
-  private initDataEdit(params: ParamMap): void {
-    console.log(params);
-    // edit existing
+  private initDataEdit(index: number): void {
+
     this.isEdit = true;
-    let existingDiscreteMapping: NeMappingDiscrete[];
-    let existingContinuousMapping: NeMappingContinuous;
-    const mapId = params.get('map').substring(2);
+    let mapping: NeMappingDiscrete | NeMappingContinuous;
+    console.log(index);
+
+    if (this.typeHint.nd) {
+      mapping = this.dataService.selectedNetwork.mappings.nodesDiscrete[index];
+      this.dataService.selectMapping('nd', mapping.col);
+    } else if (this.typeHint.nc) {
+      mapping = this.dataService.selectedNetwork.mappings.nodesContinuous[index];
+      this.dataService.selectMapping(null, null, 'nc' + index);
+    } else if (this.typeHint.ed) {
+      mapping = this.dataService.selectedNetwork.mappings.edgesDiscrete[index];
+      this.dataService.selectMapping('ed', mapping.col);
+    } else if (this.typeHint.ec) {
+      mapping = this.dataService.selectedNetwork.mappings.edgesContinuous[index];
+      this.dataService.selectMapping(null, null, 'ec' + index);
+    }
+
+    console.log(this.typeHint, mapping);
+
+    if (this.typeHint.nd || this.typeHint.nc) {
+      this.propertyToMap = this.dataService.selectedNetwork.aspectKeyValuesNodes.find(a => a.name === mapping.col);
+    } else if (this.typeHint.ed || this.typeHint.ec) {
+      this.propertyToMap = this.dataService.selectedNetwork.aspectKeyValuesEdges.find(a => a.name === mapping.col);
+    }
+
+    console.log(this.propertyToMap);
+
+    // let existingDiscreteMapping: NeMappingDiscrete[];
+    // let existingContinuousMapping: NeMappingContinuous;
 
     // switch (params.get('map').substring(0, 2)) {
     //   case 'nd':
