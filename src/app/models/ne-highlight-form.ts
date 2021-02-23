@@ -8,6 +8,11 @@ export interface NeHighlightForm {
    * Either 'node' or 'edge'
    */
   type: string;
+
+  /**
+   * Translatable type used as toggle label
+   */
+  typeLabel: string;
   /**
    * An element's attribute, whose values and distribution the user wants to inspect
    */
@@ -26,5 +31,11 @@ export interface NeHighlightForm {
    * Comparing value for inspections like 'Display elements with values same as <value>'
    */
   sameAs?: string;
+
+  /**
+   * True, if this element is to be deleted.
+   * Needs confirmation by the user
+   */
+  markedForDeletion: boolean;
 
 }

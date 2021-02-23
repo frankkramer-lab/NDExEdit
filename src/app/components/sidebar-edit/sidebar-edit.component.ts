@@ -3,7 +3,16 @@ import {DataService} from '../../services/data.service';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {GraphService} from '../../services/graph.service';
-import {faCheck, faClone, faCogs, faLightbulb, faPalette, faMagic} from '@fortawesome/free-solid-svg-icons';
+import {
+  faCheck,
+  faClone,
+  faCogs,
+  faLightbulb,
+  faMagic,
+  faPalette,
+  faTimes,
+  faTrash
+} from '@fortawesome/free-solid-svg-icons';
 import {ChartDataSets} from 'chart.js';
 import {Label} from 'ng2-charts';
 import {NeColorGradient} from '../../models/ne-color-gradient';
@@ -32,6 +41,16 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faCogs = faCogs;
+  /**
+   * Icon: faTimes
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faTimes = faTimes;
+  /**
+   * Icon: faTrash
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faTrash = faTrash;
   /**
    * Icon: faMagic
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
@@ -130,7 +149,9 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    */
   highlightDefinition: NeHighlightForm = {
     property: null,
-    type: ''
+    type: 'node',
+    typeLabel: '',
+    markedForDeletion: false
   };
 
   /**
@@ -343,7 +364,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * @param type
    */
   getAvailablePropertiesByType(type: string): NeAspect[] {
-    if (type === 'SIDEBAR_EDIT_INSPECT_TYPE_NODE') {
+    if (type === 'node') {
       return this.dataService.selectedNetwork.aspectKeyValuesNodes;
     }
     return this.dataService.selectedNetwork.aspectKeyValuesEdges;
@@ -352,9 +373,8 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   /**
    * Adds the property to the highlight definition the user is currently defining
    * @param property
-   * @param isNode
    */
-  selectProperty(property: NeAspect, isNode: boolean): void {
+  selectProperty(property: NeAspect): void {
     this.highlightDefinition.property = property;
 
     if (this.utilityService.utilFitForContinuous(property)) {
@@ -364,21 +384,54 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     } else {
       this.highlightDefinitionDatatype = 'text';
     }
-    this.highlightDefinition.type = isNode ? 'SIDEBAR_EDIT_INSPECT_TYPE_NODE' : 'SIDEBAR_EDIT_INSPECT_TYPE_EDGE';
   }
+
+  /**
+   * Sets the type of the current inspection
+   * @param type
+   */
+  selectType(type: string): void {
+    this.highlightDefinitionDatatype = null;
+    this.highlightDefinition.type = type;
+    this.highlightDefinition.typeLabel = type === 'node' ? 'SIDEBAR_EDIT_INSPECT_TYPE_NODE' : 'SIDEBAR_EDIT_INSPECT_TYPE_EDGE';
+  }
+
 
   /**
    * Submits a definition to the list of definitions the user wants to highlight
    */
   addHighlightDefinitionToList(): void {
     this.highlightListDefinition.push(this.highlightDefinition);
-    this.highlightDefinition = {property: undefined, type: ''};
+    this.highlightDefinition = {
+      property: undefined,
+      type: 'node',
+      typeLabel: 'SIDEBAR_EDIT_INSPECT_TYPE_NODE',
+      markedForDeletion: false
+    };
+  }
+
+
+  /**
+   * Marks an inspection from the list as to be deleted
+   * @param index Points to the specified element
+   */
+  markForDeletion(index: number): void {
+    this.highlightListDefinition[index].markedForDeletion = true;
   }
 
   /**
-   * On changing the type of a definition we need to clear the form
+   * Removes the mark to be deleted from the inspection
+   * @param index Points to the specified element
    */
-  clearLaterFields(): void {
-    this.highlightDefinitionDatatype = null;
+  unmarkForDeletion(index: number): void {
+    this.highlightListDefinition[index].markedForDeletion = false;
+  }
+
+  /**
+   * Removes the element from the list of inspections
+   * @param index Points to the specified element
+   */
+  deleteFromHighlightList(index: number): void {
+    this.highlightListDefinition.splice(index, 1);
   }
 }

@@ -336,24 +336,62 @@
     <div aria-labelledby="editsNavInspect" class="tab-pane fade" id="editsNavInspectContent" role="tabpanel">
       <p>{{'SIDEBAR_EDIT_INSPECT_TITLE_HINT' | translate}}</p>
 
+      <!-- INSPECTION LIST -->
       <table class="table">
-        <tr *ngFor="let def of highlightListDefinition">
-          <td>{{def.type | translate}}</td>
-          <td>{{def.property.name}}</td>
-          <td *ngIf="def.rangeLower && def.rangeUpper">
-            {{'SIDEBAR_EDIT_INSPECT_RANGE_LOWER' | translate}} {{def.rangeLower}} {{'SIDEBAR_EDIT_INSPECT_RANGE_UPPER' | translate}} {{def.rangeUpper}}
-          </td>
-          <td *ngIf="def.sameAs">{{'SIDEBAR_EDIT_INSPECT_SAME' | translate}} {{def.sameAs}}</td>
-          <td>
-            <button class="btn btn-outline-primary">
-              <fa-icon [icon]="faMagic"></fa-icon>
-            </button>
-          </td>
-        </tr>
+
+        <ng-container *ngFor="let def of highlightListDefinition; let defIndex = index">
+
+          <tr [ngClass]="def.markedForDeletion ? 'table-danger' : ''">
+            <td>{{def.type | translate}}</td>
+            <td>{{def.property.name}}</td>
+            <td *ngIf="def.rangeLower && def.rangeUpper">
+              {{'SIDEBAR_EDIT_INSPECT_RANGE_LOWER' | translate}} <b>{{def.rangeLower}}</b>
+              {{'SIDEBAR_EDIT_INSPECT_RANGE_UPPER' | translate}} <b>{{def.rangeUpper}}</b>
+            </td>
+            <td *ngIf="def.sameAs">{{'SIDEBAR_EDIT_INSPECT_SAME' | translate}} <b>{{def.sameAs}}</b></td>
+            <td>
+
+              <button *ngIf="def.sameAs" class="btn btn-outline-primary"
+                      (click)="graphService.highlightByElementSameAs(def.type, def.property, def.sameAs)">
+                <fa-icon [icon]="faMagic"></fa-icon>
+              </button>
+
+              <button *ngIf="def.rangeLower && def.rangeUpper" class="btn btn-outline-primary"
+                      (click)="graphService.highlightByElementRange(def.type, def.property, def.rangeLower, def.rangeUpper)">
+                <fa-icon [icon]="faMagic"></fa-icon>
+              </button>
+            </td>
+
+            <td>
+
+              <button *ngIf="!def.markedForDeletion" class="btn btn-outline-danger" (click)="markForDeletion(defIndex)">
+                <fa-icon [icon]="faTrash"></fa-icon>
+              </button>
+
+              <button *ngIf="def.markedForDeletion" class="btn btn-outline-danger"
+                      (click)="unmarkForDeletion(defIndex)">
+                <fa-icon [icon]="faTimes"></fa-icon>
+              </button>
+
+            </td>
+          </tr>
+          <tr *ngIf="def.markedForDeletion">
+            <td colspan="4">
+              REMOVE?
+            </td>
+            <td>
+              <button class="btn btn-outline-danger" (click)="deleteFromHighlightList(defIndex)">
+                <fa-icon [icon]="faTrash"></fa-icon>
+              </button>
+            </td>
+          </tr>
+
+        </ng-container>
       </table>
 
       <hr *ngIf="highlightListDefinition.length > 0">
 
+      <!-- INSPECTION SPECIFICATION -->
       <div class="row">
 
         <!-- TYPE -->
@@ -362,13 +400,13 @@
                data-toggle="buttons">
 
             <label class="btn btn-outline-secondary active">
-              <input type="radio" name="type" id="typeNode" #typeNode autocomplete="off"
-                     [defaultChecked]="true" (click)="clearLaterFields()">
+              <input type="radio" name="type" id="typeNode" autocomplete="off"
+                     [defaultChecked]="true" (click)="selectType('node')">
               {{'SIDEBAR_EDIT_INSPECT_TYPE_NODE' | translate}}
             </label>
 
             <label class="btn btn-outline-secondary">
-              <input type="radio" name="type" id="typeEdge" autocomplete="off" (click)="clearLaterFields()">
+              <input type="radio" name="type" id="typeEdge" autocomplete="off" (click)="selectType('edge')">
               {{'SIDEBAR_EDIT_INSPECT_TYPE_EDGE' | translate}}
             </label>
 
@@ -379,26 +417,26 @@
         <div class="col-4">
 
           <!-- NODES -->
-          <div *ngIf="typeNode.checked"
+          <div *ngIf="highlightDefinition.type === 'node'"
                class="btn-group-vertical btn-group-toggle"
                data-toggle="buttons">
 
-            <label class="btn btn-outline-secondary" *ngFor="let property of getAvailablePropertiesByType('SIDEBAR_EDIT_INSPECT_TYPE_NODE')">
+            <label class="btn btn-outline-secondary" *ngFor="let property of getAvailablePropertiesByType('node')">
               <input type="radio" name="node_{{property.name}}" id="node_{{property.name}}" autocomplete="off"
-                     (click)="selectProperty(property, typeNode.checked)">
+                     (click)="selectProperty(property)">
               {{property.name}}
             </label>
 
           </div>
 
           <!-- EDGES -->
-          <div *ngIf="!typeNode.checked"
+          <div *ngIf="highlightDefinition.type === 'edge'"
                class="btn-group-vertical btn-group-toggle"
                data-toggle="buttons">
 
-            <label class="btn btn-outline-secondary" *ngFor="let property of getAvailablePropertiesByType('SIDEBAR_EDIT_INSPECT_TYPE_EDGE')">
+            <label class="btn btn-outline-secondary" *ngFor="let property of getAvailablePropertiesByType('edge')">
               <input type="radio" name="edge_{{property.name}}" id="edge_{{property.name}}" autocomplete="off"
-                     (click)="selectProperty(property, typeNode.checked)">
+                     (click)="selectProperty(property)">
               {{property.name}}
             </label>
 

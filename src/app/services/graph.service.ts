@@ -8,6 +8,7 @@ import {NeSelection} from '../models/ne-selection';
 import {UtilityService} from './utility.service';
 import {DataService} from './data.service';
 import {ParseService} from './parse.service';
+import {NeAspect} from "../models/ne-aspect";
 
 @Injectable({
   providedIn: 'root'
@@ -68,27 +69,85 @@ export class GraphService {
   }
 
   /**
-   * Toggles the application internal CSS class on elements with the given selector
+   * Flashes the application internal style class on elements with the given selector
    *
    * @param selector selector by which elements are to be highlighted
    */
   highlightBySelector(selector: string): void {
     if (selector) {
-      console.log(selector);
+      console.log('Remove highlight by selector ' + selector);
       this.dataService.selectedNetwork.core.elements(selector).flashClass('custom_highlight_color', this.flashDuration);
     }
   }
 
   /**
-   * Toggles the application internal CSS clas on specific elements
+   * Flashes the application internal style class on specific elements
    *
    * @param id the element's id
    */
   highlightByElementId(id: string): void {
     if (id) {
-      console.log(id);
-      this.dataService.selectedNetwork.core.getElementById(id).flashClass('custom_highlight_color', this.flashDuration);
+      const selection = this.dataService.selectedNetwork.core.filter('#' + id);
+      console.log(selection);
+      selection.flashClass('custom_highlight_color', this.flashDuration);
     }
+  }
+
+  /**
+   * Flashes the application internal style class on specific elements,
+   * if they have a property with values in the given range
+   *
+   * @param type string indicating if this filter is applied to nodes or edges
+   * @param property Property, an element needs to have in order to be highlighted
+   * @param lower lower bound for the elements to be highlighted
+   * @param upper upper bound for the elements to be highlighted
+   */
+  highlightByElementRange(type: string, property: NeAspect, lower: number, upper: number): void {
+    if (lower > upper) {
+      console.log('Invalid bounds! Highlighting empty set');
+      return;
+    }
+
+    let prefix;
+    if (type === 'node') {
+      prefix = 'node[';
+    } else {
+      prefix = 'edge[';
+    }
+
+    const first = prefix + property.name.toLowerCase() + ' >= ' + lower + ']';
+    const second = prefix + property.name.toLowerCase() + ' <= ' + upper + ']';
+
+    console.log(first + second);
+
+    const selection = this.dataService.selectedNetwork.core.elements(first + second);
+    selection.flashClass('custom_highlight_color', this.flashDuration);
+  }
+
+  /**
+   * Flashes the application internal style class on specific elements,
+   * if they have a property with values in the given range
+   *
+   * @param type string indicating if this filter is applied to nodes or edges
+   * @param property Property, an element needs to have in order to be highlighted
+   * @param sameAs value the element's property needs to have in order to be highlighted
+   */
+  highlightByElementSameAs(type: string, property: NeAspect, sameAs: string): void {
+    console.log(type, property.name, sameAs);
+
+    let prefix;
+    if (type === 'node') {
+      prefix = 'node[';
+    } else {
+      prefix = 'edge[';
+    }
+
+    const definition = prefix + property.name.toLowerCase() + ' = "' + sameAs + '"]';
+
+    console.log(definition);
+
+    const selection = this.dataService.selectedNetwork.core.elements(definition);
+    selection.flashClass('custom_highlight_color', this.flashDuration);
   }
 
   /**
