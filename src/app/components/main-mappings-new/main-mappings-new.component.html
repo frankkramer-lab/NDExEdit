@@ -46,7 +46,8 @@
                                 (stylePropertyEmitter)="setStyleProperty($event)"
                                 [typeHint]="typeHint"
                                 [mappingDiscrete]="discreteMapping"
-                                [propertyToMap]="propertyToMap"></app-main-mappings-new-form>
+                                [propertyToMap]="propertyToMap"
+                                [isEdit]="isEdit"></app-main-mappings-new-form>
 
   </div>
 
@@ -110,7 +111,7 @@
 
   </div>
 
-  <!-- todo NEW: NodesPassthrough -->
+  <!-- NEW: NodesPassthrough -->
   <div *ngIf="typeHint.np">
     <span *ngIf="isEdit then editHeadlineNp else newHeadlineNp"></span>
     <ng-template #editHeadlineNp><h3>{{'MAIN_MAPPINGS_EDIT_NP' | translate}}</h3></ng-template>
@@ -143,7 +144,6 @@
     <!-- FORM -->
     <app-main-mappings-new-form *ngIf="passthroughMapping"
                                 (stylePropertyEmitter)="setStyleProperty($event)"
-                                [alreadyExists]=""
                                 [isEdit]="isEdit"
                                 [typeHint]="typeHint"
                                 [propertyToMap]="propertyToMap"
@@ -185,7 +185,8 @@
                                 (stylePropertyEmitter)="setStyleProperty($event)"
                                 [typeHint]="typeHint"
                                 [mappingDiscrete]="discreteMapping"
-                                [propertyToMap]="propertyToMap"></app-main-mappings-new-form>
+                                [propertyToMap]="propertyToMap"
+                                [isEdit]="isEdit"></app-main-mappings-new-form>
   </div>
 
   <!-- NEW: EdgesContinuous -->
@@ -247,7 +248,44 @@
                                 [propertyToMap]="propertyToMap"></app-main-mappings-new-form>
   </div>
 
-  <!-- todo NEW: EdgesPassthrough -->
+  <!-- NEW: EdgesPassthrough -->
+  <div *ngIf="typeHint.ep">
+    <span *ngIf="isEdit then editHeadlineEp else newHeadlineEp"></span>
+    <ng-template #editHeadlineEp><h3>{{'MAIN_MAPPINGS_EDIT_EP' | translate}}</h3></ng-template>
+    <ng-template #newHeadlineEp><h3>{{'MAIN_MAPPINGS_NEW_EP' | translate}}</h3></ng-template>
 
+    <!-- ALERT: mapping already exists -->
+    <app-alert-mapping-already-exists *ngIf="!isEdit"
+                                      [typeHint]="typeHint"
+                                      [propertyToMap]="propertyToMap"
+                                      [styleProperty]="styleProperty">
+    </app-alert-mapping-already-exists>
+
+    <!-- ALERT: distribution -->
+    <div class="alert alert-info" role="alert">
+
+      <button (click)="toggleDistributionChart(!showDistribution)" class="btn btn-sm btn-outline-secondary mr-4"
+              data-toggle="tooltip"
+              ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
+              placement="right"
+              type="button">
+        <fa-icon [icon]="faChartBar"></fa-icon>
+      </button>
+      {{'MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE' | translate}}: <b>{{propertyToMap.name}}</b>
+    </div>
+
+    <!-- distribution chart -->
+    <app-chart *ngIf="showDistribution" [chartObject]="chartObject"
+               [widthPercent]="100"></app-chart>
+
+    <!-- FORM -->
+    <app-main-mappings-new-form *ngIf="passthroughMapping"
+                                (stylePropertyEmitter)="setStyleProperty($event)"
+                                [isEdit]="isEdit"
+                                [typeHint]="typeHint"
+                                [propertyToMap]="propertyToMap"
+                                [mappingPassthrough]="passthroughMapping"></app-main-mappings-new-form>
+
+  </div>
 
 </ng-container>

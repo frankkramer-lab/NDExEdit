@@ -356,6 +356,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   private initDataNew(params: ParamMap): void {
 
+    this.propertyId = Number(params.get('propertyId'));
     this.isEdit = false;
     this.dataService.resetAnyMappingSelection();
 
@@ -367,11 +368,11 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
       availableAttributes = this.dataService.selectedNetwork.aspectKeyValuesNodes;
     }
 
-
     if (this.isContinuous) {
       availableAttributes = this.utilityService.utilFilterForContinuous(availableAttributes);
       this.propertyToMap = availableAttributes[this.propertyId];
 
+      // todo rework to make binsize changeable for integer based continuous mappings
       this.chartObject = (this.propertyToMap.datatype === 'integer'
         ? this.propertyToMap.chartDiscreteDistribution
         : this.propertyToMap.chartContinuousDistribution);
@@ -410,6 +411,12 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     } else {
       this.propertyToMap = availableAttributes[this.propertyId];
 
+      if (this.propertyToMap.datatype === 'integer' || !this.propertyToMap.validForContinuous) {
+        this.chartObject = this.propertyToMap.chartDiscreteDistribution;
+      } else {
+        this.chartObject = this.propertyToMap.chartContinuousDistribution;
+      }
+
       this.passthroughMapping = {
         col: this.propertyToMap.name,
         styleProperty: ''
@@ -442,18 +449,23 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
 
     if (this.typeHint.nd) {
       mapping = this.dataService.selectedNetwork.mappings.nodesDiscrete[index];
+      this.discreteMapping = mapping;
       this.dataService.selectMapping('nd', mapping.col);
     } else if (this.typeHint.nc) {
       mapping = this.dataService.selectedNetwork.mappings.nodesContinuous[index];
+      this.continuousMapping = mapping;
       this.dataService.selectMapping(null, null, 'nc' + index);
     } else if (this.typeHint.ed) {
       mapping = this.dataService.selectedNetwork.mappings.edgesDiscrete[index];
+      this.discreteMapping = mapping;
       this.dataService.selectMapping('ed', mapping.col);
     } else if (this.typeHint.ec) {
       mapping = this.dataService.selectedNetwork.mappings.edgesContinuous[index];
+      this.continuousMapping = mapping;
       this.dataService.selectMapping(null, null, 'ec' + index);
     }
 
+    this.styleProperty = mapping.styleProperty;
     console.log(this.typeHint, mapping);
 
     if (this.typeHint.nd || this.typeHint.nc) {
@@ -463,6 +475,12 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     }
 
     console.log(this.propertyToMap);
+
+    if (this.typeHint.nd || this.typeHint.ed) {
+      this.chartObject = this.propertyToMap.chartDiscreteDistribution;
+    } else if (this.typeHint.nc || this.typeHint.ec) {
+      this.chartObject = this.propertyToMap.chartContinuousDistribution;
+    }
 
     // let existingDiscreteMapping: NeMappingDiscrete[];
     // let existingContinuousMapping: NeMappingContinuous;

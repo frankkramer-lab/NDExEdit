@@ -166,6 +166,8 @@
   "MAIN_MAPPINGS_NEW_ALREADY_EXISTS": "A mapping for this attribute-style-combination already exists",
   "MAIN_MAPPINGS_NEW_EDIT_INSTEAD": "Creating a second one is usually a bad idea. Do you want to edit the existing one?",
   "MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD": "Edit existing mapping",
+  "MAIN_MAPPINGS_NEW_INSPECT_INSTEAD": "Creating a second one is usually a bad idea. Do you want to visit this mapping's details?",
+  "MAIN_MAPPINGS_NEW_TT_INSPECT_INSTEAD": "Visit mapping details",
   "MAIN_MAPPINGS_NEW_TT_HINTS_SHOW": "Show hints",
   "MAIN_MAPPINGS_NEW_TT_HINTS_HIDE": "Hide hints",
   "MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING": "Continuous mappings are tricky!",

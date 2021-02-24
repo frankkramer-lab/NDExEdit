@@ -44,6 +44,10 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    */
   mapType: string;
   /**
+   * Index of a discrete mapping within the list of discrete mappings
+   */
+  mapId: number;
+  /**
    * List of thresholds for a continuous mapping,
    * always containing at least 2 entries (default lowest and greatest).
    * Otherwise a continuous mapping does not make any sense.
@@ -54,7 +58,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * In case of a passthrough mapping this is true, if a passthrough mapping for this style (not considering the data source) exists.
    * Used to disable the submit button.
    */
-  @Input() alreadyExists = false;
+  alreadyExists = false;
   /**
    * To update a parent, what the user entered as style property, this needs to be emitted
    */
@@ -95,20 +99,12 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
         this.initContinuousMapping();
       }
     } else {
-      // let existingMapping;
-      // if (this.typeHint.nd) {
-      //   existingMapping = this.dataService.selectedNetwork.mappings.nodesDiscrete[this.mapId];
-      //   this.prefillDiscreteMapping(existingMapping, this.propertyPointer, true);
-      // } else if (this.typeHint.ed) {
-      //   existingMapping = this.dataService.selectedNetwork.mappings.edgesDiscrete[this.mapId];
-      //   this.prefillDiscreteMapping(existingMapping, this.propertyPointer, false);
-      // } else if (this.typeHint.ec) {
-      //   existingMapping = this.dataService.selectedNetwork.mappings.edgesContinuous[this.mapId];
-      //   this.prefillContinuousMapping(existingMapping);
-      // } else if (this.typeHint.nc) {
-      //   existingMapping = this.dataService.selectedNetwork.mappings.nodesContinuous[this.mapId];
-      //   this.prefillContinuousMapping(existingMapping);
-      // }
+      if (this.typeHint.nd || this.typeHint.ed) {
+        this.styleProperty = this.mappingDiscrete.styleProperty;
+        this.mapId = this.dataService.selectedDiscreteMapping.indexOf(this.mappingDiscrete);
+      } else {
+        this.prefillContinuousMapping();
+      }
     }
     // this.isInitialized = true;
   }
@@ -154,7 +150,9 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * Clears all inputs for a mapping except the non-manipulatables of a continuous mapping
    */
   clearAllInputs(): void {
-    this.styleProperty = '';
+    if (!this.isEdit) {
+      this.styleProperty = '';
+    }
     this.alreadyExists = false;
 
     if (this.mappingDiscrete) {
@@ -195,8 +193,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
     // trying
     this.mappingContinuous.greaters = this.mappingContinuous.equals;
     this.mappingContinuous.lowers = this.mappingContinuous.equals;
-
-    console.log(this.mappingContinuous);
 
     this.dataService.addMappingContinuous(this.mappingContinuous, this.styleProperty, this.typeHint);
 
@@ -314,9 +310,9 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   /**
    * Prefills the continuous mapping
    *
-   * @param mapping the mapping to be edited
    */
-  prefillContinuousMapping(mapping: any): void {
+  prefillContinuousMapping(): void {
+    // todo
     // this.continuousThresholds = [];
     // this.styleProperty = mapping.title[0];
     //
@@ -382,56 +378,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Prefills discrete mapping
-   *
-   * @param mapping the mapping to be edited
-   * @param propertyId id to the style property within the mapping which is to be edited
-   * @param isNode true if the selected mapping belongs to nodes
-   */
-  prefillDiscreteMapping(mapping: NeMappingDiscrete[], propertyId: number, isNode: boolean): void {
-    // console.log(mapping, propertyId);
-    // this.discreteMapping = [];
-    // this.styleProperty = mapping.styleMap[propertyId].cssKey;
-    // const correspondingAkv = (isNode
-    //   ? this.dataService.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === mapping.col)
-    //   : this.dataService.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === mapping.col));
-    //
-    // for (const selector of mapping.styleMap[propertyId].selectors) {
-    //   const mapObj: NeMappingsDefinition = {
-    //     col: UtilityService.utilCleanString(mapping.col),
-    //     colHR: mapping.col,
-    //     is: UtilityService.utilCleanString(mapping.values[mapping.styleMap[propertyId].selectors.indexOf(selector)]),
-    //     isHR: mapping.values[mapping.styleMap[propertyId].selectors.indexOf(selector)],
-    //     selector,
-    //     cssKey: this.styleProperty,
-    //     cssValue: mapping.styleMap[propertyId].cssValues[mapping.styleMap[propertyId].selectors.indexOf(selector)],
-    //     priority: UtilityService.utilFindPriorityBySelector(selector)
-    //   };
-    //   this.discreteMapping.push(mapObj);
-    // }
-    //
-    // for (const val of correspondingAkv.values) {
-    //   if (!this.discreteMapping.map(x => x.isHR).includes(val)) {
-    //     const col = UtilityService.utilCleanString(correspondingAkv.name);
-    //     const is = UtilityService.utilCleanString(val);
-    //     const selector = (isNode ? '.node_' : '.edge_') + col + '_' + is;
-    //     const obj: NeMappingsDefinition = {
-    //       col,
-    //       colHR: correspondingAkv.name,
-    //       is,
-    //       isHR: val,
-    //       selector,
-    //       cssKey: this.styleProperty,
-    //       cssValue: '',
-    //       priority: UtilityService.utilFindPriorityBySelector(selector)
-    //     };
-    //     this.discreteMapping.push(obj);
-    //   }
-    // }
-
-  }
-
-  /**
    * Emits the new styleProperty to parent
    */
   emitStyleProperty(): void {
@@ -483,6 +429,22 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   private submitNewPassthroughMapping(): void {
     this.mappingPassthrough.styleProperty = this.styleProperty;
     this.dataService.addMappingPassthrough(this.mappingPassthrough, this.typeHint);
+  }
+
+  /**
+   * Since order cannot be guaranteed between attributes and mappings using these attributes
+   * we need to explicitly fetch the index connecting the two.
+   *
+   * Relates to a discrete mapping. No equivalent for continuous mapping exists yet.
+   *
+   * @param key Name of the value for which the value is to be determined.
+   */
+  getIndexByKey(key: string): number {
+    const keyIndex = this.mappingDiscrete.keys.indexOf(key);
+    if (keyIndex === -1) {
+      return null;
+    }
+    return keyIndex;
   }
 }
 

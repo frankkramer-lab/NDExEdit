@@ -166,6 +166,8 @@
   "MAIN_MAPPINGS_NEW_ALREADY_EXISTS": "Ein Mapping für dieses Attribut und diese Style-Eigenschaft existiert bereits",
   "MAIN_MAPPINGS_NEW_EDIT_INSTEAD": "Ein zweites Mapping anzulegen ist in der Regel nicht sinnvoll. Möchtest du dieses Mapping stattdessen bearbeiten?",
   "MAIN_MAPPINGS_NEW_TT_EDIT_INSTEAD": "Existierendes Mapping bearbeiten",
+  "MAIN_MAPPINGS_NEW_INSPECT_INSTEAD": "Ein zweites Mapping anzulegen ist in der Regel nicht sinnvoll. Möchtest du dieses Mapping genauer betrachten?",
+  "MAIN_MAPPINGS_NEW_TT_INSPECT_INSTEAD": "Zu den Mapping-Details",
   "MAIN_MAPPINGS_NEW_TT_HINTS_SHOW": "Hinweise anzeigen",
   "MAIN_MAPPINGS_NEW_TT_HINTS_HIDE": "Hinweise verstecken",
   "MAIN_MAPPINGS_NEW_DEFAULT_HINT_HEADING": "Kontinuierliche Mappings sind knifflig!",
