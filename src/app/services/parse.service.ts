@@ -26,6 +26,8 @@ import {NeStyle} from "../models/ne-style";
  */
 export class ParseService {
 
+  attributeNameMap = {};
+
   constructor(
     private utilityService: UtilityService,
     private dataService: DataService
@@ -519,9 +521,9 @@ export class ParseService {
     const niceCX = utils.rawCXtoNiceCX(json);
     const conversion = new CxToJs(utils);
 
-    const attributeNameMap = {};
-    const elements = conversion.cyElementsFromNiceCX(niceCX, attributeNameMap);
-    const style = conversion.cyStyleFromNiceCX(niceCX, attributeNameMap);
+    const elements = conversion.cyElementsFromNiceCX(niceCX, this.attributeNameMap);
+    const style = conversion.cyStyleFromNiceCX(niceCX, this.attributeNameMap);
+
     const cyBackgroundColor = conversion.cyBackgroundColorFromNiceCX(niceCX);
     const layout = conversion.getDefaultLayout();
     const zoom = conversion.cyZoomFromNiceCX(niceCX);

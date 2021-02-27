@@ -149,9 +149,12 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    */
   highlightDefinition: NeHighlightForm = {
     property: null,
-    type: 'node',
-    typeLabel: '',
-    markedForDeletion: false
+    type: null,
+    typeLabel: null,
+    markedForDeletion: false,
+    sameAs: null,
+    rangeLower: null,
+    rangeUpper: null
   };
 
   /**
@@ -393,7 +396,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   selectType(type: string): void {
     this.highlightDefinitionDatatype = null;
     this.highlightDefinition.type = type;
-    this.highlightDefinition.typeLabel = type === 'node' ? 'SIDEBAR_EDIT_INSPECT_TYPE_NODE' : 'SIDEBAR_EDIT_INSPECT_TYPE_EDGE';
+    this.highlightDefinition.typeLabel = (type === 'node') ? 'SIDEBAR_EDIT_INSPECT_TYPE_NODE' : 'SIDEBAR_EDIT_INSPECT_TYPE_EDGE';
   }
 
 
@@ -401,13 +404,24 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * Submits a definition to the list of definitions the user wants to highlight
    */
   addHighlightDefinitionToList(): void {
+
+    if (this.highlightDefinitionDatatype === 'numeric') {
+      this.highlightDefinition.rangeLower = Number(this.highlightDefinition.rangeLower);
+      this.highlightDefinition.rangeUpper = Number(this.highlightDefinition.rangeUpper);
+    }
+
     this.highlightListDefinition.push(this.highlightDefinition);
+
     this.highlightDefinition = {
-      property: undefined,
-      type: 'node',
-      typeLabel: 'SIDEBAR_EDIT_INSPECT_TYPE_NODE',
-      markedForDeletion: false
+      property: null,
+      type: null,
+      typeLabel: null,
+      markedForDeletion: false,
+      sameAs: null,
+      rangeLower: null,
+      rangeUpper: null
     };
+    this.highlightDefinitionDatatype = null;
   }
 
 

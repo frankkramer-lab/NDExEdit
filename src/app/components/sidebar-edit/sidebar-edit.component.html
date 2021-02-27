@@ -344,11 +344,14 @@
           <tr [ngClass]="def.markedForDeletion ? 'table-danger' : ''">
             <td>{{def.type | translate}}</td>
             <td>{{def.property.name}}</td>
-            <td *ngIf="def.rangeLower && def.rangeUpper">
+
+            <td *ngIf="utilityService.utilIsNumber(def.rangeLower) && utilityService.utilIsNumber(def.rangeUpper)">
               {{'SIDEBAR_EDIT_INSPECT_RANGE_LOWER' | translate}} <b>{{def.rangeLower}}</b>
               {{'SIDEBAR_EDIT_INSPECT_RANGE_UPPER' | translate}} <b>{{def.rangeUpper}}</b>
             </td>
+
             <td *ngIf="def.sameAs">{{'SIDEBAR_EDIT_INSPECT_SAME' | translate}} <b>{{def.sameAs}}</b></td>
+
             <td>
 
               <button *ngIf="def.sameAs" class="btn btn-outline-primary"
@@ -356,7 +359,8 @@
                 <fa-icon [icon]="faMagic"></fa-icon>
               </button>
 
-              <button *ngIf="def.rangeLower && def.rangeUpper" class="btn btn-outline-primary"
+              <button *ngIf="utilityService.utilIsNumber(def.rangeLower) && utilityService.utilIsNumber(def.rangeUpper)"
+                      class="btn btn-outline-primary"
                       (click)="graphService.highlightByElementRange(def.type, def.property, def.rangeLower, def.rangeUpper)">
                 <fa-icon [icon]="faMagic"></fa-icon>
               </button>
@@ -369,7 +373,7 @@
               </button>
 
               <button *ngIf="def.markedForDeletion" class="btn btn-outline-danger"
-                      (click)="unmarkForDeletion(defIndex)">
+                      (click)="def.markedForDeletion = false">
                 <fa-icon [icon]="faTimes"></fa-icon>
               </button>
 
@@ -399,14 +403,17 @@
           <div class="btn-group-vertical btn-group-toggle"
                data-toggle="buttons">
 
-            <label class="btn btn-outline-secondary active">
+            <label class="btn btn-outline-secondary">
               <input type="radio" name="type" id="typeNode" autocomplete="off"
-                     [defaultChecked]="true" (click)="selectType('node')">
+                     (click)="selectType('node')"
+                     [checked]="highlightDefinition.type === 'node'">
               {{'SIDEBAR_EDIT_INSPECT_TYPE_NODE' | translate}}
             </label>
 
             <label class="btn btn-outline-secondary">
-              <input type="radio" name="type" id="typeEdge" autocomplete="off" (click)="selectType('edge')">
+              <input type="radio" name="type" id="typeEdge" autocomplete="off"
+                     (click)="selectType('edge')"
+                     [checked]="highlightDefinition.type === 'edge'">
               {{'SIDEBAR_EDIT_INSPECT_TYPE_EDGE' | translate}}
             </label>
 
@@ -477,7 +484,7 @@
 
         <div class="col-2">
           <button class="btn btn-block btn-outline-success" (click)="addHighlightDefinitionToList()"
-                  [disabled]="!highlightDefinition.sameAs && (!highlightDefinition.rangeUpper || !highlightDefinition.rangeLower)">
+                  [disabled]="!highlightDefinition.sameAs && (highlightDefinition.rangeUpper === null || highlightDefinition.rangeLower === null)">
             <fa-icon [icon]="faCheck"></fa-icon>
           </button>
         </div>

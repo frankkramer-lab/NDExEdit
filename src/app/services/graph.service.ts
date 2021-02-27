@@ -90,6 +90,7 @@ export class GraphService {
    * @param upper upper bound for the elements to be highlighted
    */
   highlightByElementRange(type: string, property: NeAspect, lower: number, upper: number): void {
+
     if (lower > upper) {
       console.log('Invalid bounds! Highlighting empty set');
       return;
@@ -102,8 +103,8 @@ export class GraphService {
       prefix = 'edge[';
     }
 
-    const first = prefix + property.name.toLowerCase() + ' >= ' + lower + ']';
-    const second = prefix + property.name.toLowerCase() + ' <= ' + upper + ']';
+    const first = prefix + this.parseService.attributeNameMap[property.name.toLowerCase()] + ' >= ' + lower + ']';
+    const second = prefix + this.parseService.attributeNameMap[property.name.toLowerCase()] + ' <= ' + upper + ']';
 
     const selection = this.dataService.selectedNetwork.core.elements(first + second);
     selection.flashClass('custom_highlight_color', this.flashDuration);
@@ -126,7 +127,7 @@ export class GraphService {
       prefix = 'edge[';
     }
 
-    const definition = prefix + property.name.toLowerCase() + ' = "' + sameAs + '"]';
+    const definition = prefix + this.parseService.attributeNameMap[property.name.toLowerCase()] + ' = "' + sameAs + '"]';
 
     const selection = this.dataService.selectedNetwork.core.elements(definition);
     selection.flashClass('custom_highlight_color', this.flashDuration);

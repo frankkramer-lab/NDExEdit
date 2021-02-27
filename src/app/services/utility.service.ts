@@ -405,4 +405,11 @@ export class UtilityService {
     return mapping.match(regex)[1];
   }
 
+  /**
+   * Returns true, if the typeof comparison returns true for this input
+   * @param input element to be typechecked
+   */
+  utilIsNumber(input: any): boolean {
+    return typeof input === 'number';
+  }
 }
