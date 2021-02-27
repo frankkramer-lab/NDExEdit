@@ -858,5 +858,51 @@ export class DataService {
     }
   }
 
+  /**
+   * Returns an aspects minimum based on a specific mapping. The mapping belongs to the currently selected network.
+   * @param mapping Has to be of type {@link NeMappingContinuous}, because other mappings do not have a minimum
+   * @param typeHint Indicating which type of mapping is given
+   */
+  getPropertyMinByMapping(mapping: NeMappingContinuous, typeHint: NeMappingsType): number {
+    const aspect = this.getPropertyByMapping(mapping, typeHint);
+    return aspect.min;
+  }
 
+  /**
+   * Returns an aspects maximum based on a specific mapping. The mapping belongs to the currently selected network.
+   * @param mapping Has to be of type {@link NeMappingContinuous}, because other mappings do not have a maximum
+   * @param typeHint Indicating which type of mapping is given
+   */
+  getPropertyMaxByMapping(mapping: NeMappingContinuous, typeHint: NeMappingsType): number {
+    const aspect = this.getPropertyByMapping(mapping, typeHint);
+    return aspect.max;
+  }
+
+  /**
+   * Returns a nodeProperty or edgeProperty of type {@link NeAspect}
+   * based on the currently selected network.
+   * @param mapping Can either be of type
+   * {@link NeMappingContinuous}, {@link NeMappingDiscrete} or {@link NeMappingPassthrough}
+   * @param typeHint Indicating which type of aspect is to be searched for the matching property
+   */
+  getPropertyByMapping(
+    mapping: NeMappingContinuous | NeMappingPassthrough | NeMappingDiscrete,
+    typeHint: NeMappingsType
+  ): NeAspect {
+
+    if (typeHint.nd || typeHint.nc || typeHint.np) {
+      for (const n of this.selectedNetwork.aspectKeyValuesNodes) {
+        if (n.name === mapping.col) {
+          return n;
+        }
+      }
+    } else {
+      for (const e of this.selectedNetwork.aspectKeyValuesEdges) {
+        if (e.name === mapping.col) {
+          return e;
+        }
+      }
+    }
+
+  }
 }

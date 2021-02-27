@@ -1,5 +1,5 @@
 <!-- continuous form -->
-<form *ngIf="typeHint.ec || typeHint.nc">
+<form *ngIf="(typeHint.ec || typeHint.nc)">
   <div class="form-group row">
     <label class="col-4 col-form-label"
            for="{{typeHint.ec ? 'ec' : 'nc'}}CssProperty">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
@@ -37,14 +37,15 @@
   <!-- thresholds -->
   <div *ngFor="let threshold of thresholds; let index = index" class="form-group row">
     <div class="col-4">
-      <input [disabled]="!threshold.isEditable" [(ngModel)]="threshold.value"
+      <input [disabled]="!threshold.isEditable"
+             [(ngModel)]="threshold.value"
              class="form-control"
              id="{{typeHint.ec ? 'ec' : 'nc'}}Threshold{{index}}"
              name="{{typeHint.ec ? 'ec' : 'nc'}}Threshold{{index}}"
              type="number"
              value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
     </div>
-    <div class="col-8">
+    <div class="col-7">
       <input *ngIf="!needsColorValidation(styleProperty)" [(ngModel)]="threshold.propertyValue"
              class="form-control"
              id="{{typeHint.ec ? 'ec' : 'nc'}}Value{{index}}"
@@ -58,6 +59,13 @@
              value="{{threshold.propertyValue}}">
     </div>
 
+    <div class="col-1">
+      <button class="btn btn-outline-danger"
+              (click)="removeThreshold(index)"
+              [disabled]="!threshold.isEditable">
+        <fa-icon [icon]="faTrash"></fa-icon>
+      </button>
+    </div>
   </div>
 
   <!-- button to add more thresholds -->
@@ -119,21 +127,20 @@
       </button>
 
       <!-- todo submit: edit -->
-
-      <!--        <button (click)="editMapping()" *ngIf="isEdit"-->
-      <!--                [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, mapType + mapId ]} }]"-->
-      <!--                class="btn btn-block btn-outline-success" data-toggle="tooltip"-->
-      <!--                ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"-->
-      <!--                placement="top"-->
-      <!--                type="button">-->
-      <!--          <fa-icon [icon]="faCheck"></fa-icon>-->
-      <!--        </button>-->
+      <button (click)="editMapping()" *ngIf="isEdit"
+              [routerLink]="['', { outlets: {primary: ['mappings', mapType + mapId ]} }]"
+              class="btn btn-block btn-outline-success" data-toggle="tooltip"
+              ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
+              placement="top"
+              type="button">
+        <fa-icon [icon]="faCheck"></fa-icon>
+      </button>
     </div>
   </div>
 </form>
 
 <!-- discrete form -->
-<form *ngIf="typeHint.nd || typeHint.ed">
+<form *ngIf="(typeHint.nd || typeHint.ed)">
   <div class="form-group row">
     <label class="col-4 col-form-label"
            for="{{mapType}}CssProperty">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
@@ -233,7 +240,7 @@
 </form>
 
 <!-- passthrough form -->
-<form *ngIf="typeHint.np || typeHint.ep">
+<form *ngIf="(typeHint.np || typeHint.ep)">
   <div class="form-group row">
     <label class="col-4 col-form-label"
            for="{{typeHint.ep ? 'ep' : 'np'}}CssProperty">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
