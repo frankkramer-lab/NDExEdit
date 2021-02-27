@@ -6,6 +6,7 @@ import {UtilityService} from './utility.service';
 import {NeMappingsType} from '../models/ne-mappings-type';
 import {NeAspect} from '../models/ne-aspect';
 import {NeMappingPassthrough} from '../models/ne-mapping-passthrough';
+import {LayoutService} from './layout.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,13 @@ import {NeMappingPassthrough} from '../models/ne-mapping-passthrough';
 export class DataService {
 
   constructor(
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private layoutService: LayoutService
   ) {
+
+    layoutService.layoutEmitter.subscribe(layout => {
+      this.triggerChartRedraw();
+    });
   }
 
   /**
@@ -209,15 +215,12 @@ export class DataService {
   private static buildDiscreteMappingDefinition(mapping: NeMappingDiscrete): string {
     let definition = 'COL=' + mapping.col + ',T=' + mapping.type || 'string';
 
-    console.log(mapping);
-
     for (let i = 0; i < mapping.keys.length; i++) {
 
       // only add a key-value-pair if both sides are defined and value is not empty
       if (mapping.keys[i] !== null && mapping.values[i] !== null && mapping.values[i] !== '') {
 
-        if (mapping.styleProperty === 'NODE_LABEL_FONT_FACE' || 'EDGE_LABEL_FONT_FACE') {
-          // todo is there a cleaner way to fix this?
+        if (mapping.styleProperty === 'NODE_LABEL_FONT_FACE' || mapping.styleProperty === 'EDGE_LABEL_FONT_FACE') {
           mapping.values[i] += ',,plain,,14';
         }
 
@@ -397,11 +400,9 @@ export class DataService {
           } else if (isContinuous) {
             const mapIndex = this.selectedNetwork.mappings.nodesContinuous.indexOf(this.selectedContinuousMapping);
             nodeAspect.mapPointerC = nodeAspect.mapPointerC.filter(a => a !== 'nc' + mapIndex);
-            console.log(nodeAspect);
           } else {
             const mapIndex = this.selectedNetwork.mappings.nodesPassthrough.indexOf(this.selectedPassthroughMapping);
             nodeAspect.mapPointerP = nodeAspect.mapPointerP.filter(a => a !== 'np' + mapIndex);
-            console.log(nodeAspect);
           }
         }
       }
@@ -413,11 +414,9 @@ export class DataService {
           } else if (isContinuous) {
             const mapIndex = this.selectedNetwork.mappings.edgesContinuous.indexOf(this.selectedContinuousMapping);
             edgeAspect.mapPointerC = edgeAspect.mapPointerC.filter(a => a !== 'ec' + mapIndex);
-            console.log(edgeAspect);
           } else {
             const mapIndex = this.selectedNetwork.mappings.edgesPassthrough.indexOf(this.selectedPassthroughMapping);
             edgeAspect.mapPointerP = edgeAspect.mapPointerP.filter(a => a !== 'ep' + mapIndex);
-            console.log(edgeAspect);
           }
         }
       }
@@ -484,6 +483,8 @@ export class DataService {
    */
   addMappingDiscrete(mapping: NeMappingDiscrete, typeHint: NeMappingsType): void {
 
+    console.log(mapping);
+
     if (typeHint.nc || typeHint.ec || typeHint.np || typeHint.ep) {
       console.log('Continuous or passthrough mapping cannot be added as a discrete mapping');
       return;
@@ -515,7 +516,6 @@ export class DataService {
     this.triggerNetworkCoreBuild();
 
   }
-
 
   /**
    * Adds a continuous mapping to the selected network
@@ -665,15 +665,13 @@ export class DataService {
         }
       }
     }
-
+    this.selectPropertyForDeletion();
     this.triggerNetworkCoreBuild();
 
   }
 
   /**
    * Edits an existing mapping, usable for both discrete and contiuous mappings
-   *
-   *
    */
   editMapping(typeHint: NeMappingsType, mapping: NeMappingDiscrete | NeMappingContinuous, discretePropertyPointer: number = null): void {
 
@@ -682,425 +680,11 @@ export class DataService {
       this.removePropertyFromMapping();
       this.addMappingDiscrete(mapping as NeMappingDiscrete, typeHint);
       this.selectPropertyForDeletion();
+    } else if (typeHint.nc || typeHint.ec) {
+      // todo
     }
 
-    //   const network = this.getNetworkById(id);
-    //   if (mappingsType.nd) {
-    //
-    //     const existingNdMappingIndex = network.mappings.nodesDiscrete.findIndex(x => x.classifier === mappingToEdit[0].colHR
-    //       && x.styleMap.map(a => a.cssKey).includes(mappingToEdit[0].cssKey));
-    //     const existingNdMapping = network.mappings.nodesDiscrete[existingNdMappingIndex];
-    //     const correspondingStyleMapNd = existingNdMapping.styleMap.find(x => x.cssKey === mappingToEdit[0].cssKey);
-    //     const ndMappingsNotFound = [];
-    //     const ndStyles: NeStyle[] = network.style;
-    //
-    //     for (const map of mappingToEdit) {
-    //       const currentSelector = map.selector;
-    //       let found = false;
-    //       for (let i = 0; i < correspondingStyleMapNd.cssValues.length; i++) {
-    //         if (correspondingStyleMapNd.selectors[i] === currentSelector) {
-    //           correspondingStyleMapNd.cssValues[i] = map.cssValue;
-    //           found = true;
-    //         }
-    //       }
-    //       if (!found) {
-    //         ndMappingsNotFound.push(map);
-    //         correspondingStyleMapNd.cssValues.push(map.cssValue);
-    //         correspondingStyleMapNd.selectors.push(currentSelector);
-    //       }
-    //     }
-    //     for (let i = 0; i < correspondingStyleMapNd.selectors.length; i++) {
-    //       let found = false;
-    //       for (const s of network.style) {
-    //         if (s.selector === correspondingStyleMapNd.selectors[i]) {
-    //           found = true;
-    //           s.style[correspondingStyleMapNd.cssKey] = correspondingStyleMapNd.cssValues[i];
-    //         }
-    //       }
-    //       if (!found) {
-    //         const newStyle: NeStyle = {
-    //           selector: correspondingStyleMapNd.selectors[i],
-    //           style: {},
-    //           appliedTo: [],
-    //           priority: UtilityService.utilFindPriorityBySelector(correspondingStyleMapNd.selectors[i]),
-    //         };
-    //         newStyle.style[correspondingStyleMapNd.cssKey] = correspondingStyleMapNd.cssValues[i];
-    //
-    //         for (const map of ndMappingsNotFound) {
-    //           for (const element of network.elements) {
-    //             if (element.group === 'nodes') {
-    //               for (const attribute of element.data.attributes) {
-    //                 if (attribute.keyHR === map.colHR && attribute.valueHR === map.isHR) {
-    //                   element.data.classes.push(map.selector.substring(1));
-    //                   element.classes = element.data.classes.join(' ');
-    //                   newStyle.appliedTo.push(element.data as NeNode);
-    //                 }
-    //               }
-    //             }
-    //             for (const nodeMap of network.mappings.nodesDiscrete) {
-    //               if (nodeMap.classifier === map.colHR) {
-    //                 if (!nodeMap.selectors.includes(map.selector)) {
-    //                   nodeMap.selectors.push(map.selector);
-    //                 }
-    //                 if (!nodeMap.values.includes(map.isHR)) {
-    //                   nodeMap.values.push(map.isHR);
-    //                 }
-    //               }
-    //             }
-    //           }
-    //         }
-    //         network.style = UtilityService.utilOrderStylesByPriority(ndStyles.concat([newStyle]));
-    //       }
-    //     }
-    //
-    //   } else if (mappingsType.ed) {
-    //
-    //     const existingEdMappingIndex = network.mappings.edgesDiscrete.findIndex(x => x.classifier === mappingToEdit[0].colHR
-    //       && x.styleMap.map(a => a.cssKey).includes(mappingToEdit[0].cssKey));
-    //     const existingEdMapping = network.mappings.edgesDiscrete[existingEdMappingIndex];
-    //     const correspondingStyleMapEd = existingEdMapping.styleMap.find(x => x.cssKey === mappingToEdit[0].cssKey);
-    //     const edMappingsNotFound = [];
-    //     const edStyles: NeStyle[] = network.style;
-    //
-    //     for (const map of mappingToEdit) {
-    //       let found = false;
-    //       const currentSelector = map.selector;
-    //       for (let i = 0; i < correspondingStyleMapEd.cssValues.length; i++) {
-    //         if (correspondingStyleMapEd.selectors[i] === currentSelector) {
-    //           correspondingStyleMapEd.cssValues[i] = map.cssValue;
-    //           found = true;
-    //         }
-    //       }
-    //       if (!found) {
-    //         edMappingsNotFound.push(map);
-    //         correspondingStyleMapEd.cssValues.push(map.cssValue);
-    //         correspondingStyleMapEd.selectors.push(currentSelector);
-    //       }
-    //     }
-    //
-    //     for (let i = 0; i < correspondingStyleMapEd.selectors.length; i++) {
-    //       let found = false;
-    //       for (const s of network.style) {
-    //         if (s.selector === correspondingStyleMapEd.selectors[i]) {
-    //           found = true;
-    //           s.style[correspondingStyleMapEd.cssKey] = correspondingStyleMapEd.cssValues[i];
-    //         }
-    //       }
-    //       if (!found) {
-    //         const newStyle: NeStyle = {
-    //           selector: correspondingStyleMapEd.selectors[i],
-    //           style: {},
-    //           appliedTo: [],
-    //           priority: UtilityService.utilFindPriorityBySelector(correspondingStyleMapEd.selectors[i]),
-    //         };
-    //         newStyle.style[correspondingStyleMapEd.cssKey] = correspondingStyleMapEd.cssValues[i];
-    //
-    //         for (const map of edMappingsNotFound) {
-    //           for (const element of network.elements) {
-    //             if (element.group === 'edges') {
-    //               for (const attribute of element.data.attributes) {
-    //                 if (attribute.keyHR === map.colHR && attribute.valueHR === map.isHR) {
-    //                   element.data.classes.push(map.selector.substring(1));
-    //                   element.classes = element.data.classes.join(' ');
-    //                   newStyle.appliedTo.push(element.data as NeEdge);
-    //                 }
-    //               }
-    //             }
-    //             for (const edgeMap of network.mappings.edgesDiscrete) {
-    //               if (edgeMap.classifier === map.colHR) {
-    //                 if (!edgeMap.selectors.includes(map.selector)) {
-    //                   edgeMap.selectors.push(map.selector);
-    //                 }
-    //                 if (!edgeMap.values.includes(map.isHR)) {
-    //                   edgeMap.values.push(map.isHR);
-    //                 }
-    //               }
-    //             }
-    //           }
-    //         }
-    //         network.style = UtilityService.utilOrderStylesByPriority(edStyles.concat([newStyle]));
-    //
-    //       }
-    //     }
-    //
-    //   } else if (mappingsType.nc) {
-    //     // all selectors are there, but thresholds need to be re-calculated
-    //     mappingToEdit.breakpoints = mappingToEdit.breakpoints.filter(x => x.value !== null);
-    //     mappingToEdit.breakpoints = mappingToEdit.breakpoints.sort((a, b) => a.value > b.value ? 1 : -1);
-    //
-    //
-    //     const existingNcMappingIndex = network.mappings.nodesContinuous.findIndex(x => x.title[0] === mappingToEdit.cssKey
-    //       && x.title[1] === mappingToEdit.mappedProperty.name);
-    //     const existingNcMapping = network.mappings.nodesContinuous[existingNcMappingIndex];
-    //     const ncAkv = network.aspectKeyValuesNodes.find(x => x.name === existingNcMapping.title[1]);
-    //
-    //     if (existingNcMapping.chartValid) {
-    //
-    //       existingNcMapping.chart.chartData[0].data[0] = mappingToEdit.defaultLower;
-    //       existingNcMapping.chart.chartData[0].data[mappingToEdit.breakpoints.length + 1] = mappingToEdit.defaultGreater;
-    //
-    //       for (let i = 0; i < mappingToEdit.breakpoints.length; i++) {
-    //         existingNcMapping.chart.chartData[0].data[1 + i] = mappingToEdit.breakpoints[i].propertyValue;
-    //         existingNcMapping.chart.chartLabels[1 + i] = mappingToEdit.breakpoints[i].value;
-    //       }
-    //
-    //     } else if (existingNcMapping.gradientValid) {
-    //
-    //       const min = ncAkv.min;
-    //       const max = ncAkv.max;
-    //       const range = max - min;
-    //
-    //       const newNcMapping = existingNcMapping;
-    //       const title = existingNcMapping.colorGradient[0].title;
-    //       newNcMapping.colorGradient = [];
-    //
-    //       for (const breakpoint of mappingToEdit.breakpoints) {
-    //         newNcMapping.colorGradient.push({
-    //           color: breakpoint.propertyValue,
-    //           numericThreshold: breakpoint.value,
-    //           offset: String((Number(breakpoint.value) - min) * 100 / range) + '%',
-    //           title,
-    //         });
-    //       }
-    //
-    //       newNcMapping.colorGradient = [{
-    //         color: mappingToEdit.defaultLower,
-    //         numericThreshold: String(Number.MIN_SAFE_INTEGER),
-    //         offset: '-1',
-    //         title
-    //       }].concat(newNcMapping.colorGradient);
-    //
-    //       newNcMapping.colorGradient.push({
-    //         color: mappingToEdit.defaultGreater,
-    //         numericThreshold: String(Number.MAX_SAFE_INTEGER),
-    //         offset: '101',
-    //         title
-    //       });
-    //
-    //     }
-    //     network.elements = this.updateElementsContinuously(true,
-    //       mappingToEdit, network, Number(mappingToEdit.mappedProperty.min), Number(mappingToEdit.mappedProperty.max));
-    //
-    //   } else if (mappingsType.ec) {
-    //     mappingToEdit.breakpoints = mappingToEdit.breakpoints.filter(x => x.value !== null);
-    //     mappingToEdit.breakpoints = mappingToEdit.breakpoints.sort((a, b) => a.value > b.value ? 1 : -1);
-    //
-    //     const existingEcMappingIndex = network.mappings.edgesContinuous.findIndex(x => x.title[0] === mappingToEdit.cssKey
-    //       && x.title[1] === mappingToEdit.mappedProperty.name);
-    //     const existingEcMapping = network.mappings.edgesContinuous[existingEcMappingIndex];
-    //     const ecAkv = network.aspectKeyValuesEdges.find(x => x.name === existingEcMapping.title[1]);
-    //
-    //     if (existingEcMapping.chartValid) {
-    //       // update chart
-    //       existingEcMapping.chart.chartData[0].data[0] = mappingToEdit.defaultLower;
-    //       existingEcMapping.chart.chartData[0].data[mappingToEdit.breakpoints.length + 1] = mappingToEdit.defaultGreater;
-    //
-    //       for (let i = 0; i < mappingToEdit.breakpoints.length; i++) {
-    //         existingEcMapping.chart.chartData[0].data[1 + i] = mappingToEdit.breakpoints[i].propertyValue;
-    //         existingEcMapping.chart.chartLabels[1 + i] = mappingToEdit.breakpoints[i].value;
-    //       }
-    //       existingEcMapping.chart.chartLabels.push('');
-    //     } else if (existingEcMapping.gradientValid) {
-    //
-    //       const min = ecAkv.min;
-    //       const max = ecAkv.max;
-    //       const range = max - min;
-    //
-    //       const newEcMapping = existingEcMapping;
-    //       const title = existingEcMapping.colorGradient[0].title;
-    //       newEcMapping.colorGradient = [];
-    //
-    //       for (const breakpoint of mappingToEdit.breakpoints) {
-    //         newEcMapping.colorGradient.push({
-    //           color: breakpoint.propertyValue,
-    //           numericThreshold: breakpoint.value,
-    //           offset: String((Number(breakpoint.value) - min) * 100 / range) + '%',
-    //           title,
-    //         });
-    //       }
-    //
-    //       newEcMapping.colorGradient = [{
-    //         color: mappingToEdit.defaultLower,
-    //         numericThreshold: String(Number.MIN_SAFE_INTEGER),
-    //         offset: '-1',
-    //         title
-    //       }].concat(newEcMapping.colorGradient);
-    //
-    //       newEcMapping.colorGradient.push({
-    //         color: mappingToEdit.defaultGreater,
-    //         numericThreshold: String(Number.MAX_SAFE_INTEGER),
-    //         offset: '101',
-    //         title
-    //       });
-    //
-    //     }
-    //     network.elements = this.updateElementsContinuously(false,
-    //       mappingToEdit, network, Number(mappingToEdit.mappedProperty.min), Number(mappingToEdit.mappedProperty.max));
-    //
-    //   }
   }
-
-  /**
-   * Updates all elements after adding a new continuous mapping or after editing an existing continuous mapping
-   *
-   * @param isNode true if elements are nodes
-   * @param continuousMapping new or existing continuous mapping
-   * @param network corresponding network
-   * @param minPropertyValue minimum of the element's attribute's values
-   * @param maxPropertyValue maximum of the elements's attribute's values
-   * @private
-   */
-  // private updateElementsContinuously(
-  //   isNode: boolean,
-  //   continuousMapping: any,
-  //   network: NeNetwork,
-  //   minPropertyValue,
-  //   maxPropertyValue
-  // ): ElementDefinition[] {
-  //
-  //   const styles: NeStyle[] = network.style;
-  //   const styleComponentList: NeStyleComponent[] = [];
-  //   const elements: ElementDefinition[] = network.elements;
-  //
-  //   for (const element of elements) {
-  //     if (isNode ? element.group === 'nodes' : element.group === 'edges') {
-  //       for (const attribute of element.data.attributes) {
-  //         if (attribute.keyHR === continuousMapping.mappedProperty.name) {
-  //           const elementValue = Number(attribute.valueHR);
-  //
-  //           let index = 0;
-  //           while (continuousMapping.breakpoints.length > index && continuousMapping.breakpoints[index].value < elementValue) {
-  //             index++;
-  //           }
-  //
-  //           const selector = ((isNode) ? '.node_' : '.edge_') + element.data.id;
-  //           const style = styles.find(x => x.selector === selector);
-  //
-  //           const tmpData = (isNode ? [element.data as NeNode] : [element.data as NeEdge]);
-  //
-  //           const styleComponent: NeStyleComponent = {
-  //             selector,
-  //             cssKey: '',
-  //             cssValue: '',
-  //             priority: 2
-  //           };
-  //
-  //           const styleObj: NeStyle = {
-  //             selector,
-  //             style: {},
-  //             appliedTo: tmpData,
-  //             priority: 2
-  //           };
-  //
-  //           if (!element.data.classes.includes(selector.substring(1))) {
-  //             element.data.classes.push(selector.substring(1));
-  //             element.classes = element.data.classes.join(' ');
-  //           }
-  //
-  //           if (continuousMapping.breakpoints[index] && continuousMapping.breakpoints[index].value === elementValue) {
-  //             // case 1: element hits breakpoint threshold => apply threshold value
-  //             styleObj.style[continuousMapping.cssKey] = continuousMapping.breakpoints[index].propertyValue;
-  //             styleComponent.cssKey = continuousMapping.cssKey;
-  //             styleComponent.cssValue = continuousMapping.breakpoints[index].propertyValue;
-  //
-  //           } else if (index === 0 && continuousMapping.breakpoints[index] && continuousMapping.breakpoints[index].value > elementValue) {
-  //             // case 2: element is smaller than lowest threshold => apply relatively lower
-  //             const inputMap: NeContinuousMap = {
-  //               inputValue: String(elementValue),
-  //               lowerThreshold: String(minPropertyValue),
-  //               lower: continuousMapping.defaultLower,
-  //               greaterThreshold: String(continuousMapping.breakpoints[index].value),
-  //               greater: String(continuousMapping.breakpoints[index].propertyValue)
-  //             };
-  //
-  //             const relativeValue = UtilityService.utilCalculateRelativeValue(inputMap);
-  //             styleObj.style[continuousMapping.cssKey] = relativeValue;
-  //             styleComponent.cssKey = continuousMapping.cssKey;
-  //             styleComponent.cssValue = relativeValue;
-  //
-  //           } else if (continuousMapping.breakpoints[index] && continuousMapping.breakpoints[index].value > elementValue) {
-  //             // case 3: element lower than the current breakpoint =>
-  //             // calculate relative value between two breakpoints or lowest default and current breakpoint
-  //
-  //             let limitLow: NeThresholdMap;
-  //             if (index === 0) {
-  //               limitLow = {
-  //                 value: minPropertyValue,
-  //                 propertyValue: continuousMapping.defaultLower,
-  //                 isEditable: true
-  //               };
-  //             } else {
-  //               limitLow = continuousMapping.breakpoints[index - 1];
-  //             }
-  //
-  //             const limitHigh = continuousMapping.breakpoints[index];
-  //             const inputMap: NeContinuousMap = {
-  //               inputValue: String(elementValue),
-  //               lowerThreshold: String(limitLow.value),
-  //               lower: String(limitLow.propertyValue),
-  //               greaterThreshold: String(limitHigh.value),
-  //               greater: String(limitHigh.propertyValue)
-  //             };
-  //
-  //             const relativeValue = UtilityService.utilCalculateRelativeValue(inputMap);
-  //             styleObj.style[continuousMapping.cssKey] = relativeValue;
-  //             styleComponent.cssKey = continuousMapping.cssKey;
-  //             styleComponent.cssValue = relativeValue;
-  //
-  //           } else if (index === continuousMapping.breakpoints.length && index > 0
-  //             && elementValue > continuousMapping.breakpoints[index - 1].value) {
-  //             // case 4: maxxed out index and elements value still greater => apply relatively greater
-  //
-  //             const inputMap: NeContinuousMap = {
-  //               inputValue: String(elementValue),
-  //               lowerThreshold: String(continuousMapping.breakpoints[index - 1].value),
-  //               lower: String(continuousMapping.breakpoints[index - 1].propertyValue),
-  //               greaterThreshold: String(maxPropertyValue),
-  //               greater: String(continuousMapping.defaultGreater)
-  //             };
-  //
-  //             const relativeValue = UtilityService.utilCalculateRelativeValue(inputMap);
-  //             styleObj.style[continuousMapping.cssKey] = relativeValue;
-  //             styleComponent.cssKey = continuousMapping.cssKey;
-  //             styleComponent.cssValue = relativeValue;
-  //
-  //           } else if (index === 0 && index === continuousMapping.breakpoints.length) {
-  //             const inputMap: NeContinuousMap = {
-  //               inputValue: String(elementValue),
-  //               lowerThreshold: String(minPropertyValue),
-  //               lower: String(continuousMapping.defaultLower),
-  //               greaterThreshold: String(maxPropertyValue),
-  //               greater: String(continuousMapping.defaultGreater)
-  //             };
-  //
-  //             const relativeValue = UtilityService.utilCalculateRelativeValue(inputMap);
-  //             styleObj.style[continuousMapping.cssKey] = relativeValue;
-  //             styleComponent.cssKey = continuousMapping.cssKey;
-  //             styleComponent.cssValue = relativeValue;
-  //
-  //           }
-  //
-  //           styleComponentList.push(styleComponent);
-  //
-  //           if (!style) {
-  //             styles.push(styleObj);
-  //           } else {
-  //             network.style = styles.filter(x => x !== style).concat(DataService.addPropertyToStyle(style, styleObj));
-  //             network.style = UtilityService.utilOrderStylesByPriority(network.style);
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  //
-  //   if (isNode) {
-  //     network.mappings.nodesContinuous[network.mappings.nodesContinuous.length - 1].values = styleComponentList;
-  //   } else {
-  //     network.mappings.edgesContinuous[network.mappings.edgesContinuous.length - 1].values = styleComponentList;
-  //   }
-  //
-  //   return elements;
-  // }
 
   /**
    * Emits a value to trigger redrawing of a displayed chart

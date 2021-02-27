@@ -4,7 +4,8 @@ import {ParseService} from './services/parse.service';
 import {DataService} from './services/data.service';
 import {HttpClient} from '@angular/common/http';
 import {faArrowLeft, faArrowRight, faExchangeAlt, faRedo} from '@fortawesome/free-solid-svg-icons';
-import {UtilityService} from "./services/utility.service";
+import {UtilityService} from './services/utility.service';
+import {LayoutService} from './services/layout.service';
 
 @Component({
   selector: 'app-root',
@@ -41,18 +42,7 @@ export class AppComponent {
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faArrowLeft = faArrowLeft;
-  /**
-   * True if main view is left
-   */
-  layoutIsMainLeft = false;
-  /**
-   * Main: default page layout is 60%
-   */
-  widthRight = 65;
-  /**
-   * Sidebar: default page layout is 38%
-   */
-  widthLeft = 30;
+
   /**
    * Path to mock-ups
    */
@@ -72,6 +62,7 @@ export class AppComponent {
    * @param translateService Service to manage languages
    * @param parseService Service to handle parsing of mock-ups
    * @param dataService Service to read and write globally accessible data
+   * @param layoutService Service to manage the app's layout
    * @param utilityService Service responsible for shared code
    * @param http Service to handle HTTP requests and file inputs
    */
@@ -79,14 +70,10 @@ export class AppComponent {
     public translateService: TranslateService,
     private parseService: ParseService,
     public dataService: DataService,
+    public layoutService: LayoutService,
     private utilityService: UtilityService,
     private http: HttpClient
   ) {
-
-    dataService.flipLayoutEmitter.subscribe(data => {
-      this.layoutIsMainLeft = data;
-      this.dataService.triggerChartRedraw();
-    });
 
     this.initializeTranslation();
 
@@ -125,53 +112,4 @@ export class AppComponent {
       .catch(error => console.log(error));
   }
 
-  /**
-   * Sets width of the main and sidebar back to 40:60 approximately
-   */
-  resetWidth(): void {
-    if (this.layoutIsMainLeft) {
-      if (this.widthLeft !== 65 && this.widthRight !== 30) {
-        this.widthLeft = 65;
-        this.widthRight = 30;
-      }
-    } else {
-      if (this.widthRight !== 65 && this.widthLeft !== 30) {
-        this.widthLeft = 30;
-        this.widthRight = 65;
-      }
-    }
-
-    this.dataService.triggerChartRedraw();
-
-  }
-
-  /**
-   * Increases left part of the window
-   */
-  increaseWidthLeft(): void {
-    if (this.widthRight > 15) {
-      this.widthRight -= 5;
-      this.widthLeft += 5;
-      this.dataService.triggerChartRedraw();
-    }
-  }
-
-  /**
-   * Increases right part of the window
-   */
-  increaseWidthRight(): void {
-    if (this.widthLeft > 15) {
-      this.widthLeft -= 5;
-      this.widthRight += 5;
-      this.dataService.triggerChartRedraw();
-    }
-  }
-
-  /**
-   * Flips left and right view
-   */
-  flipLayout(): void {
-    this.layoutIsMainLeft = !this.layoutIsMainLeft;
-    this.dataService.flipLayoutEmitter.emit(this.layoutIsMainLeft);
-  }
 }

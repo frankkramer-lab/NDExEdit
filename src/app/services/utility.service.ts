@@ -254,7 +254,6 @@ export class UtilityService {
     }];
   }
 
-
   /**
    * Returns the number of bins to be applied to the given set of numbers
    * {@link https://en.wikipedia.org/wiki/Histogram#Sturges'_formula|Sturge's Rule}
@@ -264,7 +263,6 @@ export class UtilityService {
   utilSturgesRule(numbers: number[]): number {
     return Math.ceil(1 + Math.log2(numbers.length));
   }
-
 
   /**
    * Calculates data for the continuous distribution chart as histogram
@@ -378,23 +376,6 @@ export class UtilityService {
     }
     return null;
   }
-
-  /**
-   * Extracts a singular discrete mapping from a collection of multiple discrete mappings to the same attribute
-   * @param mapping grouped discrete mapping
-   * @param index points to the index within this mapping's style map
-   */
-  // utilExtractDiscreteFromGroupedDiscrete(mapping: NeGroupedMappingsDiscrete, index: number): NeMappingDiscrete {
-  //   // todo remove this when editing, because NeGroupedMappingsDiscrete is going to be unnecessary
-  //   return {
-  //     keys: [],
-  //     col: mapping.col,
-  //     styleProperty: mapping.styleMap[index].cssKey,
-  //     type: mapping.datatype,
-  //     values: mapping.styleMap[index].cssValues
-  //   };
-  //
-  // }
 
   /**
    * Extracts the column by which this mapping is built.

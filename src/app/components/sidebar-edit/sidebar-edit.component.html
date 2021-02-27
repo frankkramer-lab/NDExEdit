@@ -63,7 +63,7 @@
 
               <tr *ngFor="let attribute of node|attributesByElement">
                 <td *ngIf="elementIndex === 0" colspan="2"><b>{{attribute}}</b></td>
-                <td class="w-100">{{attribute|attributeValueByElement : node}}</td>
+                <td class="w-100">{{node[attribute]}}</td>
               </tr>
 
             </table>
@@ -103,7 +103,7 @@
 
               <tr *ngFor="let attribute of edge|attributesByElement">
                 <td *ngIf="elementIndex === 0" colspan="2"><b>{{attribute}}</b></td>
-                <td class="w-100">{{attribute|attributeValueByElement : edge}}</td>
+                <td class="w-100">{{edge[attribute]}}</td>
               </tr>
 
             </table>
@@ -190,7 +190,7 @@
                 <td>&nbsp;</td>
                 <td
                   *ngFor="let styleProperty of dataService.selectedNetwork.mappings.nodesDiscrete|stylePropertiesByCol: nodeCol">
-                  <b>{{styleProperty|short}}</b>
+                  <b>{{styleProperty}}</b>
                 </td>
               </tr>
 
@@ -280,7 +280,7 @@
                 <td>&nbsp;</td>
                 <td
                   *ngFor="let styleProperty of dataService.selectedNetwork.mappings.edgesDiscrete|stylePropertiesByCol: edgeCol">
-                  <b>{{styleProperty|short}}</b>
+                  <b>{{styleProperty}}</b>
                 </td>
               </tr>
 
@@ -381,7 +381,7 @@
           </tr>
           <tr *ngIf="def.markedForDeletion">
             <td colspan="4">
-              REMOVE?
+              {{'SIDEBAR_EDIT_INSPECT_REMOVE_ITEM' | translate}}
             </td>
             <td>
               <button class="btn btn-outline-danger" (click)="deleteFromHighlightList(defIndex)">
