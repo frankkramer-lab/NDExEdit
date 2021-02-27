@@ -212,8 +212,15 @@ export class DataService {
     console.log(mapping);
 
     for (let i = 0; i < mapping.keys.length; i++) {
+
       // only add a key-value-pair if both sides are defined and value is not empty
       if (mapping.keys[i] !== null && mapping.values[i] !== null && mapping.values[i] !== '') {
+
+        if (mapping.styleProperty === 'NODE_LABEL_FONT_FACE' || 'EDGE_LABEL_FONT_FACE') {
+          // todo is there a cleaner way to fix this?
+          mapping.values[i] += ',,plain,,14';
+        }
+
         definition += ',K=' + i + '=' + mapping.keys[i];
         definition += ',V=' + i + '=' + mapping.values[i];
       }
