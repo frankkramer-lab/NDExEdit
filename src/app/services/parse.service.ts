@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, EventEmitter} from '@angular/core';
 import * as cytoscape from 'cytoscape';
 import {NeNetworkInformation} from '../models/ne-network-information';
 import {NeNetwork} from '../models/ne-network';
@@ -604,6 +604,7 @@ export class ParseService {
       console.log('No canvas specified!');
       return null;
     }
+    this.attributeNameMap = {};
     return this.convertCxToJs(network.cx, this.dataService.canvas)
       .then(core => {
         network.core = core;

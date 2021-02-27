@@ -47,6 +47,11 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * Index of a discrete mapping within the list of discrete mappings
    */
   mapId: number;
+
+  /**
+   * String containing the attribute's name which is currently used for mapping, e.g. 'Bait_Boolean'
+   */
+  col: string;
   /**
    * List of thresholds for a continuous mapping,
    * always containing at least 2 entries (default lowest and greatest).
@@ -152,6 +157,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   clearAllInputs(): void {
     if (!this.isEdit) {
       this.styleProperty = '';
+      this.emitStyleProperty();
     }
     this.alreadyExists = false;
 
@@ -240,6 +246,16 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * Edits an existing mapping
    */
   editMapping(): void {
+
+    if (this.typeHint.nd || this.typeHint.ed) {
+      this.dataService.editMapping(this.typeHint, this.mappingDiscrete, this.mapId);
+      // this.dataService.removePropertyFromMapping();
+      // this.dataService.addMappingDiscrete(this.mappingDiscrete, this.typeHint);
+      // this.dataService.editMapping(this.typeHint, this.mappingDiscrete);
+    } else {
+      this.dataService.editMapping(this.typeHint, this.mappingContinuous);
+    }
+
     // if (this.typeHint.nd || this.typeHint.ed) {
     //   this.dataService.editMapping(this.dataService.networkSelected.id, this.discreteMapping, this.styleProperty, this.typeHint);
     // } else {
@@ -364,20 +380,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Returns the property which is mapped by this mapping, either discrete or continuous
-   * @todo refactor to use a specific type for continuous mappings
-   * @param mapping
-   * @private
-   */
-  private getMappedProperty(mapping: any): NeAspect {
-    if (this.typeHint.nc) {
-      return this.dataService.selectedNetwork.aspectKeyValuesNodes.find(x => x.name === mapping.title[1]);
-    } else if (this.typeHint.ec) {
-      return this.dataService.selectedNetwork.aspectKeyValuesEdges.find(x => x.name === mapping.title[1]);
-    }
-  }
-
-  /**
    * Emits the new styleProperty to parent
    */
   emitStyleProperty(): void {
@@ -442,7 +444,9 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   getIndexByKey(key: string): number {
     const keyIndex = this.mappingDiscrete.keys.indexOf(key);
     if (keyIndex === -1) {
-      return null;
+      this.mappingDiscrete.keys.push(key);
+      this.mappingDiscrete.values.push('');
+      return this.getIndexByKey(key);
     }
     return keyIndex;
   }

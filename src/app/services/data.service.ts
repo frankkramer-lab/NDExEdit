@@ -208,8 +208,12 @@ export class DataService {
    */
   private static buildDiscreteMappingDefinition(mapping: NeMappingDiscrete): string {
     let definition = 'COL=' + mapping.col + ',T=' + mapping.type || 'string';
+
+    console.log(mapping);
+
     for (let i = 0; i < mapping.keys.length; i++) {
-      if (mapping.keys[i] !== null && mapping.values[i] !== null) {
+      // only add a key-value-pair if both sides are defined and value is not empty
+      if (mapping.keys[i] !== null && mapping.values[i] !== null && mapping.values[i] !== '') {
         definition += ',K=' + i + '=' + mapping.keys[i];
         definition += ',V=' + i + '=' + mapping.values[i];
       }
@@ -363,7 +367,6 @@ export class DataService {
   removeMapping(): void {
 
     // todo needs to apply to Passthrough mappings too!
-
 
     let col: string;
     const isDiscrete = this.selectedTypeHint.nd || this.selectedTypeHint.ed;
@@ -663,272 +666,272 @@ export class DataService {
   /**
    * Edits an existing mapping, usable for both discrete and contiuous mappings
    *
-   * @param id network's id
-   * @param mappingToEdit updated mapping
-   * @param styleProperty corresponding style from within the network's existing style
-   * @param mappingsType true for type of mapping
+   *
    */
-  // editMapping(
-  //   id: number,
-  //   mappingToEdit: any | any[],
-  //   styleProperty: string,
-  //   mappingsType: NeMappingsType
-  // ): void {
-  //   const network = this.getNetworkById(id);
-  //   if (mappingsType.nd) {
-  //
-  //     const existingNdMappingIndex = network.mappings.nodesDiscrete.findIndex(x => x.classifier === mappingToEdit[0].colHR
-  //       && x.styleMap.map(a => a.cssKey).includes(mappingToEdit[0].cssKey));
-  //     const existingNdMapping = network.mappings.nodesDiscrete[existingNdMappingIndex];
-  //     const correspondingStyleMapNd = existingNdMapping.styleMap.find(x => x.cssKey === mappingToEdit[0].cssKey);
-  //     const ndMappingsNotFound = [];
-  //     const ndStyles: NeStyle[] = network.style;
-  //
-  //     for (const map of mappingToEdit) {
-  //       const currentSelector = map.selector;
-  //       let found = false;
-  //       for (let i = 0; i < correspondingStyleMapNd.cssValues.length; i++) {
-  //         if (correspondingStyleMapNd.selectors[i] === currentSelector) {
-  //           correspondingStyleMapNd.cssValues[i] = map.cssValue;
-  //           found = true;
-  //         }
-  //       }
-  //       if (!found) {
-  //         ndMappingsNotFound.push(map);
-  //         correspondingStyleMapNd.cssValues.push(map.cssValue);
-  //         correspondingStyleMapNd.selectors.push(currentSelector);
-  //       }
-  //     }
-  //     for (let i = 0; i < correspondingStyleMapNd.selectors.length; i++) {
-  //       let found = false;
-  //       for (const s of network.style) {
-  //         if (s.selector === correspondingStyleMapNd.selectors[i]) {
-  //           found = true;
-  //           s.style[correspondingStyleMapNd.cssKey] = correspondingStyleMapNd.cssValues[i];
-  //         }
-  //       }
-  //       if (!found) {
-  //         const newStyle: NeStyle = {
-  //           selector: correspondingStyleMapNd.selectors[i],
-  //           style: {},
-  //           appliedTo: [],
-  //           priority: UtilityService.utilFindPriorityBySelector(correspondingStyleMapNd.selectors[i]),
-  //         };
-  //         newStyle.style[correspondingStyleMapNd.cssKey] = correspondingStyleMapNd.cssValues[i];
-  //
-  //         for (const map of ndMappingsNotFound) {
-  //           for (const element of network.elements) {
-  //             if (element.group === 'nodes') {
-  //               for (const attribute of element.data.attributes) {
-  //                 if (attribute.keyHR === map.colHR && attribute.valueHR === map.isHR) {
-  //                   element.data.classes.push(map.selector.substring(1));
-  //                   element.classes = element.data.classes.join(' ');
-  //                   newStyle.appliedTo.push(element.data as NeNode);
-  //                 }
-  //               }
-  //             }
-  //             for (const nodeMap of network.mappings.nodesDiscrete) {
-  //               if (nodeMap.classifier === map.colHR) {
-  //                 if (!nodeMap.selectors.includes(map.selector)) {
-  //                   nodeMap.selectors.push(map.selector);
-  //                 }
-  //                 if (!nodeMap.values.includes(map.isHR)) {
-  //                   nodeMap.values.push(map.isHR);
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //         network.style = UtilityService.utilOrderStylesByPriority(ndStyles.concat([newStyle]));
-  //       }
-  //     }
-  //
-  //   } else if (mappingsType.ed) {
-  //
-  //     const existingEdMappingIndex = network.mappings.edgesDiscrete.findIndex(x => x.classifier === mappingToEdit[0].colHR
-  //       && x.styleMap.map(a => a.cssKey).includes(mappingToEdit[0].cssKey));
-  //     const existingEdMapping = network.mappings.edgesDiscrete[existingEdMappingIndex];
-  //     const correspondingStyleMapEd = existingEdMapping.styleMap.find(x => x.cssKey === mappingToEdit[0].cssKey);
-  //     const edMappingsNotFound = [];
-  //     const edStyles: NeStyle[] = network.style;
-  //
-  //     for (const map of mappingToEdit) {
-  //       let found = false;
-  //       const currentSelector = map.selector;
-  //       for (let i = 0; i < correspondingStyleMapEd.cssValues.length; i++) {
-  //         if (correspondingStyleMapEd.selectors[i] === currentSelector) {
-  //           correspondingStyleMapEd.cssValues[i] = map.cssValue;
-  //           found = true;
-  //         }
-  //       }
-  //       if (!found) {
-  //         edMappingsNotFound.push(map);
-  //         correspondingStyleMapEd.cssValues.push(map.cssValue);
-  //         correspondingStyleMapEd.selectors.push(currentSelector);
-  //       }
-  //     }
-  //
-  //     for (let i = 0; i < correspondingStyleMapEd.selectors.length; i++) {
-  //       let found = false;
-  //       for (const s of network.style) {
-  //         if (s.selector === correspondingStyleMapEd.selectors[i]) {
-  //           found = true;
-  //           s.style[correspondingStyleMapEd.cssKey] = correspondingStyleMapEd.cssValues[i];
-  //         }
-  //       }
-  //       if (!found) {
-  //         const newStyle: NeStyle = {
-  //           selector: correspondingStyleMapEd.selectors[i],
-  //           style: {},
-  //           appliedTo: [],
-  //           priority: UtilityService.utilFindPriorityBySelector(correspondingStyleMapEd.selectors[i]),
-  //         };
-  //         newStyle.style[correspondingStyleMapEd.cssKey] = correspondingStyleMapEd.cssValues[i];
-  //
-  //         for (const map of edMappingsNotFound) {
-  //           for (const element of network.elements) {
-  //             if (element.group === 'edges') {
-  //               for (const attribute of element.data.attributes) {
-  //                 if (attribute.keyHR === map.colHR && attribute.valueHR === map.isHR) {
-  //                   element.data.classes.push(map.selector.substring(1));
-  //                   element.classes = element.data.classes.join(' ');
-  //                   newStyle.appliedTo.push(element.data as NeEdge);
-  //                 }
-  //               }
-  //             }
-  //             for (const edgeMap of network.mappings.edgesDiscrete) {
-  //               if (edgeMap.classifier === map.colHR) {
-  //                 if (!edgeMap.selectors.includes(map.selector)) {
-  //                   edgeMap.selectors.push(map.selector);
-  //                 }
-  //                 if (!edgeMap.values.includes(map.isHR)) {
-  //                   edgeMap.values.push(map.isHR);
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //         network.style = UtilityService.utilOrderStylesByPriority(edStyles.concat([newStyle]));
-  //
-  //       }
-  //     }
-  //
-  //   } else if (mappingsType.nc) {
-  //     // all selectors are there, but thresholds need to be re-calculated
-  //     mappingToEdit.breakpoints = mappingToEdit.breakpoints.filter(x => x.value !== null);
-  //     mappingToEdit.breakpoints = mappingToEdit.breakpoints.sort((a, b) => a.value > b.value ? 1 : -1);
-  //
-  //
-  //     const existingNcMappingIndex = network.mappings.nodesContinuous.findIndex(x => x.title[0] === mappingToEdit.cssKey
-  //       && x.title[1] === mappingToEdit.mappedProperty.name);
-  //     const existingNcMapping = network.mappings.nodesContinuous[existingNcMappingIndex];
-  //     const ncAkv = network.aspectKeyValuesNodes.find(x => x.name === existingNcMapping.title[1]);
-  //
-  //     if (existingNcMapping.chartValid) {
-  //
-  //       existingNcMapping.chart.chartData[0].data[0] = mappingToEdit.defaultLower;
-  //       existingNcMapping.chart.chartData[0].data[mappingToEdit.breakpoints.length + 1] = mappingToEdit.defaultGreater;
-  //
-  //       for (let i = 0; i < mappingToEdit.breakpoints.length; i++) {
-  //         existingNcMapping.chart.chartData[0].data[1 + i] = mappingToEdit.breakpoints[i].propertyValue;
-  //         existingNcMapping.chart.chartLabels[1 + i] = mappingToEdit.breakpoints[i].value;
-  //       }
-  //
-  //     } else if (existingNcMapping.gradientValid) {
-  //
-  //       const min = ncAkv.min;
-  //       const max = ncAkv.max;
-  //       const range = max - min;
-  //
-  //       const newNcMapping = existingNcMapping;
-  //       const title = existingNcMapping.colorGradient[0].title;
-  //       newNcMapping.colorGradient = [];
-  //
-  //       for (const breakpoint of mappingToEdit.breakpoints) {
-  //         newNcMapping.colorGradient.push({
-  //           color: breakpoint.propertyValue,
-  //           numericThreshold: breakpoint.value,
-  //           offset: String((Number(breakpoint.value) - min) * 100 / range) + '%',
-  //           title,
-  //         });
-  //       }
-  //
-  //       newNcMapping.colorGradient = [{
-  //         color: mappingToEdit.defaultLower,
-  //         numericThreshold: String(Number.MIN_SAFE_INTEGER),
-  //         offset: '-1',
-  //         title
-  //       }].concat(newNcMapping.colorGradient);
-  //
-  //       newNcMapping.colorGradient.push({
-  //         color: mappingToEdit.defaultGreater,
-  //         numericThreshold: String(Number.MAX_SAFE_INTEGER),
-  //         offset: '101',
-  //         title
-  //       });
-  //
-  //     }
-  //     network.elements = this.updateElementsContinuously(true,
-  //       mappingToEdit, network, Number(mappingToEdit.mappedProperty.min), Number(mappingToEdit.mappedProperty.max));
-  //
-  //   } else if (mappingsType.ec) {
-  //     mappingToEdit.breakpoints = mappingToEdit.breakpoints.filter(x => x.value !== null);
-  //     mappingToEdit.breakpoints = mappingToEdit.breakpoints.sort((a, b) => a.value > b.value ? 1 : -1);
-  //
-  //     const existingEcMappingIndex = network.mappings.edgesContinuous.findIndex(x => x.title[0] === mappingToEdit.cssKey
-  //       && x.title[1] === mappingToEdit.mappedProperty.name);
-  //     const existingEcMapping = network.mappings.edgesContinuous[existingEcMappingIndex];
-  //     const ecAkv = network.aspectKeyValuesEdges.find(x => x.name === existingEcMapping.title[1]);
-  //
-  //     if (existingEcMapping.chartValid) {
-  //       // update chart
-  //       existingEcMapping.chart.chartData[0].data[0] = mappingToEdit.defaultLower;
-  //       existingEcMapping.chart.chartData[0].data[mappingToEdit.breakpoints.length + 1] = mappingToEdit.defaultGreater;
-  //
-  //       for (let i = 0; i < mappingToEdit.breakpoints.length; i++) {
-  //         existingEcMapping.chart.chartData[0].data[1 + i] = mappingToEdit.breakpoints[i].propertyValue;
-  //         existingEcMapping.chart.chartLabels[1 + i] = mappingToEdit.breakpoints[i].value;
-  //       }
-  //       existingEcMapping.chart.chartLabels.push('');
-  //     } else if (existingEcMapping.gradientValid) {
-  //
-  //       const min = ecAkv.min;
-  //       const max = ecAkv.max;
-  //       const range = max - min;
-  //
-  //       const newEcMapping = existingEcMapping;
-  //       const title = existingEcMapping.colorGradient[0].title;
-  //       newEcMapping.colorGradient = [];
-  //
-  //       for (const breakpoint of mappingToEdit.breakpoints) {
-  //         newEcMapping.colorGradient.push({
-  //           color: breakpoint.propertyValue,
-  //           numericThreshold: breakpoint.value,
-  //           offset: String((Number(breakpoint.value) - min) * 100 / range) + '%',
-  //           title,
-  //         });
-  //       }
-  //
-  //       newEcMapping.colorGradient = [{
-  //         color: mappingToEdit.defaultLower,
-  //         numericThreshold: String(Number.MIN_SAFE_INTEGER),
-  //         offset: '-1',
-  //         title
-  //       }].concat(newEcMapping.colorGradient);
-  //
-  //       newEcMapping.colorGradient.push({
-  //         color: mappingToEdit.defaultGreater,
-  //         numericThreshold: String(Number.MAX_SAFE_INTEGER),
-  //         offset: '101',
-  //         title
-  //       });
-  //
-  //     }
-  //     network.elements = this.updateElementsContinuously(false,
-  //       mappingToEdit, network, Number(mappingToEdit.mappedProperty.min), Number(mappingToEdit.mappedProperty.max));
-  //
-  //   }
-  // }
+  editMapping(typeHint: NeMappingsType, mapping: NeMappingDiscrete | NeMappingContinuous, discretePropertyPointer: number = null): void {
+
+    if (typeHint.nd || typeHint.ed) {
+      this.selectPropertyForDeletion(discretePropertyPointer);
+      this.removePropertyFromMapping();
+      this.addMappingDiscrete(mapping as NeMappingDiscrete, typeHint);
+      this.selectPropertyForDeletion();
+    }
+
+    //   const network = this.getNetworkById(id);
+    //   if (mappingsType.nd) {
+    //
+    //     const existingNdMappingIndex = network.mappings.nodesDiscrete.findIndex(x => x.classifier === mappingToEdit[0].colHR
+    //       && x.styleMap.map(a => a.cssKey).includes(mappingToEdit[0].cssKey));
+    //     const existingNdMapping = network.mappings.nodesDiscrete[existingNdMappingIndex];
+    //     const correspondingStyleMapNd = existingNdMapping.styleMap.find(x => x.cssKey === mappingToEdit[0].cssKey);
+    //     const ndMappingsNotFound = [];
+    //     const ndStyles: NeStyle[] = network.style;
+    //
+    //     for (const map of mappingToEdit) {
+    //       const currentSelector = map.selector;
+    //       let found = false;
+    //       for (let i = 0; i < correspondingStyleMapNd.cssValues.length; i++) {
+    //         if (correspondingStyleMapNd.selectors[i] === currentSelector) {
+    //           correspondingStyleMapNd.cssValues[i] = map.cssValue;
+    //           found = true;
+    //         }
+    //       }
+    //       if (!found) {
+    //         ndMappingsNotFound.push(map);
+    //         correspondingStyleMapNd.cssValues.push(map.cssValue);
+    //         correspondingStyleMapNd.selectors.push(currentSelector);
+    //       }
+    //     }
+    //     for (let i = 0; i < correspondingStyleMapNd.selectors.length; i++) {
+    //       let found = false;
+    //       for (const s of network.style) {
+    //         if (s.selector === correspondingStyleMapNd.selectors[i]) {
+    //           found = true;
+    //           s.style[correspondingStyleMapNd.cssKey] = correspondingStyleMapNd.cssValues[i];
+    //         }
+    //       }
+    //       if (!found) {
+    //         const newStyle: NeStyle = {
+    //           selector: correspondingStyleMapNd.selectors[i],
+    //           style: {},
+    //           appliedTo: [],
+    //           priority: UtilityService.utilFindPriorityBySelector(correspondingStyleMapNd.selectors[i]),
+    //         };
+    //         newStyle.style[correspondingStyleMapNd.cssKey] = correspondingStyleMapNd.cssValues[i];
+    //
+    //         for (const map of ndMappingsNotFound) {
+    //           for (const element of network.elements) {
+    //             if (element.group === 'nodes') {
+    //               for (const attribute of element.data.attributes) {
+    //                 if (attribute.keyHR === map.colHR && attribute.valueHR === map.isHR) {
+    //                   element.data.classes.push(map.selector.substring(1));
+    //                   element.classes = element.data.classes.join(' ');
+    //                   newStyle.appliedTo.push(element.data as NeNode);
+    //                 }
+    //               }
+    //             }
+    //             for (const nodeMap of network.mappings.nodesDiscrete) {
+    //               if (nodeMap.classifier === map.colHR) {
+    //                 if (!nodeMap.selectors.includes(map.selector)) {
+    //                   nodeMap.selectors.push(map.selector);
+    //                 }
+    //                 if (!nodeMap.values.includes(map.isHR)) {
+    //                   nodeMap.values.push(map.isHR);
+    //                 }
+    //               }
+    //             }
+    //           }
+    //         }
+    //         network.style = UtilityService.utilOrderStylesByPriority(ndStyles.concat([newStyle]));
+    //       }
+    //     }
+    //
+    //   } else if (mappingsType.ed) {
+    //
+    //     const existingEdMappingIndex = network.mappings.edgesDiscrete.findIndex(x => x.classifier === mappingToEdit[0].colHR
+    //       && x.styleMap.map(a => a.cssKey).includes(mappingToEdit[0].cssKey));
+    //     const existingEdMapping = network.mappings.edgesDiscrete[existingEdMappingIndex];
+    //     const correspondingStyleMapEd = existingEdMapping.styleMap.find(x => x.cssKey === mappingToEdit[0].cssKey);
+    //     const edMappingsNotFound = [];
+    //     const edStyles: NeStyle[] = network.style;
+    //
+    //     for (const map of mappingToEdit) {
+    //       let found = false;
+    //       const currentSelector = map.selector;
+    //       for (let i = 0; i < correspondingStyleMapEd.cssValues.length; i++) {
+    //         if (correspondingStyleMapEd.selectors[i] === currentSelector) {
+    //           correspondingStyleMapEd.cssValues[i] = map.cssValue;
+    //           found = true;
+    //         }
+    //       }
+    //       if (!found) {
+    //         edMappingsNotFound.push(map);
+    //         correspondingStyleMapEd.cssValues.push(map.cssValue);
+    //         correspondingStyleMapEd.selectors.push(currentSelector);
+    //       }
+    //     }
+    //
+    //     for (let i = 0; i < correspondingStyleMapEd.selectors.length; i++) {
+    //       let found = false;
+    //       for (const s of network.style) {
+    //         if (s.selector === correspondingStyleMapEd.selectors[i]) {
+    //           found = true;
+    //           s.style[correspondingStyleMapEd.cssKey] = correspondingStyleMapEd.cssValues[i];
+    //         }
+    //       }
+    //       if (!found) {
+    //         const newStyle: NeStyle = {
+    //           selector: correspondingStyleMapEd.selectors[i],
+    //           style: {},
+    //           appliedTo: [],
+    //           priority: UtilityService.utilFindPriorityBySelector(correspondingStyleMapEd.selectors[i]),
+    //         };
+    //         newStyle.style[correspondingStyleMapEd.cssKey] = correspondingStyleMapEd.cssValues[i];
+    //
+    //         for (const map of edMappingsNotFound) {
+    //           for (const element of network.elements) {
+    //             if (element.group === 'edges') {
+    //               for (const attribute of element.data.attributes) {
+    //                 if (attribute.keyHR === map.colHR && attribute.valueHR === map.isHR) {
+    //                   element.data.classes.push(map.selector.substring(1));
+    //                   element.classes = element.data.classes.join(' ');
+    //                   newStyle.appliedTo.push(element.data as NeEdge);
+    //                 }
+    //               }
+    //             }
+    //             for (const edgeMap of network.mappings.edgesDiscrete) {
+    //               if (edgeMap.classifier === map.colHR) {
+    //                 if (!edgeMap.selectors.includes(map.selector)) {
+    //                   edgeMap.selectors.push(map.selector);
+    //                 }
+    //                 if (!edgeMap.values.includes(map.isHR)) {
+    //                   edgeMap.values.push(map.isHR);
+    //                 }
+    //               }
+    //             }
+    //           }
+    //         }
+    //         network.style = UtilityService.utilOrderStylesByPriority(edStyles.concat([newStyle]));
+    //
+    //       }
+    //     }
+    //
+    //   } else if (mappingsType.nc) {
+    //     // all selectors are there, but thresholds need to be re-calculated
+    //     mappingToEdit.breakpoints = mappingToEdit.breakpoints.filter(x => x.value !== null);
+    //     mappingToEdit.breakpoints = mappingToEdit.breakpoints.sort((a, b) => a.value > b.value ? 1 : -1);
+    //
+    //
+    //     const existingNcMappingIndex = network.mappings.nodesContinuous.findIndex(x => x.title[0] === mappingToEdit.cssKey
+    //       && x.title[1] === mappingToEdit.mappedProperty.name);
+    //     const existingNcMapping = network.mappings.nodesContinuous[existingNcMappingIndex];
+    //     const ncAkv = network.aspectKeyValuesNodes.find(x => x.name === existingNcMapping.title[1]);
+    //
+    //     if (existingNcMapping.chartValid) {
+    //
+    //       existingNcMapping.chart.chartData[0].data[0] = mappingToEdit.defaultLower;
+    //       existingNcMapping.chart.chartData[0].data[mappingToEdit.breakpoints.length + 1] = mappingToEdit.defaultGreater;
+    //
+    //       for (let i = 0; i < mappingToEdit.breakpoints.length; i++) {
+    //         existingNcMapping.chart.chartData[0].data[1 + i] = mappingToEdit.breakpoints[i].propertyValue;
+    //         existingNcMapping.chart.chartLabels[1 + i] = mappingToEdit.breakpoints[i].value;
+    //       }
+    //
+    //     } else if (existingNcMapping.gradientValid) {
+    //
+    //       const min = ncAkv.min;
+    //       const max = ncAkv.max;
+    //       const range = max - min;
+    //
+    //       const newNcMapping = existingNcMapping;
+    //       const title = existingNcMapping.colorGradient[0].title;
+    //       newNcMapping.colorGradient = [];
+    //
+    //       for (const breakpoint of mappingToEdit.breakpoints) {
+    //         newNcMapping.colorGradient.push({
+    //           color: breakpoint.propertyValue,
+    //           numericThreshold: breakpoint.value,
+    //           offset: String((Number(breakpoint.value) - min) * 100 / range) + '%',
+    //           title,
+    //         });
+    //       }
+    //
+    //       newNcMapping.colorGradient = [{
+    //         color: mappingToEdit.defaultLower,
+    //         numericThreshold: String(Number.MIN_SAFE_INTEGER),
+    //         offset: '-1',
+    //         title
+    //       }].concat(newNcMapping.colorGradient);
+    //
+    //       newNcMapping.colorGradient.push({
+    //         color: mappingToEdit.defaultGreater,
+    //         numericThreshold: String(Number.MAX_SAFE_INTEGER),
+    //         offset: '101',
+    //         title
+    //       });
+    //
+    //     }
+    //     network.elements = this.updateElementsContinuously(true,
+    //       mappingToEdit, network, Number(mappingToEdit.mappedProperty.min), Number(mappingToEdit.mappedProperty.max));
+    //
+    //   } else if (mappingsType.ec) {
+    //     mappingToEdit.breakpoints = mappingToEdit.breakpoints.filter(x => x.value !== null);
+    //     mappingToEdit.breakpoints = mappingToEdit.breakpoints.sort((a, b) => a.value > b.value ? 1 : -1);
+    //
+    //     const existingEcMappingIndex = network.mappings.edgesContinuous.findIndex(x => x.title[0] === mappingToEdit.cssKey
+    //       && x.title[1] === mappingToEdit.mappedProperty.name);
+    //     const existingEcMapping = network.mappings.edgesContinuous[existingEcMappingIndex];
+    //     const ecAkv = network.aspectKeyValuesEdges.find(x => x.name === existingEcMapping.title[1]);
+    //
+    //     if (existingEcMapping.chartValid) {
+    //       // update chart
+    //       existingEcMapping.chart.chartData[0].data[0] = mappingToEdit.defaultLower;
+    //       existingEcMapping.chart.chartData[0].data[mappingToEdit.breakpoints.length + 1] = mappingToEdit.defaultGreater;
+    //
+    //       for (let i = 0; i < mappingToEdit.breakpoints.length; i++) {
+    //         existingEcMapping.chart.chartData[0].data[1 + i] = mappingToEdit.breakpoints[i].propertyValue;
+    //         existingEcMapping.chart.chartLabels[1 + i] = mappingToEdit.breakpoints[i].value;
+    //       }
+    //       existingEcMapping.chart.chartLabels.push('');
+    //     } else if (existingEcMapping.gradientValid) {
+    //
+    //       const min = ecAkv.min;
+    //       const max = ecAkv.max;
+    //       const range = max - min;
+    //
+    //       const newEcMapping = existingEcMapping;
+    //       const title = existingEcMapping.colorGradient[0].title;
+    //       newEcMapping.colorGradient = [];
+    //
+    //       for (const breakpoint of mappingToEdit.breakpoints) {
+    //         newEcMapping.colorGradient.push({
+    //           color: breakpoint.propertyValue,
+    //           numericThreshold: breakpoint.value,
+    //           offset: String((Number(breakpoint.value) - min) * 100 / range) + '%',
+    //           title,
+    //         });
+    //       }
+    //
+    //       newEcMapping.colorGradient = [{
+    //         color: mappingToEdit.defaultLower,
+    //         numericThreshold: String(Number.MIN_SAFE_INTEGER),
+    //         offset: '-1',
+    //         title
+    //       }].concat(newEcMapping.colorGradient);
+    //
+    //       newEcMapping.colorGradient.push({
+    //         color: mappingToEdit.defaultGreater,
+    //         numericThreshold: String(Number.MAX_SAFE_INTEGER),
+    //         offset: '101',
+    //         title
+    //       });
+    //
+    //     }
+    //     network.elements = this.updateElementsContinuously(false,
+    //       mappingToEdit, network, Number(mappingToEdit.mappedProperty.min), Number(mappingToEdit.mappedProperty.max));
+    //
+    //   }
+  }
 
   /**
    * Updates all elements after adding a new continuous mapping or after editing an existing continuous mapping

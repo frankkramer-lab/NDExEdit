@@ -106,7 +106,7 @@
       </button>
     </div>
     <div class="col-4">
-      <!-- submit -->
+      <!-- submit: new -->
       <button
         [routerLink]="['', { outlets: {primary: ['mappings', mapType + (getNextIdForMappingType()) ]} }]"
         (click)="submitNewMapping()" *ngIf="!isEdit"
@@ -117,6 +117,9 @@
         [disabled]="alreadyExists">
         <fa-icon [icon]="faCheck"></fa-icon>
       </button>
+
+      <!-- todo submit: edit -->
+
       <!--        <button (click)="editMapping()" *ngIf="isEdit"-->
       <!--                [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, mapType + mapId ]} }]"-->
       <!--                class="btn btn-block btn-outline-success" data-toggle="tooltip"-->
@@ -181,6 +184,7 @@
 
   <!-- SUBMIT/CLEAR/ABORT -->
   <div class="row">
+
     <div class="col-4">
       <!-- abort -->
       <button [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id ]} }]"
@@ -191,6 +195,7 @@
         <fa-icon [icon]="faTimes"></fa-icon>
       </button>
     </div>
+
     <div class="col-4">
       <!-- clear -->
       <button (click)="clearAllInputs()" class="btn btn-block btn-outline-warning"
@@ -200,8 +205,9 @@
         <fa-icon [icon]="faUndo"></fa-icon>
       </button>
     </div>
+
     <div class="col-4">
-      <!-- submit -->
+      <!-- submit: new -->
       <button (click)="submitNewMapping()" *ngIf="!isEdit && mapType.endsWith('d')"
               [routerLink]="['', { outlets: {primary: ['mappings', mapType, mappingDiscrete.col ]} }]"
               class="btn btn-block btn-outline-success" data-toggle="tooltip"
@@ -211,17 +217,9 @@
               [disabled]="alreadyExists">
         <fa-icon [icon]="faCheck"></fa-icon>
       </button>
-      <button (click)="submitNewMapping()" *ngIf="!isEdit && mapType.endsWith('c')"
-              [routerLink]="['', { outlets: {primary: ['mappings', mapType + getNextIdForMappingType() ]} }]"
-              class="btn btn-block btn-outline-success" data-toggle="tooltip"
-              ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
-              placement="top"
-              type="button"
-              [disabled]="alreadyExists">
-        <fa-icon [icon]="faCheck"></fa-icon>
-      </button>
+      <!-- submit: edit -->
       <button (click)="editMapping()" *ngIf="isEdit"
-              [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, mapType + mapId ]} }]"
+              [routerLink]="['', { outlets: {primary: ['mappings', mapType, mappingDiscrete.col ]} }]"
               class="btn btn-block btn-outline-success" data-toggle="tooltip"
               ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
               placement="top"
@@ -229,6 +227,7 @@
         <fa-icon [icon]="faCheck"></fa-icon>
       </button>
     </div>
+
   </div>
 
 </form>
@@ -262,6 +261,7 @@
         <fa-icon [icon]="faTimes"></fa-icon>
       </button>
     </div>
+
     <div class="col-4">
       <!-- clear -->
       <button (click)="clearAllInputs()" class="btn btn-block btn-outline-warning"
@@ -271,10 +271,11 @@
         <fa-icon [icon]="faUndo"></fa-icon>
       </button>
     </div>
+
     <div class="col-4">
       <!-- submit -->
-      <button (click)="submitNewMapping()" *ngIf="!isEdit && mapType.endsWith('d')"
-              [routerLink]="['', { outlets: {primary: ['mappings', mapType, mappingDiscrete.col ]} }]"
+      <button (click)="submitNewMapping()" *ngIf="!isEdit && mapType.endsWith('p')"
+              [routerLink]="['', { outlets: {primary: ['mappings', mapType + getNextIdForMappingType() ]} }]"
               class="btn btn-block btn-outline-success" data-toggle="tooltip"
               ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
               placement="top"
@@ -282,24 +283,9 @@
               [disabled]="alreadyExists">
         <fa-icon [icon]="faCheck"></fa-icon>
       </button>
-      <button (click)="submitNewMapping()" *ngIf="!isEdit && (mapType.endsWith('c') || mapType.endsWith('p'))"
-              [routerLink]="['', { outlets: {primary: ['mappings', mapType + getNextIdForMappingType() ]} }]"
-              class="btn btn-block btn-outline-success" data-toggle="tooltip"
-              ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
-              placement="top"
-              type="button">
-        <fa-icon [icon]="faCheck"></fa-icon>
-      </button>
-
-      <!--        <button (click)="editMapping()" *ngIf="isEdit"-->
-      <!--                [routerLink]="['', { outlets: {primary: ['mappings', dataService.selectedNetwork.id, mapType + mapId ]} }]"-->
-      <!--                class="btn btn-block btn-outline-success" data-toggle="tooltip"-->
-      <!--                ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"-->
-      <!--                placement="top"-->
-      <!--                type="button">-->
-      <!--          <fa-icon [icon]="faCheck"></fa-icon>-->
-      <!--        </button>-->
     </div>
+
+    <!-- NO EDIT FOR PASSTHROUGH -->
   </div>
 
 </form>
