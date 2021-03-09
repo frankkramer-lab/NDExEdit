@@ -19,11 +19,13 @@
           <fa-icon [icon]="faSearch"></fa-icon>
         </button>
         <span aria-labelledby="cDetailsGroup" class="dropdown-menu">
-          <a *ngFor="let cDetail of attribute.mapPointerC; let i = index;"
-             [routerLink]="['', { outlets: {primary: ['mappings', cDetail]} }]"
-             class="dropdown-item">
-            {{ dataService.getMappingByHintAndId(cDetail).styleProperty }}
-          </a>
+          <ng-container *ngFor="let cDetail of attribute.mapPointerC; let i = index;">
+            <a *ngIf="dataService.getMappingByHintAndId(cDetail)"
+               [routerLink]="['', { outlets: {primary: ['mappings', cDetail]} }]"
+               class="dropdown-item">
+              {{ dataService.getMappingByHintAndId(cDetail).styleProperty }}
+            </a>
+          </ng-container>
         </span>
       </span>
     </span>

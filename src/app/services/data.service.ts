@@ -376,9 +376,8 @@ export class DataService {
    */
   removeMapping(): void {
 
-    // todo needs to apply to Passthrough mappings too!
-
     let col: string;
+    let styleProperty: string;
     const isDiscrete = this.selectedTypeHint.nd || this.selectedTypeHint.ed;
     const isContinuous = this.selectedTypeHint.nc || this.selectedTypeHint.ec;
     const isNode = this.selectedTypeHint.nd || this.selectedTypeHint.nc || this.selectedTypeHint.np;
@@ -387,39 +386,10 @@ export class DataService {
       col = this.selectedDiscreteMapping[0].col;
     } else if (isContinuous) {
       col = this.selectedContinuousMapping.col;
+      styleProperty = this.selectedContinuousMapping.styleProperty;
     } else {
       col = this.selectedPassthroughMapping.col;
-    }
-
-    // todo test this, as soon as multiple adding continuous mapping works again
-    if (isNode) {
-      for (const nodeAspect of this.selectedNetwork.aspectKeyValuesNodes) {
-        if (nodeAspect.name === col) {
-          if (isDiscrete) {
-            nodeAspect.mapPointerD = [];
-          } else if (isContinuous) {
-            const mapIndex = this.selectedNetwork.mappings.nodesContinuous.indexOf(this.selectedContinuousMapping);
-            nodeAspect.mapPointerC = nodeAspect.mapPointerC.filter(a => a !== 'nc' + mapIndex);
-          } else {
-            const mapIndex = this.selectedNetwork.mappings.nodesPassthrough.indexOf(this.selectedPassthroughMapping);
-            nodeAspect.mapPointerP = nodeAspect.mapPointerP.filter(a => a !== 'np' + mapIndex);
-          }
-        }
-      }
-    } else {
-      for (const edgeAspect of this.selectedNetwork.aspectKeyValuesEdges) {
-        if (edgeAspect.name === col) {
-          if (isDiscrete) {
-            edgeAspect.mapPointerD = [];
-          } else if (isContinuous) {
-            const mapIndex = this.selectedNetwork.mappings.edgesContinuous.indexOf(this.selectedContinuousMapping);
-            edgeAspect.mapPointerC = edgeAspect.mapPointerC.filter(a => a !== 'ec' + mapIndex);
-          } else {
-            const mapIndex = this.selectedNetwork.mappings.edgesPassthrough.indexOf(this.selectedPassthroughMapping);
-            edgeAspect.mapPointerP = edgeAspect.mapPointerP.filter(a => a !== 'ep' + mapIndex);
-          }
-        }
-      }
+      styleProperty = this.selectedPassthroughMapping.styleProperty;
     }
 
     for (const fd of this.selectedNetwork.cx) {
@@ -431,7 +401,10 @@ export class DataService {
 
               const keyCol = this.utilityService.utilExtractColByMappingString(cvp.mappings[key].definition);
               if (keyCol === col) {
-                delete cvp.mappings[key];
+
+                if ((!isDiscrete && styleProperty === key) || isDiscrete) {
+                  delete cvp.mappings[key];
+                }
               }
             }
 
@@ -440,7 +413,10 @@ export class DataService {
 
               const keyCol = this.utilityService.utilExtractColByMappingString(cvp.mappings[key].definition);
               if (keyCol === col) {
-                delete cvp.mappings[key];
+
+                if ((!isDiscrete && styleProperty === key) || isDiscrete) {
+                  delete cvp.mappings[key];
+                }
               }
             }
           }
