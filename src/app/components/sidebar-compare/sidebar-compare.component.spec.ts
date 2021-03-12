@@ -1,6 +1,10 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {SidebarCompareComponent} from './sidebar-compare.component';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {createTranslateLoader} from '../../app.module';
+import {HttpClient} from '@angular/common/http';
 
 describe('SidebarCompareComponent', () => {
   let component: SidebarCompareComponent;
@@ -8,7 +12,18 @@ describe('SidebarCompareComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SidebarCompareComponent]
+      declarations: [SidebarCompareComponent],
+      imports: [
+        HttpClientTestingModule,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useFactory: (createTranslateLoader),
+            deps: [HttpClient]
+          }
+        })
+      ],
+      providers: []
     })
       .compileComponents();
   }));

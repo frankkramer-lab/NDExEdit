@@ -713,7 +713,6 @@ export class DataService {
    * @private
    */
   private triggerNetworkCoreBuild(): void {
-    console.log('emitting');
     this.networkChangedEmitter.emit(this.selectedNetwork);
   }
 

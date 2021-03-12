@@ -15,7 +15,7 @@ import {NeAspect} from '../models/ne-aspect';
 import {NeChartType} from '../models/ne-chart-type';
 import {DataService} from './data.service';
 import {NeMappingPassthrough} from '../models/ne-mapping-passthrough';
-import {NeStyle} from "../models/ne-style";
+import {NeStyle} from '../models/ne-style';
 
 @Injectable({
   providedIn: 'root'

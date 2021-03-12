@@ -98,7 +98,10 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    */
   @Input() propertyToMap: NeAspect;
 
-  constructor(public dataService: DataService, public utilityService: UtilityService) {
+  constructor(
+    public dataService: DataService,
+    public utilityService: UtilityService
+  ) {
   }
 
   ngOnInit(): void {

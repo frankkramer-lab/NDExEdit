@@ -23,7 +23,7 @@ import {NeChartType} from '../../models/ne-chart-type';
 import {NeChart} from '../../models/ne-chart';
 import {NeMappingDiscrete} from '../../models/ne-mapping-discrete';
 import {NeMappingContinuous} from '../../models/ne-mapping-continuous';
-import {NeMappingPassthrough} from "../../models/ne-mapping-passthrough";
+import {NeMappingPassthrough} from '../../models/ne-mapping-passthrough';
 
 @Component({
   selector: 'app-main-mappings-new',
@@ -50,6 +50,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     public utilityService: UtilityService
   ) {
 
+    // todo this needs rework, because its not testable
     switch (this.route.snapshot.url[0].path) {
       case 'new':
         this.isEdit = false;
@@ -60,6 +61,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     }
 
     this.route.paramMap.subscribe(params => {
+      console.log(params);
       this.initData(params);
     });
 
@@ -208,11 +210,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * Distribution chart labels for continuous aspects
    */
   scatterChartLabels: Label[] = [''];
-
-  /**
-   * The new mapping's or the existing mapping's id
-   */
-  currentMappingId = '';
 
   /**
    * Newly created or existing discrete mapping to be edited

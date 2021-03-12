@@ -43,7 +43,7 @@ export interface NeNetwork {
   /**
    * Information about this network
    */
-  networkInformation?: NeNetworkInformation;
+  networkInformation: NeNetworkInformation;
 
   /**
    * List of all attributes for nodes and their associations to other objects
@@ -58,7 +58,7 @@ export interface NeNetwork {
   /**
    * List of all mappings
    */
-  mappings?: NeMappingsMap;
+  mappings: NeMappingsMap;
 
   /**
    * List of style constants, e.g. "arrow color same as edge"

@@ -27,7 +27,16 @@ class MockDataService {
         }]
     }),
     id: 99999,
-    cx: []
+    cx: [],
+    mappings: {
+      nodesDiscrete: [],
+      nodesContinuous: [],
+      nodesPassthrough: [],
+      edgesDiscrete: [],
+      edgesContinuous: [],
+      edgesPassthrough: []
+    },
+    networkInformation: {}
   };
 
   setCanvas = jasmine.createSpy('setCanvas').and.callFake((canvas) => {

@@ -285,7 +285,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    */
   toggleLabels(show: boolean): void {
     this.graphService.toggleLabels(show);
-    this.dataService.selectedNetwork.showLabels = show;
+    this.dataService.getSelectedNetwork().showLabels = show;
   }
 
   /**
@@ -368,9 +368,9 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    */
   getAvailablePropertiesByType(type: string): NeAspect[] {
     if (type === 'node') {
-      return this.dataService.selectedNetwork.aspectKeyValuesNodes;
+      return this.dataService.getSelectedNetwork().aspectKeyValuesNodes;
     }
-    return this.dataService.selectedNetwork.aspectKeyValuesEdges;
+    return this.dataService.getSelectedNetwork().aspectKeyValuesEdges;
   }
 
   /**
