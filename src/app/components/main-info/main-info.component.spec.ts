@@ -64,21 +64,21 @@ describe('MainInfoComponent', () => {
   /**
    * Test: Instance creation
    */
-  fit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
   /**
    * Test: Title
    */
-  fit('should have title', () => {
+  it('should have title', () => {
     expect(htmlMainInfoTitle.textContent).toEqual('MAIN_INFO_TITLE');
   });
 
   /**
    * Test: Mailto target
    */
-  fit('should have mailto link', () => {
+  it('should have mailto link', () => {
     expect(htmlMailto.getAttribute('href')).toEqual('mailto:florian.auer@informatik.uni-augsburg.de');
   });
 });

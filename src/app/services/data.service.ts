@@ -257,110 +257,27 @@ export class DataService {
     return 'COL=' + mapping.col + ',T=string';
   }
 
-  // /**
-  //  * After adding a discrete mapping all newly set values have to be aggregated into a nicely displayable mapping
-  //  *
-  //  * @param discreteMapping Newly created mapping
-  //  * @param mappings Existing mappings
-  //  * @param isNode True if the mapping applies to nodes, false if the mapping applies to edges
-  //  * @private
-  //  */
-  // private static updateMappings(
-  //   discreteMapping: NeMappingsDefinition[],
-  //   mappings: NeMappingsMap,
-  //   isNode: boolean
-  // ): NeGroupedMappingsDiscrete[] {
-  //
-  //   if (!mappings || discreteMapping.length === 0) {
-  //     return [];
-  //   }
-  //   let groupedMappings: NeGroupedMappingsDiscrete[];
-  //   if (isNode) {
-  //     groupedMappings = mappings.nodesDiscrete;
-  //   } else {
-  //     groupedMappings = mappings.edgesDiscrete;
-  //   }
-  //
-  //   const dmCssValues: string[] = [];
-  //   const dmSelectors: string[] = [];
-  //   for (const dm of discreteMapping) {
-  //     dmCssValues.push(dm.cssValue);
-  //     dmSelectors.push(dm.selector);
-  //   }
-  //
-  //   const styleMap: NeStyleMap = {
-  //     cssKey: discreteMapping[0].cssKey,
-  //     cssValues: dmCssValues,
-  //     selectors: dmSelectors
-  //   };
-  //
-  //   let found = false;
-  //   for (const elementMap of groupedMappings) {
-  //     if (discreteMapping[0].colHR === elementMap.classifier) {
-  //       found = true;
-  //       elementMap.th.push(discreteMapping[0].cssKey);
-  //
-  //       for (const dm of discreteMapping) {
-  //         const writeToIndex = elementMap.selectors.indexOf(dm.selector);
-  //         if (writeToIndex === -1) {
-  //           // value is not yet in list of values and needs adding => just push to last
-  //           elementMap.selectors.push(dm.selector);
-  //           elementMap.values.push(dm.isHR);
-  //         }
-  //       }
-  //
-  //       if (!elementMap.styleMap.includes(styleMap)) {
-  //         elementMap.styleMap.push(styleMap);
-  //       }
-  //     }
-  //   }
-  //
-  //   if (!found) {
-  //     const dmValues: string[] = [];
-  //     const dmTh: string[] = [];
-  //     for (const dm of discreteMapping) {
-  //       if (!dmValues.includes(dm.isHR)) {
-  //         dmValues.push(dm.isHR);
-  //       }
-  //       if (!dmTh.includes(dm.cssKey)) {
-  //         dmTh.push(dm.cssKey);
-  //       }
-  //     }
-  //     const newElementMap: NeGroupedMappingsDiscrete = {
-  //       classifier: discreteMapping[0].colHR,
-  //       values: dmValues,
-  //       styleMap: [styleMap],
-  //       th: dmTh,
-  //       selectors: dmSelectors,
-  //     };
-  //     groupedMappings.push(newElementMap);
-  //   }
-  //   return groupedMappings;
-  //
-  // }
-
-  // /**
-  //  * Adds a style object to the graph's existing style
-  //  *
-  //  * @param existingStyle the graph's current style
-  //  * @param styleObj newly created style
-  //  * @private
-  //  */
-  // private static addPropertyToStyle(existingStyle: NeStyle, styleObj: NeStyle): NeStyle {
-  //   const keys = Object.keys(styleObj.style);
-  //   for (const k of keys) {
-  //     existingStyle.style[k] = styleObj.style[k];
-  //   }
-  //   return existingStyle;
-  // }
-
   /**
    * Selecting a network
    *
    * @param networkId
    */
-  public selectNetwork(networkId: number): void {
+  selectNetwork(networkId: number): void {
     this.selectedNetwork = this.networksParsed.find(x => x.id === networkId);
+  }
+
+  /**
+   * Returns the currently selected network
+   */
+  getSelectedNetwork(): NeNetwork {
+    return this.selectedNetwork;
+  }
+
+  /**
+   * Returns the default canvas
+   */
+  getCanvas(): HTMLElement {
+    return this.canvas;
   }
 
   /**
@@ -458,8 +375,6 @@ export class DataService {
    * @param typeHint Type of newly created mapping
    */
   addMappingDiscrete(mapping: NeMappingDiscrete, typeHint: NeMappingsType): void {
-
-    console.log(mapping);
 
     if (typeHint.nc || typeHint.ec || typeHint.np || typeHint.ep) {
       console.log('Continuous or passthrough mapping cannot be added as a discrete mapping');
@@ -798,6 +713,7 @@ export class DataService {
    * @private
    */
   private triggerNetworkCoreBuild(): void {
+    console.log('emitting');
     this.networkChangedEmitter.emit(this.selectedNetwork);
   }
 

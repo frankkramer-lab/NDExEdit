@@ -600,12 +600,13 @@ export class ParseService {
    * @param network Network to be recalculated
    */
   rebuildCoreForNetwork(network: NeNetwork): Promise<NeNetwork> {
-    if (!this.dataService.canvas) {
+    if (!this.dataService.getCanvas()) {
       console.log('No canvas specified!');
       return null;
     }
     this.attributeNameMap = {};
-    return this.convertCxToJs(network.cx, this.dataService.canvas)
+
+    return this.convertCxToJs(network.cx, this.dataService.getCanvas())
       .then(core => {
         network.core = core;
         return network;

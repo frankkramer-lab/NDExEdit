@@ -88,8 +88,9 @@ export class MainGraphComponent implements AfterViewInit, OnDestroy {
    * @private
    */
   private renderGraph(): void {
-    this.graphService.render(this.dataService.selectedNetwork)
-      .then(network => console.log(network))
+
+    this.graphService.render(this.dataService.getSelectedNetwork())
+      .then(network => {}) // todo re-add console.log for debugging
       .catch(e => console.error(e));
   }
 

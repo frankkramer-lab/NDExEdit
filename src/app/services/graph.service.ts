@@ -8,7 +8,7 @@ import {NeSelection} from '../models/ne-selection';
 import {UtilityService} from './utility.service';
 import {DataService} from './data.service';
 import {ParseService} from './parse.service';
-import {NeAspect} from "../models/ne-aspect";
+import {NeAspect} from '../models/ne-aspect';
 
 @Injectable({
   providedIn: 'root'
@@ -51,7 +51,6 @@ export class GraphService {
    */
   render(network: NeNetwork): Promise<NeNetwork> {
     this.unsubscribeFromCoreEvents();
-
     return this.parseService.rebuildCoreForNetwork(network)
       .then(rendered => {
         const renderedNetwork = rendered;
