@@ -1,4 +1,5 @@
 import {NeElement} from './ne-element';
+import {NeChart} from './ne-chart';
 
 /**
  * Represents a collection of useful associations to an attribute
@@ -14,11 +15,6 @@ export interface NeAspect {
    * The attribute's possible values
    */
   values: string[];
-
-  /**
-   * List of element containing this attribute
-   */
-  appliedTo?: NeElement[];
 
   /**
    * Type of attribute
@@ -43,12 +39,12 @@ export interface NeAspect {
   /**
    * Distribution chart for discrete properties
    */
-  chartDiscreteDistribution?: any;
+  chartDiscreteDistribution?: NeChart;
 
   /**
    * Distribution chart for continuous properties
    */
-  chartContinuousDistribution?: any;
+  chartContinuousDistribution?: NeChart;
 
   /**
    * Minimum for numeric values

@@ -12,6 +12,11 @@ import {NeNetwork} from '../../models/ne-network';
 import {By} from '@angular/platform-browser';
 import * as cytoscape from 'cytoscape';
 
+/**
+ * Mocks {@link DataService}.
+ * Provides a simple network.
+ * Overrides canvas and network management.
+ */
 class MockDataService {
   canvas: HTMLElement;
 
@@ -53,6 +58,10 @@ class MockDataService {
 
 }
 
+/**
+ * Mocks {@link GraphService}.
+ * Overrides core event subscriptions and rendering.
+ */
 class MockGraphService {
   unsubscribeFromCoreEvents = jasmine.createSpy('unsubscribeFromCoreEvents').and.callFake(() => {
   });
@@ -65,13 +74,33 @@ class MockGraphService {
   });
 }
 
+/**
+ * Unit test: MainGraphComponent
+ */
 describe('MainGraphComponent', () => {
+  /**
+   * Component
+   */
   let component: MainGraphComponent;
+  /**
+   * Fixture
+   */
   let fixture: ComponentFixture<MainGraphComponent>;
+  /**
+   * DOM: Container for graph
+   */
   let cyContainer: HTMLElement;
+  /**
+   * Service: Data
+   */
   let dataService: DataService;
+  /**
+   * Service: Graph
+   */
   let graphService: GraphService;
-
+  /**
+   * Setup
+   */
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [MainGraphComponent],
@@ -99,6 +128,9 @@ describe('MainGraphComponent', () => {
       .compileComponents();
   }));
 
+  /**
+   * Init
+   */
   beforeEach(() => {
     fixture = TestBed.createComponent(MainGraphComponent);
     component = fixture.componentInstance;

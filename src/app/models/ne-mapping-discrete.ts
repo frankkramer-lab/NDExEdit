@@ -10,11 +10,11 @@ export interface NeMappingDiscrete {
    * Style property which is applied, e.g. 'NODE_FILL_COLOR'
    * These have to be interpretable by CX, because we render by converting CX to Cytoscape.js
    */
-  styleProperty?: string;
+  styleProperty: string;
   /**
    * Type of data which is mapped
    */
-  type?: string;
+  type: string;
   /**
    * List of keys defining a discrete threshold, e.g. "protein" for property "type" of a node
    */

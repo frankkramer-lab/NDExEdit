@@ -78,7 +78,7 @@ describe('MainMappingsNewFormComponent', () => {
       nd: true, nc: false, np: false, ed: false, ec: false, ep: false
     };
     component.mappingDiscrete = {
-      col: 'col', keys: ['key1', 'key2'], values: ['val1', 'val2']
+      col: 'col', styleProperty: 'styleTest', type: 'string', keys: ['key1', 'key2'], values: ['val1', 'val2']
     };
     component.propertyToMap = {
       name: 'property', values: ['1', '2', '3']

@@ -9,7 +9,7 @@ import {SidebarCompareComponent} from './components/sidebar-compare/sidebar-comp
 import {MainMappingsComponent} from './components/main-mappings/main-mappings.component';
 import {MainMappingsNewComponent} from './components/main-mappings-new/main-mappings-new.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: '',
     redirectTo: '/info(sidebar:manage)',
@@ -22,72 +22,30 @@ const routes: Routes = [
   {
     path: 'graph/:id',
     component: MainGraphComponent,
-    children: [
-      {
-        path: '',
-        component: MainInfoComponent,
-      },
-    ]
   },
   {
     path: 'stats/:id',
     component: MainStatsComponent,
-    children: [
-      {
-        path: '',
-        component: MainInfoComponent
-      }
-    ]
   },
   {
     path: 'mappings/:mapHint/:col',
     component: MainMappingsComponent,
-    children: [
-      {
-        path: '',
-        component: MainInfoComponent
-      }
-    ]
   },
   {
     path: 'mappings/:mapId',
     component: MainMappingsComponent,
-    children: [
-      {
-        path: '',
-        component: MainInfoComponent
-      }
-    ]
   },
   {
     path: 'new/:map/:propertyId',
     component: MainMappingsNewComponent,
-    children: [
-      {
-        path: '',
-        component: MainInfoComponent
-      }
-    ]
   },
   {
     path: 'edit/:map/:propertyId',
     component: MainMappingsNewComponent,
-    children: [
-      {
-        path: '',
-        component: MainInfoComponent
-      }
-    ]
   },
   {
     path: 'edit/:map',
     component: MainMappingsNewComponent,
-    children: [
-      {
-        path: '',
-        component: MainInfoComponent
-      }
-    ]
   },
   {
     path: 'manage',
@@ -97,24 +55,12 @@ const routes: Routes = [
   {
     path: 'edit/:id',
     component: SidebarEditComponent,
-    outlet: 'sidebar',
-    children: [
-      {
-        path: '',
-        component: SidebarManageComponent
-      }
-    ]
+    outlet: 'sidebar'
   },
   {
     path: 'compare/:id',
     component: SidebarCompareComponent,
-    outlet: 'sidebar',
-    children: [
-      {
-        path: '',
-        component: SidebarManageComponent
-      }
-    ]
+    outlet: 'sidebar'
   }
 ];
 
