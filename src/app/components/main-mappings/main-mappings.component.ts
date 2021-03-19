@@ -222,9 +222,9 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
     let baseList: NeAspect[];
 
     if (typeHint.nd || typeHint.nc || typeHint.np) {
-      baseList = this.dataService.selectedNetwork.aspectKeyValuesNodes;
+      baseList = this.dataService.getSelectedNetwork().aspectKeyValuesNodes;
     } else if (typeHint.ed || typeHint.ec || typeHint.ep) {
-      baseList = this.dataService.selectedNetwork.aspectKeyValuesEdges;
+      baseList = this.dataService.getSelectedNetwork().aspectKeyValuesEdges;
     }
 
     if (typeHint.nc || typeHint.ec) {
@@ -246,7 +246,7 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
     NeMappingDiscrete[] |
     NeMappingPassthrough[] {
     const typeHint: NeMappingsType = this.utilityService.utilGetTypeHintByString(s);
-    const availableMappings = this.dataService.selectedNetwork.mappings;
+    const availableMappings = this.dataService.getSelectedNetwork().mappings;
 
     if (typeHint.nd) {
       return availableMappings.nodesDiscrete;

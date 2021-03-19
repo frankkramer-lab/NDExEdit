@@ -14,7 +14,7 @@
   <!-- PASSTHROUGH -->
   <div
     *ngIf="dataService.selectedPassthroughMapping">
-    <table class="table">
+    <table id="tableDetailsPassthrough" class="table">
       <thead>
       <tr>
         <th>{{'MAIN_MAPPINGS_TH_COL' | translate}}</th>
@@ -45,7 +45,7 @@
 
     <div class="table-responsive">
 
-      <table class="table">
+      <table id="tableDetailsDiscrete" class="table">
         <thead>
         <tr>
           <th>{{dataService.selectedDiscreteMappingProperty}}</th>
@@ -104,7 +104,7 @@
   <div
     *ngIf="dataService.selectedContinuousMapping">
 
-    <table class="table">
+    <table id="tableDetailsContinuous" class="table">
 
       <thead>
       <tr>

@@ -20,7 +20,6 @@ export class MainMappingsAvailableAttributesComponent implements OnInit {
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faSearch = faSearch;
-
   /**
    * Icon: faPlus
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos

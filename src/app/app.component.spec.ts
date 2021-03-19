@@ -13,13 +13,23 @@ import {FontAwesomeTestingModule} from '@fortawesome/angular-fontawesome/testing
 import {Router} from '@angular/router';
 import {routes} from './app-routing.module';
 import {Location} from '@angular/common';
+import {NeNetwork} from './models/ne-network';
 
 class MockDataService {
-  selectNetwork = jasmine.createSpy('selectNetwork').and.callFake(() => {
-  });
+
+  selectNetwork = jasmine.createSpy('selectNetwork').and.callThrough();
+
+  selectMapping = jasmine.createSpy('selectMapping').and.callThrough();
+
+  resetAnyMappingSelection = jasmine.createSpy('resetAnyMappingSelection').and.callFake(() => {});
+
+  resetDiscreteMappingPropertySelection = jasmine.createSpy('resetDiscreteMappingPropertySelection').and.callFake(() => {});
 }
 
 class MockUtilityService {
+  utilGetTypeHintByString = jasmine.createSpy('utilGetTypeHintByString').and.returnValue({
+    nd: true, nc: false, np: false, ed: false, ec: false, ep: false
+  });
 }
 
 class MockLayoutService {
@@ -73,7 +83,7 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('NDExEdit');
   });
 
-  fit('routing by default to info', fakeAsync(() => {
+  it('routing by default to info', fakeAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const location: Location = fixture.debugElement.injector.get(Location) as any;
     const router: Router = fixture.debugElement.injector.get(Router) as any;
@@ -84,7 +94,7 @@ describe('AppComponent', () => {
     expect(location.path()).toBe('/info(sidebar:manage)');
   }));
 
-  fit('routing explicitly to info', fakeAsync(() => {
+  it('routing explicitly to info', fakeAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const location: Location = fixture.debugElement.injector.get(Location) as any;
     const router: Router = fixture.debugElement.injector.get(Router) as any;
@@ -95,7 +105,7 @@ describe('AppComponent', () => {
     expect(location.path()).toBe('/info(sidebar:manage)');
   }));
 
-  fit('routing to stats', fakeAsync(() => {
+  it('routing to stats', fakeAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const location: Location = fixture.debugElement.injector.get(Location) as any;
     const router: Router = fixture.debugElement.injector.get(Router) as any;
@@ -107,7 +117,7 @@ describe('AppComponent', () => {
 
   }));
 
-  fit('routing to graph', fakeAsync(() => {
+  it('routing to graph', fakeAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const location: Location = fixture.debugElement.injector.get(Location) as any;
     const router: Router = fixture.debugElement.injector.get(Router) as any;
@@ -116,6 +126,51 @@ describe('AppComponent', () => {
     router.navigate(['', {outlets: {primary: ['graph', 0], sidebar: ['edit', 0]}}]);
     tick();
     expect(location.path()).toBe('/graph/0(sidebar:edit/0)');
+  }));
+
+  it('routing to mappings', fakeAsync(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const location: Location = fixture.debugElement.injector.get(Location) as any;
+    const router: Router = fixture.debugElement.injector.get(Router) as any;
+
+    router.initialNavigation();
+
+    router.navigate(['', {outlets: {primary: ['mappings', -1]}}]);
+    tick();
+    expect(location.path()).toBe('/mappings/-1');
+
+    router.navigate(['', {outlets: {primary: ['mappings', 'nd', 'colNd1']}}]);
+    tick();
+    expect(location.path()).toBe('/mappings/nd/colNd1');
+
+    router.navigate(['', {outlets: {primary: ['mappings', 'nc0']}}]);
+    tick();
+    expect(location.path()).toBe('/mappings/nc0');
+
+  }));
+
+  xit('routing to new-mappings', fakeAsync(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const location: Location = fixture.debugElement.injector.get(Location) as any;
+    const router: Router = fixture.debugElement.injector.get(Router) as any;
+
+    router.initialNavigation();
+
+    router.navigate(['', { outlets: {primary: ['new', 'nd', 0 ]} }]);
+    tick();
+    expect(location.path()).toBe('/new/nd/0');
+  }));
+
+  xit('routing to edit-mappings', fakeAsync(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const location: Location = fixture.debugElement.injector.get(Location) as any;
+    const router: Router = fixture.debugElement.injector.get(Router) as any;
+
+    router.initialNavigation();
+
+    router.navigate(['', { outlets: {primary: ['edit', 'nd0']} }]);
+    tick();
+    expect(location.path()).toBe('/edit/nd0');
   }));
 
 });

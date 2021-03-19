@@ -1,4 +1,4 @@
-import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {MainMappingsComponent} from './main-mappings.component';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -11,6 +11,17 @@ import {UtilityService} from '../../services/utility.service';
 import {NeNetwork} from '../../models/ne-network';
 import * as cytoscape from 'cytoscape';
 import {Router} from '@angular/router';
+import {Location} from '@angular/common';
+import {routes} from '../../app-routing.module';
+import {By} from '@angular/platform-browser';
+import {NeMappingDiscrete} from '../../models/ne-mapping-discrete';
+import {NeMappingContinuous} from '../../models/ne-mapping-continuous';
+import {NeMappingPassthrough} from '../../models/ne-mapping-passthrough';
+import {FontAwesomeTestingModule} from '@fortawesome/angular-fontawesome/testing';
+import {MainMappingsAvailableAttributesComponent} from '../parts/main-mappings-available-attributes/main-mappings-available-attributes.component';
+import {IsByColPipe} from '../../pipes/isByCol.pipe';
+import {StylePropertiesByCol} from '../../pipes/stylePropertiesByCol.pipe';
+import {StyleValueByColAndKeyPipe} from '../../pipes/styleValueByColAndKey.pipe';
 
 /**
  * Mocks {@link DataService}.
@@ -445,11 +456,23 @@ class MockDataService {
         coverage: '100'
       }
     ],
-    networkInformation: {}
+    networkInformation: {
+      name: 'Test'
+    }
   };
 
-  selectMapping = jasmine.createSpy('selectMapping', (mapHint, col, mapId) => {
+  selectedDiscreteMappingProperty: string;
+
+  selectedDiscreteMapping: NeMappingDiscrete[];
+
+  selectedContinuousMapping: NeMappingContinuous;
+
+  selectedPassthroughMapping: NeMappingPassthrough;
+
+  selectMapping = jasmine.createSpy('selectMapping').and.callFake(() => {
   });
+
+  getSelectedNetwork = jasmine.createSpy('getSelectedNetwork').and.returnValue(this.selectedNetwork);
 
 }
 
@@ -457,6 +480,9 @@ class MockDataService {
  * Mocks {@link UtilityService}.
  */
 class MockUtilityService {
+  utilGetTypeHintByString = jasmine.createSpy('utilGetTypeHintByString').and.returnValue({
+    nd: true, nc: false, np: false, ed: false, ec: false, ep: false
+  });
 }
 
 /**
@@ -479,16 +505,43 @@ describe('MainMappingsComponent', () => {
    * Service: Utility
    */
   let utilityService: MockUtilityService;
+  /**
+   * Router
+   */
+  let router: Router;
+  /**
+   * Location
+   */
+  let location: Location;
+  /**
+   * DOM: details discrete
+   */
+  let domDiscrete: HTMLElement;
+  /**
+   * DOM: details continuous
+   */
+  let domContinuous: HTMLElement;
+  /**
+   * DOM: details passthrough
+   */
+  let domPassthrough: HTMLElement;
 
   /**
    * Setup
    */
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MainMappingsComponent],
+      declarations: [
+        MainMappingsComponent,
+        MainMappingsAvailableAttributesComponent,
+        IsByColPipe,
+        StylePropertiesByCol,
+        StyleValueByColAndKeyPipe
+      ],
       imports: [
-        RouterTestingModule,
+        RouterTestingModule.withRoutes(routes),
         HttpClientTestingModule,
+        FontAwesomeTestingModule,
         TranslateModule.forRoot({
           loader: {
             provide: TranslateLoader,
@@ -528,13 +581,58 @@ describe('MainMappingsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should redirect to home', fakeAsync(() => {
+  fit('should display details ND', () => {
+    utilSelectMapping(1); // test setup 1
+    fixture.detectChanges();
+    domDiscrete = fixture.debugElement.query(By.css('#tableDetailsDiscrete')).nativeElement;
 
-  }));
+    expect(dataService.selectedDiscreteMapping.length).toBe(2);
 
-  it('should display details ND', () => {
+    expect(domDiscrete).toBeDefined();
+    expect(domDiscrete.childElementCount).toBe(2);
+    expect(domDiscrete.lastElementChild.childElementCount).toBe(2);
 
+
+    utilSelectMapping(2); // test setup 2
+    fixture.detectChanges();
+    domDiscrete = fixture.debugElement.query(By.css('#tableDetailsDiscrete')).nativeElement;
+
+    expect(dataService.selectedDiscreteMapping.length).toBe(1);
+
+    expect(domDiscrete).toBeDefined();
+    expect(domDiscrete.childElementCount).toBe(2);
+    expect(domDiscrete.lastElementChild.childElementCount).toBe(1);
   });
+
+  function utilSelectMapping(num: number): void {
+    switch (num) {
+      case 1:
+        dataService.selectedDiscreteMapping = dataService.getSelectedNetwork().mappings.nodesDiscrete.filter(a => a.col === 'colNd1');
+        dataService.selectedDiscreteMappingProperty = 'colNd1';
+        dataService.selectedPassthroughMapping = null;
+        dataService.selectedContinuousMapping = null;
+        break;
+      case 2:
+        dataService.selectedDiscreteMapping = dataService.getSelectedNetwork().mappings.nodesDiscrete.filter(a => a.col === 'colNd2');
+        dataService.selectedDiscreteMappingProperty = 'colNd2';
+        dataService.selectedPassthroughMapping = null;
+        dataService.selectedContinuousMapping = null;
+        break;
+      // todo passthrough
+      // todo continuous
+    }
+
+    // switch (s) {
+    //   case 'd':
+    //     dataService.selectedDiscreteMapping = Array(dataService.selectedNetwork.mappings.nodesDiscrete[0]);
+    //     break;
+    //   case 'c':
+    //     dataService.selectedContinuousMapping = dataService.selectedNetwork.mappings.nodesContinuous[0];
+    //     break;
+    //   case 'p':
+    //     dataService.selectedPassthroughMapping = dataService.selectedNetwork.mappings.nodesPassthrough[0];
+    // }
+  }
 
   // todo display details discrete => same col, different property => renders same table (routing)
   // todo display details continuous => same col, different property => renders different table
