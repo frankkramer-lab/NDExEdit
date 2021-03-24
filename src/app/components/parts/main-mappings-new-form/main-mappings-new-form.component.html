@@ -1,5 +1,6 @@
 <!-- continuous form -->
 <form *ngIf="(typeHint.ec || typeHint.nc)">
+
   <div class="form-group row">
     <label class="col-4 col-form-label"
            for="{{typeHint.ec ? 'ec' : 'nc'}}CssProperty">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
@@ -44,7 +45,7 @@
              id="{{typeHint.ec ? 'ec' : 'nc'}}Threshold{{index}}"
              name="{{typeHint.ec ? 'ec' : 'nc'}}Threshold{{index}}"
              type="number"
-             value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
+             value="">
     </div>
     <div class="col-7">
       <input *ngIf="!needsColorValidation(styleProperty)" [(ngModel)]="threshold.propertyValue"

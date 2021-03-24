@@ -1,4 +1,4 @@
-import {Injectable, EventEmitter} from '@angular/core';
+import {Injectable} from '@angular/core';
 import * as cytoscape from 'cytoscape';
 import {NeNetworkInformation} from '../models/ne-network-information';
 import {NeNetwork} from '../models/ne-network';
@@ -102,11 +102,15 @@ export class ParseService {
       values: null
     };
 
-    const commaSplit = obj.definition.split(',');
+    const cleanDefinition = obj.definition.replace(/,,/g, '%');
+
+    const commaSplit = cleanDefinition.split(',');
     const tmpV = [];
     const tmpK = [];
 
-    for (const cs of commaSplit) {
+    for (let cs of commaSplit) {
+
+      cs = cs.replace(/%/g, ',');
 
       const equalSplit = cs.split('=');
       switch (equalSplit[0]) {

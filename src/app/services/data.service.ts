@@ -580,7 +580,9 @@ export class DataService {
    */
   editMappingContinuous(typeHint: NeMappingsType, thresholds: NeThresholdMap[]): void {
 
-    if (!typeHint.ec || !typeHint.nc || !this.selectedContinuousMapping) {
+    if (!(typeHint.ec || typeHint.nc) || !this.selectedContinuousMapping) {
+      console.log(this.selectedContinuousMapping);
+      console.log(typeHint);
       console.log('Editing continuous mapping not possible!');
       return;
     }
@@ -591,6 +593,7 @@ export class DataService {
       .filter(a => a.value !== null)
       .sort((a, b) => a.value > b.value ? 1 : -1);
 
+    console.log(thresholds);
     const mapThresholds = thresholds.map(a => a.value);
     const equals = thresholds.map(a => a.propertyValue);
     const lowers: string[] = thresholds.map(a => a.propertyValue);
@@ -736,6 +739,7 @@ export class DataService {
   resetAnyMappingSelection(): void {
     this.selectedDiscreteMapping = null;
     this.selectedContinuousMapping = null;
+    this.selectedPassthroughMapping = null;
     this.selectedTypeHint = null;
   }
 

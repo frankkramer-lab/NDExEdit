@@ -180,12 +180,12 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
     if (this.mappingContinuous) {
       this.thresholds = [
         {
-          value: this.propertyToMap.min || null,
+          value: String(this.propertyToMap.min) || null,
           propertyValue: null,
           isEditable: false
         },
         {
-          value: this.propertyToMap.max || null,
+          value: String(this.propertyToMap.max) || null,
           propertyValue: null,
           isEditable: false
         },
@@ -203,6 +203,9 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * Submits a new continuous mapping
    */
   submitNewContinuousMapping(): void {
+    this.thresholds = this.thresholds.filter(a => this.utilityService.utilIsDefined(a.propertyValue)
+      && this.utilityService.utilIsDefined(a.value));
+
     this.thresholds = this.thresholds.sort((a, b) => Number(a.value) > Number(b.value) ? 1 : -1);
 
     this.mappingContinuous.thresholds = this.thresholds.map(a => String(a.value));
@@ -252,8 +255,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
     if (this.typeHint.nd || this.typeHint.ed) {
       this.dataService.editMappingDiscrete(this.typeHint, this.mappingDiscrete, this.mapId);
     } else {
-      // todo add thresholds to mapping
-
       this.dataService.editMappingContinuous(this.typeHint, this.thresholds);
     }
   }
@@ -306,18 +307,15 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
     this.thresholds = [
       {
         propertyValue: null,
-        value: Number(this.propertyToMap.min) || null,
+        value: String(this.propertyToMap.min) || null,
         isEditable: false
       },
       {
         propertyValue: null,
-        value: Number(this.propertyToMap.max) || null,
+        value: String(this.propertyToMap.max) || null,
         isEditable: false
       },
     ];
-    console.log(this.propertyToMap);
-    this.mappingContinuous.thresholds = this.thresholds.map(a => a.value);
-    this.mappingContinuous.equals = this.thresholds.map(a => a.propertyValue);
   }
 
   /**
@@ -330,25 +328,27 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
     this.thresholds = [
       // default lower
       {
-        value: null,
+        value: this.mappingContinuous.thresholds[0] as string,
         propertyValue: this.mappingContinuous.lowers[0] as string,
         isEditable: false
       },
       // default greater
       {
-        value: null,
+        value: this.mappingContinuous.thresholds[this.mappingContinuous.thresholds.length - 1] as string,
         propertyValue: this.mappingContinuous
           .greaters[this.mappingContinuous.greaters.length - 1] as string,
         isEditable: false
       }];
 
-    for (let i = 0; i < this.mappingContinuous.thresholds.length; i++) {
-      const threshold: NeThresholdMap = {
-        value: Number(this.mappingContinuous.thresholds[i]),
-        propertyValue: this.mappingContinuous.equals[i] as string,
-        isEditable: true
-      };
-      this.thresholds.push(threshold);
+    if (this.mappingContinuous.thresholds.length > 2) {
+      for (let i = 1; i < this.mappingContinuous.thresholds.length - 1; i++) {
+        const threshold: NeThresholdMap = {
+          value: String(this.mappingContinuous.thresholds[i]),
+          propertyValue: this.mappingContinuous.equals[i] as string,
+          isEditable: true
+        };
+        this.thresholds.push(threshold);
+      }
     }
   }
 

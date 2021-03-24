@@ -4,9 +4,6 @@ import {NeAspect} from '../models/ne-aspect';
 import {NeChart} from '../models/ne-chart';
 import {NeFrequencyCounter} from '../models/ne-frequency-counter';
 import {NeStyle} from '../models/ne-style';
-import {NeMappingContinuous} from '../models/ne-mapping-continuous';
-import {NeMappingDiscrete} from '../models/ne-mapping-discrete';
-import {NeMappingPassthrough} from '../models/ne-mapping-passthrough';
 
 @Injectable({
   providedIn: 'root'
@@ -395,6 +392,17 @@ export class UtilityService {
    */
   utilIsNumber(input: any): boolean {
     return typeof input === 'number';
+  }
+
+  /**
+   * Returns true, if the value is not falsy, 0 is not evaluated to be falsy.
+   * @param input element to be evaluated
+   */
+  utilIsDefined(input: any): boolean {
+    if (typeof input === 'string') {
+      return input.length > 0;
+    }
+    return input !== null && input !== undefined;
   }
 
 }
