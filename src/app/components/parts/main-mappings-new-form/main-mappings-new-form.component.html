@@ -11,6 +11,7 @@
     </div>
     <div class="col-2 form-check">
       <input (click)="toggleNeedsColorValidation(!needsColorValidation(styleProperty))"
+             [disabled]="isEdit"
              [checked]="needsColorValidation(styleProperty)" class="form-check-input"
              id="{{typeHint.ec ? 'ec' : 'nc'}}ColorValidation"
              type="checkbox">
@@ -154,6 +155,7 @@
 
     <div class="col-2 form-check">
       <input (click)="toggleNeedsColorValidation(!needsColorValidation(styleProperty))"
+             [disabled]="isEdit"
              [checked]="needsColorValidation(styleProperty)" class="form-check-input"
              id="{{mapType}}ColorValidation"
              type="checkbox">

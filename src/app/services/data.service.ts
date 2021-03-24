@@ -563,7 +563,7 @@ export class DataService {
   }
 
   /**
-   * Edits an existing mapping, usable for both discrete and contiuous mappings
+   * Edits an existing discrete mapping
    */
   editMappingDiscrete(typeHint: NeMappingsType, mapping: NeMappingDiscrete, discretePropertyPointer: number = null): void {
 
@@ -577,13 +577,23 @@ export class DataService {
 
   }
 
+  /**
+   * Edits an existing continuous mapping
+   * @param typeHint indicates type of mapping
+   * @param thresholds list of newly defined thresholds
+   */
   editMappingContinuous(typeHint: NeMappingsType, thresholds: NeThresholdMap[]): void {
-    const typeLiteral = this.utilityService.utilGetTypeLiteralByTypeHint(typeHint);
+
+    if (!typeHint.ec || !typeHint.nc || !this.selectedContinuousMapping) {
+      console.log('Editing continuous mapping not possible!');
+      return;
+    }
+
     const defLower = thresholds[0];
     const defGreater = thresholds[1];
-    thresholds = thresholds.filter(a => a.value !== null).sort((a, b) => a.value > b.value ? 1 : -1);
-
-    console.log(thresholds);
+    thresholds = thresholds
+      .filter(a => a.value !== null)
+      .sort((a, b) => a.value > b.value ? 1 : -1);
 
     const mapThresholds = thresholds.map(a => a.value);
     const equals = thresholds.map(a => a.propertyValue);
@@ -598,7 +608,6 @@ export class DataService {
     newMapping.greaters = greaters;
     newMapping.thresholds = mapThresholds;
 
-    console.log(newMapping);
     this.removeMapping();
     this.addMappingContinuous(newMapping, newMapping.styleProperty, typeHint);
   }

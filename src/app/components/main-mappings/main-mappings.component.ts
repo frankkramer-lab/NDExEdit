@@ -125,7 +125,6 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
         // continuous or passthrough mapping
         this.mapId = mapId;
         this.dataService.selectMapping(null, null, mapId);
-        console.log(this.dataService.selectedContinuousMapping);
       } else {
         // general overview (mapId === '-1')
         this.dataService.resetAnyMappingSelection();
