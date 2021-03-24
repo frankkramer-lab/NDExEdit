@@ -8,6 +8,7 @@ import {MainStatsComponent} from './components/main-stats/main-stats.component';
 import {SidebarCompareComponent} from './components/sidebar-compare/sidebar-compare.component';
 import {MainMappingsComponent} from './components/main-mappings/main-mappings.component';
 import {MainMappingsNewComponent} from './components/main-mappings-new/main-mappings-new.component';
+import {SidebarImageComponent} from './components/sidebar-image/sidebar-image.component';
 
 export const routes: Routes = [
   {
@@ -60,6 +61,11 @@ export const routes: Routes = [
   {
     path: 'compare/:id',
     component: SidebarCompareComponent,
+    outlet: 'sidebar'
+  },
+  {
+    path: 'image/:id',
+    component: SidebarImageComponent,
     outlet: 'sidebar'
   },
   {

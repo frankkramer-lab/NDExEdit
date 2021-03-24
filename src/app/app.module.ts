@@ -31,6 +31,7 @@ import {StylePropertiesByCol} from './pipes/stylePropertiesByCol.pipe';
 import {StyleValueByColAndKeyPipe} from './pipes/styleValueByColAndKey.pipe';
 import {AttributesByElementPipe} from './pipes/attributesByElement.pipe';
 import {LayoutService} from './services/layout.service';
+import { SidebarImageComponent } from './components/sidebar-image/sidebar-image.component';
 
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -55,7 +56,8 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     IsByColPipe,
     StylePropertiesByCol,
     StyleValueByColAndKeyPipe,
-    AttributesByElementPipe
+    AttributesByElementPipe,
+    SidebarImageComponent
   ],
   imports: [
     BrowserModule,

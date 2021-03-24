@@ -52,6 +52,7 @@
   "SIDEBAR_MANAGE_TT_EDIT": "Dieses Netzwerk rendern und bearbeiten",
   "SIDEBAR_MANAGE_TT_DOWNLOAD": "Als .cx Datei herunterladen",
   "SIDEBAR_MANAGE_HELP": "Brauchst du Hilfe?",
+  "SIDEBAR_MANAGE_TT_IMAGE": "Optionen fürs Herunterladen als Bild",
   "SIDEBAR_MANAGE_TT_HELP": "Tipps und erste Schritte",
   "SIDEBAR_MANAGE_LOCAL_FILE_LABEL": "Lokale Dateien",
   "SIDEBAR_MANAGE_LOCAL_FILE_BTN": "Hochladen",
@@ -183,6 +184,7 @@
   "SIDEBAR_COMPARE_ABOUT_3_1": "Verbesserungsvorschläge und Nachfragen sind bei",
   "SIDEBAR_COMPARE_ABOUT_3_2": "gut aufgehoben",
   "SIDEBAR_COMPARE_TEASER": "Vergleich zweier Netzwerke kommt demnächst!",
+  "SIDEBAR_IMAGE_TITLE": "Als Bild speichern",
   "CHART_HISTO_INCREASE": "Bin hinzufügen",
   "CHART_HISTO_DECREASE": "Bin entfernen",
   "CHART_HISTO_RESET": "Bins zurücksetzen auf "

@@ -51,6 +51,7 @@
   "SIDEBAR_MANAGE_TT_INFO": "Info about this network",
   "SIDEBAR_MANAGE_TT_EDIT": "Render and edit this network",
   "SIDEBAR_MANAGE_TT_DOWNLOAD": "Download as .cx file",
+  "SIDEBAR_MANAGE_TT_IMAGE": "Specify options to download as image",
   "SIDEBAR_MANAGE_HELP": "Are you lost?",
   "SIDEBAR_MANAGE_TT_HELP": "Tips and first steps",
   "SIDEBAR_MANAGE_LOCAL_FILE_LABEL": "Browse local files",
@@ -183,6 +184,7 @@
   "SIDEBAR_COMPARE_ABOUT_3_1": "Please contact",
   "SIDEBAR_COMPARE_ABOUT_3_2": "for feature requests and inquiries",
   "SIDEBAR_COMPARE_TEASER": "Comparison tool coming soon!",
+  "SIDEBAR_IMAGE_TITLE": "Save as image",
   "CHART_HISTO_INCREASE": "Add bin",
   "CHART_HISTO_DECREASE": "Remove bin",
   "CHART_HISTO_RESET": "Reset bins to "

@@ -19,13 +19,17 @@
           <fa-icon [icon]="faPaintBrush"></fa-icon>
         </a>
 
-        <!-- todo rework to download cx -->
         <a (click)="downloadNetwork(network.id)" class="btn btn-sm btn-outline-secondary mr-1" data-toggle="tooltip"
            ngbTooltip="{{'SIDEBAR_MANAGE_TT_DOWNLOAD'|translate}}" placement="left"
            role="button">
           <fa-icon [icon]="faFileDownload"></fa-icon>
         </a>
-        <!-- needs to be disabled if this network does not have a uuid, bc dummy or local file -->
+        <a [routerLink]="['', { outlets: {primary: ['graph', network.id], sidebar: ['image', network.id]} }]"
+           class="btn btn-sm btn-outline-secondary mr-1" data-toggle="tooltip"
+           ngbTooltip="{{'SIDEBAR_MANAGE_TT_IMAGE'|translate}}" placement="left"
+           role="button">
+          <fa-icon [icon]="faImage"></fa-icon>
+        </a>
         <a [hidden]="!network.networkInformation.uuid" (click)="copyUuidToClipboard(network.id)" class="btn btn-sm btn-outline-secondary" data-toggle="tooltip"
            ngbTooltip="{{ copyToClipboardTooltip | translate }}" placement="left"
            role="button">
