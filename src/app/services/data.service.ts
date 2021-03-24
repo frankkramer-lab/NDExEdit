@@ -7,6 +7,7 @@ import {NeMappingsType} from '../models/ne-mappings-type';
 import {NeAspect} from '../models/ne-aspect';
 import {NeMappingPassthrough} from '../models/ne-mapping-passthrough';
 import {LayoutService} from './layout.service';
+import {NeThresholdMap} from '../models/ne-threshold-map';
 
 @Injectable({
   providedIn: 'root'
@@ -240,9 +241,9 @@ export class DataService {
     let definition = 'COL=' + mapping.col + ',T=' + mapping.type;
 
     for (let i = 0; i < mapping.thresholds.length; i++) {
-      definition += ',L=' + i + '=' + mapping.equals[i];
+      definition += ',L=' + i + '=' + mapping.lowers[i];
       definition += ',E=' + i + '=' + mapping.equals[i];
-      definition += ',G=' + i + '=' + mapping.equals[i];
+      definition += ',G=' + i + '=' + mapping.greaters[i];
       definition += ',OV=' + i + '=' + mapping.thresholds[i];
     }
     return definition;
@@ -564,17 +565,42 @@ export class DataService {
   /**
    * Edits an existing mapping, usable for both discrete and contiuous mappings
    */
-  editMapping(typeHint: NeMappingsType, mapping: NeMappingDiscrete | NeMappingContinuous, discretePropertyPointer: number = null): void {
+  editMappingDiscrete(typeHint: NeMappingsType, mapping: NeMappingDiscrete, discretePropertyPointer: number = null): void {
 
     if (typeHint.nd || typeHint.ed) {
       this.selectPropertyForDeletion(discretePropertyPointer);
       this.removePropertyFromMapping();
-      this.addMappingDiscrete(mapping as NeMappingDiscrete, typeHint);
+      this.addMappingDiscrete(mapping, typeHint);
       this.selectPropertyForDeletion();
-    } else if (typeHint.nc || typeHint.ec) {
-      // todo
+
     }
 
+  }
+
+  editMappingContinuous(typeHint: NeMappingsType, thresholds: NeThresholdMap[]): void {
+    const typeLiteral = this.utilityService.utilGetTypeLiteralByTypeHint(typeHint);
+    const defLower = thresholds[0];
+    const defGreater = thresholds[1];
+    thresholds = thresholds.filter(a => a.value !== null).sort((a, b) => a.value > b.value ? 1 : -1);
+
+    console.log(thresholds);
+
+    const mapThresholds = thresholds.map(a => a.value);
+    const equals = thresholds.map(a => a.propertyValue);
+    const lowers: string[] = thresholds.map(a => a.propertyValue);
+    const greaters: string[] = thresholds.map(a => a.propertyValue);
+    lowers[0] = defLower.propertyValue;
+    greaters[greaters.length - 1] = defGreater.propertyValue;
+
+    const newMapping: NeMappingContinuous = this.selectedContinuousMapping;
+    newMapping.equals = equals;
+    newMapping.lowers = lowers;
+    newMapping.greaters = greaters;
+    newMapping.thresholds = mapThresholds;
+
+    console.log(newMapping);
+    this.removeMapping();
+    this.addMappingContinuous(newMapping, newMapping.styleProperty, typeHint);
   }
 
   /**
@@ -795,5 +821,26 @@ export class DataService {
       }
     }
 
+  }
+
+  /**
+   * Returns the number of elements for each type of mapping for the currently selected network
+   * @param type string indicating type of mapping, e.g. 'nd'
+   */
+  countMappingsByHint(type: string): number {
+    switch (type) {
+      case 'nd':
+        return this.selectedNetwork.mappings.nodesDiscrete.length;
+      case'nc':
+        return this.selectedNetwork.mappings.nodesContinuous.length;
+      case 'np':
+        return this.selectedNetwork.mappings.nodesPassthrough.length;
+      case 'ed':
+        return this.selectedNetwork.mappings.edgesDiscrete.length;
+      case 'ec':
+        return this.selectedNetwork.mappings.edgesContinuous.length;
+      case 'ep':
+        return this.selectedNetwork.mappings.edgesPassthrough.length;
+    }
   }
 }

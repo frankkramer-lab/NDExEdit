@@ -128,7 +128,7 @@
 
       <!-- todo submit: edit -->
       <button (click)="editMapping()" *ngIf="isEdit"
-              [routerLink]="['', { outlets: {primary: ['mappings', mapType + mapId ]} }]"
+              [routerLink]="['', { outlets: {primary: ['mappings', mapType + (dataService.countMappingsByHint(mapType) - 1) ]} }]"
               class="btn btn-block btn-outline-success" data-toggle="tooltip"
               ngbTooltip="{{'MAIN_MAPPINGS_NEW_SUBMIT' | translate}}"
               placement="top"

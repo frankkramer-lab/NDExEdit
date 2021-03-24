@@ -13,7 +13,6 @@ import {FontAwesomeTestingModule} from '@fortawesome/angular-fontawesome/testing
 import {Router} from '@angular/router';
 import {routes} from './app-routing.module';
 import {Location} from '@angular/common';
-import {NeNetwork} from './models/ne-network';
 
 class MockDataService {
 

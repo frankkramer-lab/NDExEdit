@@ -250,9 +250,11 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   editMapping(): void {
 
     if (this.typeHint.nd || this.typeHint.ed) {
-      this.dataService.editMapping(this.typeHint, this.mappingDiscrete, this.mapId);
+      this.dataService.editMappingDiscrete(this.typeHint, this.mappingDiscrete, this.mapId);
     } else {
-      this.dataService.editMapping(this.typeHint, this.mappingContinuous);
+      // todo add thresholds to mapping
+
+      this.dataService.editMappingContinuous(this.typeHint, this.thresholds);
     }
   }
 

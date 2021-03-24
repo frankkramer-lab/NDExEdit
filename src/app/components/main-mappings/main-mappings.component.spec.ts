@@ -581,7 +581,10 @@ describe('MainMappingsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('should display details ND', () => {
+  /**
+   * Test: Details for discrete node mapping
+   */
+  it('should display details ND', () => {
     utilSelectMapping(1); // test setup 1
     fixture.detectChanges();
     domDiscrete = fixture.debugElement.query(By.css('#tableDetailsDiscrete')).nativeElement;
@@ -604,6 +607,10 @@ describe('MainMappingsComponent', () => {
     expect(domDiscrete.lastElementChild.childElementCount).toBe(1);
   });
 
+  /**
+   * Utility method to setup test cases
+   * @param num test case number
+   */
   function utilSelectMapping(num: number): void {
     switch (num) {
       case 1:
@@ -618,24 +625,15 @@ describe('MainMappingsComponent', () => {
         dataService.selectedPassthroughMapping = null;
         dataService.selectedContinuousMapping = null;
         break;
+      case 3:
+        dataService.selectedContinuousMapping = dataService.getSelectedNetwork().mappings.edgesContinuous.find(a => a.col === 'colEc2' && a.styleProperty === '')
       // todo passthrough
       // todo continuous
     }
-
-    // switch (s) {
-    //   case 'd':
-    //     dataService.selectedDiscreteMapping = Array(dataService.selectedNetwork.mappings.nodesDiscrete[0]);
-    //     break;
-    //   case 'c':
-    //     dataService.selectedContinuousMapping = dataService.selectedNetwork.mappings.nodesContinuous[0];
-    //     break;
-    //   case 'p':
-    //     dataService.selectedPassthroughMapping = dataService.selectedNetwork.mappings.nodesPassthrough[0];
-    // }
   }
 
-  // todo display details discrete => same col, different property => renders same table (routing)
-  // todo display details continuous => same col, different property => renders different table
+  // display details discrete
+  // todo display details continuous => same col, different property "colEc2"
   // todo display details passthrough => different col, different property => renders different table
   // todo remove part of discrete => confirm
   // todo remove part of discrete => reject

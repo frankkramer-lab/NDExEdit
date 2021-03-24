@@ -36,15 +36,15 @@ export const routes: Routes = [
     component: MainMappingsComponent,
   },
   {
-    path: 'new/:map/:propertyId',
+    path: 'new/:map/:propertyId/:isEdit',
     component: MainMappingsNewComponent,
   },
   {
-    path: 'edit/:map/:propertyId',
+    path: 'edit/:map/:propertyId/:isEdit',
     component: MainMappingsNewComponent,
   },
   {
-    path: 'edit/:map',
+    path: 'edit/:map/:isEdit',
     component: MainMappingsNewComponent,
   },
   {
@@ -61,6 +61,15 @@ export const routes: Routes = [
     path: 'compare/:id',
     component: SidebarCompareComponent,
     outlet: 'sidebar'
+  },
+  {
+    path: '**',
+    component: SidebarManageComponent,
+    outlet: 'sidebar'
+  },
+  {
+    path: '**',
+    component: MainInfoComponent
   }
 ];
 

@@ -50,18 +50,10 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     public utilityService: UtilityService
   ) {
 
-    // todo this needs rework, because its not testable
-    switch (this.route.snapshot.url[0].path) {
-      case 'new':
-        this.isEdit = false;
-        break;
-      case 'edit':
-        this.isEdit = true;
-        break;
-    }
-
     this.route.paramMap.subscribe(params => {
       console.log(params);
+
+      this.isEdit = params.get('isEdit') === '1';
       this.initData(params);
     });
 

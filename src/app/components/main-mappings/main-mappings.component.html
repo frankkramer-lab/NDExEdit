@@ -74,7 +74,7 @@
 
           <td>
             <button class="btn btn-outline-warning"
-                    [routerLink]="['', { outlets: {primary: ['edit', mapHint + styleIndex]} }]">
+                    [routerLink]="['', { outlets: {primary: ['edit', mapHint + styleIndex, '1']} }]">
               <fa-icon [icon]="faEdit"></fa-icon>
             </button>
           </td>
@@ -114,7 +114,7 @@
         <!-- EDIT -->
         <th>
           <button class="btn btn-block btn-outline-warning"
-                  [routerLink]="['', { outlets: {primary: ['edit', mapId]} }]">
+                  [routerLink]="['', { outlets: {primary: ['edit', mapId, '1']} }]">
             <fa-icon [icon]="faEdit"></fa-icon>
           </button>
         </th>
