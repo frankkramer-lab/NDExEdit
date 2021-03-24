@@ -61,6 +61,7 @@ export class ParseService {
               akvNodes.push(newAspect);
             }
           }
+          akvNodes = this.buildDistributionChart(akvNodes, network.cx, true);
         }
         if (fd.edges) {
           if (akvEdges.every(a => a.name !== 'interaction')) {
@@ -70,6 +71,7 @@ export class ParseService {
 
             }
           }
+          akvEdges = this.buildDistributionChart(akvEdges, network.cx, false);
         }
       }
       dataService.selectedNetwork.aspectKeyValuesNodes = akvNodes;
