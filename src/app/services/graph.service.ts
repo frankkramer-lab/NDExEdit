@@ -198,7 +198,6 @@ export class GraphService {
         } else if (event.target.isEdge()) {
           this.selectedElements.edges.push(event.target.data() as NeEdge);
         }
-        console.log(this.selectedElements);
         break;
       case 'unselect':
         if (event.target.isNode()) {
@@ -206,7 +205,6 @@ export class GraphService {
         } else if (event.target.isEdge()) {
           this.selectedElements.edges = this.selectedElements.edges.filter(x => x.id !== event.target.data().id);
         }
-        console.log(this.selectedElements);
         break;
     }
   }

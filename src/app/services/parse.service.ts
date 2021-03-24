@@ -47,7 +47,9 @@ export class ParseService {
           akvEdges = akvEdges.concat(this.convertAkvByFile(fd.edgeAttributes, dataService.selectedNetwork.mappings, false));
         }
         if (fd.nodes) {
+
           if (akvNodes.every(a => a.name !== 'name')) {
+
             const newAspect = ParseService.buildAspectByCx(fd.nodes, 'n', dataService.selectedNetwork.mappings);
             if (newAspect) {
               akvNodes.push(newAspect);
@@ -70,6 +72,8 @@ export class ParseService {
           }
         }
       }
+      dataService.selectedNetwork.aspectKeyValuesNodes = akvNodes;
+      dataService.selectedNetwork.aspectKeyValuesEdges = akvEdges;
     });
   }
 

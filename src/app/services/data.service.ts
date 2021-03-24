@@ -460,9 +460,6 @@ export class DataService {
       return;
     }
 
-    console.log(this.selectedNetwork.mappings.nodesPassthrough);
-    console.log(mappingPassthrough);
-
     const mappingDefinition = DataService.buildPassthroughMappingDefinition(mappingPassthrough);
 
     if (typeHint.np) {
@@ -478,7 +475,6 @@ export class DataService {
         for (const fd of this.selectedNetwork.cx) {
           if (fd.cyVisualProperties) {
             for (const cy of fd.cyVisualProperties) {
-              console.log(cy);
               if (cy.properties_of === 'nodes:default') {
                 if (!cy.mappings) {
                   cy.mappings = {};
