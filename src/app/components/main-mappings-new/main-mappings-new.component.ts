@@ -380,7 +380,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
         keys: this.propertyToMap.values,
         styleProperty: '',
         type: this.propertyToMap.datatype,
-        values
+        values,
+        useValue: Array(values.length).fill(true)
       };
     } else {
       this.propertyToMap = availableAttributes[this.propertyId];

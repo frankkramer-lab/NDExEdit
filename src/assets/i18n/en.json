@@ -157,6 +157,7 @@
   "MAIN_MAPPINGS_NEW_SELECTED_ATTRIBUTE": "Selected attribute",
   "MAIN_MAPPINGS_NEW_TT_DISTRIBUTION": "View distribution details for this property",
   "MAIN_MAPPINGS_NEW_CSS_HINT": "Enter the name of a style property you wish to map",
+  "MAIN_MAPPINGS_NEW_COLOR_SELECTION": "To exclude a value completely for this mapping, click the checkbox next to the input field",
   "MAIN_MAPPINGS_NEW_COLOR_PREVIEW": "Validate your colors by toggeling previews",
   "MAIN_MAPPINGS_NEW_SUBMIT": "Submit new mapping",
   "MAIN_MAPPINGS_NEW_ABORT": "Abort and return to graph",

@@ -152,6 +152,7 @@
              id="{{mapType}}CssProperty"
              name="{{mapType}}CssProperty" type="text">
       <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
+      <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_SELECTION' | translate}}</small>
     </div>
 
     <div class="col-2 form-check">
@@ -173,7 +174,7 @@
   <div *ngFor="let entry of propertyToMap.values; let index = index" class="form-group row">
     <label class="col-4 col-form-label" for="{{typeHint.ed ? 'ed' : 'nd'}}{{index}}">{{entry}}</label>
 
-    <div class="col-8">
+    <div [ngClass]="needsColorValidation(styleProperty) ? 'col-7' : 'col-8'">
       <input *ngIf="!needsColorValidation(styleProperty)"
              [(ngModel)]="mappingDiscrete.values[getIndexByKey(entry)]"
              class="form-control"
@@ -182,12 +183,20 @@
              type="text"
              value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
       <input *ngIf="needsColorValidation(styleProperty)"
+             [disabled]="!mappingDiscrete.useValue[index]"
              [(ngModel)]="mappingDiscrete.values[getIndexByKey(entry)]"
              type="color"
              class="form-control form-control-color"
              id="colorDiscrete{{index}}"
              name="colorDiscrete{{index}}"
-             value="{{mappingDiscrete.values[getIndexByKey(entry)]}}">
+             value="{{mappingDiscrete.useValue[index] ? mappingDiscrete.values[getIndexByKey(entry)] : '#ffffff'}}">
+    </div>
+    <div *ngIf="needsColorValidation(styleProperty)" class="col-1">
+      <input [(ngModel)]="mappingDiscrete.useValue[index]"
+             class="form-check-input"
+             id="useValue{{index}}"
+             name="useValue{{index}}"
+             type="checkbox">
     </div>
 
   </div>

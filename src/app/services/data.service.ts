@@ -216,13 +216,17 @@ export class DataService {
   private static buildDiscreteMappingDefinition(mapping: NeMappingDiscrete): string {
     let definition = 'COL=' + mapping.col + ',T=' + mapping.type || 'string';
 
+    console.log(mapping);
+
     for (let i = 0; i < mapping.keys.length; i++) {
 
       // only add a key-value-pair if both sides are defined and value is not empty
       if (mapping.keys[i] !== null && mapping.values[i] !== null && mapping.values[i] !== '') {
 
-        if (mapping.styleProperty === 'NODE_LABEL_FONT_FACE' || mapping.styleProperty === 'EDGE_LABEL_FONT_FACE') {
-          mapping.values[i] += ',,plain,,14';
+        // todo form for FONT_FACE
+        if (mapping.styleProperty === 'NODE_LABEL_FONT_FACE' ||
+          mapping.styleProperty === 'EDGE_LABEL_FONT_FACE') {
+          mapping.values[i] = mapping.values[i].replace(/,/g, ',,');
         }
 
         definition += ',K=' + i + '=' + mapping.keys[i];
@@ -568,7 +572,6 @@ export class DataService {
       this.removePropertyFromMapping();
       this.addMappingDiscrete(mapping, typeHint);
       this.selectPropertyForDeletion();
-
     }
 
   }

@@ -175,6 +175,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
 
     if (this.mappingDiscrete) {
       this.mappingDiscrete.values = [];
+      this.mappingDiscrete.useValue = [];
     }
 
     if (this.mappingContinuous) {
@@ -222,6 +223,8 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * Submits a new discrete mapping, adds CSS property to color properties managed in {@link GraphService}
    */
   submitNewDiscreteMapping(): void {
+    this.cleanForColorMapping();
+
     this.mappingDiscrete.styleProperty = this.styleProperty;
     this.dataService.addMappingDiscrete(this.mappingDiscrete, this.typeHint);
   }
@@ -253,6 +256,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   editMapping(): void {
 
     if (this.typeHint.nd || this.typeHint.ed) {
+      this.cleanForColorMapping();
       this.dataService.editMappingDiscrete(this.typeHint, this.mappingDiscrete, this.mapId);
     } else {
       this.dataService.editMappingContinuous(this.typeHint, this.thresholds);
@@ -430,6 +434,20 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    */
   removeThreshold(index: number): void {
     this.thresholds.splice(index, 1);
+  }
+
+  /**
+   * Removes values where the use-value-flag is false.
+   * Needed for color properties, where null is not possible
+   * @private
+   */
+  private cleanForColorMapping(): void {
+    for (let i = this.mappingDiscrete.useValue.length - 1; i < 0; i--) {
+      if (!this.mappingDiscrete.useValue[i]) {
+        this.mappingDiscrete.values = this.mappingDiscrete.values.splice(i, 1);
+        this.mappingDiscrete.keys = this.mappingDiscrete.keys.splice(i, 1);
+      }
+    }
   }
 }
 

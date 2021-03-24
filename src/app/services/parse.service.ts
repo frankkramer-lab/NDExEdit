@@ -99,7 +99,8 @@ export class ParseService {
       type: obj.type,
       styleProperty,
       keys: null,
-      values: null
+      values: null,
+      useValue: []
     };
 
     const cleanDefinition = obj.definition.replace(/,,/g, '%');
@@ -130,6 +131,7 @@ export class ParseService {
     }
     discreteMapping.keys = tmpK;
     discreteMapping.values = tmpV;
+    discreteMapping.useValue = Array(tmpV.length).fill(true);
     return discreteMapping;
   }
 
@@ -841,10 +843,16 @@ export class ParseService {
    * @param akvs List of aspects for which the charts are to be built
    * @param filedata data containing occurances for each aspect
    * @param isNode true, if aspects are applied to nodes
-   * @param specialKey indicates, that nodes or edges should be evaluated, based on the key. This is necessary for the 'interaction' / 'name' properties
+   * @param specialKey indicates, that nodes or edges should be evaluated, based on the key.
+   * This is necessary for the 'interaction' / 'name' properties
    * @private
    */
-  private buildDistributionChart(akvs: NeAspect[], filedata: any[], isNode: boolean, specialKey: string = null): NeAspect[] {
+  private buildDistributionChart(
+    akvs: NeAspect[],
+    filedata: any[],
+    isNode: boolean,
+    specialKey: string = null
+  ): NeAspect[] {
 
     const discreteAkvs = this.utilityService.utilFilterForDiscrete(akvs); // includes passthrough valid properties
     const continuousAkvs = this.utilityService.utilFilterForContinuous(akvs, true);

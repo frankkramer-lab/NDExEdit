@@ -24,4 +24,10 @@ export interface NeMappingDiscrete {
    * Thus keys and values always need to be of the same length to cross reference correctly
    */
   values: string[];
+
+  /**
+   * True if a set value is to be set.
+   * Used to exclude a color value defined by color picker, because there's no such thing as 'null' for color pickers
+   */
+  useValue: boolean[];
 }
