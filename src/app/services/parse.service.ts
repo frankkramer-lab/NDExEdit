@@ -17,7 +17,7 @@ import {DataService} from './data.service';
 import {NeMappingPassthrough} from '../models/ne-mapping-passthrough';
 import {NeStyle} from '../models/ne-style';
 
-import svg from 'cytoscape-svg';
+import cySvg from 'cytoscape-svg';
 
 
 @Injectable({
@@ -555,7 +555,8 @@ export class ParseService {
       pan
     };
 
-    cytoscape.use(svg);
+    // wirft fehler
+    // cytoscape.use(cySvg);
     let core = cytoscape(networkConfig);
     core = this.addUtilitySelectors(core);
 

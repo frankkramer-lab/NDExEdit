@@ -146,16 +146,18 @@
   <div class="form-group row">
     <label class="col-4 col-form-label"
            for="{{mapType}}CssProperty">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
-    <div class="col-6">
+
+    <div [ngClass]="!needsFontFaceSpecificForm(styleProperty) ? 'col-6' : 'col-8'">
       <input [(ngModel)]="styleProperty" (input)="emitStyleProperty()"
              [readOnly]="isEdit" class="form-control"
              id="{{mapType}}CssProperty"
              name="{{mapType}}CssProperty" type="text">
       <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_CSS_HINT' | translate}}</small>
-      <small class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_SELECTION' | translate}}</small>
+      <small *ngIf="needsColorValidation(styleProperty)"
+             class="form-text text-muted">{{'MAIN_MAPPINGS_NEW_COLOR_SELECTION' | translate}}</small>
     </div>
 
-    <div class="col-2 form-check">
+    <div *ngIf="!needsFontFaceSpecificForm(styleProperty)" class="col-2 form-check">
       <input (click)="toggleNeedsColorValidation(!needsColorValidation(styleProperty))"
              [disabled]="isEdit"
              [checked]="needsColorValidation(styleProperty)" class="form-check-input position-static"
@@ -171,33 +173,95 @@
   <hr>
 
   <!-- values and input fields for each value -->
-  <div *ngFor="let entry of propertyToMap.values; let index = index" class="form-group row">
-    <label class="col-4 col-form-label" for="{{typeHint.ed ? 'ed' : 'nd'}}{{index}}">{{entry}}</label>
+  <div *ngFor="let entry of propertyToMap.values; let index = index" class="form-group">
 
-    <div [ngClass]="needsColorValidation(styleProperty) ? 'col-7' : 'col-8'">
-      <input *ngIf="!needsColorValidation(styleProperty)"
-             [(ngModel)]="mappingDiscrete.values[getIndexByKey(entry)]"
-             class="form-control"
-             id="{{typeHint.ed ? 'ed' : 'nd'}}{{index}}"
-             name="{{typeHint.ed ? 'ed' : 'nd'}}{{index}}"
-             type="text"
-             value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
-      <input *ngIf="needsColorValidation(styleProperty)"
-             [disabled]="!mappingDiscrete.useValue[index]"
-             [(ngModel)]="mappingDiscrete.values[getIndexByKey(entry)]"
-             type="color"
-             class="form-control form-control-color"
-             id="colorDiscrete{{index}}"
-             name="colorDiscrete{{index}}"
-             value="{{mappingDiscrete.useValue[index] ? mappingDiscrete.values[getIndexByKey(entry)] : '#ffffff'}}">
+    <!-- REGULAR form -->
+    <div *ngIf="!needsFontFaceSpecificForm(styleProperty)">
+      <div class="row">
+
+        <label class="col-4 col-form-label" for="{{typeHint.ed ? 'ed' : 'nd'}}{{index}}">{{entry}}</label>
+
+        <div [ngClass]="needsColorValidation(styleProperty) ? 'col-7' : 'col-8'">
+          <input *ngIf="!needsColorValidation(styleProperty)"
+                 [(ngModel)]="mappingDiscrete.values[getIndexByKey(entry)]"
+                 class="form-control"
+                 id="{{typeHint.ed ? 'ed' : 'nd'}}{{index}}"
+                 name="{{typeHint.ed ? 'ed' : 'nd'}}{{index}}"
+                 type="text"
+                 value="{{'MAIN_MAPPINGS_NEW_PLACEHOLDER' | translate}}">
+          <input *ngIf="needsColorValidation(styleProperty)"
+                 [disabled]="!mappingDiscrete.useValue[index]"
+                 [(ngModel)]="mappingDiscrete.values[getIndexByKey(entry)]"
+                 type="color"
+                 class="form-control form-control-color"
+                 id="colorDiscrete{{index}}"
+                 name="colorDiscrete{{index}}"
+                 value="{{mappingDiscrete.useValue[index] ? mappingDiscrete.values[getIndexByKey(entry)] : '#ffffff'}}">
+        </div>
+        <div *ngIf="needsColorValidation(styleProperty)" class="col-1">
+          <input [(ngModel)]="mappingDiscrete.useValue[index]"
+                 class="form-check-input"
+                 id="useValue{{index}}"
+                 name="useValue{{index}}"
+                 type="checkbox">
+        </div>
+      </div>
     </div>
-    <div *ngIf="needsColorValidation(styleProperty)" class="col-1">
-      <input [(ngModel)]="mappingDiscrete.useValue[index]"
-             class="form-check-input"
-             id="useValue{{index}}"
-             name="useValue{{index}}"
-             type="checkbox">
+
+
+    <!-- FONT FACE form -->
+    <div *ngIf="needsFontFaceSpecificForm(styleProperty)">
+
+      <div class="row">
+
+        <label class="col-4 col-form-label" for="fontFaceFamily{{index}}">{{entry}}</label>
+
+        <div class="dropdown col-4">
+          <button class="btn btn-secondary dropdown-toggle" type="button"
+                  id="fontFaceFamily{{index}}"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false">
+            {{setFonts[index] && setFonts[index].family ? setFonts[index].family : ('FONT FACE FAMILY LABEL' | translate)}}
+          </button>
+          <div class="dropdown-menu" aria-labelledby="fontFaceFamily{{index}}">
+            <a class="dropdown-item" (click)="removeFont(index)">CLEAR FAMILY LABEL</a>
+            <a *ngFor="let font of availableFonts" class="dropdown-item" (click)="setFont(index, font)">{{font}}</a>
+          </div>
+        </div>
+
+        <div class="col-3">
+
+          <div class="dropdown" *ngIf="setFonts[index] && isJavaLogicalFont(setFonts[index].family)">
+            <button class="btn btn-secondary dropdown-toggle" type="button"
+                    id="fontFaceStyle{{index}}"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+              {{setFonts[index] && setFonts[index].style ? setFonts[index].style : ('FONT FACE STYLE LABEL' | translate)}}
+            </button>
+
+            <div class="dropdown-menu"
+                 aria-labelledby="fontFaceStyle{{index}}">
+              <a class="dropdown-item" (click)="removeStyle(index)">CLEAR STYLE LABEL</a>
+              <a *ngFor="let style of javaFontStyles" class="dropdown-item"
+                 (click)="setStyle(index, style)">{{style}}</a>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-1" *ngIf="setFonts[index]">
+          <label for="fontFaceSize{{index}}"></label>
+          <input class="form-control" type="number"
+                 id="fontFaceSize{{index}}" name="fontFaceSize{{index}}"
+                 [(ngModel)]="setFonts[index].size">
+        </div>
+
+      </div>
+
     </div>
+
 
   </div>
 
