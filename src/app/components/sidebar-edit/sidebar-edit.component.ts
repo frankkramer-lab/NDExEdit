@@ -11,7 +11,8 @@ import {
   faMagic,
   faPalette,
   faTimes,
-  faTrash
+  faTrash,
+  faArrowLeft
 } from '@fortawesome/free-solid-svg-icons';
 import {ChartDataSets} from 'chart.js';
 import {Label} from 'ng2-charts';
@@ -41,6 +42,11 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faCogs = faCogs;
+  /**
+   * Icon: faArrowLeft
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faArrowLeft = faArrowLeft;
   /**
    * Icon: faTimes
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos

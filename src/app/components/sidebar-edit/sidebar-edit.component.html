@@ -1,7 +1,27 @@
 <div class="p-2">
 
   <h5
-    *ngIf="dataService.selectedNetwork.networkInformation.description">{{'SIDEBAR_EDIT_DESCRIPTION_TITLE' | translate}}</h5>
+    *ngIf="dataService.selectedNetwork.networkInformation.description">
+    <a [routerLink]="['', { outlets: {sidebar: ['manage']} }]"
+       class="mb-1"
+       data-toggle="tooltip"
+       type="button"
+       ngbTooltip="{{'NAV_MANAGE' | translate}}" placement="right"
+       role="button">
+      <fa-icon [icon]="faArrowLeft"></fa-icon>
+    </a>
+    {{'SIDEBAR_EDIT_DESCRIPTION_TITLE' | translate}}</h5>
+
+  <h5 *ngIf="!dataService.selectedNetwork.networkInformation.description">
+    <a [routerLink]="['', { outlets: {sidebar: ['manage']} }]"
+       data-toggle="tooltip"
+       type="button"
+       ngbTooltip="{{'NAV_MANAGE' | translate}}" placement="right"
+       role="button">
+      <fa-icon [icon]="faArrowLeft"></fa-icon>
+    </a>
+    {{'SIDEBAR_EDIT_DEFAULT_TITLE' | translate}}
+  </h5>
 
   <div *ngIf="dataService.selectedNetwork.networkInformation.description">
     <p [innerHTML]="dataService.selectedNetwork.networkInformation.description"></p>

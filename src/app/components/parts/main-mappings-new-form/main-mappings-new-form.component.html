@@ -158,7 +158,7 @@
     <div class="col-2 form-check">
       <input (click)="toggleNeedsColorValidation(!needsColorValidation(styleProperty))"
              [disabled]="isEdit"
-             [checked]="needsColorValidation(styleProperty)" class="form-check-input"
+             [checked]="needsColorValidation(styleProperty)" class="form-check-input position-static"
              id="{{mapType}}ColorValidation"
              type="checkbox">
       <label class="form-check-label" for="{{mapType}}ColorValidation">

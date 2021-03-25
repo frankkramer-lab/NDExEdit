@@ -31,23 +31,6 @@
     <!-- Sidebar outlet -->
     <div class="w-{{layoutService.layout.sidebar.width}} scroll" [ngClass]="(layoutService.layout.sidebar.position === 'right' ? 'order-3' : 'order-1')">
 
-      <ul class="nav nav-tabs mt-2">
-        <li class="nav-item">
-          <a [routerLink]="['', { outlets: {sidebar: ['manage']} }]" class="nav-link text-black-50"
-             routerLinkActive="active">{{'NAV_MANAGE'|translate}}</a>
-        </li>
-        <li class="nav-item">
-          <a [routerLink]="['', { outlets: {sidebar: ['edit']} }]" class="nav-link text-black-50 disabled"
-             data-placement="bottom" data-toggle="tooltip" routerLinkActive="active"
-             title="{{'NAV_EDIT_TT_INFO' | translate}}">
-            {{'NAV_EDIT'|translate}}</a>
-        </li>
-        <li class="nav-item">
-          <a [routerLink]="['', { outlets: {sidebar: ['compare']} }]" class="nav-link text-black-50 disabled"
-             data-placement="bottom" data-toggle="tooltip" routerLinkActive="active"
-             title="{{'NAV_COMPARE_TT_INFO' | translate}}">{{'NAV_COMPARE'|translate}}</a>
-        </li>
-      </ul>
       <router-outlet name="sidebar"></router-outlet>
     </div>
   </div>
