@@ -93,21 +93,24 @@ class MockDataService {
           styleProperty: 'styleNd1',
           type: 'integer',
           keys: ['1', '13'],
-          values: ['a1', 'a13']
+          values: ['a1', 'a13'],
+          useValue: [true, true]
         },
         {
           col: 'colNd1',
           styleProperty: 'NODE_FILL_COLOR',
           type: 'integer',
           keys: ['25', '13'],
-          values: ['#9f0083', '#074386']
+          values: ['#9f0083', '#074386'],
+          useValue: [true, true]
         },
         {
           col: 'colNd2',
           styleProperty: 'styleNd1',
           type: 'string',
           keys: ['val1', 'val2', 'val3', 'val4'],
-          values: ['test10', 'test20', 'test30', 'test40']
+          values: ['test10', 'test20', 'test30', 'test40'],
+          useValue: [true, true, true, true]
         }],
       nodesContinuous: [
         {
@@ -178,21 +181,24 @@ class MockDataService {
           styleProperty: 'styleEd1',
           type: 'string',
           keys: ['val20'],
-          values: ['test20']
+          values: ['test20'],
+          useValue: [true]
         },
         {
           col: 'colEd2',
           styleProperty: 'EDGE_UNSELECTED_PAINT',
           type: 'string',
           keys: ['col1', 'col2', 'col3'],
-          values: ['#03f212', '#3ff8e2', '#f313f3']
+          values: ['#03f212', '#3ff8e2', '#f313f3'],
+          useValue: [true, false, true]
         },
         {
           col: 'colEd1',
           styleProperty: 'EDGE_SELECTED_PAINT',
           type: 'string',
           keys: ['val20'],
-          values: ['#f9f133']
+          values: ['#f9f133'],
+          useValue: [true]
         }],
       edgesContinuous: [
         {

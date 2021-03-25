@@ -25,8 +25,8 @@
 
         <!-- Labels -->
         <div class="form-check">
-          <input (click)="toggleLabels(!dataService.selectedNetwork.showLabels)"
-                 [checked]="dataService.selectedNetwork.showLabels"
+          <input (click)="toggleLabels(!dataService.getSelectedNetwork().showLabels)"
+                 [checked]="dataService.getSelectedNetwork().showLabels"
                  class="form-check-input" id="imgShowLabels"
                  type="checkbox">
           <label class="form-check-label" for="imgShowLabels">

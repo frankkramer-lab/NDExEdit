@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {DataService} from '../../services/data.service';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 import {GraphService} from '../../services/graph.service';
+import * as cytoscape from 'cytoscape';
+import svg from 'cytoscape-svg';
 
 @Component({
   selector: 'app-sidebar-image',
@@ -15,7 +17,7 @@ export class SidebarImageComponent implements OnInit {
   /**
    * Constructor
    * @param dataService service responsible for data access
-   * @param graphService servie responsible for graph manipulations
+   * @param graphService service responsible for graph manipulations
    */
   constructor(
     public dataService: DataService,
@@ -34,7 +36,8 @@ export class SidebarImageComponent implements OnInit {
    */
   fileTypeOptions: string[] = [
     'PNG',
-    'JPEG'
+    'JPEG',
+    'SVG'
   ];
   /**
    * Selected file type
@@ -99,6 +102,12 @@ export class SidebarImageComponent implements OnInit {
     }));
 
     this.download('.jpeg');
+  }
+
+  // todo dont let torture by js library
+  downloadImageSVG(): void {
+    // cytoscape.use(svg);
+    // this.dataService.selectedNetwork.core.svg();
   }
 
   /**
