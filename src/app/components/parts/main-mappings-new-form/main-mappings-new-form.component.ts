@@ -295,17 +295,26 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * Collapses the font specification stored within {@link setFonts} into strings
    */
   handleLabelMapping(): void {
+    let aspect: NeAspect;
+    if (this.typeHint.nd) {
+      aspect = this.dataService.selectedNetwork.aspectKeyValuesNodes.find(a => a.name === this.mappingDiscrete.col);
+    } else {
+      aspect = this.dataService.selectedNetwork.aspectKeyValuesEdges.find(a => a.name === this.mappingDiscrete.col);
+    }
+    this.mappingDiscrete.keys = aspect.values;
     this.mappingDiscrete.values = [];
 
     for (let i = 0; i < this.setFonts.length; i++) {
 
       if (this.setFonts[i] && this.setFonts[i].family && this.setFonts[i].size) {
-        this.mappingDiscrete.values.push(
+        this.mappingDiscrete.values.splice(i, 0,
           this.setFonts[i].family + ',,'
           + (this.setFonts[i].style ?? 'plain') + ',,'
           + this.setFonts[i].size);
+
       } else {
-        this.mappingDiscrete.values.push(null);
+
+        this.mappingDiscrete.values.splice(i, 0, null);
         this.mappingDiscrete.useValue[i] = false;
       }
     }
@@ -330,7 +339,14 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   editMapping(): void {
 
     if (this.typeHint.nd || this.typeHint.ed) {
-      this.cleanForColorOrLabelMapping();
+
+      if (this.styleProperty === 'NODE_LABEL_FONT_FACE'
+        || this.styleProperty === 'EDGE_LABEL_PROPERTY') {
+        this.handleLabelMapping();
+      } else {
+        this.cleanForColorOrLabelMapping();
+      }
+
       this.dataService.editMappingDiscrete(this.typeHint, this.mappingDiscrete, this.mapId);
     } else {
       this.dataService.editMappingContinuous(this.typeHint, this.thresholds);
@@ -396,6 +412,9 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
     ];
   }
 
+  /**
+   * Prefills the discrete mapping if the {@link styleProperty} is a label special case
+   */
   prefillDiscreteLabelMapping(): void {
 
     let aspect: NeAspect;
@@ -405,13 +424,12 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
       aspect = this.dataService.selectedNetwork.aspectKeyValuesEdges.find(a => a.name === this.mappingDiscrete.col);
     }
 
-    console.log(aspect);
-
     for (let i = 0; i < aspect.values.length; i++) {
       const pointer = this.mappingDiscrete.keys.indexOf(aspect.values[i]);
+
       if (pointer > -1) {
         const commaSplit = this.mappingDiscrete.values[pointer].split(',');
-        console.log(commaSplit);
+
         this.setFonts[i] = {
           family: commaSplit[0],
           style: commaSplit[1],
@@ -419,10 +437,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
         };
       }
     }
-    console.log(this.setFonts);
-
-
-    console.log(this.mappingDiscrete);
   }
 
   /**
@@ -552,7 +566,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
         this.mappingDiscrete.keys = this.mappingDiscrete.keys.splice(i, 1);
       }
     }
-    console.log(this.mappingDiscrete);
   }
 
   /**

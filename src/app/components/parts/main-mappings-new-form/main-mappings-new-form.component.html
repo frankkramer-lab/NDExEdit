@@ -219,7 +219,7 @@
         <!-- font family -->
         <div [ngClass]="(setFonts[index] && isJavaLogicalFont(setFonts[index].family)) ? 'col-3' : 'col-6'">
           <select class="custom-select" size="5" id="fontFaceFamily{{index}}">
-            <option value="null" (click)="setFont(index, null)">reset family LABEL</option>
+            <option value="null" (click)="setFont(index, null)">{{'MAIN_MAPPINGS_NEW_FONT_FAMILY_RESET' | translate}}</option>
             <option *ngFor="let font of availableFonts"
                     value="{{font}}"
                     (click)="setFont(index, font)"
@@ -230,7 +230,7 @@
         <!-- font style only java logical -->
         <div class="col-3" *ngIf="setFonts[index] && isJavaLogicalFont(setFonts[index].family)">
           <select class="custom-select" size="5" id="fontFaceStyle{{index}}">
-            <option value="null" (click)="setStyle(index, null)">reset Style label</option>
+            <option value="null" (click)="setStyle(index, null)">{{'MAIN_MAPPINGS_NEW_FONT_STYLE_RESET' | translate}}</option>
             <option *ngFor="let style of javaFontStyles"
                     value="{{style}}"
                     [selected]="setFonts[index] && setFonts[index].style === style"
@@ -249,7 +249,7 @@
                     (click)="setFonts[index].size = null">
               <fa-icon [icon]="faRedo"></fa-icon>
             </button>
-            SIZE LABEL todo
+            {{'MAIN_MAPPINGS_NEW_FONT_SIZE' | translate}}
           </label>
           <input class="form-control" type="number"
                  id="fontFaceSize{{index}}" name="fontFaceSize{{index}}"
