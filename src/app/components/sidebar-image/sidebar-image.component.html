@@ -92,15 +92,9 @@
     </div>
   </form>
 
-  <button class="btn btn-lg btn-block btn-success" *ngIf="selectedFileType === 'PNG'"
-          (click)="downloadImagePNG()">
-    {{'SIDEBAR_IMAGE_DOWNLOAD_PNG' | translate}}
-  </button>
-
-
-  <button class="btn btn-lg btn-block btn-success" *ngIf="selectedFileType === 'JPEG'"
-          (click)="downloadImageJPEG()">
-    {{'SIDEBAR_IMAGE_DOWNLOAD_JPEG' | translate}}
+  <button class="btn btn-lg btn-block btn-success" *ngIf="selectedFileType !== null"
+          (click)="downloadImage()">
+    {{'SIDEBAR_IMAGE_BTN_DOWNLOAD' | translate}}
   </button>
 
 </div>

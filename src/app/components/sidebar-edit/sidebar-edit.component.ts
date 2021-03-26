@@ -12,7 +12,9 @@ import {
   faPalette,
   faTimes,
   faTrash,
-  faArrowLeft
+  faArrowLeft,
+  faChevronDown,
+  faChevronLeft
 } from '@fortawesome/free-solid-svg-icons';
 import {ChartDataSets} from 'chart.js';
 import {Label} from 'ng2-charts';
@@ -37,6 +39,11 @@ import {UtilityService} from '../../services/utility.service';
  * Component responsible for graph editing functionality
  */
 export class SidebarEditComponent implements AfterViewInit, OnDestroy {
+  /**
+   * Icon: faChevronDown
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faChevronDown = faChevronDown;
   /**
    * Icon: faCogs
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
@@ -252,6 +259,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     this.showLabelCheckbox = true;
     this.gradientBackground = '';
     this.index = '';
+    this.dataService.selectedNetwork.core.elements().unselect();
     this.graphService.selectedElements.nodes = [];
     this.graphService.selectedElements.edges = [];
     this.mapping = null;

@@ -73,6 +73,23 @@ export class SidebarImageComponent implements OnInit {
   }
 
   /**
+   * Calls type specific download methods based on {@link SidebarImageComponent#selectedFileType}
+   */
+  downloadImage(): void {
+    switch(this.selectedFileType) {
+      case 'PNG':
+        this.downloadImagePNG();
+        break;
+      case 'JPEG':
+        this.downloadImageJPEG();
+        break;
+      case 'SVG':
+        this.downloadImageSVG();
+        break;
+    }
+  }
+
+  /**
    * Prepares the URL to download the PNG image
    */
   downloadImagePNG(): void {
@@ -112,7 +129,7 @@ export class SidebarImageComponent implements OnInit {
 
   /**
    * Downloads the generated image
-   * @param file
+   * @param file url to download the generated image
    * @private
    */
   private download(file: string): void {
@@ -140,4 +157,5 @@ export class SidebarImageComponent implements OnInit {
     this.graphService.toggleLabels(show);
     this.dataService.getSelectedNetwork().showLabels = show;
   }
+
 }

@@ -208,14 +208,15 @@
       </div>
     </div>
 
-
     <!-- FONT FACE form -->
     <div *ngIf="needsFontFaceSpecificForm(styleProperty)">
 
       <div class="row">
 
+        <!-- label -->
         <label class="col-4 col-form-label" for="fontFaceFamily{{index}}">{{entry}}</label>
 
+        <!-- font family -->
         <div class="dropdown col-4">
           <button class="btn btn-secondary dropdown-toggle" type="button"
                   id="fontFaceFamily{{index}}"
@@ -230,27 +231,25 @@
           </div>
         </div>
 
-        <div class="col-3">
+        <!-- font style only java logical -->
+        <div class="dropdown col-3" *ngIf="setFonts[index] && isJavaLogicalFont(setFonts[index].family)">
+          <button class="btn btn-secondary dropdown-toggle" type="button"
+                  id="fontFaceStyle{{index}}"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false">
+            {{setFonts[index] && setFonts[index].style ? setFonts[index].style : ('FONT FACE STYLE LABEL' | translate)}}
+          </button>
 
-          <div class="dropdown" *ngIf="setFonts[index] && isJavaLogicalFont(setFonts[index].family)">
-            <button class="btn btn-secondary dropdown-toggle" type="button"
-                    id="fontFaceStyle{{index}}"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false">
-              {{setFonts[index] && setFonts[index].style ? setFonts[index].style : ('FONT FACE STYLE LABEL' | translate)}}
-            </button>
-
-            <div class="dropdown-menu"
-                 aria-labelledby="fontFaceStyle{{index}}">
-              <a class="dropdown-item" (click)="removeStyle(index)">CLEAR STYLE LABEL</a>
-              <a *ngFor="let style of javaFontStyles" class="dropdown-item"
-                 (click)="setStyle(index, style)">{{style}}</a>
-            </div>
-
+          <div class="dropdown-menu"
+               aria-labelledby="fontFaceStyle{{index}}">
+            <a *ngFor="let style of javaFontStyles" class="dropdown-item"
+               (click)="setStyle(index, style)">{{style}}</a>
           </div>
+
         </div>
 
+        <!-- font size -->
         <div class="col-1" *ngIf="setFonts[index]">
           <label for="fontFaceSize{{index}}"></label>
           <input class="form-control" type="number"

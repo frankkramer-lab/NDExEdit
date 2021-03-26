@@ -3,17 +3,24 @@
   <h5
     *ngIf="dataService.selectedNetwork.networkInformation.description">
     <a [routerLink]="['', { outlets: {sidebar: ['manage']} }]"
-       class="mb-1"
+       class="mb-1 float-left"
        data-toggle="tooltip"
        type="button"
        ngbTooltip="{{'NAV_MANAGE' | translate}}" placement="right"
        role="button">
-      <fa-icon [icon]="faArrowLeft"></fa-icon>
+      <fa-icon class="mr-1" [icon]="faArrowLeft"></fa-icon>
     </a>
-    {{'SIDEBAR_EDIT_DESCRIPTION_TITLE' | translate}}</h5>
+    {{'SIDEBAR_EDIT_DESCRIPTION_TITLE' | translate}}
+
+    <a class="float-right" data-toggle="collapse" data-target="#contentDescription"
+       aria-expanded="true" aria-controls="contentDescription" href="#">
+      <fa-icon [icon]="faChevronDown"></fa-icon>
+    </a>
+  </h5>
 
   <h5 *ngIf="!dataService.selectedNetwork.networkInformation.description">
     <a [routerLink]="['', { outlets: {sidebar: ['manage']} }]"
+       class="mb-1 float-left"
        data-toggle="tooltip"
        type="button"
        ngbTooltip="{{'NAV_MANAGE' | translate}}" placement="right"
@@ -21,9 +28,14 @@
       <fa-icon [icon]="faArrowLeft"></fa-icon>
     </a>
     {{'SIDEBAR_EDIT_DEFAULT_TITLE' | translate}}
+
+    <a class="float-right" data-toggle="collapse" data-target="#contentDescription"
+       aria-expanded="true" aria-controls="contentDescription" href="#">
+      <fa-icon [icon]="faChevronDown"></fa-icon>
+    </a>
   </h5>
 
-  <div *ngIf="dataService.selectedNetwork.networkInformation.description">
+  <div *ngIf="dataService.selectedNetwork.networkInformation.description" id="contentDescription" class="show">
     <p [innerHTML]="dataService.selectedNetwork.networkInformation.description"></p>
   </div>
 
@@ -52,16 +64,26 @@
     </div>
   </div>
 
+  <!-- selected nodes or edges -->
   <div *ngIf="graphService.selectedElements.nodes.length > 0 || graphService.selectedElements.edges.length > 0">
 
     <hr>
 
     <!-- Display selected nodes -->
-    <h5 *ngIf="graphService.selectedElements.nodes.length > 0">{{'SIDEBAR_EDIT_COMPARISON_NODES' | translate}}</h5>
+    <h5 *ngIf="graphService.selectedElements.nodes.length > 0">
+      <span class="float-left">
+        {{'SIDEBAR_EDIT_COMPARISON_NODES' | translate}}
+      </span>
+      <a class="float-right" data-toggle="collapse" data-target="#contentNodesSelected"
+         aria-expanded="true" aria-controls="contentNodesSelected" href="#">
+        <fa-icon [icon]="faChevronDown"></fa-icon>
+      </a>
+    </h5>
 
-    <div *ngIf="graphService.selectedElements.nodes.length > 0" class="table-responsive">
+    <div *ngIf="graphService.selectedElements.nodes.length > 0"  class="table-responsive">
 
-      <table class="table">
+      <div class="show" id="contentNodesSelected">
+        <table class="table">
 
         <thead>
         <tr>
@@ -93,15 +115,25 @@
         </tbody>
 
       </table>
+      </div>
 
     </div>
 
     <!-- Display selected edges -->
-    <h5 *ngIf="graphService.selectedElements.edges.length > 0">{{'SIDEBAR_EDIT_COMPARISON_EDGES' | translate}}</h5>
+    <h5 *ngIf="graphService.selectedElements.edges.length > 0" class="mt-2">
+      <span class="float-left">
+        {{'SIDEBAR_EDIT_COMPARISON_EDGES' | translate}}
+      </span>
+      <a class="float-right" data-toggle="collapse" data-target="#contentEdgesSelected"
+         aria-expanded="true" aria-controls="contentEdgesSelected" href="#">
+        <fa-icon [icon]="faChevronDown"></fa-icon>
+      </a>
+    </h5>
 
     <div *ngIf="graphService.selectedElements.edges.length > 0" class="table-responsive">
 
-      <table class="table">
+      <div id="contentEdgesSelected" class="show">
+        <table class=" table">
 
         <thead>
         <tr>
@@ -133,7 +165,7 @@
         </tbody>
 
       </table>
-
+      </div>
     </div>
 
     <hr *ngIf="graphService.selectedElements.edges.length > 0">
