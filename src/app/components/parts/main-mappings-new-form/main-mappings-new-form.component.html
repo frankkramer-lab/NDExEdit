@@ -144,10 +144,10 @@
 <!-- discrete form -->
 <form *ngIf="(typeHint.nd || typeHint.ed)">
   <div class="form-group row">
-    <label class="col-4 col-form-label"
+    <label class="col-3 col-form-label"
            for="{{mapType}}CssProperty">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
 
-    <div [ngClass]="!needsFontFaceSpecificForm(styleProperty) ? 'col-6' : 'col-8'">
+    <div [ngClass]="!needsFontFaceSpecificForm(styleProperty) ? 'col-7' : 'col-9'">
       <input [(ngModel)]="styleProperty" (input)="emitStyleProperty()"
              [readOnly]="isEdit" class="form-control"
              id="{{mapType}}CssProperty"
@@ -179,9 +179,9 @@
     <div *ngIf="!needsFontFaceSpecificForm(styleProperty)">
       <div class="row">
 
-        <label class="col-4 col-form-label" for="{{typeHint.ed ? 'ed' : 'nd'}}{{index}}">{{entry}}</label>
+        <label class="col-3 col-form-label" for="{{typeHint.ed ? 'ed' : 'nd'}}{{index}}">{{entry}}</label>
 
-        <div [ngClass]="needsColorValidation(styleProperty) ? 'col-7' : 'col-8'">
+        <div [ngClass]="needsColorValidation(styleProperty) ? 'col-8' : 'col-9'">
           <input *ngIf="!needsColorValidation(styleProperty)"
                  [(ngModel)]="mappingDiscrete.values[getIndexByKey(entry)]"
                  class="form-control"
@@ -214,44 +214,43 @@
       <div class="row">
 
         <!-- label -->
-        <label class="col-4 col-form-label" for="fontFaceFamily{{index}}">{{entry}}</label>
+        <label class="col-3 col-form-label" for="fontFaceFamily{{index}}">{{entry}}</label>
 
         <!-- font family -->
-        <div class="dropdown col-4">
-          <button class="btn btn-secondary dropdown-toggle" type="button"
-                  id="fontFaceFamily{{index}}"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false">
-            {{setFonts[index] && setFonts[index].family ? setFonts[index].family : ('FONT FACE FAMILY LABEL' | translate)}}
-          </button>
-          <div class="dropdown-menu" aria-labelledby="fontFaceFamily{{index}}">
-            <a class="dropdown-item" (click)="removeFont(index)">CLEAR FAMILY LABEL</a>
-            <a *ngFor="let font of availableFonts" class="dropdown-item" (click)="setFont(index, font)">{{font}}</a>
-          </div>
+        <div [ngClass]="(setFonts[index] && isJavaLogicalFont(setFonts[index].family)) ? 'col-3' : 'col-6'">
+          <select class="custom-select" size="5" id="fontFaceFamily{{index}}">
+            <option value="null" (click)="setFont(index, null)">reset family LABEL</option>
+            <option *ngFor="let font of availableFonts"
+                    value="{{font}}"
+                    (click)="setFont(index, font)"
+                    [selected]="setFonts[index] && setFonts[index].family === font">{{font}}</option>
+          </select>
         </div>
 
         <!-- font style only java logical -->
-        <div class="dropdown col-3" *ngIf="setFonts[index] && isJavaLogicalFont(setFonts[index].family)">
-          <button class="btn btn-secondary dropdown-toggle" type="button"
-                  id="fontFaceStyle{{index}}"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false">
-            {{setFonts[index] && setFonts[index].style ? setFonts[index].style : ('FONT FACE STYLE LABEL' | translate)}}
-          </button>
-
-          <div class="dropdown-menu"
-               aria-labelledby="fontFaceStyle{{index}}">
-            <a *ngFor="let style of javaFontStyles" class="dropdown-item"
-               (click)="setStyle(index, style)">{{style}}</a>
-          </div>
-
+        <div class="col-3" *ngIf="setFonts[index] && isJavaLogicalFont(setFonts[index].family)">
+          <select class="custom-select" size="5" id="fontFaceStyle{{index}}">
+            <option value="null" (click)="setStyle(index, null)">reset Style label</option>
+            <option *ngFor="let style of javaFontStyles"
+                    value="{{style}}"
+                    [selected]="setFonts[index] && setFonts[index].style === style"
+                    (click)="setStyle(index, style)">{{style}}</option>
+          </select>
         </div>
 
         <!-- font size -->
-        <div class="col-1" *ngIf="setFonts[index]">
-          <label for="fontFaceSize{{index}}"></label>
+        <div class="col-3" *ngIf="setFonts[index]">
+          <label for="fontFaceSize{{index}}">
+            <button class="btn btn-sm btn-outline-secondary mr-1"
+                    data-toggle="tooltip"
+                    ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_FONT_SIZE' | translate}}"
+                    placement="top"
+                    [disabled]="!setFonts[index].size"
+                    (click)="setFonts[index].size = null">
+              <fa-icon [icon]="faRedo"></fa-icon>
+            </button>
+            SIZE LABEL todo
+          </label>
           <input class="form-control" type="number"
                  id="fontFaceSize{{index}}" name="fontFaceSize{{index}}"
                  [(ngModel)]="setFonts[index].size">
@@ -260,7 +259,6 @@
       </div>
 
     </div>
-
 
   </div>
 

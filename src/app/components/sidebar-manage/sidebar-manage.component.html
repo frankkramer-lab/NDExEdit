@@ -7,31 +7,45 @@
       <td class="text-left">{{network.networkInformation.name}}</td>
       <td class="text-nowrap text-right">
         <a [routerLink]="['', { outlets: {primary: ['stats', network.id]} }]"
-           class="btn btn-sm btn-outline-secondary mr-1" data-toggle="tooltip"
-           ngbTooltip="{{'SIDEBAR_MANAGE_TT_INFO'|translate}}" placement="left"
+           class="btn btn-sm btn-outline-secondary mr-1"
+           data-toggle="tooltip"
+           ngbTooltip="{{'SIDEBAR_MANAGE_TT_INFO'|translate}}"
+           placement="left"
            role="button">
           <fa-icon [icon]="faInfo"></fa-icon>
         </a>
         <a [routerLink]="['', { outlets: {primary: ['graph', network.id], sidebar: ['edit', network.id]} }]"
-           class="btn btn-sm btn-outline-success mr-1" data-toggle="tooltip"
-           ngbTooltip="{{'SIDEBAR_MANAGE_TT_EDIT'|translate}}" placement="left"
+           class="btn btn-sm btn-success mr-1"
+           data-toggle="tooltip"
+           ngbTooltip="{{'SIDEBAR_MANAGE_TT_EDIT'|translate}}"
+           placement="left"
            role="button">
           <fa-icon [icon]="faPaintBrush"></fa-icon>
         </a>
 
-        <a (click)="downloadNetwork(network.id)" class="btn btn-sm btn-outline-secondary mr-1" data-toggle="tooltip"
-           ngbTooltip="{{'SIDEBAR_MANAGE_TT_DOWNLOAD'|translate}}" placement="left"
+        <a [routerLink]=""
+           (click)="downloadNetwork(network.id)"
+           class="btn btn-sm btn-outline-secondary mr-1"
+           data-toggle="tooltip"
+           ngbTooltip="{{'SIDEBAR_MANAGE_TT_DOWNLOAD'|translate}}"
+           placement="left"
            role="button">
           <fa-icon [icon]="faFileDownload"></fa-icon>
         </a>
         <a [routerLink]="['', { outlets: {primary: ['graph', network.id], sidebar: ['image', network.id]} }]"
-           class="btn btn-sm btn-outline-secondary mr-1" data-toggle="tooltip"
-           ngbTooltip="{{'SIDEBAR_MANAGE_TT_IMAGE'|translate}}" placement="left"
+           class="btn btn-sm btn-outline-secondary mr-1"
+           data-toggle="tooltip"
+           ngbTooltip="{{'SIDEBAR_MANAGE_TT_IMAGE'|translate}}"
+           placement="left"
            role="button">
           <fa-icon [icon]="faImage"></fa-icon>
         </a>
-        <a [hidden]="!network.networkInformation.uuid" (click)="copyUuidToClipboard(network.id)" class="btn btn-sm btn-outline-secondary" data-toggle="tooltip"
-           ngbTooltip="{{ copyToClipboardTooltip | translate }}" placement="left"
+        <a [routerLink]="" [hidden]="!network.networkInformation.uuid"
+           (click)="copyUuidToClipboard(network.id)"
+           class="btn btn-sm btn-outline-secondary"
+           data-toggle="tooltip"
+           ngbTooltip="{{ copyToClipboardTooltip | translate }}"
+           placement="left"
            role="button">
           <fa-icon [icon]="faClone"></fa-icon>
         </a>

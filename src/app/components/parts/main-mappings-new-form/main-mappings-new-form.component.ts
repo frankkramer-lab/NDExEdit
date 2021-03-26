@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {DataService} from '../../../services/data.service';
-import {faCheck, faPlus, faTimes, faTrash, faUndo} from '@fortawesome/free-solid-svg-icons';
+import {faCheck, faPlus, faRedo, faTimes, faTrash, faUndo} from '@fortawesome/free-solid-svg-icons';
 import {UtilityService} from '../../../services/utility.service';
 import {NeMappingsType} from '../../../models/ne-mappings-type';
 import {NeAspect} from '../../../models/ne-aspect';
@@ -23,6 +23,11 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faPlus = faPlus;
+  /**
+   * Icon: faRedo
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faRedo = faRedo;
   /**
    * Icon: faTrash
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
@@ -124,7 +129,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.mapType = this.utilityService.utilGetTypeLiteralByTypeHint(this.typeHint);
-
     if (!this.isEdit) {
       // NEW MAPPING
       if (this.typeHint.ec || this.typeHint.nc) {
@@ -136,6 +140,12 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
         // discrete
         this.styleProperty = this.mappingDiscrete.styleProperty;
         this.mapId = this.dataService.selectedDiscreteMapping.indexOf(this.mappingDiscrete);
+
+        if (this.styleProperty === 'EDGE_LABEL_FONT_FACE'
+          || this.styleProperty === 'NODE_LABEL_FONT_FACE') {
+          this.prefillDiscreteLabelMapping();
+        }
+
       } else {
         // continuous
         this.prefillContinuousMapping();
@@ -151,6 +161,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
     this.styleProperty = null;
     this.typeHint = null;
     this.alreadyExists = false;
+    this.setFonts = [];
   }
 
   /**
@@ -253,7 +264,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * Submits a new discrete mapping, adds CSS property to color properties managed in {@link GraphService}
    */
   submitNewDiscreteMapping(): void {
-    this.cleanForColorMapping();
+    this.cleanForColorOrLabelMapping();
 
     this.mappingDiscrete.styleProperty = this.styleProperty;
     this.dataService.addMappingDiscrete(this.mappingDiscrete, this.typeHint);
@@ -264,11 +275,11 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    */
   submitNewMapping(): void {
 
-    // handles color property management
-    if (this.needsColorValidation(this.styleProperty) && !this.dataService.colorProperties.includes(this.styleProperty)) {
-      this.dataService.colorProperties.push(this.styleProperty);
-    } else if (!this.needsColorValidation(this.styleProperty) && this.dataService.colorProperties.includes(this.styleProperty)) {
-      this.dataService.colorProperties = this.dataService.colorProperties.filter(x => x !== this.styleProperty);
+    this.handleColorValidation();
+
+    if (this.styleProperty === 'NODE_LABEL_FONT_FACE'
+      || this.styleProperty === 'EDGE_LABEL_FONT_FACE') {
+      this.handleLabelMapping();
     }
 
     if (this.typeHint.nd || this.typeHint.ed) {
@@ -281,12 +292,45 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Collapses the font specification stored within {@link setFonts} into strings
+   */
+  handleLabelMapping(): void {
+    this.mappingDiscrete.values = [];
+
+    for (let i = 0; i < this.setFonts.length; i++) {
+
+      if (this.setFonts[i] && this.setFonts[i].family && this.setFonts[i].size) {
+        this.mappingDiscrete.values.push(
+          this.setFonts[i].family + ',,'
+          + (this.setFonts[i].style ?? 'plain') + ',,'
+          + this.setFonts[i].size);
+      } else {
+        this.mappingDiscrete.values.push(null);
+        this.mappingDiscrete.useValue[i] = false;
+      }
+    }
+    this.cleanForColorOrLabelMapping();
+  }
+
+  /**
+   * Handles color validation when submitting a new mapping
+   */
+  handleColorValidation(): void {
+
+    if (this.needsColorValidation(this.styleProperty) && !this.dataService.colorProperties.includes(this.styleProperty)) {
+      this.dataService.colorProperties.push(this.styleProperty);
+    } else if (!this.needsColorValidation(this.styleProperty) && this.dataService.colorProperties.includes(this.styleProperty)) {
+      this.dataService.colorProperties = this.dataService.colorProperties.filter(x => x !== this.styleProperty);
+    }
+  }
+
+  /**
    * Edits an existing mapping
    */
   editMapping(): void {
 
     if (this.typeHint.nd || this.typeHint.ed) {
-      this.cleanForColorMapping();
+      this.cleanForColorOrLabelMapping();
       this.dataService.editMappingDiscrete(this.typeHint, this.mappingDiscrete, this.mapId);
     } else {
       this.dataService.editMappingContinuous(this.typeHint, this.thresholds);
@@ -350,6 +394,35 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
         isEditable: false
       },
     ];
+  }
+
+  prefillDiscreteLabelMapping(): void {
+
+    let aspect: NeAspect;
+    if (this.typeHint.nd) {
+      aspect = this.dataService.selectedNetwork.aspectKeyValuesNodes.find(a => a.name === this.mappingDiscrete.col);
+    } else {
+      aspect = this.dataService.selectedNetwork.aspectKeyValuesEdges.find(a => a.name === this.mappingDiscrete.col);
+    }
+
+    console.log(aspect);
+
+    for (let i = 0; i < aspect.values.length; i++) {
+      const pointer = this.mappingDiscrete.keys.indexOf(aspect.values[i]);
+      if (pointer > -1) {
+        const commaSplit = this.mappingDiscrete.values[pointer].split(',');
+        console.log(commaSplit);
+        this.setFonts[i] = {
+          family: commaSplit[0],
+          style: commaSplit[1],
+          size: commaSplit[2]
+        };
+      }
+    }
+    console.log(this.setFonts);
+
+
+    console.log(this.mappingDiscrete);
   }
 
   /**
@@ -468,26 +541,33 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
 
   /**
    * Removes values where the use-value-flag is false.
-   * Needed for color properties, where null is not possible
+   * Needed for color properties, where null is not possible.
+   * Also used for font face mappings, where handling null cases is more complex
    * @private
    */
-  private cleanForColorMapping(): void {
+  private cleanForColorOrLabelMapping(): void {
     for (let i = this.mappingDiscrete.useValue.length - 1; i < 0; i--) {
       if (!this.mappingDiscrete.useValue[i]) {
         this.mappingDiscrete.values = this.mappingDiscrete.values.splice(i, 1);
         this.mappingDiscrete.keys = this.mappingDiscrete.keys.splice(i, 1);
       }
     }
+    console.log(this.mappingDiscrete);
   }
 
-  getFontFamilyById(index: number): string {
-    return this.setFonts[index].family ?? '';
-  }
-
+  /**
+   * True, if the specified string is in {@link JavaLogicalFontConstants}'s font stack
+   * @param font name of the font
+   */
   isJavaLogicalFont(font: string): boolean {
     return Object.keys(JavaLogicalFontConstants.FONT_STACK_MAP).includes(font);
   }
 
+  /**
+   * Adds the specified font family to the {@link setFonts}
+   * @param index element's position within {@link setFonts}
+   * @param font Name of font, null is valid
+   */
   setFont(index: number, font: string): void {
     if (!this.setFonts[index]) {
       this.setFonts[index] = {
@@ -502,9 +582,13 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
     if (!this.isJavaLogicalFont(font)) {
       this.setFonts[index].style = 'plain';
     }
-    console.log(this.setFonts[index]);
   }
 
+  /**
+   * Adds the specified font style to the {@link setFonts}
+   * @param index element's position within {@link setFonts}
+   * @param style Name of style, null is valid, but will be converted to 'plain' on submit
+   */
   setStyle(index: number, style: string): void {
     if (!this.setFonts[index]) {
       this.setFonts[index] = {
@@ -515,19 +599,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
     } else {
       this.setFonts[index].style = style;
     }
-    console.log(this.setFonts[index]);
-  }
-
-  removeFont(index: number): void {
-    this.setFonts[index].family = null;
-    console.log(this.setFonts[index]);
-
-  }
-
-  removeStyle(index: number): void {
-    this.setFonts[index].style = null;
-    console.log(this.setFonts[index]);
-
   }
 }
 

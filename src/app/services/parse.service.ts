@@ -17,9 +17,6 @@ import {DataService} from './data.service';
 import {NeMappingPassthrough} from '../models/ne-mapping-passthrough';
 import {NeStyle} from '../models/ne-style';
 
-import cySvg from 'cytoscape-svg';
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -28,6 +25,8 @@ import cySvg from 'cytoscape-svg';
  * Service for parsing of .cx and cytoscape files
  */
 export class ParseService {
+
+  core: cytoscape.Core;
 
   attributeNameMap = {};
 
@@ -555,14 +554,12 @@ export class ParseService {
       pan
     };
 
-    // wirft fehler
-    // cytoscape.use(cySvg);
-    let core = cytoscape(networkConfig);
-    core = this.addUtilitySelectors(core);
+    this.core = cytoscape(networkConfig);
+    this.core = this.addUtilitySelectors(this.core);
 
     return new Promise<cytoscape.Core>(
       (resolve, reject) => {
-        resolve(core);
+        resolve(this.core);
         reject(undefined);
       }
     );

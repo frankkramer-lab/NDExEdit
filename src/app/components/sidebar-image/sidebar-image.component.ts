@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DataService} from '../../services/data.service';
-import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
+import {faArrowLeft, faRedo} from '@fortawesome/free-solid-svg-icons';
 import {GraphService} from '../../services/graph.service';
-import * as cytoscape from 'cytoscape';
-import svg from 'cytoscape-svg';
 
 @Component({
   selector: 'app-sidebar-image',
@@ -24,7 +22,11 @@ export class SidebarImageComponent implements OnInit {
     private graphService: GraphService
   ) {
   }
-
+  /**
+   * Icon: faRedo
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faRedo = faRedo;
   /**
    * Icon: faArrowLeft
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
@@ -36,8 +38,7 @@ export class SidebarImageComponent implements OnInit {
    */
   fileTypeOptions: string[] = [
     'PNG',
-    'JPEG',
-    'SVG'
+    'JPEG'
   ];
   /**
    * Selected file type
@@ -52,9 +53,14 @@ export class SidebarImageComponent implements OnInit {
    */
   optScale = 1;
   /**
-   * Color of the background
+   * Color of the background in hexadecimal format, e.g. '#ff0000',
+   * should by default be the network's background color
    */
-  optBg: string;
+  optBg = '#fff';
+  /**
+   * True, if the background set by {@link optBg} is to be used.
+   */
+  optUseBg = true;
   /**
    * Optional height value of the resulting image
    */
@@ -70,21 +76,21 @@ export class SidebarImageComponent implements OnInit {
   url: string;
 
   ngOnInit(): void {
+    if (this.dataService.selectedNetwork) {
+      this.optBg = this.dataService.getBackgroundColor();
+    }
   }
 
   /**
    * Calls type specific download methods based on {@link SidebarImageComponent#selectedFileType}
    */
   downloadImage(): void {
-    switch(this.selectedFileType) {
+    switch (this.selectedFileType) {
       case 'PNG':
         this.downloadImagePNG();
         break;
       case 'JPEG':
         this.downloadImageJPEG();
-        break;
-      case 'SVG':
-        this.downloadImageSVG();
         break;
     }
   }
@@ -96,7 +102,7 @@ export class SidebarImageComponent implements OnInit {
     this.url = window.URL.createObjectURL(this.dataService.selectedNetwork.core.png({
       output: 'blob',
       full: this.optFull ?? false,
-      bg: this.optBg ?? null,
+      bg: this.optUseBg ? this.optBg : null,
       scale: this.optScale,
       maxHeight: this.optHeight ?? null,
       maxWidth: this.optWidth ?? null
@@ -112,19 +118,13 @@ export class SidebarImageComponent implements OnInit {
     this.url = window.URL.createObjectURL(this.dataService.selectedNetwork.core.jpeg({
       output: 'blob',
       full: this.optFull ?? false,
-      bg: this.optBg ?? null,
+      bg: this.optUseBg ? this.optBg : null,
       scale: this.optScale,
       maxHeight: this.optHeight ?? null,
       maxWidth: this.optWidth ?? null
     }));
 
     this.download('.jpeg');
-  }
-
-  // todo dont let torture by js library
-  downloadImageSVG(): void {
-    // cytoscape.use(svg);
-    // this.dataService.selectedNetwork.core.svg();
   }
 
   /**
