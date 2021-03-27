@@ -144,6 +144,7 @@
 <!-- discrete form -->
 <form *ngIf="(typeHint.nd || typeHint.ed)">
   <div class="form-group row">
+
     <label class="col-3 col-form-label"
            for="{{mapType}}CssProperty">{{'MAIN_MAPPINGS_NEW_CSS_PROPERTY_LABEL' | translate}}</label>
 
@@ -160,7 +161,7 @@
     <div *ngIf="!needsFontFaceSpecificForm(styleProperty)" class="col-2 form-check">
       <input (click)="toggleNeedsColorValidation(!needsColorValidation(styleProperty))"
              [disabled]="isEdit"
-             [checked]="needsColorValidation(styleProperty)" class="form-check-input position-static"
+             [checked]="needsColorValidation(styleProperty)" class="form-check-input"
              id="{{mapType}}ColorValidation"
              type="checkbox">
       <label class="form-check-label" for="{{mapType}}ColorValidation">

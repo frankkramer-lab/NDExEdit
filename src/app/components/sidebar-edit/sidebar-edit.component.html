@@ -12,8 +12,12 @@
     </a>
     {{'SIDEBAR_EDIT_DESCRIPTION_TITLE' | translate}}
 
-    <a class="float-right" data-toggle="collapse" data-target="#contentDescription"
-       aria-expanded="true" aria-controls="contentDescription" href="#">
+    <a class="float-right"
+       data-toggle="collapse"
+       data-target="#contentDescription"
+       aria-expanded="true"
+       aria-controls="contentDescription"
+       href="#">
       <fa-icon [icon]="faChevronDown"></fa-icon>
     </a>
   </h5>
@@ -25,20 +29,18 @@
        type="button"
        ngbTooltip="{{'NAV_MANAGE' | translate}}" placement="right"
        role="button">
-      <fa-icon [icon]="faArrowLeft"></fa-icon>
+      <fa-icon class="mr-1" [icon]="faArrowLeft"></fa-icon>
     </a>
     {{'SIDEBAR_EDIT_DEFAULT_TITLE' | translate}}
 
-    <a class="float-right" data-toggle="collapse" data-target="#contentDescription"
-       aria-expanded="true" aria-controls="contentDescription" href="#">
-      <fa-icon [icon]="faChevronDown"></fa-icon>
-    </a>
   </h5>
 
+  <!-- Network description -->
   <div *ngIf="dataService.selectedNetwork.networkInformation.description" id="contentDescription" class="show">
     <p [innerHTML]="dataService.selectedNetwork.networkInformation.description"></p>
   </div>
 
+  <!-- Show labels -->
   <div *ngIf="showLabelCheckbox" class="form-check mb-2">
     <input (click)="toggleLabels(!dataService.selectedNetwork.showLabels)"
            [checked]="dataService.selectedNetwork.showLabels" class="form-check-input" id="showLabels"
@@ -48,10 +50,11 @@
     </label>
   </div>
 
+  <!-- Show chart -->
   <app-chart *ngIf="showChart" [chartObject]="lineChartObject"
              [index]="index" [widthPercent]="100"></app-chart>
 
-  <!-- color gradient for continuous mappings -->
+  <!-- Show color gradient -->
   <div *ngIf="showColorGradient">
     <h5>
       <a [routerLink]="['', {outlets: {primary: ['mappings', index]} }]" role="button">
@@ -80,41 +83,41 @@
       </a>
     </h5>
 
-    <div *ngIf="graphService.selectedElements.nodes.length > 0"  class="table-responsive">
+    <div *ngIf="graphService.selectedElements.nodes.length > 0" class="table-responsive">
 
       <div class="show" id="contentNodesSelected">
         <table class="table">
 
-        <thead>
-        <tr>
-          <td *ngFor="let node of graphService.selectedElements.nodes">
-            <a (click)="graphService.highlightByElementId(node.id)" data-toggle="tooltip"
-               ngbTooltip="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_NODE' | translate}} {{node.id}}" placement="left"
-               role="button">
-              <b class="float-right">{{node.name}} ({{node.id}})</b>
-            </a>
-          </td>
-        </tr>
-        </thead>
+          <thead>
+          <tr>
+            <td *ngFor="let node of graphService.selectedElements.nodes">
+              <a (click)="graphService.highlightByElementId(node.id)" data-toggle="tooltip"
+                 ngbTooltip="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_NODE' | translate}} {{node.id}}" placement="left"
+                 role="button">
+                <b class="float-right">{{node.name}} ({{node.id}})</b>
+              </a>
+            </td>
+          </tr>
+          </thead>
 
-        <tbody>
-        <tr>
-          <td *ngFor="let node of graphService.selectedElements.nodes; let elementIndex = index">
+          <tbody>
+          <tr>
+            <td *ngFor="let node of graphService.selectedElements.nodes; let elementIndex = index">
 
-            <table class="table table-borderless">
+              <table class="table table-borderless">
 
-              <tr *ngFor="let attribute of node|attributesByElement">
-                <td *ngIf="elementIndex === 0" colspan="2"><b>{{attribute}}</b></td>
-                <td class="w-100">{{node[attribute]}}</td>
-              </tr>
+                <tr *ngFor="let attribute of node|attributesByElement">
+                  <td *ngIf="elementIndex === 0" colspan="2"><b>{{attribute}}</b></td>
+                  <td class="w-100">{{node[attribute]}}</td>
+                </tr>
 
-            </table>
+              </table>
 
-          </td>
-        </tr>
-        </tbody>
+            </td>
+          </tr>
+          </tbody>
 
-      </table>
+        </table>
       </div>
 
     </div>
@@ -135,36 +138,36 @@
       <div id="contentEdgesSelected" class="show">
         <table class=" table">
 
-        <thead>
-        <tr>
-          <td *ngFor="let edge of graphService.selectedElements.edges">
-            <a (click)="graphService.highlightByElementId(edge.id)" data-toggle="tooltip"
-               ngbTooltip="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_NODE' | translate}} {{edge.id}}" placement="left"
-               role="button">
-              <b class="float-right">{{edge.name}} ({{edge.id}})</b>
-            </a>
-          </td>
-        </tr>
-        </thead>
+          <thead>
+          <tr>
+            <td *ngFor="let edge of graphService.selectedElements.edges">
+              <a (click)="graphService.highlightByElementId(edge.id)" data-toggle="tooltip"
+                 ngbTooltip="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_NODE' | translate}} {{edge.id}}" placement="left"
+                 role="button">
+                <b class="float-right">{{edge.name}} ({{edge.id}})</b>
+              </a>
+            </td>
+          </tr>
+          </thead>
 
-        <tbody>
-        <tr>
-          <td *ngFor="let edge of graphService.selectedElements.edges; let elementIndex = index">
+          <tbody>
+          <tr>
+            <td *ngFor="let edge of graphService.selectedElements.edges; let elementIndex = index">
 
-            <table class="table table-borderless">
+              <table class="table table-borderless">
 
-              <tr *ngFor="let attribute of edge|attributesByElement">
-                <td *ngIf="elementIndex === 0" colspan="2"><b>{{attribute}}</b></td>
-                <td class="w-100">{{edge[attribute]}}</td>
-              </tr>
+                <tr *ngFor="let attribute of edge|attributesByElement">
+                  <td *ngIf="elementIndex === 0" colspan="2"><b>{{attribute}}</b></td>
+                  <td class="w-100">{{edge[attribute]}}</td>
+                </tr>
 
-            </table>
+              </table>
 
-          </td>
-        </tr>
-        </tbody>
+            </td>
+          </tr>
+          </tbody>
 
-      </table>
+        </table>
       </div>
     </div>
 
@@ -203,7 +206,9 @@
       </button>
 
       <h5
-        *ngIf="dataService.selectedNetwork.mappings.nodesDiscrete.length > 0 || dataService.selectedNetwork.mappings.nodesContinuous.length > 0">
+        *ngIf="dataService.selectedNetwork.mappings.nodesDiscrete.length > 0
+        || dataService.selectedNetwork.mappings.nodesContinuous.length > 0
+        || dataService.selectedNetwork.mappings.nodesPassthrough.length > 0">
         {{'SIDEBAR_EDIT_ASPECTS_NODES' | translate}}
       </h5>
 
@@ -293,7 +298,9 @@
       </ul>
 
       <h5
-        *ngIf="dataService.selectedNetwork.mappings.edgesDiscrete.length > 0 || dataService.selectedNetwork.mappings.edgesContinuous.length > 0">
+        *ngIf="dataService.selectedNetwork.mappings.edgesDiscrete.length > 0
+        || dataService.selectedNetwork.mappings.edgesContinuous.length > 0
+        || dataService.selectedNetwork.mappings.edgesPassthrough.length > 0">
         {{'SIDEBAR_EDIT_ASPECTS_EDGES' | translate}}
       </h5>
 
