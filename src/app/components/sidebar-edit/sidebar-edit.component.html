@@ -396,158 +396,259 @@
       <p>{{'SIDEBAR_EDIT_INSPECT_TITLE_HINT' | translate}}</p>
 
       <!-- INSPECTION LIST -->
-      <table class="table">
+      <div class="table-responsive">
+        <table class="table">
 
-        <ng-container *ngFor="let def of highlightListDefinition; let defIndex = index">
+          <ng-container *ngFor="let def of highlightListDefinition; let defIndex = index">
 
-          <tr [ngClass]="def.markedForDeletion ? 'table-danger' : ''">
-            <td>{{def.type | translate}}</td>
-            <td>{{def.property.name}}</td>
+            <tr [ngClass]="def.markedForDeletion ? 'table-danger' : ''">
+              <td>{{def.type | translate}}</td>
+              <td>{{def.property.name}}</td>
 
-            <td *ngIf="utilityService.utilIsNumber(def.rangeLower) && utilityService.utilIsNumber(def.rangeUpper)">
-              {{'SIDEBAR_EDIT_INSPECT_RANGE_LOWER' | translate}} <b>{{def.rangeLower}}</b>
-              {{'SIDEBAR_EDIT_INSPECT_RANGE_UPPER' | translate}} <b>{{def.rangeUpper}}</b>
-            </td>
+              <td *ngIf="utilityService.utilIsNumber(def.rangeLower) && utilityService.utilIsNumber(def.rangeUpper)">
+                {{'SIDEBAR_EDIT_INSPECT_RANGE_LOWER' | translate}} <b>{{def.rangeLower}}</b>
+                {{'SIDEBAR_EDIT_INSPECT_RANGE_UPPER' | translate}} <b>{{def.rangeUpper}}</b>
+              </td>
 
-            <td *ngIf="def.sameAs">{{'SIDEBAR_EDIT_INSPECT_SAME' | translate}} <b>{{def.sameAs}}</b></td>
+              <td *ngIf="def.sameAs">{{'SIDEBAR_EDIT_INSPECT_SAME' | translate}} <b>{{def.sameAs}}</b></td>
 
-            <td>
+              <td>
 
-              <button *ngIf="def.sameAs" class="btn btn-outline-primary"
-                      (click)="graphService.highlightByElementSameAs(def.type, def.property, def.sameAs)">
-                <fa-icon [icon]="faMagic"></fa-icon>
-              </button>
+                <button *ngIf="def.sameAs" class="btn btn-outline-primary"
+                        (click)="graphService.highlightByElementSameAs(def.type, def.property, def.sameAs)">
+                  <fa-icon [icon]="faMagic"></fa-icon>
+                </button>
 
-              <button *ngIf="utilityService.utilIsNumber(def.rangeLower) && utilityService.utilIsNumber(def.rangeUpper)"
-                      class="btn btn-outline-primary"
-                      (click)="graphService.highlightByElementRange(def.type, def.property, def.rangeLower, def.rangeUpper)">
-                <fa-icon [icon]="faMagic"></fa-icon>
-              </button>
-            </td>
+                <button *ngIf="utilityService.utilIsNumber(def.rangeLower) && utilityService.utilIsNumber(def.rangeUpper)"
+                        class="btn btn-outline-primary"
+                        (click)="graphService.highlightByElementRange(def.type, def.property, def.rangeLower, def.rangeUpper)">
+                  <fa-icon [icon]="faMagic"></fa-icon>
+                </button>
+              </td>
 
-            <td>
+              <td>
 
-              <button *ngIf="!def.markedForDeletion" class="btn btn-outline-danger" (click)="markForDeletion(defIndex)">
-                <fa-icon [icon]="faTrash"></fa-icon>
-              </button>
+                <button *ngIf="!def.markedForDeletion" class="btn btn-outline-danger" (click)="markForDeletion(defIndex)">
+                  <fa-icon [icon]="faTrash"></fa-icon>
+                </button>
 
-              <button *ngIf="def.markedForDeletion" class="btn btn-outline-danger"
-                      (click)="def.markedForDeletion = false">
-                <fa-icon [icon]="faTimes"></fa-icon>
-              </button>
+                <button *ngIf="def.markedForDeletion" class="btn btn-outline-danger"
+                        (click)="def.markedForDeletion = false">
+                  <fa-icon [icon]="faTimes"></fa-icon>
+                </button>
 
-            </td>
-          </tr>
-          <tr *ngIf="def.markedForDeletion">
-            <td colspan="4">
-              {{'SIDEBAR_EDIT_INSPECT_REMOVE_ITEM' | translate}}
-            </td>
-            <td>
-              <button class="btn btn-outline-danger" (click)="deleteFromHighlightList(defIndex)">
-                <fa-icon [icon]="faTrash"></fa-icon>
-              </button>
-            </td>
-          </tr>
+              </td>
+            </tr>
+            <tr *ngIf="def.markedForDeletion">
+              <td colspan="4">
+                {{'SIDEBAR_EDIT_INSPECT_REMOVE_ITEM' | translate}}
+              </td>
+              <td>
+                <button class="btn btn-outline-danger" (click)="deleteFromHighlightList(defIndex)">
+                  <fa-icon [icon]="faTrash"></fa-icon>
+                </button>
+              </td>
+            </tr>
 
-        </ng-container>
-      </table>
+          </ng-container>
+        </table>
+
+      </div>
 
       <hr *ngIf="highlightListDefinition.length > 0">
 
       <!-- INSPECTION SPECIFICATION -->
-      <div class="row">
 
-        <!-- TYPE -->
-        <div class="col-2">
-          <div class="btn-group-vertical btn-group-toggle"
-               data-toggle="buttons">
+      <div class="table-responsive">
+        <table class="table table-borderless">
+          <tr>
+            <!-- TYPE -->
+            <td>
+              <div class="btn-group-vertical btn-group-toggle"
+                   data-toggle="buttons">
 
-            <label class="btn btn-outline-secondary">
-              <input type="radio" name="type" id="typeNode" autocomplete="off"
-                     (click)="selectType('node')"
-                     [checked]="highlightDefinition.type === 'node'">
-              {{'SIDEBAR_EDIT_INSPECT_TYPE_NODE' | translate}}
-            </label>
+                <label class="btn btn-outline-secondary">
+                  <input type="radio" name="type" id="typeNode" autocomplete="off"
+                         (click)="selectType('node')"
+                         [checked]="highlightDefinition.type === 'node'">
+                  {{'SIDEBAR_EDIT_INSPECT_TYPE_NODE' | translate}}
+                </label>
 
-            <label class="btn btn-outline-secondary">
-              <input type="radio" name="type" id="typeEdge" autocomplete="off"
-                     (click)="selectType('edge')"
-                     [checked]="highlightDefinition.type === 'edge'">
-              {{'SIDEBAR_EDIT_INSPECT_TYPE_EDGE' | translate}}
-            </label>
+                <label class="btn btn-outline-secondary">
+                  <input type="radio" name="type" id="typeEdge" autocomplete="off"
+                         (click)="selectType('edge')"
+                         [checked]="highlightDefinition.type === 'edge'">
+                  {{'SIDEBAR_EDIT_INSPECT_TYPE_EDGE' | translate}}
+                </label>
 
-          </div>
-        </div>
+              </div>
+            </td>
 
-        <!-- PROPERTY -->
-        <div class="col-4">
+            <!-- PROPERTY -->
+            <td>
+              <!-- NODES -->
+              <div *ngIf="highlightDefinition.type === 'node'"
+                   class="btn-group-vertical btn-group-toggle"
+                   data-toggle="buttons">
 
-          <!-- NODES -->
-          <div *ngIf="highlightDefinition.type === 'node'"
-               class="btn-group-vertical btn-group-toggle"
-               data-toggle="buttons">
+                <label class="btn btn-outline-secondary" *ngFor="let property of getAvailablePropertiesByType('node')">
+                  <input type="radio" name="node_{{property.name}}" id="node_{{property.name}}" autocomplete="off"
+                         (click)="selectProperty(property)">
+                  {{property.name}}
+                </label>
 
-            <label class="btn btn-outline-secondary" *ngFor="let property of getAvailablePropertiesByType('node')">
-              <input type="radio" name="node_{{property.name}}" id="node_{{property.name}}" autocomplete="off"
-                     (click)="selectProperty(property)">
-              {{property.name}}
-            </label>
+              </div>
 
-          </div>
+              <!-- EDGES -->
+              <div *ngIf="highlightDefinition.type === 'edge'"
+                   class="btn-group-vertical btn-group-toggle"
+                   data-toggle="buttons">
 
-          <!-- EDGES -->
-          <div *ngIf="highlightDefinition.type === 'edge'"
-               class="btn-group-vertical btn-group-toggle"
-               data-toggle="buttons">
+                <label class="btn btn-outline-secondary" *ngFor="let property of getAvailablePropertiesByType('edge')">
+                  <input type="radio" name="edge_{{property.name}}" id="edge_{{property.name}}" autocomplete="off"
+                         (click)="selectProperty(property)">
+                  {{property.name}}
+                </label>
 
-            <label class="btn btn-outline-secondary" *ngFor="let property of getAvailablePropertiesByType('edge')">
-              <input type="radio" name="edge_{{property.name}}" id="edge_{{property.name}}" autocomplete="off"
-                     (click)="selectProperty(property)">
-              {{property.name}}
-            </label>
+              </div>
+            </td>
 
-          </div>
+            <!-- COMPARATOR -->
+            <td class="fixed-width">
+              <!-- numeric: lower -->
+              <form *ngIf="highlightDefinitionDatatype === 'numeric'">
+                <div class="form-group">
+                  <label for="numericLower">{{'SIDEBAR_EDIT_INSPECT_RANGE_LOWER' | translate}}</label>
+                  <input type="number" class="form-control" name="numericLower" id="numericLower" placeholder="0"
+                         [(ngModel)]="highlightDefinition.rangeLower">
+                </div>
+              </form>
 
-        </div>
+              <!-- numeric: upper -->
+              <form *ngIf="highlightDefinitionDatatype === 'numeric'">
+                <div class="form-group">
+                  <label for="numericUpper">{{'SIDEBAR_EDIT_INSPECT_RANGE_UPPER' | translate}}</label>
+                  <input type="number" class="form-control" name="numericUpper" id="numericUpper" placeholder="0"
+                         [(ngModel)]="highlightDefinition.rangeUpper">
+                </div>
+              </form>
 
-        <!-- COMPARATOR -->
-        <div class="col-4">
+              <!-- text -->
+              <form *ngIf="highlightDefinitionDatatype === 'text'">
+                <div class="form-group">
+                  <label for="nonNumeric">{{'SIDEBAR_EDIT_INSPECT_SAME_LABEL' | translate}}</label>
+                  <input type="text" class="form-control" name="nonNumeric" id="nonNumeric" placeholder="{{'SIDEBAR_EDIT_INSPECT_SAME_PLACEHOLDER' | translate}}"
+                         [(ngModel)]="highlightDefinition.sameAs">
+                </div>
+              </form>
+            </td>
 
-          <form *ngIf="highlightDefinitionDatatype === 'numeric'">
-            <div class="form-group">
-              <label for="numericLower">{{'SIDEBAR_EDIT_INSPECT_RANGE_LOWER' | translate}}</label>
-              <input type="number" class="form-control" name="numericLower" id="numericLower" placeholder="0"
-                     [(ngModel)]="highlightDefinition.rangeLower">
-            </div>
-          </form>
+            <!-- SUBMIT -->
+            <td>
+              <button class="btn btn-outline-success" (click)="addHighlightDefinitionToList()"
+                      [disabled]="!highlightDefinition.sameAs && (highlightDefinition.rangeUpper === null || highlightDefinition.rangeLower === null)">
+                <fa-icon [icon]="faCheck"></fa-icon>
+              </button>
+            </td>
 
-          <form *ngIf="highlightDefinitionDatatype === 'numeric'">
-            <div class="form-group">
-              <label for="numericUpper">{{'SIDEBAR_EDIT_INSPECT_RANGE_UPPER' | translate}}</label>
-              <input type="number" class="form-control" name="numericUpper" id="numericUpper" placeholder="0"
-                     [(ngModel)]="highlightDefinition.rangeUpper">
-            </div>
-          </form>
-
-          <form *ngIf="highlightDefinitionDatatype === 'text'">
-            <div class="form-group">
-              <label for="nonNumeric">{{'SIDEBAR_EDIT_INSPECT_SAME_LABEL' | translate}}</label>
-              <input type="text" class="form-control" name="nonNumeric" id="nonNumeric" placeholder="Test"
-                     [(ngModel)]="highlightDefinition.sameAs">
-            </div>
-          </form>
-
-        </div>
-
-        <!-- SUBMIT -->
-
-        <div class="col-2">
-          <button class="btn btn-block btn-outline-success" (click)="addHighlightDefinitionToList()"
-                  [disabled]="!highlightDefinition.sameAs && (highlightDefinition.rangeUpper === null || highlightDefinition.rangeLower === null)">
-            <fa-icon [icon]="faCheck"></fa-icon>
-          </button>
-        </div>
+          </tr>
+        </table>
       </div>
+
+<!--      <div class="row">-->
+
+<!--        &lt;!&ndash; TYPE &ndash;&gt;-->
+<!--        <div class="col-2">-->
+<!--&lt;!&ndash;          <div class="btn-group-vertical btn-group-toggle"&ndash;&gt;-->
+<!--&lt;!&ndash;               data-toggle="buttons">&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <label class="btn btn-outline-secondary">&ndash;&gt;-->
+<!--&lt;!&ndash;              <input type="radio" name="type" id="typeNode" autocomplete="off"&ndash;&gt;-->
+<!--&lt;!&ndash;                     (click)="selectType('node')"&ndash;&gt;-->
+<!--&lt;!&ndash;                     [checked]="highlightDefinition.type === 'node'">&ndash;&gt;-->
+<!--&lt;!&ndash;              {{'SIDEBAR_EDIT_INSPECT_TYPE_NODE' | translate}}&ndash;&gt;-->
+<!--&lt;!&ndash;            </label>&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <label class="btn btn-outline-secondary">&ndash;&gt;-->
+<!--&lt;!&ndash;              <input type="radio" name="type" id="typeEdge" autocomplete="off"&ndash;&gt;-->
+<!--&lt;!&ndash;                     (click)="selectType('edge')"&ndash;&gt;-->
+<!--&lt;!&ndash;                     [checked]="highlightDefinition.type === 'edge'">&ndash;&gt;-->
+<!--&lt;!&ndash;              {{'SIDEBAR_EDIT_INSPECT_TYPE_EDGE' | translate}}&ndash;&gt;-->
+<!--&lt;!&ndash;            </label>&ndash;&gt;-->
+
+<!--&lt;!&ndash;          </div>&ndash;&gt;-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; PROPERTY &ndash;&gt;-->
+<!--        <div class="col-4">-->
+
+<!--&lt;!&ndash;          &lt;!&ndash; NODES &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;          <div *ngIf="highlightDefinition.type === 'node'"&ndash;&gt;-->
+<!--&lt;!&ndash;               class="btn-group-vertical btn-group-toggle"&ndash;&gt;-->
+<!--&lt;!&ndash;               data-toggle="buttons">&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <label class="btn btn-outline-secondary" *ngFor="let property of getAvailablePropertiesByType('node')">&ndash;&gt;-->
+<!--&lt;!&ndash;              <input type="radio" name="node_{{property.name}}" id="node_{{property.name}}" autocomplete="off"&ndash;&gt;-->
+<!--&lt;!&ndash;                     (click)="selectProperty(property)">&ndash;&gt;-->
+<!--&lt;!&ndash;              {{property.name}}&ndash;&gt;-->
+<!--&lt;!&ndash;            </label>&ndash;&gt;-->
+
+<!--&lt;!&ndash;          </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;          &lt;!&ndash; EDGES &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;          <div *ngIf="highlightDefinition.type === 'edge'"&ndash;&gt;-->
+<!--&lt;!&ndash;               class="btn-group-vertical btn-group-toggle"&ndash;&gt;-->
+<!--&lt;!&ndash;               data-toggle="buttons">&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <label class="btn btn-outline-secondary" *ngFor="let property of getAvailablePropertiesByType('edge')">&ndash;&gt;-->
+<!--&lt;!&ndash;              <input type="radio" name="edge_{{property.name}}" id="edge_{{property.name}}" autocomplete="off"&ndash;&gt;-->
+<!--&lt;!&ndash;                     (click)="selectProperty(property)">&ndash;&gt;-->
+<!--&lt;!&ndash;              {{property.name}}&ndash;&gt;-->
+<!--&lt;!&ndash;            </label>&ndash;&gt;-->
+
+<!--&lt;!&ndash;          </div>&ndash;&gt;-->
+
+<!--        </div>-->
+
+<!--        &lt;!&ndash; COMPARATOR &ndash;&gt;-->
+<!--        <div class="col-4">-->
+
+<!--&lt;!&ndash;          <form *ngIf="highlightDefinitionDatatype === 'numeric'">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;              <label for="numericLower">{{'SIDEBAR_EDIT_INSPECT_RANGE_LOWER' | translate}}</label>&ndash;&gt;-->
+<!--&lt;!&ndash;              <input type="number" class="form-control" name="numericLower" id="numericLower" placeholder="0"&ndash;&gt;-->
+<!--&lt;!&ndash;                     [(ngModel)]="highlightDefinition.rangeLower">&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;          </form>&ndash;&gt;-->
+
+<!--&lt;!&ndash;          <form *ngIf="highlightDefinitionDatatype === 'numeric'">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;              <label for="numericUpper">{{'SIDEBAR_EDIT_INSPECT_RANGE_UPPER' | translate}}</label>&ndash;&gt;-->
+<!--&lt;!&ndash;              <input type="number" class="form-control" name="numericUpper" id="numericUpper" placeholder="0"&ndash;&gt;-->
+<!--&lt;!&ndash;                     [(ngModel)]="highlightDefinition.rangeUpper">&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;          </form>&ndash;&gt;-->
+
+<!--&lt;!&ndash;          <form *ngIf="highlightDefinitionDatatype === 'text'">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;              <label for="nonNumeric">{{'SIDEBAR_EDIT_INSPECT_SAME_LABEL' | translate}}</label>&ndash;&gt;-->
+<!--&lt;!&ndash;              <input type="text" class="form-control" name="nonNumeric" id="nonNumeric" placeholder="Test"&ndash;&gt;-->
+<!--&lt;!&ndash;                     [(ngModel)]="highlightDefinition.sameAs">&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;          </form>&ndash;&gt;-->
+
+<!--        </div>-->
+
+<!--        &lt;!&ndash; SUBMIT &ndash;&gt;-->
+
+<!--        <div class="col-2">-->
+<!--&lt;!&ndash;          <button class="btn btn-sm btn-block btn-outline-success" (click)="addHighlightDefinitionToList()"&ndash;&gt;-->
+<!--&lt;!&ndash;                  [disabled]="!highlightDefinition.sameAs && (highlightDefinition.rangeUpper === null || highlightDefinition.rangeLower === null)">&ndash;&gt;-->
+<!--&lt;!&ndash;            <fa-icon [icon]="faCheck"></fa-icon>&ndash;&gt;-->
+<!--&lt;!&ndash;          </button>&ndash;&gt;-->
+<!--        </div>-->
+<!--      </div>-->
+
 
     </div>
 

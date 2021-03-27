@@ -26,10 +26,6 @@ import {NeStyle} from '../models/ne-style';
  */
 export class ParseService {
 
-  core: cytoscape.Core;
-
-  attributeNameMap = {};
-
   constructor(
     private utilityService: UtilityService,
     private dataService: DataService
@@ -80,6 +76,8 @@ export class ParseService {
       dataService.selectedNetwork.aspectKeyValuesEdges = akvEdges;
     });
   }
+
+  attributeNameMap = {};
 
   /**
    * Creates a discrete mapping object based on the definition string.
@@ -134,47 +132,8 @@ export class ParseService {
     discreteMapping.keys = tmpK;
     discreteMapping.values = tmpV;
     discreteMapping.useValue = Array(tmpV.length).fill(true);
+
     return discreteMapping;
-  }
-
-  /**
-   * Builds the color gradient for a continuous mapping with color application
-   * @param mapping Mapping to be interpreted as color mapping
-   * @private
-   */
-  private static buildColorGradient(mapping: NeMappingContinuous): NeColorGradient[] {
-
-    const thresholds = mapping.thresholds as string[];
-    const lowers = mapping.lowers as string[];
-    const greaters = mapping.greaters as string[];
-    const equals = mapping.equals as string[];
-
-    const colorGradientCollection: NeColorGradient[] = [];
-    const range: number = Number(thresholds[thresholds.length - 1]) - Number(thresholds[0]);
-    if (range === 0) {
-      return [];
-    }
-    colorGradientCollection.push({
-      color: lowers[0],
-      offset: '-1',
-      numericThreshold: '-1'
-    });
-    for (const th of thresholds) {
-      const offset = ((Number(th) - Number(thresholds[0])) * 100 / range).toFixed(0);
-      const gradient: NeColorGradient = {
-        color: equals[thresholds.indexOf(th)],
-        offset: String(offset).concat('%'),
-        numericThreshold: th
-      };
-      colorGradientCollection.push(gradient);
-    }
-    colorGradientCollection.push({
-      color: greaters[greaters.length - 1],
-      offset: '101',
-      numericThreshold: '101'
-    });
-
-    return colorGradientCollection;
   }
 
   /**
@@ -253,6 +212,68 @@ export class ParseService {
   }
 
   /**
+   * Returns true, if the given list consists of distinct values
+   * @param thresholds List of values to be checked
+   * @private
+   */
+  private static validateThresholds(thresholds: number[] | string[]): boolean {
+    const uniqueThresholds = [];
+
+    for (const th of thresholds) {
+      if (uniqueThresholds.includes(th)) {
+        console.log('Thresholds need to be distinct! No color gradient can be built!');
+        return false;
+      }
+      uniqueThresholds.push(th);
+    }
+    return true;
+  }
+
+  /**
+   * Builds the color gradient for a continuous mapping with color application
+   * @param mapping Mapping to be interpreted as color mapping
+   * @private
+   */
+  private static buildColorGradient(mapping: NeMappingContinuous): NeColorGradient[] {
+
+    if (!ParseService.validateThresholds(mapping.thresholds)) {
+      return null;
+    }
+
+    const thresholds = mapping.thresholds as string[];
+    const lowers = mapping.lowers as string[];
+    const greaters = mapping.greaters as string[];
+    const equals = mapping.equals as string[];
+
+    const colorGradientCollection: NeColorGradient[] = [];
+    const range: number = Number(thresholds[thresholds.length - 1]) - Number(thresholds[0]);
+    if (range === 0) {
+      return [];
+    }
+    colorGradientCollection.push({
+      color: lowers[0],
+      offset: '-1',
+      numericThreshold: '-1'
+    });
+    for (const th of thresholds) {
+      const offset = ((Number(th) - Number(thresholds[0])) * 100 / range).toFixed(0);
+      const gradient: NeColorGradient = {
+        color: equals[thresholds.indexOf(th)],
+        offset: String(offset).concat('%'),
+        numericThreshold: th
+      };
+      colorGradientCollection.push(gradient);
+    }
+    colorGradientCollection.push({
+      color: greaters[greaters.length - 1],
+      offset: '101',
+      numericThreshold: '101'
+    });
+
+    return colorGradientCollection;
+  }
+
+  /**
    * Gathers attributes for which a mapping can be created
    * @param attributes
    * @param mappings
@@ -292,10 +313,12 @@ export class ParseService {
     for (const akv of akvs) {
 
       if (this.utilityService.utilFitForContinuous(akv)) {
+        akv.values = this.utilityService.utilCleanNumericValues(akv.values);
         akv.validForContinuous = true;
         let max = Number.MIN_SAFE_INTEGER;
         let min = Number.MAX_SAFE_INTEGER;
         for (const v of akv.values as unknown as number[]) {
+
           if (v < min) {
             min = v;
           }
@@ -454,6 +477,7 @@ export class ParseService {
       col: this.utilityService.utilExtractColByMappingString(obj.definition),
       styleProperty
     };
+
   }
 
   /**
@@ -463,6 +487,11 @@ export class ParseService {
    * @private
    */
   private buildChartData(mapping: NeMappingContinuous): NeChart {
+
+    if (!ParseService.validateThresholds(mapping.thresholds)) {
+      console.log('Thresholds need to be distinct! No chart can be built!');
+      return null;
+    }
 
     const chartMappingObject: NeChart = {
       chartData: [],
@@ -532,6 +561,7 @@ export class ParseService {
     }
 
     const utils = new CyNetworkUtils();
+
     const niceCX = utils.rawCXtoNiceCX(json);
     const conversion = new CxToJs(utils);
 
@@ -554,12 +584,13 @@ export class ParseService {
       pan
     };
 
-    this.core = cytoscape(networkConfig);
-    this.core = this.addUtilitySelectors(this.core);
+    let core: cytoscape.Core;
+    core = cytoscape(networkConfig);
+    core = this.addUtilitySelectors(core);
 
     return new Promise<cytoscape.Core>(
       (resolve, reject) => {
-        resolve(this.core);
+        resolve(core);
         reject(undefined);
       }
     );
@@ -649,11 +680,12 @@ export class ParseService {
   ): Promise<NeNetwork> {
     let networkAttributeData;
 
-    filedata.forEach(obj => {
+    for (const obj of filedata) {
       if (obj.networkAttributes) {
         networkAttributeData = obj.networkAttributes;
+        break;
       }
-    });
+    }
 
     const networkInformation: NeNetworkInformation = {
       name: '',
@@ -662,7 +694,7 @@ export class ParseService {
       organism: '',
       description: '',
       originalFilename: filename,
-      uuid
+      uuid: uuid ?? null
     };
 
     for (const na of networkAttributeData || []) {
@@ -859,17 +891,17 @@ export class ParseService {
     const discreteAkvs = this.utilityService.utilFilterForDiscrete(akvs); // includes passthrough valid properties
     const continuousAkvs = this.utilityService.utilFilterForContinuous(akvs, true);
 
-    let numberOfNodes;
-    let numberOfEdges;
+    let numberOfNodes: number;
+    let numberOfEdges: number;
 
     for (const fd of filedata) {
       if (fd.metaData) {
         for (const md of fd.metaData) {
           if (md.name === 'nodes') {
-            numberOfNodes = md.elementCount;
+            numberOfNodes = md.elementCount as number;
           }
           if (md.name === 'edges') {
-            numberOfEdges = md.elementCount;
+            numberOfEdges = md.elementCount as number;
           }
         }
       }
@@ -977,7 +1009,12 @@ export class ParseService {
    * @param elementCount number of nodes or edges
    * @private
    */
-  private getCoverageByChart(chart: NeChart, elementCount: any): string {
+  private getCoverageByChart(chart: NeChart, elementCount: number): string {
+
+    if (!chart || isNaN(elementCount)) {
+      return '';
+    }
+
     const tmpData = chart.chartData[0].data as number[];
     const sum = this.utilityService.utilSum(tmpData);
     if (sum !== null) {

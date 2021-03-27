@@ -278,7 +278,8 @@ export class UtilityService {
     const frequencies: NeFrequencyCounter[] = [];
     const chartLabels = [];
 
-    if (isNaN(binSize) || isNaN(propertyToMap.min) || isNaN(propertyToMap.max)) {
+    if (!binSize || !propertyToMap.min || !propertyToMap.max
+      || isNaN(binSize) || isNaN(propertyToMap.min) || isNaN(propertyToMap.max)) {
       console.log('Histogram data could not be calculated');
       return {
         chartData,
@@ -403,6 +404,27 @@ export class UtilityService {
       return input.length > 0;
     }
     return input !== null && input !== undefined;
+  }
+
+  /**
+   * Recalculates values which contain an exponential notation, e.g.
+   * '1.4E-3' which translates to '1.4 * 10^-3'
+   * @param numbers List of numbers as strings, which is necessary to avoid rendering discrepancies
+   */
+  utilCleanNumericValues(numbers: string[]): string[] {
+    const cleanNumbers: string[] = [];
+
+    for (const num of numbers) {
+      const exponentSplit = num.split('E');
+
+      if (exponentSplit.length === 2) {
+        const numVal = Math.pow(Number(exponentSplit[0]), Number(exponentSplit[1]));
+        cleanNumbers.push(String(numVal));
+      } else {
+        cleanNumbers.push(num);
+      }
+    }
+    return cleanNumbers;
   }
 
 }
