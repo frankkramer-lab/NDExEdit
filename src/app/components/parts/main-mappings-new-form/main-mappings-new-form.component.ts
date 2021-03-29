@@ -264,7 +264,10 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * Submits a new discrete mapping, adds CSS property to color properties managed in {@link GraphService}
    */
   submitNewDiscreteMapping(): void {
-    this.cleanForColorOrLabelMapping();
+
+    if (this.needsColorValidation(this.styleProperty)) {
+      this.cleanForColorMappings();
+    }
 
     this.mappingDiscrete.styleProperty = this.styleProperty;
     this.dataService.addMappingDiscrete(this.mappingDiscrete, this.typeHint);
@@ -318,7 +321,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
         this.mappingDiscrete.useValue[i] = false;
       }
     }
-    this.cleanForColorOrLabelMapping();
   }
 
   /**
@@ -344,7 +346,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
         || this.styleProperty === 'EDGE_LABEL_PROPERTY') {
         this.handleLabelMapping();
       } else {
-        this.cleanForColorOrLabelMapping();
+        this.cleanForColorMappings();
       }
 
 
@@ -547,9 +549,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
         aspect = this.dataService.selectedNetwork.aspectKeyValuesEdges.find(a => a.name === this.mappingDiscrete.col);
       }
 
-      console.log(aspect);
       keyIndex = aspect.values.findIndex(a => a === key);
-      console.log(keyIndex);
 
       if (isNaN(keyIndex) || keyIndex === -1) {
         console.log('No matching index found for key ' + key);
@@ -575,10 +575,9 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   /**
    * Removes values where the use-value-flag is false.
    * Needed for color properties, where null is not possible.
-   * Also used for font face mappings, where handling null cases is more complex
    * @private
    */
-  private cleanForColorOrLabelMapping(): void {
+  private cleanForColorMappings(): void {
     const values = this.mappingDiscrete.values;
     const keys = this.mappingDiscrete.keys;
     this.mappingDiscrete.values = [];
@@ -611,7 +610,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * @param font Name of font, null is valid
    */
   setFont(index: number, font: string): void {
-    if (!this.setFonts[index]) {
+    if (!this.setFonts[index] || font === null) {
       this.setFonts[index] = {
         family: font,
         style: null,
@@ -640,6 +639,10 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
       };
     } else {
       this.setFonts[index].style = style;
+
+      if (style === null) {
+        this.setFonts[index].size = null;
+      }
     }
   }
 
