@@ -294,19 +294,19 @@ export class UtilityService {
     const max = Number(propertyToMap.max);
     const values = propertyToMap.values as unknown as number[];
 
-    const sizeOfBin = Number(((max - min) / binSize).toFixed(4));
+    const sizeOfBin = Number((max - min) / binSize);
 
     let intervalPointer = min;
     while (intervalPointer < max) {
 
-      const nextThreshold = Number((intervalPointer + sizeOfBin).toFixed(4));
+      const nextThreshold = Number(intervalPointer + sizeOfBin);
       frequencies.push({
         lowerBorder: intervalPointer,
         upperBorder: nextThreshold,
-        occurance: 0
+        occurrence: 0
       });
 
-      chartLabels.push('[' + intervalPointer + ':' + nextThreshold + ']');
+      chartLabels.push('[' + intervalPointer + ' : ' + nextThreshold + ']');
       intervalPointer = nextThreshold;
     }
 
@@ -314,18 +314,18 @@ export class UtilityService {
       for (const value of values) {
 
         if (value === min && frequencies.indexOf(f) === 0) {
-          f.occurance++;
+          f.occurrence++;
           continue;
         }
 
         if (value > f.lowerBorder && value <= f.upperBorder) {
-          f.occurance++;
+          f.occurrence++;
         }
       }
     }
 
     chartData.push({
-      data: frequencies.map(a => a.occurance),
+      data: frequencies.map(a => a.occurrence),
       label: propertyToMap.name
     });
 

@@ -39,7 +39,7 @@
       <fa-icon [icon]="faPlus"></fa-icon>
     </button>
     <button class="col btn btn-sm btn-outline-warning" (click)="setNumberOfBins(binSizeInitially)" data-toggle="tooltip"
-            ngbTooltip="{{'CHART_HISTO_RESET' | translate}} <b>{{binSizeInitially}}</b>"
+            ngbTooltip="{{'CHART_HISTO_RESET' | translate}} {{binSizeInitially}}"
             placement="bottom">
       <fa-icon [icon]="faUndo"></fa-icon>
     </button>

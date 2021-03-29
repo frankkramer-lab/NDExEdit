@@ -16,6 +16,8 @@ export interface NeAspect {
    */
   values: string[];
 
+  numericValues?: number[];
+
   /**
    * Type of attribute
    */

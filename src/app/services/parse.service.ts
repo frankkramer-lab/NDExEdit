@@ -280,26 +280,35 @@ export class ParseService {
    * @param isNode
    * @private
    */
-  private convertAkvByFile(attributes: any, mappings: NeMappingsMap, isNode: boolean = true): NeAspect[] {
+  private convertAkvByFile(attributes: any[], mappings: NeMappingsMap, isNode: boolean = true): NeAspect[] {
     const akvs: NeAspect[] = [];
 
     for (const attr of attributes) {
       let found = false;
+      const isNumeric = (attr.d === 'double' || attr.d === 'integer');
 
       for (const akv of akvs) {
         if (akv.name === attr.n) {
+
           found = true;
+
+          if (isNumeric && !akv.numericValues.includes(Number(attr.v))) {
+            akv.numericValues.push(Number(attr.v));
+          }
 
           if (!akv.values.includes(attr.v)) {
             akv.values.push(attr.v);
           }
+
         }
       }
 
       if (!found) {
+
         const tmp: NeAspect = {
           name: attr.n,
-          values: [attr.v],
+          values: [attr.v] as string[],
+          numericValues: isNumeric ? [Number(attr.v)]: null,
           datatype: attr.d ?? 'string',
           mapPointerD: [],
           mapPointerC: [],
@@ -313,8 +322,6 @@ export class ParseService {
     for (const akv of akvs) {
 
       if (this.utilityService.utilFitForContinuous(akv)) {
-        // todo
-        akv.values = this.utilityService.utilCleanNumericValues(akv.values);
         akv.validForContinuous = true;
         let max = Number.MIN_SAFE_INTEGER;
         let min = Number.MAX_SAFE_INTEGER;
@@ -928,7 +935,7 @@ export class ParseService {
       const chart: NeChart = {
         chartColors: this.utilityService.utilGetRandomColorForChart(),
         chartData,
-        chartLabels: akv.values,
+        chartLabels: akv.values as string[],
         chartType,
         chartOptions: {
           scales: {
@@ -999,7 +1006,7 @@ export class ParseService {
     }
 
     for (const akv of continuousAkvs) {
-      const binSize = this.utilityService.utilSturgesRule(akv.values as unknown as number[]);
+      const binSize = this.utilityService.utilSturgesRule(akv.numericValues ?? []);
       const chart = this.utilityService.utilCalculateHistogramDataForBinSize(binSize, akv, ['OCCURANCES', 'BINS']);
       akv.chartContinuousDistribution = chart;
       akv.binSize = binSize;
@@ -1011,7 +1018,7 @@ export class ParseService {
 
   /**
    * Calculates percentage of element coverage per aspect
-   * @param chart Chart containing occurance counts for each aspect
+   * @param chart Chart containing occurrence counts for each aspect
    * @param elementCount number of nodes or edges
    * @private
    */

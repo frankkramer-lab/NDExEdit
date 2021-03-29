@@ -568,8 +568,6 @@ export class DataService {
    */
   editMappingDiscrete(typeHint: NeMappingsType, mapping: NeMappingDiscrete, discretePropertyPointer: number = null): void {
 
-    console.log(mapping);
-
     if (typeHint.nd || typeHint.ed) {
       this.selectPropertyForDeletion(discretePropertyPointer);
       this.removePropertyFromMapping();

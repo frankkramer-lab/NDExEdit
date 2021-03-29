@@ -353,7 +353,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
 
       this.binSize = (this.propertyToMap.datatype === 'integer')
         ? null
-        : this.utilityService.utilSturgesRule(this.chartObject.chartLabels as unknown as number[]);
+        : this.utilityService.utilSturgesRule(this.propertyToMap.numericValues);
 
       this.continuousMapping = {
         chart: undefined,

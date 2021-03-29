@@ -138,11 +138,8 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
       // EDIT MAPPING
       if (this.typeHint.nd || this.typeHint.ed) {
         // discrete
-        // this.mappingDiscrete.useValue = Array(this.propertyToMap.values.length).fill(true);
         this.styleProperty = this.mappingDiscrete.styleProperty;
         this.mapId = this.dataService.selectedDiscreteMapping.indexOf(this.mappingDiscrete);
-
-        console.log(this.mappingDiscrete);
 
         if (this.styleProperty === 'EDGE_LABEL_FONT_FACE'
           || this.styleProperty === 'NODE_LABEL_FONT_FACE') {
