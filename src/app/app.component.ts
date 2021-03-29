@@ -76,9 +76,7 @@ export class AppComponent {
   ) {
 
     this.initializeTranslation();
-
-    this.initDemoNetwork('DummyForTesting.cx');
-    // this.initDemoNetwork('mappings.cx');
+    this.initDemoFromNDEx('5d97a04a-6fab-11ea-bfdc-0ac135e8bacf');
   }
 
   /**
@@ -98,6 +96,7 @@ export class AppComponent {
    * For development purposes this method loads the specified file from the assets directory and adds the files to both the
    * {@link dataService#networksDownloaded|loaded} and
    * {@link dataService#networksParsed} accessible through the {@link dataService|dataService}.
+   * Networks rendered by this method get the prefix 'Demo: '.
    * @param filename name of the file to be loaded, parsed and added
    */
   private initDemoNetwork(filename: string): void {
@@ -105,11 +104,30 @@ export class AppComponent {
       .toPromise()
       .then((data: any[]) => {
         this.dataService.networksDownloaded.push(data);
-        this.parseService.convert(null, data, filename, '', this.dataService.nextId())
+        this.parseService.convert(null, data, 'DEMO', '', this.dataService.nextId())
           .then(dummy => this.dataService.networksParsed.push(dummy))
           .catch(e => console.error(e));
       })
       .catch(error => console.log(error));
+  }
+
+  /**
+   * For development purposes this method loads the specified uuid from the public NDEx API on app creation.
+   * Networks rendered by this method get the prefix 'Demo: '
+   * @param uuid unique identifier recognised by NDEx
+   * @private
+   */
+  private initDemoFromNDEx(uuid: string): void {
+    const url = 'http://public.ndexbio.org/v2/network/' + uuid;
+    this.http.get(url)
+      .toPromise()
+      .then((data: any[]) => {
+        this.dataService.networksDownloaded.push(data);
+        this.parseService.convert(null, data, 'DEMO', uuid, this.dataService.nextId())
+          .then(dummy => this.dataService.networksParsed.push(dummy))
+          .catch(e => console.error(e));
+      })
+      .catch(error => console.error(error));
   }
 
 }

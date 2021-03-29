@@ -15,6 +15,11 @@
 
 <hr>
 
+<h3>{{'MAIN_INFO_DEMO_TITLE' | translate}}</h3>
+<p [innerHTML]="'MAIN_INFO_DEMO_DESCRIPTION' | translate"></p>
+
+<hr>
+
 <h3>{{'MAIN_INFO_LAYOUT_TITLE' | translate}}</h3>
 <p>{{'MAIN_INFO_LAYOUT_DESCRIPTION' | translate}}</p>
 <ul>
@@ -48,7 +53,9 @@
 </p>
 <p>
   <fa-icon [icon]="faUserGraduate" [size]="'lg'" class="mr-3"></fa-icon>
-  {{'SIDEBAR_COMPARE_ABOUT_2' | translate}}
+  {{'SIDEBAR_COMPARE_ABOUT_2_1' | translate}}
+  <a href="mailto:simone1.mayer@student.uni-augsburg.de" target="_blank"><b>Simone Mayer</b></a>
+  {{'SIDEBAR_COMPARE_ABOUT_2_2' | translate}}
 </p>
 <p>
   <fa-icon [icon]="faComments" [size]="'lg'" class="mr-3"></fa-icon>

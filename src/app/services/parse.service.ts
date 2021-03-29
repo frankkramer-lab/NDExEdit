@@ -308,7 +308,7 @@ export class ParseService {
         const tmp: NeAspect = {
           name: attr.n,
           values: [attr.v] as string[],
-          numericValues: isNumeric ? [Number(attr.v)]: null,
+          numericValues: isNumeric ? [Number(attr.v)] : null,
           datatype: attr.d ?? 'string',
           mapPointerD: [],
           mapPointerC: [],
@@ -706,14 +706,18 @@ export class ParseService {
       networkType: '',
       organism: '',
       description: '',
-      originalFilename: filename,
+      originalFilename: '',
       uuid: uuid ?? null
     };
 
     for (const na of networkAttributeData || []) {
       switch (na.n) {
         case 'name':
-          networkInformation.name = na.v;
+          if (filename === 'DEMO') {
+            networkInformation.name = 'Demo: ' + na.v;
+          } else {
+            networkInformation.name = na.v;
+          }
           break;
         case 'rightsHolder':
           networkInformation.rightsholder = na.v;
