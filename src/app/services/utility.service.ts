@@ -413,7 +413,6 @@ export class UtilityService {
    */
   utilCleanNumericValues(numbers: string[]): string[] {
     const cleanNumbers: string[] = [];
-
     for (const num of numbers) {
       const exponentSplit = num.split('E');
 

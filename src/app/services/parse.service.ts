@@ -237,7 +237,7 @@ export class ParseService {
   private static buildColorGradient(mapping: NeMappingContinuous): NeColorGradient[] {
 
     if (!ParseService.validateThresholds(mapping.thresholds)) {
-      return null;
+      return [];
     }
 
     const thresholds = mapping.thresholds as string[];
@@ -313,6 +313,7 @@ export class ParseService {
     for (const akv of akvs) {
 
       if (this.utilityService.utilFitForContinuous(akv)) {
+        // todo
         akv.values = this.utilityService.utilCleanNumericValues(akv.values);
         akv.validForContinuous = true;
         let max = Number.MIN_SAFE_INTEGER;
@@ -490,7 +491,12 @@ export class ParseService {
 
     if (!ParseService.validateThresholds(mapping.thresholds)) {
       console.log('Thresholds need to be distinct! No chart can be built!');
-      return null;
+      return {
+        chartType: {
+          line: true,
+          bar: false
+        }
+      };
     }
 
     const chartMappingObject: NeChart = {

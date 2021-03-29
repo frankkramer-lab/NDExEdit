@@ -138,8 +138,11 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
       // EDIT MAPPING
       if (this.typeHint.nd || this.typeHint.ed) {
         // discrete
+        // this.mappingDiscrete.useValue = Array(this.propertyToMap.values.length).fill(true);
         this.styleProperty = this.mappingDiscrete.styleProperty;
         this.mapId = this.dataService.selectedDiscreteMapping.indexOf(this.mappingDiscrete);
+
+        console.log(this.mappingDiscrete);
 
         if (this.styleProperty === 'EDGE_LABEL_FONT_FACE'
           || this.styleProperty === 'NODE_LABEL_FONT_FACE') {
@@ -347,6 +350,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
         this.cleanForColorOrLabelMapping();
       }
 
+
       this.dataService.editMappingDiscrete(this.typeHint, this.mappingDiscrete, this.mapId);
     } else {
       this.dataService.editMappingContinuous(this.typeHint, this.thresholds);
@@ -536,11 +540,29 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * @param key Name of the value for which the value is to be determined.
    */
   getIndexByKey(key: string): number {
-    const keyIndex = this.mappingDiscrete.keys.indexOf(key);
+    let keyIndex = this.mappingDiscrete.keys.indexOf(key);
     if (keyIndex === -1) {
-      this.mappingDiscrete.keys.push(key);
-      this.mappingDiscrete.values.push('');
-      return this.getIndexByKey(key);
+
+      let aspect: NeAspect;
+      if (this.typeHint.nd) {
+        aspect = this.dataService.selectedNetwork.aspectKeyValuesNodes.find(a => a.name === this.mappingDiscrete.col);
+      } else if (this.typeHint.ed) {
+        aspect = this.dataService.selectedNetwork.aspectKeyValuesEdges.find(a => a.name === this.mappingDiscrete.col);
+      }
+
+      console.log(aspect);
+      keyIndex = aspect.values.findIndex(a => a === key);
+      console.log(keyIndex);
+
+      if (isNaN(keyIndex) || keyIndex === -1) {
+        console.log('No matching index found for key ' + key);
+        return -1;
+      }
+
+      this.mappingDiscrete.keys.splice(keyIndex, 0, aspect.values[keyIndex]);
+      this.mappingDiscrete.values.splice(keyIndex, 0, '');
+      this.mappingDiscrete.useValue.splice(keyIndex, 0, true);
+
     }
     return keyIndex;
   }
@@ -560,10 +582,20 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * @private
    */
   private cleanForColorOrLabelMapping(): void {
-    for (let i = this.mappingDiscrete.useValue.length - 1; i < 0; i--) {
-      if (!this.mappingDiscrete.useValue[i]) {
-        this.mappingDiscrete.values = this.mappingDiscrete.values.splice(i, 1);
-        this.mappingDiscrete.keys = this.mappingDiscrete.keys.splice(i, 1);
+    const values = this.mappingDiscrete.values;
+    const keys = this.mappingDiscrete.keys;
+    this.mappingDiscrete.values = [];
+    this.mappingDiscrete.keys = [];
+
+    for (let i = 0; i < keys.length; i++) {
+      if (this.mappingDiscrete.useValue[i]) {
+
+        this.mappingDiscrete.keys.push(keys[i]);
+        if (values[i] === '') {
+          this.mappingDiscrete.values.push('#000000');
+        } else {
+          this.mappingDiscrete.values.push(values[i]);
+        }
       }
     }
   }
@@ -613,5 +645,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
       this.setFonts[index].style = style;
     }
   }
+
 }
 

@@ -197,7 +197,7 @@
                  class="form-control form-control-color"
                  id="colorDiscrete{{index}}"
                  name="colorDiscrete{{index}}"
-                 value="{{mappingDiscrete.useValue[index] ? mappingDiscrete.values[getIndexByKey(entry)] : '#ffffff'}}">
+                 value="{{mappingDiscrete.values[getIndexByKey(entry)]}}">
         </div>
         <div *ngIf="needsColorValidation(styleProperty)" class="col-1">
           <input [(ngModel)]="mappingDiscrete.useValue[index]"

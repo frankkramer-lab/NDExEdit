@@ -1,6 +1,5 @@
 import {NeNetworkInformation} from './ne-network-information';
-import * as cytoscape from 'cytoscape';
-import {ElementDefinition, Stylesheet} from 'cytoscape';
+import {Core, ElementDefinition, Stylesheet} from 'cytoscape';
 import {NeAspect} from './ne-aspect';
 import {NeMappingsMap} from './ne-mappings-map';
 
@@ -28,7 +27,7 @@ export interface NeNetwork {
   /**
    * Core object which can be rendered
    */
-  core: cytoscape.Core;
+  core: Core;
 
   /**
    * List of nodes and edges

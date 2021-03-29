@@ -8,6 +8,7 @@ import {NeAspect} from '../models/ne-aspect';
 import {NeMappingPassthrough} from '../models/ne-mapping-passthrough';
 import {LayoutService} from './layout.service';
 import {NeThresholdMap} from '../models/ne-threshold-map';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -219,7 +220,9 @@ export class DataService {
     for (let i = 0; i < mapping.keys.length; i++) {
 
       // only add a key-value-pair if both sides are defined and value is not empty
-      if (mapping.keys[i] !== null && mapping.values[i] !== null && mapping.values[i] !== '') {
+      if (mapping.keys[i] !== null
+        && mapping.values[i] !== null
+        && mapping.values[i] !== '') {
 
         // todo form for FONT_FACE
         // if (mapping.styleProperty === 'NODE_LABEL_FONT_FACE' ||
@@ -564,6 +567,8 @@ export class DataService {
    * Edits an existing discrete mapping
    */
   editMappingDiscrete(typeHint: NeMappingsType, mapping: NeMappingDiscrete, discretePropertyPointer: number = null): void {
+
+    console.log(mapping);
 
     if (typeHint.nd || typeHint.ed) {
       this.selectPropertyForDeletion(discretePropertyPointer);
