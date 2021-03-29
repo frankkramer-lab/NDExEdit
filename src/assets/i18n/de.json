@@ -82,6 +82,7 @@
   "SIDEBAR_EDIT_TH_HIGHLIGHT": "Elemente",
   "SIDEBAR_EDIT_TT_SELECTOR": "Markiere Elemente mit Klasse",
   "SIDEBAR_EDIT_TT_ID": "Markiere Elemente mit ID",
+  "SIDEBAR_EDIT_TT_CONTINUOUS": "Eine Vorschau für kontinuierliche Mappings erscheint bei Klick unterhalb der Netzwerkbeschreibung",
   "SIDEBAR_EDIT_LABEL_HEX_NODE": "Knoten hervorheben (Farbcodes im Format #FF00FF)",
   "SIDEBAR_EDIT_LABEL_HEX_EDGE": "Kanten hervorheben (Farbcodes im Format #FF00FF)",
   "SIDEBAR_EDIT_LABEL_DURATION": "Dauer (in ms)",
