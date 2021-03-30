@@ -6,12 +6,12 @@ export interface NeFrequencyCounter {
   /**
    * Lower border is needed as value to be counted
    */
-  lowerBorder: string|number;
+  lowerBorder: string | number;
 
   /**
    * Optionally add an upper border to indicate end of interval
    */
-  upperBorder?: string|number;
+  upperBorder?: string | number;
 
   /**
    * Counter

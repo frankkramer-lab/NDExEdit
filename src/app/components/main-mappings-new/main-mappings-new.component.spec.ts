@@ -8,11 +8,12 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {createTranslateLoader} from '../../app.module';
 import {HttpClient} from '@angular/common/http';
-import {ActivatedRoute} from '@angular/router';
 
-class MockDataService {}
+class MockDataService {
+}
 
-class MockUtilityService {}
+class MockUtilityService {
+}
 
 describe('MainMappingsNewComponent', () => {
   let component: MainMappingsNewComponent;

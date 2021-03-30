@@ -4,17 +4,16 @@ import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {GraphService} from '../../services/graph.service';
 import {
+  faArrowLeft,
   faCheck,
+  faChevronDown,
   faClone,
   faCogs,
   faLightbulb,
   faMagic,
   faPalette,
   faTimes,
-  faTrash,
-  faArrowLeft,
-  faChevronDown,
-  faChevronLeft
+  faTrash
 } from '@fortawesome/free-solid-svg-icons';
 import {ChartDataSets} from 'chart.js';
 import {Label} from 'ng2-charts';
@@ -176,7 +175,13 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * Integer based properties should be treated as numeric.
    */
   highlightDefinitionDatatype: string;
-
+  /**
+   * Type of chart to be displayed
+   */
+  chartType: NeChartType = {
+    line: true,
+    bar: false
+  };
   /**
    * Ensures that only a graph is rendered if the id is specified within the URL
    * @private
@@ -197,14 +202,6 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * @private
    */
   private isInitialized = false;
-
-  /**
-   * Type of chart to be displayed
-   */
-  chartType: NeChartType = {
-    line: true,
-    bar: false
-  };
 
   /**
    * Subscribes to graph id and renders the graph if the view is already initialized

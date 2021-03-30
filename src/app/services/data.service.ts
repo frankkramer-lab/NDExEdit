@@ -8,7 +8,6 @@ import {NeAspect} from '../models/ne-aspect';
 import {NeMappingPassthrough} from '../models/ne-mapping-passthrough';
 import {LayoutService} from './layout.service';
 import {NeThresholdMap} from '../models/ne-threshold-map';
-import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -18,16 +17,6 @@ import {map} from 'rxjs/operators';
  * Service containing globally accessible data and providing manipulations
  */
 export class DataService {
-
-  constructor(
-    private utilityService: UtilityService,
-    private layoutService: LayoutService
-  ) {
-
-    layoutService.layoutEmitter.subscribe(layout => {
-      this.triggerChartRedraw();
-    });
-  }
 
   /**
    * List of networks available to be rendered within the app
@@ -65,7 +54,6 @@ export class DataService {
    * On selection of a mapping this typehint is set
    */
   selectedTypeHint: NeMappingsType;
-
   /**
    * Canvas used to display a network
    */
@@ -95,7 +83,6 @@ export class DataService {
     'EDGE_TARGET_ARROW_UNSELECTED_PAINT',
     'EDGE_UNSELECTED_PAINT'
   ];
-
   /**
    * List of known node properties
    */
@@ -193,21 +180,28 @@ export class DataService {
     'EDGE_VISIBLE',
     'EDGE_WIDTH'
   ];
-
   /**
    * Toggle redraw of a chart
    */
   chartRedrawEmitter = new EventEmitter<boolean>();
-
   /**
    * Toggle flipping the layout
    */
   flipLayoutEmitter = new EventEmitter<boolean>();
-
   /**
    * Toggle rebuild of the network's core for rendering
    */
   networkChangedEmitter = new EventEmitter<NeNetwork>();
+
+  constructor(
+    private utilityService: UtilityService,
+    private layoutService: LayoutService
+  ) {
+
+    layoutService.layoutEmitter.subscribe(layout => {
+      this.triggerChartRedraw();
+    });
+  }
 
   /**
    * Builds the definition string for a discrete mapping
@@ -748,14 +742,6 @@ export class DataService {
   }
 
   /**
-   * Emits the currently changed network
-   * @private
-   */
-  private triggerNetworkCoreBuild(): void {
-    this.networkChangedEmitter.emit(this.selectedNetwork);
-  }
-
-  /**
    * Defines the canvas to be used to render a network
    * @param nativeElement HTML element used as canvas
    */
@@ -875,5 +861,13 @@ export class DataService {
       }
     }
     return '#fff';
+  }
+
+  /**
+   * Emits the currently changed network
+   * @private
+   */
+  private triggerNetworkCoreBuild(): void {
+    this.networkChangedEmitter.emit(this.selectedNetwork);
   }
 }

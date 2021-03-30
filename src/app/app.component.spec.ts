@@ -20,9 +20,11 @@ class MockDataService {
 
   selectMapping = jasmine.createSpy('selectMapping').and.callThrough();
 
-  resetAnyMappingSelection = jasmine.createSpy('resetAnyMappingSelection').and.callFake(() => {});
+  resetAnyMappingSelection = jasmine.createSpy('resetAnyMappingSelection').and.callFake(() => {
+  });
 
-  resetDiscreteMappingPropertySelection = jasmine.createSpy('resetDiscreteMappingPropertySelection').and.callFake(() => {});
+  resetDiscreteMappingPropertySelection = jasmine.createSpy('resetDiscreteMappingPropertySelection').and.callFake(() => {
+  });
 }
 
 class MockUtilityService {
@@ -155,7 +157,7 @@ describe('AppComponent', () => {
 
     router.initialNavigation();
 
-    router.navigate(['', { outlets: {primary: ['new', 'nd', 0 ]} }]);
+    router.navigate(['', {outlets: {primary: ['new', 'nd', 0]}}]);
     tick();
     expect(location.path()).toBe('/new/nd/0');
   }));
@@ -167,7 +169,7 @@ describe('AppComponent', () => {
 
     router.initialNavigation();
 
-    router.navigate(['', { outlets: {primary: ['edit', 'nd0']} }]);
+    router.navigate(['', {outlets: {primary: ['edit', 'nd0']}}]);
     tick();
     expect(location.path()).toBe('/edit/nd0');
   }));

@@ -34,7 +34,10 @@ class MockDataService {
   getSelectedNetwork = jasmine.createSpy('getSelectedNetwork').and.callThrough();
 
 }
-class MockUtilityService {}
+
+class MockUtilityService {
+}
+
 class MockGraphService {
   selectedElements: NeSelection = {
     nodes: [],

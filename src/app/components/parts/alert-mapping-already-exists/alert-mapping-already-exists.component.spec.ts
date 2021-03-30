@@ -6,7 +6,6 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {createTranslateLoader} from '../../../app.module';
 import {HttpClient} from '@angular/common/http';
 import {DataService} from '../../../services/data.service';
-import {NeMappingsType} from '../../../models/ne-mappings-type';
 import {NeNetwork} from '../../../models/ne-network';
 
 class MockDataService {

@@ -9,8 +9,11 @@ import {HttpClient} from '@angular/common/http';
 import {DataService} from '../../services/data.service';
 import {UtilityService} from '../../services/utility.service';
 
-class MockDataService {}
-class MockUtilityService {}
+class MockDataService {
+}
+
+class MockUtilityService {
+}
 
 describe('MainStatsComponent', () => {
   let component: MainStatsComponent;

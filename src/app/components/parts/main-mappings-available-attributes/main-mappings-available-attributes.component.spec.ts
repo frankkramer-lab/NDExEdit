@@ -8,7 +8,9 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {createTranslateLoader} from '../../../app.module';
 import {HttpClient} from '@angular/common/http';
 
-class MockDataService {}
+class MockDataService {
+}
+
 class MockUtilityService {
   utilGetTypeHintByString = jasmine.createSpy('utilGetTypeHintByString').and.returnValue({
     nd: true, nc: false, np: false, ed: false, ec: false, ep: false

@@ -7,38 +7,38 @@
       <b>{{mapping.col}}</b>
     </a>
   </h5>
-  <canvas [ngStyle]="{'width.%': widthPercent}"
-          [chartType]="'line'" [colors]="chartObject.chartColors"
-          [datasets]="chartObject.chartData"
+  <canvas [chartType]="'line'"
+          [colors]="chartObject.chartColors" [datasets]="chartObject.chartData"
           [labels]="chartObject.chartLabels"
           [legend]="true"
+          [ngStyle]="{'width.%': widthPercent}"
           [options]="chartObject.chartOptions"
           baseChart></canvas>
 </div>
 
 <!-- Create new / Edit existing continuous mappings: Distribution charts -->
 <div *ngIf="chartObject && chartObject.chartType.bar">
-  <canvas [ngStyle]="{'width.%': widthPercent}"
-          [chartType]="'bar'"
+  <canvas [chartType]="'bar'"
           [colors]="chartObject.chartColors"
           [datasets]="chartObject.chartData"
           [labels]="chartObject.chartLabels"
+          [ngStyle]="{'width.%': widthPercent}"
           [options]="chartObject.chartOptions || {}"
           baseChart></canvas>
 
   <!-- Allow manipulation of bins for continuous mappings -->
   <div *ngIf="numberOfBins" class="row mt-2 mb-2 p-2">
-    <button class="col mr-2 btn btn-sm btn-outline-danger" (click)="setNumberOfBins(numberOfBins - 1)"
+    <button (click)="setNumberOfBins(numberOfBins - 1)" class="col mr-2 btn btn-sm btn-outline-danger"
             data-toggle="tooltip" ngbTooltip="{{'CHART_HISTO_DECREASE' | translate}}"
             placement="bottom">
       <fa-icon [icon]="faMinus"></fa-icon>
     </button>
-    <button class="col mr-2 btn btn-sm btn-outline-success" (click)="setNumberOfBins(numberOfBins + 1)"
+    <button (click)="setNumberOfBins(numberOfBins + 1)" class="col mr-2 btn btn-sm btn-outline-success"
             data-toggle="tooltip" ngbTooltip="{{'CHART_HISTO_INCREASE' | translate}}"
             placement="bottom">
       <fa-icon [icon]="faPlus"></fa-icon>
     </button>
-    <button class="col btn btn-sm btn-outline-warning" (click)="setNumberOfBins(binSizeInitially)" data-toggle="tooltip"
+    <button (click)="setNumberOfBins(binSizeInitially)" class="col btn btn-sm btn-outline-warning" data-toggle="tooltip"
             ngbTooltip="{{'CHART_HISTO_RESET' | translate}} {{binSizeInitially}}"
             placement="bottom">
       <fa-icon [icon]="faUndo"></fa-icon>

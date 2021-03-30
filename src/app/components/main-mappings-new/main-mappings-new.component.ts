@@ -37,6 +37,168 @@ import {NeMappingPassthrough} from '../../models/ne-mapping-passthrough';
 export class MainMappingsNewComponent implements OnInit, OnDestroy {
 
   /**
+   * Emits changes in mappings which also have to be visible within the sidebar
+   */
+  @Output() static mappingsNewEmitter: EventEmitter<any> = new EventEmitter<any>();
+  /**
+   * Icon: faQuestionCircle
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faQuestionCircle = faQuestionCircle;
+  /**
+   * Icon: faArrowRight
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faArrowRight = faArrowRight;
+  /**
+   * Icon: faArrowLeft
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faArrowLeft = faArrowLeft;
+  /**
+   * Icon: faPalette
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faPalette = faPalette;
+  /**
+   * Icon: faUndo
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faUndo = faUndo;
+  /**
+   * Icon: faCheck
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faCheck = faCheck;
+  /**
+   * Icon: faChartBar
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faChartBar = faChartBar;
+  /**
+   * Icon: faTimes
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faTimes = faTimes;
+  /**
+   * Icon: faPlus
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faPlus = faPlus;
+  /**
+   * Icon: faRoute
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faRoute = faRoute;
+  /**
+   * Property for which a mapping is to be added
+   */
+  propertyToMap: NeAspect;
+  /**
+   * Object containing the type of mapping to be added
+   */
+  typeHint: NeMappingsType = null;
+  /**
+   * Since the same component is used for adding a new and editing an existing mapping this boolean determines if
+   * the component is used for editing
+   */
+  isEdit: boolean;
+  /**
+   * True if the distribution chart for the selected property is to be shown
+   */
+  showDistribution = false;
+  /**
+   * True if the hints for continuous mappings are to be shown
+   */
+  showHints = false;
+  /**
+   * Determines which type of chart is to be displayed as distribution
+   * Since scatter diagrams are to be replaced with histograms, we don't need further distinction
+   * between discrete and continuous mappings
+   */
+  chartType: NeChartType = {
+    line: false,
+    bar: true
+  };
+  /**
+   * Defines how many bins are used to display the histogram.
+   * Initially calculated by {@link https://www.vosesoftware.com/riskwiki/Determiningthewidthofhistogrambars.php|Sturge's Rule}
+   */
+  binSize: number;
+  /**
+   * Calculation always leads to precision errors
+   * To fix those the user has to be able to adjust these
+   */
+  precision = 4;
+  /**
+   * The CSS property for which the mapping is to be created or edited
+   */
+  @Input() styleProperty: string;
+  /**
+   * Distribution chart data for discrete aspects
+   */
+  barChartData: ChartDataSets[] = [
+    {data: [0], label: 'no data found'}
+  ];
+  /**
+   * Distribution chart labels for discrete aspects
+   */
+  barChartLabels: Label[] = [''];
+  /**
+   * Chart Object
+   */
+  chartObject: NeChart;
+  /**
+   * Distribution chart data for continuous aspects
+   */
+  scatterChartData: ChartDataSets[] = [
+    {data: [0], label: 'no data found'}
+  ];
+  /**
+   * Distribution chart labels for continuous aspects
+   */
+  scatterChartLabels: Label[] = [''];
+  /**
+   * Newly created or existing discrete mapping to be edited
+   */
+  discreteMapping: NeMappingDiscrete;
+  /**
+   * Newly created or existing continuous mapping to be edited
+   */
+  continuousMapping: NeMappingContinuous;
+  /**
+   * Thresholds that belong to this {@link MainMappingsNewComponent#continuousMapping}
+   */
+  continuousThresholds: NeThresholdMap[] = [];
+  /**
+   * Newly created passthrough mapping
+   */
+  passthroughMapping: NeMappingPassthrough;
+  /**
+   * Points to property within the possible attributes of a network's elements (for new creation)
+   */
+  propertyId: number;
+  /**
+   * Points to already existing mapping which is to be edited
+   */
+  mapPointer: number;
+  /**
+   * Indicates if this new mapping or already existing mapping is discrete
+   * @private
+   */
+  private isDiscrete: boolean;
+  /**
+   * Indicates if this new mapping or already existing mapping is continuous
+   * @private
+   */
+  private isContinuous: boolean;
+  /**
+   * Indicates if this new mapping or already existing mapping is passthrough
+   * @private
+   */
+  private isPassthrough: boolean;
+
+  /**
    * Determines by URL if this component is used for editing or creating a new mapping.
    * Thus prefills the properties used in the form or prepares the new creation.
    *
@@ -56,197 +218,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     });
 
   }
-
-  /**
-   * Emits changes in mappings which also have to be visible within the sidebar
-   */
-  @Output() static mappingsNewEmitter: EventEmitter<any> = new EventEmitter<any>();
-  /**
-   * Icon: faQuestionCircle
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faQuestionCircle = faQuestionCircle;
-  /**
-   * Icon: faArrowRight
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faArrowRight = faArrowRight;
-
-  /**
-   * Icon: faArrowLeft
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faArrowLeft = faArrowLeft;
-
-  /**
-   * Icon: faPalette
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faPalette = faPalette;
-
-  /**
-   * Icon: faUndo
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faUndo = faUndo;
-
-  /**
-   * Icon: faCheck
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faCheck = faCheck;
-
-  /**
-   * Icon: faChartBar
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faChartBar = faChartBar;
-
-  /**
-   * Icon: faTimes
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faTimes = faTimes;
-
-  /**
-   * Icon: faPlus
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faPlus = faPlus;
-
-  /**
-   * Icon: faRoute
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faRoute = faRoute;
-
-  /**
-   * Property for which a mapping is to be added
-   */
-  propertyToMap: NeAspect;
-
-  /**
-   * Object containing the type of mapping to be added
-   */
-  typeHint: NeMappingsType = null;
-
-  /**
-   * Since the same component is used for adding a new and editing an existing mapping this boolean determines if
-   * the component is used for editing
-   */
-  isEdit: boolean;
-
-  /**
-   * True if the distribution chart for the selected property is to be shown
-   */
-  showDistribution = false;
-
-  /**
-   * True if the hints for continuous mappings are to be shown
-   */
-  showHints = false;
-  /**
-   * Determines which type of chart is to be displayed as distribution
-   * Since scatter diagrams are to be replaced with histograms, we don't need further distinction
-   * between discrete and continuous mappings
-   */
-  chartType: NeChartType = {
-    line: false,
-    bar: true
-  };
-
-  /**
-   * Defines how many bins are used to display the histogram.
-   * Initially calculated by {@link https://www.vosesoftware.com/riskwiki/Determiningthewidthofhistogrambars.php|Sturge's Rule}
-   */
-  binSize: number;
-
-  /**
-   * Calculation always leads to precision errors
-   * To fix those the user has to be able to adjust these
-   */
-  precision = 4;
-
-  /**
-   * The CSS property for which the mapping is to be created or edited
-   */
-  @Input() styleProperty: string;
-
-  /**
-   * Distribution chart data for discrete aspects
-   */
-  barChartData: ChartDataSets[] = [
-    {data: [0], label: 'no data found'}
-  ];
-
-  /**
-   * Distribution chart labels for discrete aspects
-   */
-  barChartLabels: Label[] = [''];
-
-  /**
-   * Chart Object
-   */
-  chartObject: NeChart;
-
-  /**
-   * Distribution chart data for continuous aspects
-   */
-  scatterChartData: ChartDataSets[] = [
-    {data: [0], label: 'no data found'}
-  ];
-
-  /**
-   * Distribution chart labels for continuous aspects
-   */
-  scatterChartLabels: Label[] = [''];
-
-  /**
-   * Newly created or existing discrete mapping to be edited
-   */
-  discreteMapping: NeMappingDiscrete;
-
-  /**
-   * Newly created or existing continuous mapping to be edited
-   */
-  continuousMapping: NeMappingContinuous;
-
-  /**
-   * Thresholds that belong to this {@link MainMappingsNewComponent#continuousMapping}
-   */
-  continuousThresholds: NeThresholdMap[] = [];
-
-  /**
-   * Newly created passthrough mapping
-   */
-  passthroughMapping: NeMappingPassthrough;
-
-  /**
-   * Points to property within the possible attributes of a network's elements (for new creation)
-   */
-  propertyId: number;
-
-  /**
-   * Points to already existing mapping which is to be edited
-   */
-  mapPointer: number;
-
-  /**
-   * Indicates if this new mapping or already existing mapping is discrete
-   * @private
-   */
-  private isDiscrete: boolean;
-  /**
-   * Indicates if this new mapping or already existing mapping is continuous
-   * @private
-   */
-  private isContinuous: boolean;
-  /**
-   * Indicates if this new mapping or already existing mapping is passthrough
-   * @private
-   */
-  private isPassthrough: boolean;
-
 
   /**
    * Hides the label checkbox in the sidebar, because toggling it from here has no gain at all
@@ -293,6 +264,25 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   setStyleProperty($event: any): void {
     this.styleProperty = $event;
+  }
+
+  /**
+   * As numbers of bins are increased or decreased, the distribution needs to be recalculated
+   *
+   * @param $event
+   */
+  changeBinSize($event: number): void {
+    this.binSize = $event;
+    this.chartObject = this.utilityService.utilCalculateHistogramDataForBinSize(
+      this.binSize,
+      this.propertyToMap);
+  }
+
+  /**
+   * Returns the continuously updated style property
+   */
+  getCurrentStyleProperty(): string {
+    return this.styleProperty;
   }
 
   /**
@@ -453,25 +443,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
       this.chartObject = this.propertyToMap.chartContinuousDistribution;
     }
 
-  }
-
-  /**
-   * As numbers of bins are increased or decreased, the distribution needs to be recalculated
-   *
-   * @param $event
-   */
-  changeBinSize($event: number): void {
-    this.binSize = $event;
-    this.chartObject = this.utilityService.utilCalculateHistogramDataForBinSize(
-      this.binSize,
-      this.propertyToMap);
-  }
-
-  /**
-   * Returns the continuously updated style property
-   */
-  getCurrentStyleProperty(): string {
-    return this.styleProperty;
   }
 }
 

@@ -26,6 +26,8 @@ import {NeStyle} from '../models/ne-style';
  */
 export class ParseService {
 
+  attributeNameMap = {};
+
   constructor(
     private utilityService: UtilityService,
     private dataService: DataService
@@ -76,8 +78,6 @@ export class ParseService {
       dataService.selectedNetwork.aspectKeyValuesEdges = akvEdges;
     });
   }
-
-  attributeNameMap = {};
 
   /**
    * Creates a discrete mapping object based on the definition string.
@@ -271,6 +271,226 @@ export class ParseService {
     });
 
     return colorGradientCollection;
+  }
+
+  /**
+   * Using external library to build the cytoscape core by converting the input JSON
+   * @param json CX file
+   * @param canvas HTML target
+   */
+  convertCxToJs(json: any[], canvas: HTMLElement): Promise<cytoscape.Core> {
+
+    if (!json || !canvas) {
+      console.log('Either data or canvas is missing');
+      return null;
+    }
+
+    const utils = new CyNetworkUtils();
+
+    const niceCX = utils.rawCXtoNiceCX(json);
+    const conversion = new CxToJs(utils);
+
+    const elements = conversion.cyElementsFromNiceCX(niceCX, this.attributeNameMap);
+    const style = conversion.cyStyleFromNiceCX(niceCX, this.attributeNameMap);
+
+    const cyBackgroundColor = conversion.cyBackgroundColorFromNiceCX(niceCX);
+    const layout = conversion.getDefaultLayout();
+    const zoom = conversion.cyZoomFromNiceCX(niceCX);
+    const pan = conversion.cyPanFromNiceCX(niceCX);
+
+    canvas.style.backgroundColor = cyBackgroundColor;
+
+    const networkConfig: cytoscape.CytoscapeOptions = {
+      container: canvas,
+      style,
+      elements,
+      layout,
+      zoom,
+      pan
+    };
+
+    let core: cytoscape.Core;
+    core = cytoscape(networkConfig);
+    core = this.addUtilitySelectors(core);
+
+    return new Promise<cytoscape.Core>(
+      (resolve, reject) => {
+        resolve(core);
+        reject(undefined);
+      }
+    );
+  }
+
+  /**
+   * Does not override any of the initially defined network properties.
+   * Simply recalculates the core for this network, ID is the same as before
+   * @param network Network to be recalculated
+   */
+  rebuildCoreForNetwork(network: NeNetwork): Promise<NeNetwork> {
+    if (!this.dataService.getCanvas()) {
+      console.log('No canvas specified!');
+      return null;
+    }
+    this.attributeNameMap = {};
+
+    return this.convertCxToJs(network.cx, this.dataService.getCanvas())
+      .then(core => {
+        network.core = core;
+        return network;
+      })
+      .catch(e => {
+        console.error(e);
+        return network;
+      });
+  }
+
+  /**
+   * Parses a file from .cx to cytoscape.js interpretable data
+   *
+   * @param container canvas rendering the network
+   * @param filedata data of the .cx file
+   * @param filename name of original file
+   * @param uuid optionally give the uuid for copy-to-clipboard-feature
+   * @param networkId id for this network
+   */
+  convert(
+    container: HTMLElement,
+    filedata: any[],
+    filename: string,
+    uuid: string = null,
+    networkId: number
+  ): Promise<NeNetwork> {
+    let networkAttributeData;
+
+    for (const obj of filedata) {
+      if (obj.networkAttributes) {
+        networkAttributeData = obj.networkAttributes;
+        break;
+      }
+    }
+
+    const networkInformation: NeNetworkInformation = {
+      name: '',
+      rightsholder: '',
+      networkType: '',
+      organism: '',
+      description: '',
+      originalFilename: '',
+      uuid: uuid ?? null
+    };
+
+    for (const na of networkAttributeData || []) {
+      switch (na.n) {
+        case 'name':
+          if (filename === 'DEMO') {
+            networkInformation.name = 'Demo: ' + na.v;
+          } else {
+            networkInformation.name = na.v;
+          }
+          break;
+        case 'rightsHolder':
+          networkInformation.rightsholder = na.v;
+          break;
+        case 'networkType':
+          networkInformation.networkType = na.v;
+          break;
+        case 'organism':
+          networkInformation.organism = na.v;
+          break;
+        case 'description':
+          networkInformation.description = na.v;
+          break;
+      }
+    }
+
+    let core = null;
+    const id = networkId;
+    const mappings = this.convertMappingsByFile(filedata);
+
+    let akvNodes: NeAspect[] = [];
+    let akvEdges: NeAspect[] = [];
+
+    for (const fd of filedata) {
+
+      if (fd.nodeAttributes) {
+        akvNodes = akvNodes.concat(this.convertAkvByFile(fd.nodeAttributes, mappings));
+      }
+      if (fd.edgeAttributes) {
+        akvEdges = akvEdges.concat(this.convertAkvByFile(fd.edgeAttributes, mappings, false));
+      }
+
+      if (fd.nodes) {
+        if (akvNodes.every(a => a.name !== 'name')) {
+          const newAspect = ParseService.buildAspectByCx(fd.nodes, 'n', mappings);
+          if (newAspect) {
+            akvNodes.push(newAspect);
+          }
+        }
+        if (akvNodes.every(a => a.name !== 'represents')) {
+          const newAspect = ParseService.buildAspectByCx(fd.nodes, 'r', mappings);
+          if (newAspect) {
+            akvNodes.push(newAspect);
+          }
+        }
+      }
+      if (fd.edges) {
+        if (akvEdges.every(a => a.name !== 'interaction')) {
+          const newAspect = ParseService.buildAspectByCx(fd.edges, 'i', mappings);
+          if (newAspect) {
+            akvEdges.push(newAspect);
+
+          }
+        }
+      }
+    }
+
+    akvNodes = this.buildDistributionChart(akvNodes, filedata, true);
+    akvEdges = this.buildDistributionChart(akvEdges, filedata, false);
+
+    if (container) {
+      return this.convertCxToJs(filedata, container)
+        .then(receivedCore => {
+          core = receivedCore;
+          return {
+            id,
+            cx: filedata,
+            filename,
+            core,
+            networkInformation,
+            showLabels: this.utilityService.utilShowLabels(core),
+            mappings,
+            aspectKeyValueNodes: akvNodes,
+            aspectKeyValueEdges: akvEdges
+          };
+        })
+        .catch(e => {
+          console.error(e);
+          return {
+            id,
+            cx: filedata,
+            filename,
+            core,
+            networkInformation,
+            showLabels: this.utilityService.utilShowLabels(core),
+            mappings,
+            aspectKeyValueNodes: akvNodes,
+            aspectKeyValueEdges: akvEdges
+          };
+        });
+    } else {
+      return new Promise<NeNetwork>((resolve) => {
+        resolve({
+          id,
+          cx: filedata,
+          filename,
+          core,
+          networkInformation,
+          mappings,
+          aspectKeyValuesNodes: akvNodes,
+          aspectKeyValuesEdges: akvEdges
+        });
+      });
+    }
   }
 
   /**
@@ -562,54 +782,6 @@ export class ParseService {
   }
 
   /**
-   * Using external library to build the cytoscape core by converting the input JSON
-   * @param json CX file
-   * @param canvas HTML target
-   */
-  convertCxToJs(json: any[], canvas: HTMLElement): Promise<cytoscape.Core> {
-
-    if (!json || !canvas) {
-      console.log('Either data or canvas is missing');
-      return null;
-    }
-
-    const utils = new CyNetworkUtils();
-
-    const niceCX = utils.rawCXtoNiceCX(json);
-    const conversion = new CxToJs(utils);
-
-    const elements = conversion.cyElementsFromNiceCX(niceCX, this.attributeNameMap);
-    const style = conversion.cyStyleFromNiceCX(niceCX, this.attributeNameMap);
-
-    const cyBackgroundColor = conversion.cyBackgroundColorFromNiceCX(niceCX);
-    const layout = conversion.getDefaultLayout();
-    const zoom = conversion.cyZoomFromNiceCX(niceCX);
-    const pan = conversion.cyPanFromNiceCX(niceCX);
-
-    canvas.style.backgroundColor = cyBackgroundColor;
-
-    const networkConfig: cytoscape.CytoscapeOptions = {
-      container: canvas,
-      style,
-      elements,
-      layout,
-      zoom,
-      pan
-    };
-
-    let core: cytoscape.Core;
-    core = cytoscape(networkConfig);
-    core = this.addUtilitySelectors(core);
-
-    return new Promise<cytoscape.Core>(
-      (resolve, reject) => {
-        resolve(core);
-        reject(undefined);
-      }
-    );
-  }
-
-  /**
    * Utility styles, such as custom_highlight_color
    * and hide_label are added and toggled here to the current core
    * @param core current network's core
@@ -650,178 +822,6 @@ export class ParseService {
     core.elements().toggleClass('custom_highlight_color', false);
     core.elements().toggleClass('hide_label', (!this.utilityService.utilShowLabels(core)));
     return core;
-  }
-
-  /**
-   * Does not override any of the initially defined network properties.
-   * Simply recalculates the core for this network, ID is the same as before
-   * @param network Network to be recalculated
-   */
-  rebuildCoreForNetwork(network: NeNetwork): Promise<NeNetwork> {
-    if (!this.dataService.getCanvas()) {
-      console.log('No canvas specified!');
-      return null;
-    }
-    this.attributeNameMap = {};
-
-    return this.convertCxToJs(network.cx, this.dataService.getCanvas())
-      .then(core => {
-        network.core = core;
-        return network;
-      })
-      .catch(e => {
-        console.error(e);
-        return network;
-      });
-  }
-
-  /**
-   * Parses a file from .cx to cytoscape.js interpretable data
-   *
-   * @param container canvas rendering the network
-   * @param filedata data of the .cx file
-   * @param filename name of original file
-   * @param uuid optionally give the uuid for copy-to-clipboard-feature
-   * @param networkId id for this network
-   */
-  convert(
-    container: HTMLElement,
-    filedata: any[],
-    filename: string,
-    uuid: string = null,
-    networkId: number
-  ): Promise<NeNetwork> {
-    let networkAttributeData;
-
-    for (const obj of filedata) {
-      if (obj.networkAttributes) {
-        networkAttributeData = obj.networkAttributes;
-        break;
-      }
-    }
-
-    const networkInformation: NeNetworkInformation = {
-      name: '',
-      rightsholder: '',
-      networkType: '',
-      organism: '',
-      description: '',
-      originalFilename: '',
-      uuid: uuid ?? null
-    };
-
-    for (const na of networkAttributeData || []) {
-      switch (na.n) {
-        case 'name':
-          if (filename === 'DEMO') {
-            networkInformation.name = 'Demo: ' + na.v;
-          } else {
-            networkInformation.name = na.v;
-          }
-          break;
-        case 'rightsHolder':
-          networkInformation.rightsholder = na.v;
-          break;
-        case 'networkType':
-          networkInformation.networkType = na.v;
-          break;
-        case 'organism':
-          networkInformation.organism = na.v;
-          break;
-        case 'description':
-          networkInformation.description = na.v;
-          break;
-      }
-    }
-
-    let core = null;
-    const id = networkId;
-    const mappings = this.convertMappingsByFile(filedata);
-
-    let akvNodes: NeAspect[] = [];
-    let akvEdges: NeAspect[] = [];
-
-    for (const fd of filedata) {
-
-      if (fd.nodeAttributes) {
-        akvNodes = akvNodes.concat(this.convertAkvByFile(fd.nodeAttributes, mappings));
-      }
-      if (fd.edgeAttributes) {
-        akvEdges = akvEdges.concat(this.convertAkvByFile(fd.edgeAttributes, mappings, false));
-      }
-
-      if (fd.nodes) {
-        if (akvNodes.every(a => a.name !== 'name')) {
-          const newAspect = ParseService.buildAspectByCx(fd.nodes, 'n', mappings);
-          if (newAspect) {
-            akvNodes.push(newAspect);
-          }
-        }
-        if (akvNodes.every(a => a.name !== 'represents')) {
-          const newAspect = ParseService.buildAspectByCx(fd.nodes, 'r', mappings);
-          if (newAspect) {
-            akvNodes.push(newAspect);
-          }
-        }
-      }
-      if (fd.edges) {
-        if (akvEdges.every(a => a.name !== 'interaction')) {
-          const newAspect = ParseService.buildAspectByCx(fd.edges, 'i', mappings);
-          if (newAspect) {
-            akvEdges.push(newAspect);
-
-          }
-        }
-      }
-    }
-
-    akvNodes = this.buildDistributionChart(akvNodes, filedata, true);
-    akvEdges = this.buildDistributionChart(akvEdges, filedata, false);
-
-    if (container) {
-      return this.convertCxToJs(filedata, container)
-        .then(receivedCore => {
-          core = receivedCore;
-          return {
-            id,
-            cx: filedata,
-            filename,
-            core,
-            networkInformation,
-            showLabels: this.utilityService.utilShowLabels(core),
-            mappings,
-            aspectKeyValueNodes: akvNodes,
-            aspectKeyValueEdges: akvEdges
-          };
-        })
-        .catch(e => {
-          console.error(e);
-          return {
-            id,
-            cx: filedata,
-            filename,
-            core,
-            networkInformation,
-            showLabels: this.utilityService.utilShowLabels(core),
-            mappings,
-            aspectKeyValueNodes: akvNodes,
-            aspectKeyValueEdges: akvEdges
-          };
-        });
-    } else {
-      return new Promise<NeNetwork>((resolve) => {
-        resolve({
-          id,
-          cx: filedata,
-          filename,
-          core,
-          networkInformation,
-          mappings,
-          aspectKeyValuesNodes: akvNodes,
-          aspectKeyValuesEdges: akvEdges
-        });
-      });
-    }
   }
 
   /**

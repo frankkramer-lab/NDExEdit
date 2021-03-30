@@ -1,4 +1,3 @@
-import {NeElement} from './ne-element';
 import {NeChart} from './ne-chart';
 
 /**

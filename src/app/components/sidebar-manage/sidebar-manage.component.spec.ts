@@ -10,9 +10,14 @@ import {DataService} from '../../services/data.service';
 import {UtilityService} from '../../services/utility.service';
 import {ParseService} from '../../services/parse.service';
 
-class MockDataService {}
-class MockUtilityService {}
-class MockParseService {}
+class MockDataService {
+}
+
+class MockUtilityService {
+}
+
+class MockParseService {
+}
 
 describe('SidebarManageComponent', () => {
   let component: SidebarManageComponent;

@@ -23,8 +23,8 @@
           <fa-icon [icon]="faPaintBrush"></fa-icon>
         </a>
 
-        <a [routerLink]=""
-           (click)="downloadNetwork(network.id)"
+        <a (click)="downloadNetwork(network.id)"
+           [routerLink]=""
            class="btn btn-sm btn-outline-secondary mr-1"
            data-toggle="tooltip"
            ngbTooltip="{{'SIDEBAR_MANAGE_TT_DOWNLOAD'|translate}}"
@@ -40,8 +40,8 @@
            role="button">
           <fa-icon [icon]="faImage"></fa-icon>
         </a>
-        <a [routerLink]="" [hidden]="!network.networkInformation.uuid"
-           (click)="copyUuidToClipboard(network.id)"
+        <a (click)="copyUuidToClipboard(network.id)" [hidden]="!network.networkInformation.uuid"
+           [routerLink]=""
            class="btn btn-sm btn-outline-secondary"
            data-toggle="tooltip"
            ngbTooltip="{{ copyToClipboardTooltip | translate }}"

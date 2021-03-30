@@ -22,9 +22,9 @@
 
     <!-- ALERT: mapping already exists -->
     <app-alert-mapping-already-exists *ngIf="!isEdit"
-                                      [typeHint]="typeHint"
                                       [propertyToMap]="propertyToMap"
-                                      [styleProperty]="getCurrentStyleProperty()"></app-alert-mapping-already-exists>
+                                      [styleProperty]="getCurrentStyleProperty()"
+                                      [typeHint]="typeHint"></app-alert-mapping-already-exists>
 
     <!-- ALERT: distribution -->
     <div class="alert alert-info" role="alert">
@@ -39,15 +39,15 @@
     </div>
 
     <!-- distribution chart -->
-    <app-chart *ngIf="showDistribution" [widthPercent]="100" [chartObject]="chartObject"></app-chart>
+    <app-chart *ngIf="showDistribution" [chartObject]="chartObject" [widthPercent]="100"></app-chart>
 
     <!-- FORM -->
-    <app-main-mappings-new-form *ngIf="discreteMapping"
-                                (stylePropertyEmitter)="setStyleProperty($event)"
-                                [typeHint]="typeHint"
+    <app-main-mappings-new-form (stylePropertyEmitter)="setStyleProperty($event)"
+                                *ngIf="discreteMapping"
+                                [isEdit]="isEdit"
                                 [mappingDiscrete]="discreteMapping"
                                 [propertyToMap]="propertyToMap"
-                                [isEdit]="isEdit"></app-main-mappings-new-form>
+                                [typeHint]="typeHint"></app-main-mappings-new-form>
 
   </div>
 
@@ -59,9 +59,9 @@
 
     <!-- ALERT: mapping already exists -->
     <app-alert-mapping-already-exists *ngIf="!isEdit"
-                                      [typeHint]="typeHint"
                                       [propertyToMap]="propertyToMap"
-                                      [styleProperty]="styleProperty">
+                                      [styleProperty]="styleProperty"
+                                      [typeHint]="typeHint">
     </app-alert-mapping-already-exists>
 
     <!-- ALERT: distribution -->
@@ -78,8 +78,8 @@
     </div>
 
     <!-- distribution chart -->
-    <app-chart *ngIf="showDistribution" [chartObject]="chartObject"
-               [widthPercent]="100" [numberOfBins]="binSize" (binSizeEmitter)="changeBinSize($event)"></app-chart>
+    <app-chart (binSizeEmitter)="changeBinSize($event)" *ngIf="showDistribution"
+               [chartObject]="chartObject" [numberOfBins]="binSize" [widthPercent]="100"></app-chart>
 
     <!-- ALERT: minimum und maximum (if available) -->
     <div class="alert alert-info" role="alert">
@@ -102,12 +102,12 @@
     </div>
 
     <!-- FORM -->
-    <app-main-mappings-new-form *ngIf="continuousMapping"
-                                (stylePropertyEmitter)="setStyleProperty($event)"
+    <app-main-mappings-new-form (stylePropertyEmitter)="setStyleProperty($event)"
+                                *ngIf="continuousMapping"
                                 [isEdit]="isEdit"
-                                [typeHint]="typeHint"
+                                [mappingContinuous]="continuousMapping"
                                 [propertyToMap]="propertyToMap"
-                                [mappingContinuous]="continuousMapping"></app-main-mappings-new-form>
+                                [typeHint]="typeHint"></app-main-mappings-new-form>
 
   </div>
 
@@ -119,9 +119,9 @@
 
     <!-- ALERT: mapping already exists -->
     <app-alert-mapping-already-exists *ngIf="!isEdit"
-                                      [typeHint]="typeHint"
                                       [propertyToMap]="propertyToMap"
-                                      [styleProperty]="styleProperty">
+                                      [styleProperty]="styleProperty"
+                                      [typeHint]="typeHint">
     </app-alert-mapping-already-exists>
 
     <!-- ALERT: distribution -->
@@ -142,12 +142,12 @@
                [widthPercent]="100"></app-chart>
 
     <!-- FORM -->
-    <app-main-mappings-new-form *ngIf="passthroughMapping"
-                                (stylePropertyEmitter)="setStyleProperty($event)"
+    <app-main-mappings-new-form (stylePropertyEmitter)="setStyleProperty($event)"
+                                *ngIf="passthroughMapping"
                                 [isEdit]="isEdit"
-                                [typeHint]="typeHint"
+                                [mappingPassthrough]="passthroughMapping"
                                 [propertyToMap]="propertyToMap"
-                                [mappingPassthrough]="passthroughMapping"></app-main-mappings-new-form>
+                                [typeHint]="typeHint"></app-main-mappings-new-form>
 
   </div>
 
@@ -160,9 +160,9 @@
 
     <!-- ALERT: mapping already exists -->
     <app-alert-mapping-already-exists *ngIf="!isEdit"
-                                      [typeHint]="typeHint"
                                       [propertyToMap]="propertyToMap"
-                                      [styleProperty]="styleProperty"></app-alert-mapping-already-exists>
+                                      [styleProperty]="styleProperty"
+                                      [typeHint]="typeHint"></app-alert-mapping-already-exists>
 
     <!-- ALERT: distribution -->
     <div class="alert alert-info" role="alert">
@@ -177,16 +177,16 @@
     </div>
 
     <!-- distribution chart -->
-    <app-chart *ngIf="showDistribution" [widthPercent]="100" [chartObject]="chartObject"></app-chart>
+    <app-chart *ngIf="showDistribution" [chartObject]="chartObject" [widthPercent]="100"></app-chart>
 
 
     <!-- FORM -->
-    <app-main-mappings-new-form *ngIf="discreteMapping"
-                                (stylePropertyEmitter)="setStyleProperty($event)"
-                                [typeHint]="typeHint"
+    <app-main-mappings-new-form (stylePropertyEmitter)="setStyleProperty($event)"
+                                *ngIf="discreteMapping"
+                                [isEdit]="isEdit"
                                 [mappingDiscrete]="discreteMapping"
                                 [propertyToMap]="propertyToMap"
-                                [isEdit]="isEdit"></app-main-mappings-new-form>
+                                [typeHint]="typeHint"></app-main-mappings-new-form>
   </div>
 
   <!-- NEW: EdgesContinuous -->
@@ -198,9 +198,9 @@
 
     <!-- ALERT: mapping already exists -->
     <app-alert-mapping-already-exists *ngIf="!isEdit"
-                                      [typeHint]="typeHint"
                                       [propertyToMap]="propertyToMap"
-                                      [styleProperty]="styleProperty">
+                                      [styleProperty]="styleProperty"
+                                      [typeHint]="typeHint">
     </app-alert-mapping-already-exists>
 
     <!-- ALERT: distribution -->
@@ -217,9 +217,9 @@
     </div>
 
     <!-- distribution chart -->
-    <app-chart *ngIf="showDistribution" [chartObject]="chartObject"
-               [widthPercent]="100" [numberOfBins]="binSize"
-               (binSizeEmitter)="this.changeBinSize($event)"></app-chart>
+    <app-chart (binSizeEmitter)="this.changeBinSize($event)" *ngIf="showDistribution"
+               [chartObject]="chartObject" [numberOfBins]="binSize"
+               [widthPercent]="100"></app-chart>
 
     <!-- ALERT: minimum and maximum (if available) -->
     <div class="alert alert-info" role="alert">
@@ -241,11 +241,11 @@
       </div>
     </div>
 
-    <app-main-mappings-new-form *ngIf="continuousMapping"
-                                (stylePropertyEmitter)="setStyleProperty($event)"
+    <app-main-mappings-new-form (stylePropertyEmitter)="setStyleProperty($event)"
+                                *ngIf="continuousMapping"
                                 [isEdit]="isEdit"
-                                [typeHint]="typeHint"
-                                [propertyToMap]="propertyToMap"></app-main-mappings-new-form>
+                                [propertyToMap]="propertyToMap"
+                                [typeHint]="typeHint"></app-main-mappings-new-form>
   </div>
 
   <!-- NEW: EdgesPassthrough -->
@@ -256,9 +256,9 @@
 
     <!-- ALERT: mapping already exists -->
     <app-alert-mapping-already-exists *ngIf="!isEdit"
-                                      [typeHint]="typeHint"
                                       [propertyToMap]="propertyToMap"
-                                      [styleProperty]="styleProperty">
+                                      [styleProperty]="styleProperty"
+                                      [typeHint]="typeHint">
     </app-alert-mapping-already-exists>
 
     <!-- ALERT: distribution -->
@@ -279,12 +279,12 @@
                [widthPercent]="100"></app-chart>
 
     <!-- FORM -->
-    <app-main-mappings-new-form *ngIf="passthroughMapping"
-                                (stylePropertyEmitter)="setStyleProperty($event)"
+    <app-main-mappings-new-form (stylePropertyEmitter)="setStyleProperty($event)"
+                                *ngIf="passthroughMapping"
                                 [isEdit]="isEdit"
-                                [typeHint]="typeHint"
+                                [mappingPassthrough]="passthroughMapping"
                                 [propertyToMap]="propertyToMap"
-                                [mappingPassthrough]="passthroughMapping"></app-main-mappings-new-form>
+                                [typeHint]="typeHint"></app-main-mappings-new-form>
 
   </div>
 

@@ -394,40 +394,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Initializes a continuous mapping
-   * @private
-   */
-  private initContinuousMapping(): void {
-
-    this.mappingContinuous = {
-      chart: undefined,
-      cleanStyleProperty: '',
-      col: this.propertyToMap.name || '',
-      colorGradient: [],
-      equals: undefined,
-      greaters: undefined,
-      isColor: false,
-      lowers: undefined,
-      styleProperty: '',
-      thresholds: undefined,
-      type: this.propertyToMap.datatype || 'string'
-    };
-
-    this.thresholds = [
-      {
-        propertyValue: null,
-        value: String(this.propertyToMap.min) || null,
-        isEditable: false
-      },
-      {
-        propertyValue: null,
-        value: String(this.propertyToMap.max) || null,
-        isEditable: false
-      },
-    ];
-  }
-
-  /**
    * Prefills the discrete mapping if the {@link styleProperty} is a label special case
    */
   prefillDiscreteLabelMapping(): void {
@@ -541,14 +507,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Submits a new discrete mapping, adds CSS property to color properties managed in {@link GraphService}
-   */
-  private submitNewPassthroughMapping(): void {
-    this.mappingPassthrough.styleProperty = this.styleProperty;
-    this.dataService.addMappingPassthrough(this.mappingPassthrough, this.typeHint);
-  }
-
-  /**
    * Since order cannot be guaranteed between attributes and mappings using these attributes
    * we need to explicitly fetch the index connecting the two.
    *
@@ -588,30 +546,6 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    */
   removeThreshold(index: number): void {
     this.thresholds.splice(index, 1);
-  }
-
-  /**
-   * Removes values where the use-value-flag is false.
-   * Needed for color properties, where null is not possible.
-   * @private
-   */
-  private cleanForColorMappings(): void {
-    const values = this.mappingDiscrete.values;
-    const keys = this.mappingDiscrete.keys;
-    this.mappingDiscrete.values = [];
-    this.mappingDiscrete.keys = [];
-
-    for (let i = 0; i < keys.length; i++) {
-      if (this.mappingDiscrete.useValue[i]) {
-
-        this.mappingDiscrete.keys.push(keys[i]);
-        if (values[i] === '') {
-          this.mappingDiscrete.values.push('#000000');
-        } else {
-          this.mappingDiscrete.values.push(values[i]);
-        }
-      }
-    }
   }
 
   /**
@@ -660,6 +594,72 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
 
       if (style === null) {
         this.setFonts[index].size = null;
+      }
+    }
+  }
+
+  /**
+   * Initializes a continuous mapping
+   * @private
+   */
+  private initContinuousMapping(): void {
+
+    this.mappingContinuous = {
+      chart: undefined,
+      cleanStyleProperty: '',
+      col: this.propertyToMap.name || '',
+      colorGradient: [],
+      equals: undefined,
+      greaters: undefined,
+      isColor: false,
+      lowers: undefined,
+      styleProperty: '',
+      thresholds: undefined,
+      type: this.propertyToMap.datatype || 'string'
+    };
+
+    this.thresholds = [
+      {
+        propertyValue: null,
+        value: String(this.propertyToMap.min) || null,
+        isEditable: false
+      },
+      {
+        propertyValue: null,
+        value: String(this.propertyToMap.max) || null,
+        isEditable: false
+      },
+    ];
+  }
+
+  /**
+   * Submits a new discrete mapping, adds CSS property to color properties managed in {@link GraphService}
+   */
+  private submitNewPassthroughMapping(): void {
+    this.mappingPassthrough.styleProperty = this.styleProperty;
+    this.dataService.addMappingPassthrough(this.mappingPassthrough, this.typeHint);
+  }
+
+  /**
+   * Removes values where the use-value-flag is false.
+   * Needed for color properties, where null is not possible.
+   * @private
+   */
+  private cleanForColorMappings(): void {
+    const values = this.mappingDiscrete.values;
+    const keys = this.mappingDiscrete.keys;
+    this.mappingDiscrete.values = [];
+    this.mappingDiscrete.keys = [];
+
+    for (let i = 0; i < keys.length; i++) {
+      if (this.mappingDiscrete.useValue[i]) {
+
+        this.mappingDiscrete.keys.push(keys[i]);
+        if (values[i] === '') {
+          this.mappingDiscrete.values.push('#000000');
+        } else {
+          this.mappingDiscrete.values.push(values[i]);
+        }
       }
     }
   }

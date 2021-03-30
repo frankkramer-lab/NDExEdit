@@ -25,14 +25,6 @@ import {ParseService} from '../../services/parse.service';
  */
 export class SidebarManageComponent {
 
-  constructor(
-    public dataService: DataService,
-    private http: HttpClient,
-    private utilityService: UtilityService,
-    private parseService: ParseService,
-  ) {
-  }
-
   /**
    * Icon: faImage
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
@@ -130,6 +122,10 @@ export class SidebarManageComponent {
    */
   invalidExtension: string;
   /**
+   * Tooltip for copying a UUID to clipboard
+   */
+  copyToClipboardTooltip = 'SIDEBAR_MANAGE_TT_CLIPBOARD';
+  /**
    * Factor to display bytes as megabytes
    *
    * @private
@@ -151,10 +147,13 @@ export class SidebarManageComponent {
    */
   private readonly ndexPublicApiHost = 'http://public.ndexbio.org/v2/';
 
-  /**
-   * Tooltip for copying a UUID to clipboard
-   */
-  copyToClipboardTooltip = 'SIDEBAR_MANAGE_TT_CLIPBOARD';
+  constructor(
+    public dataService: DataService,
+    private http: HttpClient,
+    private utilityService: UtilityService,
+    private parseService: ParseService,
+  ) {
+  }
 
   /**
    * Converts a network to .cx file format

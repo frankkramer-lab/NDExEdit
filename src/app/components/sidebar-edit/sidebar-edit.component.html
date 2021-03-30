@@ -3,19 +3,19 @@
   <h5 *ngIf="dataService.selectedNetwork.networkInformation.description">
     <a [routerLink]="['', { outlets: {sidebar: ['manage']} }]"
        class="mb-1 float-left"
-       type="button"
        data-toggle="tooltip"
-       ngbTooltip="{{'NAV_MANAGE' | translate}}" placement="right"
-       role="button">
-      <fa-icon class="mr-1" [icon]="faArrowLeft"></fa-icon>
+       ngbTooltip="{{'NAV_MANAGE' | translate}}"
+       placement="right" role="button"
+       type="button">
+      <fa-icon [icon]="faArrowLeft" class="mr-1"></fa-icon>
     </a>
     {{'SIDEBAR_EDIT_DESCRIPTION_TITLE' | translate}}
 
-    <a class="float-right"
-       data-toggle="collapse"
-       data-target="#contentDescription"
+    <a aria-controls="contentDescription"
        aria-expanded="true"
-       aria-controls="contentDescription"
+       class="float-right"
+       data-target="#contentDescription"
+       data-toggle="collapse"
        href="#">
       <fa-icon [icon]="faChevronDown"></fa-icon>
     </a>
@@ -25,17 +25,17 @@
     <a [routerLink]="['', { outlets: {sidebar: ['manage']} }]"
        class="mb-1"
        data-toggle="tooltip"
-       type="button"
-       ngbTooltip="{{'NAV_MANAGE' | translate}}" placement="right"
-       role="button">
-      <fa-icon class="mr-1" [icon]="faArrowLeft"></fa-icon>
+       ngbTooltip="{{'NAV_MANAGE' | translate}}"
+       placement="right" role="button"
+       type="button">
+      <fa-icon [icon]="faArrowLeft" class="mr-1"></fa-icon>
     </a>
     {{'SIDEBAR_EDIT_DEFAULT_TITLE' | translate}}
 
   </h5>
 
   <!-- Network description -->
-  <div *ngIf="dataService.selectedNetwork.networkInformation.description" id="contentDescription" class="show">
+  <div *ngIf="dataService.selectedNetwork.networkInformation.description" class="show" id="contentDescription">
     <p [innerHTML]="dataService.selectedNetwork.networkInformation.description"></p>
   </div>
 
@@ -76,8 +76,8 @@
       <span class="float-left">
         {{'SIDEBAR_EDIT_COMPARISON_NODES' | translate}}
       </span>
-      <a class="float-right" data-toggle="collapse" data-target="#contentNodesSelected"
-         aria-expanded="true" aria-controls="contentNodesSelected" href="#">
+      <a aria-controls="contentNodesSelected" aria-expanded="true" class="float-right"
+         data-target="#contentNodesSelected" data-toggle="collapse" href="#">
         <fa-icon [icon]="faChevronDown"></fa-icon>
       </a>
     </h5>
@@ -126,15 +126,15 @@
       <span class="float-left">
         {{'SIDEBAR_EDIT_COMPARISON_EDGES' | translate}}
       </span>
-      <a class="float-right" data-toggle="collapse" data-target="#contentEdgesSelected"
-         aria-expanded="true" aria-controls="contentEdgesSelected" href="#">
+      <a aria-controls="contentEdgesSelected" aria-expanded="true" class="float-right"
+         data-target="#contentEdgesSelected" data-toggle="collapse" href="#">
         <fa-icon [icon]="faChevronDown"></fa-icon>
       </a>
     </h5>
 
     <div *ngIf="graphService.selectedElements.edges.length > 0" class="table-responsive">
 
-      <div id="contentEdgesSelected" class="show">
+      <div class="show" id="contentEdgesSelected">
         <table class=" table">
 
           <thead>
@@ -213,11 +213,11 @@
       || dataService.selectedNetwork.mappings.nodesContinuous.length > 0
       || dataService.selectedNetwork.mappings.nodesPassthrough.length > 0">
         {{'SIDEBAR_EDIT_ASPECTS_NODES' | translate}}
-        <a class="float-right"
-           data-toggle="collapse"
-           data-target="#contentMappingsNodes"
+        <a aria-controls="contentMappingsNodes"
            aria-expanded="true"
-           aria-controls="contentMappingsNodes"
+           class="float-right"
+           data-target="#contentMappingsNodes"
+           data-toggle="collapse"
            href="#">
           <fa-icon [icon]="faChevronDown"></fa-icon>
         </a>
@@ -274,10 +274,10 @@
                     *ngFor="let styleProperty of dataService.selectedNetwork.mappings.nodesDiscrete|stylePropertiesByCol: nodeCol">
                     {{dataService.selectedNetwork.mappings.nodesDiscrete|styleValueByColAndKey: nodeCol : styleProperty : is}}
                     <span
-                      [ngStyle]="{'background-color': dataService.selectedNetwork.mappings.nodesDiscrete|styleValueByColAndKey: nodeCol : styleProperty : is}"
                       [ngClass]="((dataService.selectedNetwork.mappings.nodesDiscrete|styleValueByColAndKey: nodeCol : styleProperty : is) !== null
                     && (dataService.selectedNetwork.mappings.nodesDiscrete|styleValueByColAndKey: nodeCol : styleProperty : is).startsWith('#')
-                    ? 'badge badge-pill border' : 'd-none')">
+                    ? 'badge badge-pill border' : 'd-none')"
+                      [ngStyle]="{'background-color': dataService.selectedNetwork.mappings.nodesDiscrete|styleValueByColAndKey: nodeCol : styleProperty : is}">
                       &nbsp;
                     </span>
                   </td>
@@ -297,10 +297,10 @@
       <span *ngFor="let nodeMap of dataService.selectedNetwork.mappings.nodesContinuous; let index = index">
         <li *ngIf="!nodeMap.isColor" class="list-group-item">
           <a (click)="displayMapping(nodeMap.chart, [], 'nc' + index)"
-             role="button"
              data-toggle="tooltip"
              ngbTooltip="{{'SIDEBAR_EDIT_TT_CONTINUOUS' | translate}}"
-             placement="top">
+             placement="top"
+             role="button">
             <b>{{nodeMap.cleanStyleProperty || nodeMap.styleProperty}}</b>
             {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
             <b> {{nodeMap.col}}</b>
@@ -308,10 +308,10 @@
         </li>
         <li *ngIf="nodeMap.isColor" class="list-group-item">
           <a (click)="displayMapping(null, nodeMap.colorGradient, 'nc' + index)"
-             role="button"
              data-toggle="tooltip"
              ngbTooltip="{{'SIDEBAR_EDIT_TT_CONTINUOUS' | translate}}"
-             placement="top">
+             placement="top"
+             role="button">
             <b>{{nodeMap.cleanStyleProperty || nodeMap.styleProperty}}</b>
             {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
             <b> {{nodeMap.col}}</b>
@@ -330,11 +330,11 @@
       || dataService.selectedNetwork.mappings.edgesContinuous.length > 0
       || dataService.selectedNetwork.mappings.edgesPassthrough.length > 0">
         {{'SIDEBAR_EDIT_ASPECTS_EDGES' | translate}}
-        <a class="float-right"
-           data-toggle="collapse"
-           data-target="#contentMappingsEdges"
+        <a aria-controls="contentMappingsEdges"
            aria-expanded="true"
-           aria-controls="contentMappingsEdges"
+           class="float-right"
+           data-target="#contentMappingsEdges"
+           data-toggle="collapse"
            href="#">
           <fa-icon [icon]="faChevronDown"></fa-icon>
         </a>
@@ -389,10 +389,10 @@
                     *ngFor="let styleProperty of dataService.selectedNetwork.mappings.edgesDiscrete|stylePropertiesByCol: edgeCol">
                     {{dataService.selectedNetwork.mappings.edgesDiscrete|styleValueByColAndKey: edgeCol : styleProperty : is}}
                     <span
-                      [ngStyle]="{'background-color': dataService.selectedNetwork.mappings.edgesDiscrete|styleValueByColAndKey: edgeCol : styleProperty : is}"
                       [ngClass]="((dataService.selectedNetwork.mappings.edgesDiscrete|styleValueByColAndKey: edgeCol : styleProperty : is) !== null
                     && (dataService.selectedNetwork.mappings.edgesDiscrete|styleValueByColAndKey: edgeCol : styleProperty : is).startsWith('#')
-                    ? 'badge badge-pill border' : 'd-none')">
+                    ? 'badge badge-pill border' : 'd-none')"
+                      [ngStyle]="{'background-color': dataService.selectedNetwork.mappings.edgesDiscrete|styleValueByColAndKey: edgeCol : styleProperty : is}">
                       &nbsp;
                     </span>
                   </td>
@@ -411,10 +411,10 @@
       <span *ngFor="let edgeMap of dataService.selectedNetwork.mappings.edgesContinuous; let index = index">
         <li *ngIf="!edgeMap.isColor" class="list-group-item">
           <a (click)="displayMapping(edgeMap.chart, [], 'ec' + index)"
-             role="button"
              data-toggle="tooltip"
              ngbTooltip="{{'SIDEBAR_EDIT_TT_CONTINUOUS' | translate}}"
-             placement="top">
+             placement="top"
+             role="button">
             <b>{{edgeMap.cleanStyleProperty || edgeMap.styleProperty}}</b>
             {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
             <b>{{edgeMap.col}}</b>
@@ -461,28 +461,28 @@
 
               <td>
 
-                <button *ngIf="def.sameAs" class="btn btn-outline-primary"
-                        (click)="graphService.highlightByElementSameAs(def.type, def.property, def.sameAs)">
+                <button (click)="graphService.highlightByElementSameAs(def.type, def.property, def.sameAs)" *ngIf="def.sameAs"
+                        class="btn btn-outline-primary">
                   <fa-icon [icon]="faMagic"></fa-icon>
                 </button>
 
                 <button
+                  (click)="graphService.highlightByElementRange(def.type, def.property, def.rangeLower, def.rangeUpper)"
                   *ngIf="utilityService.utilIsNumber(def.rangeLower) && utilityService.utilIsNumber(def.rangeUpper)"
-                  class="btn btn-outline-primary"
-                  (click)="graphService.highlightByElementRange(def.type, def.property, def.rangeLower, def.rangeUpper)">
+                  class="btn btn-outline-primary">
                   <fa-icon [icon]="faMagic"></fa-icon>
                 </button>
               </td>
 
               <td>
 
-                <button *ngIf="!def.markedForDeletion" class="btn btn-outline-danger"
-                        (click)="markForDeletion(defIndex)">
+                <button (click)="markForDeletion(defIndex)" *ngIf="!def.markedForDeletion"
+                        class="btn btn-outline-danger">
                   <fa-icon [icon]="faTrash"></fa-icon>
                 </button>
 
-                <button *ngIf="def.markedForDeletion" class="btn btn-outline-danger"
-                        (click)="def.markedForDeletion = false">
+                <button (click)="def.markedForDeletion = false" *ngIf="def.markedForDeletion"
+                        class="btn btn-outline-danger">
                   <fa-icon [icon]="faTimes"></fa-icon>
                 </button>
 
@@ -493,7 +493,7 @@
                 {{'SIDEBAR_EDIT_INSPECT_REMOVE_ITEM' | translate}}
               </td>
               <td>
-                <button class="btn btn-outline-danger" (click)="deleteFromHighlightList(defIndex)">
+                <button (click)="deleteFromHighlightList(defIndex)" class="btn btn-outline-danger">
                   <fa-icon [icon]="faTrash"></fa-icon>
                 </button>
               </td>
@@ -516,16 +516,16 @@
                    data-toggle="buttons">
 
                 <label class="btn btn-outline-secondary">
-                  <input type="radio" name="type" id="typeNode" autocomplete="off"
-                         (click)="selectType('node')"
-                         [checked]="highlightDefinition.type === 'node'">
+                  <input (click)="selectType('node')" [checked]="highlightDefinition.type === 'node'" autocomplete="off" id="typeNode"
+                         name="type"
+                         type="radio">
                   {{'SIDEBAR_EDIT_INSPECT_TYPE_NODE' | translate}}
                 </label>
 
                 <label class="btn btn-outline-secondary">
-                  <input type="radio" name="type" id="typeEdge" autocomplete="off"
-                         (click)="selectType('edge')"
-                         [checked]="highlightDefinition.type === 'edge'">
+                  <input (click)="selectType('edge')" [checked]="highlightDefinition.type === 'edge'" autocomplete="off" id="typeEdge"
+                         name="type"
+                         type="radio">
                   {{'SIDEBAR_EDIT_INSPECT_TYPE_EDGE' | translate}}
                 </label>
 
@@ -539,9 +539,9 @@
                    class="btn-group-vertical btn-group-toggle"
                    data-toggle="buttons">
 
-                <label class="btn btn-outline-secondary" *ngFor="let property of getAvailablePropertiesByType('node')">
-                  <input type="radio" name="node_{{property.name}}" id="node_{{property.name}}" autocomplete="off"
-                         (click)="selectProperty(property)">
+                <label *ngFor="let property of getAvailablePropertiesByType('node')" class="btn btn-outline-secondary">
+                  <input (click)="selectProperty(property)" autocomplete="off" id="node_{{property.name}}" name="node_{{property.name}}"
+                         type="radio">
                   {{property.name}}
                 </label>
 
@@ -552,9 +552,9 @@
                    class="btn-group-vertical btn-group-toggle"
                    data-toggle="buttons">
 
-                <label class="btn btn-outline-secondary" *ngFor="let property of getAvailablePropertiesByType('edge')">
-                  <input type="radio" name="edge_{{property.name}}" id="edge_{{property.name}}" autocomplete="off"
-                         (click)="selectProperty(property)">
+                <label *ngFor="let property of getAvailablePropertiesByType('edge')" class="btn btn-outline-secondary">
+                  <input (click)="selectProperty(property)" autocomplete="off" id="edge_{{property.name}}" name="edge_{{property.name}}"
+                         type="radio">
                   {{property.name}}
                 </label>
 
@@ -567,8 +567,8 @@
               <form *ngIf="highlightDefinitionDatatype === 'numeric'">
                 <div class="form-group">
                   <label for="numericLower">{{'SIDEBAR_EDIT_INSPECT_RANGE_LOWER' | translate}}</label>
-                  <input type="number" class="form-control" name="numericLower" id="numericLower" placeholder="0"
-                         [(ngModel)]="highlightDefinition.rangeLower">
+                  <input [(ngModel)]="highlightDefinition.rangeLower" class="form-control" id="numericLower" name="numericLower" placeholder="0"
+                         type="number">
                 </div>
               </form>
 
@@ -576,8 +576,8 @@
               <form *ngIf="highlightDefinitionDatatype === 'numeric'">
                 <div class="form-group">
                   <label for="numericUpper">{{'SIDEBAR_EDIT_INSPECT_RANGE_UPPER' | translate}}</label>
-                  <input type="number" class="form-control" name="numericUpper" id="numericUpper" placeholder="0"
-                         [(ngModel)]="highlightDefinition.rangeUpper">
+                  <input [(ngModel)]="highlightDefinition.rangeUpper" class="form-control" id="numericUpper" name="numericUpper" placeholder="0"
+                         type="number">
                 </div>
               </form>
 
@@ -585,17 +585,17 @@
               <form *ngIf="highlightDefinitionDatatype === 'text'">
                 <div class="form-group">
                   <label for="nonNumeric">{{'SIDEBAR_EDIT_INSPECT_SAME_LABEL' | translate}}</label>
-                  <input type="text" class="form-control" name="nonNumeric" id="nonNumeric"
+                  <input [(ngModel)]="highlightDefinition.sameAs" class="form-control" id="nonNumeric" name="nonNumeric"
                          placeholder="{{'SIDEBAR_EDIT_INSPECT_SAME_PLACEHOLDER' | translate}}"
-                         [(ngModel)]="highlightDefinition.sameAs">
+                         type="text">
                 </div>
               </form>
             </td>
 
             <!-- SUBMIT -->
             <td>
-              <button class="btn btn-outline-success" (click)="addHighlightDefinitionToList()"
-                      [disabled]="!highlightDefinition.sameAs && (highlightDefinition.rangeUpper === null || highlightDefinition.rangeLower === null)">
+              <button (click)="addHighlightDefinitionToList()" [disabled]="!highlightDefinition.sameAs && (highlightDefinition.rangeUpper === null || highlightDefinition.rangeLower === null)"
+                      class="btn btn-outline-success">
                 <fa-icon [icon]="faCheck"></fa-icon>
               </button>
             </td>
@@ -621,28 +621,28 @@
 
       <div class="form-row">
         <label for="highlightNodesHex">{{'SIDEBAR_EDIT_LABEL_HEX_NODE' | translate}}</label>
-        <input [(ngModel)]="highlightNodes"
-               (change)="setHighlightColorAndDuration()"
-               type="color"
+        <input (change)="setHighlightColorAndDuration()"
+               [(ngModel)]="highlightNodes"
                class="form-control form-control-color"
                id="highlightNodesHex"
                name="highlightNodesHex"
+               type="color"
                value="{{highlightNodes}}">
       </div>
       <div class="form-row">
         <label for="highlightEdgesHex">{{'SIDEBAR_EDIT_LABEL_HEX_EDGE' | translate}}</label>
-        <input [(ngModel)]="highlightEdges"
-               (change)="setHighlightColorAndDuration()"
-               type="color"
+        <input (change)="setHighlightColorAndDuration()"
+               [(ngModel)]="highlightEdges"
                class="form-control form-control-color"
                id="highlightEdgesHex"
                name="highlightEdgesHex"
+               type="color"
                value="{{highlightEdges}}">
       </div>
       <div class="form-row">
         <label for="highlightDuration">{{'SIDEBAR_EDIT_LABEL_DURATION' | translate}}</label>
-        <input [(ngModel)]="highlightDuration" class="form-control mb-2" id="highlightDuration" min="0"
-               (change)="setHighlightColorAndDuration()"
+        <input (change)="setHighlightColorAndDuration()" [(ngModel)]="highlightDuration" class="form-control mb-2" id="highlightDuration"
+               min="0"
                name="highlightDuration"
                placeholder="2000"
                step="100" type="number">

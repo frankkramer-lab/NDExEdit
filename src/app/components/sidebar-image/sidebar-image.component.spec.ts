@@ -1,5 +1,5 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SidebarImageComponent } from './sidebar-image.component';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {SidebarImageComponent} from './sidebar-image.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {createTranslateLoader} from '../../app.module';
@@ -28,7 +28,9 @@ class MockDataService {
 
   getSelectedNetwork = jasmine.createSpy('getSelectedNetwork').and.returnValue(this.selectedNetwork);
 }
-class MockGraphService {}
+
+class MockGraphService {
+}
 
 describe('SidebarImageComponent', () => {
   let component: SidebarImageComponent;

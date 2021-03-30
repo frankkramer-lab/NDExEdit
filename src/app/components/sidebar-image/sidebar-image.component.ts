@@ -13,17 +13,6 @@ import {GraphService} from '../../services/graph.service';
  */
 export class SidebarImageComponent implements OnInit {
   /**
-   * Constructor
-   * @param dataService service responsible for data access
-   * @param graphService service responsible for graph manipulations
-   */
-  constructor(
-    public dataService: DataService,
-    private graphService: GraphService
-  ) {
-  }
-
-  /**
    * Icon: faRedo
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
@@ -33,7 +22,6 @@ export class SidebarImageComponent implements OnInit {
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faArrowLeft = faArrowLeft;
-
   /**
    * Possible file types
    */
@@ -70,11 +58,21 @@ export class SidebarImageComponent implements OnInit {
    * Optional width value of the resulting image
    */
   optWidth: number;
-
   /**
    * Generated URL to download the image
    */
   url: string;
+
+  /**
+   * Constructor
+   * @param dataService service responsible for data access
+   * @param graphService service responsible for graph manipulations
+   */
+  constructor(
+    public dataService: DataService,
+    private graphService: GraphService
+  ) {
+  }
 
   ngOnInit(): void {
     if (this.dataService.selectedNetwork) {
@@ -129,20 +127,6 @@ export class SidebarImageComponent implements OnInit {
   }
 
   /**
-   * Downloads the generated image
-   * @param file url to download the generated image
-   * @private
-   */
-  private download(file: string): void {
-    const a = document.createElement('a');
-    a.href = this.url;
-    a.setAttribute('download', (this.dataService.selectedNetwork.networkInformation.name || 'network_image') + file);
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  }
-
-  /**
    * Selects the specified file type
    * @param option
    */
@@ -157,6 +141,20 @@ export class SidebarImageComponent implements OnInit {
   toggleLabels(show: boolean): void {
     this.graphService.toggleLabels(show);
     this.dataService.getSelectedNetwork().showLabels = show;
+  }
+
+  /**
+   * Downloads the generated image
+   * @param file url to download the generated image
+   * @private
+   */
+  private download(file: string): void {
+    const a = document.createElement('a');
+    a.href = this.url;
+    a.setAttribute('download', (this.dataService.selectedNetwork.networkInformation.name || 'network_image') + file);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }
 
 }

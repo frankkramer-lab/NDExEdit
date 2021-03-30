@@ -3,7 +3,8 @@
   <div class="row">
 
     <!-- Main outlet -->
-    <div class="w-{{layoutService.layout.main.width}} scroll p-2" [ngClass]="(layoutService.layout.main.position === 'left' ? 'order-1' : 'order-3')">
+    <div [ngClass]="(layoutService.layout.main.position === 'left' ? 'order-1' : 'order-3')"
+         class="w-{{layoutService.layout.main.width}} scroll p-2">
       <router-outlet></router-outlet>
     </div>
 
@@ -11,20 +12,20 @@
     <div class="order-2 w-5">
       <div class="drag-bar">
         <div class="btn-group-vertical">
-          <button class="btn btn-sm btn-secondary btnLayout"
-                  (click)="layoutService.increaseLayoutRight()">
+          <button (click)="layoutService.increaseLayoutRight()"
+                  class="btn btn-sm btn-secondary btnLayout">
             <fa-icon [icon]="faArrowLeft"></fa-icon>
           </button>
-          <button class="btn btn-sm btn-secondary btnLayout"
-                  (click)="layoutService.increaseLayoutLeft()">
+          <button (click)="layoutService.increaseLayoutLeft()"
+                  class="btn btn-sm btn-secondary btnLayout">
             <fa-icon [icon]="faArrowRight"></fa-icon>
           </button>
-          <button class="btn btn-sm btn-secondary btnLayout"
-                  (click)="layoutService.resetLayout()">
+          <button (click)="layoutService.resetLayout()"
+                  class="btn btn-sm btn-secondary btnLayout">
             <fa-icon [icon]="faRedo"></fa-icon>
           </button>
-          <button class="btn btn-sm btn-warning btnLayout"
-                  (click)="layoutService.flipLayout()"
+          <button (click)="layoutService.flipLayout()"
+                  class="btn btn-sm btn-warning btnLayout"
                   role="button">
             <fa-icon [icon]="faExchangeAlt"></fa-icon>
           </button>
@@ -33,7 +34,8 @@
     </div>
 
     <!-- Sidebar outlet -->
-    <div class="w-{{layoutService.layout.sidebar.width}} scroll" [ngClass]="(layoutService.layout.sidebar.position === 'right' ? 'order-3' : 'order-1')">
+    <div [ngClass]="(layoutService.layout.sidebar.position === 'right' ? 'order-3' : 'order-1')"
+         class="w-{{layoutService.layout.sidebar.width}} scroll">
 
       <router-outlet name="sidebar"></router-outlet>
     </div>
