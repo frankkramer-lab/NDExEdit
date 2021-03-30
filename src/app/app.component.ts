@@ -3,7 +3,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {ParseService} from './services/parse.service';
 import {DataService} from './services/data.service';
 import {HttpClient} from '@angular/common/http';
-import {faArrowLeft, faArrowRight, faExchangeAlt, faRedo} from '@fortawesome/free-solid-svg-icons';
+import {faArrowLeft, faArrowRight, faComment, faExchangeAlt, faRedo} from '@fortawesome/free-solid-svg-icons';
 import {UtilityService} from './services/utility.service';
 import {LayoutService} from './services/layout.service';
 
@@ -22,6 +22,11 @@ export class AppComponent {
    * Title of the application is NDExEdit
    */
   title = 'NDExEdit';
+  /**
+   * Icon: faComment
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faComment = faComment;
   /**
    * Icon: faExchange
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
@@ -42,6 +47,8 @@ export class AppComponent {
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faArrowLeft = faArrowLeft;
+
+  browserLang;
 
   /**
    * Path to mock-ups
@@ -85,8 +92,29 @@ export class AppComponent {
   private initializeTranslation(): void {
     this.translateService.setDefaultLang(this.defaultLanguage);
 
-    const browserLang = this.translateService.getBrowserLang();
-    this.translateService.use((browserLang && this.supportedLanguages.includes(browserLang)) ? browserLang : this.defaultLanguage);
+    this.browserLang = this.translateService.getBrowserLang();
+
+    if (!this.browserLang || !this.supportedLanguages.includes(this.browserLang)) {
+      this.browserLang = this.defaultLanguage;
+    }
+    this.applyLanguage();
+  }
+
+  /**
+   * Sets the language to the specified string
+   * @param lang either 'de' for German or 'en' for English
+   */
+  setLanguage(lang: string): void {
+    this.browserLang = lang;
+    this.applyLanguage();
+  }
+
+  /**
+   * Applies a language
+   * @private
+   */
+  private applyLanguage(): void {
+    this.translateService.use(this.browserLang);
     this.translateService.get('MAIN_STATS_AXIS_BINS').subscribe(value => this.utilityService.xAxisContinuousLabel = value);
     this.translateService.get('MAIN_STATS_AXIS_OCCURANCES').subscribe(value => this.utilityService.yAxisLabel = value);
     this.translateService.get('MAIN_STATS_AXIS_NAMES').subscribe(value => this.utilityService.xAxisDiscreteLabel = value);

@@ -3,6 +3,7 @@ import {DataService} from '../../services/data.service';
 import {GraphService} from '../../services/graph.service';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
+import {faHome} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-main-graph',
@@ -14,6 +15,11 @@ import {ActivatedRoute} from '@angular/router';
  * Component responsible for graph rendering and manipulation
  */
 export class MainGraphComponent implements AfterViewInit, OnDestroy {
+  /**
+   * Icon: faHome
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faHome = faHome;
 
   /**
    * Contains DOM element for {@link https://js.cytoscape.org/|Cytoscape.js}

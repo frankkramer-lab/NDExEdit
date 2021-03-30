@@ -1,13 +1,28 @@
 <ng-container *ngIf="dataService.selectedNetwork">
 
   <h1>
-    <a [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]" data-toggle="tooltip"
-       ngbTooltip="{{'MAIN_MAPPINGS_GRAPH' | translate}}" placement="right"
-       role="button">
-      <fa-icon [icon]="faArrowLeft"></fa-icon>
-    </a>
-    {{dataService.selectedNetwork.networkInformation.name}}
+    <span class="row">
+      <span class="col-11">
+        <a [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]" data-toggle="tooltip"
+           ngbTooltip="{{'MAIN_MAPPINGS_GRAPH' | translate}}" placement="right"
+           role="button">
+          <fa-icon [icon]="faArrowLeft"></fa-icon>
+        </a>
+        {{dataService.selectedNetwork.networkInformation.name}}
+      </span>
+      <span class="col-1 float-right">
+        <a [routerLink]="['', { outlets: {primary: ['info'], sidebar: ['manage']} }]"
+           class="mt-2 float-right btn btn-outline-primary"
+           data-toggle="tooltip"
+           ngbTooltip="{{'MAIN_GRAPH_TT_HOME' | translate}}"
+           placement="bottom"
+           role="button">
+          <fa-icon [icon]="faHome"></fa-icon>
+        </a>
+      </span>
+    </span>
   </h1>
+
 
   <hr>
 
@@ -58,15 +73,17 @@
         </thead>
 
         <tbody>
-        <tr *ngFor="let styleProperty of dataService.selectedDiscreteMapping|stylePropertiesByCol : dataService.selectedDiscreteMappingProperty; let styleIndex = index"
-            [ngClass]="dataService.selectedForDeletion === styleProperty ? 'table-danger' : ''">
+        <tr
+          *ngFor="let styleProperty of dataService.selectedDiscreteMapping|stylePropertiesByCol : dataService.selectedDiscreteMappingProperty; let styleIndex = index"
+          [ngClass]="dataService.selectedForDeletion === styleProperty ? 'table-danger' : ''">
           <td>{{styleProperty}}</td>
 
           <td
             *ngFor="let is of dataService.selectedDiscreteMapping|isByCol : dataService.selectedDiscreteMappingProperty">
           <span
             #tmp>{{dataService.selectedDiscreteMapping|styleValueByColAndKey : dataService.selectedDiscreteMappingProperty : styleProperty : is}}</span>
-            <span *ngIf="tmp.innerHTML.startsWith('#')" [ngStyle]="{'background-color': dataService.selectedDiscreteMapping|styleValueByColAndKey : dataService.selectedDiscreteMappingProperty : styleProperty : is}"
+            <span *ngIf="tmp.innerHTML.startsWith('#')"
+                  [ngStyle]="{'background-color': dataService.selectedDiscreteMapping|styleValueByColAndKey : dataService.selectedDiscreteMappingProperty : styleProperty : is}"
                   class="badge badge-pill border">
             &nbsp;
           </span>
@@ -130,7 +147,8 @@
           <span #defaultLower>
             {{dataService.selectedContinuousMapping.lowers[0]}}
           </span>
-          <span *ngIf="dataService.selectedContinuousMapping.isColor" [ngStyle]="{'background-color': defaultLower.innerHTML || ''}"
+          <span *ngIf="dataService.selectedContinuousMapping.isColor"
+                [ngStyle]="{'background-color': defaultLower.innerHTML || ''}"
                 class="badge-pill border">&nbsp;</span>
         </td>
       </tr>
@@ -150,7 +168,8 @@
           <span #defaultGreater>
             {{dataService.selectedContinuousMapping.greaters[dataService.selectedContinuousMapping.greaters.length - 1]}}
           </span>
-          <span *ngIf="dataService.selectedContinuousMapping.isColor" [ngStyle]="{'background-color': defaultGreater.innerHTML || ''}"
+          <span *ngIf="dataService.selectedContinuousMapping.isColor"
+                [ngStyle]="{'background-color': defaultGreater.innerHTML || ''}"
                 class="badge-pill border">&nbsp;</span>
         </td>
       </tr>

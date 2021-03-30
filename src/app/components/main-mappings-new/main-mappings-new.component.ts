@@ -11,7 +11,8 @@ import {
   faQuestionCircle,
   faRoute,
   faTimes,
-  faUndo
+  faUndo,
+  faHome
 } from '@fortawesome/free-solid-svg-icons';
 import {NeAspect} from '../../models/ne-aspect';
 import {ChartDataSets} from 'chart.js';
@@ -50,6 +51,11 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faArrowRight = faArrowRight;
+  /**
+   * Icon: faHome
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faHome = faHome;
   /**
    * Icon: faArrowLeft
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos

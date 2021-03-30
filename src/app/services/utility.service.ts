@@ -4,6 +4,7 @@ import {NeAspect} from '../models/ne-aspect';
 import {NeChart} from '../models/ne-chart';
 import {NeFrequencyCounter} from '../models/ne-frequency-counter';
 import {NeStyle} from '../models/ne-style';
+import {Core} from 'cytoscape';
 
 @Injectable({
   providedIn: 'root'
@@ -181,8 +182,8 @@ export class UtilityService {
    * instead of random hacks anywhere else.
    * @param core network
    */
-  utilShowLabels(core: cytoscape.Core): boolean {
-    return core.nodes().length < 300;
+  utilShowLabels(core: Core): boolean {
+    return core.nodes().length < 500;
   }
 
   /**

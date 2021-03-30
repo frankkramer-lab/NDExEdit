@@ -1,5 +1,15 @@
 <ng-container *ngIf="dataService.selectedNetwork">
-  <h1>{{'MAIN_STATS_TITLE' | translate}}</h1>
+  <h1>
+    {{'MAIN_STATS_TITLE' | translate}}
+    <a [routerLink]="['', { outlets: {primary: ['info'], sidebar: ['manage']} }]"
+       class="mt-2 float-right btn btn-outline-primary"
+       data-toggle="tooltip"
+       ngbTooltip="{{'MAIN_GRAPH_TT_HOME' | translate}}"
+       placement="bottom"
+       role="button">
+      <fa-icon [icon]="faHome"></fa-icon>
+    </a>
+  </h1>
 
   <hr>
 

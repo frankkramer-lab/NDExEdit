@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
-import {faArrowLeft, faCheck, faEdit, faPlus, faSearch, faTimes, faTrash} from '@fortawesome/free-solid-svg-icons';
+import {faArrowLeft, faCheck, faEdit, faPlus, faSearch, faTimes, faTrash, faHome} from '@fortawesome/free-solid-svg-icons';
 import {NeMappingsType} from '../../models/ne-mappings-type';
 import {NeAspect} from '../../models/ne-aspect';
 import {UtilityService} from '../../services/utility.service';
@@ -36,6 +36,11 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faPlus = faPlus;
+  /**
+   * Icon: faHome
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faHome = faHome;
   /**
    * Icon: faEdit
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos

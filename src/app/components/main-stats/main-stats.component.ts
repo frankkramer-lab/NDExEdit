@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
-import {faExchangeAlt, faPaintBrush} from '@fortawesome/free-solid-svg-icons';
+import {faExchangeAlt, faPaintBrush, faHome} from '@fortawesome/free-solid-svg-icons';
 import {UtilityService} from '../../services/utility.service';
 import {NeAspect} from '../../models/ne-aspect';
 
@@ -15,7 +15,11 @@ import {NeAspect} from '../../models/ne-aspect';
  * Component responsible for graph statistics and description
  */
 export class MainStatsComponent {
-
+  /**
+   * Icon: faHome
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faHome = faHome;
   /**
    * Icon: faPaintBrush
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos

@@ -1,12 +1,27 @@
 <ng-container *ngIf="dataService.selectedNetwork && this.propertyToMap">
 
   <h1>
-    <a [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]" data-toggle="tooltip"
-       ngbTooltip="{{'MAIN_MAPPINGS_GRAPH' | translate}}" placement="right"
-       role="button">
-      <fa-icon [icon]="faArrowLeft"></fa-icon>
-    </a>
-    {{dataService.selectedNetwork.networkInformation.name}}
+    <span class="row">
+      <span class="col-11">
+        <a [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]" data-toggle="tooltip"
+           ngbTooltip="{{'MAIN_MAPPINGS_GRAPH' | translate}}" placement="right"
+           role="button">
+          <fa-icon [icon]="faArrowLeft"></fa-icon>
+        </a>
+        {{dataService.selectedNetwork.networkInformation.name}}
+      </span>
+      <span class="col-1 float-right">
+        <a [routerLink]="['', { outlets: {primary: ['info'], sidebar: ['manage']} }]"
+           class="mt-2 float-right btn btn-outline-primary"
+           data-toggle="tooltip"
+           ngbTooltip="{{'MAIN_GRAPH_TT_HOME' | translate}}"
+           placement="bottom"
+           role="button">
+          <fa-icon [icon]="faHome"></fa-icon>
+        </a>
+      </span>
+    </span>
+
   </h1>
 
   <hr>
