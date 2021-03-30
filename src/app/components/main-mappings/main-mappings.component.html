@@ -1,160 +1,175 @@
-<ng-container *ngIf="dataService.networkSelected">
+<ng-container *ngIf="dataService.selectedNetwork">
 
   <h1>
-    <a [routerLink]="['', { outlets: {primary: ['graph', dataService.networkSelected.id]} }]" data-toggle="tooltip"
+    <a [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]" data-toggle="tooltip"
        ngbTooltip="{{'MAIN_MAPPINGS_GRAPH' | translate}}" placement="right"
        role="button">
       <fa-icon [icon]="faArrowLeft"></fa-icon>
     </a>
-    {{dataService.networkSelected.networkInformation.name}}
+    {{dataService.selectedNetwork.networkInformation.name}}
   </h1>
 
   <hr>
 
-  <div *ngIf="selectedMapping">
-    <span *ngFor="let map of selectedMapping">
+  <!-- PASSTHROUGH -->
+  <div
+    *ngIf="dataService.selectedPassthroughMapping">
+    <table id="tableDetailsPassthrough" class="table">
+      <thead>
+      <tr>
+        <th>{{'MAIN_MAPPINGS_TH_COL' | translate}}</th>
+        <th>{{'MAIN_MAPPINGS_TH_STYLE' | translate}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>{{dataService.selectedPassthroughMapping.col}}</td>
+        <td>{{dataService.selectedPassthroughMapping.styleProperty}}</td>
+      </tr>
+      </tbody>
+    </table>
 
-      <table *ngIf="map && map.chartValid" class="table table-bordered">
-        <thead>
-        <tr>
-          <th>{{map.title[1]}}</th>
-          <th>
-            <button *ngIf="givenMapType.startsWith('n')"
-                    [routerLink]="['', { outlets: {primary: ['edit', dataService.networkSelected.id, givenMapType + dataService.networkSelected.mappings.nodesContinuous.indexOf(map) ]} }]"
-                    class="btn btn-block btn-outline-warning"
-                    data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"
-                    placement="bottom">
-              <fa-icon [icon]="faEdit"></fa-icon>
-            </button>
-            <button *ngIf="givenMapType.startsWith('e')"
-                    [routerLink]="['', { outlets: {primary: ['edit', dataService.networkSelected.id, givenMapType + dataService.networkSelected.mappings.edgesContinuous.indexOf(map) ]} }]"
-                    class="btn btn-block btn-outline-warning"
-                    data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"
-                    placement="bottom">
-              <fa-icon [icon]="faEdit"></fa-icon>
-            </button>
-          </th>
-          <th>{{map.title[0]}}</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let entry of map.chart.chartData[0].data; let i = index">
-          <td *ngIf="i === 0" colspan="2">&lt;</td>
-          <td *ngIf="i === map.chart.chartLabels.length - 1" colspan="2">&gt;</td>
-          <td *ngIf="i > 0 && i < map.chart.chartLabels.length - 1"
-              colspan="2">{{map.chart.chartLabels[i]}}</td>
-          <td>{{entry}}</td>
-        </tr>
-        </tbody>
-      </table>
+    <button (click)="toggleGlobalRemoveDialogue()"
+            class="btn btn-block btn-outline-danger"
+            data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_DELETE' | translate}}"
+            placement="bottom">
+      <fa-icon [icon]="faTrash"></fa-icon>
+      {{'MAIN_MAPPINGS_DELETE' | translate}}
+    </button>
 
-      <table *ngIf="map && map.gradientValid" class="table table-bordered">
-        <thead>
-        <tr>
-          <th>{{map.title[1]}}</th>
-          <th>
-            <button *ngIf="givenMapType.startsWith('n')"
-                    [routerLink]="['', { outlets: {primary: ['edit', dataService.networkSelected.id, givenMapType + dataService.networkSelected.mappings.nodesContinuous.indexOf(map) ]} }]"
-                    class="btn btn-block btn-outline-warning"
-                    data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"
-                    placement="bottom">
-              <fa-icon [icon]="faEdit"></fa-icon>
-            </button>
-            <button *ngIf="givenMapType.startsWith('e')"
-                    [routerLink]="['', { outlets: {primary: ['edit', dataService.networkSelected.id, givenMapType + dataService.networkSelected.mappings.edgesContinuous.indexOf(map) ]} }]"
-                    class="btn btn-block btn-outline-warning"
-                    data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}"
-                    placement="bottom">
-              <fa-icon [icon]="faEdit"></fa-icon>
-            </button>
-          </th>
-          <th>{{map.title[0]}}</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let entry of map.colorGradient; let i = index">
-          <td *ngIf="i === 0" colspan="2">&lt;</td>
-          <td *ngIf="i === map.colorGradient.length - 1" colspan="2">&gt;</td>
-          <td *ngIf="i > 0 && i < map.colorGradient.length - 1" colspan="2">
-            {{entry.numericThreshold}}
-          </td>
-          <td>
-            {{entry.color}}
-            <span [ngStyle]="{'background-color': entry.color}" class="badge badge-pill border">&nbsp;</span>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-
-      <div class="table-responsive">
-        <table *ngIf="map && map.classifier" class="table table-bordered">
-          <thead>
-          <th colspan="3">{{map.classifier}}</th>
-          <th *ngFor="let value of map.values">{{value}}</th>
-          </thead>
-          <tbody>
-          <tr *ngFor="let style of map.styleMap" [ngClass]="{'table-info' : (propertyToRemove.style === style)}">
-
-            <td><b>{{style.cssKey}}</b></td>
-            <td>
-              <button *ngIf="givenMapType.startsWith('n')"
-                      [routerLink]="['', { outlets: {primary: ['edit', dataService.networkSelected.id, givenMapType + dataService.networkSelected.mappings.nodesDiscrete.indexOf(map), map.styleMap.indexOf(style) ]} }]"
-                      class="btn btn-block btn-outline-warning"
-                      data-toggle="tooltip"
-                      ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}" placement="bottom"
-                      type="button">
-                <fa-icon [icon]="faEdit"></fa-icon>
-              </button>
-              <button *ngIf="givenMapType.startsWith('e')"
-                      [routerLink]="['', { outlets: {primary: ['edit', dataService.networkSelected.id, givenMapType + dataService.networkSelected.mappings.edgesDiscrete.indexOf(map), map.styleMap.indexOf(style) ]} }]"
-                      class="btn btn-block btn-outline-warning"
-                      data-toggle="tooltip"
-                      ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_EDIT' | translate}}" placement="bottom"
-                      type="button">
-                <fa-icon [icon]="faEdit"></fa-icon>
-              </button>
-            </td>
-            <td>
-              <button (click)="toggleSingleRemoveDialogue(map, givenMapType, style)"
-                      class="btn btn-block btn-outline-danger" data-toggle="tooltip"
-                      ngbTooltip="{{'MAIN_MAPPINGS_TT_SINGLE_DELETE' | translate}}" placement="bottom"
-                      type="button">
-                <fa-icon [icon]="faTrash"></fa-icon>
-              </button>
-            </td>
-
-            <td *ngFor="let value of map.values; let i = index">
-
-                <span *ngFor="let styleValue of style.cssValues; let j = index">
-                  <span *ngIf="map.selectors[i] === style.selectors[j]">
-                      {{styleValue}}
-                    <span *ngIf="styleValue && styleValue.toString().indexOf('#') > -1"
-                          [ngStyle]="{'background-color': styleValue}"
-                          class="badge badge-pill border">&nbsp;</span>
-                    </span>
-                  </span>
-
-            </td>
-
-          </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div *ngIf="map && (map.classifier || map.chartValid || map.gradientValid)" class="mt-3 mb-3">
-        <div>
-          <button (click)="toggleGlobalRemoveDialogue(map, givenMapType)" class="btn btn-block btn-outline-danger"
-                  data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_DELETE' | translate}}" placement="bottom">
-            <fa-icon [icon]="faTrash"></fa-icon>
-            {{'MAIN_MAPPINGS_DELETE' | translate}}
-          </button>
-        </div>
-      </div>
-
-    </span>
   </div>
 
-  <hr>
+  <!-- DISCRETE -->
+  <div
+    *ngIf="dataService.selectedDiscreteMapping">
+
+    <div class="table-responsive">
+
+      <table id="tableDetailsDiscrete" class="table">
+        <thead>
+        <tr>
+          <th>{{dataService.selectedDiscreteMappingProperty}}</th>
+          <th
+            *ngFor="let is of dataService.selectedDiscreteMapping|isByCol : dataService.selectedDiscreteMappingProperty">
+            {{is}}
+          </th>
+          <th colspan="2">&nbsp;</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr [ngClass]="dataService.selectedForDeletion === styleProperty ? 'table-danger' : ''"
+            *ngFor="let styleProperty of dataService.selectedDiscreteMapping|stylePropertiesByCol : dataService.selectedDiscreteMappingProperty; let styleIndex = index">
+          <td>{{styleProperty}}</td>
+
+          <td
+            *ngFor="let is of dataService.selectedDiscreteMapping|isByCol : dataService.selectedDiscreteMappingProperty">
+          <span
+            #tmp>{{dataService.selectedDiscreteMapping|styleValueByColAndKey : dataService.selectedDiscreteMappingProperty : styleProperty : is}}</span>
+            <span *ngIf="tmp.innerHTML.startsWith('#')" class="badge badge-pill border"
+                  [ngStyle]="{'background-color': dataService.selectedDiscreteMapping|styleValueByColAndKey : dataService.selectedDiscreteMappingProperty : styleProperty : is}">
+            &nbsp;
+          </span>
+          </td>
+
+          <td>
+            <button class="btn btn-outline-warning"
+                    [routerLink]="['', { outlets: {primary: ['edit', mapHint + styleIndex, '1']} }]">
+              <fa-icon [icon]="faEdit"></fa-icon>
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-outline-danger" (click)="toggleRemoveDiscreteSingle(styleIndex)">
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </button>
+          </td>
+
+        </tr>
+        </tbody>
+
+      </table>
+
+    </div>
+    <button (click)="toggleGlobalRemoveDialogue()"
+            class="btn btn-block btn-outline-danger"
+            data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_DELETE' | translate}}"
+            placement="bottom">
+      <fa-icon [icon]="faTrash"></fa-icon>
+      {{'MAIN_MAPPINGS_DELETE' | translate}}
+    </button>
+
+  </div>
+
+  <!-- CONTINUOUS -->
+  <div
+    *ngIf="dataService.selectedContinuousMapping">
+
+    <table id="tableDetailsContinuous" class="table">
+
+      <thead>
+      <tr>
+        <th>{{dataService.selectedContinuousMapping.col}}</th>
+        <th>{{dataService.selectedContinuousMapping.styleProperty}}</th>
+
+        <!-- EDIT -->
+        <th>
+          <button class="btn btn-block btn-outline-warning"
+                  [routerLink]="['', { outlets: {primary: ['edit', mapId, '1']} }]">
+            <fa-icon [icon]="faEdit"></fa-icon>
+          </button>
+        </th>
+
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr>
+        <!-- default lower -->
+        <td><</td>
+        <td colspan="2">
+          <span #defaultLower>
+            {{dataService.selectedContinuousMapping.lowers[0]}}
+          </span>
+          <span *ngIf="dataService.selectedContinuousMapping.isColor" class="badge-pill border"
+                [ngStyle]="{'background-color': defaultLower.innerHTML || ''}">&nbsp;</span>
+        </td>
+      </tr>
+
+      <tr *ngFor="let eq of dataService.selectedContinuousMapping.equals; let index = index">
+        <td>{{dataService.selectedContinuousMapping.thresholds[index]}}</td>
+        <td colspan="2">
+          {{eq}}
+          <span *ngIf="dataService.selectedContinuousMapping.isColor" class="badge-pill border"
+                [ngStyle]="{'background-color': eq}">&nbsp;</span>
+        </td>
+      </tr>
+      <tr>
+        <!-- default greater -->
+        <td>></td>
+        <td colspan="2">
+          <span #defaultGreater>
+            {{dataService.selectedContinuousMapping.greaters[dataService.selectedContinuousMapping.greaters.length - 1]}}
+          </span>
+          <span *ngIf="dataService.selectedContinuousMapping.isColor" class="badge-pill border"
+                [ngStyle]="{'background-color': defaultGreater.innerHTML || ''}">&nbsp;</span>
+        </td>
+      </tr>
+
+      </tbody>
+
+    </table>
+
+    <button (click)="toggleGlobalRemoveDialogue()"
+            class="btn btn-block btn-outline-danger"
+            data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_DELETE' | translate}}"
+            placement="bottom">
+      <fa-icon [icon]="faTrash"></fa-icon>
+      {{'MAIN_MAPPINGS_DELETE' | translate}}
+    </button>
+
+  </div>
+
+  <hr *ngIf="dataService.selectedTypeHint">
 
   <!-- SHOW LIST -->
   <div *ngIf="!showGlobalDeletionDialogue && !showSingleDeletionDialogue">
@@ -162,7 +177,8 @@
     <h3>{{'MAIN_MAPPINGS_TITLE_LIST' | translate}}</h3>
 
     <div class="row">
-      <!-- todo should be responsive, input component width ... -->
+
+      <!-- ND -->
       <div class="col-xl-6 col-12">
 
         <app-main-mappings-available-attributes
@@ -173,7 +189,7 @@
         </app-main-mappings-available-attributes>
 
       </div>
-
+      <!-- ED -->
       <div class="col-xl-6 col-12">
 
         <app-main-mappings-available-attributes
@@ -185,8 +201,11 @@
 
       </div>
 
-      <div class="w-100"></div>
+      <!-- break -->
+      <div class="w-100 border-bottom mb-3 mt-3"></div>
+      <hr>
 
+      <!-- NC -->
       <div class="col-xl-6 col-12">
 
         <app-main-mappings-available-attributes
@@ -197,7 +216,7 @@
         </app-main-mappings-available-attributes>
 
       </div>
-
+      <!-- EC -->
       <div class="col-xl-6 col-12">
 
         <app-main-mappings-available-attributes
@@ -208,6 +227,33 @@
         </app-main-mappings-available-attributes>
 
       </div>
+
+      <!-- break -->
+      <div class="w-100 border-bottom mb-3 mt-3"></div>
+
+      <!-- NP -->
+      <div class="col-xl-6 col-12">
+
+        <app-main-mappings-available-attributes
+          [attributeListFull]="getAttributeListForCurrentNetworkAndType('np')"
+          [headline]="'MAIN_MAPPINGS_TITLE_NODES_PASSTHROUGH'"
+          [mappings]="getExistingMappingListForCurrentNetworkAndType('np')"
+          [type]="'np'">
+        </app-main-mappings-available-attributes>
+
+      </div>
+      <!-- EP -->
+      <div class="col-xl-6 col-12">
+
+        <app-main-mappings-available-attributes
+          [attributeListFull]="getAttributeListForCurrentNetworkAndType('ep')"
+          [headline]="'MAIN_MAPPINGS_TITLE_EDGES_PASSTHROUGH'"
+          [mappings]="getExistingMappingListForCurrentNetworkAndType('ep')"
+          [type]="'ep'">
+        </app-main-mappings-available-attributes>
+
+      </div>
+
     </div>
 
   </div>
@@ -222,7 +268,7 @@
 
       <!-- nevermind -->
       <div class="col-6">
-        <button (click)="confirmDeletion(false)" class="btn btn-block btn-outline-success">
+        <button (click)="confirmDeletionGlobal(false)" class="btn btn-block btn-outline-success">
           <fa-icon [icon]="faTimes"></fa-icon>
           {{'MAIN_MAPPINGS_CONFIRM_DELETION_NO' | translate}}
         </button>
@@ -230,8 +276,8 @@
 
       <!-- confirm -->
       <div class="col-6">
-        <button (click)="confirmDeletion(true, 'global')"
-                [routerLink]="['', { outlets: {primary: ['graph', dataService.networkSelected.id]} }]"
+        <button (click)="confirmDeletionGlobal(true)"
+                [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]"
                 class="btn btn-block btn-outline-danger">
           <fa-icon [icon]="faCheck"></fa-icon>
           {{'MAIN_MAPPINGS_CONFIRM_DELETION_YES' | translate}}
@@ -242,7 +288,7 @@
   </div>
 
   <!-- SHOW SINGLE DELETION DIALOGUE -->
-  <div *ngIf="showSingleDeletionDialogue && !showGlobalDeletionDialogue">
+  <div *ngIf="showSingleDeletionDialogue && !showGlobalDeletionDialogue" class="mb-3">
     <div class="alert alert-danger" role="alert">
       {{'MAIN_MAPPINGS_SINGLE_CONFIRM_DELETION' | translate}}
     </div>
@@ -251,7 +297,7 @@
 
       <!-- nevermind -->
       <div class="col-6">
-        <button (click)="confirmDeletion(false, 'single')" class="btn btn-block btn-outline-success">
+        <button (click)="confirmDeletionSingle(false)" class="btn btn-block btn-outline-success">
           <fa-icon [icon]="faTimes"></fa-icon>
           {{'MAIN_MAPPINGS_CONFIRM_DELETION_NO' | translate}}
         </button>
@@ -259,8 +305,8 @@
 
       <!-- confirm -->
       <div class="col-6">
-        <button (click)="confirmDeletion(true, 'single')"
-                [routerLink]="['', { outlets: {primary: ['graph', dataService.networkSelected.id]} }]"
+        <button (click)="confirmDeletionSingle(true)"
+                [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]"
                 class="btn btn-block btn-outline-danger">
           <fa-icon [icon]="faCheck"></fa-icon>
           {{'MAIN_MAPPINGS_CONFIRM_DELETION_YES' | translate}}

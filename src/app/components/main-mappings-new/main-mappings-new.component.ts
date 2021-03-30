@@ -5,25 +5,25 @@ import {
   faArrowLeft,
   faArrowRight,
   faChartBar,
-  faQuestionCircle,
   faCheck,
   faPalette,
   faPlus,
+  faQuestionCircle,
   faRoute,
   faTimes,
   faUndo
 } from '@fortawesome/free-solid-svg-icons';
-import {NeMappingsDefinition} from '../../models/ne-mappings-definition';
 import {NeAspect} from '../../models/ne-aspect';
 import {ChartDataSets} from 'chart.js';
 import {Label} from 'ng2-charts';
-import {NeContinuousThresholds} from '../../models/ne-continuous-thresholds';
 import {NeThresholdMap} from '../../models/ne-threshold-map';
 import {UtilityService} from '../../services/utility.service';
 import {NeMappingsType} from '../../models/ne-mappings-type';
 import {NeChartType} from '../../models/ne-chart-type';
 import {NeChart} from '../../models/ne-chart';
-import {NeFrequencyCounter} from '../../models/ne-frequency-counter';
+import {NeMappingDiscrete} from '../../models/ne-mapping-discrete';
+import {NeMappingContinuous} from '../../models/ne-mapping-continuous';
+import {NeMappingPassthrough} from '../../models/ne-mapping-passthrough';
 
 @Component({
   selector: 'app-main-mappings-new',
@@ -50,16 +50,8 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
     public utilityService: UtilityService
   ) {
 
-    switch (this.route.snapshot.url[0].path) {
-      case 'new':
-        this.isEdit = false;
-        break;
-      case 'edit':
-        this.isEdit = true;
-        break;
-    }
-
     this.route.paramMap.subscribe(params => {
+      this.isEdit = params.get('isEdit') === '1';
       this.initData(params);
     });
 
@@ -210,24 +202,24 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   scatterChartLabels: Label[] = [''];
 
   /**
-   * The new mapping's or the existing mapping's id
-   */
-  currentMappingId = '';
-
-  /**
    * Newly created or existing discrete mapping to be edited
    */
-  discreteMapping: NeMappingsDefinition[];
+  discreteMapping: NeMappingDiscrete;
 
   /**
    * Newly created or existing continuous mapping to be edited
    */
-  continuousMapping: NeContinuousThresholds;
+  continuousMapping: NeMappingContinuous;
 
   /**
    * Thresholds that belong to this {@link MainMappingsNewComponent#continuousMapping}
    */
   continuousThresholds: NeThresholdMap[] = [];
+
+  /**
+   * Newly created passthrough mapping
+   */
+  passthroughMapping: NeMappingPassthrough;
 
   /**
    * Points to property within the possible attributes of a network's elements (for new creation)
@@ -244,16 +236,17 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * @private
    */
   private isDiscrete: boolean;
-
   /**
-   * Returns the number of bins to be applied to the given set of numbers
-   * {@link https://en.wikipedia.org/wiki/Histogram#Sturges'_formula|Sturge's Rule}
-   * @param numbers list of numbers
+   * Indicates if this new mapping or already existing mapping is continuous
    * @private
    */
-  private static sturgesRule(numbers: number[]): number {
-    return Math.ceil(1 + Math.log2(numbers.length));
-  }
+  private isContinuous: boolean;
+  /**
+   * Indicates if this new mapping or already existing mapping is passthrough
+   * @private
+   */
+  private isPassthrough: boolean;
+
 
   /**
    * Hides the label checkbox in the sidebar, because toggling it from here has no gain at all
@@ -295,18 +288,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Is called on submission of and edited mapping and edits the continuous or discrete mapping
-   * based on the previously set mappingstype
-   */
-  editMapping(): void {
-    if (this.typeHint.nd || this.typeHint.ed) {
-      this.dataService.editMapping(this.dataService.networkSelected.id, this.discreteMapping, this.styleProperty, this.typeHint);
-    } else {
-      this.dataService.editMapping(this.dataService.networkSelected.id, this.continuousMapping, this.styleProperty, this.typeHint);
-    }
-  }
-
-  /**
    * Reacting to the form's styleProperty
    * @param $event string set as styleProperty in child form
    */
@@ -321,23 +302,20 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * @private Only needed on init
    */
   private initData(params: ParamMap): void {
-    const map = params.get('map');
-    const networkId = params.get('id');
+    const mapType = params.get('map');
 
-    if (map && networkId) {
-      this.dataService.selectNetwork(Number(networkId));
-      this.currentMappingId = map.substring(2);
-      const mapType = map.substring(0, 2);
-      this.typeHint = this.utilityService.utilGetTypeHintByString(mapType);
+    if (mapType) {
+      const type = mapType.substring(0, 2);
+      const index = mapType.substring(2);
 
-      if (this.typeHint.ec || this.typeHint.nc) {
-        this.isDiscrete = false;
-      } else {
-        this.isDiscrete = true;
-      }
+      this.typeHint = this.utilityService.utilGetTypeHintByString(type);
+
+      this.isContinuous = this.typeHint.ec || this.typeHint.nc;
+      this.isDiscrete = this.typeHint.nd || this.typeHint.ed;
+      this.isPassthrough = this.typeHint.np || this.typeHint.ep;
 
       if (this.isEdit) {
-        this.initDataEdit(params);
+        this.initDataEdit(Number(index));
       } else {
         this.initDataNew(params);
       }
@@ -351,165 +329,130 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * @private only needed on init
    */
   private initDataNew(params: ParamMap): void {
-    this.isEdit = false;
+
     this.propertyId = Number(params.get('propertyId'));
+    this.isEdit = false;
+    this.dataService.resetAnyMappingSelection();
+
     let availableAttributes: any[];
 
-    if (this.typeHint.ec || this.typeHint.ed) {
-      availableAttributes = this.dataService.networkSelected.aspectKeyValuesEdges;
+    if (this.typeHint.ec || this.typeHint.ed || this.typeHint.ep) {
+      availableAttributes = this.dataService.selectedNetwork.aspectKeyValuesEdges;
     } else {
-      availableAttributes = this.dataService.networkSelected.aspectKeyValuesNodes;
+      availableAttributes = this.dataService.selectedNetwork.aspectKeyValuesNodes;
     }
 
-    if (!this.isDiscrete) {
-      availableAttributes = availableAttributes
-        .filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'float' || a.datatype === 'double'));
-    } else {
-      availableAttributes = availableAttributes
-        .filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
-    }
+    if (this.isContinuous) {
+      availableAttributes = this.utilityService.utilFilterForContinuous(availableAttributes);
+      this.propertyToMap = availableAttributes[this.propertyId];
 
-    this.propertyToMap = availableAttributes[this.propertyId];
+      // todo rework to make binsize changeable for integer based continuous mappings
+      this.chartObject = (this.propertyToMap.datatype === 'integer'
+        ? this.propertyToMap.chartDiscreteDistribution
+        : this.propertyToMap.chartContinuousDistribution);
 
-    if (this.isDiscrete) {
-      this.chartObject = {
-        chartData: this.propertyToMap.chartDiscreteDistribution.chartData,
-        chartLabels: this.propertyToMap.chartDiscreteDistribution.chartLabels,
-        chartType: this.chartType
+      this.binSize = (this.propertyToMap.datatype === 'integer')
+        ? null
+        : this.utilityService.utilSturgesRule(this.propertyToMap.numericValues);
+
+      this.continuousMapping = {
+        chart: undefined,
+        cleanStyleProperty: '',
+        col: this.propertyToMap.name,
+        colorGradient: [],
+        equals: undefined,
+        greaters: undefined,
+        isColor: false,
+        lowers: undefined,
+        styleProperty: '',
+        thresholds: [],
+        type: this.propertyToMap.datatype
+      };
+    } else if (this.isDiscrete) {
+      availableAttributes = this.utilityService.utilFilterForDiscrete(availableAttributes);
+      this.propertyToMap = availableAttributes[this.propertyId];
+
+      this.chartObject = this.propertyToMap.chartDiscreteDistribution;
+
+      const values: string[] = new Array<string>(this.propertyToMap.values.length);
+      this.discreteMapping = {
+        col: this.propertyToMap.name,
+        keys: this.propertyToMap.values,
+        styleProperty: '',
+        type: this.propertyToMap.datatype,
+        values,
+        useValue: Array(values.length).fill(true)
       };
     } else {
-      this.binSize = MainMappingsNewComponent.sturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
-      this.chartObject = this.calculateHistogramDataForBinSize(this.binSize,
-        this.propertyToMap.min,
-        this.propertyToMap.max,
-        this.propertyToMap.chartContinuousDistribution.chartLabels);
-    }
-    console.log(this.chartObject);
+      this.propertyToMap = availableAttributes[this.propertyId];
 
-    if (this.typeHint.nc || this.typeHint.ec) {
-      this.continuousMapping = {};
+      if (this.propertyToMap.datatype === 'integer' || !this.propertyToMap.validForContinuous) {
+        this.chartObject = this.propertyToMap.chartDiscreteDistribution;
+      } else {
+        this.chartObject = this.propertyToMap.chartContinuousDistribution;
+      }
+
+      this.passthroughMapping = {
+        col: this.propertyToMap.name,
+        styleProperty: ''
+      };
+    }
+
+    if (this.isDiscrete) {
+      this.continuousMapping = null;
+      this.passthroughMapping = null;
+    } else if (this.isContinuous) {
+      this.discreteMapping = null;
+      this.passthroughMapping = null;
     } else {
-      this.discreteMapping = [];
+      this.discreteMapping = null;
+      this.continuousMapping = null;
     }
-
   }
 
   /**
    * Initializes data for editing an existing mapping
    *
-   * @param params Passed routing params
+   * index number pointing to index of a mapping or property for a collection of discrete mappings
    * @private only needed on init
    */
-  private initDataEdit(params: ParamMap): void {
-    // edit existing
+  private initDataEdit(index: number): void {
+
     this.isEdit = true;
-    let existingMapping;
-    const mapId = params.get('map').substring(2);
+    let mapping: NeMappingDiscrete | NeMappingContinuous;
 
-    switch (params.get('map').substring(0, 2)) {
-      case 'nd':
-        this.propertyId = Number(params.get('propertyId'));
-        existingMapping = this.dataService.networkSelected.mappings.nodesDiscrete[mapId];
-        this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === existingMapping.classifier);
-        this.styleProperty = existingMapping.styleMap[this.propertyId].cssKey;
-        this.discreteMapping = existingMapping;
-        break;
-      case 'nc':
-        existingMapping = this.dataService.networkSelected.mappings.nodesContinuous[mapId];
-        this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesNodes.find(x => x.name === existingMapping.title[1]);
-        this.styleProperty = existingMapping.title[0];
-        this.continuousMapping = existingMapping;
-        this.binSize = MainMappingsNewComponent.sturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
-        this.chartObject = this.calculateHistogramDataForBinSize(this.binSize,
-          this.propertyToMap.min,
-          this.propertyToMap.max,
-          this.propertyToMap.chartContinuousDistribution.chartLabels);
-        break;
-      case 'ed':
-        this.propertyId = Number(params.get('propertyId'));
-        existingMapping = this.dataService.networkSelected.mappings.edgesDiscrete[mapId];
-        this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === existingMapping.classifier);
-        this.styleProperty = existingMapping.styleMap[this.propertyId].cssKey;
-        this.discreteMapping = existingMapping;
-        break;
-      case 'ec':
-        existingMapping = this.dataService.networkSelected.mappings.edgesContinuous[mapId];
-        this.propertyToMap = this.dataService.networkSelected.aspectKeyValuesEdges.find(x => x.name === existingMapping.title[1]);
-        this.styleProperty = existingMapping.title[0];
-        this.continuousMapping = existingMapping;
-        this.binSize = MainMappingsNewComponent.sturgesRule(this.propertyToMap.chartContinuousDistribution.chartLabels);
-        this.chartObject = this.calculateHistogramDataForBinSize(this.binSize,
-          this.propertyToMap.min,
-          this.propertyToMap.max,
-          this.propertyToMap.chartContinuousDistribution.chartLabels);
-        break;
-    }
-  }
-
-  /**
-   * Calculates data for the continuous distribution chart as histogram
-   * with default binSize calculated as Sturge's Rule
-   *
-   * @param binSize number of bins calculated by Sturge's Rule
-   * @param min lowest value
-   * @param max greatest value
-   * @param values list of values
-   * @private
-   */
-  private calculateHistogramDataForBinSize(binSize: number, min: number, max: number, values: number[]): NeChart {
-    const chartData = [];
-    const frequencies: NeFrequencyCounter[] = [];
-    const chartLabels = [];
-
-    if (isNaN(binSize) || isNaN(min) || isNaN(max)) {
-      console.log('Histogram data could not be calculated');
-      return {
-        chartData,
-        chartLabels,
-        chartType: this.chartType
-      };
+    if (this.typeHint.nd) {
+      mapping = this.dataService.selectedNetwork.mappings.nodesDiscrete[index];
+      this.discreteMapping = mapping;
+      this.dataService.selectMapping('nd', mapping.col);
+    } else if (this.typeHint.nc) {
+      mapping = this.dataService.selectedNetwork.mappings.nodesContinuous[index];
+      this.continuousMapping = mapping;
+      this.dataService.selectMapping(null, null, 'nc' + index);
+    } else if (this.typeHint.ed) {
+      mapping = this.dataService.selectedNetwork.mappings.edgesDiscrete[index];
+      this.discreteMapping = mapping;
+      this.dataService.selectMapping('ed', mapping.col);
+    } else if (this.typeHint.ec) {
+      mapping = this.dataService.selectedNetwork.mappings.edgesContinuous[index];
+      this.continuousMapping = mapping;
+      this.dataService.selectMapping(null, null, 'ec' + index);
     }
 
-    const sizeOfBin = Number(((max - min) / binSize).toFixed(this.precision));
+    this.styleProperty = mapping.styleProperty;
 
-    let intervalPointer = min;
-    while (intervalPointer < max) {
-
-      const nextThreshold = Number((intervalPointer + sizeOfBin).toFixed(this.precision));
-      frequencies.push({
-        lowerBorder: intervalPointer,
-        upperBorder: nextThreshold,
-        occurance: 0
-      });
-
-      chartLabels.push('[' + intervalPointer + ':' + nextThreshold + ']');
-      intervalPointer = nextThreshold;
+    if (this.typeHint.nd || this.typeHint.nc) {
+      this.propertyToMap = this.dataService.selectedNetwork.aspectKeyValuesNodes.find(a => a.name === mapping.col);
+    } else if (this.typeHint.ed || this.typeHint.ec) {
+      this.propertyToMap = this.dataService.selectedNetwork.aspectKeyValuesEdges.find(a => a.name === mapping.col);
     }
 
-    for (const f of frequencies) {
-      for (const value of values) {
-
-        if (value === min && frequencies.indexOf(f) === 0) {
-          f.occurance++;
-          continue;
-        }
-
-        if (value > f.lowerBorder && value <= f.upperBorder) {
-          f.occurance++;
-        }
-      }
+    if (this.typeHint.nd || this.typeHint.ed) {
+      this.chartObject = this.propertyToMap.chartDiscreteDistribution;
+    } else if (this.typeHint.nc || this.typeHint.ec) {
+      this.chartObject = this.propertyToMap.chartContinuousDistribution;
     }
 
-    chartData.push({
-      data: frequencies.map(a => a.occurance),
-      label: this.propertyToMap.name
-    });
-
-    return {
-      chartType: this.chartType,
-      chartLabels,
-      chartData
-    };
   }
 
   /**
@@ -519,11 +462,16 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   changeBinSize($event: number): void {
     this.binSize = $event;
-    this.chartObject = this.calculateHistogramDataForBinSize(
+    this.chartObject = this.utilityService.utilCalculateHistogramDataForBinSize(
       this.binSize,
-      this.propertyToMap.min,
-      this.propertyToMap.max,
-      this.propertyToMap.chartContinuousDistribution.chartLabels);
+      this.propertyToMap);
+  }
+
+  /**
+   * Returns the continuously updated style property
+   */
+  getCurrentStyleProperty(): string {
+    return this.styleProperty;
   }
 }
 

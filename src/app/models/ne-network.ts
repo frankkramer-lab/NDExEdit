@@ -1,7 +1,5 @@
 import {NeNetworkInformation} from './ne-network-information';
-import * as cytoscape from 'cytoscape';
-import {ElementDefinition, Stylesheet} from 'cytoscape';
-import {NeElementAttribute} from './ne-element-attribute';
+import {Core, ElementDefinition, Stylesheet} from 'cytoscape';
 import {NeAspect} from './ne-aspect';
 import {NeMappingsMap} from './ne-mappings-map';
 
@@ -13,32 +11,38 @@ export interface NeNetwork {
   /**
    * The network's internal ID
    */
-  id?: number;
+  id: number;
 
   /**
-   * List of nodes and edges
+   * Contains the original NDEx data as JSON.
+   * Essential for conversion by library
    */
-  elements: ElementDefinition[];
+  cx: any[];
 
   /**
-   * Stylesheet
+   * Name of original file
    */
-  style: Stylesheet[] | any[];
-
-  /**
-   * Information about this network
-   */
-  networkInformation?: NeNetworkInformation;
+  filename?: string;
 
   /**
    * Core object which can be rendered
    */
-  graph?: cytoscape.Core;
+  core: Core;
 
   /**
-   * List of all available attributes
+   * List of nodes and edges
    */
-  aspects?: NeElementAttribute[];
+  elements?: ElementDefinition[];
+
+  /**
+   * Stylesheet
+   */
+  style?: Stylesheet[] | any[];
+
+  /**
+   * Information about this network
+   */
+  networkInformation: NeNetworkInformation;
 
   /**
    * List of all attributes for nodes and their associations to other objects
@@ -53,7 +57,7 @@ export interface NeNetwork {
   /**
    * List of all mappings
    */
-  mappings?: NeMappingsMap;
+  mappings: NeMappingsMap;
 
   /**
    * List of style constants, e.g. "arrow color same as edge"
@@ -64,5 +68,4 @@ export interface NeNetwork {
    * Indicates if the labels are visible or not
    */
   showLabels?: boolean;
-
 }

@@ -1,9 +1,9 @@
-<div class="container-fluid">
+<div class="container-fluid full">
 
   <div class="row">
 
     <!-- Main outlet -->
-    <div [ngClass]="(layoutIsMainLeft ? 'order-1 p-2 w-' + widthLeft : 'order-3 p-2 w-' + widthRight)">
+    <div class="w-{{layoutService.layout.main.width}} scroll p-2" [ngClass]="(layoutService.layout.main.position === 'left' ? 'order-1' : 'order-3')">
       <router-outlet></router-outlet>
     </div>
 
@@ -11,16 +11,20 @@
     <div class="order-2 w-5">
       <div class="drag-bar">
         <div class="btn-group-vertical">
-          <button class="btn btn-sm btn-secondary btnLayout" (click)="increaseWidthRight()">
+          <button class="btn btn-sm btn-secondary btnLayout"
+                  (click)="layoutService.increaseLayoutRight()">
             <fa-icon [icon]="faArrowLeft"></fa-icon>
           </button>
-          <button class="btn btn-sm btn-secondary btnLayout" (click)="increaseWidthLeft()">
+          <button class="btn btn-sm btn-secondary btnLayout"
+                  (click)="layoutService.increaseLayoutLeft()">
             <fa-icon [icon]="faArrowRight"></fa-icon>
           </button>
-          <button class="btn btn-sm btn-secondary btnLayout" (click)="resetWidth()">
+          <button class="btn btn-sm btn-secondary btnLayout"
+                  (click)="layoutService.resetLayout()">
             <fa-icon [icon]="faRedo"></fa-icon>
           </button>
-          <button class="btn btn-sm btn-warning btnLayout" (click)="flipLayout()"
+          <button class="btn btn-sm btn-warning btnLayout"
+                  (click)="layoutService.flipLayout()"
                   role="button">
             <fa-icon [icon]="faExchangeAlt"></fa-icon>
           </button>
@@ -29,27 +33,9 @@
     </div>
 
     <!-- Sidebar outlet -->
-    <div [ngClass]="(layoutIsMainLeft ? 'order-3 w-' + widthRight : 'order-1 w-' + widthLeft)">
+    <div class="w-{{layoutService.layout.sidebar.width}} scroll" [ngClass]="(layoutService.layout.sidebar.position === 'right' ? 'order-3' : 'order-1')">
 
-      <ul class="nav nav-tabs mt-2">
-        <li class="nav-item">
-          <a [routerLink]="['', { outlets: {sidebar: ['manage']} }]" class="nav-link text-black-50"
-             routerLinkActive="active">{{'NAV_MANAGE'|translate}}</a>
-        </li>
-        <li class="nav-item">
-          <a [routerLink]="['', { outlets: {sidebar: ['edit']} }]" class="nav-link text-black-50 disabled"
-             data-placement="bottom" data-toggle="tooltip" routerLinkActive="active"
-             title="{{'NAV_EDIT_TT_INFO' | translate}}">
-            {{'NAV_EDIT'|translate}}</a>
-        </li>
-        <li class="nav-item">
-          <a [routerLink]="['', { outlets: {sidebar: ['compare']} }]" class="nav-link text-black-50 disabled"
-             data-placement="bottom" data-toggle="tooltip" routerLinkActive="active"
-             title="{{'NAV_COMPARE_TT_INFO' | translate}}">{{'NAV_COMPARE'|translate}}</a>
-        </li>
-      </ul>
       <router-outlet name="sidebar"></router-outlet>
-
     </div>
   </div>
 </div>

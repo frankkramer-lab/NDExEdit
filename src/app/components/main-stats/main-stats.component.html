@@ -1,74 +1,118 @@
-<ng-container *ngIf="dataService.networkSelected">
+<ng-container *ngIf="dataService.selectedNetwork">
   <h1>{{'MAIN_STATS_TITLE' | translate}}</h1>
 
   <hr>
 
-  <h3>{{'MAIN_STATS_GRAPH_INFO_TITLE' | translate}} "{{dataService.networkSelected.networkInformation.name}}"</h3>
+  <h3>{{'MAIN_STATS_GRAPH_INFO_TITLE' | translate}} "{{dataService.selectedNetwork.networkInformation.name}}"</h3>
 
-  <div class="row mt-3 p-2">
-    <div class="col-3">
-      <h6>{{'MAIN_STATS_GRAPH_INFO_NODES' | translate}}: {{nodeCount}}</h6>
-      <h6>{{'MAIN_STATS_GRAPH_INFO_EDGES' | translate}}: {{edgeCount}}</h6>
-      <h6>{{'MAIN_STATS_GRAPH_INFO_CLASSES' | translate}}: {{styleCount}}</h6>
+  <p
+    [innerHTML]="dataService.selectedNetwork.networkInformation.description || 'MAIN_STATS_NO_DESCRIPTION'|translate"></p>
+  <div class="row">
+
+    <div class="col">
       <a
-        [routerLink]="['', { outlets: {primary: ['graph', dataService.networkSelected.id], sidebar: ['edit', dataService.networkSelected.id]} }]"
-        class="btn btn-block btn-outline-success mt-4"
+        [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id], sidebar: ['edit', dataService.selectedNetwork.id]} }]"
+        class="btn btn-block btn-outline-success mt-2 mb-2"
         data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_EDIT' | translate}}" placement="bottom"
         role="button">
         <fa-icon [icon]="faPaintBrush"></fa-icon>&nbsp;{{'MAIN_STATS_BTN_RENDER' | translate}}
       </a>
-      <a
-        [routerLink]="['', { outlets: {primary: ['graph', dataService.networkSelected.id], sidebar: ['compare', dataService.networkSelected.id]} }]"
-        class="btn btn-block btn-outline-secondary mt-2"
-        data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_COMPARE' | translate}}" placement="bottom"
-        role="button">
-        <fa-icon [icon]="faExchangeAlt"></fa-icon>&nbsp;{{'MAIN_STATS_BTN_COMPARE' | translate}}
-      </a>
     </div>
-    <div
-      *ngIf="dataService.networkSelected.networkInformation.rightsholder || dataService.networkSelected.networkInformation.networkType || dataService.networkSelected.networkInformation.organism || dataService.networkSelected.networkInformation.description"
-      class="col-9 card">
-      <div class="card-body">
-        <p *ngIf="dataService.networkSelected.networkInformation.rightsholder">
-          <b [innerHTML]="">{{'MAIN_STATS_GRAPH_INFO_NW_RIGHTSHOLDER' | translate}}:</b>&nbsp;
-          <span [innerHTML]="dataService.networkSelected.networkInformation.rightsholder"></span>
-        </p>
-        <p *ngIf="dataService.networkSelected.networkInformation.networkType">
-          <b>{{'MAIN_STATS_GRAPH_INFO_NW_TYPE' | translate}}:</b>&nbsp;<span
-          [innerHTML]="dataService.networkSelected.networkInformation.networkType"></span>
-        </p>
-        <p *ngIf="dataService.networkSelected.networkInformation.organism">
-          <b>{{'MAIN_STATS_GRAPH_INFO_NW_ORGANISM' | translate}}:</b>&nbsp;<span
-          [innerHTML]="dataService.networkSelected.networkInformation.organism"></span>
-        </p>
-        <p *ngIf="dataService.networkSelected.networkInformation.description">
-          <b>{{'MAIN_STATS_GRAPH_INFO_NW_DESCRIPTION' | translate}}:</b>&nbsp;<span
-          [innerHTML]="dataService.networkSelected.networkInformation.description"></span>
-        </p>
-      </div>
+
+<!--    <div class="col">-->
+
+      <!--    <a-->
+      <!--      [routerLink]="['', { outlets: {primary: ['graph', dataService.networkSelected.id], sidebar: ['compare', dataService.networkSelected.id]} }]"-->
+      <!--      class="btn btn-block btn-outline-secondary mt-2"-->
+      <!--      data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_COMPARE' | translate}}" placement="bottom"-->
+      <!--      role="button">-->
+      <!--      <fa-icon [icon]="faExchangeAlt"></fa-icon>&nbsp;{{'MAIN_STATS_BTN_COMPARE' | translate}}-->
+      <!--    </a>-->
+<!--      <button-->
+<!--        class="btn btn-block btn-outline-secondary mt-2 mb-2"-->
+<!--        data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_COMPARE' | translate}}" placement="bottom"-->
+<!--        [disabled]="true">-->
+<!--        <fa-icon [icon]="faExchangeAlt"></fa-icon>&nbsp;{{'MAIN_STATS_BTN_COMPARE' | translate}}-->
+<!--      </button>-->
+
+<!--    </div>-->
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <p *ngIf="dataService.selectedNetwork.networkInformation.rightsholder">
+        <b [innerHTML]="">{{'MAIN_STATS_GRAPH_INFO_NW_RIGHTSHOLDER' | translate}}:</b>&nbsp;
+        <span [innerHTML]="dataService.selectedNetwork.networkInformation.rightsholder"></span>
+      </p>
+      <p *ngIf="dataService.selectedNetwork.networkInformation.networkType">
+        <b>{{'MAIN_STATS_GRAPH_INFO_NW_TYPE' | translate}}:</b>&nbsp;<span
+        [innerHTML]="dataService.selectedNetwork.networkInformation.networkType"></span>
+      </p>
+      <p *ngIf="dataService.selectedNetwork.networkInformation.organism">
+        <b>{{'MAIN_STATS_GRAPH_INFO_NW_ORGANISM' | translate}}:</b>&nbsp;<span
+        [innerHTML]="dataService.selectedNetwork.networkInformation.organism"></span>
+      </p>
     </div>
   </div>
 
-  <hr>
+  <ng-container
+    *ngIf="dataService.selectedNetwork.aspectKeyValuesEdges.length > 0 || dataService.selectedNetwork.aspectKeyValuesNodes.length > 0">
 
-  <h3
-    *ngIf="dataService.networkSelected.aspectKeyValuesNodes.length > 0">{{'MAIN_STATS_GRAPH_ATTRIBUTES_NODES_TITLE' | translate}}</h3>
-  <ul *ngIf="dataService.networkSelected.aspectKeyValuesNodes.length > 0">
-    <li *ngFor="let aspect of dataService.networkSelected.aspectKeyValuesNodes">
-      {{aspect.name}}
-    </li>
-  </ul>
+    <h3 class="mt-2">{{'MAIN_STATS_GRAPH_ATTRIBUTES_TITLE' | translate}}</h3>
 
-  <h3
-    *ngIf="dataService.networkSelected.aspectKeyValuesEdges.length > 0">{{'MAIN_STATS_GRAPH_ATTRIBUTES_EDGES_TITLE' | translate}}</h3>
-  <ul *ngIf="dataService.networkSelected.aspectKeyValuesEdges.length > 0">
-    <li *ngFor="let aspect of dataService.networkSelected.aspectKeyValuesEdges">
-      {{aspect.name}}
-    </li>
-  </ul>
+    <div class="row mt-2 mb-2">
 
-  <hr
-    *ngIf="dataService.networkSelected.aspectKeyValuesNodes.length > 0 || dataService.networkSelected.aspectKeyValuesEdges.length > 0">
+      <div class="col-4">
+        <div class="list-group" id="list-tab" role="tablist">
+
+          <a
+            *ngFor="let akv of dataService.selectedNetwork.aspectKeyValuesNodes.concat(dataService.selectedNetwork.aspectKeyValuesEdges); let index = index"
+            class="list-group-item list-group-item-action" id="list-{{index}}-list" data-toggle="list"
+            href="#list-{{index}}" role="tab" aria-controls="{{index}}">
+            {{akv.name}}
+          </a>
+        </div>
+      </div>
+      <div class="col-8">
+        <div class="tab-content" id="nav-tabContent">
+          <div
+            *ngFor="let akv of dataService.selectedNetwork.aspectKeyValuesNodes.concat(dataService.selectedNetwork.aspectKeyValuesEdges); let index = index"
+            class="tab-pane fade" id="list-{{index}}" role="tabpanel" aria-labelledby="list-{{index}}-list">
+
+            <!-- distribution -->
+            <h5>{{'MAIN_STATS_DISTRIBUTION_TITLE' | translate}}</h5>
+            <app-chart *ngIf="akv.chartContinuousDistribution"
+                       [numberOfBins]="akv.binSize"
+                       [chartObject]="akv.chartContinuousDistribution"
+                       (binSizeEmitter)="setBinSize($event, akv)"></app-chart>
+
+            <app-chart *ngIf="akv.chartDiscreteDistribution"
+                       [chartObject]="akv.chartDiscreteDistribution"></app-chart>
+
+            <!-- aspect coverage -->
+            <h5>
+              {{'MAIN_STATS_COVERAGE_TITLE' | translate}}
+              <span class="badge badge-pill border"
+                    [ngClass]="akv.coverage < 25 ? 'bg-warning' : (akv.coverage < 75 ? 'bg-primary' : 'bg-success')">
+                {{akv.coverage}} %
+              </span>
+            </h5>
+
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" [ngStyle]="{'width.%': akv.coverage}"
+                   aria-valuenow="{{akv.coverage}}" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <small>{{'MAIN_STATS_COVERAGE_HINT' | translate}}</small>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <hr>
+
+  </ng-container>
 
 </ng-container>
 

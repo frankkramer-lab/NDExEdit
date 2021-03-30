@@ -3,14 +3,19 @@
  */
 export interface NeMappingsType {
   /**
-   * Discrete nodes mapping
+   * Discrete node mapping
    */
   nd: boolean;
 
   /**
-   * Continuous nodes mapping
+   * Continuous node mapping
    */
   nc: boolean;
+
+  /**
+   * Passthrough node mapping
+   */
+  np: boolean;
 
   /**
    * Discrete edge mapping
@@ -21,4 +26,9 @@ export interface NeMappingsType {
    * Continuous edge mapping
    */
   ec: boolean;
+
+  /**
+   * Passthrough edge mapping
+   */
+  ep: boolean;
 }

@@ -6,7 +6,7 @@ export interface NeThresholdMap {
   /**
    * Numeric input value
    */
-  value: number;
+  value: string;
 
   /**
    * The resulting property value

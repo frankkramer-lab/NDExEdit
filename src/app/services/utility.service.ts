@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
-import {NeStyle} from '../models/ne-style';
-import {NeStyleComponent} from '../models/ne-style-component';
-import {NeContinuousMap} from '../models/ne-continuous-map';
-import {NeConversionMap} from '../models/ne-conversion-map';
-import {HttpClient} from '@angular/common/http';
 import {NeMappingsType} from '../models/ne-mappings-type';
+import {NeAspect} from '../models/ne-aspect';
+import {NeChart} from '../models/ne-chart';
+import {NeFrequencyCounter} from '../models/ne-frequency-counter';
+import {NeStyle} from '../models/ne-style';
 
 @Injectable({
   providedIn: 'root'
@@ -16,35 +15,21 @@ import {NeMappingsType} from '../models/ne-mappings-type';
 export class UtilityService {
 
   /**
-   * filepath to lookup file
-   * @private
+   * Label for continuous x axis
    */
-  private readonly lookupFilePath = 'assets/';
+  xAxisContinuousLabel: string;
 
   /**
-   * filename of lookup file
-   * @private
+   * Label for discrete / passthrough x axis
    */
-  private readonly lookupFileName = 'lookup.json';
+  xAxisDiscreteLabel: string;
 
   /**
-   * data of lookup file
-   * @private
+   * Label for y axis
    */
-  private lookupData: NeConversionMap[];
+  yAxisLabel: string;
 
-  /**
-   * Reading lookup file data
-   *
-   * @param http
-   */
-  constructor(private http: HttpClient) {
-    this.http.get(this.lookupFilePath.concat(this.lookupFileName))
-      .toPromise()
-      .then((fileContent: any) => {
-        this.lookupData = fileContent;
-      })
-      .catch(error => console.error(error));
+  constructor() {
   }
 
   /**
@@ -96,250 +81,6 @@ export class UtilityService {
   }
 
   /**
-   * Orders styleComponents by their priority to avoid overriding high priority styles with newly added styles
-   *
-   * @param styles list of styles to be sorted
-   */
-  public static utilOrderStyleComponentsByPriority(styles: NeStyleComponent[]): NeStyleComponent[] {
-    return styles.sort((a, b) => (a.priority < b.priority) ? -1 : 1);
-  }
-
-
-  /**
-   * Fills a string with leading zeros to the specified length
-   *
-   * @param s string to be filled
-   * @param targetLength final number of characters
-   * @private
-   */
-  public static utilLeadingZeros(s: string, targetLength: number): string {
-    while (s.length < targetLength) {
-      s = '0'.concat(s);
-    }
-    return s;
-  }
-
-  /**
-   * Calculates relative values for continuous mappings
-   *
-   * @param inputMap contains the value to be mapped and the upper and lower thresholds
-   */
-  public static utilCalculateRelativeValue(inputMap: NeContinuousMap): string {
-
-    let returnValue;
-
-    if (!inputMap.greaterThreshold || !inputMap.lowerThreshold || !inputMap.greater || !inputMap.lower || !inputMap.inputValue) {
-      return '';
-    }
-
-    const xDiff = Number(inputMap.greaterThreshold) - Number(inputMap.lowerThreshold);
-    const xDiffRequired = Number(inputMap.inputValue) - Number(inputMap.lowerThreshold);
-
-    if (inputMap.greater && inputMap.lower && inputMap.lower.includes('#')) {
-      // workaround for hex value comparison
-      const hexGreater = inputMap.greater.replace('#', '');
-      const hexLower = inputMap.lower.replace('#', '');
-
-      const hexGreaterMap = {
-        r: Number('0x'.concat(hexGreater.substring(0, 2))),
-        g: Number('0x'.concat(hexGreater.substring(2, 4))),
-        b: Number('0x'.concat(hexGreater.substring(4, 6))),
-      };
-
-      const hexLowerMap = {
-        r: Number('0x'.concat(hexLower.substring(0, 2))),
-        g: Number('0x'.concat(hexLower.substring(2, 4))),
-        b: Number('0x'.concat(hexLower.substring(4, 6))),
-      };
-
-      const yDiffMap = {
-        r: hexGreaterMap.r - hexLowerMap.r,
-        g: hexGreaterMap.g - hexLowerMap.g,
-        b: hexGreaterMap.b - hexLowerMap.b
-      };
-
-      const slopeCoefficientMap = {
-        r: yDiffMap.r / xDiff,
-        g: yDiffMap.g / xDiff,
-        b: yDiffMap.b / xDiff
-      };
-
-      const resultMap = {
-        // tslint:disable-next-line:no-bitwise
-        r: ((xDiffRequired * slopeCoefficientMap.r) + hexLowerMap.r) & 0xff,
-        // tslint:disable-next-line:no-bitwise
-        g: ((xDiffRequired * slopeCoefficientMap.g) + hexLowerMap.g) & 0xff,
-        // tslint:disable-next-line:no-bitwise
-        b: ((xDiffRequired * slopeCoefficientMap.b) + hexLowerMap.b) & 0xff
-      };
-
-      const resultR = UtilityService.utilLeadingZeros(resultMap.r.toString(16), 2);
-      const resultG = UtilityService.utilLeadingZeros(resultMap.g.toString(16), 2);
-      const resultB = UtilityService.utilLeadingZeros(resultMap.b.toString(16), 2);
-
-      returnValue = '#'.concat(resultR.concat(resultG.concat(resultB)));
-
-    } else {
-
-      const yDiff = Number(inputMap.greater) - Number(inputMap.lower);
-      const slopeCoefficient = yDiff / xDiff;
-
-      returnValue = String(((xDiffRequired * slopeCoefficient) + Number(inputMap.lower)).toPrecision(5));
-    }
-
-    return returnValue;
-  }
-
-  /**
-   * Method for matching NDEx properties to cytoscape properties and vice versa
-   *
-   * @param property Object containing cssKey and cssValue to be parsed
-   * @param selector name by which this style is recognised within CSS
-   * @param from origin format
-   * @param to target format
-   * @returns array of {@link NeStyleComponent|NeStyleComponent}
-   */
-  public lookup(property: any, selector: string = 'node', from: string = 'ndex', to: string = 'cytoscape'): NeStyleComponent[] {
-    let lookupMap: NeConversionMap;
-
-    if (property.key === 'width' && selector && !selector.includes('node')) {
-      for (const entry of this.lookupData) {
-        if (entry[from].includes(property.key) && entry[to].includes('EDGE_WIDTH')) {
-          lookupMap = entry;
-          break;
-        }
-      }
-    } else {
-      for (const entry of this.lookupData) {
-        if (entry[from].includes(property.key)) {
-          lookupMap = entry;
-          break;
-        }
-      }
-    }
-
-    let styleCollection: NeStyleComponent[];
-
-    let builtSelector = selector;
-    if (selector !== 'node' && selector !== 'edge' && lookupMap && lookupMap.selector) {
-      builtSelector = selector.concat(lookupMap.selector);
-    } else if (lookupMap && lookupMap.selector) {
-      builtSelector = lookupMap.selector;
-    }
-
-    const priority = UtilityService.utilFindPriorityBySelector(builtSelector);
-
-    // case 1: simply applicable
-    if (lookupMap && !lookupMap.conversionType) {
-      const collection: NeStyleComponent[] = [];
-      for (const lookup of lookupMap[to]) {
-        collection.push({
-          selector: builtSelector,
-          cssKey: lookup,
-          cssValue: property.value,
-          priority
-        });
-      }
-      return collection;
-    } else if (lookupMap && lookupMap.conversionType) {
-      switch (lookupMap.conversionType) {
-
-        // case 2: conversion by method
-        case 'method':
-
-          let cssValue = property.value;
-          styleCollection = [];
-
-          for (const conv of lookupMap.conversion as any) {
-            switch (conv[to]) {
-              case 'low':
-                cssValue = cssValue.toLowerCase();
-                break;
-              case 'up':
-                cssValue = cssValue.toUpperCase();
-                break;
-              case '_':
-                cssValue = cssValue.replace('-', '_');
-                break;
-              case '-':
-                cssValue = cssValue.replace('_', '-');
-                break;
-              case 'norm255to1':
-                cssValue /= 255;
-                break;
-              case 'norm1to255':
-                cssValue *= 255;
-                break;
-            }
-          }
-
-          for (const key of lookupMap[to]) {
-            const obj: NeStyleComponent = {
-              selector: builtSelector,
-              cssKey: key,
-              cssValue,
-              priority
-            };
-
-            if (!styleCollection.includes(obj)) {
-              styleCollection.push(obj);
-            }
-          }
-
-          return styleCollection;
-
-        // case 3: conversion by split
-        case 'split':
-          const splitted = property.value.split(lookupMap.splitRules.splitAt);
-          styleCollection = [];
-          for (const index of lookupMap.splitRules.evalIndex) {
-            const initialValue = splitted[index];
-            const matchedValue: string[] = lookupMap.matchRules[initialValue];
-
-            for (const key of lookupMap[to]) {
-
-              const indexOfKey = lookupMap[to].indexOf(key);
-              if (!matchedValue) {
-                continue;
-              }
-
-              const obj: NeStyleComponent = {
-                selector: builtSelector,
-                cssKey: key,
-                cssValue: matchedValue[indexOfKey],
-                priority
-              };
-              styleCollection.push(obj);
-            }
-          }
-          return styleCollection;
-      }
-    }
-    return [];
-  }
-
-  /**
-   * Only fetching corresponding key, not mapping or transforming any of the values
-   *
-   * @param keys keys to look for
-   * @param from source format
-   * @param to target format
-   */
-  public lookupKey(keys: string[], from: string = 'ndex', to: string = 'cytoscape'): string[] {
-
-    let mappedKeys: string[] = [];
-
-    for (const key of keys) {
-      for (const entry of this.lookupData) {
-        if (entry[from].includes(key)) {
-          mappedKeys = mappedKeys.concat(entry[to]);
-        }
-      }
-    }
-    return mappedKeys;
-  }
-
-  /**
    * Consolidating type hints for each kind of mapping by using a model.
    * In context of e.g. routing there is still a lot of string usage.
    * This method will hopefully ease the transition to model standardization.
@@ -351,43 +92,71 @@ export class UtilityService {
         return {
           nd: true,
           nc: false,
+          np: false,
           ed: false,
-          ec: false
+          ec: false,
+          ep: false
         };
       case 'nc':
         return {
           nd: false,
           nc: true,
+          np: false,
           ed: false,
-          ec: false
+          ec: false,
+          ep: false
         };
       case 'ed':
         return {
           nd: false,
           nc: false,
+          np: false,
           ed: true,
-          ec: false
+          ec: false,
+          ep: false
         };
       case 'ec':
         return {
           nd: false,
           nc: false,
+          np: false,
           ed: false,
-          ec: true
+          ec: true,
+          ep: false
+        };
+      case 'np':
+        return {
+          nd: false,
+          nc: false,
+          np: true,
+          ed: false,
+          ec: false,
+          ep: false
+        };
+      case 'ep':
+        return {
+          nd: false,
+          nc: false,
+          np: false,
+          ed: false,
+          ec: false,
+          ep: true
         };
       default:
         return {
           nd: false,
           nc: false,
+          np: false,
           ed: false,
-          ec: false
+          ec: false,
+          ep: false
         };
     }
   }
 
   /**
    * Returns literal string representation for maptype
-   * @param typeHint
+   * @param typeHint Map of hints applying to this mapping
    */
   utilGetTypeLiteralByTypeHint(typeHint: NeMappingsType): string {
     if (typeHint.nd) {
@@ -398,7 +167,263 @@ export class UtilityService {
       return 'ed';
     } else if (typeHint.ec) {
       return 'ec';
+    } else if (typeHint.np) {
+      return 'np';
+    } else if (typeHint.ep) {
+      return 'ep';
     }
     return '';
   }
+
+  /**
+   * Display labels, if there are less than 300 nodes within the network
+   * To avoid discrepancies in the code, this is the method to use,
+   * instead of random hacks anywhere else.
+   * @param core network
+   */
+  utilShowLabels(core: cytoscape.Core): boolean {
+    return core.nodes().length < 300;
+  }
+
+  /**
+   * Takes an input string and removes a prefix, if it matches one of the specified prefixes
+   * @param input String to clear
+   * @param strings List of prefixes
+   */
+  utilRemovePrefix(input: string, strings: string[]): string {
+    for (const prefix of strings) {
+      if (input.startsWith(prefix)) {
+        return input.substr(prefix.length);
+      }
+    }
+    return input;
+  }
+
+  /**
+   * Returns a list of aspects suitable for discrete mappings
+   * @param aspects List of all available attributes
+   */
+  utilFilterForDiscrete(aspects: NeAspect[]): NeAspect[] {
+    return aspects.filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
+  }
+
+  /**
+   * Returns a list of aspects suitable for continuous mappings
+   * @param aspects List of all available attributes
+   * @param strict If true, do not treat integer as numeric property, should only be handled as discrete attribute
+   */
+  utilFilterForContinuous(aspects: NeAspect[], strict: boolean = false): NeAspect[] {
+    if (strict) {
+      return aspects.filter(a => a.datatype && (a.datatype === 'float' || a.datatype === 'double'));
+    }
+    return aspects.filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'float' || a.datatype === 'double'));
+
+  }
+
+  /**
+   * Returns a random color for a chart
+   */
+  utilGetRandomColorForChart(): any[] {
+
+    const colorChoicesFill = [
+      'rgba(255,0,0,0.3)',
+      'rgba(0,255,0,0.3)',
+      'rgba(0,0,255,0.3)',
+      'rgba(255,255,0,0.3)',
+      'rgba(255,0,255,0.3)',
+      'rgba(0,255,255,0.3)'
+    ];
+
+    const colorChoicesBorder = [
+      'red',
+      'green',
+      'blue',
+      'yellow',
+      'pink',
+      'teal'
+    ];
+    const rdn = Math.floor(Math.random() * 100000) % colorChoicesFill.length;
+    return [{
+      hoverBackgroundColor: colorChoicesFill[rdn],
+      backgroundColor: colorChoicesFill[rdn],
+      borderColor: colorChoicesBorder[rdn],
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    }];
+  }
+
+  /**
+   * Returns the number of bins to be applied to the given set of numbers
+   * {@link https://en.wikipedia.org/wiki/Histogram#Sturges'_formula|Sturge's Rule}
+   * @param numbers list of numbers
+   * @private
+   */
+  utilSturgesRule(numbers: number[]): number {
+    return Math.ceil(1 + Math.log2(numbers.length));
+  }
+
+  /**
+   * Calculates data for the continuous distribution chart as histogram
+   * with default binSize calculated as Sturge's Rule
+   *
+   * @param binSize number of bins calculated by Sturge's Rule
+   * @param propertyToMap Aspect which is displayed in this histogram
+   * @param axisLabels list of strings containing axis labels, if needed, 0 => x, 1 => y
+   * @private
+   */
+  utilCalculateHistogramDataForBinSize(binSize: number, propertyToMap: NeAspect, axisLabels: string[] = []): NeChart {
+    const chartData = [];
+    const frequencies: NeFrequencyCounter[] = [];
+    const chartLabels = [];
+
+    if (!binSize || !propertyToMap.min || !propertyToMap.max
+      || isNaN(binSize) || isNaN(propertyToMap.min) || isNaN(propertyToMap.max)) {
+      console.log('Histogram data could not be calculated');
+      return {
+        chartData,
+        chartLabels,
+        chartType: {
+          line: false,
+          bar: true
+        }
+      };
+    }
+    const min = Number(propertyToMap.min);
+    const max = Number(propertyToMap.max);
+    const values = propertyToMap.values as unknown as number[];
+
+    const sizeOfBin = Number((max - min) / binSize);
+
+    let intervalPointer = min;
+    while (intervalPointer < max) {
+
+      const nextThreshold = Number(intervalPointer + sizeOfBin);
+      frequencies.push({
+        lowerBorder: intervalPointer,
+        upperBorder: nextThreshold,
+        occurrence: 0
+      });
+
+      chartLabels.push('[' + intervalPointer + ' : ' + nextThreshold + ']');
+      intervalPointer = nextThreshold;
+    }
+
+    for (const f of frequencies) {
+      for (const value of values) {
+
+        if (value === min && frequencies.indexOf(f) === 0) {
+          f.occurrence++;
+          continue;
+        }
+
+        if (value > f.lowerBorder && value <= f.upperBorder) {
+          f.occurrence++;
+        }
+      }
+    }
+
+    chartData.push({
+      data: frequencies.map(a => a.occurrence),
+      label: propertyToMap.name
+    });
+
+    const finalChart: NeChart = {
+      chartType: {
+        bar: true,
+        line: false
+      },
+      chartLabels,
+      chartData
+    };
+
+    if (axisLabels.length > 0) {
+      finalChart.chartOptions = {
+        scales: {
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: this.xAxisContinuousLabel || ''
+            }
+          }],
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: this.yAxisLabel ? (this.yAxisLabel + propertyToMap.name) : ''
+            }
+          }]
+        }
+      };
+    }
+    return finalChart;
+  }
+
+  /**
+   * Returns true if this akv may be used as continuous property
+   * @param akv Aspect whose datatype is to be evaluated
+   */
+  utilFitForContinuous(akv: NeAspect): boolean {
+    return (akv.datatype === 'integer' || akv.datatype === 'double' || akv.datatype === 'float');
+  }
+
+  /**
+   * Calculates sum of the list of numbers
+   * @param numbers List of numbers to be reduced
+   */
+  utilSum(numbers: number[]): number {
+    if (numbers.length > 0) {
+      return numbers.reduce((acc, curr) => acc + curr);
+    }
+    return null;
+  }
+
+  /**
+   * Extracts the column by which this mapping is built.
+   * @param mapping Unintuitive string, e.g. "COL=Bait_Boolean,T=integer,K=0=1,V=0=Dialog,,plain,,14"
+   */
+  utilExtractColByMappingString(mapping: string): string {
+    const regex = new RegExp('COL=(.*?),');
+    return mapping.match(regex)[1];
+  }
+
+  /**
+   * Returns true, if the typeof comparison returns true for this input
+   * @param input element to be typechecked
+   */
+  utilIsNumber(input: any): boolean {
+    return typeof input === 'number';
+  }
+
+  /**
+   * Returns true, if the value is not falsy, 0 is not evaluated to be falsy.
+   * @param input element to be evaluated
+   */
+  utilIsDefined(input: any): boolean {
+    if (typeof input === 'string') {
+      return input.length > 0;
+    }
+    return input !== null && input !== undefined;
+  }
+
+  /**
+   * Recalculates values which contain an exponential notation, e.g.
+   * '1.4E-3' which translates to '1.4 * 10^-3'
+   * @param numbers List of numbers as strings, which is necessary to avoid rendering discrepancies
+   */
+  utilCleanNumericValues(numbers: string[]): string[] {
+    const cleanNumbers: string[] = [];
+    for (const num of numbers) {
+      const exponentSplit = num.split('E');
+
+      if (exponentSplit.length === 2) {
+        const numVal = Math.pow(Number(exponentSplit[0]), Number(exponentSplit[1]));
+        cleanNumbers.push(String(numVal));
+      } else {
+        cleanNumbers.push(num);
+      }
+    }
+    return cleanNumbers;
+  }
+
 }

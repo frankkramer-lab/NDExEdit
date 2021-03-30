@@ -22,12 +22,19 @@ import {GraphService} from './services/graph.service';
 import {ParseService} from './services/parse.service';
 import {UtilityService} from './services/utility.service';
 import {MainMappingsAvailableAttributesComponent} from './components/parts/main-mappings-available-attributes/main-mappings-available-attributes.component';
-import { AlertMappingAlreadyExistsComponent } from './components/parts/alert-mapping-already-exists/alert-mapping-already-exists.component';
-import { MainMappingsNewFormComponent } from './components/parts/main-mappings-new-form/main-mappings-new-form.component';
-import { ChartComponent } from './components/parts/chart/chart.component';
+import {AlertMappingAlreadyExistsComponent} from './components/parts/alert-mapping-already-exists/alert-mapping-already-exists.component';
+import {MainMappingsNewFormComponent} from './components/parts/main-mappings-new-form/main-mappings-new-form.component';
+import {ChartComponent} from './components/parts/chart/chart.component';
+import {UniqueColsPipe} from './pipes/uniqueCols.pipe';
+import {IsByColPipe} from './pipes/isByCol.pipe';
+import {StylePropertiesByCol} from './pipes/stylePropertiesByCol.pipe';
+import {StyleValueByColAndKeyPipe} from './pipes/styleValueByColAndKey.pipe';
+import {AttributesByElementPipe} from './pipes/attributesByElement.pipe';
+import {LayoutService} from './services/layout.service';
+import {SidebarImageComponent} from './components/sidebar-image/sidebar-image.component';
 
-export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
-  return new TranslateHttpLoader(http);
+export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 @NgModule({
@@ -44,7 +51,13 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     MainMappingsAvailableAttributesComponent,
     AlertMappingAlreadyExistsComponent,
     MainMappingsNewFormComponent,
-    ChartComponent
+    ChartComponent,
+    UniqueColsPipe,
+    IsByColPipe,
+    StylePropertiesByCol,
+    StyleValueByColAndKeyPipe,
+    AttributesByElementPipe,
+    SidebarImageComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +66,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
+        useFactory: (createTranslateLoader),
         deps: [HttpClient]
       }
     }),
@@ -66,7 +79,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     DataService,
     GraphService,
     ParseService,
-    UtilityService
+    UtilityService,
+    LayoutService
   ],
   bootstrap: [AppComponent]
 })

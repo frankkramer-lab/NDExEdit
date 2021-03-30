@@ -8,8 +8,9 @@ import {MainStatsComponent} from './components/main-stats/main-stats.component';
 import {SidebarCompareComponent} from './components/sidebar-compare/sidebar-compare.component';
 import {MainMappingsComponent} from './components/main-mappings/main-mappings.component';
 import {MainMappingsNewComponent} from './components/main-mappings-new/main-mappings-new.component';
+import {SidebarImageComponent} from './components/sidebar-image/sidebar-image.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: '',
     redirectTo: '/info(sidebar:manage)',
@@ -22,62 +23,30 @@ const routes: Routes = [
   {
     path: 'graph/:id',
     component: MainGraphComponent,
-    children: [
-      {
-        path: '',
-        component: MainInfoComponent,
-      },
-    ]
   },
   {
     path: 'stats/:id',
     component: MainStatsComponent,
-    children: [
-      {
-        path: '',
-        component: MainInfoComponent
-      }
-    ]
   },
   {
-    path: 'mappings/:id/:map',
+    path: 'mappings/:mapHint/:col',
     component: MainMappingsComponent,
-    children: [
-      {
-        path: '',
-        component: MainInfoComponent
-      }
-    ]
   },
   {
-    path: 'new/:id/:map/:propertyId',
-    component: MainMappingsNewComponent,
-    children: [
-      {
-        path: '',
-        component: MainInfoComponent
-      }
-    ]
+    path: 'mappings/:mapId',
+    component: MainMappingsComponent,
   },
   {
-    path: 'edit/:id/:map/:propertyId',
+    path: 'new/:map/:propertyId/:isEdit',
     component: MainMappingsNewComponent,
-    children: [
-      {
-        path: '',
-        component: MainInfoComponent
-      }
-    ]
   },
   {
-    path: 'edit/:id/:map',
+    path: 'edit/:map/:propertyId/:isEdit',
     component: MainMappingsNewComponent,
-    children: [
-      {
-        path: '',
-        component: MainInfoComponent
-      }
-    ]
+  },
+  {
+    path: 'edit/:map/:isEdit',
+    component: MainMappingsNewComponent,
   },
   {
     path: 'manage',
@@ -87,24 +56,26 @@ const routes: Routes = [
   {
     path: 'edit/:id',
     component: SidebarEditComponent,
-    outlet: 'sidebar',
-    children: [
-      {
-        path: '',
-        component: SidebarManageComponent
-      }
-    ]
+    outlet: 'sidebar'
   },
   {
     path: 'compare/:id',
     component: SidebarCompareComponent,
-    outlet: 'sidebar',
-    children: [
-      {
-        path: '',
-        component: SidebarManageComponent
-      }
-    ]
+    outlet: 'sidebar'
+  },
+  {
+    path: 'image/:id',
+    component: SidebarImageComponent,
+    outlet: 'sidebar'
+  },
+  {
+    path: '**',
+    component: SidebarManageComponent,
+    outlet: 'sidebar'
+  },
+  {
+    path: '**',
+    component: MainInfoComponent
   }
 ];
 

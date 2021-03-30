@@ -1,4 +1,5 @@
 import {NeElement} from './ne-element';
+import {NeChart} from './ne-chart';
 
 /**
  * Represents a collection of useful associations to an attribute
@@ -15,10 +16,7 @@ export interface NeAspect {
    */
   values: string[];
 
-  /**
-   * List of element containing this attribute
-   */
-  appliedTo?: NeElement[];
+  numericValues?: number[];
 
   /**
    * Type of attribute
@@ -28,22 +26,27 @@ export interface NeAspect {
   /**
    * List of continuous mappings for this attribute
    */
-  mapPointerC?: number[];
+  mapPointerC?: string[];
 
   /**
    * List of discrete mappings for this attribute
    */
-  mapPointerD?: number[];
+  mapPointerD?: string[];
+
+  /**
+   * List of passthrough mappings for this attribute
+   */
+  mapPointerP?: string[];
 
   /**
    * Distribution chart for discrete properties
    */
-  chartDiscreteDistribution?: any;
+  chartDiscreteDistribution?: NeChart;
 
   /**
    * Distribution chart for continuous properties
    */
-  chartContinuousDistribution?: any;
+  chartContinuousDistribution?: NeChart;
 
   /**
    * Minimum for numeric values
@@ -54,4 +57,20 @@ export interface NeAspect {
    * Maximum for numeric values
    */
   max?: number;
+
+  /**
+   * Initial size of bins for histogram distribution
+   */
+  binSize?: number;
+
+  /**
+   * True, if this aspect may be used for a continuous mapping and has a histogram distribution
+   */
+  validForContinuous?: boolean;
+
+  /**
+   * Indicates how many fitting elements have this aspect, e.g. 10 nodes in a network, 9 of which have aspect "A" results in 90% coverage.
+   * This value is always between 0 and 100.
+   */
+  coverage?: string;
 }

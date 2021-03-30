@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component} from '@angular/core';
 import {faComments, faThumbsUp, faUserGraduate, faArrowRight, faArrowLeft, faUndo, faExchangeAlt} from '@fortawesome/free-solid-svg-icons';
 import {DataService} from '../../services/data.service';
 
@@ -12,14 +12,25 @@ import {DataService} from '../../services/data.service';
  * Component responsible for FAQ display
  */
 export class MainInfoComponent {
-
   /**
-   * Default: main view is right
+   * Icon: faArrowRight
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
-  layoutIsMainLeft = false;
   faArrowRight = faArrowRight;
+  /**
+   * Icon: faArrowLeft
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faArrowLeft = faArrowLeft;
+  /**
+   * Icon: faUndo
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faUndo = faUndo;
+  /**
+   * Icon: faExchangeAlt
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faExchangeAlt = faExchangeAlt;
   /**
    * Icon: faThumbsUp
@@ -41,13 +52,5 @@ export class MainInfoComponent {
 
   constructor(public dataService: DataService) {
 
-  }
-
-  /**
-   * Flips sidebar and main view
-   */
-  flipLayout(): void {
-    this.layoutIsMainLeft = !this.layoutIsMainLeft;
-    this.dataService.flipLayoutEmitter.emit(this.layoutIsMainLeft);
   }
 }

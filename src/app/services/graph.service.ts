@@ -1,10 +1,14 @@
 import {Injectable} from '@angular/core';
 import {NeNetwork} from '../models/ne-network';
-import * as cytoscape from 'cytoscape';
-import {CytoscapeOptions, EventObject} from 'cytoscape';
+import {EventObject} from 'cytoscape';
 import {NeNode} from '../models/ne-node';
 import {NeEdge} from '../models/ne-edge';
 import {NeSelection} from '../models/ne-selection';
+
+import {UtilityService} from './utility.service';
+import {DataService} from './data.service';
+import {ParseService} from './parse.service';
+import {NeAspect} from '../models/ne-aspect';
 
 @Injectable({
   providedIn: 'root'
@@ -22,69 +26,110 @@ export class GraphService {
     nodes: [],
     edges: []
   };
-  /**
-   * Core belonging to the selected network
-   * @private
-   */
-  private core: cytoscape.Core;
+
   /**
    * Duration of highlighting elements in milliseconds
    * @private
    */
   private flashDuration = 2000;
 
-  constructor() {
+  constructor(
+    private utilityService: UtilityService,
+    private dataService: DataService,
+    private parseService: ParseService
+  ) {
+    dataService.networkChangedEmitter.subscribe(network => {
+      this.render(network)
+        .then()
+        .catch(e => console.error(e));
+    });
   }
 
   /**
    * Renders the selected network
-   * @param container DOM element where to render the graph
    * @param network network to be rendered
    */
-  render(container: HTMLElement, network: NeNetwork): cytoscape.Core {
+  render(network: NeNetwork): Promise<NeNetwork> {
     this.unsubscribeFromCoreEvents();
-    this.core = cytoscape(this.interpretAsCytoscape(container, network));
-    this.core.elements('.custom_highlight_color').toggleClass('custom_highlight_color', false);
-    this.subscribeToCoreEvents();
-    return this.core;
+    return this.parseService.rebuildCoreForNetwork(network)
+      .then(rendered => {
+        const renderedNetwork = rendered;
+        renderedNetwork.core.fit();
+        renderedNetwork.showLabels = this.utilityService.utilShowLabels(renderedNetwork.core);
+        this.subscribeToCoreEvents();
+        return renderedNetwork;
+      })
+      .catch(e => {
+        console.error(e);
+        console.log('Not subscribing to core events due to errors!');
+        return network;
+      });
+
   }
 
   /**
-   * Makes a network and the chosen container a valid input for the cytoscape constructor
-   * @param container DOM element where to render the graph
-   * @param network selected network
-   */
-  interpretAsCytoscape(container: HTMLElement, network: NeNetwork): CytoscapeOptions {
-    return {
-      container,
-      elements: network.elements,
-      style: network.style,
-      layout: {
-        name: 'preset'
-      },
-    };
-  }
-
-  /**
-   * Toggles the application internal CSS class on elements with the given selector
-   *
-   * @param selector selector by which elements are to be highlighted
-   */
-  highlightBySelector(selector: string): void {
-    if (selector) {
-      this.core.elements(selector).flashClass('custom_highlight_color', this.flashDuration);
-    }
-  }
-
-  /**
-   * Toggles the application internal CSS clas on specific elements
+   * Flashes the application internal style class on specific elements
    *
    * @param id the element's id
    */
   highlightByElementId(id: string): void {
     if (id) {
-      this.core.getElementById(id).flashClass('custom_highlight_color', this.flashDuration);
+      const selection = this.dataService.selectedNetwork.core.filter('#' + id);
+      selection.flashClass('custom_highlight_color', this.flashDuration);
     }
+  }
+
+  /**
+   * Flashes the application internal style class on specific elements,
+   * if they have a property with values in the given range
+   *
+   * @param type string indicating if this filter is applied to nodes or edges
+   * @param property Property, an element needs to have in order to be highlighted
+   * @param lower lower bound for the elements to be highlighted
+   * @param upper upper bound for the elements to be highlighted
+   */
+  highlightByElementRange(type: string, property: NeAspect, lower: number, upper: number): void {
+
+    if (lower > upper) {
+      console.log('Invalid bounds! Highlighting empty set');
+      return;
+    }
+
+    let prefix;
+    if (type === 'node') {
+      prefix = 'node[';
+    } else {
+      prefix = 'edge[';
+    }
+
+    const first = prefix + this.parseService.attributeNameMap[property.name.toLowerCase()] + ' >= ' + lower + ']';
+    const second = prefix + this.parseService.attributeNameMap[property.name.toLowerCase()] + ' <= ' + upper + ']';
+
+    const selection = this.dataService.selectedNetwork.core.elements(first + second);
+    selection.flashClass('custom_highlight_color', this.flashDuration);
+  }
+
+  /**
+   * Flashes the application internal style class on specific elements,
+   * if they have a property with values in the given range
+   *
+   * @param type string indicating if this filter is applied to nodes or edges
+   * @param property Property, an element needs to have in order to be highlighted
+   * @param sameAs value the element's property needs to have in order to be highlighted
+   */
+  highlightByElementSameAs(type: string, property: NeAspect, sameAs: string): void {
+
+    let prefix;
+    if (type === 'node') {
+      prefix = 'node[';
+    } else {
+      prefix = 'edge[';
+    }
+
+    const definition = prefix + this.parseService.attributeNameMap[property.name.toLowerCase()] + ' = "' + sameAs + '"]';
+
+    const selection = this.dataService.selectedNetwork.core.elements(definition);
+    selection.flashClass('custom_highlight_color', this.flashDuration);
   }
 
   /**
@@ -94,7 +139,7 @@ export class GraphService {
    * @param duration highlight duration in milliseconds
    */
   setHighlightColorAndDuration(hexColorNodes: string, hexColorEdges: string, duration: number): void {
-    const styleJson = this.core.style().json();
+    const styleJson = this.dataService.selectedNetwork.core.style().json();
     for (const style of styleJson) {
       if (style.selector === '.custom_highlight_color') {
         style.style = {
@@ -107,7 +152,7 @@ export class GraphService {
     }
 
     this.flashDuration = duration;
-    this.core.style(styleJson);
+    this.dataService.selectedNetwork.core.style(styleJson);
 
   }
 
@@ -116,14 +161,14 @@ export class GraphService {
    * @param show current status of labels
    */
   toggleLabels(show: boolean): void {
-    this.core.elements().toggleClass('hide_label', !show);
+    this.dataService.selectedNetwork.core.elements().toggleClass('hide_label', !show);
   }
 
   /**
    * Fits the graph to the screen width
    */
   fitGraph(): void {
-    this.core.fit();
+    this.dataService.selectedNetwork.core.fit();
   }
 
   /**
@@ -131,9 +176,9 @@ export class GraphService {
    * @private
    */
   private subscribeToCoreEvents(): void {
-    if (this.core) {
-      this.core.ready(() => {
-        this.core.on('select unselect', event => {
+    if (this.dataService.selectedNetwork.core) {
+      this.dataService.selectedNetwork.core.ready(() => {
+        this.dataService.selectedNetwork.core.on('select unselect', event => {
           this.handleEvent(event);
         });
       });
@@ -169,8 +214,8 @@ export class GraphService {
    * @private
    */
   private unsubscribeFromCoreEvents(): void {
-    if (this.core) {
-      this.core.removeListener('click');
+    if (this.dataService.selectedNetwork.core) {
+      this.dataService.selectedNetwork.core.removeListener('click');
     }
   }
 

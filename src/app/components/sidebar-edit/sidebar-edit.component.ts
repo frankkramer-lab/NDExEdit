@@ -3,7 +3,19 @@ import {DataService} from '../../services/data.service';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {GraphService} from '../../services/graph.service';
-import {faLightbulb, faPalette, faClone} from '@fortawesome/free-solid-svg-icons';
+import {
+  faCheck,
+  faClone,
+  faCogs,
+  faLightbulb,
+  faMagic,
+  faPalette,
+  faTimes,
+  faTrash,
+  faArrowLeft,
+  faChevronDown,
+  faChevronLeft
+} from '@fortawesome/free-solid-svg-icons';
 import {ChartDataSets} from 'chart.js';
 import {Label} from 'ng2-charts';
 import {NeColorGradient} from '../../models/ne-color-gradient';
@@ -11,6 +23,11 @@ import {MainMappingsComponent} from '../main-mappings/main-mappings.component';
 import {MainMappingsNewComponent} from '../main-mappings-new/main-mappings-new.component';
 import {NeChart} from '../../models/ne-chart';
 import {NeChartType} from '../../models/ne-chart-type';
+import {NeMappingDiscrete} from '../../models/ne-mapping-discrete';
+import {NeMappingContinuous} from '../../models/ne-mapping-continuous';
+import {NeHighlightForm} from '../../models/ne-highlight-form';
+import {NeAspect} from '../../models/ne-aspect';
+import {UtilityService} from '../../services/utility.service';
 
 @Component({
   selector: 'app-sidebar-edit',
@@ -22,7 +39,40 @@ import {NeChartType} from '../../models/ne-chart-type';
  * Component responsible for graph editing functionality
  */
 export class SidebarEditComponent implements AfterViewInit, OnDestroy {
-
+  /**
+   * Icon: faChevronDown
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faChevronDown = faChevronDown;
+  /**
+   * Icon: faCogs
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faCogs = faCogs;
+  /**
+   * Icon: faArrowLeft
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faArrowLeft = faArrowLeft;
+  /**
+   * Icon: faTimes
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faTimes = faTimes;
+  /**
+   * Icon: faTrash
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faTrash = faTrash;
+  /**
+   * Icon: faMagic
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faMagic = faMagic;
+  /**
+   * Icon: faClone
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
   faClone = faClone;
   /**
    * Icon: faPalette
@@ -35,13 +85,10 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    */
   faLightbulb = faLightbulb;
   /**
-   * CSS property which is mapped by {@link SidebarEditComponent#attribute|this attribute}
+   * Icon: faCheck
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
-  lookup: string;
-  /**
-   * attribute responsible for {@link SidebarEditComponent#lookup|this CSS property's} value
-   */
-  attribute: string;
+  faCheck = faCheck;
   /**
    * Toggles displaying the comparison of multiple selected elements
    */
@@ -66,6 +113,10 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * Indicates which type of mapping is to be displayed
    */
   index = '';
+  /**
+   * Selected mapping matching the {@link index}
+   */
+  mapping: NeMappingDiscrete | NeMappingContinuous;
   /**
    * chart data used to display numeric continuous mapping, initialized with default values.
    * See {@link ParseService#buildChartData} for more details
@@ -92,15 +143,40 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   /**
    * Default color for highlighting a lost node
    */
-  highlightNodes = '';
+  highlightNodes = '#ff0000';
   /**
    * Default color for highlighting a lost edge
    */
-  highlightEdges = '';
+  highlightEdges = '#ff0000';
   /**
    * Default duration for highlight a lost element, in milliseconds
    */
   highlightDuration = 2000;
+  /**
+   * List of user defined inspections,
+   * e.g. 'Highlight all nodes, where 'Bait_boolean' = 1'
+   */
+  highlightListDefinition: NeHighlightForm[] = [];
+  /**
+   * Currently user defined inspection
+   */
+  highlightDefinition: NeHighlightForm = {
+    property: null,
+    type: null,
+    typeLabel: null,
+    markedForDeletion: false,
+    sameAs: null,
+    rangeLower: null,
+    rangeUpper: null
+  };
+
+  /**
+   * 'numeric' or 'text', where 'numeric' indicates that a property should be selected based on min and max thresholds.
+   * 'text' indicates, that a discrete value for the chosen property is needed.
+   * Integer based properties should be treated as numeric.
+   */
+  highlightDefinitionDatatype: string;
+
   /**
    * Ensures that only a graph is rendered if the id is specified within the URL
    * @private
@@ -136,18 +212,19 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * @param dataService Service to read and write globally accessible data
    * @param route Service to read URL
    * @param graphService Service for graph manipulations
+   * @param utilityService
    */
   constructor(
     public dataService: DataService,
     private route: ActivatedRoute,
-    public graphService: GraphService
+    public graphService: GraphService,
+    public utilityService: UtilityService
   ) {
 
     this.routerSubscription = this.route.paramMap.subscribe(params => {
       const networkId = params.get('id');
       if (networkId) {
         dataService.selectNetwork(Number(networkId));
-        this.initColorHighlighting();
       }
     });
 
@@ -158,6 +235,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     this.mappingsNewSubscription = MainMappingsNewComponent.mappingsNewEmitter.subscribe(data => {
       this.handleViewChanges(data);
     });
+
   }
 
   /**
@@ -166,7 +244,6 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    */
   ngAfterViewInit(): void {
     this.isInitialized = true;
-    this.graphService.toggleLabels(this.dataService.networkSelected.showLabels);
   }
 
   /**
@@ -182,8 +259,10 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     this.showLabelCheckbox = true;
     this.gradientBackground = '';
     this.index = '';
+    this.dataService.selectedNetwork.core.elements().unselect();
     this.graphService.selectedElements.nodes = [];
     this.graphService.selectedElements.edges = [];
+    this.mapping = null;
 
     if (this.mappingsSubscription) {
       this.mappingsSubscription.unsubscribe();
@@ -220,7 +299,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    */
   toggleLabels(show: boolean): void {
     this.graphService.toggleLabels(show);
-    this.dataService.networkSelected.showLabels = show;
+    this.dataService.getSelectedNetwork().showLabels = show;
   }
 
   /**
@@ -231,17 +310,17 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    */
   displayMapping(chart: any = null, colorGradient: NeColorGradient[] = [], index: string): void {
     this.index = index;
+    this.mapping = this.dataService.findMappingById(index);
+
     if (chart !== null) {
-      this.lookup = chart.lineChartOptions.title.text[0];
-      this.attribute = chart.lineChartOptions.title.text[1];
       this.lineChartData = chart.chartData;
       this.lineChartLabels = chart.chartLabels;
 
-      this.lineChartOptions = chart.lineChartOptions;
+      this.lineChartOptions = chart.chartOptions;
       this.lineChartObject = {
         chartData: this.lineChartData,
         chartLabels: this.lineChartLabels,
-        lineChartOptions: this.lineChartOptions,
+        chartOptions: this.lineChartOptions,
         chartType: this.chartType
       };
       this.showColorGradient = false;
@@ -250,8 +329,6 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
 
     } else if (colorGradient.length > 0) {
 
-      this.lookup = colorGradient[0].title[0];
-      this.attribute = colorGradient[0].title[1];
       let color = 'linear-gradient(90deg, ';
       const tmp = [];
 
@@ -294,33 +371,95 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
   /**
    * Overrides the network's style property with the given color codes, duration will be reset if the view is
    * destroyed and reinitialized, because this is not stored within the network
-   *
-   * @param highlightNodes color to highlight the nodes
-   * @param highlightEdges color to highlight the edges
-   * @param highlightDuration duration to highlight each element in milliseconds
    */
-  setHighlightColorAndDuration(highlightNodes: string, highlightEdges: string, highlightDuration: number): void {
-    this.graphService.setHighlightColorAndDuration(highlightNodes, highlightEdges, highlightDuration);
-    const colorStyle = {
-      'background-color': highlightNodes,
-      'line-color': highlightEdges,
-      'source-arrow-color': highlightEdges,
-      'target-arrow-color': highlightEdges
-    };
-    const styleIndex = this.dataService.networkSelected.style.findIndex(x => x.selector === '.custom_highlight_color');
-    this.dataService.networkSelected.style[styleIndex].style = colorStyle;
+  setHighlightColorAndDuration(): void {
+    this.graphService.setHighlightColorAndDuration(this.highlightNodes, this.highlightEdges, this.highlightDuration);
   }
 
   /**
-   * If there is network information for color highlighting this information is used
-   * @private
+   * Returns attributes related to nodes or edges
+   * @param type
    */
-  private initColorHighlighting(): void {
-    const colorStyle = this.dataService.networkSelected.style.find(x => x.selector === '.custom_highlight_color');
-    if (colorStyle) {
-      this.highlightNodes = colorStyle.style['background-color'];
-      this.highlightEdges = colorStyle.style['line-color'];
+  getAvailablePropertiesByType(type: string): NeAspect[] {
+    if (type === 'node') {
+      return this.dataService.getSelectedNetwork().aspectKeyValuesNodes;
+    }
+    return this.dataService.getSelectedNetwork().aspectKeyValuesEdges;
+  }
+
+  /**
+   * Adds the property to the highlight definition the user is currently defining
+   * @param property
+   */
+  selectProperty(property: NeAspect): void {
+    this.highlightDefinition.property = property;
+
+    if (this.utilityService.utilFitForContinuous(property)) {
+      this.highlightDefinitionDatatype = 'numeric';
+      this.highlightDefinition.rangeLower = property.min;
+      this.highlightDefinition.rangeUpper = property.max;
+    } else {
+      this.highlightDefinitionDatatype = 'text';
     }
   }
 
+  /**
+   * Sets the type of the current inspection
+   * @param type
+   */
+  selectType(type: string): void {
+    this.highlightDefinitionDatatype = null;
+    this.highlightDefinition.type = type;
+    this.highlightDefinition.typeLabel = (type === 'node') ? 'SIDEBAR_EDIT_INSPECT_TYPE_NODE' : 'SIDEBAR_EDIT_INSPECT_TYPE_EDGE';
+  }
+
+
+  /**
+   * Submits a definition to the list of definitions the user wants to highlight
+   */
+  addHighlightDefinitionToList(): void {
+
+    if (this.highlightDefinitionDatatype === 'numeric') {
+      this.highlightDefinition.rangeLower = Number(this.highlightDefinition.rangeLower);
+      this.highlightDefinition.rangeUpper = Number(this.highlightDefinition.rangeUpper);
+    }
+
+    this.highlightListDefinition.push(this.highlightDefinition);
+
+    this.highlightDefinition = {
+      property: null,
+      type: null,
+      typeLabel: null,
+      markedForDeletion: false,
+      sameAs: null,
+      rangeLower: null,
+      rangeUpper: null
+    };
+    this.highlightDefinitionDatatype = null;
+  }
+
+
+  /**
+   * Marks an inspection from the list as to be deleted
+   * @param index Points to the specified element
+   */
+  markForDeletion(index: number): void {
+    this.highlightListDefinition[index].markedForDeletion = true;
+  }
+
+  /**
+   * Removes the mark to be deleted from the inspection
+   * @param index Points to the specified element
+   */
+  unmarkForDeletion(index: number): void {
+    this.highlightListDefinition[index].markedForDeletion = false;
+  }
+
+  /**
+   * Removes the element from the list of inspections
+   * @param index Points to the specified element
+   */
+  deleteFromHighlightList(index: number): void {
+    this.highlightListDefinition.splice(index, 1);
+  }
 }

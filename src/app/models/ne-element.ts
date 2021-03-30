@@ -1,5 +1,3 @@
-import {NeElementAttribute} from './ne-element-attribute';
-
 /**
  * Basetype for {@link NeNode} and {@link NeEdge}
  */
@@ -28,12 +26,6 @@ export interface NeElement {
    * </ul>
    */
   group: string;
-
-  /**
-   * An element's list of attributes,
-   * see {@link NeElementAttribute} for further details
-   */
-  attributes?: NeElementAttribute[];
 
   /**
    * An element's list of attributes

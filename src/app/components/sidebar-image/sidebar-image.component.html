@@ -1,0 +1,128 @@
+<div class="p-2">
+
+  <h5>
+
+    <a [routerLink]="['', { outlets: {sidebar: ['manage']} }]"
+       class="mb-1"
+       data-toggle="tooltip"
+       type="button"
+       ngbTooltip="{{'NAV_MANAGE' | translate}}" placement="right"
+       role="button">
+      <fa-icon class="mr-1" [icon]="faArrowLeft"></fa-icon>
+    </a>
+    {{'SIDEBAR_IMAGE_TITLE' | translate}}
+  </h5>
+
+  <p>{{'SIDEBAR_IMAGE_GENERAL' | translate}}</p>
+
+  <form>
+
+    <div class="row mb-2">
+
+      <div class="col-6">
+
+        <!-- Labels -->
+        <div class="form-check">
+          <input (click)="toggleLabels(!dataService.getSelectedNetwork().showLabels)"
+                 [checked]="dataService.getSelectedNetwork().showLabels"
+                 class="form-check-input" id="imgShowLabels"
+                 type="checkbox">
+          <label class="form-check-label" for="imgShowLabels">
+            {{'SIDEBAR_EDIT_CB_LABELS' | translate}}
+          </label>
+        </div>
+
+        <!-- Full vs viewport -->
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value=""
+                 id="fullViewportInput" name="fullViewportInput"
+                 [(ngModel)]="optFull">
+          <label class="form-check-label" for="fullViewportInput">
+            {{'SIDEBAR_IMAGE_FULL' | translate}}
+          </label>
+          <small>{{'SIDEBAR_IMAGE_FULL_HINT' | translate}}</small>
+        </div>
+
+      </div>
+
+      <div class="col-6">
+        <button type="button"
+                class="btn btn-block btn-outline-success dropdown-toggle"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{selectedFileType || 'SIDEBAR_IMAGE_SELECT_TYPE' | translate}}
+        </button>
+        <div class="dropdown-menu">
+          <a *ngFor="let option of fileTypeOptions" class="dropdown-item"
+             (click)="selectImageType(option)">{{option}}</a>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="form-row mb-2">
+
+      <div class="col-6">
+        <!-- BG white vs transparent: only for PNG -->
+        <div class="form-check">
+          <input class="form-check-input"
+                 type="checkbox"
+                 value="optUseBg"
+                 id="bgUse"
+                 name="bgUse"
+                 [(ngModel)]="optUseBg">
+          <label class="form-check-label"
+                 for="bgUse">
+            {{'SIDEBAR_IMAGE_BG' | translate}}
+          </label>
+        </div>
+      </div>
+
+      <div class="col-2" *ngIf="optUseBg">
+        <button class="btn btn-outline-secondary" (click)="this.optBg = dataService.getBackgroundColor()">
+          <fa-icon [icon]="faRedo"></fa-icon>
+        </button>
+      </div>
+
+      <div [ngClass]="optUseBg ? 'col-4' : 'col-6'">
+
+        <input *ngIf="optUseBg"
+               [(ngModel)]="optBg"
+               type="color"
+               class="form-control form-control-color"
+               id="colorBg"
+               name="colorBg"
+               value="{{optBg}}">
+
+        <small *ngIf="selectedFileType !== 'PNG' && !optUseBg">{{'SIDEBAR_IMAGE_BG_HINT' | translate}}</small>
+        <small *ngIf="selectedFileType === 'PNG' && !optUseBg">{{'SIDEBAR_IMAGE_BG_PNG_HINT' | translate}}</small>
+      </div>
+
+    </div>
+
+    <div class="row mb-2">
+      <div class="col-6">
+        <label for="widthInput">{{'SIDEBAR_IMAGE_WIDTH' | translate}}</label>
+        <input type="number" class="form-control" id="widthInput" name="widthInput" [(ngModel)]="optWidth">
+      </div>
+      <div class="col-6">
+        <label for="heightInput">{{'SIDEBAR_IMAGE_HEIGHT' | translate}}</label>
+        <input type="number" class="form-control" id="heightInput" name="heightInput" [(ngModel)]="optHeight">
+      </div>
+    </div>
+
+    <!-- Scale -->
+    <div class="form-group mb-2">
+      <label for="scaleInput">{{'SIDEBAR_IMAGE_SCALE' | translate}}</label>
+      <input type="range" class="form-control-range" id="scaleInput" name="scaleInput"
+             [(ngModel)]="optScale" min="1" max="10">
+      <small>{{'SIDEBAR_IMAGE_SCALE_HINT' | translate}}</small>
+    </div>
+  </form>
+
+  <button class="btn btn-lg btn-block btn-success" *ngIf="selectedFileType"
+          (click)="downloadImage()">
+    {{'SIDEBAR_IMAGE_BTN_DOWNLOAD' | translate}}
+  </button>
+
+</div>

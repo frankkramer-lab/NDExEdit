@@ -16,5 +16,5 @@ export interface NeFrequencyCounter {
   /**
    * Counter
    */
-  occurance: number;
+  occurrence: number;
 }

@@ -2,12 +2,12 @@ import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core'
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
 import {faArrowLeft, faCheck, faEdit, faPlus, faSearch, faTimes, faTrash} from '@fortawesome/free-solid-svg-icons';
-import {NeGroupedMappingsDiscrete} from '../../models/ne-grouped-mappings-discrete';
-import {NeMappingProperty} from '../../models/ne-mapping-property';
-import {NeMappingsType} from "../../models/ne-mappings-type";
-import {NeAspect} from "../../models/ne-aspect";
-import {UtilityService} from "../../services/utility.service";
-import {NeContinuousCollection} from "../../models/ne-continuous-collection";
+import {NeMappingsType} from '../../models/ne-mappings-type';
+import {NeAspect} from '../../models/ne-aspect';
+import {UtilityService} from '../../services/utility.service';
+import {NeMappingDiscrete} from '../../models/ne-mapping-discrete';
+import {NeMappingPassthrough} from '../../models/ne-mapping-passthrough';
+import {NeMappingContinuous} from '../../models/ne-mapping-continuous';
 
 @Component({
   selector: 'app-main-mappings',
@@ -74,48 +74,32 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    * Displays deletion dialogue for a single property within a mapping
    */
   showSingleDeletionDialogue = false;
-  /**
-   * Selected mapping which is displayed in the table at the top of the view
-   */
-  selectedMapping: NeGroupedMappingsDiscrete[] | any[];
-  /**
-   * Id of the currently selected mapping
-   */
-  currentMappingId: string[];
-  /**
-   * Mapping to be removed which is overridden as soon as the user selects a mapping to delete
-   */
-  mappingToRemove = {
-    map: null,
-    type: '',
-    network: -1,
-    mappingId: -1,
-    akvIndex: -1,
-  };
-  /**
-   * Property to be removed which is overridden as soon as the user selects a property to delete
-   */
-  propertyToRemove: NeMappingProperty = {
-    mapReference: -1,
-    attributeName: '',
-    mapType: '',
-    style: null
-  };
+
   /**
    * Can be one of the following types:
    * <ul>
    *   <li><b>nd</b>: discrete node mapping</li>
    *   <li><b>nc</b>: continuous node mapping</li>
+   *   <li><b>np</b>: passthrough node mapping</li>
    *   <li><b>ed</b>: discrete edge mapping</li>
    *   <li><b>ec</b>: continuous edge mapping</li>
+   *   <li><b>ep</b>: passthrough edge mapping</li>
    * </ul>
    */
-  givenMapType: string;
+  typeHint: NeMappingsType;
+
+  /**
+   * Index pointing to position of a mapping within the corresponding list of mappings
+   */
+  mapId: string;
+
+  /**
+   * Without any numeric index, only string based representation of the typehint
+   */
+  mapHint: string;
 
   /**
    * The URL rendering this view contains both the specified graph and a mapping whose details are displayed.
-   * Thus within the constructor both {@link DataService#networkSelected} and
-   * {@link MainMappingsComponent#selectedMapping} are set
    *
    * @param route Service to read URL
    * @param dataService Service to read and write to globally accessible data
@@ -128,39 +112,26 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
   ) {
 
     this.route.paramMap.subscribe(params => {
-      const networkId = params.get('id');
-      if (networkId) {
-        dataService.selectNetwork(Number(networkId));
-        this.givenMapType = params.get('map').substring(0, 2);
-        this.currentMappingId = params.get('map').substring(2).split('-');
-        this.selectedMapping = [];
 
-        switch (this.givenMapType) {
-          case 'ec':
-            for (const mapIndex of this.currentMappingId) {
-              this.selectedMapping.push(dataService.networkSelected.mappings.edgesContinuous[mapIndex]);
-            }
-            break;
-          case 'nc':
-            for (const mapIndex of this.currentMappingId) {
-              this.selectedMapping.push(dataService.networkSelected.mappings.nodesContinuous[mapIndex]);
-            }
-            break;
-          case 'ed':
-            for (const mapIndex of this.currentMappingId) {
-              this.selectedMapping.push(dataService.networkSelected.mappings.edgesDiscrete[mapIndex]);
-            }
-            break;
-          case 'nd':
-            for (const mapIndex of this.currentMappingId) {
-              this.selectedMapping.push(dataService.networkSelected.mappings.nodesDiscrete[mapIndex]);
-            }
-            break;
-          default:
-            break;
-        }
+      const mapHint = params.get('mapHint');
+      const mapId = params.get('mapId');
+      const col = params.get('col');
+
+      if (mapHint !== null && col !== null) {
+        // discrete mapping
+        this.mapHint = mapHint;
+        this.dataService.selectMapping(mapHint, col);
+      } else if (mapId !== '-1') {
+        // continuous or passthrough mapping
+        this.mapId = mapId;
+        this.dataService.selectMapping(null, null, mapId);
+      } else {
+        // general overview (mapId === '-1')
+        this.dataService.resetAnyMappingSelection();
+        this.dataService.resetDiscreteMappingPropertySelection();
       }
     });
+
   }
 
   /**
@@ -175,179 +146,107 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy(): void {
     MainMappingsComponent.mappingsEmitter.emit({showLabelCheckbox: true});
+    this.showSingleDeletionDialogue = false;
+    this.showGlobalDeletionDialogue = false;
+    this.dataService.resetAnyMappingSelection();
+    this.dataService.resetDiscreteMappingPropertySelection();
   }
 
   /**
-   * Toggles the dialogue to confirm deletion of an existing mapping. Selects the mapping to be deleted by
-   * overriding {@link MainMappingsComponent#mappingToRemove}
-   *
-   * @param map Single mapping which is to be deleted
-   * @param type As specified by {@link MainMappingsComponent#givenMapType}
+   * Toggles a global remove dialogue
    */
-  toggleGlobalRemoveDialogue(map: any = null, type: string = ''): void {
-    switch (type) {
-      case 'nd':
-        for (const akv of this.dataService.networkSelected.aspectKeyValuesNodes) {
-          if (akv.name === map.classifier) {
-            this.mappingToRemove.akvIndex = this.dataService.networkSelected.aspectKeyValuesNodes.indexOf(akv);
-            break;
-          }
-        }
-        this.mappingToRemove.mappingId = this.dataService.networkSelected.mappings.nodesDiscrete.indexOf(map);
-        break;
-      case 'nc':
-        for (const akv of this.dataService.networkSelected.aspectKeyValuesNodes) {
-          if (akv.name === map.title[1]) {
-            this.mappingToRemove.akvIndex = this.dataService.networkSelected.aspectKeyValuesNodes.indexOf(akv);
-            break;
-          }
-        }
-        this.mappingToRemove.mappingId = this.dataService.networkSelected.mappings.nodesContinuous.indexOf(map);
-        break;
-      case 'ed':
-        for (const akv of this.dataService.networkSelected.aspectKeyValuesEdges) {
-          if (akv.name === map.classifier) {
-            this.mappingToRemove.akvIndex = this.dataService.networkSelected.aspectKeyValuesEdges.indexOf(akv);
-            break;
-          }
-        }
-        this.mappingToRemove.mappingId = this.dataService.networkSelected.mappings.edgesDiscrete.indexOf(map);
-        break;
-      case 'ec':
-        for (const akv of this.dataService.networkSelected.aspectKeyValuesEdges) {
-          if (akv.name === map.title[1]) {
-            this.mappingToRemove.akvIndex = this.dataService.networkSelected.aspectKeyValuesEdges.indexOf(akv);
-            break;
-          }
-        }
-        this.mappingToRemove.mappingId = this.dataService.networkSelected.mappings.edgesContinuous.indexOf(map);
-        break;
+  toggleGlobalRemoveDialogue(): void {
+    if (!(this.dataService.selectedDiscreteMapping || this.dataService.selectedContinuousMapping || this.dataService.selectedPassthroughMapping)) {
+      console.log('No mapping selected which could be deleted!');
     }
-    this.showGlobalDeletionDialogue = !this.showGlobalDeletionDialogue;
-    this.mappingToRemove.map = map;
-    this.mappingToRemove.type = type;
-    this.mappingToRemove.network = this.dataService.networkSelected.id;
+    this.dataService.selectPropertyForDeletion();
+    this.showSingleDeletionDialogue = false;
+    this.showGlobalDeletionDialogue = true;
   }
 
   /**
-   * Toggles the dialogue to confirm deletion of a property from an existing mapping.
+   * Dialog toggle:
+   * Remove discrete by specific style.
+   * May only be used for discrete mappings
    *
-   * @param map mapping to remove the property from
-   * @param mapType type of property
-   * @param style the style object matching the selected property
+   * @param styleIndex Points to the style to be removed
    */
-  toggleSingleRemoveDialogue(map: any = null, mapType: string = '', style: any = null): void {
-    if (map && map.styleMap.length === 1) {
-      this.toggleGlobalRemoveDialogue(map, mapType);
-      return;
+  toggleRemoveDiscreteSingle(styleIndex: number): void {
+    if (!this.dataService.selectedDiscreteMapping) {
+      console.log('No discrete mapping selected!');
     }
-
-    this.propertyToRemove.style = style;
-    this.propertyToRemove.mapType = mapType;
-    if (map) {
-      this.propertyToRemove.attributeName = map.classifier;
-    }
-    switch (mapType) {
-      case 'nd':
-        this.propertyToRemove.mapReference = this.dataService.networkSelected.mappings.nodesDiscrete.indexOf(map);
-        this.showSingleDeletionDialogue = true;
-        break;
-      case 'nc':
-        this.propertyToRemove.mapReference = this.dataService.networkSelected.mappings.nodesContinuous.indexOf(map);
-        this.showSingleDeletionDialogue = true;
-        break;
-      case 'ed':
-        this.propertyToRemove.mapReference = this.dataService.networkSelected.mappings.edgesDiscrete.indexOf(map);
-        this.showSingleDeletionDialogue = true;
-        break;
-      case 'ec':
-        this.propertyToRemove.mapReference = this.dataService.networkSelected.mappings.edgesContinuous.indexOf(map);
-        this.showSingleDeletionDialogue = true;
-        break;
-      default:
-        this.propertyToRemove = {
-          mapType: '',
-          attributeName: '',
-          mapReference: -1,
-          style: null
-        };
-        this.showSingleDeletionDialogue = false;
-        break;
-
-    }
+    this.dataService.selectPropertyForDeletion(styleIndex);
+    this.showSingleDeletionDialogue = true;
+    this.showGlobalDeletionDialogue = false;
   }
 
   /**
-   * On confirmation the deletion of the mapping or a selected property is executed and
-   * instead of the confirmation dialogue the list of
-   * existing mappings reappears.
-   * When not confirming the deletion merely the dialogue is hidden again.
-   *
-   * @param confirmation Determines if the deletion is executed or not
-   * @param scope Can either be global or single depending on which deletion button was clicked
+   * Confirms or denies a global deletion of a mapping
+   * @param confirmed true, if deletion is to be executed
    */
-  confirmDeletion(confirmation: boolean, scope = 'global'): void {
+  confirmDeletionGlobal(confirmed: boolean): void {
+    if (confirmed && (this.dataService.selectedDiscreteMapping
+      || this.dataService.selectedContinuousMapping
+      || this.dataService.selectedPassthroughMapping)) {
+      this.dataService.removeMapping();
 
-    switch (scope) {
-      case 'global':
-        if (confirmation) {
-          this.dataService.removeMapping(this.mappingToRemove);
-          this.selectedMapping = [];
-
-          // hide the gradient or chart currently displayed to avoid confusion
-          MainMappingsComponent.mappingsEmitter.emit({
-            showGradient: false,
-            showChart: false
-          });
-        }
-        this.toggleGlobalRemoveDialogue();
-
-        break;
-      case 'single':
-        if (confirmation) {
-          this.dataService.removePropertyFromMapping(this.dataService.networkSelected.id, this.propertyToRemove);
-          this.propertyToRemove = {
-            mapReference: -1,
-            attributeName: '',
-            mapType: '',
-            style: null
-          };
-        }
-        this.toggleSingleRemoveDialogue();
-        break;
+      MainMappingsComponent.mappingsEmitter.emit({
+        showGradient: false,
+        showChart: false
+      });
     }
+
+    this.showGlobalDeletionDialogue = false;
+    this.showSingleDeletionDialogue = false;
+  }
+
+  /**
+   * Confirms or denies a single deletion of a mapping's property
+   * @param confirmed true, if deletion is to be executed
+   */
+  confirmDeletionSingle(confirmed: boolean): void {
+    if (confirmed) {
+      this.dataService.removePropertyFromMapping();
+    }
+    this.showSingleDeletionDialogue = false;
+    this.showGlobalDeletionDialogue = false;
   }
 
   /**
    * Fetches a list of attributes, which can be used to create a mapping of the specified type for the currently selected network.
    *
-   * @param s Can either be 'nd', 'nc', 'ed' or 'ec'
+   * @param s Can either be 'nd', 'nc', 'np', 'ed', 'ec' or 'ep'
    */
   public getAttributeListForCurrentNetworkAndType(s: string): NeAspect[] {
     const typeHint: NeMappingsType = this.utilityService.utilGetTypeHintByString(s);
-    let availableAttributes: NeAspect[];
+    let baseList: NeAspect[];
 
-    if (typeHint.ec || typeHint.ed) {
-      availableAttributes = this.dataService.networkSelected.aspectKeyValuesEdges;
-    } else {
-      availableAttributes = this.dataService.networkSelected.aspectKeyValuesNodes;
+    if (typeHint.nd || typeHint.nc || typeHint.np) {
+      baseList = this.dataService.getSelectedNetwork().aspectKeyValuesNodes;
+    } else if (typeHint.ed || typeHint.ec || typeHint.ep) {
+      baseList = this.dataService.getSelectedNetwork().aspectKeyValuesEdges;
     }
 
-    if (typeHint.ec || typeHint.nc) {
-      return availableAttributes.filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'float' || a.datatype === 'double'));
+    if (typeHint.nc || typeHint.ec) {
+      return baseList.filter(a => a.datatype === 'double' || a.datatype === 'float' || a.datatype === 'integer');
+    } else if (typeHint.nd || typeHint.ed) {
+      return baseList.filter(a => a.datatype === 'string' || a.datatype === 'integer');
     } else {
-      return availableAttributes.filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
+      return baseList; // assuming all attributes are valid for a passthrough mapping
     }
   }
 
   /**
    * Fetches already existing mappings of the specified type and currently selected network.
    *
-   * @param s Can either be 'nd', 'nc', 'ed' or 'ec'
+   * @param s Can either be 'nd', 'nc', 'np', 'ed', 'ec' or 'ep'
    */
-  public getExistingMappingListForCurrentNetworkAndType(s: string): NeContinuousCollection[] | NeGroupedMappingsDiscrete[] {
+  public getExistingMappingListForCurrentNetworkAndType(s: string):
+    NeMappingContinuous[] |
+    NeMappingDiscrete[] |
+    NeMappingPassthrough[] {
     const typeHint: NeMappingsType = this.utilityService.utilGetTypeHintByString(s);
-    const availableMappings = this.dataService.networkSelected.mappings;
+    const availableMappings = this.dataService.getSelectedNetwork().mappings;
 
     if (typeHint.nd) {
       return availableMappings.nodesDiscrete;
@@ -357,8 +256,13 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
       return availableMappings.edgesDiscrete;
     } else if (typeHint.ec) {
       return availableMappings.edgesContinuous;
+    } else if (typeHint.np) {
+      return availableMappings.nodesPassthrough;
+    } else if (typeHint.ep) {
+      return availableMappings.edgesPassthrough;
     }
 
     return [];
   }
+
 }
