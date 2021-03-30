@@ -131,6 +131,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
     this.mapType = this.utilityService.utilGetTypeLiteralByTypeHint(this.typeHint);
     if (!this.isEdit) {
       // NEW MAPPING
+
       if (this.typeHint.ec || this.typeHint.nc) {
         this.initContinuousMapping();
       }
@@ -209,6 +210,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   clearAllInputs(): void {
     if (!this.isEdit) {
       this.styleProperty = '';
+      this.setFonts = Array(this.propertyToMap.values.length);
       this.emitStyleProperty();
     }
 
@@ -217,6 +219,16 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
     if (this.mappingDiscrete) {
       this.mappingDiscrete.values = [];
       this.mappingDiscrete.useValue = [];
+
+      if (this.styleProperty === 'EDGE_LABEL_FONT_FACE'
+        || this.styleProperty === 'NODE_LABEL_FONT_FACE') {
+
+        for (let i = 0; i < this.setFonts.length; i++) {
+          this.setFont(i, null);
+          this.setStyle(i, null);
+          this.setFonts[i].size = null;
+        }
+      }
     }
 
     if (this.mappingContinuous) {
@@ -437,6 +449,12 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
           family: commaSplit[0],
           style: commaSplit[1],
           size: commaSplit[2]
+        };
+      } else {
+        this.setFonts[i] = {
+          family: null,
+          style: null,
+          size: null
         };
       }
     }
