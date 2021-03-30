@@ -22,6 +22,7 @@ export class SidebarImageComponent implements OnInit {
     private graphService: GraphService
   ) {
   }
+
   /**
    * Icon: faRedo
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
@@ -85,34 +86,16 @@ export class SidebarImageComponent implements OnInit {
    * Calls type specific download methods based on {@link SidebarImageComponent#selectedFileType}
    */
   downloadImage(): void {
-
-    this.downloadImageSVG();
-    // switch (this.selectedFileType) {
-    //   case 'PNG':
-    //     this.downloadImagePNG();
-    //     break;
-    //   case 'JPEG':
-    //     this.downloadImageJPEG();
-    //     break;
-    // }
+    switch (this.selectedFileType) {
+      case 'PNG':
+        this.downloadImagePNG();
+        break;
+      case 'JPEG':
+        this.downloadImageJPEG();
+        break;
+    }
   }
 
-  /**
-   * Prepares the URL to download the PNG image
-   */
-  downloadImageSVG(): void {
-    // @ts-ignore
-    this.url = window.URL.createObjectURL(this.dataService.selectedNetwork.core.svg({
-      output: 'blob',
-      full: this.optFull ?? false,
-      bg: this.optUseBg ? this.optBg : null,
-      scale: this.optScale,
-      maxHeight: this.optHeight ?? null,
-      maxWidth: this.optWidth ?? null
-    }));
-
-    this.download('.png');
-  }
   /**
    * Prepares the URL to download the PNG image
    */

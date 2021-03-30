@@ -11,16 +11,20 @@
     <div class="order-2 w-5">
       <div class="drag-bar">
         <div class="btn-group-vertical">
-          <button class="btn btn-sm btn-secondary btnLayout" (click)="layoutService.increaseLayoutRight()">
+          <button class="btn btn-sm btn-secondary btnLayout"
+                  (click)="layoutService.increaseLayoutRight()">
             <fa-icon [icon]="faArrowLeft"></fa-icon>
           </button>
-          <button class="btn btn-sm btn-secondary btnLayout" (click)="layoutService.increaseLayoutLeft()">
+          <button class="btn btn-sm btn-secondary btnLayout"
+                  (click)="layoutService.increaseLayoutLeft()">
             <fa-icon [icon]="faArrowRight"></fa-icon>
           </button>
-          <button class="btn btn-sm btn-secondary btnLayout" (click)="layoutService.resetLayout()">
+          <button class="btn btn-sm btn-secondary btnLayout"
+                  (click)="layoutService.resetLayout()">
             <fa-icon [icon]="faRedo"></fa-icon>
           </button>
-          <button class="btn btn-sm btn-warning btnLayout" (click)="layoutService.flipLayout()"
+          <button class="btn btn-sm btn-warning btnLayout"
+                  (click)="layoutService.flipLayout()"
                   role="button">
             <fa-icon [icon]="faExchangeAlt"></fa-icon>
           </button>
