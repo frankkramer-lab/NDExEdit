@@ -146,7 +146,7 @@ export class AppComponent {
    * @private
    */
   private initDemoFromNDEx(uuid: string): void {
-    const url = 'http://public.ndexbio.org/v2/network/' + uuid;
+    const url = 'https://public.ndexbio.org/v2/network/' + uuid;
     this.http.get(url)
       .toPromise()
       .then((data: any[]) => {
