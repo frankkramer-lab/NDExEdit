@@ -73,10 +73,16 @@
     </div>
   </div>
 
+  <!-- Selected elements -->
   <app-sidebar-edit-selected
-    *ngIf="graphService.selectedElements.nodes.length > 0
-    || graphService.selectedElements.edges.length > 0">
+    [selectedElements]="graphService.selectedElements.nodes"
+    [type]="'NODE'">
   </app-sidebar-edit-selected>
+  <app-sidebar-edit-selected
+    [selectedElements]="graphService.selectedElements.edges"
+    [type]="'EDGE'">
+  </app-sidebar-edit-selected>
+
 
   <!-- NAV -->
   <div aria-orientation="horizontal" class="nav nav-pills flex-row" id="editsNav" role="tablist">

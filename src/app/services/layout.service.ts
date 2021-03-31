@@ -17,12 +17,12 @@ export class LayoutService {
   layout: NeLayout = {
     main: {
       position: 'right',
-      width: 55,
+      width: 65,
       tooltipDirection: 'left'
     },
     sidebar: {
       position: 'left',
-      width: 40,
+      width: 30,
       tooltipDirection: 'right'
     }
   };
