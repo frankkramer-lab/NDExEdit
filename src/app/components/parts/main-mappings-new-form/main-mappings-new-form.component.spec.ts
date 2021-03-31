@@ -8,6 +8,7 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {createTranslateLoader} from '../../../app.module';
 import {HttpClient} from '@angular/common/http';
 import {NeNetwork} from '../../../models/ne-network';
+import {FontAwesomeTestingModule} from '@fortawesome/angular-fontawesome/testing';
 
 class MockDataService {
   colorProperties = [
@@ -18,6 +19,14 @@ class MockDataService {
     id: 99999,
     core: null,
     cx: [],
+    aspectKeyValuesEdges: [{
+      name: 'edge-test',
+      values: []
+    }],
+    aspectKeyValuesNodes: [{
+      name: 'col',
+      values: ['key1', 'key2']
+    }],
     networkInformation: {},
     mappings: {
       nodesDiscrete: [],
@@ -45,6 +54,7 @@ describe('MainMappingsNewFormComponent', () => {
       declarations: [MainMappingsNewFormComponent],
       imports: [
         HttpClientTestingModule,
+        FontAwesomeTestingModule,
         TranslateModule.forRoot({
           loader: {
             provide: TranslateLoader,
