@@ -1,0 +1,136 @@
+<!-- selected nodes or edges -->
+<div *ngIf="graphService.selectedElements.nodes.length > 0 || graphService.selectedElements.edges.length > 0">
+
+  <hr>
+  <!-- NODES -->
+  <!-- nodes: headline -->
+  <h5 *ngIf="graphService.selectedElements.nodes.length > 0">
+      <span class="float-left">
+        {{'SIDEBAR_EDIT_COMPARISON_NODES' | translate}}
+      </span>
+    <a aria-controls="contentNodesSelected"
+       aria-expanded="true"
+       class="float-right"
+       data-target="#contentNodesSelected"
+       data-toggle="collapse"
+       href="#"
+       ngbTooltip="{{'SIDEBAR_COLLAPSE' | translate}}"
+       placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+       container="body"
+       role="button"
+       type="button">
+      <fa-icon [icon]="faChevronDown"></fa-icon>
+    </a>
+  </h5>
+  <!-- nodes: table -->
+  <div *ngIf="graphService.selectedElements.nodes.length > 0" class="table-responsive">
+
+    <div class="show" id="contentNodesSelected">
+      <table class="table">
+
+        <thead>
+        <tr>
+          <td *ngFor="let node of graphService.selectedElements.nodes">
+            <a (click)="graphService.highlightByElementId(node.id)"
+               data-toggle="tooltip"
+               ngbTooltip="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_NODE' | translate}} {{node.id}}"
+               placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+               role="button"
+               class="float-right">
+              <b>{{node.name}} ({{node.id}})</b>
+            </a>
+          </td>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+          <td *ngFor="let node of graphService.selectedElements.nodes; let elementIndex = index">
+
+            <table class="table table-borderless">
+
+              <tr *ngFor="let attribute of node|attributesByElement">
+                <td *ngIf="elementIndex === 0" colspan="3"><b>{{attribute}}</b></td>
+                <td class="w-100 text-right">{{node[attribute]}}</td>
+              </tr>
+
+            </table>
+
+          </td>
+        </tr>
+        </tbody>
+
+      </table>
+    </div>
+
+  </div>
+
+  <!-- SEPARATOR -->
+  <hr *ngIf="graphService.selectedElements.nodes.length > 0">
+
+  <!-- EDGES -->
+  <!-- edges: headline -->
+  <h5 *ngIf="graphService.selectedElements.edges.length > 0" class="mt-2">
+      <span class="float-left">
+        {{'SIDEBAR_EDIT_COMPARISON_EDGES' | translate}}
+      </span>
+    <a aria-controls="contentEdgesSelected"
+       aria-expanded="true"
+       class="float-right"
+       data-target="#contentEdgesSelected"
+       data-toggle="collapse"
+       href="#"
+       ngbTooltip="{{'SIDEBAR_COLLAPSE' | translate}}"
+       placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+       container="body"
+       role="button"
+       type="button">
+      <fa-icon [icon]="faChevronDown"></fa-icon>
+    </a>
+  </h5>
+  <!-- edges: table -->
+  <div *ngIf="graphService.selectedElements.edges.length > 0" class="table-responsive">
+
+    <div class="show" id="contentEdgesSelected">
+      <table class=" table">
+
+        <thead>
+        <tr>
+          <td *ngFor="let edge of graphService.selectedElements.edges">
+            <a (click)="graphService.highlightByElementId(edge.id)"
+               data-toggle="tooltip"
+               ngbTooltip="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_NODE' | translate}} {{edge.id}}"
+               placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+               role="button"
+               class="float-right">
+              <b>{{edge.name}} ({{edge.id}})</b>
+            </a>
+          </td>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+          <td *ngFor="let edge of graphService.selectedElements.edges; let elementIndex = index">
+
+            <table class="table table-borderless">
+
+              <tr *ngFor="let attribute of edge|attributesByElement">
+                <td *ngIf="elementIndex === 0" colspan="3"><b>{{attribute}}</b></td>
+                <td class="w-100 text-right">{{edge[attribute]}}</td>
+              </tr>
+
+            </table>
+
+          </td>
+        </tr>
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+
+  <!-- SEPARATOR -->
+  <hr *ngIf="graphService.selectedElements.edges.length > 0">
+
+</div>

@@ -32,33 +32,37 @@ import {StyleValueByColAndKeyPipe} from './pipes/styleValueByColAndKey.pipe';
 import {AttributesByElementPipe} from './pipes/attributesByElement.pipe';
 import {LayoutService} from './services/layout.service';
 import {SidebarImageComponent} from './components/sidebar-image/sidebar-image.component';
+import {SidebarEditSelectedComponent} from './components/parts/sidebar-edit-selected/sidebar-edit-selected.component';
+import { SidebarEditInspectComponent } from './components/parts/sidebar-edit-inspect/sidebar-edit-inspect.component';
 
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    MainGraphComponent,
-    MainInfoComponent,
-    MainStatsComponent,
-    SidebarManageComponent,
-    SidebarEditComponent,
-    SidebarCompareComponent,
-    MainMappingsComponent,
-    MainMappingsNewComponent,
-    MainMappingsAvailableAttributesComponent,
-    AlertMappingAlreadyExistsComponent,
-    MainMappingsNewFormComponent,
-    ChartComponent,
-    UniqueColsPipe,
-    IsByColPipe,
-    StylePropertiesByCol,
-    StyleValueByColAndKeyPipe,
-    AttributesByElementPipe,
-    SidebarImageComponent
-  ],
+    declarations: [
+        AppComponent,
+        MainGraphComponent,
+        MainInfoComponent,
+        MainStatsComponent,
+        SidebarManageComponent,
+        SidebarEditComponent,
+        SidebarCompareComponent,
+        MainMappingsComponent,
+        MainMappingsNewComponent,
+        MainMappingsAvailableAttributesComponent,
+        AlertMappingAlreadyExistsComponent,
+        MainMappingsNewFormComponent,
+        ChartComponent,
+        UniqueColsPipe,
+        IsByColPipe,
+        StylePropertiesByCol,
+        StyleValueByColAndKeyPipe,
+        AttributesByElementPipe,
+        SidebarImageComponent,
+        SidebarEditSelectedComponent,
+        SidebarEditInspectComponent
+    ],
   imports: [
     BrowserModule,
     FormsModule,

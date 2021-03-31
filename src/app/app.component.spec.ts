@@ -162,7 +162,7 @@ describe('AppComponent', () => {
     expect(location.path()).toBe('/new/nd/0');
   }));
 
-  fit('routing to edit-mappings', fakeAsync(() => {
+  xit('routing to edit-mappings', fakeAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const location: Location = fixture.debugElement.injector.get(Location) as any;
     const router: Router = fixture.debugElement.injector.get(Router) as any;
