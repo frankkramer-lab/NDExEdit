@@ -1,26 +1,31 @@
 <ng-container *ngIf="dataService.selectedNetwork">
 
   <h1>
-    <span class="row">
-      <span class="col-11">
-        <a [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]" data-toggle="tooltip"
-           ngbTooltip="{{'MAIN_MAPPINGS_GRAPH' | translate}}" placement="right"
-           role="button">
+    <div class="row">
+
+      <div class="col-11">
+        <a [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]"
+           data-toggle="tooltip"
+           ngbTooltip="{{'MAIN_MAPPINGS_GRAPH' | translate}}"
+           placement="{{layoutService.layout.main.tooltipDirection}}"
+           role="button"
+           container="body">
           <fa-icon [icon]="faArrowLeft"></fa-icon>
         </a>
         {{dataService.selectedNetwork.networkInformation.name}}
-      </span>
-      <span class="col-1 float-right">
+      </div>
+
+      <ng-container class="col-1 float-right">
         <a [routerLink]="['', { outlets: {primary: ['info'], sidebar: ['manage']} }]"
            class="mt-2 float-right btn btn-outline-primary"
            data-toggle="tooltip"
            ngbTooltip="{{'MAIN_GRAPH_TT_HOME' | translate}}"
-           placement="bottom"
+           placement="{{layoutService.layout.main.tooltipDirection}}"
            role="button">
           <fa-icon [icon]="faHome"></fa-icon>
         </a>
-      </span>
-    </span>
+      </ng-container>
+    </div>
   </h1>
 
 
@@ -46,8 +51,9 @@
 
     <button (click)="toggleGlobalRemoveDialogue()"
             class="btn btn-block btn-outline-danger"
-            data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_DELETE' | translate}}"
-            placement="bottom">
+            data-toggle="tooltip"
+            ngbTooltip="{{'MAIN_MAPPINGS_TT_DELETE' | translate}}"
+            placement="{{layoutService.layout.main.tooltipDirection}}">
       <fa-icon [icon]="faTrash"></fa-icon>
       {{'MAIN_MAPPINGS_DELETE' | translate}}
     </button>
@@ -90,7 +96,7 @@
           </td>
 
           <td>
-            <button [routerLink]="['', { outlets: {primary: ['edit', mapHint + styleIndex, '1']} }]"
+            <button [routerLink]="['', { outlets: {primary: ['edit', mapHint + styleIndex]} }]"
                     class="btn btn-outline-warning">
               <fa-icon [icon]="faEdit"></fa-icon>
             </button>
@@ -109,8 +115,9 @@
     </div>
     <button (click)="toggleGlobalRemoveDialogue()"
             class="btn btn-block btn-outline-danger"
-            data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_DELETE' | translate}}"
-            placement="bottom">
+            data-toggle="tooltip"
+            ngbTooltip="{{'MAIN_MAPPINGS_TT_DELETE' | translate}}"
+            placement="{{layoutService.layout.main.tooltipDirection}}">
       <fa-icon [icon]="faTrash"></fa-icon>
       {{'MAIN_MAPPINGS_DELETE' | translate}}
     </button>
@@ -130,7 +137,7 @@
 
         <!-- EDIT -->
         <th>
-          <button [routerLink]="['', { outlets: {primary: ['edit', mapId, '1']} }]"
+          <button [routerLink]="['', { outlets: {primary: ['edit', mapId]} }]"
                   class="btn btn-block btn-outline-warning">
             <fa-icon [icon]="faEdit"></fa-icon>
           </button>
@@ -180,8 +187,9 @@
 
     <button (click)="toggleGlobalRemoveDialogue()"
             class="btn btn-block btn-outline-danger"
-            data-toggle="tooltip" ngbTooltip="{{'MAIN_MAPPINGS_TT_DELETE' | translate}}"
-            placement="bottom">
+            data-toggle="tooltip"
+            ngbTooltip="{{'MAIN_MAPPINGS_TT_DELETE' | translate}}"
+            placement="{{layoutService.layout.main.tooltipDirection}}">
       <fa-icon [icon]="faTrash"></fa-icon>
       {{'MAIN_MAPPINGS_DELETE' | translate}}
     </button>

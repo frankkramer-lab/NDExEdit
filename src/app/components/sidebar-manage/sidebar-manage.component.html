@@ -13,7 +13,7 @@
            class="btn btn-sm btn-outline-secondary mr-1"
            data-toggle="tooltip"
            ngbTooltip="{{'SIDEBAR_MANAGE_TT_INFO'|translate}}"
-           placement="left"
+           placement="{{layoutService.layout.sidebar.tooltipDirection}}"
            role="button">
           <fa-icon [icon]="faInfo"></fa-icon>
         </a>
@@ -21,7 +21,7 @@
            class="btn btn-sm btn-success mr-1"
            data-toggle="tooltip"
            ngbTooltip="{{'SIDEBAR_MANAGE_TT_EDIT'|translate}}"
-           placement="left"
+           placement="{{layoutService.layout.sidebar.tooltipDirection}}"
            role="button">
           <fa-icon [icon]="faPaintBrush"></fa-icon>
         </a>
@@ -31,7 +31,7 @@
            class="btn btn-sm btn-outline-secondary mr-1"
            data-toggle="tooltip"
            ngbTooltip="{{'SIDEBAR_MANAGE_TT_DOWNLOAD'|translate}}"
-           placement="left"
+           placement="{{layoutService.layout.sidebar.tooltipDirection}}"
            role="button">
           <fa-icon [icon]="faFileDownload"></fa-icon>
         </a>
@@ -39,7 +39,7 @@
            class="btn btn-sm btn-outline-secondary mr-1"
            data-toggle="tooltip"
            ngbTooltip="{{'SIDEBAR_MANAGE_TT_IMAGE'|translate}}"
-           placement="left"
+           placement="{{layoutService.layout.sidebar.tooltipDirection}}"
            role="button">
           <fa-icon [icon]="faImage"></fa-icon>
         </a>
@@ -47,8 +47,8 @@
            [routerLink]=""
            class="btn btn-sm btn-outline-secondary"
            data-toggle="tooltip"
-           ngbTooltip="{{ copyToClipboardTooltip | translate }}"
-           placement="left"
+           ngbTooltip="{{ 'SIDEBAR_MANAGE_TT_CLIPBOARD' | translate }}"
+           placement="{{layoutService.layout.sidebar.tooltipDirection}}"
            role="button">
           <fa-icon [icon]="faClone"></fa-icon>
         </a>
@@ -89,24 +89,28 @@
     </button>
   </div>
 
-
   <h5>
     {{'SIDEBAR_MANAGE_REMOTE_FILE_LABEL'|translate}}
     <div *ngIf="loadingHttp" class="spinner-border spinner-border-sm mr-2 align-middle" role="status">
       <span class="sr-only">Loading...</span>
     </div>
   </h5>
+
   <div class="row mb-3">
     <div class="col-9 form-group mb-2">
       <input [(ngModel)]="ndexLinkToUpload" aria-describedby="remoteNetworkHelp" class="form-control"
              id="remoteNetworkFile"
-             placeholder="{{'SIDEBAR_MANAGE_REMOTE_FILE_EXAMPLE'|translate}}" type="text">
+             placeholder="{{'SIDEBAR_MANAGE_REMOTE_FILE_EXAMPLE'|translate}}"
+             type="text">
       <small class="form-text text-muted" id="remoteNetworkHelp">{{'SIDEBAR_MANAGE_REMOTE_FILE_TIP'|translate}}</small>
     </div>
     <div class="col-3">
       <button (click)="importFromNdex()" [disabled]="loadingHttp" class="btn btn-block btn-outline-success"
-              data-toggle="tooltip" ngbTooltip="{{'SIDEBAR_MANAGE_TT_REMOTE_FILES' | translate}}" placement="left"
-              type="button">
+              data-toggle="tooltip"
+              ngbTooltip="{{'SIDEBAR_MANAGE_TT_REMOTE_FILES' | translate}}"
+              placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+              type="button"
+              container="body">
 
         <fa-icon [icon]="faCloudDownloadAlt"></fa-icon>
       </button>
@@ -127,8 +131,11 @@
     </div>
     <div class="input-group-append">
       <button (click)="importLocalFile()" [disabled]="loadingFile" class="btn btn-outline-secondary"
-              data-toggle="tooltip" ngbTooltip="{{'SIDEBAR_MANAGE_TT_LOCAL_FILE' | translate}}" placement="left"
-              type="button">
+              data-toggle="tooltip"
+              ngbTooltip="{{'SIDEBAR_MANAGE_TT_LOCAL_FILE' | translate}}"
+              placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+              type="button"
+              container="body">
         {{'SIDEBAR_MANAGE_LOCAL_FILE_BTN'|translate}}
       </button>
     </div>

@@ -27,6 +27,7 @@ import {NeMappingContinuous} from '../../models/ne-mapping-continuous';
 import {NeHighlightForm} from '../../models/ne-highlight-form';
 import {NeAspect} from '../../models/ne-aspect';
 import {UtilityService} from '../../services/utility.service';
+import {LayoutService} from '../../services/layout.service';
 
 @Component({
   selector: 'app-sidebar-edit',
@@ -209,13 +210,15 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * @param dataService Service to read and write globally accessible data
    * @param route Service to read URL
    * @param graphService Service for graph manipulations
-   * @param utilityService
+   * @param utilityService Service responsible for shared code
+   * @param layoutService Service responsible for tooltip directions
    */
   constructor(
     public dataService: DataService,
     private route: ActivatedRoute,
     public graphService: GraphService,
-    public utilityService: UtilityService
+    public utilityService: UtilityService,
+    public layoutService: LayoutService
   ) {
 
     this.routerSubscription = this.route.paramMap.subscribe(params => {

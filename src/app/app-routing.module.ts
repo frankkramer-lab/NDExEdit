@@ -43,17 +43,12 @@ export const routes: Routes = [
     canActivate: [MappingGuard]
   },
   {
-    path: 'new/:map/:propertyId/:isEdit',
+    path: 'new/:map/:propertyId',
     component: MainMappingsNewComponent,
     canActivate: [MappingGuard]
   },
   {
-    path: 'edit/:map/:propertyId/:isEdit',
-    component: MainMappingsNewComponent,
-    canActivate: [MappingGuard]
-  },
-  {
-    path: 'edit/:map/:isEdit',
+    path: 'edit/:map',
     component: MainMappingsNewComponent,
     canActivate: [MappingGuard]
   },

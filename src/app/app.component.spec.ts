@@ -157,12 +157,12 @@ describe('AppComponent', () => {
 
     router.initialNavigation();
 
-    router.navigate(['', {outlets: {primary: ['new', 'nd', 0]}}]);
+    router.navigate(['', {outlets: {primary: ['new', 'nd']}}]);
     tick();
     expect(location.path()).toBe('/new/nd/0');
   }));
 
-  xit('routing to edit-mappings', fakeAsync(() => {
+  fit('routing to edit-mappings', fakeAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const location: Location = fixture.debugElement.injector.get(Location) as any;
     const router: Router = fixture.debugElement.injector.get(Router) as any;

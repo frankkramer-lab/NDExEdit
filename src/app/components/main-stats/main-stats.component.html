@@ -5,7 +5,7 @@
        class="mt-2 float-right btn btn-outline-primary"
        data-toggle="tooltip"
        ngbTooltip="{{'MAIN_GRAPH_TT_HOME' | translate}}"
-       placement="bottom"
+       placement="{{layoutService.layout.main.tooltipDirection}}"
        role="button">
       <fa-icon [icon]="faHome"></fa-icon>
     </a>
@@ -23,7 +23,8 @@
       <a
         [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id], sidebar: ['edit', dataService.selectedNetwork.id]} }]"
         class="btn btn-block btn-outline-success mt-2 mb-2"
-        data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_EDIT' | translate}}" placement="bottom"
+        data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_EDIT' | translate}}"
+        placement="{{layoutService.layout.main.tooltipDirection}}"
         role="button">
         <fa-icon [icon]="faPaintBrush"></fa-icon>&nbsp;{{'MAIN_STATS_BTN_RENDER' | translate}}
       </a>

@@ -4,6 +4,7 @@ import {GraphService} from '../../services/graph.service';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import {faHome} from '@fortawesome/free-solid-svg-icons';
+import {LayoutService} from '../../services/layout.service';
 
 @Component({
   selector: 'app-main-graph',
@@ -46,13 +47,15 @@ export class MainGraphComponent implements AfterViewInit, OnDestroy {
    * @param dataService Service to read and write to globally accessible data
    * @param route Service to read URL
    * @param renderer necessary to access the DOM element and render the graph
-   * @param graphService Servive to access graph manipulations
+   * @param graphService Service to access graph manipulations
+   * @param layoutService Service responsible for tooltip positions
    */
   constructor(
     public dataService: DataService,
     public route: ActivatedRoute,
     private renderer: Renderer2,
-    public graphService: GraphService
+    public graphService: GraphService,
+    public layoutService: LayoutService
   ) {
 
     this.subscription = this.route.paramMap.subscribe(params => {

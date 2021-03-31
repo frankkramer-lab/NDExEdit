@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {DataService} from '../../services/data.service';
 import {faArrowLeft, faRedo} from '@fortawesome/free-solid-svg-icons';
 import {GraphService} from '../../services/graph.service';
+import {LayoutService} from '../../services/layout.service';
 
 @Component({
   selector: 'app-sidebar-image',
@@ -67,10 +68,12 @@ export class SidebarImageComponent implements OnInit {
    * Constructor
    * @param dataService service responsible for data access
    * @param graphService service responsible for graph manipulations
+   * @param layoutService service responsible for tooltip directions
    */
   constructor(
     public dataService: DataService,
-    private graphService: GraphService
+    private graphService: GraphService,
+    public layoutService: LayoutService
   ) {
   }
 

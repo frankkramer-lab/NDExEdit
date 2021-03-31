@@ -17,11 +17,13 @@ export class LayoutService {
   layout: NeLayout = {
     main: {
       position: 'right',
-      width: 65
+      width: 65,
+      tooltipDirection: 'left'
     },
     sidebar: {
       position: 'left',
-      width: 30
+      width: 30,
+      tooltipDirection: 'right'
     }
   };
 
@@ -85,10 +87,14 @@ export class LayoutService {
   flipLayout(): void {
     if (this.layout.main.position === 'left') {
       this.layout.main.position = 'right';
+      this.layout.main.tooltipDirection = 'left';
       this.layout.sidebar.position = 'left';
+      this.layout.sidebar.tooltipDirection = 'right';
     } else {
       this.layout.main.position = 'left';
+      this.layout.main.tooltipDirection = 'right';
       this.layout.sidebar.position = 'right';
+      this.layout.sidebar.tooltipDirection = 'left';
     }
     const mainWidth = this.layout.main.width;
     this.layout.main.width = this.layout.sidebar.width;

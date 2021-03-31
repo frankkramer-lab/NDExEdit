@@ -5,7 +5,8 @@
        class="mb-1 float-left"
        data-toggle="tooltip"
        ngbTooltip="{{'NAV_MANAGE' | translate}}"
-       placement="right" role="button"
+       placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+       role="button"
        type="button">
       <fa-icon [icon]="faArrowLeft" class="mr-1"></fa-icon>
     </a>
@@ -16,7 +17,12 @@
        class="float-right"
        data-target="#contentDescription"
        data-toggle="collapse"
-       href="#">
+       href="#"
+       ngbTooltip="{{'SIDEBAR_COLLAPSE' | translate}}"
+       placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+       container="body"
+       role="button"
+       type="button">
       <fa-icon [icon]="faChevronDown"></fa-icon>
     </a>
   </h5>
@@ -26,7 +32,8 @@
        class="mb-1"
        data-toggle="tooltip"
        ngbTooltip="{{'NAV_MANAGE' | translate}}"
-       placement="right" role="button"
+       placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+       role="button"
        type="button">
       <fa-icon [icon]="faArrowLeft" class="mr-1"></fa-icon>
     </a>
@@ -76,8 +83,17 @@
       <span class="float-left">
         {{'SIDEBAR_EDIT_COMPARISON_NODES' | translate}}
       </span>
-      <a aria-controls="contentNodesSelected" aria-expanded="true" class="float-right"
-         data-target="#contentNodesSelected" data-toggle="collapse" href="#">
+      <a aria-controls="contentNodesSelected"
+         aria-expanded="true"
+         class="float-right"
+         data-target="#contentNodesSelected"
+         data-toggle="collapse"
+         href="#"
+         ngbTooltip="{{'SIDEBAR_COLLAPSE' | translate}}"
+         placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+         container="body"
+         role="button"
+         type="button">
         <fa-icon [icon]="faChevronDown"></fa-icon>
       </a>
     </h5>
@@ -91,7 +107,8 @@
           <tr>
             <td *ngFor="let node of graphService.selectedElements.nodes">
               <a (click)="graphService.highlightByElementId(node.id)" data-toggle="tooltip"
-                 ngbTooltip="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_NODE' | translate}} {{node.id}}" placement="left"
+                 ngbTooltip="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_NODE' | translate}} {{node.id}}"
+                 placement="{{layoutService.layout.sidebar.tooltipDirection}}"
                  role="button">
                 <b class="float-right">{{node.name}} ({{node.id}})</b>
               </a>
@@ -121,13 +138,24 @@
 
     </div>
 
+    <hr *ngIf="graphService.selectedElements.edges.length > 0">
+
     <!-- Display selected edges -->
     <h5 *ngIf="graphService.selectedElements.edges.length > 0" class="mt-2">
       <span class="float-left">
         {{'SIDEBAR_EDIT_COMPARISON_EDGES' | translate}}
       </span>
-      <a aria-controls="contentEdgesSelected" aria-expanded="true" class="float-right"
-         data-target="#contentEdgesSelected" data-toggle="collapse" href="#">
+      <a aria-controls="contentEdgesSelected"
+         aria-expanded="true"
+         class="float-right"
+         data-target="#contentEdgesSelected"
+         data-toggle="collapse"
+         href="#"
+         ngbTooltip="{{'SIDEBAR_COLLAPSE' | translate}}"
+         placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+         container="body"
+         role="button"
+         type="button">
         <fa-icon [icon]="faChevronDown"></fa-icon>
       </a>
     </h5>
@@ -141,7 +169,8 @@
           <tr>
             <td *ngFor="let edge of graphService.selectedElements.edges">
               <a (click)="graphService.highlightByElementId(edge.id)" data-toggle="tooltip"
-                 ngbTooltip="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_NODE' | translate}} {{edge.id}}" placement="left"
+                 ngbTooltip="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_NODE' | translate}} {{edge.id}}"
+                 placement="{{layoutService.layout.sidebar.tooltipDirection}}"
                  role="button">
                 <b class="float-right">{{edge.name}} ({{edge.id}})</b>
               </a>
@@ -176,15 +205,37 @@
 
   <!-- NAV -->
   <div aria-orientation="horizontal" class="nav nav-pills flex-row" id="editsNav" role="tablist">
-    <a aria-controls="editsNavAspects" aria-selected="false" class="nav-link active" data-toggle="pill"
+    <a aria-controls="editsNavAspects"
+       aria-selected="false"
+       class="nav-link active"
+       data-toggle="pill"
        href="#editsNavAspectsContent"
-       id="editsNavAspects" role="tab">{{'SIDEBAR_EDIT_ATTRIBUTES_TITLE' | translate}}</a>
-    <a aria-controls="editsNavInspect" aria-selected="false" class="nav-link" data-toggle="pill"
+       id="editsNavAspects"
+       role="tab"
+       ngbTooltip="{{'SIDEBAR_EDIT_NAV_TT_MAPPINGS' | translate}}"
+       placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+      {{'SIDEBAR_EDIT_ATTRIBUTES_TITLE' | translate}}
+    </a>
+    <a aria-controls="editsNavInspect"
+       aria-selected="false"
+       class="nav-link"
+       data-toggle="pill"
        href="#editsNavInspectContent"
-       id="editsNavInspect" role="tab">{{'SIDEBAR_EDIT_INSPECT_TITLE' | translate}}</a>
-    <a aria-controls="editsNavHighlights" aria-selected="true" class="nav-link" data-toggle="pill"
+       id="editsNavInspect"
+       role="tab"
+       ngbTooltip="{{'SIDEBAR_EDIT_NAV_TT_INSPECT' | translate}}"
+       placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+      {{'SIDEBAR_EDIT_INSPECT_TITLE' | translate}}
+    </a>
+    <a aria-controls="editsNavHighlights"
+       aria-selected="true"
+       class="nav-link"
+       data-toggle="pill"
        href="#editsNavHighlightsContent"
-       id="editsNavHighlights" role="tab">
+       id="editsNavHighlights"
+       role="tab"
+       ngbTooltip="{{'SIDEBAR_EDIT_NAV_TT_SETTINGS' | translate}}"
+       placement="{{layoutService.layout.sidebar.tooltipDirection}}">
       <fa-icon [icon]="faCogs"></fa-icon>
     </a>
 
@@ -197,9 +248,10 @@
          role="tabpanel">
 
       <button [routerLink]="['', { outlets: {primary: ['mappings', -1]} }]"
-              class="btn btn-lg btn-block btn-success mt-2 mb-2" data-toggle="tooltip"
+              class="btn btn-lg btn-block btn-success mt-2 mb-2"
+              data-toggle="tooltip"
               ngbTooltip="{{'SIDEBAR_EDIT_TT_MANAGE_MAPPINGS' | translate}}"
-              placement="bottom">
+              placement="{{layoutService.layout.sidebar.tooltipDirection}}">
         <fa-icon [icon]="faPalette" class="mr-2"></fa-icon>
         {{'SIDEBAR_EDIT_MANAGE_MAPPINGS' | translate}}
       </button>
@@ -218,7 +270,12 @@
            class="float-right"
            data-target="#contentMappingsNodes"
            data-toggle="collapse"
-           href="#">
+           href="#"
+           ngbTooltip="{{'SIDEBAR_COLLAPSE' | translate}}"
+           placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+           container="body"
+           role="button"
+           type="button">
           <fa-icon [icon]="faChevronDown"></fa-icon>
         </a>
       </h5>
@@ -228,7 +285,7 @@
         <table class="table"
                data-toggle="tooltip"
                ngbTooltip="{{'SIDEBAR_EDIT_TT_PASSTHROUGH' | translate}}"
-               placement="top">
+               placement="{{layoutService.layout.sidebar.tooltipDirection}}">
           <tr *ngFor="let np of dataService.selectedNetwork.mappings.nodesPassthrough; let npIndex = index">
             <td>
               <a [routerLink]="['', { outlets: {primary: ['mappings', 'np' +  npIndex]} }]" role="button">
@@ -299,7 +356,7 @@
           <a (click)="displayMapping(nodeMap.chart, [], 'nc' + index)"
              data-toggle="tooltip"
              ngbTooltip="{{'SIDEBAR_EDIT_TT_CONTINUOUS' | translate}}"
-             placement="top"
+             placement="{{layoutService.layout.sidebar.tooltipDirection}}"
              role="button">
             <b>{{nodeMap.cleanStyleProperty || nodeMap.styleProperty}}</b>
             {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
@@ -310,7 +367,7 @@
           <a (click)="displayMapping(null, nodeMap.colorGradient, 'nc' + index)"
              data-toggle="tooltip"
              ngbTooltip="{{'SIDEBAR_EDIT_TT_CONTINUOUS' | translate}}"
-             placement="top"
+             placement="{{layoutService.layout.sidebar.tooltipDirection}}"
              role="button">
             <b>{{nodeMap.cleanStyleProperty || nodeMap.styleProperty}}</b>
             {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
@@ -335,7 +392,12 @@
            class="float-right"
            data-target="#contentMappingsEdges"
            data-toggle="collapse"
-           href="#">
+           href="#"
+           ngbTooltip="{{'SIDEBAR_COLLAPSE' | translate}}"
+           placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+           container="body"
+           role="button"
+           type="button">
           <fa-icon [icon]="faChevronDown"></fa-icon>
         </a>
       </h5>
@@ -343,7 +405,8 @@
       <div class="show mt-1" id="contentMappingsEdges">
         <!-- EP -->
         <table class="table" data-toggle="tooltip"
-               ngbTooltip="{{'SIDEBAR_EDIT_TT_PASSTHROUGH' | translate}}" placement="top">
+               ngbTooltip="{{'SIDEBAR_EDIT_TT_PASSTHROUGH' | translate}}"
+               placement="{{layoutService.layout.sidebar.tooltipDirection}}">
           <tr *ngFor="let ep of dataService.selectedNetwork.mappings.edgesPassthrough; let epIndex = index">
             <td>
               <a [routerLink]="['', { outlets: {primary: ['mappings', 'ep' +  epIndex]} }]" role="button">
@@ -413,7 +476,7 @@
           <a (click)="displayMapping(edgeMap.chart, [], 'ec' + index)"
              data-toggle="tooltip"
              ngbTooltip="{{'SIDEBAR_EDIT_TT_CONTINUOUS' | translate}}"
-             placement="top"
+             placement="{{layoutService.layout.sidebar.tooltipDirection}}"
              role="button">
             <b>{{edgeMap.cleanStyleProperty || edgeMap.styleProperty}}</b>
             {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
@@ -424,7 +487,7 @@
           <a (click)="displayMapping(null, edgeMap.colorGradient, 'ec' + index)"
              data-toggle="tooltip"
              ngbTooltip="{{'SIDEBAR_EDIT_TT_CONTINUOUS' | translate}}"
-             placement="top"
+             placement="{{layoutService.layout.sidebar.tooltipDirection}}"
              role="button">
             <b>{{edgeMap.cleanStyleProperty || edgeMap.styleProperty}}</b>
             {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
@@ -461,7 +524,8 @@
 
               <td>
 
-                <button (click)="graphService.highlightByElementSameAs(def.type, def.property, def.sameAs)" *ngIf="def.sameAs"
+                <button (click)="graphService.highlightByElementSameAs(def.type, def.property, def.sameAs)"
+                        *ngIf="def.sameAs"
                         class="btn btn-outline-primary">
                   <fa-icon [icon]="faMagic"></fa-icon>
                 </button>
@@ -516,14 +580,16 @@
                    data-toggle="buttons">
 
                 <label class="btn btn-outline-secondary">
-                  <input (click)="selectType('node')" [checked]="highlightDefinition.type === 'node'" autocomplete="off" id="typeNode"
+                  <input (click)="selectType('node')" [checked]="highlightDefinition.type === 'node'" autocomplete="off"
+                         id="typeNode"
                          name="type"
                          type="radio">
                   {{'SIDEBAR_EDIT_INSPECT_TYPE_NODE' | translate}}
                 </label>
 
                 <label class="btn btn-outline-secondary">
-                  <input (click)="selectType('edge')" [checked]="highlightDefinition.type === 'edge'" autocomplete="off" id="typeEdge"
+                  <input (click)="selectType('edge')" [checked]="highlightDefinition.type === 'edge'" autocomplete="off"
+                         id="typeEdge"
                          name="type"
                          type="radio">
                   {{'SIDEBAR_EDIT_INSPECT_TYPE_EDGE' | translate}}
@@ -540,7 +606,8 @@
                    data-toggle="buttons">
 
                 <label *ngFor="let property of getAvailablePropertiesByType('node')" class="btn btn-outline-secondary">
-                  <input (click)="selectProperty(property)" autocomplete="off" id="node_{{property.name}}" name="node_{{property.name}}"
+                  <input (click)="selectProperty(property)" autocomplete="off" id="node_{{property.name}}"
+                         name="node_{{property.name}}"
                          type="radio">
                   {{property.name}}
                 </label>
@@ -553,7 +620,8 @@
                    data-toggle="buttons">
 
                 <label *ngFor="let property of getAvailablePropertiesByType('edge')" class="btn btn-outline-secondary">
-                  <input (click)="selectProperty(property)" autocomplete="off" id="edge_{{property.name}}" name="edge_{{property.name}}"
+                  <input (click)="selectProperty(property)" autocomplete="off" id="edge_{{property.name}}"
+                         name="edge_{{property.name}}"
                          type="radio">
                   {{property.name}}
                 </label>
@@ -567,7 +635,8 @@
               <form *ngIf="highlightDefinitionDatatype === 'numeric'">
                 <div class="form-group">
                   <label for="numericLower">{{'SIDEBAR_EDIT_INSPECT_RANGE_LOWER' | translate}}</label>
-                  <input [(ngModel)]="highlightDefinition.rangeLower" class="form-control" id="numericLower" name="numericLower" placeholder="0"
+                  <input [(ngModel)]="highlightDefinition.rangeLower" class="form-control" id="numericLower"
+                         name="numericLower" placeholder="0"
                          type="number">
                 </div>
               </form>
@@ -576,7 +645,8 @@
               <form *ngIf="highlightDefinitionDatatype === 'numeric'">
                 <div class="form-group">
                   <label for="numericUpper">{{'SIDEBAR_EDIT_INSPECT_RANGE_UPPER' | translate}}</label>
-                  <input [(ngModel)]="highlightDefinition.rangeUpper" class="form-control" id="numericUpper" name="numericUpper" placeholder="0"
+                  <input [(ngModel)]="highlightDefinition.rangeUpper" class="form-control" id="numericUpper"
+                         name="numericUpper" placeholder="0"
                          type="number">
                 </div>
               </form>
@@ -594,7 +664,8 @@
 
             <!-- SUBMIT -->
             <td>
-              <button (click)="addHighlightDefinitionToList()" [disabled]="!highlightDefinition.sameAs && (highlightDefinition.rangeUpper === null || highlightDefinition.rangeLower === null)"
+              <button (click)="addHighlightDefinitionToList()"
+                      [disabled]="!highlightDefinition.sameAs && (highlightDefinition.rangeUpper === null || highlightDefinition.rangeLower === null)"
                       class="btn btn-outline-success">
                 <fa-icon [icon]="faCheck"></fa-icon>
               </button>
@@ -641,7 +712,8 @@
       </div>
       <div class="form-row">
         <label for="highlightDuration">{{'SIDEBAR_EDIT_LABEL_DURATION' | translate}}</label>
-        <input (change)="setHighlightColorAndDuration()" [(ngModel)]="highlightDuration" class="form-control mb-2" id="highlightDuration"
+        <input (change)="setHighlightColorAndDuration()" [(ngModel)]="highlightDuration" class="form-control mb-2"
+               id="highlightDuration"
                min="0"
                name="highlightDuration"
                placeholder="2000"

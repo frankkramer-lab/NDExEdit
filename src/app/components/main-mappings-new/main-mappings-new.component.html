@@ -4,7 +4,8 @@
     <span class="row">
       <span class="col-11">
         <a [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]" data-toggle="tooltip"
-           ngbTooltip="{{'MAIN_MAPPINGS_GRAPH' | translate}}" placement="right"
+           ngbTooltip="{{'MAIN_MAPPINGS_GRAPH' | translate}}"
+           placement="{{layoutService.layout.main.tooltipDirection}}"
            role="button">
           <fa-icon [icon]="faArrowLeft"></fa-icon>
         </a>
@@ -15,7 +16,7 @@
            class="mt-2 float-right btn btn-outline-primary"
            data-toggle="tooltip"
            ngbTooltip="{{'MAIN_GRAPH_TT_HOME' | translate}}"
-           placement="bottom"
+           placement="{{layoutService.layout.main.tooltipDirection}}"
            role="button">
           <fa-icon [icon]="faHome"></fa-icon>
         </a>
@@ -46,7 +47,7 @@
       <button (click)="toggleDistributionChart(!showDistribution)" class="btn btn-sm btn-outline-secondary mr-4"
               data-toggle="tooltip"
               ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
-              placement="right"
+              placement="{{layoutService.layout.main.tooltipDirection}}"
               type="button">
         <fa-icon [icon]="faChartBar"></fa-icon>
       </button>
@@ -85,7 +86,7 @@
       <button (click)="toggleDistributionChart(!showDistribution)" class="btn btn-sm btn-outline-secondary mr-4"
               data-toggle="tooltip"
               ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
-              placement="right"
+              placement="{{layoutService.layout.main.tooltipDirection}}"
               type="button">
         <fa-icon [icon]="faChartBar"></fa-icon>
       </button>
@@ -101,7 +102,7 @@
       <button (click)="showHints = !showHints" class="btn btn-sm btn-outline-secondary mr-4"
               data-toggle="tooltip"
               ngbTooltip="{{(!showHints ? 'MAIN_MAPPINGS_NEW_TT_HINTS_SHOW' : 'MAIN_MAPPINGS_NEW_TT_HINTS_HIDE') | translate}}"
-              placement="right"
+              placement="{{layoutService.layout.main.tooltipDirection}}"
               type="button">
         <fa-icon [icon]="faQuestionCircle"></fa-icon>
       </button>
@@ -145,7 +146,7 @@
       <button (click)="toggleDistributionChart(!showDistribution)" class="btn btn-sm btn-outline-secondary mr-4"
               data-toggle="tooltip"
               ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
-              placement="right"
+              placement="{{layoutService.layout.main.tooltipDirection}}"
               type="button">
         <fa-icon [icon]="faChartBar"></fa-icon>
       </button>
@@ -184,7 +185,7 @@
       <button (click)="toggleDistributionChart(!showDistribution)" class="btn btn-sm btn-outline-secondary mr-4"
               data-toggle="tooltip"
               ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
-              placement="right"
+              placement="{{layoutService.layout.main.tooltipDirection}}"
               type="button">
         <fa-icon [icon]="faChartBar"></fa-icon>
       </button>
@@ -224,7 +225,7 @@
       <button (click)="toggleDistributionChart(!showDistribution)" class="btn btn-sm btn-outline-secondary mr-4"
               data-toggle="tooltip"
               ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
-              placement="right"
+              placement="{{layoutService.layout.main.tooltipDirection}}"
               type="button">
         <fa-icon [icon]="faChartBar"></fa-icon>
       </button>
@@ -241,7 +242,7 @@
       <button (click)="showHints = !showHints" class="btn btn-sm btn-outline-secondary mr-4"
               data-toggle="tooltip"
               ngbTooltip="{{(!showHints ? 'MAIN_MAPPINGS_NEW_TT_HINTS_SHOW' : 'MAIN_MAPPINGS_NEW_TT_HINTS_HIDE') | translate}}"
-              placement="right"
+              placement="{{layoutService.layout.main.tooltipDirection}}"
               type="button">
         <fa-icon [icon]="faQuestionCircle"></fa-icon>
       </button>
@@ -282,7 +283,7 @@
       <button (click)="toggleDistributionChart(!showDistribution)" class="btn btn-sm btn-outline-secondary mr-4"
               data-toggle="tooltip"
               ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_DISTRIBUTION' | translate}}"
-              placement="right"
+              placement="{{layoutService.layout.main.tooltipDirection}}"
               type="button">
         <fa-icon [icon]="faChartBar"></fa-icon>
       </button>

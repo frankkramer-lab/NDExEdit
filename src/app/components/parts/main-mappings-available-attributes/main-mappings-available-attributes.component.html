@@ -42,7 +42,7 @@
 
     <!-- add new -->
     <button
-      [routerLink]="['', { outlets: {primary: ['new', (typeHint.ec ? 'ec' : 'nc'), attributeIndex, '0' ]} }]"
+      [routerLink]="['', { outlets: {primary: ['new', (typeHint.ec ? 'ec' : 'nc'), attributeIndex]} }]"
       class="btn btn-outline-success ml-2"
       data-toggle="tooltip"
       ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"
@@ -67,7 +67,7 @@
 
     <!-- new -->
     <button
-      [routerLink]="['', { outlets: {primary: ['new', (typeHint.ed ? 'ed' : 'nd'), attributeIndex, '0' ]} }]"
+      [routerLink]="['', { outlets: {primary: ['new', (typeHint.ed ? 'ed' : 'nd'), attributeIndex]} }]"
       class="btn btn-outline-success ml-2"
       data-toggle="tooltip"
       ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"
@@ -109,7 +109,7 @@
 
     <!-- new -->
     <button
-      [routerLink]="['', { outlets: {primary: ['new', (typeHint.np ? 'np' : 'ep'), attributeIndex, '0' ]} }]"
+      [routerLink]="['', { outlets: {primary: ['new', (typeHint.np ? 'np' : 'ep'), attributeIndex]} }]"
       class="btn btn-outline-success ml-2"
       data-toggle="tooltip"
       ngbTooltip="{{'MAIN_MAPPINGS_TT_NEW' | translate}}" placement="bottom"

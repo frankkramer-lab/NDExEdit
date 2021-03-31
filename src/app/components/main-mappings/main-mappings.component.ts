@@ -8,6 +8,7 @@ import {UtilityService} from '../../services/utility.service';
 import {NeMappingDiscrete} from '../../models/ne-mapping-discrete';
 import {NeMappingPassthrough} from '../../models/ne-mapping-passthrough';
 import {NeMappingContinuous} from '../../models/ne-mapping-continuous';
+import {LayoutService} from '../../services/layout.service';
 
 @Component({
   selector: 'app-main-mappings',
@@ -109,11 +110,13 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    * @param route Service to read URL
    * @param dataService Service to read and write to globally accessible data
    * @param utilityService Service used to access shared code
+   * @param layoutService Service responsible for tooltip directions
    */
   constructor(
     private route: ActivatedRoute,
     public dataService: DataService,
-    public utilityService: UtilityService
+    public utilityService: UtilityService,
+    public layoutService: LayoutService
   ) {
 
     this.route.paramMap.subscribe(params => {
