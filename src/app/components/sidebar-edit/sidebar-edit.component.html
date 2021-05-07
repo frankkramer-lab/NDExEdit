@@ -1,41 +1,48 @@
 <div class="p-2">
 
-  <h5 *ngIf="dataService.selectedNetwork.networkInformation.description">
-    <a [routerLink]="['', { outlets: {sidebar: ['manage']} }]"
-       class="mb-1 float-left"
-       data-toggle="tooltip"
-       ngbTooltip="{{'NAV_MANAGE' | translate}}"
-       placement="right" role="button"
-       type="button">
-      <fa-icon [icon]="faArrowLeft" class="mr-1"></fa-icon>
-    </a>
-    {{'SIDEBAR_EDIT_DESCRIPTION_TITLE' | translate}}
+  <div class="row">
+    <div class="col">
 
-    <a aria-controls="contentDescription"
-       aria-expanded="true"
-       class="float-right"
-       data-target="#contentDescription"
-       data-toggle="collapse"
-       href="#">
-      <fa-icon [icon]="faChevronDown"></fa-icon>
-    </a>
-  </h5>
+      <h5 *ngIf="dataService.selectedNetwork.networkInformation.description">
+        <a [routerLink]="['', { outlets: {sidebar: ['manage']} }]"
+           class="mb-1 float-left"
+           data-toggle="tooltip"
+           ngbTooltip="{{'NAV_MANAGE' | translate}}"
+           placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+           role="button"
+           type="button">
+          <fa-icon [icon]="faArrowLeft" class="mr-1"></fa-icon>
+        </a>
+        {{'SIDEBAR_EDIT_DESCRIPTION_TITLE' | translate}}
+      </h5>
 
-  <h5 *ngIf="!dataService.selectedNetwork.networkInformation.description">
-    <a [routerLink]="['', { outlets: {sidebar: ['manage']} }]"
-       class="mb-1"
-       data-toggle="tooltip"
-       ngbTooltip="{{'NAV_MANAGE' | translate}}"
-       placement="right" role="button"
-       type="button">
-      <fa-icon [icon]="faArrowLeft" class="mr-1"></fa-icon>
-    </a>
-    {{'SIDEBAR_EDIT_DEFAULT_TITLE' | translate}}
+      <h5 *ngIf="!dataService.selectedNetwork.networkInformation.description">
+        <a [routerLink]="['', { outlets: {sidebar: ['manage']} }]"
+           class="mb-1"
+           data-toggle="tooltip"
+           ngbTooltip="{{'NAV_MANAGE' | translate}}"
+           placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+           role="button"
+           type="button">
+          <fa-icon [icon]="faArrowLeft" class="mr-1"></fa-icon>
+        </a>
+        {{'SIDEBAR_EDIT_DEFAULT_TITLE' | translate}}
 
-  </h5>
+      </h5>
+    </div>
+    <div class="col">
+      <span class="float-right"
+            (click)="collapseDescription.toggle()"
+            [attr.aria-expanded]="!isCollapsedDescription"
+            aria-controls="collapseExample">
+        <fa-icon [icon]="faChevronDown"></fa-icon>
+      </span>
+    </div>
+  </div>
+  <hr *ngIf="isCollapsedDescription">
 
   <!-- Network description -->
-  <div *ngIf="dataService.selectedNetwork.networkInformation.description" class="show" id="contentDescription">
+  <div #collapseDescription="ngbCollapse" [(ngbCollapse)]="isCollapsedDescription">
     <p [innerHTML]="dataService.selectedNetwork.networkInformation.description"></p>
   </div>
 
@@ -49,142 +56,54 @@
     </label>
   </div>
 
-  <!-- Show chart -->
-  <app-chart *ngIf="showChart" [chartObject]="lineChartObject"
-             [index]="index" [widthPercent]="100"></app-chart>
+  <!-- Selected elements -->
+  <app-sidebar-edit-selected
+    [selectedElements]="graphService.selectedElements.nodes"
+    [relevantProperties]="graphService.selectedElements.nodeProperties"
+    [type]="'NODE'">
+  </app-sidebar-edit-selected>
 
-  <!-- Show color gradient -->
-  <div *ngIf="showColorGradient">
-    <h5>
-      <a [routerLink]="['', {outlets: {primary: ['mappings', index]} }]" role="button">
-        <b>{{mapping.cleanStyleProperty || mapping.styleProperty}}</b>
-        {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
-        <b>{{mapping.col}}</b>
-      </a>
-    </h5>
-    <div [style.background]="gradientBackground" [style.height.px]="200" [style.width.%]="100" class="mb-3">
-    </div>
-  </div>
+  <app-sidebar-edit-selected
+    [selectedElements]="graphService.selectedElements.edges"
+    [relevantProperties]="graphService.selectedElements.edgeProperties"
+    [type]="'EDGE'">
+  </app-sidebar-edit-selected>
 
-  <!-- selected nodes or edges -->
-  <div *ngIf="graphService.selectedElements.nodes.length > 0 || graphService.selectedElements.edges.length > 0">
-
-    <hr>
-
-    <!-- Display selected nodes -->
-    <h5 *ngIf="graphService.selectedElements.nodes.length > 0">
-      <span class="float-left">
-        {{'SIDEBAR_EDIT_COMPARISON_NODES' | translate}}
-      </span>
-      <a aria-controls="contentNodesSelected" aria-expanded="true" class="float-right"
-         data-target="#contentNodesSelected" data-toggle="collapse" href="#">
-        <fa-icon [icon]="faChevronDown"></fa-icon>
-      </a>
-    </h5>
-
-    <div *ngIf="graphService.selectedElements.nodes.length > 0" class="table-responsive">
-
-      <div class="show" id="contentNodesSelected">
-        <table class="table">
-
-          <thead>
-          <tr>
-            <td *ngFor="let node of graphService.selectedElements.nodes">
-              <a (click)="graphService.highlightByElementId(node.id)" data-toggle="tooltip"
-                 ngbTooltip="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_NODE' | translate}} {{node.id}}" placement="left"
-                 role="button">
-                <b class="float-right">{{node.name}} ({{node.id}})</b>
-              </a>
-            </td>
-          </tr>
-          </thead>
-
-          <tbody>
-          <tr>
-            <td *ngFor="let node of graphService.selectedElements.nodes; let elementIndex = index">
-
-              <table class="table table-borderless">
-
-                <tr *ngFor="let attribute of node|attributesByElement">
-                  <td *ngIf="elementIndex === 0" colspan="2"><b>{{attribute}}</b></td>
-                  <td class="w-100">{{node[attribute]}}</td>
-                </tr>
-
-              </table>
-
-            </td>
-          </tr>
-          </tbody>
-
-        </table>
-      </div>
-
-    </div>
-
-    <!-- Display selected edges -->
-    <h5 *ngIf="graphService.selectedElements.edges.length > 0" class="mt-2">
-      <span class="float-left">
-        {{'SIDEBAR_EDIT_COMPARISON_EDGES' | translate}}
-      </span>
-      <a aria-controls="contentEdgesSelected" aria-expanded="true" class="float-right"
-         data-target="#contentEdgesSelected" data-toggle="collapse" href="#">
-        <fa-icon [icon]="faChevronDown"></fa-icon>
-      </a>
-    </h5>
-
-    <div *ngIf="graphService.selectedElements.edges.length > 0" class="table-responsive">
-
-      <div class="show" id="contentEdgesSelected">
-        <table class=" table">
-
-          <thead>
-          <tr>
-            <td *ngFor="let edge of graphService.selectedElements.edges">
-              <a (click)="graphService.highlightByElementId(edge.id)" data-toggle="tooltip"
-                 ngbTooltip="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_NODE' | translate}} {{edge.id}}" placement="left"
-                 role="button">
-                <b class="float-right">{{edge.name}} ({{edge.id}})</b>
-              </a>
-            </td>
-          </tr>
-          </thead>
-
-          <tbody>
-          <tr>
-            <td *ngFor="let edge of graphService.selectedElements.edges; let elementIndex = index">
-
-              <table class="table table-borderless">
-
-                <tr *ngFor="let attribute of edge|attributesByElement">
-                  <td *ngIf="elementIndex === 0" colspan="2"><b>{{attribute}}</b></td>
-                  <td class="w-100">{{edge[attribute]}}</td>
-                </tr>
-
-              </table>
-
-            </td>
-          </tr>
-          </tbody>
-
-        </table>
-      </div>
-    </div>
-
-    <hr *ngIf="graphService.selectedElements.edges.length > 0">
-
-  </div>
+  <hr>
 
   <!-- NAV -->
   <div aria-orientation="horizontal" class="nav nav-pills flex-row" id="editsNav" role="tablist">
-    <a aria-controls="editsNavAspects" aria-selected="false" class="nav-link active" data-toggle="pill"
+    <a aria-controls="editsNavAspects"
+       aria-selected="false"
+       class="nav-link active"
+       data-toggle="pill"
        href="#editsNavAspectsContent"
-       id="editsNavAspects" role="tab">{{'SIDEBAR_EDIT_ATTRIBUTES_TITLE' | translate}}</a>
-    <a aria-controls="editsNavInspect" aria-selected="false" class="nav-link" data-toggle="pill"
+       id="editsNavAspects"
+       role="tab"
+       ngbTooltip="{{'SIDEBAR_EDIT_NAV_TT_MAPPINGS' | translate}}"
+       placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+      {{'SIDEBAR_EDIT_ATTRIBUTES_TITLE' | translate}}
+    </a>
+    <a aria-controls="editsNavInspect"
+       aria-selected="false"
+       class="nav-link"
+       data-toggle="pill"
        href="#editsNavInspectContent"
-       id="editsNavInspect" role="tab">{{'SIDEBAR_EDIT_INSPECT_TITLE' | translate}}</a>
-    <a aria-controls="editsNavHighlights" aria-selected="true" class="nav-link" data-toggle="pill"
+       id="editsNavInspect"
+       role="tab"
+       ngbTooltip="{{'SIDEBAR_EDIT_NAV_TT_INSPECT' | translate}}"
+       placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+      {{'SIDEBAR_EDIT_INSPECT_TITLE' | translate}}
+    </a>
+    <a aria-controls="editsNavHighlights"
+       aria-selected="true"
+       class="nav-link"
+       data-toggle="pill"
        href="#editsNavHighlightsContent"
-       id="editsNavHighlights" role="tab">
+       id="editsNavHighlights"
+       role="tab"
+       ngbTooltip="{{'SIDEBAR_EDIT_NAV_TT_SETTINGS' | translate}}"
+       placement="{{layoutService.layout.sidebar.tooltipDirection}}">
       <fa-icon [icon]="faCogs"></fa-icon>
     </a>
 
@@ -196,10 +115,12 @@
     <div aria-labelledby="editsNavAspects" class="tab-pane fade show active" id="editsNavAspectsContent"
          role="tabpanel">
 
+      <!-- MAPPINGS: MANAGE -->
       <button [routerLink]="['', { outlets: {primary: ['mappings', -1]} }]"
-              class="btn btn-lg btn-block btn-success mt-2 mb-2" data-toggle="tooltip"
+              class="btn btn-lg btn-block btn-success mt-2 mb-2"
+              data-toggle="tooltip"
               ngbTooltip="{{'SIDEBAR_EDIT_TT_MANAGE_MAPPINGS' | translate}}"
-              placement="bottom">
+              placement="{{layoutService.layout.sidebar.tooltipDirection}}">
         <fa-icon [icon]="faPalette" class="mr-2"></fa-icon>
         {{'SIDEBAR_EDIT_MANAGE_MAPPINGS' | translate}}
       </button>
@@ -209,26 +130,29 @@
       || dataService.selectedNetwork.mappings.nodesPassthrough.length > 0">
 
       <!-- MAPPINGS: NODES -->
-      <h5 *ngIf="dataService.selectedNetwork.mappings.nodesDiscrete.length > 0
-      || dataService.selectedNetwork.mappings.nodesContinuous.length > 0
-      || dataService.selectedNetwork.mappings.nodesPassthrough.length > 0">
-        {{'SIDEBAR_EDIT_ASPECTS_NODES' | translate}}
-        <a aria-controls="contentMappingsNodes"
-           aria-expanded="true"
-           class="float-right"
-           data-target="#contentMappingsNodes"
-           data-toggle="collapse"
-           href="#">
-          <fa-icon [icon]="faChevronDown"></fa-icon>
-        </a>
-      </h5>
+      <div class="row" *ngIf="dataService.selectedNetwork.mappings.nodesDiscrete.length > 0
+              || dataService.selectedNetwork.mappings.nodesContinuous.length > 0
+              || dataService.selectedNetwork.mappings.nodesPassthrough.length > 0">
+        <div class="col">
+          <h5>
+            {{'SIDEBAR_EDIT_ASPECTS_NODES' | translate}}</h5>
+        </div>
+        <div class="col">
+          <span class="float-right"
+                (click)="collapseMappingsNodes.toggle()"
+                [attr.aria-expanded]="!isCollapsedMappingsNodes"
+                aria-controls="collapseExample">
+            <fa-icon [icon]="faChevronDown"></fa-icon>
+          </span>
+        </div>
+      </div>
 
-      <div class="show mt-1" id="contentMappingsNodes">
+      <div #collapseMappingsNodes="ngbCollapse" [ngbCollapse]="isCollapsedMappingsNodes" class="mt-1">
         <!-- NP -->
         <table class="table"
                data-toggle="tooltip"
                ngbTooltip="{{'SIDEBAR_EDIT_TT_PASSTHROUGH' | translate}}"
-               placement="top">
+               placement="{{layoutService.layout.sidebar.tooltipDirection}}">
           <tr *ngFor="let np of dataService.selectedNetwork.mappings.nodesPassthrough; let npIndex = index">
             <td>
               <a [routerLink]="['', { outlets: {primary: ['mappings', 'np' +  npIndex]} }]" role="button">
@@ -291,34 +215,36 @@
         </table>
 
         <!-- NC -->
-        <ul
-          *ngIf="dataService.selectedNetwork.mappings.nodesContinuous.length > 0"
-          class="list-group mb-2">
-      <span *ngFor="let nodeMap of dataService.selectedNetwork.mappings.nodesContinuous; let index = index">
-        <li *ngIf="!nodeMap.isColor" class="list-group-item">
-          <a (click)="displayMapping(nodeMap.chart, [], 'nc' + index)"
-             data-toggle="tooltip"
-             ngbTooltip="{{'SIDEBAR_EDIT_TT_CONTINUOUS' | translate}}"
-             placement="top"
-             role="button">
-            <b>{{nodeMap.cleanStyleProperty || nodeMap.styleProperty}}</b>
-            {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
-            <b> {{nodeMap.col}}</b>
-          </a>
-        </li>
-        <li *ngIf="nodeMap.isColor" class="list-group-item">
-          <a (click)="displayMapping(null, nodeMap.colorGradient, 'nc' + index)"
-             data-toggle="tooltip"
-             ngbTooltip="{{'SIDEBAR_EDIT_TT_CONTINUOUS' | translate}}"
-             placement="top"
-             role="button">
-            <b>{{nodeMap.cleanStyleProperty || nodeMap.styleProperty}}</b>
-            {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
-            <b> {{nodeMap.col}}</b>
-          </a>
-        </li>
-      </span>
-        </ul>
+        <div class="list-group list-group-flush"
+             *ngIf="dataService.selectedNetwork.mappings.nodesContinuous.length > 0">
+          <span *ngFor="let nc of dataService.selectedNetwork.mappings.nodesContinuous; let ncIndex = index">
+            <button class="list-group-item list-group-item-action" type="button"
+                    (click)="collapseVisualAid.toggle()"
+                    [attr.aria-expanded]="!isCollapsedVisualAid"
+                    aria-controls="collapseExample">
+              <b>{{nc.cleanStyleProperty}} </b>{{'SIDEBAR_EDIT_MAPPED_BY' | translate}}<b> {{nc.col}}</b>
+            </button>
+            <div #collapseVisualAid="ngbCollapse" [ngbCollapse]="isCollapsedVisualAid">
+              <app-chart *ngIf="hasChart(nc)" class="mt-2"
+                         [chartObject]="getLineChartObject(nc)"
+                         [index]="'nc' + ncIndex"
+                         [includeHeadline]="false"
+                         [widthPercent]="100"></app-chart>
+
+              <div *ngIf="hasGradient(nc)" class="mt-2"
+                   [style.background]="getGradient(nc)"
+                   [style.height.px]="200"
+                   [style.width.%]="100">
+              </div>
+              <a role="button" class="btn btn-block btn-sm btn-outline-secondary m-1"
+                 [routerLink]="['', { outlets: {primary: ['mappings', 'nc' + ncIndex]} }]">
+                {{'SIDEBAR_EDIT_BTN_LABEL_DISPLAY_CONTINUOUS_DETAILS' | translate}}
+                <fa-icon [icon]="faRoute"></fa-icon>
+              </a>
+            </div>
+          </span>
+        </div>
+
       </div>
 
       <hr *ngIf="dataService.selectedNetwork.mappings.edgesDiscrete.length > 0
@@ -326,24 +252,29 @@
       || dataService.selectedNetwork.mappings.edgesPassthrough.length > 0">
 
       <!-- MAPPINGS: EDGES -->
-      <h5 *ngIf="dataService.selectedNetwork.mappings.edgesDiscrete.length > 0
+      <div class="row" *ngIf="dataService.selectedNetwork.mappings.edgesDiscrete.length > 0
       || dataService.selectedNetwork.mappings.edgesContinuous.length > 0
       || dataService.selectedNetwork.mappings.edgesPassthrough.length > 0">
-        {{'SIDEBAR_EDIT_ASPECTS_EDGES' | translate}}
-        <a aria-controls="contentMappingsEdges"
-           aria-expanded="true"
-           class="float-right"
-           data-target="#contentMappingsEdges"
-           data-toggle="collapse"
-           href="#">
-          <fa-icon [icon]="faChevronDown"></fa-icon>
-        </a>
-      </h5>
+        <div class="col">
+          <h5>
+            {{'SIDEBAR_EDIT_ASPECTS_EDGES' | translate}}
+          </h5>
+        </div>
+        <div class="col">
+          <span class="float-right"
+                (click)="collapseMappingsEdges.toggle()"
+                [attr.aria-expanded]="!isCollapsedMappingsEdges"
+                aria-controls="collapseExample">
+            <fa-icon [icon]="faChevronDown"></fa-icon>
+          </span>
+        </div>
+      </div>
 
-      <div class="show mt-1" id="contentMappingsEdges">
+      <div #collapseMappingsEdges="ngbCollapse" [ngbCollapse]="isCollapsedMappingsEdges" class="mt-1">
         <!-- EP -->
         <table class="table" data-toggle="tooltip"
-               ngbTooltip="{{'SIDEBAR_EDIT_TT_PASSTHROUGH' | translate}}" placement="top">
+               ngbTooltip="{{'SIDEBAR_EDIT_TT_PASSTHROUGH' | translate}}"
+               placement="{{layoutService.layout.sidebar.tooltipDirection}}">
           <tr *ngFor="let ep of dataService.selectedNetwork.mappings.edgesPassthrough; let epIndex = index">
             <td>
               <a [routerLink]="['', { outlets: {primary: ['mappings', 'ep' +  epIndex]} }]" role="button">
@@ -406,207 +337,50 @@
         </table>
 
         <!-- EC -->
-        <ul *ngIf="dataService.selectedNetwork.mappings.edgesContinuous.length > 0"
-            class="list-group mb-2">
-      <span *ngFor="let edgeMap of dataService.selectedNetwork.mappings.edgesContinuous; let index = index">
-        <li *ngIf="!edgeMap.isColor" class="list-group-item">
-          <a (click)="displayMapping(edgeMap.chart, [], 'ec' + index)"
-             data-toggle="tooltip"
-             ngbTooltip="{{'SIDEBAR_EDIT_TT_CONTINUOUS' | translate}}"
-             placement="top"
-             role="button">
-            <b>{{edgeMap.cleanStyleProperty || edgeMap.styleProperty}}</b>
-            {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
-            <b>{{edgeMap.col}}</b>
-          </a>
-        </li>
-        <li *ngIf="edgeMap.isColor" class="list-group-item">
-          <a (click)="displayMapping(null, edgeMap.colorGradient, 'ec' + index)"
-             data-toggle="tooltip"
-             ngbTooltip="{{'SIDEBAR_EDIT_TT_CONTINUOUS' | translate}}"
-             placement="top"
-             role="button">
-            <b>{{edgeMap.cleanStyleProperty || edgeMap.styleProperty}}</b>
-            {{'SIDEBAR_EDIT_MAPPED_BY' | translate}}
-            <b>{{edgeMap.col}}</b>
-          </a>
-        </li>
+        <div class="list-group list-group-flush"
+             *ngIf="dataService.selectedNetwork.mappings.edgesContinuous.length > 0">
+          <span *ngFor="let ec of dataService.selectedNetwork.mappings.edgesContinuous; let ecIndex = index">
+            <button class="list-group-item list-group-item-action" type="button"
+                    (click)="collapseVisualAid.toggle()"
+                    [attr.aria-expanded]="!isCollapsedVisualAid"
+                    aria-controls="collapseExample">
+              <b>{{ec.cleanStyleProperty}} </b>{{'SIDEBAR_EDIT_MAPPED_BY' | translate}}<b> {{ec.col}}</b>
+            </button>
+            <div #collapseVisualAid="ngbCollapse" [ngbCollapse]="isCollapsedVisualAid">
+              <app-chart *ngIf="hasChart(ec)" class="mt-2"
+                         [chartObject]="getLineChartObject(ec)"
+                         [index]="'ec' + ecIndex"
+                         [includeHeadline]="false"
+                         [widthPercent]="100"></app-chart>
 
-      </span>
-        </ul>
+              <div *ngIf="hasGradient(ec)" class="mt-2"
+                   [style.background]="getGradient(ec)"
+                   [style.height.px]="200"
+                   [style.width.%]="100">
+              </div>
+
+              <a role="button" class="btn btn-block btn-sm btn-outline-secondary m-1"
+                 [routerLink]="['', { outlets: {primary: ['mappings', 'ec' + ecIndex]} }]">
+                {{'SIDEBAR_EDIT_BTN_LABEL_DISPLAY_CONTINUOUS_DETAILS' | translate}}
+                <fa-icon [icon]="faRoute"></fa-icon>
+              </a>
+
+            </div>
+          </span>
+        </div>
       </div>
 
     </div>
 
-    <!-- Edit: Inspect -->
-    <div aria-labelledby="editsNavInspect" class="tab-pane fade" id="editsNavInspectContent" role="tabpanel">
-      <p>{{'SIDEBAR_EDIT_INSPECT_TITLE_HINT' | translate}}</p>
+    <!-- Edit: Inspection tool -->
+    <app-sidebar-edit-inspect
+      aria-labelledby="editsNavInspect"
+      class="tab-pane fade"
+      id="editsNavInspectContent"
+      role="tabpanel">
+    </app-sidebar-edit-inspect>
 
-      <!-- INSPECTION LIST -->
-      <div class="table-responsive">
-        <table class="table">
-
-          <ng-container *ngFor="let def of highlightListDefinition; let defIndex = index">
-
-            <tr [ngClass]="def.markedForDeletion ? 'table-danger' : ''">
-              <td>{{def.type | translate}}</td>
-              <td>{{def.property.name}}</td>
-
-              <td *ngIf="utilityService.utilIsNumber(def.rangeLower) && utilityService.utilIsNumber(def.rangeUpper)">
-                {{'SIDEBAR_EDIT_INSPECT_RANGE_LOWER' | translate}} <b>{{def.rangeLower}}</b>
-                {{'SIDEBAR_EDIT_INSPECT_RANGE_UPPER' | translate}} <b>{{def.rangeUpper}}</b>
-              </td>
-
-              <td *ngIf="def.sameAs">{{'SIDEBAR_EDIT_INSPECT_SAME' | translate}} <b>{{def.sameAs}}</b></td>
-
-              <td>
-
-                <button (click)="graphService.highlightByElementSameAs(def.type, def.property, def.sameAs)" *ngIf="def.sameAs"
-                        class="btn btn-outline-primary">
-                  <fa-icon [icon]="faMagic"></fa-icon>
-                </button>
-
-                <button
-                  (click)="graphService.highlightByElementRange(def.type, def.property, def.rangeLower, def.rangeUpper)"
-                  *ngIf="utilityService.utilIsNumber(def.rangeLower) && utilityService.utilIsNumber(def.rangeUpper)"
-                  class="btn btn-outline-primary">
-                  <fa-icon [icon]="faMagic"></fa-icon>
-                </button>
-              </td>
-
-              <td>
-
-                <button (click)="markForDeletion(defIndex)" *ngIf="!def.markedForDeletion"
-                        class="btn btn-outline-danger">
-                  <fa-icon [icon]="faTrash"></fa-icon>
-                </button>
-
-                <button (click)="def.markedForDeletion = false" *ngIf="def.markedForDeletion"
-                        class="btn btn-outline-danger">
-                  <fa-icon [icon]="faTimes"></fa-icon>
-                </button>
-
-              </td>
-            </tr>
-            <tr *ngIf="def.markedForDeletion">
-              <td colspan="4">
-                {{'SIDEBAR_EDIT_INSPECT_REMOVE_ITEM' | translate}}
-              </td>
-              <td>
-                <button (click)="deleteFromHighlightList(defIndex)" class="btn btn-outline-danger">
-                  <fa-icon [icon]="faTrash"></fa-icon>
-                </button>
-              </td>
-            </tr>
-
-          </ng-container>
-        </table>
-
-      </div>
-
-      <hr *ngIf="highlightListDefinition.length > 0">
-
-      <!-- INSPECTION SPECIFICATION -->
-      <div class="table-responsive">
-        <table class="table table-borderless">
-          <tr>
-            <!-- TYPE -->
-            <td>
-              <div class="btn-group-vertical btn-group-toggle"
-                   data-toggle="buttons">
-
-                <label class="btn btn-outline-secondary">
-                  <input (click)="selectType('node')" [checked]="highlightDefinition.type === 'node'" autocomplete="off" id="typeNode"
-                         name="type"
-                         type="radio">
-                  {{'SIDEBAR_EDIT_INSPECT_TYPE_NODE' | translate}}
-                </label>
-
-                <label class="btn btn-outline-secondary">
-                  <input (click)="selectType('edge')" [checked]="highlightDefinition.type === 'edge'" autocomplete="off" id="typeEdge"
-                         name="type"
-                         type="radio">
-                  {{'SIDEBAR_EDIT_INSPECT_TYPE_EDGE' | translate}}
-                </label>
-
-              </div>
-            </td>
-
-            <!-- PROPERTY -->
-            <td>
-              <!-- NODES -->
-              <div *ngIf="highlightDefinition.type === 'node'"
-                   class="btn-group-vertical btn-group-toggle"
-                   data-toggle="buttons">
-
-                <label *ngFor="let property of getAvailablePropertiesByType('node')" class="btn btn-outline-secondary">
-                  <input (click)="selectProperty(property)" autocomplete="off" id="node_{{property.name}}" name="node_{{property.name}}"
-                         type="radio">
-                  {{property.name}}
-                </label>
-
-              </div>
-
-              <!-- EDGES -->
-              <div *ngIf="highlightDefinition.type === 'edge'"
-                   class="btn-group-vertical btn-group-toggle"
-                   data-toggle="buttons">
-
-                <label *ngFor="let property of getAvailablePropertiesByType('edge')" class="btn btn-outline-secondary">
-                  <input (click)="selectProperty(property)" autocomplete="off" id="edge_{{property.name}}" name="edge_{{property.name}}"
-                         type="radio">
-                  {{property.name}}
-                </label>
-
-              </div>
-            </td>
-
-            <!-- COMPARATOR -->
-            <td class="fixed-width">
-              <!-- numeric: lower -->
-              <form *ngIf="highlightDefinitionDatatype === 'numeric'">
-                <div class="form-group">
-                  <label for="numericLower">{{'SIDEBAR_EDIT_INSPECT_RANGE_LOWER' | translate}}</label>
-                  <input [(ngModel)]="highlightDefinition.rangeLower" class="form-control" id="numericLower" name="numericLower" placeholder="0"
-                         type="number">
-                </div>
-              </form>
-
-              <!-- numeric: upper -->
-              <form *ngIf="highlightDefinitionDatatype === 'numeric'">
-                <div class="form-group">
-                  <label for="numericUpper">{{'SIDEBAR_EDIT_INSPECT_RANGE_UPPER' | translate}}</label>
-                  <input [(ngModel)]="highlightDefinition.rangeUpper" class="form-control" id="numericUpper" name="numericUpper" placeholder="0"
-                         type="number">
-                </div>
-              </form>
-
-              <!-- text -->
-              <form *ngIf="highlightDefinitionDatatype === 'text'">
-                <div class="form-group">
-                  <label for="nonNumeric">{{'SIDEBAR_EDIT_INSPECT_SAME_LABEL' | translate}}</label>
-                  <input [(ngModel)]="highlightDefinition.sameAs" class="form-control" id="nonNumeric" name="nonNumeric"
-                         placeholder="{{'SIDEBAR_EDIT_INSPECT_SAME_PLACEHOLDER' | translate}}"
-                         type="text">
-                </div>
-              </form>
-            </td>
-
-            <!-- SUBMIT -->
-            <td>
-              <button (click)="addHighlightDefinitionToList()" [disabled]="!highlightDefinition.sameAs && (highlightDefinition.rangeUpper === null || highlightDefinition.rangeLower === null)"
-                      class="btn btn-outline-success">
-                <fa-icon [icon]="faCheck"></fa-icon>
-              </button>
-            </td>
-
-          </tr>
-        </table>
-      </div>
-
-    </div>
-
-    <!-- Edit: Highlight color -->
+    <!-- Edit: Setting highlight colors and duration -->
     <div aria-labelledby="editsNavHighlights" class="tab-pane fade" id="editsNavHighlightsContent"
          role="tabpanel">
 
@@ -641,7 +415,8 @@
       </div>
       <div class="form-row">
         <label for="highlightDuration">{{'SIDEBAR_EDIT_LABEL_DURATION' | translate}}</label>
-        <input (change)="setHighlightColorAndDuration()" [(ngModel)]="highlightDuration" class="form-control mb-2" id="highlightDuration"
+        <input (change)="setHighlightColorAndDuration()" [(ngModel)]="highlightDuration" class="form-control mb-2"
+               id="highlightDuration"
                min="0"
                name="highlightDuration"
                placeholder="2000"

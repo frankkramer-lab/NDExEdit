@@ -12,4 +12,5 @@ export interface NeLayout {
    * Sidebar view
    */
   sidebar: NeLayoutElement;
+
 }

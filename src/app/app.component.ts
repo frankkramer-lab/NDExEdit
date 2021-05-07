@@ -47,7 +47,9 @@ export class AppComponent {
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faArrowLeft = faArrowLeft;
-
+  /**
+   * Selected language
+   */
   browserLang;
 
   /**
@@ -83,7 +85,8 @@ export class AppComponent {
   ) {
 
     this.initializeTranslation();
-    this.initDemoFromNDEx('5d97a04a-6fab-11ea-bfdc-0ac135e8bacf');
+    // this.initDemoFromNDEx('5d97a04a-6fab-11ea-bfdc-0ac135e8bacf');
+    this.initDemoFromNDEx('296dd114-d392-11ea-8772-0ac135e8bacf'); // bool mapping
   }
 
   /**

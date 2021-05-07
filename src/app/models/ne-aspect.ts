@@ -15,6 +15,9 @@ export interface NeAspect {
    */
   values: string[];
 
+  /**
+   * List of numeric values needed, if the datatype of this aspect is double or int
+   */
   numericValues?: number[];
 
   /**

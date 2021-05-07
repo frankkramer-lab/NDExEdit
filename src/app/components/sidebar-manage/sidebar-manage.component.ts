@@ -13,6 +13,7 @@ import {DataService} from '../../services/data.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {UtilityService} from '../../services/utility.service';
 import {ParseService} from '../../services/parse.service';
+import {LayoutService} from '../../services/layout.service';
 
 @Component({
   selector: 'app-sidebar-manage',
@@ -121,10 +122,7 @@ export class SidebarManageComponent {
    * Current file extension
    */
   invalidExtension: string;
-  /**
-   * Tooltip for copying a UUID to clipboard
-   */
-  copyToClipboardTooltip = 'SIDEBAR_MANAGE_TT_CLIPBOARD';
+
   /**
    * Factor to display bytes as megabytes
    *
@@ -147,11 +145,20 @@ export class SidebarManageComponent {
    */
   private readonly ndexPublicApiHost = 'http://public.ndexbio.org/v2/';
 
+  /**
+   *
+   * @param dataService Service responsible for data access
+   * @param http Needed to load data from ndex
+   * @param utilityService Service responsible for shared code
+   * @param parseService Service responsible for parsing a network
+   * @param layoutService Service responsible for tooltip directions
+   */
   constructor(
     public dataService: DataService,
     private http: HttpClient,
     private utilityService: UtilityService,
     private parseService: ParseService,
+    public layoutService: LayoutService
   ) {
   }
 
@@ -364,10 +371,6 @@ export class SidebarManageComponent {
     const network = this.dataService.networksParsed.find(x => x.id === networkId);
     if (network.networkInformation.uuid) {
       navigator.clipboard.writeText(network.networkInformation.uuid);
-      this.copyToClipboardTooltip = 'SIDEBAR_MANAGE_CLIPBOARD_SUCCESSFUL';
-      window.setTimeout(() => {
-        this.copyToClipboardTooltip = 'SIDEBAR_MANAGE_TT_CLIPBOARD';
-      }, 5000);
     }
   }
 }

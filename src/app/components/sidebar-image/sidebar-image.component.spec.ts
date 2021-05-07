@@ -27,6 +27,7 @@ class MockDataService {
   };
 
   getSelectedNetwork = jasmine.createSpy('getSelectedNetwork').and.returnValue(this.selectedNetwork);
+  getBackgroundColor = jasmine.createSpy('getBackgroundColor').and.returnValue('#ffffff');
 }
 
 class MockGraphService {
@@ -69,7 +70,7 @@ describe('SidebarImageComponent', () => {
     fixture.detectChanges();
   });
 
-  fit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });
