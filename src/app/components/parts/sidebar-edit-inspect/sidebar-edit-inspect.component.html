@@ -35,7 +35,7 @@
 
           <td>
 
-            <button (click)="markForDeletion(defIndex)" *ngIf="!def.markedForDeletion"
+            <button (click)="def.markedForDeletion = true" *ngIf="!def.markedForDeletion"
                     class="btn btn-outline-danger">
               <fa-icon [icon]="faTrash"></fa-icon>
             </button>
@@ -153,6 +153,28 @@
               <input [(ngModel)]="highlightDefinition.sameAs" class="form-control" id="nonNumeric" name="nonNumeric"
                      placeholder="{{'SIDEBAR_EDIT_INSPECT_SAME_PLACEHOLDER' | translate}}"
                      type="text">
+            </div>
+          </form>
+
+          <!-- boolean -->
+          <form *ngIf="highlightDefinitionDatatype === 'boolean'">
+            <div class="form-group">
+
+              <div class="btn-group-vertical btn-group-toggle"
+                   data-toggle="buttons">
+
+                <label class="btn btn-outline-secondary">
+                  <input (click)="this.highlightDefinition.sameAs = 'true'" autocomplete="off" id="boolTruthy" type="radio">
+                  true
+                </label>
+
+                <label class="btn btn-outline-secondary">
+                  <input (click)="this.highlightDefinition.sameAs = 'false'" autocomplete="off" id="boolFalsy" type="radio">
+                  false
+                </label>
+
+              </div>
+
             </div>
           </form>
         </td>

@@ -231,7 +231,7 @@
                          [includeHeadline]="false"
                          [widthPercent]="100"></app-chart>
 
-              <div *ngIf="hasGradient(nc)" class="mt-2"
+              <div *ngIf="hasGradient(nc)" class="mt-2 hoverlinetest"
                    [style.background]="getGradient(nc)"
                    [style.height.px]="200"
                    [style.width.%]="100">
@@ -353,10 +353,17 @@
                          [includeHeadline]="false"
                          [widthPercent]="100"></app-chart>
 
-              <div *ngIf="hasGradient(ec)" class="mt-2"
+              <div *ngIf="hasGradient(ec)" class="mt-2 threshold-hover"
                    [style.background]="getGradient(ec)"
                    [style.height.px]="200"
                    [style.width.%]="100">
+                <ng-container *ngFor="let gradient of ec.colorGradient">
+                  <div *ngIf="gradient.offset !== '-1' && gradient.offset !== '101'"
+                       class="threshold"
+                       [ngStyle]="{'padding-left.%': gradient.offsetInterval}">{{gradient.offsetInterval}}
+                  </div>
+                </ng-container>
+
               </div>
 
               <a role="button" class="btn btn-block btn-sm btn-outline-secondary m-1"

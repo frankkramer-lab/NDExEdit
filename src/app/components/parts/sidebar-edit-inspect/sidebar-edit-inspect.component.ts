@@ -38,8 +38,12 @@ export class SidebarEditInspectComponent implements OnInit {
    */
   highlightListDefinition: NeHighlightForm[] = [];
   /**
-   * 'numeric' or 'text', where 'numeric' indicates that a property should be selected based on min and max thresholds.
+   * 'numeric' or 'text' or 'boolean'.
+   *
+   * 'numeric' indicates that a property should be selected based on min and max thresholds.
    * 'text' indicates, that a discrete value for the chosen property is needed.
+   * 'boolean' allows only true or false as selection for sameAs values.
+   *
    * Integer based properties should be treated as numeric.
    */
   highlightDefinitionDatatype: string;
@@ -78,6 +82,8 @@ export class SidebarEditInspectComponent implements OnInit {
       this.highlightDefinitionDatatype = 'numeric';
       this.highlightDefinition.rangeLower = property.min;
       this.highlightDefinition.rangeUpper = property.max;
+    } else if (property.datatype === 'boolean') {
+      this.highlightDefinitionDatatype = 'boolean';
     } else {
       this.highlightDefinitionDatatype = 'text';
     }
@@ -116,23 +122,6 @@ export class SidebarEditInspectComponent implements OnInit {
       rangeUpper: null
     };
     this.highlightDefinitionDatatype = null;
-  }
-
-
-  /**
-   * Marks an inspection from the list as to be deleted
-   * @param index Points to the specified element
-   */
-  markForDeletion(index: number): void {
-    this.highlightListDefinition[index].markedForDeletion = true;
-  }
-
-  /**
-   * Removes the mark to be deleted from the inspection
-   * @param index Points to the specified element
-   */
-  unmarkForDeletion(index: number): void {
-    this.highlightListDefinition[index].markedForDeletion = false;
   }
 
   /**

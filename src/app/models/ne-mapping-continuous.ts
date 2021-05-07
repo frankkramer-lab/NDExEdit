@@ -40,6 +40,7 @@ export interface NeMappingContinuous {
    * List of the thresholds
    */
   thresholds: number[] | string[];
+
   /**
    * Chart data visualising the mapping
    */

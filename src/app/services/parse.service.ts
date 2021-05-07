@@ -133,6 +133,7 @@ export class ParseService {
     discreteMapping.values = tmpV;
     discreteMapping.useValue = Array(tmpV.length).fill(true);
 
+    console.log(discreteMapping);
     return discreteMapping;
   }
 
@@ -253,13 +254,17 @@ export class ParseService {
     colorGradientCollection.push({
       color: lowers[0],
       offset: '-1',
+      numericOffset: null,
+      offsetInterval: null,
       numericThreshold: '-1'
     });
     for (const th of thresholds) {
       const offset = ((Number(th) - Number(thresholds[0])) * 100 / range).toFixed(0);
       const gradient: NeColorGradient = {
         color: equals[thresholds.indexOf(th)],
-        offset: String(offset).concat('%'),
+        offset: offset.concat('%'),
+        numericOffset: Number(offset),
+        offsetInterval: null,
         numericThreshold: th
       };
       colorGradientCollection.push(gradient);
@@ -267,8 +272,20 @@ export class ParseService {
     colorGradientCollection.push({
       color: greaters[greaters.length - 1],
       offset: '101',
+      numericOffset: null,
+      offsetInterval: null,
       numericThreshold: '101'
     });
+
+    for (let i = 1; i < colorGradientCollection.length - 1; i++) {
+      if (colorGradientCollection[i].offset !== '-1' && colorGradientCollection[i].offset !== '101') {
+        // if (colorGradientCollection[i].offset === '100%') {
+        //   colorGradientCollection[i].offsetInterval = String(colorGradientCollection[i].numericOffset - colorGradientCollection[i - 1].numericOffset - 1);
+        // }
+        colorGradientCollection[i].offsetInterval = String(colorGradientCollection[i].numericOffset - colorGradientCollection[i - 1].numericOffset);
+      }
+
+    }
 
     return colorGradientCollection;
   }
@@ -505,7 +522,7 @@ export class ParseService {
 
     for (const attr of attributes) {
       let found = false;
-      const isNumeric = (attr.d === 'double' || attr.d === 'integer');
+      const isNumeric = (attr.d === 'double' || attr.d === 'integer' || attr.d === 'long');
 
       for (const akv of akvs) {
         if (akv.name === attr.n) {

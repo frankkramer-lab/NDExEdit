@@ -129,8 +129,14 @@ export class GraphService {
       prefix = 'edge[';
     }
 
-    const definition = prefix + this.parseService.attributeNameMap[property.name.toLowerCase()] + ' = "' + sameAs + '"]';
-
+    let definition;
+    if (property.datatype === 'boolean' && sameAs === 'true') {
+      definition = prefix + '?' + this.parseService.attributeNameMap[property.name.toLowerCase()] + ']';
+    } else if (property.datatype === 'boolean' && sameAs === 'false') {
+      definition = prefix + '!' + this.parseService.attributeNameMap[property.name.toLowerCase()] + ']';
+    } else {
+      definition = prefix + this.parseService.attributeNameMap[property.name.toLowerCase()] + ' = "' + sameAs + '"]';
+    }
     const selection = this.dataService.selectedNetwork.core.elements(definition);
     selection.flashClass('custom_highlight_color', this.flashDuration);
   }

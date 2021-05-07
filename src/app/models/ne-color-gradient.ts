@@ -11,6 +11,15 @@ export interface NeColorGradient {
    * Offset in percent to display the threshold respectively, where 0% is the left border and 100% is the right border
    */
   offset: string;
+  /**
+   * Only contains numeric values for calculating the offsetInterval
+   */
+  numericOffset: number;
+
+  /**
+   * Offset to previous threshold, translates to padding-left
+   */
+  offsetInterval: string;
 
   /**
    * Numeric threshold needed for calculation of the offset in percent
