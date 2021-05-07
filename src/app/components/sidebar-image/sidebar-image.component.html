@@ -6,7 +6,8 @@
        class="mb-1"
        data-toggle="tooltip"
        ngbTooltip="{{'NAV_MANAGE' | translate}}"
-       placement="right" role="button"
+       placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+       role="button"
        type="button">
       <fa-icon [icon]="faArrowLeft" class="mr-1"></fa-icon>
     </a>

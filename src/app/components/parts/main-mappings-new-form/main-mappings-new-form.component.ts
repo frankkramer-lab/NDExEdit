@@ -515,6 +515,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * @param key Name of the value for which the value is to be determined.
    */
   getIndexByKey(key: string): number {
+
     let keyIndex = this.mappingDiscrete.keys.indexOf(key);
     if (keyIndex === -1) {
 
