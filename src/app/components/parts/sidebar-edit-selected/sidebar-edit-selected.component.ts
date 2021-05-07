@@ -1,9 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, DoCheck, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {GraphService} from '../../../services/graph.service';
 import {LayoutService} from '../../../services/layout.service';
 import {faChevronDown} from '@fortawesome/free-solid-svg-icons';
 import {NeEdge} from '../../../models/ne-edge';
 import {NeNode} from '../../../models/ne-node';
+import {NeElement} from '../../../models/ne-element';
 
 @Component({
   selector: 'app-sidebar-edit-selected',
@@ -29,6 +30,15 @@ export class SidebarEditSelectedComponent implements OnInit {
    * List of selected elements
    */
   @Input() selectedElements: NeNode[] | NeEdge[];
+  /**
+   * Contains properties relevant for all selected elements
+   */
+  @Input() relevantProperties: string[];
+
+  /**
+   * True, if component is collapsed
+   */
+  isCollapsedSelection = false;
 
   /**
    *

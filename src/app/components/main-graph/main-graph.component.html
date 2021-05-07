@@ -17,15 +17,6 @@
       <img src="assets/unicorn.png"
            [ngStyle]="{'width.px': 60}">
     </a>
-
-    <a [routerLink]="['', { outlets: {primary: ['info'], sidebar: ['manage']} }]"
-       class="mt-2 btn btn-outline-primary"
-       data-toggle="tooltip"
-       ngbTooltip="{{'MAIN_GRAPH_TT_HOME' | translate}}"
-       placement="{{layoutService.layout.main.tooltipDirection}}"
-       role="button">
-      <fa-icon [icon]="faHome"></fa-icon>
-    </a>
   </span>
 
 </h1>

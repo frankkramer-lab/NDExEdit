@@ -123,6 +123,7 @@
   "SIDEBAR_EDIT_NAV_TT_MAPPINGS": "Übersicht über Mappings",
   "SIDEBAR_EDIT_NAV_TT_INSPECT": "Netzwerk untersuchen",
   "SIDEBAR_EDIT_NAV_TT_SETTINGS": "Markierungseinstellungen",
+  "SIDEBAR_EDIT_BTN_LABEL_DISPLAY_CONTINUOUS_DETAILS": "Details zum Mapping",
   "MAIN_MAPPINGS_TH_COL": "Spalte mit Daten",
   "MAIN_MAPPINGS_TH_STYLE": "Zugewiesener Style",
   "MAIN_MAPPINGS_GRAPH": "Zurück zum Graph",

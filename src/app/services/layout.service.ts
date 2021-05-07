@@ -17,12 +17,12 @@ export class LayoutService {
   layout: NeLayout = {
     main: {
       position: 'right',
-      width: 65,
+      width: 45,
       tooltipDirection: 'left'
     },
     sidebar: {
       position: 'left',
-      width: 30,
+      width: 50,
       tooltipDirection: 'right'
     }
   };
@@ -74,8 +74,8 @@ export class LayoutService {
    * sidebar has a default of 30.
    */
   resetLayout(): void {
-    this.layout.main.width = 65;
-    this.layout.sidebar.width = 30;
+    this.layout.main.width = 45;
+    this.layout.sidebar.width = 50;
     this.emitLayout();
   }
 

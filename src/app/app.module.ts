@@ -12,7 +12,7 @@ import {SidebarCompareComponent} from './components/sidebar-compare/sidebar-comp
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCollapse, NgbCollapseModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
 import {ChartsModule} from 'ng2-charts';
 import {MainMappingsComponent} from './components/main-mappings/main-mappings.component';
@@ -74,9 +74,9 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
         deps: [HttpClient]
       }
     }),
+    NgbModule,
     AppRoutingModule,
     FontAwesomeModule,
-    NgbModule,
     ChartsModule
   ],
   providers: [

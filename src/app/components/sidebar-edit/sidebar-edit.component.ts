@@ -7,13 +7,12 @@ import {
   faArrowLeft,
   faCheck,
   faChevronDown,
+  faChevronLeft,
   faClone,
   faCogs,
   faLightbulb,
-  faMagic,
   faPalette,
-  faTimes,
-  faTrash
+  faRoute
 } from '@fortawesome/free-solid-svg-icons';
 import {ChartDataSets} from 'chart.js';
 import {Label} from 'ng2-charts';
@@ -24,7 +23,6 @@ import {NeChart} from '../../models/ne-chart';
 import {NeChartType} from '../../models/ne-chart-type';
 import {NeMappingDiscrete} from '../../models/ne-mapping-discrete';
 import {NeMappingContinuous} from '../../models/ne-mapping-continuous';
-import {NeAspect} from '../../models/ne-aspect';
 import {UtilityService} from '../../services/utility.service';
 import {LayoutService} from '../../services/layout.service';
 
@@ -43,6 +41,11 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faChevronDown = faChevronDown;
+  /**
+   * Icon: faRoute
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faRoute = faRoute;
   /**
    * Icon: faCogs
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
@@ -144,6 +147,22 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
     line: true,
     bar: false
   };
+  /**
+   * True, if description is collapsed
+   */
+  isCollapsedDescription = false;
+  /**
+   * True, if node mappings are collapsed
+   */
+  isCollapsedMappingsNodes = false;
+  /**
+   * True, if edge mappings are collapsed
+   */
+  isCollapsedMappingsEdges = false;
+  /**
+   * True, if gradient or chart is collapsed
+   */
+  isCollapsedVisualAid = true;
   /**
    * Ensures that only a graph is rendered if the id is specified within the URL
    * @private
@@ -270,7 +289,7 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
    * @param index type of mapping
    */
   displayMapping(chart: any = null, colorGradient: NeColorGradient[] = [], index: string): void {
-    this.index = index;
+    // this.index = index;
     this.mapping = this.dataService.findMappingById(index);
 
     if (chart !== null) {
@@ -290,43 +309,105 @@ export class SidebarEditComponent implements AfterViewInit, OnDestroy {
 
     } else if (colorGradient.length > 0) {
 
-      let color = 'linear-gradient(90deg, ';
-      const tmp = [];
-
-      let foundLowest = false;
-      let foundHighest = false;
-
-      for (const gradient of colorGradient) {
-        if (gradient.offset === '0%') {
-          foundLowest = true;
-        }
-        if (gradient.offset === '100%') {
-          foundHighest = true;
-        }
-
-        if (gradient.offset !== '-1' && gradient.offset !== '101') {
-          tmp.push(gradient.color.concat(' '.concat(gradient.offset)));
-        }
-      }
-
-      if (!foundLowest) {
-        const lowestFallback = colorGradient.find(x => x.offset === '-1');
-        tmp.splice(0, 0, lowestFallback.color.concat(' '.concat('0%')));
-      }
-
-      if (!foundHighest) {
-        const highestFallback = colorGradient.find(x => x.offset === '101');
-        tmp.push(highestFallback.color.concat(' '.concat('100%')));
-      }
-
-      color = color.concat(tmp.join(', '));
-      color = color.concat(')');
-
-      this.gradientBackground = colorGradient[0].color + ' ' + color;
+      // let color = 'linear-gradient(90deg, ';
+      // const tmp = [];
+      //
+      // let foundLowest = false;
+      // let foundHighest = false;
+      //
+      // for (const gradient of colorGradient) {
+      //   if (gradient.offset === '0%') {
+      //     foundLowest = true;
+      //   }
+      //   if (gradient.offset === '100%') {
+      //     foundHighest = true;
+      //   }
+      //
+      //   if (gradient.offset !== '-1' && gradient.offset !== '101') {
+      //     tmp.push(gradient.color.concat(' '.concat(gradient.offset)));
+      //   }
+      // }
+      //
+      // if (!foundLowest) {
+      //   const lowestFallback = colorGradient.find(x => x.offset === '-1');
+      //   tmp.splice(0, 0, lowestFallback.color.concat(' '.concat('0%')));
+      // }
+      //
+      // if (!foundHighest) {
+      //   const highestFallback = colorGradient.find(x => x.offset === '101');
+      //   tmp.push(highestFallback.color.concat(' '.concat('100%')));
+      // }
+      //
+      // color = color.concat(tmp.join(', '));
+      // color = color.concat(')');
+      //
+      // this.gradientBackground = colorGradient[0].color + ' ' + color;
       this.showComparison = false;
       this.showChart = false;
       this.showColorGradient = true;
     }
+  }
+
+  setVisualAid(mapping: NeMappingContinuous): void {
+    if (mapping.chart !== null) {
+      this.lineChartObject = mapping.chart;
+      this.gradientBackground = '';
+    } else {
+      this.lineChartObject = null;
+      this.gradientBackground = this.buildColorGradient(mapping.colorGradient);
+    }
+  }
+
+  buildColorGradient(gradientObject: NeColorGradient[]): string {
+    let color = 'linear-gradient(90deg, ';
+    const tmp = [];
+
+    let foundLowest = false;
+    let foundHighest = false;
+
+    for (const gradient of gradientObject) {
+      if (gradient.offset === '0%') {
+        foundLowest = true;
+      }
+      if (gradient.offset === '100%') {
+        foundHighest = true;
+      }
+
+      if (gradient.offset !== '-1' && gradient.offset !== '101') {
+        tmp.push(gradient.color.concat(' '.concat(gradient.offset)));
+      }
+    }
+
+    if (!foundLowest) {
+      const lowestFallback = gradientObject.find(x => x.offset === '-1');
+      tmp.splice(0, 0, lowestFallback.color.concat(' '.concat('0%')));
+    }
+
+    if (!foundHighest) {
+      const highestFallback = gradientObject.find(x => x.offset === '101');
+      tmp.push(highestFallback.color.concat(' '.concat('100%')));
+    }
+
+    color = color.concat(tmp.join(', '));
+    color = color.concat(')');
+
+    return gradientObject[0].color + ' ' + color;
+  }
+
+  getLineChartObject(mapping: NeMappingContinuous): NeChart {
+    return mapping.chart ?? null;
+  }
+
+  hasChart(mapping: NeMappingContinuous): boolean {
+    return mapping.chart !== null;
+  }
+
+  getGradient(mapping: NeMappingContinuous): string {
+    return this.buildColorGradient(mapping.colorGradient);
+  }
+
+  hasGradient(mapping: NeMappingContinuous): boolean {
+    return mapping.colorGradient !== null;
   }
 
   /**

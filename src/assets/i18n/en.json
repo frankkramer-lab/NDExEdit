@@ -123,6 +123,7 @@
   "SIDEBAR_EDIT_NAV_TT_MAPPINGS": "Mappings overview",
   "SIDEBAR_EDIT_NAV_TT_INSPECT": "Inspect network data",
   "SIDEBAR_EDIT_NAV_TT_SETTINGS": "Highlighting settings",
+  "SIDEBAR_EDIT_BTN_LABEL_DISPLAY_CONTINUOUS_DETAILS": "Visit details",
   "MAIN_MAPPINGS_TH_COL": "Data column",
   "MAIN_MAPPINGS_TH_STYLE": "Applied style",
   "MAIN_MAPPINGS_GRAPH": "Return to graph",

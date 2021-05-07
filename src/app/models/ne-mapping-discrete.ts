@@ -12,7 +12,9 @@ export interface NeMappingDiscrete {
    */
   styleProperty: string;
   /**
-   * Type of data which is mapped
+   * Type of data which is mapped, should be string (default) or boolean
+   * to be a valid discrete mapping.
+   * List of available types: {@link https://home.ndexbio.org/data-model/#data_types}
    */
   type: string;
   /**

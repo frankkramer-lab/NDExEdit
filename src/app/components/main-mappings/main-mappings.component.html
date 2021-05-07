@@ -1,31 +1,16 @@
 <ng-container *ngIf="dataService.selectedNetwork">
 
   <h1>
-    <div class="row">
+    <a [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]"
+       data-toggle="tooltip"
+       ngbTooltip="{{'MAIN_MAPPINGS_GRAPH' | translate}}"
+       placement="{{layoutService.layout.main.tooltipDirection}}"
+       role="button"
+       container="body">
+      <fa-icon [icon]="faArrowLeft"></fa-icon>
+    </a>
+    {{dataService.selectedNetwork.networkInformation.name}}
 
-      <div class="col-11">
-        <a [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id]} }]"
-           data-toggle="tooltip"
-           ngbTooltip="{{'MAIN_MAPPINGS_GRAPH' | translate}}"
-           placement="{{layoutService.layout.main.tooltipDirection}}"
-           role="button"
-           container="body">
-          <fa-icon [icon]="faArrowLeft"></fa-icon>
-        </a>
-        {{dataService.selectedNetwork.networkInformation.name}}
-      </div>
-
-      <ng-container class="col-1 float-right">
-        <a [routerLink]="['', { outlets: {primary: ['info'], sidebar: ['manage']} }]"
-           class="mt-2 float-right btn btn-outline-primary"
-           data-toggle="tooltip"
-           ngbTooltip="{{'MAIN_GRAPH_TT_HOME' | translate}}"
-           placement="{{layoutService.layout.main.tooltipDirection}}"
-           role="button">
-          <fa-icon [icon]="faHome"></fa-icon>
-        </a>
-      </ng-container>
-    </div>
   </h1>
 
 

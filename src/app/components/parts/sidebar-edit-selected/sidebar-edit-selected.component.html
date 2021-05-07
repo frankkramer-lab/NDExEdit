@@ -1,26 +1,23 @@
 <!-- selected nodes or edges -->
-<div *ngIf="selectedElements.length > 0">
+<div *ngIf="type && selectedElements.length > 0">
 
-  <!-- HEADLINE -->
-  <h5>
-    {{'SIDEBAR_EDIT_COMPARISON_' + type | translate}}
-    <a [attr.aria-controls]="type"
-       aria-expanded="true"
-       class="float-right"
-       data-target="#{{type}}"
-       data-toggle="collapse"
-       href="#"
-       ngbTooltip="{{'SIDEBAR_COLLAPSE' | translate}}"
-       placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-       container="body"
-       role="button"
-       type="button">
-      <fa-icon [icon]="faChevronDown"></fa-icon>
-    </a>
-  </h5>
+  <div class="row">
+    <div class="col">
+      <h5>{{'SIDEBAR_EDIT_COMPARISON_' + type | translate}}</h5>
+    </div>
+    <div class="col">
+      <span class="float-right"
+            (click)="collapseSelection.toggle()"
+            [attr.aria-expanded]="!isCollapsedSelection"
+            aria-controls="collapseExample">
+        <fa-icon [icon]="faChevronDown"></fa-icon>
+      </span>
+    </div>
+  </div>
+
 
   <!-- TABLE -->
-  <div class="show" id="{{type}}">
+  <div #collapseSelection="ngbCollapse" [ngbCollapse]="isCollapsedSelection">
     <div class="table-responsive">
 
       <table class="table">
@@ -42,17 +39,19 @@
 
         <tbody>
         <tr>
-          <td *ngFor="let element of selectedElements; let elementIndex = index">
 
+          <td *ngFor="let element of selectedElements; let elementIndex = index">
             <table class="table table-borderless">
 
-              <tr *ngFor="let attribute of element|attributesByElement">
-                <td *ngIf="elementIndex === 0" colspan="3"><b>{{attribute}}</b></td>
-                <td class="w-100 text-right">{{element[attribute]}}</td>
+              <tr *ngFor="let prop of relevantProperties">
+
+                <td *ngIf="elementIndex === 0" colspan="3"><b>{{prop}}</b></td>
+                <td class="w-100 text-right" *ngIf="element[prop] !== undefined">{{element[prop]}}</td>
+                <td class="w-100 text-right" *ngIf="element[prop] === undefined">&nbsp;</td>
+
               </tr>
 
             </table>
-
           </td>
         </tr>
         </tbody>
@@ -60,6 +59,5 @@
       </table>
     </div>
   </div>
-
 </div>
 

@@ -205,7 +205,7 @@ export class UtilityService {
    * @param aspects List of all available attributes
    */
   utilFilterForDiscrete(aspects: NeAspect[]): NeAspect[] {
-    return aspects.filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
+    return aspects.filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'boolean' || a.datatype === 'string' || a.datatype === null);
   }
 
   /**
@@ -215,10 +215,9 @@ export class UtilityService {
    */
   utilFilterForContinuous(aspects: NeAspect[], strict: boolean = false): NeAspect[] {
     if (strict) {
-      return aspects.filter(a => a.datatype && (a.datatype === 'float' || a.datatype === 'double'));
+      return aspects.filter(a => a.datatype && (a.datatype === 'long' || a.datatype === 'double'));
     }
-    return aspects.filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'float' || a.datatype === 'double'));
-
+    return aspects.filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'long' || a.datatype === 'double'));
   }
 
   /**

@@ -9,6 +9,7 @@ import {UtilityService} from './utility.service';
 import {DataService} from './data.service';
 import {ParseService} from './parse.service';
 import {NeAspect} from '../models/ne-aspect';
+import {NeElement} from '../models/ne-element';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,9 @@ export class GraphService {
    */
   selectedElements: NeSelection = {
     nodes: [],
-    edges: []
+    nodeProperties: [],
+    edges: [],
+    edgeProperties: []
   };
 
   /**
@@ -207,6 +210,21 @@ export class GraphService {
         }
         break;
     }
+
+    this.selectedElements.nodeProperties = this.gatherPropertiesForSelection(this.selectedElements.nodes);
+    this.selectedElements.edgeProperties = this.gatherPropertiesForSelection(this.selectedElements.edges);
+  }
+
+  gatherPropertiesForSelection(elements: NeElement[]): string[] {
+    const properties: string[] = [];
+    for (const e of elements) {
+      for (const key of Object.keys(e)) {
+        if (!properties.includes(key)) {
+          properties.push(key);
+        }
+      }
+    }
+    return properties;
   }
 
   /**

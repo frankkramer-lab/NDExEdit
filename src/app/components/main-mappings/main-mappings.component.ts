@@ -236,9 +236,9 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
     }
 
     if (typeHint.nc || typeHint.ec) {
-      return baseList.filter(a => a.datatype === 'double' || a.datatype === 'float' || a.datatype === 'integer');
+      return this.utilityService.utilFilterForContinuous(baseList);
     } else if (typeHint.nd || typeHint.ed) {
-      return baseList.filter(a => a.datatype === 'string' || a.datatype === 'integer');
+      return this.utilityService.utilFilterForDiscrete(baseList);
     } else {
       return baseList; // assuming all attributes are valid for a passthrough mapping
     }
@@ -255,7 +255,6 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
     NeMappingPassthrough[] {
     const typeHint: NeMappingsType = this.utilityService.utilGetTypeHintByString(s);
     const availableMappings = this.dataService.getSelectedNetwork().mappings;
-
     if (typeHint.nd) {
       return availableMappings.nodesDiscrete;
     } else if (typeHint.nc) {

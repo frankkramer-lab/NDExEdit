@@ -1,14 +1,6 @@
 <ng-container *ngIf="dataService.selectedNetwork">
   <h1>
     {{'MAIN_STATS_TITLE' | translate}}
-    <a [routerLink]="['', { outlets: {primary: ['info'], sidebar: ['manage']} }]"
-       class="mt-2 float-right btn btn-outline-primary"
-       data-toggle="tooltip"
-       ngbTooltip="{{'MAIN_GRAPH_TT_HOME' | translate}}"
-       placement="{{layoutService.layout.main.tooltipDirection}}"
-       role="button">
-      <fa-icon [icon]="faHome"></fa-icon>
-    </a>
   </h1>
 
   <hr>
@@ -25,7 +17,8 @@
         class="btn btn-block btn-outline-success mt-2 mb-2"
         data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_EDIT' | translate}}"
         placement="{{layoutService.layout.main.tooltipDirection}}"
-        role="button">
+        role="button"
+        container="body">
         <fa-icon [icon]="faPaintBrush"></fa-icon>&nbsp;{{'MAIN_STATS_BTN_RENDER' | translate}}
       </a>
     </div>
