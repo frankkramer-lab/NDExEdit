@@ -133,10 +133,11 @@ export class GraphService {
     if (property.datatype === 'boolean' && sameAs === 'true') {
       definition = prefix + '?' + this.parseService.attributeNameMap[property.name.toLowerCase()] + ']';
     } else if (property.datatype === 'boolean' && sameAs === 'false') {
-      definition = prefix + '!' + this.parseService.attributeNameMap[property.name.toLowerCase()] + ']';
+      definition = prefix + this.parseService.attributeNameMap[property.name.toLowerCase()] + '][!' + this.parseService.attributeNameMap[property.name.toLowerCase()] + ']';
     } else {
       definition = prefix + this.parseService.attributeNameMap[property.name.toLowerCase()] + ' = "' + sameAs + '"]';
     }
+
     const selection = this.dataService.selectedNetwork.core.elements(definition);
     selection.flashClass('custom_highlight_color', this.flashDuration);
   }

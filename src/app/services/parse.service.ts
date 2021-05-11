@@ -133,7 +133,6 @@ export class ParseService {
     discreteMapping.values = tmpV;
     discreteMapping.useValue = Array(tmpV.length).fill(true);
 
-    console.log(discreteMapping);
     return discreteMapping;
   }
 

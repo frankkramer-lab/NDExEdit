@@ -87,7 +87,8 @@ export class AppComponent {
     this.initializeTranslation();
     // this.initDemoFromNDEx('5d97a04a-6fab-11ea-bfdc-0ac135e8bacf');
     // this.initDemoFromNDEx('296dd114-d392-11ea-8772-0ac135e8bacf'); // bool mapping
-    this.initDemoNetwork('refactor_no_nodes.cx');
+    this.initDemoNetwork('test.cx');
+    // this.initDemoNetwork('refactor_no_nodes.cx');
   }
 
   /**

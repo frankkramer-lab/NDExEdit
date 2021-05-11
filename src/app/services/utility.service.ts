@@ -58,17 +58,16 @@ export class UtilityService {
     if (selector === 'node' || selector === 'edge') {
       // selectors: default
       priority = 0;
-    } else if (selector.startsWith('.') && selector.match(/[0-9]/g) === null) {
-      // selectors: aspect specific
-      priority = 1;
-    } else if (selector.match(/[0-9]/g) !== null) {
+    } else if (selector.startsWith('#') || selector.startsWith('node[id = ') || selector.startsWith('edge[id = ')) {
       // selectors: element specific
       priority = 2;
+    } else if (selector.startsWith('node[') || selector.startsWith('edge[')) {
+      // selectors: aspect specific
+      priority = 1;
     } else if (selector.includes(':')) {
       // selectors: special
       priority = 3;
     }
-
     return priority;
   }
 

@@ -9977,7 +9977,7 @@
           },
           "NODE_FILL_COLOR": {
             "type": "DISCRETE",
-            "definition": "COL=human,T=boolean,K=0=true,V=0=#ff0000,K=1=false,V=1=#00ff00"
+            "definition": "COL=human,T=boolean,K=0='true',V=0=#ff0000,K=1='false',V=1=#00ff00"
           },
           "NODE_SIZE": {
             "type": "CONTINUOUS",
