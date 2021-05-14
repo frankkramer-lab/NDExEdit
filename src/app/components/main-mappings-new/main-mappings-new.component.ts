@@ -223,7 +223,6 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
 
     this.route.paramMap.subscribe(params => {
       this.isEdit = !params.get('propertyId');
-      console.log(this.isEdit ? 'EDIT' : 'NEW');
       this.initData(params);
     });
 

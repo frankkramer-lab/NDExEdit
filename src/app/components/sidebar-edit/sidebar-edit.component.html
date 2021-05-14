@@ -353,16 +353,10 @@
                          [includeHeadline]="false"
                          [widthPercent]="100"></app-chart>
 
-              <div *ngIf="hasGradient(ec)" class="mt-2 threshold-hover"
+              <div *ngIf="hasGradient(ec)" class="mt-2"
                    [style.background]="getGradient(ec)"
                    [style.height.px]="200"
                    [style.width.%]="100">
-                <ng-container *ngFor="let gradient of ec.colorGradient">
-                  <div *ngIf="gradient.offset !== '-1' && gradient.offset !== '101'"
-                       class="threshold"
-                       [ngStyle]="{'padding-left.%': gradient.offsetInterval}">{{gradient.offsetInterval}}
-                  </div>
-                </ng-container>
 
               </div>
 

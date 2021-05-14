@@ -253,8 +253,6 @@ export class ParseService {
     colorGradientCollection.push({
       color: lowers[0],
       offset: '-1',
-      numericOffset: null,
-      offsetInterval: null,
       numericThreshold: '-1'
     });
     for (const th of thresholds) {
@@ -262,8 +260,6 @@ export class ParseService {
       const gradient: NeColorGradient = {
         color: equals[thresholds.indexOf(th)],
         offset: offset.concat('%'),
-        numericOffset: Number(offset),
-        offsetInterval: null,
         numericThreshold: th
       };
       colorGradientCollection.push(gradient);
@@ -271,20 +267,8 @@ export class ParseService {
     colorGradientCollection.push({
       color: greaters[greaters.length - 1],
       offset: '101',
-      numericOffset: null,
-      offsetInterval: null,
       numericThreshold: '101'
     });
-
-    for (let i = 1; i < colorGradientCollection.length - 1; i++) {
-      if (colorGradientCollection[i].offset !== '-1' && colorGradientCollection[i].offset !== '101') {
-        // if (colorGradientCollection[i].offset === '100%') {
-        //   colorGradientCollection[i].offsetInterval = String(colorGradientCollection[i].numericOffset - colorGradientCollection[i - 1].numericOffset - 1);
-        // }
-        colorGradientCollection[i].offsetInterval = String(colorGradientCollection[i].numericOffset - colorGradientCollection[i - 1].numericOffset);
-      }
-
-    }
 
     return colorGradientCollection;
   }

@@ -11,7 +11,9 @@ import {NeSelection} from '../../../models/ne-selection';
 class MockGraphService {
   selectedElements: NeSelection = {
     nodes: [],
-    edges: []
+    nodeProperties: [],
+    edges: [],
+    edgeProperties: []
   };
 }
 

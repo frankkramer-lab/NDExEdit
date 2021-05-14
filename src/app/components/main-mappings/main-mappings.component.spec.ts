@@ -489,6 +489,8 @@ class MockUtilityService {
   utilGetTypeHintByString = jasmine.createSpy('utilGetTypeHintByString').and.returnValue({
     nd: true, nc: false, np: false, ed: false, ec: false, ep: false
   });
+  utilFilterForContinuous = jasmine.createSpy('utilFilterForContinuous').and.callThrough();
+  utilFilterForDiscrete = jasmine.createSpy('utilFilterForDiscrete').and.callThrough();
 }
 
 /**
