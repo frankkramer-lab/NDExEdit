@@ -58,17 +58,16 @@ export class UtilityService {
     if (selector === 'node' || selector === 'edge') {
       // selectors: default
       priority = 0;
-    } else if (selector.startsWith('.') && selector.match(/[0-9]/g) === null) {
-      // selectors: aspect specific
-      priority = 1;
-    } else if (selector.match(/[0-9]/g) !== null) {
+    } else if (selector.startsWith('#') || selector.startsWith('node[id = ') || selector.startsWith('edge[id = ')) {
       // selectors: element specific
       priority = 2;
+    } else if (selector.startsWith('node[') || selector.startsWith('edge[')) {
+      // selectors: aspect specific
+      priority = 1;
     } else if (selector.includes(':')) {
       // selectors: special
       priority = 3;
     }
-
     return priority;
   }
 
@@ -205,7 +204,7 @@ export class UtilityService {
    * @param aspects List of all available attributes
    */
   utilFilterForDiscrete(aspects: NeAspect[]): NeAspect[] {
-    return aspects.filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'string' || a.datatype === null);
+    return aspects.filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'boolean' || a.datatype === 'string' || a.datatype === null);
   }
 
   /**
@@ -215,10 +214,9 @@ export class UtilityService {
    */
   utilFilterForContinuous(aspects: NeAspect[], strict: boolean = false): NeAspect[] {
     if (strict) {
-      return aspects.filter(a => a.datatype && (a.datatype === 'float' || a.datatype === 'double'));
+      return aspects.filter(a => a.datatype && (a.datatype === 'long' || a.datatype === 'double'));
     }
-    return aspects.filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'float' || a.datatype === 'double'));
-
+    return aspects.filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'long' || a.datatype === 'double'));
   }
 
   /**

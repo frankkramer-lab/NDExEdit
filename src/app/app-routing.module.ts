@@ -9,6 +9,8 @@ import {SidebarCompareComponent} from './components/sidebar-compare/sidebar-comp
 import {MainMappingsComponent} from './components/main-mappings/main-mappings.component';
 import {MainMappingsNewComponent} from './components/main-mappings-new/main-mappings-new.component';
 import {SidebarImageComponent} from './components/sidebar-image/sidebar-image.component';
+import {NetworkGuard} from './guards/network.guard';
+import {MappingGuard} from './guards/mapping.guard';
 
 export const routes: Routes = [
   {
@@ -23,30 +25,32 @@ export const routes: Routes = [
   {
     path: 'graph/:id',
     component: MainGraphComponent,
+    canActivate: [NetworkGuard]
   },
   {
     path: 'stats/:id',
     component: MainStatsComponent,
+    canActivate: [NetworkGuard]
   },
   {
     path: 'mappings/:mapHint/:col',
     component: MainMappingsComponent,
+    canActivate: [MappingGuard]
   },
   {
     path: 'mappings/:mapId',
     component: MainMappingsComponent,
+    canActivate: [MappingGuard]
   },
   {
-    path: 'new/:map/:propertyId/:isEdit',
+    path: 'new/:map/:propertyId',
     component: MainMappingsNewComponent,
+    canActivate: [MappingGuard]
   },
   {
-    path: 'edit/:map/:propertyId/:isEdit',
+    path: 'edit/:map',
     component: MainMappingsNewComponent,
-  },
-  {
-    path: 'edit/:map/:isEdit',
-    component: MainMappingsNewComponent,
+    canActivate: [MappingGuard]
   },
   {
     path: 'manage',
@@ -56,17 +60,20 @@ export const routes: Routes = [
   {
     path: 'edit/:id',
     component: SidebarEditComponent,
-    outlet: 'sidebar'
+    outlet: 'sidebar',
+    canActivate: [NetworkGuard]
   },
   {
     path: 'compare/:id',
     component: SidebarCompareComponent,
-    outlet: 'sidebar'
+    outlet: 'sidebar',
+    canActivate: [NetworkGuard]
   },
   {
     path: 'image/:id',
     component: SidebarImageComponent,
-    outlet: 'sidebar'
+    outlet: 'sidebar',
+    canActivate: [NetworkGuard]
   },
   {
     path: '**',

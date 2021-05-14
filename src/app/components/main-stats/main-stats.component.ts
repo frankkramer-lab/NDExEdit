@@ -4,6 +4,7 @@ import {DataService} from '../../services/data.service';
 import {faExchangeAlt, faPaintBrush, faHome} from '@fortawesome/free-solid-svg-icons';
 import {UtilityService} from '../../services/utility.service';
 import {NeAspect} from '../../models/ne-aspect';
+import {LayoutService} from '../../services/layout.service';
 
 @Component({
   selector: 'app-main-stats',
@@ -37,12 +38,14 @@ export class MainStatsComponent {
    *
    * @param route Service to read URL
    * @param dataService Service to read and write globally accessible data
-   * @param utilityService Service reponsible for shared code
+   * @param utilityService Service responsible for shared code
+   * @param layoutService Service responsible for tooltip directions
    */
   constructor(
     public route: ActivatedRoute,
     public dataService: DataService,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    public layoutService: LayoutService
   ) {
     this.route.paramMap.subscribe(params => {
       const networkId = params.get('id');

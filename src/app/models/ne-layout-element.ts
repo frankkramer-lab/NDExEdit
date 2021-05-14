@@ -11,5 +11,8 @@ export interface NeLayoutElement {
    * Current with of this component, units are vw
    */
   width: number;
-
+  /**
+   * Direction of the tooltips within this component
+   */
+  tooltipDirection: string;
 }

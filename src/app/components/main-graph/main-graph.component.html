@@ -3,8 +3,11 @@
   <span class="mr-5">{{'MAIN_GRAPH_TITLE' | translate}}</span>
   <button (click)="graphService.fitGraph()"
           class="btn btn-outline-success"
-          data-toggle="tooltip" ngbTooltip="{{'MAIN_GRAPH_TT_FIT' | translate}}" placement="bottom"
-  >{{'MAIN_GRAPH_BTN_FIT' | translate}}</button>
+          data-toggle="tooltip"
+          ngbTooltip="{{'MAIN_GRAPH_TT_FIT' | translate}}"
+          placement="{{layoutService.layout.main.tooltipDirection}}">
+    {{'MAIN_GRAPH_BTN_FIT' | translate}}
+  </button>
 
   <span class="float-right">
     <a *ngIf="dataService.selectedNetwork.id === 0"
@@ -13,15 +16,6 @@
        class="mr-4 mb-1">
       <img src="assets/unicorn.png"
            [ngStyle]="{'width.px': 60}">
-    </a>
-
-    <a [routerLink]="['', { outlets: {primary: ['info'], sidebar: ['manage']} }]"
-       class="mt-2 btn btn-outline-primary"
-       data-toggle="tooltip"
-       ngbTooltip="{{'MAIN_GRAPH_TT_HOME' | translate}}"
-       placement="bottom"
-       role="button">
-      <fa-icon [icon]="faHome"></fa-icon>
     </a>
   </span>
 

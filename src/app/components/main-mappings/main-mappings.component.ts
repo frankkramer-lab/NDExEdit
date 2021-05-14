@@ -8,6 +8,7 @@ import {UtilityService} from '../../services/utility.service';
 import {NeMappingDiscrete} from '../../models/ne-mapping-discrete';
 import {NeMappingPassthrough} from '../../models/ne-mapping-passthrough';
 import {NeMappingContinuous} from '../../models/ne-mapping-continuous';
+import {LayoutService} from '../../services/layout.service';
 
 @Component({
   selector: 'app-main-mappings',
@@ -109,11 +110,13 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    * @param route Service to read URL
    * @param dataService Service to read and write to globally accessible data
    * @param utilityService Service used to access shared code
+   * @param layoutService Service responsible for tooltip directions
    */
   constructor(
     private route: ActivatedRoute,
     public dataService: DataService,
-    public utilityService: UtilityService
+    public utilityService: UtilityService,
+    public layoutService: LayoutService
   ) {
 
     this.route.paramMap.subscribe(params => {
@@ -233,9 +236,9 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
     }
 
     if (typeHint.nc || typeHint.ec) {
-      return baseList.filter(a => a.datatype === 'double' || a.datatype === 'float' || a.datatype === 'integer');
+      return this.utilityService.utilFilterForContinuous(baseList);
     } else if (typeHint.nd || typeHint.ed) {
-      return baseList.filter(a => a.datatype === 'string' || a.datatype === 'integer');
+      return this.utilityService.utilFilterForDiscrete(baseList);
     } else {
       return baseList; // assuming all attributes are valid for a passthrough mapping
     }
@@ -252,7 +255,6 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
     NeMappingPassthrough[] {
     const typeHint: NeMappingsType = this.utilityService.utilGetTypeHintByString(s);
     const availableMappings = this.dataService.getSelectedNetwork().mappings;
-
     if (typeHint.nd) {
       return availableMappings.nodesDiscrete;
     } else if (typeHint.nc) {

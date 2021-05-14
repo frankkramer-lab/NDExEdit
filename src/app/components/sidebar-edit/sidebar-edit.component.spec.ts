@@ -12,6 +12,7 @@ import {GraphService} from '../../services/graph.service';
 import {NeNetwork} from '../../models/ne-network';
 import {FontAwesomeTestingModule} from '@fortawesome/angular-fontawesome/testing';
 import {NeSelection} from '../../models/ne-selection';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 class MockDataService {
   selectedNetwork: NeNetwork = {
@@ -41,7 +42,9 @@ class MockUtilityService {
 class MockGraphService {
   selectedElements: NeSelection = {
     nodes: [],
-    edges: []
+    nodeProperties: [],
+    edges: [],
+    edgeProperties: []
   };
 }
 
@@ -65,6 +68,7 @@ describe('SidebarEditComponent', () => {
             deps: [HttpClient]
           }
         }),
+        NgbModule,
         FontAwesomeTestingModule
       ],
       providers: []

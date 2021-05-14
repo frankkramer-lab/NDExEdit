@@ -17,11 +17,13 @@ export class LayoutService {
   layout: NeLayout = {
     main: {
       position: 'right',
-      width: 65
+      width: 45,
+      tooltipDirection: 'left'
     },
     sidebar: {
       position: 'left',
-      width: 30
+      width: 50,
+      tooltipDirection: 'right'
     }
   };
 
@@ -72,8 +74,8 @@ export class LayoutService {
    * sidebar has a default of 30.
    */
   resetLayout(): void {
-    this.layout.main.width = 65;
-    this.layout.sidebar.width = 30;
+    this.layout.main.width = 45;
+    this.layout.sidebar.width = 50;
     this.emitLayout();
   }
 
@@ -85,10 +87,14 @@ export class LayoutService {
   flipLayout(): void {
     if (this.layout.main.position === 'left') {
       this.layout.main.position = 'right';
+      this.layout.main.tooltipDirection = 'left';
       this.layout.sidebar.position = 'left';
+      this.layout.sidebar.tooltipDirection = 'right';
     } else {
       this.layout.main.position = 'left';
+      this.layout.main.tooltipDirection = 'right';
       this.layout.sidebar.position = 'right';
+      this.layout.sidebar.tooltipDirection = 'left';
     }
     const mainWidth = this.layout.main.width;
     this.layout.main.width = this.layout.sidebar.width;
