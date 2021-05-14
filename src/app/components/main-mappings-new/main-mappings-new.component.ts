@@ -25,6 +25,7 @@ import {NeChart} from '../../models/ne-chart';
 import {NeMappingDiscrete} from '../../models/ne-mapping-discrete';
 import {NeMappingContinuous} from '../../models/ne-mapping-continuous';
 import {NeMappingPassthrough} from '../../models/ne-mapping-passthrough';
+import {LayoutService} from '../../services/layout.service';
 
 @Component({
   selector: 'app-main-mappings-new',
@@ -211,15 +212,17 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    * @param route Current route
    * @param dataService Service used to find the currently selected network
    * @param utilityService Service used to access shared code
+   * @param layoutService Service responsible for tooltip directions
    */
   constructor(
     private route: ActivatedRoute,
     public dataService: DataService,
-    public utilityService: UtilityService
+    public utilityService: UtilityService,
+    public layoutService: LayoutService
   ) {
 
     this.route.paramMap.subscribe(params => {
-      this.isEdit = params.get('isEdit') === '1';
+      this.isEdit = !params.get('propertyId');
       this.initData(params);
     });
 

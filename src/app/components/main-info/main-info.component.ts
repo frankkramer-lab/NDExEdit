@@ -9,6 +9,7 @@ import {
   faUserGraduate
 } from '@fortawesome/free-solid-svg-icons';
 import {DataService} from '../../services/data.service';
+import {LayoutService} from '../../services/layout.service';
 
 @Component({
   selector: 'app-main-info',
@@ -58,7 +59,16 @@ export class MainInfoComponent {
    */
   faComments = faComments;
 
-  constructor(public dataService: DataService) {
+  /**
+   *
+   * @param dataService Service responsible for data access
+   * @param layoutService Service responsible for tooltip directions
+   */
+  constructor(
+    public dataService: DataService,
+    public layoutService: LayoutService
+
+    ) {
 
   }
 }

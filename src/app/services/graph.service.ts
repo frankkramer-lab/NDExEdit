@@ -9,6 +9,7 @@ import {UtilityService} from './utility.service';
 import {DataService} from './data.service';
 import {ParseService} from './parse.service';
 import {NeAspect} from '../models/ne-aspect';
+import {NeElement} from '../models/ne-element';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,9 @@ export class GraphService {
    */
   selectedElements: NeSelection = {
     nodes: [],
-    edges: []
+    nodeProperties: [],
+    edges: [],
+    edgeProperties: []
   };
 
   /**
@@ -126,7 +129,14 @@ export class GraphService {
       prefix = 'edge[';
     }
 
-    const definition = prefix + this.parseService.attributeNameMap[property.name.toLowerCase()] + ' = "' + sameAs + '"]';
+    let definition;
+    if (property.datatype === 'boolean' && sameAs === 'true') {
+      definition = prefix + '?' + this.parseService.attributeNameMap[property.name.toLowerCase()] + ']';
+    } else if (property.datatype === 'boolean' && sameAs === 'false') {
+      definition = prefix + this.parseService.attributeNameMap[property.name.toLowerCase()] + '][!' + this.parseService.attributeNameMap[property.name.toLowerCase()] + ']';
+    } else {
+      definition = prefix + this.parseService.attributeNameMap[property.name.toLowerCase()] + ' = "' + sameAs + '"]';
+    }
 
     const selection = this.dataService.selectedNetwork.core.elements(definition);
     selection.flashClass('custom_highlight_color', this.flashDuration);
@@ -207,6 +217,21 @@ export class GraphService {
         }
         break;
     }
+
+    this.selectedElements.nodeProperties = this.gatherPropertiesForSelection(this.selectedElements.nodes);
+    this.selectedElements.edgeProperties = this.gatherPropertiesForSelection(this.selectedElements.edges);
+  }
+
+  gatherPropertiesForSelection(elements: NeElement[]): string[] {
+    const properties: string[] = [];
+    for (const e of elements) {
+      for (const key of Object.keys(e)) {
+        if (!properties.includes(key)) {
+          properties.push(key);
+        }
+      }
+    }
+    return properties;
   }
 
   /**

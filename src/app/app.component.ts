@@ -47,7 +47,9 @@ export class AppComponent {
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faArrowLeft = faArrowLeft;
-
+  /**
+   * Selected language
+   */
   browserLang;
 
   /**

@@ -259,7 +259,7 @@ export class ParseService {
       const offset = ((Number(th) - Number(thresholds[0])) * 100 / range).toFixed(0);
       const gradient: NeColorGradient = {
         color: equals[thresholds.indexOf(th)],
-        offset: String(offset).concat('%'),
+        offset: offset.concat('%'),
         numericThreshold: th
       };
       colorGradientCollection.push(gradient);
@@ -505,7 +505,7 @@ export class ParseService {
 
     for (const attr of attributes) {
       let found = false;
-      const isNumeric = (attr.d === 'double' || attr.d === 'integer');
+      const isNumeric = (attr.d === 'double' || attr.d === 'integer' || attr.d === 'long');
 
       for (const akv of akvs) {
         if (akv.name === attr.n) {

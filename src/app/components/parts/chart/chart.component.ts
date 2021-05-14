@@ -34,7 +34,10 @@ export class ChartComponent implements OnInit, OnDestroy {
    * Currently set number of bins
    */
   @Input() numberOfBins?: number;
-
+  /**
+   * Renders a headline, if true
+   */
+  @Input() includeHeadline: boolean;
   /**
    * Triggers redraw of the chart with the new binSize to better evaluate your data
    * for continuous mappings

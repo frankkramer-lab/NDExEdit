@@ -19,8 +19,9 @@ export interface NeMappingContinuous {
    */
   cleanStyleProperty?: string;
   /**
-   * Type of data which is mapped, should be double, integer or float
-   * to be a valid continuous mapping
+   * Type of data which is mapped, should be double, long, or integer
+   * to be a valid continuous mapping.
+   * List of available types: {@link https://home.ndexbio.org/data-model/#data_types}
    */
   type?: string;
   /**
@@ -39,6 +40,7 @@ export interface NeMappingContinuous {
    * List of the thresholds
    */
   thresholds: number[] | string[];
+
   /**
    * Chart data visualising the mapping
    */
