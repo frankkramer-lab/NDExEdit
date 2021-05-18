@@ -143,7 +143,7 @@ export class SidebarManageComponent {
    * NDEx's public API endpoint
    * @private
    */
-  private readonly ndexPublicApiHost = 'http://public.ndexbio.org/v2/';
+  private readonly ndexPublicApiHost = 'https://public.ndexbio.org/v2/';
 
   /**
    *
