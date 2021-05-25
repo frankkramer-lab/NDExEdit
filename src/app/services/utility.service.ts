@@ -280,14 +280,7 @@ export class UtilityService {
     if (!binSize || !propertyToMap.min || !propertyToMap.max
       || isNaN(binSize) || isNaN(propertyToMap.min) || isNaN(propertyToMap.max)) {
       console.log('Histogram data could not be calculated');
-      return {
-        chartData,
-        chartLabels,
-        chartType: {
-          line: false,
-          bar: true
-        }
-      };
+      return null;
     }
     const min = Number(propertyToMap.min);
     const max = Number(propertyToMap.max);
