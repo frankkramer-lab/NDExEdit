@@ -6,13 +6,13 @@ import {
   faArrowRight,
   faChartBar,
   faCheck,
+  faHome,
   faPalette,
   faPlus,
   faQuestionCircle,
   faRoute,
   faTimes,
-  faUndo,
-  faHome
+  faUndo
 } from '@fortawesome/free-solid-svg-icons';
 import {NeAspect} from '../../models/ne-aspect';
 import {ChartDataSets} from 'chart.js';
@@ -282,6 +282,12 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   changeBinSize($event: number): void {
     this.binSize = $event;
+
+    if (!this.binSize && this.propertyToMap.datatype === 'integer') {
+      this.chartObject = this.propertyToMap.chartDiscreteDistribution;
+      return;
+    }
+
     this.chartObject = this.utilityService.utilCalculateHistogramDataForBinSize(
       this.binSize,
       this.propertyToMap);
