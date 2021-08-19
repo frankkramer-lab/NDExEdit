@@ -8,7 +8,9 @@ export interface NeLayoutElement {
   position: string;
 
   /**
-   * Current with of this component, units are vw
+   * Current with of this component, units correspond to bootstrap grid sizes
+   * ranging up to 12.
+   * When width is 0 this component is completely collapsed.
    */
   width: number;
   /**

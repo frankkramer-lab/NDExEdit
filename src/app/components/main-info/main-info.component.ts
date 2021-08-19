@@ -1,11 +1,13 @@
 import {Component} from '@angular/core';
 import {
-  faArrowLeft,
-  faArrowRight,
+  faAngleDoubleRight,
+  faAngleRight,
+  faAngleLeft,
+  faAngleDoubleLeft,
   faComments,
   faExchangeAlt,
   faThumbsUp,
-  faUndo,
+  faRedo,
   faUserGraduate
 } from '@fortawesome/free-solid-svg-icons';
 import {DataService} from '../../services/data.service';
@@ -22,20 +24,22 @@ import {LayoutService} from '../../services/layout.service';
  */
 export class MainInfoComponent {
   /**
-   * Icon: faArrowRight
+   * Icon: faAngleRight
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
-  faArrowRight = faArrowRight;
+  faAngleRight = faAngleRight;
   /**
-   * Icon: faArrowLeft
+   * Icon: faAngleLeft
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
-  faArrowLeft = faArrowLeft;
+  faAngleLeft = faAngleLeft;
+  faAngleDoubleRight = faAngleDoubleRight;
+  faAngleDoubleLeft = faAngleDoubleLeft;
   /**
-   * Icon: faUndo
+   * Icon: faRedo
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
-  faUndo = faUndo;
+  faRedo = faRedo;
   /**
    * Icon: faExchangeAlt
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos

@@ -1,0 +1,51 @@
+//.deletable:hover .deletable-btn {
+//  display: initial;
+//}
+//
+//.deletable-btn {
+//  display: none;
+//}
+//
+//.form-add-mapping {
+//  min-width: 300px;
+//}
+//
+//.slim {
+//  padding: 0;
+//  margin: 0;
+//}
+//
+//.wide {
+//  width: 100%;
+//}
+
+.threshold-selected {
+  display: inline-block;
+  visibility: visible;
+  height: 200px;
+  width: 0;
+}
+
+.threshold-unselected {
+  display: inline-block;
+  visibility: hidden;
+  height: 200px;
+  width: 0;
+}
+
+.gradient-preview:hover {
+
+  .threshold-selected {
+    display: inline-block;
+    visibility: visible;
+    height: 200px;
+    width: 0;
+  }
+
+  .threshold-unselected {
+    display: inline-block;
+    visibility: visible;
+    height: 200px;
+    width: 0;
+  }
+}

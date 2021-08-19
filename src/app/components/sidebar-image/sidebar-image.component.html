@@ -126,4 +126,15 @@
     {{'SIDEBAR_IMAGE_BTN_DOWNLOAD' | translate}}
   </button>
 
+
+  <a [routerLink]="['']"
+     class="btn btn-block btn-lg btn-primary mt-5 mb-3"
+     data-toggle="tooltip"
+     container="body"
+     openDelay="1000"
+     ngbTooltip="{{'LOST'|translate}}"
+     placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+     role="button">
+    <fa-icon [icon]="faHome"></fa-icon>
+  </a>
 </div>

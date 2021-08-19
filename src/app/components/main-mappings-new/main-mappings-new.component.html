@@ -42,7 +42,7 @@
     </div>
 
     <!-- distribution chart -->
-    <app-chart *ngIf="showDistribution" [chartObject]="chartObject" [widthPercent]="100"></app-chart>
+    <app-chart *ngIf="showDistribution" [chartObject]="chartObject"></app-chart>
 
     <!-- FORM -->
     <app-main-mappings-new-form (stylePropertyEmitter)="setStyleProperty($event)"
@@ -83,7 +83,7 @@
 
     <!-- distribution chart -->
     <app-chart (binSizeEmitter)="changeBinSize($event)" *ngIf="showDistribution"
-               [chartObject]="chartObject" [numberOfBins]="binSize" [widthPercent]="100"></app-chart>
+               [chartObject]="chartObject" [numberOfBins]="binSize"></app-chart>
 
     <!-- ALERT: minimum und maximum (if available) -->
     <div class="alert alert-info" role="alert">
@@ -144,8 +144,7 @@
     </div>
 
     <!-- distribution chart -->
-    <app-chart *ngIf="showDistribution" [chartObject]="chartObject"
-               [widthPercent]="100"></app-chart>
+    <app-chart *ngIf="showDistribution" [chartObject]="chartObject"></app-chart>
 
     <!-- FORM -->
     <app-main-mappings-new-form (stylePropertyEmitter)="setStyleProperty($event)"
@@ -184,7 +183,7 @@
     </div>
 
     <!-- distribution chart -->
-    <app-chart *ngIf="showDistribution" [chartObject]="chartObject" [widthPercent]="100"></app-chart>
+    <app-chart *ngIf="showDistribution" [chartObject]="chartObject"></app-chart>
 
 
     <!-- FORM -->
@@ -226,8 +225,7 @@
 
     <!-- distribution chart -->
     <app-chart (binSizeEmitter)="this.changeBinSize($event)" *ngIf="showDistribution"
-               [chartObject]="chartObject" [numberOfBins]="binSize"
-               [widthPercent]="100"></app-chart>
+               [chartObject]="chartObject" [numberOfBins]="binSize"></app-chart>
 
     <!-- ALERT: hints -->
     <div class="alert alert-info" role="alert">
@@ -285,8 +283,7 @@
     </div>
 
     <!-- distribution chart -->
-    <app-chart *ngIf="showDistribution" [chartObject]="chartObject"
-               [widthPercent]="100"></app-chart>
+    <app-chart *ngIf="showDistribution" [chartObject]="chartObject"></app-chart>
 
     <!-- FORM -->
     <app-main-mappings-new-form (stylePropertyEmitter)="setStyleProperty($event)"

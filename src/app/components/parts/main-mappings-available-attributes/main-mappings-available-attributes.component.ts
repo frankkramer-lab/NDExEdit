@@ -4,9 +4,7 @@ import {NeAspect} from '../../../models/ne-aspect';
 import {DataService} from '../../../services/data.service';
 import {NeMappingsType} from '../../../models/ne-mappings-type';
 import {UtilityService} from '../../../services/utility.service';
-import {NeMappingDiscrete} from '../../../models/ne-mapping-discrete';
-import {NeMappingPassthrough} from '../../../models/ne-mapping-passthrough';
-import {NeMappingContinuous} from '../../../models/ne-mapping-continuous';
+import {NeMapping} from '../../../models/ne-mapping';
 
 @Component({
   selector: 'app-main-mappings-available-attributes',
@@ -36,7 +34,7 @@ export class MainMappingsAvailableAttributesComponent implements OnInit {
   /**
    * List of already existing mappings for the list of properties
    */
-  @Input() mappings: NeMappingContinuous | NeMappingDiscrete[] | NeMappingPassthrough;
+  @Input() mappings: NeMapping;
   /**
    * Indicating type of mappings, e.g. 'nd'
    */

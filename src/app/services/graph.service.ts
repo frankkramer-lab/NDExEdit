@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import {NeNetwork} from '../models/ne-network';
-import {EventObject} from 'cytoscape';
+import {EventObject, NodePositionMap} from 'cytoscape';
 import {NeNode} from '../models/ne-node';
 import {NeEdge} from '../models/ne-edge';
 import {NeSelection} from '../models/ne-selection';
 
-import {UtilityService} from './utility.service';
+import {ElementType, UtilityService} from './utility.service';
 import {DataService} from './data.service';
 import {ParseService} from './parse.service';
 import {NeAspect} from '../models/ne-aspect';
@@ -18,7 +18,7 @@ import {NeElement} from '../models/ne-element';
 /**
  * Service responsible for displaying a graph
  */
-export class GraphService {
+export class GraphService implements OnDestroy {
 
   /**
    * Collection of selected nodes or edges whose information are to be displayed within the sidebar
@@ -31,10 +31,31 @@ export class GraphService {
   };
 
   /**
+   * Collection of possible graph layout methods
+   */
+  readonly graphLayoutMethods = [
+    'preset',
+    'random',
+    'cose',
+    'circle',
+    'concentric',
+    'breadthfirst',
+    'grid',
+    'null',
+  ];
+
+  /**
+   * Subscription to a network's core's click events to listen for selections
+   */
+  subscription: any = null;
+
+  /**
    * Duration of highlighting elements in milliseconds
    * @private
    */
   private flashDuration = 2000;
+
+  private draggingNodes = [];
 
   constructor(
     private utilityService: UtilityService,
@@ -54,12 +75,17 @@ export class GraphService {
    */
   render(network: NeNetwork): Promise<NeNetwork> {
     this.unsubscribeFromCoreEvents();
+
     return this.parseService.rebuildCoreForNetwork(network)
       .then(rendered => {
         const renderedNetwork = rendered;
         renderedNetwork.core.fit();
         renderedNetwork.showLabels = this.utilityService.utilShowLabels(renderedNetwork.core);
-        this.subscribeToCoreEvents();
+
+        if (this.subscription === null) {
+          this.subscribeToCoreEvents();
+        }
+
         return renderedNetwork;
       })
       .catch(e => {
@@ -188,7 +214,7 @@ export class GraphService {
   private subscribeToCoreEvents(): void {
     if (this.dataService.selectedNetwork.core) {
       this.dataService.selectedNetwork.core.ready(() => {
-        this.dataService.selectedNetwork.core.on('select unselect', event => {
+        this.subscription = this.dataService.selectedNetwork.core.on('select unselect dragfreeon', event => {
           this.handleEvent(event);
         });
       });
@@ -201,27 +227,76 @@ export class GraphService {
    * @private
    */
   private handleEvent(event: EventObject): void {
+
     switch (event.type as string) {
       case 'select':
         if (event.target.isNode()) {
           this.selectedElements.nodes.push(event.target.data() as NeNode);
+
+          // for dragging nodes
+          if (!this.draggingNodes.includes(event.target)) {
+            this.draggingNodes.push(event.target);
+          }
         } else if (event.target.isEdge()) {
           this.selectedElements.edges.push(event.target.data() as NeEdge);
         }
+        this.selectedElements.nodeProperties = this.gatherPropertiesForSelection(this.selectedElements.nodes);
+        this.selectedElements.edgeProperties = this.gatherPropertiesForSelection(this.selectedElements.edges);
         break;
       case 'unselect':
         if (event.target.isNode()) {
+          this.draggingNodes = this.draggingNodes.filter(a => a !== event.target);
           this.selectedElements.nodes = this.selectedElements.nodes.filter(x => x.id !== event.target.data().id);
         } else if (event.target.isEdge()) {
           this.selectedElements.edges = this.selectedElements.edges.filter(x => x.id !== event.target.data().id);
         }
+        this.selectedElements.nodeProperties = this.gatherPropertiesForSelection(this.selectedElements.nodes);
+        this.selectedElements.edgeProperties = this.gatherPropertiesForSelection(this.selectedElements.edges);
+        break;
+      case 'dragfreeon':
+        const positions: NodePositionMap = {};
+        for (const element of this.draggingNodes) {
+          const id = element.data.id;
+          const x = element.position.x;
+          const y = element.position.y;
+          positions[id] = {x, y};
+        }
+
+        this.layoutGraph('preset', positions, false);
+        this.draggingNodes = [];
         break;
     }
-
-    this.selectedElements.nodeProperties = this.gatherPropertiesForSelection(this.selectedElements.nodes);
-    this.selectedElements.edgeProperties = this.gatherPropertiesForSelection(this.selectedElements.edges);
   }
 
+  /**
+   * Applies a layout to the graph
+   * @param method Name of the layout
+   * @param positions Collection of positions which are used for the preset method
+   * @param withCoreRebuild Triggering a core rebuild, which is not necessary for manually changing node positions
+   */
+  public layoutGraph(method: string, positions: NodePositionMap = null, withCoreRebuild: boolean = true): void {
+
+    if (method === 'preset') {
+
+      if (positions === null) {
+        positions = {};
+        for (const node of this.dataService.selectedNetwork.initialLayout) {
+          positions[node.node] = {x: node.x, y: node.y};
+        }
+      }
+      this.dataService.selectedNetwork.core.layout({name: method, positions}).run();
+    } else if (method === 'cose') {
+      this.dataService.selectedNetwork.core.layout({name: method, animate: false}).run();
+    } else {
+      this.dataService.selectedNetwork.core.layout({name: method}).run();
+    }
+    this.dataService.applyLayout(withCoreRebuild);
+  }
+
+  /**
+   * Collections available properties for selected elements
+   * @param elements List of selected elements
+   */
   gatherPropertiesForSelection(elements: NeElement[]): string[] {
     const properties: string[] = [];
     for (const e of elements) {
@@ -241,6 +316,29 @@ export class GraphService {
   private unsubscribeFromCoreEvents(): void {
     if (this.dataService.selectedNetwork.core) {
       this.dataService.selectedNetwork.core.removeListener('click');
+      this.subscription = null;
+    }
+  }
+
+  /**
+   * Resets the selection of elements
+   * @param elementType Type of element or null (if both types are to be reset)
+   */
+  public resetElementSelection(elementType: ElementType = null): void {
+    if (elementType === ElementType.node || elementType === null) {
+      this.selectedElements.nodes = [];
+      this.selectedElements.nodeProperties = [];
+    }
+    if (elementType === ElementType.edge || elementType === null) {
+      this.selectedElements.edges = [];
+      this.selectedElements.edgeProperties = [];
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription !== null) {
+      this.subscription = null;
+      this.unsubscribeFromCoreEvents();
     }
   }
 

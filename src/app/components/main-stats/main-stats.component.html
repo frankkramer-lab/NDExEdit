@@ -18,28 +18,12 @@
         data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_EDIT' | translate}}"
         placement="{{layoutService.layout.main.tooltipDirection}}"
         role="button"
+        openDelay="1000"
         container="body">
         <fa-icon [icon]="faPaintBrush"></fa-icon>&nbsp;{{'MAIN_STATS_BTN_RENDER' | translate}}
       </a>
     </div>
 
-    <!--    <div class="col">-->
-
-    <!--    <a-->
-    <!--      [routerLink]="['', { outlets: {primary: ['graph', dataService.networkSelected.id], sidebar: ['compare', dataService.networkSelected.id]} }]"-->
-    <!--      class="btn btn-block btn-outline-secondary mt-2"-->
-    <!--      data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_COMPARE' | translate}}" placement="bottom"-->
-    <!--      role="button">-->
-    <!--      <fa-icon [icon]="faExchangeAlt"></fa-icon>&nbsp;{{'MAIN_STATS_BTN_COMPARE' | translate}}-->
-    <!--    </a>-->
-    <!--      <button-->
-    <!--        class="btn btn-block btn-outline-secondary mt-2 mb-2"-->
-    <!--        data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_COMPARE' | translate}}" placement="bottom"-->
-    <!--        [disabled]="true">-->
-    <!--        <fa-icon [icon]="faExchangeAlt"></fa-icon>&nbsp;{{'MAIN_STATS_BTN_COMPARE' | translate}}-->
-    <!--      </button>-->
-
-    <!--    </div>-->
   </div>
 
   <div class="card">
@@ -59,64 +43,123 @@
     </div>
   </div>
 
-  <ng-container
-    *ngIf="dataService.selectedNetwork.aspectKeyValuesEdges.length > 0 || dataService.selectedNetwork.aspectKeyValuesNodes.length > 0">
+  <h3 class="mt-2" *ngIf="dataService.selectedNetwork.aspectKeyValuesEdges.length > 0
+  || dataService.selectedNetwork.aspectKeyValuesNodes.length > 0">
+    {{'MAIN_STATS_GRAPH_ATTRIBUTES_TITLE' | translate}}
+  </h3>
 
-    <h3 class="mt-2">{{'MAIN_STATS_GRAPH_ATTRIBUTES_TITLE' | translate}}</h3>
+  <!-- ATTRIBUTES: NODES -->
+  <ng-container *ngIf="dataService.selectedNetwork.aspectKeyValuesNodes.length > 0">
 
+    <h5>{{'NODES' | translate}}</h5>
     <div class="row mt-2 mb-2">
 
       <div class="col-4">
-        <div class="list-group" id="list-tab" role="tablist">
+        <div class="list-group">
 
-          <a
-            *ngFor="let akv of dataService.selectedNetwork.aspectKeyValuesNodes.concat(dataService.selectedNetwork.aspectKeyValuesEdges); let index = index"
-            aria-controls="{{index}}" class="list-group-item list-group-item-action" data-toggle="list"
-            href="#list-{{index}}" id="list-{{index}}-list" role="tab">
+          <button *ngFor="let akv of dataService.selectedNetwork.aspectKeyValuesNodes; let index = index"
+                  (click)="displayDistributionChart(index, utilityService.elementType.node)"
+                  type="button"
+                  class="list-group-item list-group-item-action">
             {{akv.name}}
-          </a>
+          </button>
         </div>
       </div>
+
       <div class="col-8">
-        <div class="tab-content" id="nav-tabContent">
-          <div
-            *ngFor="let akv of dataService.selectedNetwork.aspectKeyValuesNodes.concat(dataService.selectedNetwork.aspectKeyValuesEdges); let index = index"
-            aria-labelledby="list-{{index}}-list" class="tab-pane fade" id="list-{{index}}" role="tabpanel">
+        <div *ngIf="nodeAkv !== null">
 
-            <!-- distribution -->
-            <h5>{{'MAIN_STATS_DISTRIBUTION_TITLE' | translate}}</h5>
-            <app-chart (binSizeEmitter)="setBinSize($event, akv)"
-                       *ngIf="akv.chartContinuousDistribution"
-                       [chartObject]="akv.chartContinuousDistribution"
-                       [numberOfBins]="akv.binSize"></app-chart>
-
-            <app-chart *ngIf="akv.chartDiscreteDistribution"
-                       [chartObject]="akv.chartDiscreteDistribution"></app-chart>
-
-            <!-- aspect coverage -->
-            <h5>
-              {{'MAIN_STATS_COVERAGE_TITLE' | translate}}
-              <span [ngClass]="akv.coverage < 25 ? 'bg-warning' : (akv.coverage < 75 ? 'bg-primary' : 'bg-success')"
-                    class="badge badge-pill border">
-                {{akv.coverage}} %
+          <!-- aspect coverage -->
+          <h5>
+            {{'MAIN_STATS_COVERAGE_TITLE' | translate}}
+            <span
+              [ngClass]="nodeAkv.coverage < 25 ? 'bg-warning' : (nodeAkv.coverage < 75 ? 'bg-primary' : 'bg-success')"
+              class="badge badge-pill border">
+                {{nodeAkv.coverage}} %
               </span>
-            </h5>
+          </h5>
 
-            <div class="progress">
-              <div [ngStyle]="{'width.%': akv.coverage}" aria-valuemax="100" aria-valuemin="0"
-                   aria-valuenow="{{akv.coverage}}" class="progress-bar" role="progressbar"></div>
-            </div>
-            <small>{{'MAIN_STATS_COVERAGE_HINT' | translate}}</small>
-
+          <div class="progress">
+            <div [ngStyle]="{'width.%': nodeAkv.coverage}" aria-valuemax="100" aria-valuemin="0"
+                 aria-valuenow="{{nodeAkv.coverage}}" class="progress-bar" role="progressbar"></div>
           </div>
+          <small>{{'MAIN_STATS_COVERAGE_HINT' | translate}}</small>
+
+          <!-- distribution -->
+          <h5>{{'MAIN_STATS_DISTRIBUTION_TITLE' | translate}}</h5>
+          <ng-container *ngIf="nodeAkv.chartContinuousDistribution !== null && nodeAkv.validForContinuous">
+            <app-chart (binSizeEmitter)="setBinSize($event, nodeAkv)"
+                       [chartObject]="nodeAkv.chartContinuousDistribution"
+                       [numberOfBins]="nodeAkv.binSize"></app-chart>
+          </ng-container>
+
+          <ng-container *ngIf="nodeAkv.chartDiscreteDistribution !== null">
+            <app-chart
+              [chartObject]="nodeAkv.chartDiscreteDistribution"></app-chart>
+          </ng-container>
+
         </div>
       </div>
-
     </div>
 
-    <hr>
 
   </ng-container>
+
+  <!-- ATTRIBUTES: EDGES -->
+  <ng-container *ngIf="dataService.selectedNetwork.aspectKeyValuesEdges.length > 0">
+
+    <h5>{{'EDGES' | translate}}</h5>
+    <div class="row mt-2 mb-2">
+
+      <div class="col-4">
+        <div class="list-group">
+
+          <button *ngFor="let akv of dataService.selectedNetwork.aspectKeyValuesEdges; let index = index"
+                  (click)="displayDistributionChart(index, utilityService.elementType.edge)"
+                  type="button"
+                  class="list-group-item list-group-item-action">
+            {{akv.name}}
+          </button>
+        </div>
+      </div>
+
+      <div class="col-8">
+        <div *ngIf="edgeAkv !== null">
+
+          <!-- aspect coverage -->
+          <h5>
+            {{'MAIN_STATS_COVERAGE_TITLE' | translate}}
+            <span
+              [ngClass]="edgeAkv.coverage < 25 ? 'bg-warning' : (edgeAkv.coverage < 75 ? 'bg-primary' : 'bg-success')"
+              class="badge badge-pill border">
+                {{edgeAkv.coverage}} %
+              </span>
+          </h5>
+
+          <div class="progress">
+            <div [ngStyle]="{'width.%': edgeAkv.coverage}" aria-valuemax="100" aria-valuemin="0"
+                 aria-valuenow="{{edgeAkv.coverage}}" class="progress-bar" role="progressbar"></div>
+          </div>
+          <small>{{'MAIN_STATS_COVERAGE_HINT' | translate}}</small>
+
+          <!-- distribution -->
+          <h5>{{'MAIN_STATS_DISTRIBUTION_TITLE' | translate}}</h5>
+          <app-chart (binSizeEmitter)="setBinSize($event, edgeAkv)"
+                     *ngIf="edgeAkv.chartContinuousDistribution !== null && edgeAkv.validForContinuous"
+                     [chartObject]="edgeAkv.chartContinuousDistribution"
+                     [numberOfBins]="edgeAkv.binSize"></app-chart>
+
+          <app-chart *ngIf="edgeAkv.chartDiscreteDistribution !== null"
+                     [chartObject]="edgeAkv.chartDiscreteDistribution"></app-chart>
+
+        </div>
+      </div>
+    </div>
+
+
+  </ng-container>
+
+  <hr>
 
 </ng-container>
 

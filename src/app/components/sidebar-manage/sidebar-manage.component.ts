@@ -4,10 +4,10 @@ import {
   faCloudDownloadAlt,
   faFileDownload,
   faFileExport,
+  faHome,
   faImage,
   faInfo,
-  faPaintBrush,
-  faSave
+  faPaintBrush
 } from '@fortawesome/free-solid-svg-icons';
 import {DataService} from '../../services/data.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
@@ -57,10 +57,10 @@ export class SidebarManageComponent {
    */
   faFileDownload = faFileDownload;
   /**
-   * Icon: faSave
+   * Icon: faHome
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
-  faSave = faSave;
+  faHome = faHome;
   /**
    * Icon: faFileExport
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos

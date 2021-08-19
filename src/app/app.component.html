@@ -1,54 +1,34 @@
-<div class="container-fluid full">
+<div class="container-fluid">
 
   <div class="row">
 
     <!-- Main outlet -->
-    <div [ngClass]="(layoutService.layout.main.position === 'left' ? 'order-1' : 'order-3')"
-         class="w-{{layoutService.layout.main.width}} scroll p-2">
-      <router-outlet></router-outlet>
-    </div>
+    <div class="col-{{widthMain}}" [ngClass]="layoutService.layout.main.position === 'left' ? 'order-1' : 'order-2'">
 
-    <!-- Grey bar -->
-    <div class="order-2 w-5">
-      <div class="drag-bar">
+      <div class="row">
 
-        <div class="btn-group-vertical">
-          <button (click)="layoutService.increaseLayoutRight()"
-                  class="btn btn-sm btn-secondary btnLayout">
-            <fa-icon [icon]="faArrowLeft"></fa-icon>
-          </button>
-          <button (click)="layoutService.increaseLayoutLeft()"
-                  class="btn btn-sm btn-secondary btnLayout">
-            <fa-icon [icon]="faArrowRight"></fa-icon>
-          </button>
-          <button (click)="layoutService.resetLayout()"
-                  class="btn btn-sm btn-secondary btnLayout">
-            <fa-icon [icon]="faRedo"></fa-icon>
-          </button>
-          <button (click)="layoutService.flipLayout()"
-                  class="btn btn-sm btn-warning btnLayout"
-                  role="button">
-            <fa-icon [icon]="faExchangeAlt"></fa-icon>
-          </button>
-
-          <button (click)="setLanguage('de')"
-                  class="btn btn-sm btn-secondary btnLayout">
-            DE
-          </button>
-          <button (click)="setLanguage('en')"
-                  class="btn btn-sm btn-secondary btnLayout">
-            EN
-          </button>
+        <div class="scroll col">
+          <router-outlet></router-outlet>
         </div>
 
+        <div class="col-auto" *ngIf="layoutService.layout.main.position === 'left'">
+          <app-dragbar (languageEmitter)="setLanguage($event)"></app-dragbar>
+        </div>
       </div>
     </div>
 
     <!-- Sidebar outlet -->
-    <div [ngClass]="(layoutService.layout.sidebar.position === 'right' ? 'order-3' : 'order-1')"
-         class="w-{{layoutService.layout.sidebar.width}} scroll">
+    <div class="col-{{widthSidebar}}" [ngClass]="layoutService.layout.main.position === 'left' ? 'order-2' : 'order-1'">
 
-      <router-outlet name="sidebar"></router-outlet>
+      <div class="row">
+        <div class="scroll col">
+          <router-outlet name="sidebar"></router-outlet>
+        </div>
+        <div class="col-auto" *ngIf="layoutService.layout.sidebar.position === 'left'">
+          <app-dragbar (languageEmitter)="setLanguage($event)"></app-dragbar>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

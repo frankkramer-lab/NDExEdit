@@ -2,17 +2,37 @@ import {Injectable} from '@angular/core';
 import {NeMappingsType} from '../models/ne-mappings-type';
 import {NeAspect} from '../models/ne-aspect';
 import {NeChart} from '../models/ne-chart';
-import {NeFrequencyCounter} from '../models/ne-frequency-counter';
 import {NeStyle} from '../models/ne-style';
 import {Core} from 'cytoscape';
+import {NeMappingContinuous} from '../models/ne-mapping-continuous';
+import {NeMappingDiscrete} from '../models/ne-mapping-discrete';
+import {NeMapping} from '../models/ne-mapping';
+import {NeBin} from '../models/ne-bin';
 
-@Injectable({
-  providedIn: 'root'
-})
+export enum ElementType {
+  node,
+  edge
+}
+
+export enum MappingType {
+  continuous,
+  discrete,
+  passthrough
+}
+
+export enum AttributeType {
+  color,
+  numeric,
+  fontFace,
+  default
+}
 
 /**
  * Service for methods used within multiple components or services
  */
+@Injectable({
+  providedIn: 'root'
+})
 export class UtilityService {
 
   /**
@@ -29,6 +49,40 @@ export class UtilityService {
    * Label for y axis
    */
   yAxisLabel: string;
+  /**
+   * When no mapping exists or is selected for any purpose,
+   * the default typehint is false for all
+   */
+  defaultTypeHint: NeMappingsType = {
+    nd: false,
+    nc: false,
+    np: false,
+    ed: false,
+    ec: false,
+    ep: false
+  };
+
+  /**
+   * Types of elements
+   */
+  elementType = ElementType;
+
+  /**
+   * Types of mappings
+   */
+  mappingType = MappingType;
+  /**
+   * Types of attributes
+   */
+  attributeType = AttributeType;
+  /**
+   * List of valid numeric properties, as defined here {@link https://home.ndexbio.org/data-model/#data_types}
+   */
+  readonly numericTypes = [
+    'long',
+    'integer',
+    'double'
+  ];
 
   constructor() {
   }
@@ -143,14 +197,7 @@ export class UtilityService {
           ep: true
         };
       default:
-        return {
-          nd: false,
-          nc: false,
-          np: false,
-          ed: false,
-          ec: false,
-          ep: false
-        };
+        return this.defaultTypeHint;
     }
   }
 
@@ -176,6 +223,48 @@ export class UtilityService {
   }
 
   /**
+   * Determines the typehint based on the elementType and mappingType
+   * @param elementType node or edge
+   * @param mappingType passthrough, discrete or continuous
+   */
+  utilGetTypeHintByElementTypeAndMappingType(elementType: ElementType, mappingType: MappingType): NeMappingsType {
+    const typeHint: NeMappingsType = {
+      nd: false,
+      nc: false,
+      np: false,
+      ed: false,
+      ec: false,
+      ep: false
+    };
+    if (elementType === ElementType.node) {
+      switch (mappingType) {
+        case MappingType.passthrough:
+          typeHint.np = true;
+          break;
+        case MappingType.discrete:
+          typeHint.nd = true;
+          break;
+        case MappingType.continuous:
+          typeHint.nc = true;
+          break;
+      }
+    } else {
+      switch (mappingType) {
+        case MappingType.passthrough:
+          typeHint.ep = true;
+          break;
+        case MappingType.discrete:
+          typeHint.ed = true;
+          break;
+        case MappingType.continuous:
+          typeHint.ec = true;
+          break;
+      }
+    }
+    return typeHint;
+  }
+
+  /**
    * Display labels, if there are less than 300 nodes within the network
    * To avoid discrepancies in the code, this is the method to use,
    * instead of random hacks anywhere else.
@@ -186,25 +275,12 @@ export class UtilityService {
   }
 
   /**
-   * Takes an input string and removes a prefix, if it matches one of the specified prefixes
-   * @param input String to clear
-   * @param strings List of prefixes
-   */
-  utilRemovePrefix(input: string, strings: string[]): string {
-    for (const prefix of strings) {
-      if (input.startsWith(prefix)) {
-        return input.substr(prefix.length);
-      }
-    }
-    return input;
-  }
-
-  /**
    * Returns a list of aspects suitable for discrete mappings
    * @param aspects List of all available attributes
    */
   utilFilterForDiscrete(aspects: NeAspect[]): NeAspect[] {
-    return aspects.filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'boolean' || a.datatype === 'string' || a.datatype === null);
+    return aspects.filter(a => !a.datatype || a.datatype === 'integer' || a.datatype === 'boolean'
+      || a.datatype === 'string' || a.datatype === null);
   }
 
   /**
@@ -216,7 +292,8 @@ export class UtilityService {
     if (strict) {
       return aspects.filter(a => a.datatype && (a.datatype === 'long' || a.datatype === 'double'));
     }
-    return aspects.filter(a => a.datatype && (a.datatype === 'integer' || a.datatype === 'long' || a.datatype === 'double'));
+    return aspects.filter(a => a.datatype && (a.datatype === 'integer'
+      || a.datatype === 'long' || a.datatype === 'double'));
   }
 
   /**
@@ -267,87 +344,77 @@ export class UtilityService {
    * Calculates data for the continuous distribution chart as histogram
    * with default binSize calculated as Sturge's Rule
    *
-   * @param binSize number of bins calculated by Sturge's Rule
+   * @param numberOfBins number of bins calculated by Sturge's Rule
    * @param propertyToMap Aspect which is displayed in this histogram
-   * @param axisLabels list of strings containing axis labels, if needed, 0 => x, 1 => y
    * @private
    */
-  utilCalculateHistogramDataForBinSize(binSize: number, propertyToMap: NeAspect, axisLabels: string[] = []): NeChart {
+  utilCalculateHistogramDataForBinSize(numberOfBins: number, propertyToMap: NeAspect): NeChart {
     const chartData = [];
-    const frequencies: NeFrequencyCounter[] = [];
     const chartLabels = [];
+    const bins: NeBin[] = [];
+    const binSteps = (propertyToMap.max - propertyToMap.min) / numberOfBins;
 
-    if (!binSize || !propertyToMap.min || !propertyToMap.max
-      || isNaN(binSize) || isNaN(propertyToMap.min) || isNaN(propertyToMap.max)) {
-      console.log('Histogram data could not be calculated');
-      return null;
-    }
-    const min = Number(propertyToMap.min);
-    const max = Number(propertyToMap.max);
-    const values = propertyToMap.values as unknown as number[];
 
-    const sizeOfBin = Number((max - min) / binSize);
+    let pointer: number = propertyToMap.min;
 
-    let intervalPointer = min;
-    while (intervalPointer < max) {
-
-      const nextThreshold = Number(intervalPointer + sizeOfBin);
-      frequencies.push({
-        lowerBorder: intervalPointer,
-        upperBorder: nextThreshold,
-        occurrence: 0
-      });
-
-      chartLabels.push('[' + intervalPointer + ' : ' + nextThreshold + ']');
-      intervalPointer = nextThreshold;
+    for (let i = 0; i < numberOfBins; i++) {
+      const bin: NeBin = {
+        from: pointer,
+        to: pointer + binSteps,
+        values: []
+      };
+      pointer += binSteps;
+      bins.push(bin);
     }
 
-    for (const f of frequencies) {
-      for (const value of values) {
-
-        if (value === min && frequencies.indexOf(f) === 0) {
-          f.occurrence++;
-          continue;
-        }
-
-        if (value > f.lowerBorder && value <= f.upperBorder) {
-          f.occurrence++;
+    outer: for (const value of propertyToMap.numericValues) {
+      for (const bin of bins) {
+        if (value >= bin.from && value <= bin.to) {
+          bin.values.push(value);
+          continue outer;
         }
       }
     }
 
+    for (const bin of bins) {
+      chartLabels.push('[' + bin.from.toString() + ' : ' + bin.to.toString() + ']');
+    }
+
     chartData.push({
-      data: frequencies.map(a => a.occurrence),
+      data: bins.map(a => a.values.length),
       label: propertyToMap.name
     });
 
     const finalChart: NeChart = {
-      chartType: {
-        bar: true,
-        line: false
-      },
+      chartData,
       chartLabels,
-      chartData
+      chartType: {
+        line: false,
+        bar: true
+      }
     };
 
-    if (axisLabels.length > 0) {
-      finalChart.chartOptions = {
-        scales: {
-          xAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: this.xAxisContinuousLabel || ''
-            }
-          }],
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: this.yAxisLabel ? (this.yAxisLabel + propertyToMap.name) : ''
-            }
-          }]
-        }
-      };
-    }
+    finalChart.chartOptions = {
+      scales: {
+        xAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: this.xAxisContinuousLabel || ''
+          }
+        }],
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: this.yAxisLabel ? (this.yAxisLabel + ' ' + propertyToMap.name) : ''
+          }
+        }]
+      },
+      legend: {
+        display: true
+      },
+      responsive: true,
+      maintainAspectRatio: false
+    };
     return finalChart;
   }
 
@@ -356,7 +423,7 @@ export class UtilityService {
    * @param akv Aspect whose datatype is to be evaluated
    */
   utilFitForContinuous(akv: NeAspect): boolean {
-    return (akv.datatype === 'integer' || akv.datatype === 'double' || akv.datatype === 'float');
+    return this.numericTypes.includes(akv.datatype);
   }
 
   /**
@@ -380,6 +447,21 @@ export class UtilityService {
   }
 
   /**
+   * Extracts the type of mapping
+   * @param mappingType Name of this mapping within .cx file
+   */
+  utilExtractTypeByMapping(mappingType: string): MappingType {
+    switch (mappingType) {
+      case 'PASSTHROUGH':
+        return MappingType.passthrough;
+      case 'DISCRETE':
+        return MappingType.discrete;
+      case 'CONTINUOUS':
+        return MappingType.continuous;
+    }
+  }
+
+  /**
    * Returns true, if the typeof comparison returns true for this input
    * @param input element to be typechecked
    */
@@ -399,23 +481,149 @@ export class UtilityService {
   }
 
   /**
-   * Recalculates values which contain an exponential notation, e.g.
-   * '1.4E-3' which translates to '1.4 * 10^-3'
-   * @param numbers List of numbers as strings, which is necessary to avoid rendering discrepancies
+   * Returns a new mapping object with the same properties as the given continuous mapping
+   * @param mapping continuous mapping to be copied
+   * @param targetThresholds list of thresholds for which this mapping has to fit
    */
-  utilCleanNumericValues(numbers: string[]): string[] {
-    const cleanNumbers: string[] = [];
-    for (const num of numbers) {
-      const exponentSplit = num.split('E');
+  utilDeepCopyMappingContinuous(mapping: NeMappingContinuous, targetThresholds: number[] = null): NeMappingContinuous {
+    const mappingCopy: NeMappingContinuous = Object.assign({}, mapping);
 
-      if (exponentSplit.length === 2) {
-        const numVal = Math.pow(Number(exponentSplit[0]), Number(exponentSplit[1]));
-        cleanNumbers.push(String(numVal));
+    const duplicatesCopy = [];
+    for (const dup of mapping.duplicates) {
+      if (dup !== null) {
+        duplicatesCopy.push(Object.assign([], dup));
       } else {
-        cleanNumbers.push(num);
+        duplicatesCopy.push(null);
       }
     }
-    return cleanNumbers;
+
+    mappingCopy.newlyAdded = mapping.newlyAdded;
+    mappingCopy.duplicates = Object.assign([], duplicatesCopy);
+    mappingCopy.equals = Object.assign([], mapping.equals);
+    mappingCopy.thresholds = Object.assign([], mapping.thresholds);
+    mappingCopy.greaters = Object.assign([], mapping.greaters);
+    mappingCopy.lowers = Object.assign([], mapping.lowers);
+    mappingCopy.useValue = Object.assign([], mapping.useValue);
+    mappingCopy.colorGradient = Object.assign([], mapping.colorGradient);
+
+    if (targetThresholds !== null) {
+
+      for (let i = 0; i < targetThresholds.length; i++) {
+        if (targetThresholds[i] !== mappingCopy.thresholds[i]) {
+          mappingCopy.thresholds.splice(i, 0, targetThresholds[i]);
+          mappingCopy.duplicates.splice(i, 0, null);
+          mappingCopy.equals.splice(i, 0, mappingCopy.isColor ? '#000000' : null);
+          mappingCopy.lowers.splice(i, 0, mappingCopy.isColor ? '#000000' : null);
+          mappingCopy.greaters.splice(i, 0, mappingCopy.isColor ? '#000000' : null);
+          mappingCopy.useValue.splice(i, 0, false);
+        }
+      }
+    }
+    return mappingCopy;
+  }
+
+  /**
+   * Returns a new mapping object with the same properties as the given discrete mapping
+   * @param mapping discrete mapping to be copied
+   */
+  utilDeepCopyMappingDiscrete(mapping: NeMappingDiscrete): NeMappingDiscrete {
+    return {
+      col: mapping.col,
+      styleProperty: mapping.styleProperty,
+      mappingType: this.mappingType.discrete,
+      type: mapping.type,
+      keys: mapping.keys,
+      values: mapping.values,
+      useValue: mapping.useValue,
+      mapObject: Object.assign([], mapping.mapObject),
+      newlyAdded: mapping.newlyAdded
+    };
+  }
+
+  /**
+   * Returns a new mapping object with the same properties as the given passthrough mapping
+   * @param mapping passthrough mapping to be copied
+   */
+  utilDeepCopyMappingPassthrough(mapping: NeMapping): NeMapping {
+    return {
+      col: mapping.col,
+      styleProperty: mapping.styleProperty,
+      mappingType: this.mappingType.passthrough,
+      useValue: mapping.useValue,
+      newlyAdded: mapping.newlyAdded
+    };
+  }
+
+  /**
+   * Takes a color in hexadecimal format, then calculates and returns a contrasting color, also in hex format
+   * @param hexColor base color for which a contrasting color is being calculated, such as #FF00FF
+   */
+  utilGetContrastColorByHex(hexColor: string): string {
+
+    const rgbColor = this.utilGetRgbByHex(hexColor);
+
+    const max = parseInt('FF', 16);
+    const numContrastR = (max - rgbColor.r);
+    const numContrastG = (max - rgbColor.g);
+    const numContrastB = (max - rgbColor.b);
+    const contrastR = this.utilLeftPad(numContrastR.toString(16), 2, '0');
+    const contrastG = this.utilLeftPad(numContrastG.toString(16), 2, '0');
+    const contrastB = this.utilLeftPad(numContrastB.toString(16), 2, '0');
+
+    return ('#' + contrastR + contrastG + contrastB);
+  }
+
+  /**
+   * Pads a string with a character until the requested length is achieved
+   * @param s input string to be left padded
+   * @param length target length
+   * @param filler character to be padded with
+   */
+  utilLeftPad(s: string, length: number, filler: string): string {
+    if (filler.length > 1) {
+      console.log('Padding string only possible by one char!');
+      return s;
+    }
+    while (s.length < length) {
+      s = filler + s;
+    }
+    return s;
+  }
+
+  /**
+   * Returns true, if the given hex string is too dark to make a black label text readable,
+   * e.g. #023858 is a very dark blue and needs a white label to be readable
+   * @param hexColor color in hexadecimal notation, including #
+   */
+  utilNeedsWhiteLabelText(hexColor: string): boolean {
+    const rgbColor = this.utilGetRgbByHex(hexColor);
+    const greyscaleColor = rgbColor.r * 0.299 + rgbColor.g * 0.587 + rgbColor.b * 0.114;
+    return greyscaleColor < 130;
+  }
+
+  /**
+   * Converts a hexadecimal color representation to an object containing keys for each color, without alpha channel
+   * @param hexColor color in hexadecimal notation, including #
+   */
+  utilGetRgbByHex(hexColor: string): any {
+    const inputR = hexColor.substr(1, 2);
+    const inputG = hexColor.substr(3, 2);
+    const inputB = hexColor.substr(5, 2);
+    return {
+      r: parseInt(inputR, 16),
+      g: parseInt(inputG, 16),
+      b: parseInt(inputB, 16)
+    };
+  }
+
+
+  /**
+   * Returns true, if the mapping contains duplicates
+   * @param mapping Continuous mapping which is checked for duplicates
+   * @private
+   */
+  utilContainsDuplicates(mapping: NeMappingContinuous): boolean {
+    return mapping.duplicates.some(a => !!a && a.length > 0);
   }
 
 }

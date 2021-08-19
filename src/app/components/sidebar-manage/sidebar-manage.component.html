@@ -12,6 +12,8 @@
         <a [routerLink]="['', { outlets: {primary: ['stats', network.id]} }]"
            class="btn btn-sm btn-outline-secondary mr-1"
            data-toggle="tooltip"
+           container="body"
+           openDelay="1000"
            ngbTooltip="{{'SIDEBAR_MANAGE_TT_INFO'|translate}}"
            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
            role="button">
@@ -20,6 +22,8 @@
         <a [routerLink]="['', { outlets: {primary: ['graph', network.id], sidebar: ['edit', network.id]} }]"
            class="btn btn-sm btn-success mr-1"
            data-toggle="tooltip"
+           container="body"
+           openDelay="1000"
            ngbTooltip="{{'SIDEBAR_MANAGE_TT_EDIT'|translate}}"
            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
            role="button">
@@ -30,6 +34,8 @@
            [routerLink]=""
            class="btn btn-sm btn-outline-secondary mr-1"
            data-toggle="tooltip"
+           container="body"
+           openDelay="1000"
            ngbTooltip="{{'SIDEBAR_MANAGE_TT_DOWNLOAD'|translate}}"
            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
            role="button">
@@ -38,6 +44,8 @@
         <a [routerLink]="['', { outlets: {primary: ['graph', network.id], sidebar: ['image', network.id]} }]"
            class="btn btn-sm btn-outline-secondary mr-1"
            data-toggle="tooltip"
+           container="body"
+           openDelay="1000"
            ngbTooltip="{{'SIDEBAR_MANAGE_TT_IMAGE'|translate}}"
            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
            role="button">
@@ -47,6 +55,8 @@
            [routerLink]=""
            class="btn btn-sm btn-outline-secondary"
            data-toggle="tooltip"
+           container="body"
+           openDelay="1000"
            ngbTooltip="{{ 'SIDEBAR_MANAGE_TT_CLIPBOARD' | translate }}"
            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
            role="button">
@@ -110,6 +120,7 @@
               ngbTooltip="{{'SIDEBAR_MANAGE_TT_REMOTE_FILES' | translate}}"
               placement="{{layoutService.layout.sidebar.tooltipDirection}}"
               type="button"
+              openDelay="1000"
               container="body">
 
         <fa-icon [icon]="faCloudDownloadAlt"></fa-icon>
@@ -135,10 +146,21 @@
               ngbTooltip="{{'SIDEBAR_MANAGE_TT_LOCAL_FILE' | translate}}"
               placement="{{layoutService.layout.sidebar.tooltipDirection}}"
               type="button"
+              openDelay="1000"
               container="body">
         {{'SIDEBAR_MANAGE_LOCAL_FILE_BTN'|translate}}
       </button>
     </div>
   </div>
 
+  <a [routerLink]="['']"
+     class="btn btn-block btn-lg btn-primary mt-5 mb-3"
+     data-toggle="tooltip"
+     container="body"
+     openDelay="1000"
+     ngbTooltip="{{'LOST'|translate}}"
+     placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+     role="button">
+    <fa-icon [icon]="faHome"></fa-icon>
+  </a>
 </div>

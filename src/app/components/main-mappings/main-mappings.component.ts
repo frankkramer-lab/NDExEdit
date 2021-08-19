@@ -1,14 +1,21 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
-import {faArrowLeft, faCheck, faEdit, faPlus, faSearch, faTimes, faTrash, faHome} from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowLeft,
+  faCheck,
+  faEdit,
+  faHome,
+  faPlus,
+  faSearch,
+  faTimes,
+  faTrash
+} from '@fortawesome/free-solid-svg-icons';
 import {NeMappingsType} from '../../models/ne-mappings-type';
 import {NeAspect} from '../../models/ne-aspect';
 import {UtilityService} from '../../services/utility.service';
-import {NeMappingDiscrete} from '../../models/ne-mapping-discrete';
-import {NeMappingPassthrough} from '../../models/ne-mapping-passthrough';
-import {NeMappingContinuous} from '../../models/ne-mapping-continuous';
 import {LayoutService} from '../../services/layout.service';
+import {NeMapping} from '../../models/ne-mapping';
 
 @Component({
   selector: 'app-main-mappings',
@@ -164,7 +171,8 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    * Toggles a global remove dialogue
    */
   toggleGlobalRemoveDialogue(): void {
-    if (!(this.dataService.selectedDiscreteMapping || this.dataService.selectedContinuousMapping || this.dataService.selectedPassthroughMapping)) {
+    if (!(this.dataService.selectedDiscreteMapping
+      || this.dataService.selectedContinuousMapping || this.dataService.selectedPassthroughMapping)) {
       console.log('No mapping selected which could be deleted!');
     }
     this.dataService.selectPropertyForDeletion();
@@ -192,21 +200,21 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    * Confirms or denies a global deletion of a mapping
    * @param confirmed true, if deletion is to be executed
    */
-  confirmDeletionGlobal(confirmed: boolean): void {
-    if (confirmed && (this.dataService.selectedDiscreteMapping
-      || this.dataService.selectedContinuousMapping
-      || this.dataService.selectedPassthroughMapping)) {
-      this.dataService.removeMapping();
-
-      MainMappingsComponent.mappingsEmitter.emit({
-        showGradient: false,
-        showChart: false
-      });
-    }
-
-    this.showGlobalDeletionDialogue = false;
-    this.showSingleDeletionDialogue = false;
-  }
+  // confirmDeletionGlobal(confirmed: boolean): void {
+  //   if (confirmed && (this.dataService.selectedDiscreteMapping
+  //     || this.dataService.selectedContinuousMapping
+  //     || this.dataService.selectedPassthroughMapping)) {
+  //     this.dataService.removeMapping();
+  //
+  //     MainMappingsComponent.mappingsEmitter.emit({
+  //       showGradient: false,
+  //       showChart: false
+  //     });
+  //   }
+  //
+  //   this.showGlobalDeletionDialogue = false;
+  //   this.showSingleDeletionDialogue = false;
+  // }
 
   /**
    * Confirms or denies a single deletion of a mapping's property
@@ -250,9 +258,7 @@ export class MainMappingsComponent implements OnInit, OnDestroy {
    * @param s Can either be 'nd', 'nc', 'np', 'ed', 'ec' or 'ep'
    */
   public getExistingMappingListForCurrentNetworkAndType(s: string):
-    NeMappingContinuous[] |
-    NeMappingDiscrete[] |
-    NeMappingPassthrough[] {
+    NeMapping[] {
     const typeHint: NeMappingsType = this.utilityService.utilGetTypeHintByString(s);
     const availableMappings = this.dataService.getSelectedNetwork().mappings;
     if (typeHint.nd) {

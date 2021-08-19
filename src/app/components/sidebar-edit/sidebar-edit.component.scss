@@ -2,4 +2,7 @@
   min-width: 120px;
 }
 
-
+.routerlink_disabled {
+  pointer-events: none;
+  cursor: default;
+}

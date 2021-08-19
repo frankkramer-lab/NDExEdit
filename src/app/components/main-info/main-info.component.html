@@ -24,12 +24,14 @@
 <p>{{'MAIN_INFO_LAYOUT_DESCRIPTION' | translate}}</p>
 <ul>
   <li>
-    <fa-icon [icon]="faArrowLeft"></fa-icon>
-    <fa-icon [icon]="faArrowRight"></fa-icon>
+    <fa-icon [icon]="faAngleDoubleLeft"></fa-icon>
+    <fa-icon [icon]="faAngleLeft"></fa-icon>
+    <fa-icon [icon]="faAngleRight"></fa-icon>
+    <fa-icon [icon]="faAngleDoubleRight"></fa-icon>
     {{'MAIN_INFO_LAYOUT_STEP_1' | translate}}
   </li>
   <li>
-    <fa-icon [icon]="faUndo"></fa-icon>
+    <fa-icon [icon]="faRedo"></fa-icon>
     {{'MAIN_INFO_LAYOUT_STEP_2' | translate}}
   </li>
   <li>
@@ -39,11 +41,6 @@
 </ul>
 
 <p>{{'MAIN_INFO_LANG_DESCRIPTION' | translate}}</p>
-
-<!--<hr>-->
-
-<!--<h3>{{'MAIN_INFO_DOCUMENTATION_TITLE' | translate}}</h3>-->
-<!--<p [innerHTML]="'MAIN_INFO_DOCUMENTATION_DESCRIPTION' | translate"></p>-->
 
 <hr>
 
@@ -59,6 +56,8 @@
   <a href="mailto:simone1.mayer@student.uni-augsburg.de"
      target="_blank"
      data-toggle="tooltip"
+     openDelay="1000"
+     container="body"
      ngbTooltip="{{'MAIN_INFO_TT_MAIL_MAYER' | translate}}"
      placement="{{layoutService.layout.main.tooltipDirection}}">
     <b>Simone Mayer</b>
@@ -72,6 +71,8 @@
      id="mailto"
      target="_blank"
      data-toggle="tooltip"
+     openDelay="1000"
+     container="body"
      ngbTooltip="{{'MAIN_INFO_TT_MAIL_AUER' | translate}}"
      placement="{{layoutService.layout.main.tooltipDirection}}">
     <b>Florian Auer</b>

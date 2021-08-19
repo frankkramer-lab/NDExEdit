@@ -1,23 +1,11 @@
 import {NeChart} from './ne-chart';
 import {NeColorGradient} from './ne-color-gradient';
+import {NeMapping} from './ne-mapping';
 
 /**
  * Format for a continuous mapping
  */
-export interface NeMappingContinuous {
-  /**
-   * Column of a node's or edge's property whose values are mapped
-   */
-  col: string;
-  /**
-   * Style property which is applied, e.g. 'NODE_FILL_COLOR'
-   * These have to be interpretable by CX, because we render by converting CX to Cytoscape.js
-   */
-  styleProperty: string;
-  /**
-   * Style property without redundant prefix 'NODE_' or 'EDGE_'
-   */
-  cleanStyleProperty?: string;
+export interface NeMappingContinuous extends NeMapping {
   /**
    * Type of data which is mapped, should be double, long, or integer
    * to be a valid continuous mapping.
@@ -27,20 +15,25 @@ export interface NeMappingContinuous {
   /**
    * List of lower values for this style property on the specified index
    */
-  lowers: number[] | string[];
+  lowers: (string | number)[];
   /**
    * List of greater values for this style property on the specified index
    */
-  greaters: number[] | string[];
+  greaters: (string | number)[];
   /**
    * List of equal values for this style property on the specified index
    */
-  equals: number[] | string[];
+  equals: (string | number)[];
   /**
    * List of the thresholds
    */
-  thresholds: number[] | string[];
-
+  thresholds: number[];
+  /**
+   * If any threshold has more than one assigned value,
+   * all duplicates are listed here on the corresponding index.
+   * Has to have the same length as {@link thresholds}
+   */
+  duplicates: any[];
   /**
    * Chart data visualising the mapping
    */
@@ -53,4 +46,5 @@ export interface NeMappingContinuous {
    * True, if this mapping applies to a color property
    */
   isColor: boolean;
+
 }

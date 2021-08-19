@@ -1,13 +1,40 @@
 <h1>
 
   <span class="mr-5">{{'MAIN_GRAPH_TITLE' | translate}}</span>
-  <button (click)="graphService.fitGraph()"
-          class="btn btn-outline-success"
-          data-toggle="tooltip"
-          ngbTooltip="{{'MAIN_GRAPH_TT_FIT' | translate}}"
-          placement="{{layoutService.layout.main.tooltipDirection}}">
-    {{'MAIN_GRAPH_BTN_FIT' | translate}}
-  </button>
+
+
+  <div class="btn-group" role="group">
+
+    <button (click)="graphService.fitGraph()"
+            class="btn btn-outline-success"
+            data-toggle="tooltip"
+            container="body"
+            openDelay="1000"
+            ngbTooltip="{{'MAIN_GRAPH_TT_FIT' | translate}}"
+            placement="{{layoutService.layout.main.tooltipDirection}}">
+      {{'MAIN_GRAPH_BTN_FIT' | translate}}
+    </button>
+
+
+      <div class="btn-group" role="group">
+        <button class="btn btn-outline-success dropdown-toggle"
+                [disabled]="layoutInProcessing"
+                type="button"
+                id="graph_layout" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+          {{'MAIN_GRAPH_BTN_LAYOUT' | translate}}
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item"
+             *ngFor="let method of graphService.graphLayoutMethods"
+             (click)="layoutGraph(method)">
+            {{method}}
+          </a>
+        </div>
+      </div>
+  </div>
+
+
 
   <span class="float-right">
     <a *ngIf="dataService.selectedNetwork.id === 0"
@@ -24,3 +51,4 @@
 <hr>
 
 <div #cy id="cy"></div>
+

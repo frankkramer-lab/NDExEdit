@@ -1,0 +1,14 @@
+.drag-bar {
+  background-color: #f1f1f1;
+  height: 100vh;
+  //width: 25px;
+  //margin: 0 5px 0 5px;
+}
+
+.btnLayout {
+  visibility: hidden;
+
+  .drag-bar:hover & {
+    visibility: visible;
+  }
+}

@@ -6,7 +6,7 @@
       <h5>{{'SIDEBAR_EDIT_COMPARISON_' + type | translate}}</h5>
     </div>
     <div class="col">
-      <span class="float-right"
+      <span class="float-right cursor"
             (click)="collapseSelection.toggle()"
             [attr.aria-expanded]="!isCollapsedSelection"
             aria-controls="collapseExample">
@@ -27,6 +27,8 @@
           <td *ngFor="let element of selectedElements">
             <a (click)="graphService.highlightByElementId(element.id)"
                data-toggle="tooltip"
+               openDelay="1000"
+               container="body"
                ngbTooltip="{{'SIDEBAR_EDIT_TT_HIGHLIGHT_' + type | translate}} {{element.id}}"
                placement="{{layoutService.layout.sidebar.tooltipDirection}}"
                role="button"

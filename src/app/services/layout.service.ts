@@ -10,6 +10,14 @@ export class LayoutService {
    * Emits the current layout to the dataservice to trigger a chart redraw.
    */
   layoutEmitter = new EventEmitter<any>();
+  /**
+   * Minimum width equals collapsed column
+   */
+  minWidth = 2;
+  /**
+   * Maximum width equals maximised column
+   */
+  maxWidth = 10;
 
   /**
    * Layout object
@@ -17,12 +25,12 @@ export class LayoutService {
   layout: NeLayout = {
     main: {
       position: 'right',
-      width: 45,
+      width: 6,
       tooltipDirection: 'left'
     },
     sidebar: {
       position: 'left',
-      width: 50,
+      width: 6,
       tooltipDirection: 'right'
     }
   };
@@ -36,14 +44,14 @@ export class LayoutService {
    */
   increaseLayoutLeft(): void {
     if (this.layout.main.position === 'left') {
-      if (this.layout.sidebar.width > 15) {
-        this.layout.sidebar.width -= 5;
-        this.layout.main.width += 5;
+      if (this.layout.sidebar.width > this.minWidth) {
+        this.layout.sidebar.width--;
+        this.layout.main.width++;
       }
     } else if (this.layout.sidebar.position === 'left') {
-      if (this.layout.main.width > 15) {
-        this.layout.sidebar.width += 5;
-        this.layout.main.width -= 5;
+      if (this.layout.main.width > this.minWidth) {
+        this.layout.sidebar.width++;
+        this.layout.main.width--;
       }
     }
     this.emitLayout();
@@ -55,15 +63,37 @@ export class LayoutService {
    */
   increaseLayoutRight(): void {
     if (this.layout.main.position === 'right') {
-      if (this.layout.sidebar.width > 15) {
-        this.layout.sidebar.width -= 5;
-        this.layout.main.width += 5;
+      if (this.layout.sidebar.width > this.minWidth) {
+        this.layout.sidebar.width--;
+        this.layout.main.width++;
+      } else if (this.layout.sidebar.width === this.minWidth) {
+        this.maxOut('right');
       }
     } else if (this.layout.sidebar.position === 'right') {
-      if (this.layout.main.width > 15) {
-        this.layout.sidebar.width += 5;
-        this.layout.main.width -= 5;
+      if (this.layout.main.width > this.minWidth) {
+        this.layout.sidebar.width++;
+        this.layout.main.width--;
+      } else if (this.layout.main.width === this.minWidth) {
+        this.maxOut('right');
       }
+    }
+    this.emitLayout();
+  }
+
+  /**
+   * Increases the given direction to the maximum, thus collapsing the opposite completely
+   * @param direction either 'left' or 'right'
+   */
+  maxOut(direction: string): void {
+
+    // todo needs to contain collapse functionality
+
+    if (this.layout.main.position === direction) {
+      this.layout.sidebar.width = this.minWidth;
+      this.layout.main.width = this.maxWidth;
+    } else if (this.layout.sidebar.position === direction) {
+      this.layout.sidebar.width = this.maxWidth;
+      this.layout.main.width = this.minWidth;
     }
     this.emitLayout();
   }
@@ -74,8 +104,8 @@ export class LayoutService {
    * sidebar has a default of 30.
    */
   resetLayout(): void {
-    this.layout.main.width = 45;
-    this.layout.sidebar.width = 50;
+    this.layout.main.width = 6;
+    this.layout.sidebar.width = 6;
     this.emitLayout();
   }
 
@@ -108,4 +138,5 @@ export class LayoutService {
   emitLayout(): void {
     this.layoutEmitter.emit(this.layout);
   }
+
 }

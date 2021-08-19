@@ -1,7 +1,9 @@
 import {NeNetworkInformation} from './ne-network-information';
-import {Core, ElementDefinition, Stylesheet} from 'cytoscape';
+import {Core, ElementDefinition, NodeCollection, NodeCollectionLayout, Stylesheet} from 'cytoscape';
 import {NeAspect} from './ne-aspect';
 import {NeMappingsMap} from './ne-mappings-map';
+import * as cytoscape from 'cytoscape';
+import {NeNode} from './ne-node';
 
 /**
  * Represents a network ready for rendering within NDExEdit
@@ -68,4 +70,9 @@ export interface NeNetwork {
    * Indicates if the labels are visible or not
    */
   showLabels?: boolean;
+
+  /**
+   * Stores the initial layout for this network so users can return to preset layout
+   */
+  initialLayout: any[];
 }

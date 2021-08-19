@@ -3,7 +3,7 @@ import * as cytoscape from 'cytoscape';
 import {NeNetworkInformation} from '../models/ne-network-information';
 import {NeNetwork} from '../models/ne-network';
 import {NeColorGradient} from '../models/ne-color-gradient';
-import {UtilityService} from './utility.service';
+import {ElementType, MappingType, UtilityService} from './utility.service';
 import {NeChart} from '../models/ne-chart';
 import {ChartDataSets} from 'chart.js';
 import 'cytoscape-cx2js';
@@ -14,8 +14,9 @@ import {NeMappingContinuous} from '../models/ne-mapping-continuous';
 import {NeAspect} from '../models/ne-aspect';
 import {NeChartType} from '../models/ne-chart-type';
 import {DataService} from './data.service';
-import {NeMappingPassthrough} from '../models/ne-mapping-passthrough';
 import {NeStyle} from '../models/ne-style';
+import {NeMapping} from '../models/ne-mapping';
+import {NeNode} from '../models/ne-node';
 
 @Injectable({
   providedIn: 'root'
@@ -25,8 +26,6 @@ import {NeStyle} from '../models/ne-style';
  * Service for parsing of .cx and cytoscape files
  */
 export class ParseService {
-
-  attributeNameMap = {};
 
   constructor(
     private utilityService: UtilityService,
@@ -61,7 +60,6 @@ export class ParseService {
               akvNodes.push(newAspect);
             }
           }
-          akvNodes = this.buildDistributionChart(akvNodes, network.cx, true);
         }
         if (fd.edges) {
           if (akvEdges.every(a => a.name !== 'interaction')) {
@@ -71,70 +69,16 @@ export class ParseService {
 
             }
           }
-          akvEdges = this.buildDistributionChart(akvEdges, network.cx, false);
         }
       }
+      akvNodes = this.buildDistributionChart(akvNodes, network.cx, ElementType.node);
+      akvEdges = this.buildDistributionChart(akvEdges, network.cx, ElementType.edge);
       dataService.selectedNetwork.aspectKeyValuesNodes = akvNodes;
       dataService.selectedNetwork.aspectKeyValuesEdges = akvEdges;
     });
   }
 
-  /**
-   * Creates a discrete mapping object based on the definition string.
-   * Keys and values are always considered to be strings
-   *
-   * @param obj JSON containing the mapping's definition
-   * @param styleProperty Name of the property which is used for this mapping
-   * @private
-   */
-  private static parseDefinitionDiscrete(obj: any, styleProperty: string): NeMappingDiscrete {
-
-    if (!obj || !obj.definition || !styleProperty) {
-      console.log('No definition given');
-      return null;
-    }
-
-    const discreteMapping: NeMappingDiscrete = {
-      col: null,
-      type: obj.type,
-      styleProperty,
-      keys: null,
-      values: null,
-      useValue: []
-    };
-
-    const cleanDefinition = obj.definition.replace(/,,/g, '%');
-
-    const commaSplit = cleanDefinition.split(',');
-    const tmpV = [];
-    const tmpK = [];
-
-    for (let cs of commaSplit) {
-
-      cs = cs.replace(/%/g, ',');
-
-      const equalSplit = cs.split('=');
-      switch (equalSplit[0]) {
-        case 'COL':
-          discreteMapping.col = equalSplit[1];
-          break;
-        case 'T':
-          discreteMapping.type = equalSplit[1];
-          break;
-        case 'K':
-          tmpK.splice(equalSplit[1], 0, equalSplit[2]);
-          break;
-        case 'V':
-          tmpV.splice(equalSplit[1], 0, equalSplit[2]);
-          break;
-      }
-    }
-    discreteMapping.keys = tmpK;
-    discreteMapping.values = tmpV;
-    discreteMapping.useValue = Array(tmpV.length).fill(true);
-
-    return discreteMapping;
-  }
+  attributeNameMap = {};
 
   /**
    * Builds aspects which need specific handling, according to CX documentation those are
@@ -212,21 +156,88 @@ export class ParseService {
   }
 
   /**
-   * Returns true, if the given list consists of distinct values
-   * @param thresholds List of values to be checked
+   * Creates a discrete mapping object based on the definition string.
+   * Keys and values are always considered to be strings
+   *
+   * @param obj JSON containing the mapping's definition
+   * @param styleProperty Name of the property which is used for this mapping
    * @private
    */
-  private static validateThresholds(thresholds: number[] | string[]): boolean {
-    const uniqueThresholds = [];
+  private static parseDefinitionDiscrete(obj: any, styleProperty: string): NeMappingDiscrete {
 
-    for (const th of thresholds) {
-      if (uniqueThresholds.includes(th)) {
-        console.log('Thresholds need to be distinct! No color gradient can be built!');
-        return false;
-      }
-      uniqueThresholds.push(th);
+    if (!obj || !obj.definition || !styleProperty) {
+      console.log('No definition given');
+      return null;
     }
-    return true;
+
+    const discreteMapping: NeMappingDiscrete = {
+      col: null,
+      mappingType: MappingType.discrete,
+      type: null,
+      styleProperty,
+      keys: null,
+      values: null,
+      mapObject: null,
+      useValue: [],
+      newlyAdded: false
+    };
+
+    if (obj.definition.startsWith('*')) {
+      discreteMapping.newlyAdded = true;
+      obj.definition = obj.definition.substring(1);
+    }
+
+    const cleanDefinition = obj.definition.replace(/,,/g, '%');
+
+    const commaSplit = cleanDefinition.split(',');
+    const tmpV = [];
+    const tmpK = [];
+
+    if (discreteMapping.newlyAdded) {
+      console.log('Found new discrete mapping! Setting defaults ...');
+
+      discreteMapping.col = commaSplit[0].split('=')[1];
+      discreteMapping.type = commaSplit[1].split('=')[1];
+      discreteMapping.keys = [];
+      discreteMapping.mapObject = [];
+      discreteMapping.values = [];
+      return discreteMapping;
+    }
+
+    for (let cs of commaSplit) {
+
+      cs = cs.replace(/%/g, ',,');
+
+      const equalSplit = cs.split('=');
+      switch (equalSplit[0]) {
+        case 'COL':
+          discreteMapping.col = equalSplit[1];
+          break;
+        case 'T':
+          discreteMapping.type = equalSplit[1];
+          break;
+        case 'K':
+          tmpK.splice(equalSplit[1], 0, equalSplit[2]);
+          break;
+        case 'V':
+          tmpV.splice(equalSplit[1], 0, equalSplit[2]);
+          break;
+      }
+    }
+
+    if (tmpV.length === 0) {
+      return null;
+    }
+
+    discreteMapping.keys = tmpK;
+    discreteMapping.values = tmpV;
+    discreteMapping.mapObject = [];
+    for (let i = 0; i < tmpK.length; i++) {
+      discreteMapping.mapObject[tmpK[i]] = tmpV[i];
+    }
+    discreteMapping.useValue = Array(tmpV.length).fill(true);
+
+    return discreteMapping;
   }
 
   /**
@@ -234,42 +245,72 @@ export class ParseService {
    * @param mapping Mapping to be interpreted as color mapping
    * @private
    */
-  private static buildColorGradient(mapping: NeMappingContinuous): NeColorGradient[] {
+  buildColorGradient(mapping: NeMappingContinuous): NeColorGradient[] {
 
-    if (!ParseService.validateThresholds(mapping.thresholds)) {
-      return [];
+    if (this.utilityService.utilContainsDuplicates(mapping)) {
+      console.log('Cannot build gradient when duplicate values exist!');
+      return null;
     }
 
-    const thresholds = mapping.thresholds as string[];
-    const lowers = mapping.lowers as string[];
-    const greaters = mapping.greaters as string[];
-    const equals = mapping.equals as string[];
+    const thresholds = mapping.thresholds;
+    const equals = mapping.equals;
+    const greaters = mapping.greaters;
+    const lowers = mapping.lowers;
 
     const colorGradientCollection: NeColorGradient[] = [];
     const range: number = Number(thresholds[thresholds.length - 1]) - Number(thresholds[0]);
     if (range === 0) {
       return [];
     }
+
     colorGradientCollection.push({
-      color: lowers[0],
+      color: lowers[0] as string,
+      contrastColor: this.utilityService.utilGetContrastColorByHex(lowers[0] as string),
+      labelColorWhite: this.utilityService.utilNeedsWhiteLabelText(lowers[0] as string),
       offset: '-1',
-      numericThreshold: '-1'
+      numericOffset: null,
+      offsetInterval: null,
+      numericThreshold: '-1',
+      selected: false
     });
-    for (const th of thresholds) {
-      const offset = ((Number(th) - Number(thresholds[0])) * 100 / range).toFixed(0);
-      const gradient: NeColorGradient = {
-        color: equals[thresholds.indexOf(th)],
-        offset: offset.concat('%'),
-        numericThreshold: th
-      };
-      colorGradientCollection.push(gradient);
+    for (let i = 0; i < thresholds.length; i++) {
+
+      if (mapping.useValue[i]) {
+        const th = thresholds[i];
+
+        const offset = ((Number(th) - Number(thresholds[0])) * 100 / range).toFixed(0);
+        const gradient: NeColorGradient = {
+          color: equals[thresholds.indexOf(th)] as string,
+          contrastColor: this.utilityService.utilGetContrastColorByHex(equals[thresholds.indexOf(th)] as string),
+          labelColorWhite: this.utilityService.utilNeedsWhiteLabelText(equals[thresholds.indexOf(th)] as string),
+          offset: offset.concat('%'),
+          numericOffset: Number(offset),
+          offsetInterval: null,
+          numericThreshold: th as unknown as string,
+          selected: false
+        };
+        colorGradientCollection.push(gradient);
+      }
+
     }
     colorGradientCollection.push({
-      color: greaters[greaters.length - 1],
+      color: greaters[greaters.length - 1] as string,
+      contrastColor: this.utilityService.utilGetContrastColorByHex(greaters[greaters.length - 1] as string),
+      labelColorWhite: this.utilityService.utilNeedsWhiteLabelText(greaters[greaters.length - 1] as string),
       offset: '101',
-      numericThreshold: '101'
+      numericOffset: null,
+      offsetInterval: null,
+      numericThreshold: '101',
+      selected: false
     });
 
+    for (let i = 1; i < colorGradientCollection.length - 1; i++) {
+      if (colorGradientCollection[i].offset !== '-1' && colorGradientCollection[i].offset !== '101') {
+        colorGradientCollection[i].offsetInterval = String(colorGradientCollection[i].numericOffset
+          - colorGradientCollection[i - 1].numericOffset);
+      }
+
+    }
     return colorGradientCollection;
   }
 
@@ -281,7 +322,7 @@ export class ParseService {
   convertCxToJs(json: any[], canvas: HTMLElement): Promise<cytoscape.Core> {
 
     if (!json || !canvas) {
-      console.log('Either data or canvas is missing');
+      console.log('Either data or canvas is missing while trying to convert CX to JS');
       return null;
     }
 
@@ -328,7 +369,7 @@ export class ParseService {
    */
   rebuildCoreForNetwork(network: NeNetwork): Promise<NeNetwork> {
     if (!this.dataService.getCanvas()) {
-      console.log('No canvas specified!');
+      console.log('No canvas specified! Building the Cytoscape.js core requires a canvas.');
       return null;
     }
     this.attributeNameMap = {};
@@ -409,6 +450,7 @@ export class ParseService {
 
     let akvNodes: NeAspect[] = [];
     let akvEdges: NeAspect[] = [];
+    let initialLayout: NeNode[] = [];
 
     for (const fd of filedata) {
 
@@ -442,10 +484,17 @@ export class ParseService {
           }
         }
       }
+      if (fd.cartesianLayout) {
+        const layout = [];
+        for (const item of fd.cartesianLayout) {
+          layout.push(Object.assign({}, item));
+        }
+        initialLayout = layout;
+      }
     }
 
-    akvNodes = this.buildDistributionChart(akvNodes, filedata, true);
-    akvEdges = this.buildDistributionChart(akvEdges, filedata, false);
+    akvNodes = this.buildDistributionChart(akvNodes, filedata, ElementType.node);
+    akvEdges = this.buildDistributionChart(akvEdges, filedata, ElementType.edge);
 
     if (container) {
       return this.convertCxToJs(filedata, container)
@@ -456,6 +505,7 @@ export class ParseService {
             cx: filedata,
             filename,
             core,
+            initialLayout, // will be set to current layout on core rebuild
             networkInformation,
             showLabels: this.utilityService.utilShowLabels(core),
             mappings,
@@ -470,6 +520,7 @@ export class ParseService {
             cx: filedata,
             filename,
             core,
+            initialLayout,
             networkInformation,
             showLabels: this.utilityService.utilShowLabels(core),
             mappings,
@@ -484,6 +535,7 @@ export class ParseService {
           cx: filedata,
           filename,
           core,
+          initialLayout,
           networkInformation,
           mappings,
           aspectKeyValuesNodes: akvNodes,
@@ -545,7 +597,7 @@ export class ParseService {
         akv.validForContinuous = true;
         let max = Number.MIN_SAFE_INTEGER;
         let min = Number.MAX_SAFE_INTEGER;
-        for (const v of akv.values as unknown as number[]) {
+        for (const v of akv.numericValues) {
 
           if (v < min) {
             min = v;
@@ -554,8 +606,8 @@ export class ParseService {
             max = v;
           }
         }
-        akv.max = max;
-        akv.min = min;
+        akv.max = Number(max);
+        akv.min = Number(min);
       }
 
       if (isNode) {
@@ -610,30 +662,57 @@ export class ParseService {
   private parseDefinitionContinuous(obj: any, styleProperty: string): NeMappingContinuous {
 
     if (!obj || !obj.definition || !styleProperty) {
-      console.log('No definition given');
+      console.log('No definition given while parsing continuous mapping');
       return null;
     }
 
     const mappingContinuous: NeMappingContinuous = {
       col: null,
+      useValue: [],
       styleProperty,
-      cleanStyleProperty: this.utilityService.utilRemovePrefix(styleProperty, ['EDGE_', 'NODE_']),
+      mappingType: MappingType.continuous,
       type: null,
       lowers: null,
       equals: null,
       greaters: null,
       thresholds: null,
+      duplicates: null,
       chart: null,
       colorGradient: null,
-      isColor: true
+      isColor: true,
+      newlyAdded: false
     };
 
     const tmpL = [];
     const tmpE = [];
     const tmpG = [];
-    const tmpOV = [];
+    const tmpOV: number[] = [];
+
+    if (obj.definition.startsWith('*')) {
+      mappingContinuous.newlyAdded = true;
+      obj.definition = obj.definition.substring(1);
+    }
 
     const commaSplit = obj.definition.split(',');
+
+    if (mappingContinuous.newlyAdded) {
+      console.log('Found new continuous mapping! Setting defaults ...');
+
+      mappingContinuous.isColor = this.dataService.colorProperties.includes(styleProperty);
+      const defaultValue = mappingContinuous.isColor ? '#000000' : null;
+
+      // assigning two thresholds by default with example values
+      // also display empty input fields for assigned values to guide the user
+      mappingContinuous.col = commaSplit[0].split('=')[1];
+      mappingContinuous.type = commaSplit[1].split('=')[1];
+      mappingContinuous.thresholds = [0, 1];
+      mappingContinuous.useValue = [false, false];
+      mappingContinuous.equals = [defaultValue, defaultValue];
+      mappingContinuous.lowers = [defaultValue, defaultValue];
+      mappingContinuous.greaters = [defaultValue, defaultValue];
+      mappingContinuous.duplicates = [[], []];
+      return mappingContinuous;
+    }
 
     for (const cs of commaSplit) {
 
@@ -665,25 +744,54 @@ export class ParseService {
           tmpG.splice(equalSplit[1], 0, equalSplit[2]);
           break;
         case 'OV':
-          tmpOV.splice(equalSplit[1], 0, equalSplit[2]);
+          tmpOV.splice(equalSplit[1], 0, Number(equalSplit[2]));
           break;
 
       }
     }
 
+    const duplicateMask: number[] = [];
+    const uniqueThresholds: number[] = [];
+    mappingContinuous.duplicates = Array(tmpE.length).fill(null);
+
+    for (let i = 0; i < tmpOV.length; i++) {
+      if (!uniqueThresholds.includes(tmpOV[i])) {
+        uniqueThresholds.push(tmpOV[i]);
+      } else {
+        console.log('Found duplicate while parsing continuous mapping!');
+        const firstOccurrence = tmpOV.findIndex(a => a === tmpOV[i]);
+        duplicateMask.push(i);
+        if (mappingContinuous.duplicates[i] !== null) {
+          mappingContinuous.duplicates[firstOccurrence].push(tmpE[i]);
+        } else {
+          mappingContinuous.duplicates[firstOccurrence] = [tmpE[i]];
+        }
+      }
+    }
+
+    for (const duplicateIndex of duplicateMask) {
+      tmpOV.splice(duplicateIndex, 1);
+      tmpL.splice(duplicateIndex, 1);
+      tmpE.splice(duplicateIndex, 1);
+      tmpG.splice(duplicateIndex, 1);
+      mappingContinuous.duplicates.splice(duplicateIndex, 1);
+    }
+
     mappingContinuous.thresholds = tmpOV;
-    mappingContinuous.lowers = tmpL;
+    mappingContinuous.lowers = Array(tmpOV.length).fill(mappingContinuous.isColor ? '#000000' : null);
+    // mappingContinuous.lowers = tmpL;
     mappingContinuous.equals = tmpE;
-    mappingContinuous.greaters = tmpG;
+    mappingContinuous.greaters = Array(tmpOV.length).fill(mappingContinuous.isColor ? '#000000' : null);
+    // mappingContinuous.greaters = tmpG;
+    mappingContinuous.useValue = Array(tmpOV.length).fill(true);
 
     if (mappingContinuous.isColor) {
-      mappingContinuous.colorGradient = ParseService.buildColorGradient(mappingContinuous);
+      mappingContinuous.colorGradient = this.buildColorGradient(mappingContinuous);
       mappingContinuous.chart = null;
     } else {
       mappingContinuous.chart = this.buildChartData(mappingContinuous);
       mappingContinuous.colorGradient = null;
     }
-
     return mappingContinuous;
   }
 
@@ -694,16 +802,25 @@ export class ParseService {
    * @param styleProperty Name of the property which is used for this mapping
    * @private
    */
-  private parseDefinitionPassthrough(obj: any, styleProperty: string): NeMappingPassthrough {
+  private parseDefinitionPassthrough(obj: any, styleProperty: string): NeMapping {
 
     if (!obj || !obj.definition || !styleProperty) {
-      console.log('No definition given');
+      console.log('No definition given for parsing passthrough mapping');
       return null;
+    }
+
+    let newlyAdded = false;
+    if (obj.definition.startsWith('*')) {
+      obj.definition = obj.definition.substring(1);
+      newlyAdded = true;
     }
 
     return {
       col: this.utilityService.utilExtractColByMappingString(obj.definition),
-      styleProperty
+      styleProperty,
+      mappingType: MappingType.passthrough,
+      useValue: [],
+      newlyAdded
     };
 
   }
@@ -714,17 +831,16 @@ export class ParseService {
    * @param mapping continuous mapping to be displayed as chart
    * @private
    */
-  private buildChartData(mapping: NeMappingContinuous): NeChart {
-
-    if (!ParseService.validateThresholds(mapping.thresholds)) {
-      console.log('Thresholds need to be distinct! No chart can be built!');
-      return {
-        chartType: {
-          line: true,
-          bar: false
-        }
-      };
+  buildChartData(mapping: NeMappingContinuous): NeChart {
+    if (this.utilityService.utilContainsDuplicates(mapping)) {
+      console.log('Found duplicate values while building chart data!');
+      return null;
     }
+
+    const thresholds = mapping.thresholds.filter(a => mapping.useValue[mapping.thresholds.indexOf(a)]);
+    const equals = mapping.equals.filter(a => mapping.useValue[mapping.equals.indexOf(a)]);
+    const greaters = mapping.greaters.filter(a => mapping.useValue[mapping.greaters.indexOf(a)]);
+    const lowers = mapping.lowers.filter(a => mapping.useValue[mapping.lowers.indexOf(a)]);
 
     const chartMappingObject: NeChart = {
       chartData: [],
@@ -750,24 +866,24 @@ export class ParseService {
           }
         },
         responsive: true,
-        maintainAspectRatio: true
+        maintainAspectRatio: false
       }
     };
 
     chartMappingObject.chartLabels.push('');
 
-    for (const th of mapping.thresholds) {
-      chartMappingObject.chartLabels.push(String(th));
+    for (const th of thresholds) {
+      chartMappingObject.chartLabels.push(th as unknown as string);
     }
 
     chartMappingObject.chartLabels.push('');
 
-    const numericEquals = [].concat(mapping.equals as unknown as number[]);
-    const numericLowers = [].concat(mapping.lowers as unknown as number[]);
-    const numericGreaters = [].concat(mapping.greaters as unknown as number[]);
+    const numericEquals = [].concat(equals as unknown as number[]);
+    const numericLowers = [].concat(lowers as unknown as number[]);
+    const numericGreaters = [].concat(greaters as unknown as number[]);
 
     const tmp: ChartDataSets = {
-      label: this.utilityService.utilRemovePrefix(mapping.styleProperty, ['EDGE_', 'NODE_']),
+      label: mapping.styleProperty,
       data: numericEquals
     };
 
@@ -775,9 +891,12 @@ export class ParseService {
       chartMappingObject.chartData.push(tmp);
     }
 
-    chartMappingObject.chartData[0].data.splice(0, 0, numericLowers[0]);
-    chartMappingObject.chartData[0].data.push(numericGreaters[numericGreaters.length - 1]);
-
+    chartMappingObject.chartData[0].data.splice(0, 0, (numericLowers[0] === null ? numericEquals[0] : numericLowers[0]));
+    chartMappingObject.chartData[0].data.push(
+      numericGreaters[numericGreaters.length - 1] === null
+        ? numericEquals[numericEquals.length - 1]
+        : numericGreaters[numericGreaters.length - 1]
+    );
     return chartMappingObject;
   }
 
@@ -857,19 +976,19 @@ export class ParseService {
 
               if (isDiscrete) {
                 const definition: NeMappingDiscrete = ParseService.parseDefinitionDiscrete(prop.mappings[mapKey], mapKey);
-                if (isNode) {
+                if (isNode && definition !== null) {
                   // nd
                   mappings.nodesDiscrete.push(definition);
-                } else {
+                } else if (definition !== null) {
                   // ed
                   mappings.edgesDiscrete.push(definition);
                 }
               } else if (isContinuous) {
                 const definition = this.parseDefinitionContinuous(prop.mappings[mapKey], mapKey);
-                if (isNode) {
+                if (isNode && definition !== null) {
                   // nc
                   mappings.nodesContinuous.push(definition);
-                } else {
+                } else if (definition !== null) {
                   // ec
                   mappings.edgesContinuous.push(definition);
                 }
@@ -893,7 +1012,7 @@ export class ParseService {
    * Builds distribution charts per aspect
    * @param akvs List of aspects for which the charts are to be built
    * @param filedata data containing occurances for each aspect
-   * @param isNode true, if aspects are applied to nodes
+   * @param elementType Type of elements, either 'node' or 'edge'
    * @param specialKey indicates, that nodes or edges should be evaluated, based on the key.
    * This is necessary for the 'interaction' / 'name' properties
    * @private
@@ -901,7 +1020,7 @@ export class ParseService {
   private buildDistributionChart(
     akvs: NeAspect[],
     filedata: any[],
-    isNode: boolean,
+    elementType: ElementType,
     specialKey: string = null
   ): NeAspect[] {
 
@@ -963,7 +1082,7 @@ export class ParseService {
         let vCount = 0;
 
         for (const fd of filedata) {
-          if (isNode) {
+          if (elementType === ElementType.node) {
 
             // handle 'name' or 'represents'
             if (fd.nodes && (akv.name === 'name' || akv.name === 'represents')) {
@@ -1006,15 +1125,15 @@ export class ParseService {
         chart.chartData[0].data.push(vCount);
       }
       akv.chartDiscreteDistribution = chart;
-      akv.coverage = this.getCoverageByChart(chart, isNode ? numberOfNodes : numberOfEdges);
+      akv.coverage = this.getCoverageByChart(chart, (elementType === ElementType.node) ? numberOfNodes : numberOfEdges);
     }
 
     for (const akv of continuousAkvs) {
       const binSize = this.utilityService.utilSturgesRule(akv.numericValues ?? []);
-      const chart = this.utilityService.utilCalculateHistogramDataForBinSize(binSize, akv, ['OCCURANCES', 'BINS']);
+      const chart = this.utilityService.utilCalculateHistogramDataForBinSize(binSize, akv);
       akv.chartContinuousDistribution = chart;
       akv.binSize = binSize;
-      akv.coverage = this.getCoverageByChart(chart, isNode ? numberOfNodes : numberOfEdges);
+      akv.coverage = this.getCoverageByChart(chart, (elementType === ElementType.node) ? numberOfNodes : numberOfEdges);
     }
 
     return discreteAkvs.concat(continuousAkvs);
@@ -1032,11 +1151,10 @@ export class ParseService {
       return '';
     }
 
-    const tmpData = chart.chartData[0].data as number[];
-    const sum = this.utilityService.utilSum(tmpData);
-    if (sum !== null) {
-      return ((sum / elementCount) * 100).toFixed(0);
+    const occurrencesSum = this.utilityService.utilSum(chart.chartData[0].data as number[]);
+    if (occurrencesSum !== null) {
+      return ((occurrencesSum / elementCount) * 100).toFixed(0);
     }
-    return null;
+    return '';
   }
 }

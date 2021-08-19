@@ -3,8 +3,9 @@ import {DataService} from '../../services/data.service';
 import {GraphService} from '../../services/graph.service';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
-import {faHome} from '@fortawesome/free-solid-svg-icons';
+import {faExclamationTriangle, faSave} from '@fortawesome/free-solid-svg-icons';
 import {LayoutService} from '../../services/layout.service';
+import {NodePositionMap} from 'cytoscape';
 
 @Component({
   selector: 'app-main-graph',
@@ -16,12 +17,20 @@ import {LayoutService} from '../../services/layout.service';
  * Component responsible for graph rendering and manipulation
  */
 export class MainGraphComponent implements AfterViewInit, OnDestroy {
-  /**
-   * Icon: faHome
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faHome = faHome;
 
+  /**
+   * True if a layout is currently being processed
+   */
+  layoutInProcessing = false;
+  /**
+   * Contains the previously saved layout
+   */
+  previousGraphLayout = 'preset';
+
+  /**
+   * Contains the currently visible layout (which may or may not be saved)
+   */
+  currentGraphLayout = 'preset';
   /**
    * Contains DOM element for {@link https://js.cytoscape.org/|Cytoscape.js}
    */
@@ -101,6 +110,18 @@ export class MainGraphComponent implements AfterViewInit, OnDestroy {
     this.graphService.render(this.dataService.getSelectedNetwork())
       .then(network => {})
       .catch(e => console.error(e));
+  }
+
+
+  /**
+   * Apply different layout methods to the graph
+   */
+  layoutGraph(method: string): void {
+    this.layoutInProcessing = true;
+    this.currentGraphLayout = method;
+    this.graphService.layoutGraph(method);
+    this.previousGraphLayout = this.currentGraphLayout;
+    this.layoutInProcessing = false;
   }
 
 }

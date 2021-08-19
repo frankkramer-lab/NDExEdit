@@ -5,12 +5,8 @@ import {SidebarManageComponent} from './components/sidebar-manage/sidebar-manage
 import {MainGraphComponent} from './components/main-graph/main-graph.component';
 import {SidebarEditComponent} from './components/sidebar-edit/sidebar-edit.component';
 import {MainStatsComponent} from './components/main-stats/main-stats.component';
-import {SidebarCompareComponent} from './components/sidebar-compare/sidebar-compare.component';
-import {MainMappingsComponent} from './components/main-mappings/main-mappings.component';
-import {MainMappingsNewComponent} from './components/main-mappings-new/main-mappings-new.component';
 import {SidebarImageComponent} from './components/sidebar-image/sidebar-image.component';
 import {NetworkGuard} from './guards/network.guard';
-import {MappingGuard} from './guards/mapping.guard';
 
 export const routes: Routes = [
   {
@@ -33,26 +29,6 @@ export const routes: Routes = [
     canActivate: [NetworkGuard]
   },
   {
-    path: 'mappings/:mapHint/:col',
-    component: MainMappingsComponent,
-    canActivate: [MappingGuard]
-  },
-  {
-    path: 'mappings/:mapId',
-    component: MainMappingsComponent,
-    canActivate: [MappingGuard]
-  },
-  {
-    path: 'new/:map/:propertyId',
-    component: MainMappingsNewComponent,
-    canActivate: [MappingGuard]
-  },
-  {
-    path: 'edit/:map',
-    component: MainMappingsNewComponent,
-    canActivate: [MappingGuard]
-  },
-  {
     path: 'manage',
     component: SidebarManageComponent,
     outlet: 'sidebar'
@@ -60,12 +36,6 @@ export const routes: Routes = [
   {
     path: 'edit/:id',
     component: SidebarEditComponent,
-    outlet: 'sidebar',
-    canActivate: [NetworkGuard]
-  },
-  {
-    path: 'compare/:id',
-    component: SidebarCompareComponent,
     outlet: 'sidebar',
     canActivate: [NetworkGuard]
   },

@@ -29,4 +29,14 @@ export interface NeNode extends NeElement {
    * {@inheritdoc}
    */
   classes?: string[];
+
+  /**
+   * X coordinate
+   */
+  x: number;
+
+  /**
+   * Y coordinate
+   */
+  y: number;
 }

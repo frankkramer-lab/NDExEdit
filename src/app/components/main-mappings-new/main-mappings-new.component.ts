@@ -18,14 +18,14 @@ import {NeAspect} from '../../models/ne-aspect';
 import {ChartDataSets} from 'chart.js';
 import {Label} from 'ng2-charts';
 import {NeThresholdMap} from '../../models/ne-threshold-map';
-import {UtilityService} from '../../services/utility.service';
+import {MappingType, UtilityService} from '../../services/utility.service';
 import {NeMappingsType} from '../../models/ne-mappings-type';
 import {NeChartType} from '../../models/ne-chart-type';
 import {NeChart} from '../../models/ne-chart';
 import {NeMappingDiscrete} from '../../models/ne-mapping-discrete';
 import {NeMappingContinuous} from '../../models/ne-mapping-continuous';
-import {NeMappingPassthrough} from '../../models/ne-mapping-passthrough';
 import {LayoutService} from '../../services/layout.service';
+import {NeMapping} from '../../models/ne-mapping';
 
 @Component({
   selector: 'app-main-mappings-new',
@@ -180,7 +180,7 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
   /**
    * Newly created passthrough mapping
    */
-  passthroughMapping: NeMappingPassthrough;
+  passthroughMapping: NeMapping;
   /**
    * Points to property within the possible attributes of a network's elements (for new creation)
    */
@@ -335,84 +335,89 @@ export class MainMappingsNewComponent implements OnInit, OnDestroy {
    */
   private initDataNew(params: ParamMap): void {
 
-    this.propertyId = Number(params.get('propertyId'));
-    this.isEdit = false;
-    this.dataService.resetAnyMappingSelection();
-
-    let availableAttributes: any[];
-
-    if (this.typeHint.ec || this.typeHint.ed || this.typeHint.ep) {
-      availableAttributes = this.dataService.selectedNetwork.aspectKeyValuesEdges;
-    } else {
-      availableAttributes = this.dataService.selectedNetwork.aspectKeyValuesNodes;
-    }
-
-    if (this.isContinuous) {
-      availableAttributes = this.utilityService.utilFilterForContinuous(availableAttributes);
-      this.propertyToMap = availableAttributes[this.propertyId];
-
-      // todo rework to make binsize changeable for integer based continuous mappings
-      this.chartObject = (this.propertyToMap.datatype === 'integer'
-        ? this.propertyToMap.chartDiscreteDistribution
-        : this.propertyToMap.chartContinuousDistribution);
-
-      this.binSize = (this.propertyToMap.datatype === 'integer')
-        ? null
-        : this.utilityService.utilSturgesRule(this.propertyToMap.numericValues);
-
-      this.continuousMapping = {
-        chart: undefined,
-        cleanStyleProperty: '',
-        col: this.propertyToMap.name,
-        colorGradient: [],
-        equals: undefined,
-        greaters: undefined,
-        isColor: false,
-        lowers: undefined,
-        styleProperty: '',
-        thresholds: [],
-        type: this.propertyToMap.datatype
-      };
-    } else if (this.isDiscrete) {
-      availableAttributes = this.utilityService.utilFilterForDiscrete(availableAttributes);
-      this.propertyToMap = availableAttributes[this.propertyId];
-
-      this.chartObject = this.propertyToMap.chartDiscreteDistribution;
-
-      const values: string[] = new Array<string>(this.propertyToMap.values.length);
-      this.discreteMapping = {
-        col: this.propertyToMap.name,
-        keys: this.propertyToMap.values,
-        styleProperty: '',
-        type: this.propertyToMap.datatype,
-        values,
-        useValue: Array(values.length).fill(true)
-      };
-    } else {
-      this.propertyToMap = availableAttributes[this.propertyId];
-
-      if (this.propertyToMap.datatype === 'integer' || !this.propertyToMap.validForContinuous) {
-        this.chartObject = this.propertyToMap.chartDiscreteDistribution;
-      } else {
-        this.chartObject = this.propertyToMap.chartContinuousDistribution;
-      }
-
-      this.passthroughMapping = {
-        col: this.propertyToMap.name,
-        styleProperty: ''
-      };
-    }
-
-    if (this.isDiscrete) {
-      this.continuousMapping = null;
-      this.passthroughMapping = null;
-    } else if (this.isContinuous) {
-      this.discreteMapping = null;
-      this.passthroughMapping = null;
-    } else {
-      this.discreteMapping = null;
-      this.continuousMapping = null;
-    }
+    // this.propertyId = Number(params.get('propertyId'));
+    // this.isEdit = false;
+    // this.dataService.resetAnyMappingSelection();
+    //
+    // let availableAttributes: any[];
+    //
+    // if (this.typeHint.ec || this.typeHint.ed || this.typeHint.ep) {
+    //   availableAttributes = this.dataService.selectedNetwork.aspectKeyValuesEdges;
+    // } else {
+    //   availableAttributes = this.dataService.selectedNetwork.aspectKeyValuesNodes;
+    // }
+    //
+    // if (this.isContinuous) {
+    //   availableAttributes = this.utilityService.utilFilterForContinuous(availableAttributes);
+    //   this.propertyToMap = availableAttributes[this.propertyId];
+    //
+    //   // todo rework to make binsize changeable for integer based continuous mappings
+    //   this.chartObject = (this.propertyToMap.datatype === 'integer'
+    //     ? this.propertyToMap.chartDiscreteDistribution
+    //     : this.propertyToMap.chartContinuousDistribution);
+    //
+    //   this.binSize = (this.propertyToMap.datatype === 'integer')
+    //     ? null
+    //     : this.utilityService.utilSturgesRule(this.propertyToMap.numericValues);
+    //
+    //   this.continuousMapping = {
+    //     chart: undefined,
+    //     useValue: [],
+    //     mappingType: MappingType.continuous,
+    //     cleanStyleProperty: '',
+    //     col: this.propertyToMap.name,
+    //     colorGradient: [],
+    //     equals: undefined,
+    //     greaters: undefined,
+    //     isColor: false,
+    //     lowers: undefined,
+    //     styleProperty: '',
+    //     thresholds: [],
+    //     type: this.propertyToMap.datatype
+    //   };
+    // } else if (this.isDiscrete) {
+    //   availableAttributes = this.utilityService.utilFilterForDiscrete(availableAttributes);
+    //   this.propertyToMap = availableAttributes[this.propertyId];
+    //
+    //   this.chartObject = this.propertyToMap.chartDiscreteDistribution;
+    //
+    //   const values: string[] = new Array<string>(this.propertyToMap.values.length);
+    //   this.discreteMapping = {
+    //     col: this.propertyToMap.name,
+    //     mappingType: MappingType.discrete,
+    //     keys: this.propertyToMap.values,
+    //     styleProperty: '',
+    //     type: this.propertyToMap.datatype,
+    //     values,
+    //     useValue: Array(values.length).fill(true)
+    //   };
+    // } else {
+    //   this.propertyToMap = availableAttributes[this.propertyId];
+    //
+    //   if (this.propertyToMap.datatype === 'integer' || !this.propertyToMap.validForContinuous) {
+    //     this.chartObject = this.propertyToMap.chartDiscreteDistribution;
+    //   } else {
+    //     this.chartObject = this.propertyToMap.chartContinuousDistribution;
+    //   }
+    //
+    //   this.passthroughMapping = {
+    //     col: this.propertyToMap.name,
+    //     styleProperty: '',
+    //     mappingType: MappingType.passthrough,
+    //     useValue: []
+    //   };
+    // }
+    //
+    // if (this.isDiscrete) {
+    //   this.continuousMapping = null;
+    //   this.passthroughMapping = null;
+    // } else if (this.isContinuous) {
+    //   this.discreteMapping = null;
+    //   this.passthroughMapping = null;
+    // } else {
+    //   this.discreteMapping = null;
+    //   this.continuousMapping = null;
+    // }
   }
 
   /**

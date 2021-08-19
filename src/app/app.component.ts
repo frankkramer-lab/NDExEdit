@@ -3,7 +3,17 @@ import {TranslateService} from '@ngx-translate/core';
 import {ParseService} from './services/parse.service';
 import {DataService} from './services/data.service';
 import {HttpClient} from '@angular/common/http';
-import {faArrowLeft, faArrowRight, faComment, faExchangeAlt, faRedo} from '@fortawesome/free-solid-svg-icons';
+import {
+  faAngleDoubleLeft,
+  faAngleDoubleRight,
+  faAngleLeft,
+  faAngleRight,
+  faArrowLeft,
+  faArrowRight,
+  faComment,
+  faExchangeAlt,
+  faRedo
+} from '@fortawesome/free-solid-svg-icons';
 import {UtilityService} from './services/utility.service';
 import {LayoutService} from './services/layout.service';
 
@@ -28,29 +38,52 @@ export class AppComponent {
    */
   faComment = faComment;
   /**
-   * Icon: faExchange
+   * Icon: faExchangeAlt
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faExchangeAlt = faExchangeAlt;
   /**
-   * Icon: faExchange
+   * Icon: faRedo
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faRedo = faRedo;
   /**
-   * Icon: faExchange
+   * Icon: faArrowRight
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faArrowRight = faArrowRight;
   /**
-   * Icon: faExchange
+   * Icon: faArrowLeft
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faArrowLeft = faArrowLeft;
   /**
+   * Icon: faAngleLeft
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faAngleLeft = faAngleLeft;
+  /**
+   * Icon: faAngleDoubleLeft
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faAngleDoubleLeft = faAngleDoubleLeft;
+  /**
+   * Icon: faAngleRight
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faAngleRight = faAngleRight;
+  /**
+   * Icon: faAngleDoubleRight
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faAngleDoubleRight = faAngleDoubleRight;
+  /**
    * Selected language
    */
   browserLang;
+
+  widthMain = 6;
+  widthSidebar = 6;
 
   /**
    * Path to mock-ups
@@ -84,8 +117,13 @@ export class AppComponent {
     private http: HttpClient
   ) {
 
+    this.layoutService.layoutEmitter.subscribe(layout => {
+      this.widthMain = layout.main.width;
+      this.widthSidebar = layout.sidebar.width;
+    });
+
     this.initializeTranslation();
-    this.initDemoFromNDEx('5d97a04a-6fab-11ea-bfdc-0ac135e8bacf');
+    this.initDemoFromNDEx('868bd0b0-68d2-11e7-961c-0ac135e8bacf');
   }
 
   /**
@@ -118,7 +156,7 @@ export class AppComponent {
   private applyLanguage(): void {
     this.translateService.use(this.browserLang);
     this.translateService.get('MAIN_STATS_AXIS_BINS').subscribe(value => this.utilityService.xAxisContinuousLabel = value);
-    this.translateService.get('MAIN_STATS_AXIS_OCCURANCES').subscribe(value => this.utilityService.yAxisLabel = value);
+    this.translateService.get('MAIN_STATS_AXIS_OCCURRENCES').subscribe(value => this.utilityService.yAxisLabel = value);
     this.translateService.get('MAIN_STATS_AXIS_NAMES').subscribe(value => this.utilityService.xAxisDiscreteLabel = value);
   }
 

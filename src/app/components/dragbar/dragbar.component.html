@@ -1,0 +1,42 @@
+<!-- Grey bar -->
+<div class="drag-bar">
+
+  <div class="btn-group-vertical">
+
+    <button (click)="layoutService.maxOut('right')"
+            class="btn btn-sm btn-secondary btnLayout">
+      <fa-icon [icon]="faAngleDoubleLeft"></fa-icon>
+    </button>
+    <button (click)="layoutService.increaseLayoutRight()"
+            class="btn btn-sm btn-secondary btnLayout">
+      <fa-icon [icon]="faAngleLeft"></fa-icon>
+    </button>
+    <button (click)="layoutService.increaseLayoutLeft()"
+            class="btn btn-sm btn-secondary btnLayout">
+      <fa-icon [icon]="faAngleRight"></fa-icon>
+    </button>
+    <button (click)="layoutService.maxOut('left')"
+            class="btn btn-sm btn-secondary btnLayout">
+      <fa-icon [icon]="faAngleDoubleRight"></fa-icon>
+    </button>
+    <button (click)="layoutService.resetLayout()"
+            class="btn btn-sm btn-secondary btnLayout">
+      <fa-icon [icon]="faRedo"></fa-icon>
+    </button>
+    <button (click)="layoutService.flipLayout()"
+            class="btn btn-sm btn-warning btnLayout"
+            role="button">
+      <fa-icon [icon]="faExchangeAlt"></fa-icon>
+    </button>
+
+    <button (click)="setLanguage('de')"
+            class="btn btn-sm btn-secondary btnLayout">
+      DE
+    </button>
+    <button (click)="setLanguage('en')"
+            class="btn btn-sm btn-secondary btnLayout">
+      EN
+    </button>
+  </div>
+
+</div>

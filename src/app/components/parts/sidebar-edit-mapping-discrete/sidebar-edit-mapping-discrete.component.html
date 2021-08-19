@@ -1,0 +1,476 @@
+<b>{{col}}</b>
+
+<!-- OPTIONS -->
+<div class="row">
+
+  <!-- INSPECT -->
+  <div class="col-4">
+    <button class="btn btn-sm btn-block"
+            data-toggle="tooltip"
+            openDelay="1000"
+            ngbTooltip="{{'SIDEBAR_EDIT_TT_INSPECTION_MODE' | translate}}"
+            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+            (click)="toggleInspectionMode()"
+            [disabled]="editMode"
+            [ngClass]="editMode ? 'btn-outline-secondary' : 'btn-outline-info'"
+            type="button">
+      <fa-icon [icon]="faSearch"></fa-icon>
+    </button>
+  </div>
+
+  <!-- EDIT -->
+  <div class="col-4">
+    <button class="btn btn-sm btn-block"
+            data-toggle="tooltip"
+            openDelay="1000"
+            ngbTooltip="{{'SIDEBAR_EDIT_TT_EDIT_MODE' | translate}}"
+            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+            (click)="toggleEditMode()"
+            [disabled]="markedForDeletion || dataService.isAnyMappingSelected()"
+            [ngClass]="editMode
+                      ? 'btn-warning'
+                      : (markedForDeletion)
+                        || dataService.isAnyMappingSelected()
+                        ? 'btn-outline-secondary'
+                        : 'btn-outline-warning'"
+            type="button">
+      <fa-icon [icon]="faEdit"></fa-icon>
+    </button>
+  </div>
+
+  <!-- DELETE -->
+  <div class="col-4">
+    <button class="btn btn-sm btn-block"
+            data-toggle="tooltip"
+            openDelay="1000"
+            ngbTooltip="{{'SIDEBAR_EDIT_TT_DELETE_ALL' | translate}}"
+            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+            container="body"
+            (click)="markForDeletion()"
+            [disabled]="editMode"
+            [ngClass]="markedForDeletion
+                      ? 'btn-danger'
+                      : (editMode)
+                        ? 'btn-outline-secondary'
+                        : 'btn-outline-danger'"
+            type="button">
+      <fa-icon [icon]="faTrash"></fa-icon>
+    </button>
+  </div>
+</div>
+
+
+<app-chart *ngIf="displayChart"
+           [chartObject]="chart"></app-chart>
+
+<!-- INSPECT -->
+<div class="table-responsive mt-2" *ngIf="inspectionMode">
+  <table class="table table-borderless table-striped">
+
+    <!-- STYLE PROPERTIES -->
+    <tr class="border-bottom">
+      <td class="border-right">
+        <button type="button"
+                class="btn btn-outline-primary btn-block"
+                (click)="toggleChart()">
+          {{col}}
+        </button>
+      </td>
+
+      <!-- INSPECT: loop mappings which are already applied -->
+      <td
+        *ngFor="let styleProperty of discreteMapping|stylePropertiesByCol: col">
+        <b>{{styleProperty}}</b>
+      </td>
+
+    </tr>
+    <!-- Values when INSPECTING -->
+    <ng-container *ngIf="inspectionMode">
+      <tr class="border-bottom"
+          *ngFor="let is of discreteMapping|isByCol: col; let isIndex = index">
+        <td class="border-right">{{is}}</td>
+
+        <td
+          *ngFor="let styleProperty of discreteMapping|stylePropertiesByCol: col">
+          {{discreteMapping|styleValueByColAndKey: col : styleProperty : is}}
+          <span
+            [ngClass]="((discreteMapping|styleValueByColAndKey: col : styleProperty : is) !== null
+                                && (discreteMapping|styleValueByColAndKey: col : styleProperty : is).startsWith('#')
+                                ? 'badge badge-pill border' : 'd-none')"
+            [ngStyle]="{'background-color': discreteMapping|styleValueByColAndKey: col : styleProperty : is}">
+                                  &nbsp;
+                                </span>
+        </td>
+      </tr>
+    </ng-container>
+
+  </table>
+</div>
+
+<!-- EDIT -->
+<form [formGroup]="discreteMappingForm" (ngSubmit)="onSubmitEdit()"
+      class="table-responsive mt-2" *ngIf="editMode">
+  <table class="table table-borderless">
+
+    <!-- STYLE PROPERTIES -->
+    <tr class="border-bottom">
+
+      <!-- toggle chart -->
+      <td class="border-right">
+        <button type="button"
+                class="btn btn-outline-primary btn-block"
+                (click)="toggleChart()">
+          {{col}}
+        </button>
+      </td>
+
+      <!-- EDIT: loop mappings which are already applied -->
+      <td formArrayName="styleProperties"
+          *ngFor="let styleProperty of styleProperties.controls; let stylePropertyIndex = index">
+        <b>{{styleProperty.value}}</b>
+
+        <div class="row mt-3">
+          <!-- Remove this mapping -->
+          <div class="col-6">
+            <button type="button" class="btn btn-block btn-outline-danger"
+                    [disabled]="flashMode"
+                    (click)="removeMapping(stylePropertyIndex)">
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </button>
+          </div>
+
+          <!-- Reset this mapping -->
+          <div class="col-6">
+            <button type="button" class="btn btn-block btn-outline-warning"
+                    [disabled]="flashMode"
+                    (click)="resetMapping(styleProperty.value, stylePropertyIndex)">
+              <fa-icon [icon]="faRedo"></fa-icon>
+            </button>
+          </div>
+        </div>
+      </td>
+
+      <!-- ADD NEW STYLEPROPERTY TO THIS MAPPING -->
+      <td>
+        <button *ngIf="!showNewMappingForm"
+                class="btn btn-outline-success"
+                [disabled]="flashMode"
+                (click)="showNewMappingForm = !showNewMappingForm">
+          <fa-icon [icon]="faPlus"></fa-icon>
+        </button>
+
+        <!-- NEW STYLE FORM -->
+        <form *ngIf="showNewMappingForm"
+              [formGroup]="newMappingForm"
+              (ngSubmit)="onSubmitNewMappingStyleProperty()">
+
+          <div class="form-row form-add-mapping">
+            <div class="col-8">
+              <input class="form-control" type="text" id="styleProperty" name="styleProperty"
+                     formControlName="styleProperty"
+                     container="body"
+                     [ngbTypeahead]="suggestStyleProperties"
+                     [ngClass]="newMappingForm.get('styleProperty').errors !== null
+                          && (newMappingForm.get('styleProperty').touched
+                              || newMappingForm.get('styleProperty').dirty)
+                          ? 'border border-danger'
+                          : newMappingForm.get('styleProperty').errors === null ? 'border border-success' : ''">
+
+            </div>
+
+            <div class="col-2">
+              <button class="btn btn-outline-secondary"
+                      type="button"
+                      (click)="resetNewMappingForm()">
+                <fa-icon [icon]="faTimes"></fa-icon>
+              </button>
+            </div>
+
+            <div class="col-2">
+              <button class="btn btn-outline-success"
+                      type="submit"
+                      [disabled]="newMappingForm.invalid">
+                <fa-icon [icon]="faCheck"></fa-icon>
+              </button>
+            </div>
+
+          </div>
+
+          <small class="form-row mt-1 text-muted"
+                 [innerHTML]="'SIDEBAR_EDIT_TT_PROPERTY_HINT' | translate"></small>
+
+          <div class="form-row mt-1">
+            <small *ngIf="(newMappingForm.get('styleProperty').touched || newMappingForm.get('styleProperty').dirty)
+                                                  && newMappingForm.get('styleProperty').errors !== null">
+
+              <fa-icon [icon]="faExclamationTriangle"
+                       class="text-danger">
+              </fa-icon>
+
+              <ng-container *ngIf="newMappingForm.get('styleProperty').errors['required'];
+                                                      then errRequired
+                                                      else errStylePropertyName"></ng-container>
+
+              <ng-template #errRequired>
+                {{'SIDEBAR_EDIT_STYLE_PROP_VALIDATION_ERROR_REQUIRED' | translate}}
+              </ng-template>
+
+              <ng-template #errStylePropertyName>
+                {{'SIDEBAR_EDIT_STYLE_PROP_VALIDATION_ERROR_INPUT' | translate}}
+              </ng-template>
+
+            </small>
+
+            <small *ngIf="(newMappingForm.get('styleProperty').touched || newMappingForm.get('styleProperty').dirty)
+                                                  && newMappingForm.get('styleProperty').errors === null">
+              <fa-icon [icon]="faCheckCircle"
+                       class="text-success">
+              </fa-icon>
+              {{'SIDEBAR_EDIT_VALIDATION_OK' | translate}}
+            </small>
+          </div>
+        </form>
+
+      </td>
+    </tr>
+
+    <!-- VALUES -->
+    <tr *ngFor="let cv of this.colValues.controls; let cvIndex = index"
+        formArrayName="colValues" class="border-bottom">
+
+      <ng-container [formGroupName]="cvIndex">
+
+        <ng-container
+          *ngFor="let assignedCollection of cv.get('assignedValues')['controls']; let assignedCollectionIndex = index"
+          formArrayName="assignedValues" class="form-control">
+
+          <td *ngIf="assignedCollectionIndex === 0" class="border-right">
+            {{cv.get('colValue').value}}
+          </td>
+
+          <td class="deletable">
+
+            <!-- Add cell -->
+            <button type="button" class="btn btn-block btn-light" [disabled]="flashMode"
+                    (click)="addValue(cvIndex, assignedCollectionIndex)"
+                    *ngIf="!cv.get('useValues')['controls'][assignedCollectionIndex].value">
+              <fa-icon [icon]="faPlus"></fa-icon>
+            </button>
+
+            <!-- Cell value -->
+            <table *ngIf="cv.get('useValues')['controls'][assignedCollectionIndex].value"
+                   class="table table-borderless">
+              <tr>
+
+                <!-- VALUES -->
+                <td class="slim wide">
+
+                  <!-- COLOR -->
+                  <input [formControlName]="assignedCollectionIndex"
+                         class="form-control"
+                         type="color"
+                         [defaultValue]="'#000000'"
+                         *ngIf="cv.get('attributes')['controls'][assignedCollectionIndex].value === utilityService.attributeType.color">
+
+                  <!-- NUMERIC -->
+                  <input [formControlName]="assignedCollectionIndex"
+                         class="form-control"
+                         type="number"
+                         *ngIf="cv.get('attributes')['controls'][assignedCollectionIndex].value === utilityService.attributeType.numeric">
+
+                  <!-- FONT FACE -->
+                  <button *ngIf="cv.get('attributes')['controls'][assignedCollectionIndex].value === utilityService.attributeType.fontFace"
+                          type="button"
+                          class="btn btn-block btn-primary" (click)="toggleFontFaceDialogue(fontFaceForm, assignedCollectionIndex, cvIndex)">
+
+                    <span *ngIf="!cv.get('assignedValues')['controls'][assignedCollectionIndex].value">
+                      &nbsp;
+                    </span>
+                    <span *ngIf="cv.get('assignedValues')['controls'][assignedCollectionIndex].value">
+                      {{cv.get('assignedValues')['controls'][assignedCollectionIndex].value}}
+                    </span>
+
+                  </button>
+
+                  <!-- ELSE -->
+                  <input [formControlName]="assignedCollectionIndex"
+                         class="form-control"
+                         type="text"
+                         *ngIf="cv.get('attributes')['controls'][assignedCollectionIndex].value === utilityService.attributeType.default">
+                </td>
+
+                <!-- REMOVE VALUE -->
+                <td class="slim wide">
+                  <button type="button" class="btn btn-outline-danger deletable-btn"
+                          [disabled]="flashMode"
+                          (click)="removeValue(cvIndex, assignedCollectionIndex)">
+                    <fa-icon [icon]="faTimes"></fa-icon>
+                  </button>
+                </td>
+
+              </tr>
+            </table>
+
+          </td>
+
+        </ng-container>
+
+      </ng-container>
+    </tr>
+
+  </table>
+
+  <!-- ERROR: COLLECTION MINLENGTH -->
+  <span *ngIf="!!styleProperties">
+    <table class="table table-borderless" *ngIf="styleProperties.errors !== null">
+      <tr *ngIf="styleProperties.errors['required']">
+        <td [attr.colspan]="2">
+          <small>
+            <fa-icon [icon]="faExclamationTriangle"
+                     class="text-danger">
+            </fa-icon>
+            {{'SIDEBAR_EDIT_VALIDATION_ERROR_MINLENGTH' | translate}}
+          </small>
+        </td>
+      </tr>
+    </table>
+  </span>
+
+  <!-- ERROR: INSUFFICIENT VALUES VISIBLE -->
+  <table class="table table-borderless" *ngIf="discreteMappingForm.errors !== null">
+    <tr *ngIf="discreteMappingForm.errors['insufficientValuesVisible']">
+      <td [attr.colspan]="2">
+        <small>
+          <fa-icon [icon]="faExclamationTriangle"
+                   class="text-danger">
+          </fa-icon>
+          {{'SIDEBAR_EDIT_VALUE_VALIDATION_ERROR_VISIBLE_DISCRETE' | translate}}
+          <ul>
+            <li *ngFor="let error of discreteMappingForm.errors['insufficientValuesVisible']">
+              {{styleProperties.at(error).value}}
+            </li>
+          </ul>
+        </small>
+      </td>
+    </tr>
+  </table>
+
+  <!-- abort / flash / submit -->
+  <div class="row mb-3 mt-3">
+    <div class="col-4">
+      <!-- discarding changes is not possible for a newly added mapping, this has to be submitted and deleted as a whole -->
+      <button class="btn btn-block btn-outline-danger"
+              data-toggle="tooltip"
+              ngbTooltip="{{'SIDEBAR_EDIT_TT_BTN_ABORT' | translate}}"
+              placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+              type="button"
+              [disabled]="newlyAdded"
+              (click)="discardChanges()">
+        <fa-icon [icon]="faTimes"></fa-icon>
+      </button>
+    </div>
+    <div class="col-4">
+      <button class="btn btn-block"
+              data-toggle="tooltip"
+              ngbTooltip="{{'SIDEBAR_EDIT_TT_BTN_MAGIC_' + (flashMode ? 'OFF' : 'ON') | translate}}"
+              placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+              type="button"
+              [ngClass]="flashMode ? 'btn-info' : 'btn-outline-info'"
+              [disabled]="discreteMappingForm.invalid"
+              (click)="toggleFlashMode()">
+        <fa-icon [icon]="faMagic"></fa-icon>
+      </button>
+    </div>
+    <div class="col-4">
+      <button class="btn btn-block btn-outline-success"
+              data-toggle="tooltip"
+              ngbTooltip="{{'SIDEBAR_EDIT_TT_BTN_APPLY' | translate}}"
+              container="body"
+              placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+              [disabled]="discreteMappingForm.invalid"
+              type="submit">
+        <fa-icon [icon]="faCheck"></fa-icon>
+      </button>
+    </div>
+  </div>
+</form>
+
+<!-- MODAL: FONT FORM -->
+<ng-template #fontFaceForm let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      {{'MODAL_FONT_FACE_FORM' | translate}}
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <!-- FORM -->
+    <form [formGroup]="fontForm" (ngSubmit)="onSubmitFontForm()">
+
+      <p>
+        {{'MODAL_FONT_FACE_FORM_DESCRIPTION' | translate}}
+      </p>
+
+      <p>
+        <b>{{fontForm.get('elementAttributeName').value}}</b>
+        {{'SIDEBAR_EDIT_INSPECT_SAME_LABEL' | translate}}
+        <b>{{fontForm.get('colProperty').value}}</b>
+      </p>
+
+      <div class="row">
+
+        <!-- FAMILY -->
+        <div [ngClass]="fontForm.get('isJavaFont').value ? 'col-3' : 'col-4'">
+          <select class="custom-select" size="5" name="family">
+            <option *ngFor="let font of availableFonts"
+                    (click)="setFont(font)"
+                    [selected]="font === fontForm.get('family').value"
+                    [ngValue]="font">{{font}}</option>
+          </select>
+        </div>
+
+        <!-- STYLE -->
+        <div *ngIf="fontForm.get('isJavaFont').value" class="col-3">
+          <select class="custom-select" size="5">
+            <option *ngFor="let style of javaFontStyles"
+                    (click)="setStyle(style)"
+                    [selected]="style === fontForm.get('style').value"
+                    [ngValue]="style">{{style}}</option>
+          </select>
+        </div>
+
+        <!-- SIZE -->
+        <div class="col-3">
+          <label>
+            <button (click)="resetSize()"
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary mr-1"
+                    data-toggle="tooltip"
+                    openDelay="1000"
+                    ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_FONT_SIZE' | translate}}"
+                    placement="top">
+              <fa-icon [icon]="faRedo"></fa-icon>
+            </button>
+            {{'MAIN_MAPPINGS_NEW_FONT_SIZE' | translate}}
+          </label>
+          <input formControlName="size" class="form-control"
+                 type="number">
+        </div>
+      </div>
+
+      <!-- SUBMIT -->
+      <div class="row mt-4">
+        <div class="col">
+          <button type="submit" class="btn btn-block btn-success" [disabled]="fontForm.invalid">
+            <fa-icon [icon]="faCheck"></fa-icon>
+          </button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+</ng-template>

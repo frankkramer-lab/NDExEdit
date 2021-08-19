@@ -5,6 +5,7 @@ import {faMinus, faPlus, faUndo} from '@fortawesome/free-solid-svg-icons';
 import {NeMappingDiscrete} from '../../../models/ne-mapping-discrete';
 import {NeMappingContinuous} from '../../../models/ne-mapping-continuous';
 import {UtilityService} from '../../../services/utility.service';
+import {NeMapping} from '../../../models/ne-mapping';
 
 @Component({
   selector: 'app-chart',
@@ -12,18 +13,6 @@ import {UtilityService} from '../../../services/utility.service';
   styleUrls: ['./chart.component.scss']
 })
 export class ChartComponent implements OnInit, OnDestroy {
-
-  /**
-   * Sidebar chart displaying a preview for the continuous mapping needs a router link
-   * to the corresponding mapping, to display details.
-   * Index points to the corresponding mapping
-   */
-  @Input() index?: string;
-
-  /**
-   * Since height is automatically set, width can be set by parent component
-   */
-  @Input() widthPercent?: number;
 
   /**
    * Chart object which is to be rendered
@@ -35,10 +24,6 @@ export class ChartComponent implements OnInit, OnDestroy {
    */
   @Input() numberOfBins?: number;
   /**
-   * Renders a headline, if true
-   */
-  @Input() includeHeadline: boolean;
-  /**
    * Triggers redraw of the chart with the new binSize to better evaluate your data
    * for continuous mappings
    */
@@ -47,7 +32,7 @@ export class ChartComponent implements OnInit, OnDestroy {
   /**
    * Mapping to display
    */
-  mapping: NeMappingDiscrete | NeMappingContinuous;
+  mapping: NeMappingContinuous | NeMappingDiscrete | NeMapping;
   /**
    * Default binSize for this property
    */
@@ -68,7 +53,6 @@ export class ChartComponent implements OnInit, OnDestroy {
    */
   faUndo = faUndo;
 
-
   constructor(
     public dataService: DataService,
     private utilityService: UtilityService
@@ -78,17 +62,16 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.binSizeEmitter.emit(this.binSizeInitially);
+    this.numberOfBins = null;
   }
 
   ngOnInit(): void {
     if (!this.binSizeInitially) {
       this.binSizeInitially = this.numberOfBins;
     }
+
     if (this.chartObject) {
       this.chartObject.chartColors = this.utilityService.utilGetRandomColorForChart();
-    }
-    if (this.index) {
-      this.mapping = this.dataService.findMappingById(this.index);
     }
   }
 
@@ -96,16 +79,19 @@ export class ChartComponent implements OnInit, OnDestroy {
    * Triggers a colorful redraw of a chart
    */
   triggerRedraw(): void {
-    this.chartObject.chartColors = this.utilityService.utilGetRandomColorForChart();
+    if (this.chartObject) {
+      this.chartObject.chartColors = this.utilityService.utilGetRandomColorForChart();
+    }
   }
 
   /**
    * Sets the number of bins for the distribution chart
    * only if the size is changing
    * @param newBinSize new number of bins
+   * @param enforce when resetting the number of bins we need to enforce
    */
-  setNumberOfBins(newBinSize: number): void {
-    if (this.numberOfBins !== newBinSize && newBinSize > 0) {
+  setNumberOfBins(newBinSize: number, enforce: boolean = false): void {
+    if (enforce || (this.numberOfBins !== newBinSize && newBinSize > 0)) {
       this.numberOfBins = newBinSize;
       this.binSizeEmitter.emit(this.numberOfBins);
     }

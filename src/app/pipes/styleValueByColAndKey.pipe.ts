@@ -15,7 +15,8 @@ export class StyleValueByColAndKeyPipe implements PipeTransform {
 
         const keyIndex = map.keys.indexOf(is);
 
-        if (map.values[keyIndex] && map.values[keyIndex] !== 'undefined') {
+        if (!!map.values[keyIndex]
+          && map.useValue[keyIndex]) {
           return map.values[keyIndex];
         }
         return null;

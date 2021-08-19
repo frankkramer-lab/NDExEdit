@@ -1,1 +1,24 @@
-/* You can add global styles to this file, and also import other style files */
+.cursor {
+  cursor: pointer;
+}
+
+.deletable:hover .deletable-btn {
+  display: initial;
+}
+
+.deletable-btn {
+  display: none;
+}
+
+.form-add-mapping {
+  min-width: 300px;
+}
+
+.slim {
+  padding: 0 !important;
+  margin: 0;
+}
+
+.wide {
+  width: 100%;
+}

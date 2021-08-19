@@ -1,16 +1,16 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {DataService} from '../../../services/data.service';
 import {faCheck, faPlus, faRedo, faTimes, faTrash, faUndo} from '@fortawesome/free-solid-svg-icons';
-import {UtilityService} from '../../../services/utility.service';
+import {MappingType, UtilityService} from '../../../services/utility.service';
 import {NeMappingsType} from '../../../models/ne-mappings-type';
 import {NeAspect} from '../../../models/ne-aspect';
 import {NeMappingContinuous} from '../../../models/ne-mapping-continuous';
 import {NeMappingDiscrete} from '../../../models/ne-mapping-discrete';
 import {NeThresholdMap} from '../../../models/ne-threshold-map';
-import {NeMappingPassthrough} from '../../../models/ne-mapping-passthrough';
 import {NeFontFace} from '../../../models/ne-font-face';
 import 'cytoscape-cx2js';
 import {CommonOSFontConstants, JavaLogicalFontConstants} from 'cytoscape-cx2js';
+import {NeMapping} from '../../../models/ne-mapping';
 
 @Component({
   selector: 'app-main-mappings-new-form',
@@ -115,7 +115,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
   /**
    * Passthrough mapping
    */
-  @Input() mappingPassthrough: NeMappingPassthrough;
+  @Input() mappingPassthrough: NeMapping;
   /**
    * Aspect which is to be mapped
    */
@@ -129,33 +129,33 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.mapType = this.utilityService.utilGetTypeLiteralByTypeHint(this.typeHint);
-    if (!this.isEdit) {
-      // NEW MAPPING
-
-      if (this.typeHint.ec || this.typeHint.nc) {
-        this.initContinuousMapping();
-      }
-    } else {
-      // EDIT MAPPING
-      if (this.typeHint.nd || this.typeHint.ed) {
-        // discrete
-        this.styleProperty = this.mappingDiscrete.styleProperty;
-        this.mapId = this.dataService.selectedDiscreteMapping.indexOf(this.mappingDiscrete);
-
-        if (this.styleProperty === 'EDGE_LABEL_FONT_FACE'
-          || this.styleProperty === 'NODE_LABEL_FONT_FACE') {
-          this.prefillDiscreteLabelMapping();
-        }
-
-      } else {
-        // continuous
-        this.prefillContinuousMapping();
-      }
-    }
-    this.availableFonts = Object.keys(CommonOSFontConstants.FONT_STACK_MAP)
-      .concat(JavaLogicalFontConstants.FONT_FAMILY_LIST);
-
-    this.javaFontStyles = Object.keys(JavaLogicalFontConstants.FONT_PROPERTIES_MAP);
+    // if (!this.isEdit) {
+    //   // NEW MAPPING
+    //
+    //   if (this.typeHint.ec || this.typeHint.nc) {
+    //     this.initContinuousMapping();
+    //   }
+    // } else {
+    //   // EDIT MAPPING
+    //   if (this.typeHint.nd || this.typeHint.ed) {
+    //     // discrete
+    //     this.styleProperty = this.mappingDiscrete.styleProperty;
+    //     this.mapId = this.dataService.selectedDiscreteMapping.indexOf(this.mappingDiscrete);
+    //
+    //     if (this.styleProperty === 'EDGE_LABEL_FONT_FACE'
+    //       || this.styleProperty === 'NODE_LABEL_FONT_FACE') {
+    //       this.prefillDiscreteLabelMapping();
+    //     }
+    //
+    //   } else {
+    //     // continuous
+    //     this.prefillContinuousMapping();
+    //   }
+    // }
+    // this.availableFonts = Object.keys(CommonOSFontConstants.FONT_STACK_MAP)
+    //   .concat(JavaLogicalFontConstants.FONT_FAMILY_LIST);
+    //
+    // this.javaFontStyles = Object.keys(JavaLogicalFontConstants.FONT_PROPERTIES_MAP);
   }
 
   ngOnDestroy(): void {
@@ -198,7 +198,7 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    */
   public addNewThreshold(): void {
     this.thresholds.push({
-      value: null,
+      value: '#000000',
       propertyValue: '',
       isEditable: true
     });
@@ -244,32 +244,34 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
           isEditable: false
         },
       ];
-      this.mappingContinuous.thresholds = this.thresholds.map(a => a.value);
+      this.mappingContinuous.thresholds = this.thresholds.map(a => a.value) as unknown as number[];
       this.mappingContinuous.equals = this.thresholds.map(a => a.propertyValue);
     }
 
     if (this.mappingPassthrough) {
       this.mappingPassthrough.styleProperty = '';
     }
+
+    console.log(this.thresholds);
   }
 
   /**
    * Submits a new continuous mapping
    */
   submitNewContinuousMapping(): void {
-    this.thresholds = this.thresholds.filter(a => this.utilityService.utilIsDefined(a.propertyValue)
-      && this.utilityService.utilIsDefined(a.value));
-
-    this.thresholds = this.thresholds.sort((a, b) => Number(a.value) > Number(b.value) ? 1 : -1);
-
-    this.mappingContinuous.thresholds = this.thresholds.map(a => String(a.value));
-    this.mappingContinuous.equals = this.thresholds.map(a => String(a.propertyValue));
-
-    // trying
-    this.mappingContinuous.greaters = this.mappingContinuous.equals;
-    this.mappingContinuous.lowers = this.mappingContinuous.equals;
-
-    this.dataService.addMappingContinuous(this.mappingContinuous, this.styleProperty, this.typeHint);
+    // this.thresholds = this.thresholds.filter(a => this.utilityService.utilIsDefined(a.propertyValue)
+    //   && this.utilityService.utilIsDefined(a.value));
+    //
+    // this.thresholds = this.thresholds.sort((a, b) => Number(a.value) > Number(b.value) ? 1 : -1);
+    //
+    // this.mappingContinuous.thresholds = this.thresholds.map(a => String(a.value)) as unknown as number[];
+    // this.mappingContinuous.equals = this.thresholds.map(a => String(a.propertyValue));
+    //
+    // // trying
+    // this.mappingContinuous.greaters = this.mappingContinuous.equals;
+    // this.mappingContinuous.lowers = this.mappingContinuous.equals;
+    //
+    // this.dataService.addMappingContinuous(this.dataService.selectedNetwork, this.mappingContinuous, this.styleProperty, this.typeHint);
   }
 
   /**
@@ -277,12 +279,12 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    */
   submitNewDiscreteMapping(): void {
 
-    if (this.needsColorValidation(this.styleProperty)) {
-      this.cleanForColorMappings();
-    }
-
-    this.mappingDiscrete.styleProperty = this.styleProperty;
-    this.dataService.addMappingDiscrete(this.mappingDiscrete, this.typeHint);
+    // if (this.needsColorValidation(this.styleProperty)) {
+    //   this.cleanForColorMappings();
+    // }
+    //
+    // this.mappingDiscrete.styleProperty = this.styleProperty;
+    // this.dataService.addMappingDiscrete(this.mappingDiscrete, this.typeHint);
   }
 
   /**
@@ -430,19 +432,19 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    * Prefills the continuous mapping
    */
   prefillContinuousMapping(): void {
-    this.mappingContinuous = this.dataService.selectedContinuousMapping;
+    // this.mappingContinuous = this.dataService.selectedContinuousMapping;
     this.styleProperty = this.mappingContinuous.styleProperty;
 
     this.thresholds = [
       // default lower
       {
-        value: this.mappingContinuous.thresholds[0] as string,
+        value: this.mappingContinuous.thresholds[0] as unknown as string,
         propertyValue: this.mappingContinuous.lowers[0] as string,
         isEditable: false
       },
       // default greater
       {
-        value: this.mappingContinuous.thresholds[this.mappingContinuous.thresholds.length - 1] as string,
+        value: this.mappingContinuous.thresholds[this.mappingContinuous.thresholds.length - 1] as unknown as string,
         propertyValue: this.mappingContinuous
           .greaters[this.mappingContinuous.greaters.length - 1] as string,
         isEditable: false
@@ -605,40 +607,43 @@ export class MainMappingsNewFormComponent implements OnInit, OnDestroy {
    */
   private initContinuousMapping(): void {
 
-    this.mappingContinuous = {
-      chart: undefined,
-      cleanStyleProperty: '',
-      col: this.propertyToMap.name || '',
-      colorGradient: [],
-      equals: undefined,
-      greaters: undefined,
-      isColor: false,
-      lowers: undefined,
-      styleProperty: '',
-      thresholds: undefined,
-      type: this.propertyToMap.datatype || 'string'
-    };
-
-    this.thresholds = [
-      {
-        propertyValue: null,
-        value: String(this.propertyToMap.min) || null,
-        isEditable: false
-      },
-      {
-        propertyValue: null,
-        value: String(this.propertyToMap.max) || null,
-        isEditable: false
-      },
-    ];
+    // this.mappingContinuous = {
+    //   useValue: [],
+    //   mappingType: MappingType.continuous,
+    //   chart: undefined,
+    //   cleanStyleProperty: '',
+    //   col: this.propertyToMap.name || '',
+    //   colorGradient: [],
+    //   equals: undefined,
+    //   greaters: undefined,
+    //
+    //   isColor: false,
+    //   lowers: undefined,
+    //   styleProperty: '',
+    //   thresholds: undefined,
+    //   type: this.propertyToMap.datatype || 'string'
+    // };
+    //
+    // this.thresholds = [
+    //   {
+    //     propertyValue: null,
+    //     value: String(this.propertyToMap.min) || '#000000',
+    //     isEditable: false
+    //   },
+    //   {
+    //     propertyValue: null,
+    //     value: String(this.propertyToMap.max) || '#000000',
+    //     isEditable: false
+    //   },
+    // ];
   }
 
   /**
    * Submits a new discrete mapping, adds CSS property to color properties managed in {@link GraphService}
    */
   private submitNewPassthroughMapping(): void {
-    this.mappingPassthrough.styleProperty = this.styleProperty;
-    this.dataService.addMappingPassthrough(this.mappingPassthrough, this.typeHint);
+    // this.mappingPassthrough.styleProperty = this.styleProperty;
+    // this.dataService.addMappingPassthrough(this.mappingPassthrough, this.typeHint);
   }
 
   /**

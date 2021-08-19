@@ -1,16 +1,9 @@
 /**
  * Format of a discrete mapping
  */
-export interface NeMappingDiscrete {
-  /**
-   * Column of a node's or edge's property whose values are mapped
-   */
-  col: string;
-  /**
-   * Style property which is applied, e.g. 'NODE_FILL_COLOR'
-   * These have to be interpretable by CX, because we render by converting CX to Cytoscape.js
-   */
-  styleProperty: string;
+import {NeMapping} from './ne-mapping';
+
+export interface NeMappingDiscrete extends NeMapping {
   /**
    * Type of data which is mapped, should be string (default) or boolean
    * to be a valid discrete mapping.
@@ -28,8 +21,8 @@ export interface NeMappingDiscrete {
   values: string[];
 
   /**
-   * True if a set value is to be set.
-   * Used to exclude a color value defined by color picker, because there's no such thing as 'null' for color pickers
+   * Contains a mapping association of the form {"RNA":"#ff0000"}
    */
-  useValue: boolean[];
+  mapObject: any;
+
 }

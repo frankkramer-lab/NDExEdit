@@ -1,6 +1,6 @@
-import {NeMappingDiscrete} from "./ne-mapping-discrete";
-import {NeMappingContinuous} from "./ne-mapping-continuous";
-import {NeMappingPassthrough} from "./ne-mapping-passthrough";
+import {NeMappingDiscrete} from './ne-mapping-discrete';
+import {NeMappingContinuous} from './ne-mapping-continuous';
+import {NeMapping} from './ne-mapping';
 
 /**
  * Collection of all types of mappings
@@ -30,10 +30,10 @@ export interface NeMappingsMap {
   /**
    * Collection of passthrough node mappings
    */
-  nodesPassthrough: NeMappingPassthrough[];
+  nodesPassthrough: NeMapping[];
 
   /**
    * Collection of passthrough edge mappings
    */
-  edgesPassthrough: NeMappingPassthrough[];
+  edgesPassthrough: NeMapping[];
 }

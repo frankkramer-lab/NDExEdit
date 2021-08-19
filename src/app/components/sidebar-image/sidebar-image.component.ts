@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DataService} from '../../services/data.service';
-import {faArrowLeft, faRedo} from '@fortawesome/free-solid-svg-icons';
+import {faArrowLeft, faRedo, faHome} from '@fortawesome/free-solid-svg-icons';
 import {GraphService} from '../../services/graph.service';
 import {LayoutService} from '../../services/layout.service';
 
@@ -13,6 +13,11 @@ import {LayoutService} from '../../services/layout.service';
  * Component to export the specified network as PNG or JPEG
  */
 export class SidebarImageComponent implements OnInit {
+  /**
+   * Icon: faHome
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faHome = faHome;
   /**
    * Icon: faRedo
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
