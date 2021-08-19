@@ -22,6 +22,16 @@ export interface NeColorGradient {
   offset: string;
 
   /**
+   * Discrepancy between two offsets
+   */
+  offsetInterval: string;
+
+  /**
+   * Numeric representation of an offset
+   */
+  numericOffset: number;
+
+  /**
    * Numeric threshold needed for calculation of the offset in percent
    */
   numericThreshold: string;
