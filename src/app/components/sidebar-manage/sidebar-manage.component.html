@@ -1,7 +1,7 @@
 <div class="p-2">
 
-  <h5>{{'SIDEBAR_MANAGE_TITLE' | translate}}
-
+  <h5 class="mt-1">
+    {{'SIDEBAR_MANAGE_TITLE' | translate}}
     <span class="flag-icon flag-icon-squared flag-icon-gr"></span>
   </h5>
 
@@ -9,58 +9,15 @@
     <tr *ngFor="let network of dataService.networksParsed" class="border-bottom">
       <td class="text-left">{{network.networkInformation.name}}</td>
       <td class="text-nowrap text-right">
-        <a [routerLink]="['', { outlets: {primary: ['stats', network.id]} }]"
-           class="btn btn-sm btn-outline-secondary mr-1"
-           data-toggle="tooltip"
-           container="body"
-           openDelay="1000"
-           ngbTooltip="{{'SIDEBAR_MANAGE_TT_INFO'|translate}}"
-           placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-           role="button">
-          <fa-icon [icon]="faInfo"></fa-icon>
-        </a>
         <a [routerLink]="['', { outlets: {primary: ['graph', network.id], sidebar: ['edit', network.id]} }]"
-           class="btn btn-sm btn-success mr-1"
-           data-toggle="tooltip"
+           class="btn btn-sm btn-success"
            container="body"
-           openDelay="1000"
+           data-toggle="tooltip"
            ngbTooltip="{{'SIDEBAR_MANAGE_TT_EDIT'|translate}}"
+           openDelay="1000"
            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
            role="button">
           <fa-icon [icon]="faPaintBrush"></fa-icon>
-        </a>
-
-        <a (click)="downloadNetwork(network.id)"
-           [routerLink]=""
-           class="btn btn-sm btn-outline-secondary mr-1"
-           data-toggle="tooltip"
-           container="body"
-           openDelay="1000"
-           ngbTooltip="{{'SIDEBAR_MANAGE_TT_DOWNLOAD'|translate}}"
-           placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-           role="button">
-          <fa-icon [icon]="faFileDownload"></fa-icon>
-        </a>
-        <a [routerLink]="['', { outlets: {primary: ['graph', network.id], sidebar: ['image', network.id]} }]"
-           class="btn btn-sm btn-outline-secondary mr-1"
-           data-toggle="tooltip"
-           container="body"
-           openDelay="1000"
-           ngbTooltip="{{'SIDEBAR_MANAGE_TT_IMAGE'|translate}}"
-           placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-           role="button">
-          <fa-icon [icon]="faImage"></fa-icon>
-        </a>
-        <a (click)="copyUuidToClipboard(network.id)" [hidden]="!network.networkInformation.uuid"
-           [routerLink]=""
-           class="btn btn-sm btn-outline-secondary"
-           data-toggle="tooltip"
-           container="body"
-           openDelay="1000"
-           ngbTooltip="{{ 'SIDEBAR_MANAGE_TT_CLIPBOARD' | translate }}"
-           placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-           role="button">
-          <fa-icon [icon]="faClone"></fa-icon>
         </a>
       </td>
     </tr>
@@ -70,6 +27,13 @@
     <h5>{{'SIDEBAR_MANAGE_FILE_SIZE_TOO_LARGE' | translate}}</h5>
     <p><b>{{'SIDEBAR_MANAGE_FILE_SIZE_LABEL_CURRENT' | translate}}</b>: ~ {{currentFileSize}} MB</p>
     <p><b>{{'SIDEBAR_MANAGE_FILE_SIZE_LABEL_MAX' | translate}}</b>: {{sizeLimit}} MB</p>
+    <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div *ngIf="showInvalidFile" class="alert alert-danger alert-dismissible" role="alert">
+    <h5>{{'SIDEBAR_MANAGE_FILE_INVALID' | translate}}</h5>
+    <p>{{'SIDEBAR_MANAGE_FILE_INVALID_TEXT' | translate}}</p>
     <button aria-label="Close" class="close" data-dismiss="alert" type="button">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -116,12 +80,12 @@
     </div>
     <div class="col-3">
       <button (click)="importFromNdex()" [disabled]="loadingHttp" class="btn btn-block btn-outline-success"
+              container="body"
               data-toggle="tooltip"
               ngbTooltip="{{'SIDEBAR_MANAGE_TT_REMOTE_FILES' | translate}}"
-              placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-              type="button"
               openDelay="1000"
-              container="body">
+              placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+              type="button">
 
         <fa-icon [icon]="faCloudDownloadAlt"></fa-icon>
       </button>
@@ -142,25 +106,15 @@
     </div>
     <div class="input-group-append">
       <button (click)="importLocalFile()" [disabled]="loadingFile" class="btn btn-outline-secondary"
+              container="body"
               data-toggle="tooltip"
               ngbTooltip="{{'SIDEBAR_MANAGE_TT_LOCAL_FILE' | translate}}"
-              placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-              type="button"
               openDelay="1000"
-              container="body">
+              placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+              type="button">
         {{'SIDEBAR_MANAGE_LOCAL_FILE_BTN'|translate}}
       </button>
     </div>
   </div>
 
-  <a [routerLink]="['']"
-     class="btn btn-block btn-lg btn-primary mt-5 mb-3"
-     data-toggle="tooltip"
-     container="body"
-     openDelay="1000"
-     ngbTooltip="{{'LOST'|translate}}"
-     placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-     role="button">
-    <fa-icon [icon]="faHome"></fa-icon>
-  </a>
 </div>

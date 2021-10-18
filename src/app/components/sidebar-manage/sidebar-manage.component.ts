@@ -3,10 +3,8 @@ import {
   faClone,
   faCloudDownloadAlt,
   faFileDownload,
-  faFileExport,
   faHome,
   faImage,
-  faInfo,
   faPaintBrush
 } from '@fortawesome/free-solid-svg-icons';
 import {DataService} from '../../services/data.service';
@@ -47,11 +45,6 @@ export class SidebarManageComponent {
    */
   faPaintBrush = faPaintBrush;
   /**
-   * Icon: faInfo
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faInfo = faInfo;
-  /**
    * Icon: faFileDownload
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
@@ -61,11 +54,6 @@ export class SidebarManageComponent {
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faHome = faHome;
-  /**
-   * Icon: faFileExport
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faFileExport = faFileExport;
   /**
    * File from local computer to import
    */
@@ -90,6 +78,12 @@ export class SidebarManageComponent {
    * Boolean to display the element-count-too-big-alert
    */
   showFileElementCountTooBig = false;
+
+  /**
+   * Boolean to display the invalid-file-alert
+   */
+  showInvalidFile = false;
+
   /**
    * Boolean indicating if data is currently being loaded via HTTP
    */
@@ -143,7 +137,7 @@ export class SidebarManageComponent {
    * NDEx's public API endpoint
    * @private
    */
-  private readonly ndexPublicApiHost = 'https://public.ndexbio.org/v2/';
+  private readonly ndexPublicApiHost = 'http://public.ndexbio.org/v2/';
 
   /**
    *
@@ -160,25 +154,6 @@ export class SidebarManageComponent {
     private parseService: ParseService,
     public layoutService: LayoutService
   ) {
-  }
-
-  /**
-   * Converts a network to .cx file format
-   *
-   * @param id network's id
-   */
-  downloadNetwork(id: number): void {
-    const network = this.dataService.getNetworkById(id);
-
-    const blob = new Blob([JSON.stringify(network.cx)], {type: 'application/octet-stream'});
-    const url = window.URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.setAttribute('download', (network.networkInformation.name || 'network_' + id) + '.cx');
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
   }
 
   /**
@@ -220,7 +195,7 @@ export class SidebarManageComponent {
       return;
     }
     this.loadingHttp = true;
-    const slashSplit = this.ndexLinkToUpload.split('/');
+    const slashSplit = this.ndexLinkToUpload.trim().split('/');
     const uuid = slashSplit[slashSplit.length - 1];
 
     this.http.get(this.ndexPublicApiHost + 'network/' + slashSplit[slashSplit.length - 1] + '/summary', this.options)
@@ -229,6 +204,7 @@ export class SidebarManageComponent {
         if ((preview.nodeCount && preview.nodeCount > this.elementLimit) || (preview.edgeCount && preview.edgeCount > this.elementLimit)) {
           this.nodeCount = preview.nodeCount;
           this.edgeCount = preview.edgeCount;
+          this.showInvalidFile = false;
           this.showFileElementCountTooBig = true;
           this.showFileSizeTooLargeAlert = false;
           this.showFileNotValidAlert = false;
@@ -254,6 +230,7 @@ export class SidebarManageComponent {
 
             if (this.currentFileSize > this.sizeLimit) {
               this.showFileSizeTooLargeAlert = true;
+              this.showInvalidFile = false;
               this.showFileElementCountTooBig = false;
               this.showFileNotValidAlert = false;
               this.showFileSizeOkAlert = false;
@@ -266,6 +243,7 @@ export class SidebarManageComponent {
               return;
             } else {
               this.showFileSizeOkAlert = true;
+              this.showInvalidFile = false;
               this.showFileElementCountTooBig = false;
               this.showFileSizeTooLargeAlert = false;
               this.showFileNotValidAlert = false;
@@ -303,7 +281,21 @@ export class SidebarManageComponent {
           .catch(error => console.error(error));
 
       })
-      .catch(error => console.error(error));
+      .catch(error => {
+        console.error(error);
+        this.showInvalidFile = true;
+        this.showFileElementCountTooBig = false;
+        this.showFileSizeTooLargeAlert = false;
+        this.showFileNotValidAlert = false;
+        this.showFileSizeOkAlert = false;
+        this.loadingHttp = false;
+
+        setTimeout(() => {
+          this.showInvalidFile = false;
+        }, 8000);
+
+        return;
+      });
   }
 
   /**
@@ -361,16 +353,6 @@ export class SidebarManageComponent {
       setTimeout(() => {
         this.showFileSizeOkAlert = false;
       }, 8000);
-    }
-  }
-
-  /**
-   * Copies this network's UUID to the clipboard
-   */
-  copyUuidToClipboard(networkId: number): void {
-    const network = this.dataService.networksParsed.find(x => x.id === networkId);
-    if (network.networkInformation.uuid) {
-      navigator.clipboard.writeText(network.networkInformation.uuid);
     }
   }
 }

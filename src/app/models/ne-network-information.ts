@@ -1,6 +1,8 @@
 /**
  * Information about a network
  */
+import {NeKeyValue} from './ne-key-value';
+
 export interface NeNetworkInformation {
 
   /**
@@ -9,32 +11,17 @@ export interface NeNetworkInformation {
   name?: string;
 
   /**
-   * Rightsholder for this network
-   */
-  rightsholder?: string;
-
-  /**
-   * Type of network
-   */
-  networkType?: string;
-
-  /**
-   * This network's organism
-   */
-  organism?: string;
-
-  /**
-   * Description of this network, possibly containing HTML markup
-   */
-  description?: string;
-
-  /**
-   * Original filename
-   */
-  originalFilename?: string;
-
-  /**
    * UUID
    */
   uuid?: string;
+
+  /**
+   * List of information items
+   */
+  information: NeKeyValue[];
+
+  /**
+   * List of ndexStatus items
+   */
+  status: NeKeyValue[];
 }

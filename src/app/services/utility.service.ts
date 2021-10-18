@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {NeMappingsType} from '../models/ne-mappings-type';
 import {NeAspect} from '../models/ne-aspect';
 import {NeChart} from '../models/ne-chart';
 import {NeStyle} from '../models/ne-style';
@@ -27,6 +26,13 @@ export enum AttributeType {
   default
 }
 
+export enum InspectionRuleType {
+  numeric,
+  boolean,
+  text
+}
+
+
 /**
  * Service for methods used within multiple components or services
  */
@@ -49,18 +55,6 @@ export class UtilityService {
    * Label for y axis
    */
   yAxisLabel: string;
-  /**
-   * When no mapping exists or is selected for any purpose,
-   * the default typehint is false for all
-   */
-  defaultTypeHint: NeMappingsType = {
-    nd: false,
-    nc: false,
-    np: false,
-    ed: false,
-    ec: false,
-    ep: false
-  };
 
   /**
    * Types of elements
@@ -75,6 +69,10 @@ export class UtilityService {
    * Types of attributes
    */
   attributeType = AttributeType;
+  /**
+   * Type of comparator for inspection rules
+   */
+  inspectionRuleType = InspectionRuleType;
   /**
    * List of valid numeric properties, as defined here {@link https://home.ndexbio.org/data-model/#data_types}
    */
@@ -132,136 +130,6 @@ export class UtilityService {
    */
   public static utilOrderStylesByPriority(styles: NeStyle[]): NeStyle[] {
     return styles.sort((a, b) => (a.priority < b.priority) ? -1 : 1);
-  }
-
-  /**
-   * Consolidating type hints for each kind of mapping by using a model.
-   * In context of e.g. routing there is still a lot of string usage.
-   * This method will hopefully ease the transition to model standardization.
-   * @param s Can either be 'nd', 'nc', 'ed' or 'ec'
-   */
-  utilGetTypeHintByString(s: string): NeMappingsType {
-    switch (s) {
-      case 'nd':
-        return {
-          nd: true,
-          nc: false,
-          np: false,
-          ed: false,
-          ec: false,
-          ep: false
-        };
-      case 'nc':
-        return {
-          nd: false,
-          nc: true,
-          np: false,
-          ed: false,
-          ec: false,
-          ep: false
-        };
-      case 'ed':
-        return {
-          nd: false,
-          nc: false,
-          np: false,
-          ed: true,
-          ec: false,
-          ep: false
-        };
-      case 'ec':
-        return {
-          nd: false,
-          nc: false,
-          np: false,
-          ed: false,
-          ec: true,
-          ep: false
-        };
-      case 'np':
-        return {
-          nd: false,
-          nc: false,
-          np: true,
-          ed: false,
-          ec: false,
-          ep: false
-        };
-      case 'ep':
-        return {
-          nd: false,
-          nc: false,
-          np: false,
-          ed: false,
-          ec: false,
-          ep: true
-        };
-      default:
-        return this.defaultTypeHint;
-    }
-  }
-
-  /**
-   * Returns literal string representation for maptype
-   * @param typeHint Map of hints applying to this mapping
-   */
-  utilGetTypeLiteralByTypeHint(typeHint: NeMappingsType): string {
-    if (typeHint.nd) {
-      return 'nd';
-    } else if (typeHint.nc) {
-      return 'nc';
-    } else if (typeHint.ed) {
-      return 'ed';
-    } else if (typeHint.ec) {
-      return 'ec';
-    } else if (typeHint.np) {
-      return 'np';
-    } else if (typeHint.ep) {
-      return 'ep';
-    }
-    return '';
-  }
-
-  /**
-   * Determines the typehint based on the elementType and mappingType
-   * @param elementType node or edge
-   * @param mappingType passthrough, discrete or continuous
-   */
-  utilGetTypeHintByElementTypeAndMappingType(elementType: ElementType, mappingType: MappingType): NeMappingsType {
-    const typeHint: NeMappingsType = {
-      nd: false,
-      nc: false,
-      np: false,
-      ed: false,
-      ec: false,
-      ep: false
-    };
-    if (elementType === ElementType.node) {
-      switch (mappingType) {
-        case MappingType.passthrough:
-          typeHint.np = true;
-          break;
-        case MappingType.discrete:
-          typeHint.nd = true;
-          break;
-        case MappingType.continuous:
-          typeHint.nc = true;
-          break;
-      }
-    } else {
-      switch (mappingType) {
-        case MappingType.passthrough:
-          typeHint.ep = true;
-          break;
-        case MappingType.discrete:
-          typeHint.ed = true;
-          break;
-        case MappingType.continuous:
-          typeHint.ec = true;
-          break;
-      }
-    }
-    return typeHint;
   }
 
   /**
@@ -354,13 +222,14 @@ export class UtilityService {
     const bins: NeBin[] = [];
     const binSteps = (propertyToMap.max - propertyToMap.min) / numberOfBins;
 
-
     let pointer: number = propertyToMap.min;
 
     for (let i = 0; i < numberOfBins; i++) {
       const bin: NeBin = {
         from: pointer,
+        fromNormed: pointer.toExponential(2),
         to: pointer + binSteps,
+        toNormed: (pointer + binSteps).toExponential(2),
         values: []
       };
       pointer += binSteps;
@@ -377,7 +246,7 @@ export class UtilityService {
     }
 
     for (const bin of bins) {
-      chartLabels.push('[' + bin.from.toString() + ' : ' + bin.to.toString() + ']');
+      chartLabels.push('[' + bin.fromNormed + ' : ' + bin.toNormed + ']');
     }
 
     chartData.push({
@@ -626,4 +495,15 @@ export class UtilityService {
     return mapping.duplicates.some(a => !!a && a.length > 0);
   }
 
+  /**
+   * Recalculates the histogram with a new number of bins
+   * @param $event new number of bins
+   * @param aspect attribute for which the chart is to be recalculated
+   */
+  utilSetBinSize($event: number, aspect: NeAspect): NeChart {
+    if (aspect.validForContinuous) {
+      aspect.chartContinuousDistribution = this.utilCalculateHistogramDataForBinSize($event, aspect);
+    }
+    return aspect.chartContinuousDistribution;
+  }
 }

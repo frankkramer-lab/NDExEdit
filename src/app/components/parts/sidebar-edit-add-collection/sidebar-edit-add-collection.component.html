@@ -1,0 +1,46 @@
+<h6>
+  <fa-icon *ngIf="locked" [icon]="faLock"></fa-icon>
+  {{'SIDEBAR_EDIT_TT_NEW' | translate}}
+</h6>
+
+<form (ngSubmit)="onSubmitNewMappingCollection()"
+      [formGroup]="newCollectionForm"
+      class="mb-3">
+
+  <div class="form-row">
+    <!-- Property -->
+    <div class="col-5">
+      <input [ngClass]="(newCollectionForm.get('property').touched || newCollectionForm.get('property').dirty)
+                                && newCollectionForm.get('property').errors !== null ? 'border-danger' : ''"
+             [ngbTypeahead]="suggestProperties()"
+             class="form-control"
+             formControlName="property"
+             placeholder="{{'SIDEBAR_EDIT_NEW_MAPPING_' + (elementType === utilityService.elementType.edge ? 'EDGE' : 'NODE') + '_PLACEHOLDER' | translate}}">
+
+      <small [innerHTML]="'SIDEBAR_EDIT_TT_PROPERTY_HINT' | translate" class="mt-1 text-muted"></small>
+    </div>
+
+    <!-- Style property -->
+    <div class="col-5">
+      <input [ngClass]="(newCollectionForm.get('styleProperty').touched || newCollectionForm.get('styleProperty').dirty)
+                                && newCollectionForm.get('styleProperty').errors !== null ? 'border-danger' : ''"
+             [ngbTypeahead]="suggestStyleProperties()"
+             class="form-control"
+             formControlName="styleProperty"
+             placeholder="{{'SIDEBAR_EDIT_NEW_MAPPING_PLACEHOLDER' | translate}}">
+      <small [innerHTML]="'SIDEBAR_EDIT_TT_PROPERTY_HINT' | translate" class="mt-1 text-muted"></small>
+
+    </div>
+
+    <!-- Submit -->
+    <div class="col-2">
+      <button [disabled]="newCollectionForm.invalid
+                          || dataService.lockRouting" class="btn btn-block btn-outline-success col"
+              type="submit">
+        <fa-icon [icon]="faPlus"></fa-icon>
+      </button>
+    </div>
+
+  </div>
+</form>
+

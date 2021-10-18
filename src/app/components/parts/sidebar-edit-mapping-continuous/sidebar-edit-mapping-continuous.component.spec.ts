@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SidebarEditMappingContinuousComponent } from './sidebar-edit-mapping-continuous.component';
+import {SidebarEditMappingContinuousComponent} from './sidebar-edit-mapping-continuous.component';
 
 describe('SidebarEditMappingContinuousComponent', () => {
   let component: SidebarEditMappingContinuousComponent;
@@ -8,9 +8,9 @@ describe('SidebarEditMappingContinuousComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SidebarEditMappingContinuousComponent ]
+      declarations: [SidebarEditMappingContinuousComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

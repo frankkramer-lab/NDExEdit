@@ -86,8 +86,6 @@ export class LayoutService {
    */
   maxOut(direction: string): void {
 
-    // todo needs to contain collapse functionality
-
     if (this.layout.main.position === direction) {
       this.layout.sidebar.width = this.minWidth;
       this.layout.main.width = this.maxWidth;

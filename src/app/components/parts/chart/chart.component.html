@@ -1,4 +1,4 @@
-<div *ngIf="chartObject">
+<div *ngIf="chartObject" style="position: relative; height:300px; width:100%">
   <canvas [chartType]="chartObject.chartType.bar ? 'bar' : 'line'"
           [colors]="chartObject.chartColors"
           [datasets]="chartObject.chartData"
@@ -11,19 +11,24 @@
 
 <div *ngIf="numberOfBins" class="row mt-2 mb-2 p-2">
   <button (click)="setNumberOfBins(numberOfBins - 1)" class="col mr-2 btn btn-sm btn-outline-danger"
-          data-toggle="tooltip" ngbTooltip="{{'CHART_HISTO_DECREASE' | translate}}"
-          placement="bottom">
+          container="body"
+          data-toggle="tooltip"
+          ngbTooltip="{{'CHART_HISTO_DECREASE' | translate}}"
+          placement="{{layoutService.layout.sidebar.tooltipDirection}}">
     <fa-icon [icon]="faMinus"></fa-icon>
   </button>
   <button (click)="setNumberOfBins(numberOfBins + 1)" class="col mr-2 btn btn-sm btn-outline-success"
-          data-toggle="tooltip" ngbTooltip="{{'CHART_HISTO_INCREASE' | translate}}"
-          placement="bottom">
+          container="body"
+          data-toggle="tooltip"
+          ngbTooltip="{{'CHART_HISTO_INCREASE' | translate}}"
+          placement="{{layoutService.layout.sidebar.tooltipDirection}}">
     <fa-icon [icon]="faPlus"></fa-icon>
   </button>
   <button (click)="setNumberOfBins(binSizeInitially, true)" class="col btn btn-sm btn-outline-warning"
+          container="body"
           data-toggle="tooltip"
           ngbTooltip="{{'CHART_HISTO_RESET' | translate}} {{binSizeInitially}}"
-          placement="bottom">
+          placement="{{layoutService.layout.sidebar.tooltipDirection}}">
     <fa-icon [icon]="faUndo"></fa-icon>
   </button>
 </div>

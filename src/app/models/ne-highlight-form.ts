@@ -1,4 +1,5 @@
 import {NeAspect} from './ne-aspect';
+import {ElementType, InspectionRuleType} from '../services/utility.service';
 
 /**
  * Base type for inspect tool
@@ -7,12 +8,12 @@ export interface NeHighlightForm {
   /**
    * Either 'node' or 'edge'
    */
-  type: string;
+  elementType: ElementType;
 
   /**
-   * Translatable type used as toggle label
+   * Either 'numeric', 'bool' or 'text'
    */
-  typeLabel: string;
+  ruleType: InspectionRuleType;
   /**
    * An element's attribute, whose values and distribution the user wants to inspect
    */

@@ -1,0 +1,261 @@
+<h4 (click)="parent.toggle()"
+    [attr.aria-expanded]="!collapsedParent"
+    aria-controls="parent"
+    class="alert alert-secondary cursor">
+  {{ elementTypeLiteral | translate}}
+  <span *ngIf="dataService.objInEditing.elementType === elementType"
+        class="text-warning">
+    <fa-icon [icon]="faExclamationTriangle"></fa-icon>
+  </span>
+</h4>
+
+<div #parent="ngbCollapse"
+     [(ngbCollapse)]="collapsedParent"
+     class="p-2">
+
+  <div class="mb-2">
+    <button (click)="hardReset = true"
+            *ngIf="dataService.selectedNetwork.hasCyViualProperties"
+            class="btn btn-block btn-outline-danger">
+      {{('SIDEBAR_EDIT_MAPPING_HARD_RESET_' + (elementType === utilityService.elementType.node ? 'NODE' : 'EDGE')) | translate}}
+    </button>
+
+    <button (click)="initDefaultStyles()"
+            *ngIf="!dataService.selectedNetwork.hasCyViualProperties"
+            class="btn btn-block btn-outline-info">
+      {{('SIDEBAR_EDIT_MAPPING_INIT_DEFAULT_' + (elementType === utilityService.elementType.node ? 'NODE' : 'EDGE')) | translate}}
+    </button>
+  </div>
+
+  <!-- CONFIRMING RESET -->
+  <div *ngIf="hardReset" class="alert alert-danger">
+    <h5>{{'SIDEBAR_EDIT_MAPPING_HARD_RESET_HEADLINE' | translate}}</h5>
+    <p>{{'SIDEBAR_EDIT_MAPPING_HARD_RESET_TEXT' | translate}}</p>
+    <p>{{'SIDEBAR_EDIT_MAPPING_HARD_RESET_TEXT_NODE' | translate}}</p>
+    <div class="mt-3 row">
+      <div class="col-6">
+        <button (click)="deleteAll(true)" [disabled]="dataService.lockRouting"
+                class="btn btn-lg btn-block btn-danger">
+          {{'SIDEBAR_EDIT_TT_RESET_CONFIRM' | translate}}
+        </button>
+      </div>
+      <div class="col-6">
+        <button (click)="deleteAll(false)" [disabled]="dataService.lockRouting"
+                class="btn btn-lg btn-block btn-success">
+          {{'SIDEBAR_EDIT_TT_RESET_ABORT' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAPPINGS MARKED FOR DELETION -->
+  <div *ngIf="(pForDeletion.length > 0 || dForDeletion.length > 0 || cForDeletion.length > 0) && !hardReset"
+       class="alert alert-danger">
+    <h5>{{'SIDEBAR_EDIT_ALERT_REMOVE_NODE_MAPPINGS_HEADLINE' | translate}}</h5>
+    <p>{{'SIDEBAR_EDIT_ALERT_REMOVE_NODE_MAPPINGS' | translate}}</p>
+    <b *ngIf="pForDeletion.length > 0">{{'SIDEBAR_EDIT_ALERT_REMOVE_P' | translate}}</b>
+    <ul *ngIf="pForDeletion.length > 0">
+      <li *ngFor="let pCol of pForDeletion|uniqueCols">{{pCol}}</li>
+    </ul>
+    <b *ngIf="dForDeletion.length > 0">{{'SIDEBAR_EDIT_ALERT_REMOVE_D' | translate}}</b>
+    <ul *ngIf="dForDeletion.length > 0">
+      <li *ngFor="let dCol of dForDeletion|uniqueCols">{{dCol}}</li>
+    </ul>
+    <b *ngIf="cForDeletion.length > 0">{{'SIDEBAR_EDIT_ALERT_REMOVE_C' | translate}}</b>
+    <ul *ngIf="cForDeletion.length > 0">
+      <li *ngFor="let cCol of cForDeletion|uniqueCols">{{cCol}}</li>
+    </ul>
+
+    <div class="mt-3">
+      <button (click)="deleteMappingCollections()" [disabled]="dataService.lockRouting"
+              class="btn btn-lg btn-block btn-danger">
+        {{'SIDEBAR_EDIT_TT_DELETE_ALL' | translate}}
+      </button>
+    </div>
+
+  </div>
+
+  <!-- DEFAULT -->
+  <h6 (click)="childDefault.toggle()"
+      [attr.aria-expanded]="!collapsedChildDefault"
+      aria-controls="childDefault"
+      class="mt-2 alert alert-dark cursor">
+    <span class="badge badge-light">
+      {{elementTypeLiteral | translate}}
+    </span>
+    &nbsp;{{'DEFAULT' | translate}}
+    <span *ngIf="dataService.objInEditing.elementType === elementType && dataService.objInEditing.mappingType === null"
+          class="text-warning">
+    <fa-icon [icon]="faExclamationTriangle"></fa-icon>
+  </span>
+  </h6>
+  <div #childDefault="ngbCollapse"
+       [(ngbCollapse)]="collapsedChildDefault">
+
+    <app-sidebar-edit-info
+      [elementType]="elementType"
+      [itemList]="elementType === utilityService.elementType.node
+        ? dataService.selectedNetwork.mappings.nodesDefault
+        : dataService.selectedNetwork.mappings.edgesDefault"
+      headline="DEFAULT"
+      target="{{elementTypeLiteral}}_DEFAULT"></app-sidebar-edit-info>
+
+  </div>
+
+  <!-- PASSTHROUGH -->
+  <h6 (click)="childPassthrough.toggle()"
+      [attr.aria-expanded]="!collapsedChildPassthrough"
+      aria-controls="childPassthrough"
+      class="mt-4 alert alert-dark cursor">
+    <span class="badge badge-light">
+      {{elementTypeLiteral | translate}}
+    </span>
+    &nbsp;{{'PASSTHROUGH' | translate}}
+  </h6>
+  <div #childPassthrough="ngbCollapse"
+       [(ngbCollapse)]="collapsedChildPassthrough">
+
+    <app-sidebar-edit-add-collection
+      (newMappingEmitter)="handleNewMapping($event)"
+      [elementType]="elementType"
+      [locked]="dataService.lockRouting"
+      [mappingType]="utilityService.mappingType.passthrough"></app-sidebar-edit-add-collection>
+
+    <hr *ngIf="pMappings.length > 0">
+    <h6 *ngIf="pMappings.length > 0">
+      {{'SIDEBAR_EDIT_TT_EXISTING' | translate}}
+    </h6>
+
+    <table *ngIf="pMappings.length > 0" class="table table-borderless">
+
+      <ng-container *ngFor="let p of pMappings; let pIndex = index">
+
+        <tr *ngIf="passthroughChartIndex === pIndex ">
+          <td [attr.colspan]="3">
+            <app-chart [chartObject]="passthroughChart"></app-chart>
+          </td>
+        </tr>
+
+        <tr>
+          <!-- CHART | ELEMENT PROPERTY -->
+          <td>
+            <button (click)="displayDistributionChart(pIndex, p)"
+                    class="btn btn-block btn-primary"
+                    container="body"
+                    data-toggle="tooltip"
+                    ngbTooltip="{{'SIDEBAR_EDIT_TT_CHART_PASSTHROUGH' | translate}}"
+                    openDelay="1000"
+                    placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+              {{p.col}}
+            </button>
+          </td>
+          <!-- VISUAL PROPERTY -->
+          <td class="align-middle"
+              container="body"
+              data-toggle="tooltip"
+              ngbTooltip="{{'SIDEBAR_EDIT_TT_PASSTHROUGH' | translate}}"
+              openDelay="1000"
+              placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+            {{p.styleProperty}}
+          </td>
+          <!-- DELETE -->
+          <td>
+            <button (click)="markForDeletion(p.col, p.mappingType)"
+                    [ngClass]="pForDeletion.includes(p) ? 'btn-danger' : 'btn-outline-danger'"
+                    class="btn btn-block"
+                    container="body"
+                    data-toggle="tooltip"
+                    ngbTooltip="{{'SIDEBAR_EDIT_TT_REMOVE_PASSTHROUGH' | translate}}"
+                    openDelay="1000"
+                    placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </ng-container>
+    </table>
+
+  </div>
+
+  <!-- DISCRETE -->
+  <h6 (click)="childDiscrete.toggle()"
+      [attr.aria-expanded]="!collapsedChildDiscrete"
+      aria-controls="childDiscrete"
+      class="mt-4 alert alert-dark cursor">
+          <span class="badge badge-light">
+              {{elementTypeLiteral | translate}}
+          </span>
+    &nbsp;{{'DISCRETE' | translate}}
+    <span *ngIf="dataService.objInEditing.elementType === elementType
+            && dataService.objInEditing.mappingType === utilityService.mappingType.discrete"
+          class="text-warning">
+      <fa-icon [icon]="faExclamationTriangle"></fa-icon>
+    </span>
+  </h6>
+  <div #childDiscrete="ngbCollapse" [(ngbCollapse)]="collapsedChildDiscrete">
+
+    <app-sidebar-edit-add-collection
+      (newMappingEmitter)="handleNewMapping($event)"
+      [elementType]="elementType"
+      [locked]="dataService.lockRouting"
+      [mappingType]="utilityService.mappingType.discrete"></app-sidebar-edit-add-collection>
+
+    <hr *ngIf="dMappings.length > 0">
+    <h6 *ngIf="dMappings.length > 0">
+      {{'SIDEBAR_EDIT_TT_EXISTING' | translate}}
+    </h6>
+
+    <ng-container
+      *ngFor="let col of dMappings|uniqueCols; let colIndex = index">
+      <app-sidebar-edit-mapping-discrete
+        (flashOrEditModeEmitter)="handleChildFlashOrEditMode($event, elementType, utilityService.mappingType.discrete)"
+        (markedForDeletionEmitter)="markForDeletion(col, utilityService.mappingType.discrete)"
+        [col]="col"
+        [elementType]="elementType"></app-sidebar-edit-mapping-discrete>
+
+    </ng-container>
+  </div>
+
+  <!-- CONTINUOUS -->
+  <h6 (click)="childContinuous.toggle()"
+      [attr.aria-expanded]="!collapsedChildContinuous"
+      aria-controls="childContinuous"
+      class="mt-4 alert alert-dark cursor">
+          <span class="badge badge-light">
+              {{elementTypeLiteral | translate}}
+          </span>
+    &nbsp;{{'CONTINUOUS' | translate}}
+    <span *ngIf="dataService.objInEditing.elementType === elementType
+            && dataService.objInEditing.mappingType === utilityService.mappingType.continuous"
+          class="text-warning">
+      <fa-icon [icon]="faExclamationTriangle"></fa-icon>
+    </span>
+  </h6>
+  <div #childContinuous="ngbCollapse"
+       [(ngbCollapse)]="collapsedChildContinuous">
+
+    <app-sidebar-edit-add-collection
+      (newMappingEmitter)="handleNewMapping($event)"
+      [elementType]="elementType"
+      [locked]="dataService.lockRouting"
+      [mappingType]="utilityService.mappingType.continuous"></app-sidebar-edit-add-collection>
+
+    <hr *ngIf="cMappings.length > 0">
+    <h6 *ngIf="cMappings.length > 0">
+      {{'SIDEBAR_EDIT_TT_EXISTING' | translate}}
+    </h6>
+
+    <div *ngFor="let col of cMappings|uniqueCols; let colIndex = index">
+      <b>{{col}}</b>
+
+      <app-sidebar-edit-mapping-continuous
+        (flashOrEditModeEmitter)="handleChildFlashOrEditMode($event, elementType, utilityService.mappingType.continuous)"
+        (markedForDeletionEmitter)="markForDeletion(col, utilityService.mappingType.continuous)"
+        [col]="col"
+        [elementType]="elementType"></app-sidebar-edit-mapping-continuous>
+
+    </div>
+  </div>
+
+</div>
+

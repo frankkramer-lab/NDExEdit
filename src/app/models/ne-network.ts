@@ -1,9 +1,7 @@
 import {NeNetworkInformation} from './ne-network-information';
-import {Core, ElementDefinition, NodeCollection, NodeCollectionLayout, Stylesheet} from 'cytoscape';
+import {Core, ElementDefinition, Stylesheet} from 'cytoscape';
 import {NeAspect} from './ne-aspect';
 import {NeMappingsMap} from './ne-mappings-map';
-import * as cytoscape from 'cytoscape';
-import {NeNode} from './ne-node';
 
 /**
  * Represents a network ready for rendering within NDExEdit
@@ -75,4 +73,10 @@ export interface NeNetwork {
    * Stores the initial layout for this network so users can return to preset layout
    */
   initialLayout: any[];
+
+  /**
+   * True, if this network comes with a CyVisualProperties aspect.
+   * That is essential for a network to work with NDExEdit
+   */
+  hasCyViualProperties: boolean;
 }

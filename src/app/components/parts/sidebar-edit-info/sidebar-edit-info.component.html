@@ -1,0 +1,188 @@
+<h5 class="row mt-2">
+  <span class="col-10">
+    <span *ngIf="!target.endsWith('_DEFAULT')">
+      {{headline | translate}}
+    </span>
+
+  </span>
+
+  <!-- Toggle edit mode ON -->
+  <span class="col-2">
+    <button (click)="toggleEditMode()"
+            [disabled]="editMode || dataService.lockRouting"
+            [ngClass]="editMode ? 'btn-warning' : (dataService.lockRouting ? 'btn-secondary' : 'btn-outline-warning')"
+            class="btn btn-block"
+            container="body"
+            data-toggle="tooltip"
+            ngbTooltip="{{ 'SIDEBAR_EDIT_TT_EDIT_' + (target | uppercase) + '_TOGGLE' | translate}}"
+            openDelay="1000"
+            placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+      <fa-icon [icon]="faEdit"></fa-icon>
+    </button>
+  </span>
+</h5>
+
+<!-- Displays everything from within networkAttributes or ndexStatus -->
+<div [ngClass]="editMode ? 'border-warning' : ''" class="card mb-2">
+  <div class="card-body">
+
+    <!-- Display information -->
+    <div *ngIf="!editMode">
+      <p *ngFor="let infoItem of itemList; let index">
+        <b [innerHTML]="infoItem.name">:</b>&nbsp;
+        <span [innerHTML]="infoItem.value"></span>
+      </p>
+    </div>
+
+    <!-- Edit information -->
+    <div *ngIf="editMode">
+      <form (ngSubmit)="onSubmitDescriptionChanges()" [formGroup]="itemForm">
+
+        <div formArrayName="items">
+
+          <div *ngFor="let item of items.controls; let itemIndex = index">
+
+            <div [formGroup]="item" class="mb-2">
+
+              <div class="input-group">
+                <!-- LABEL -->
+                <input class="form-control"
+                       formControlName="label"
+                       placeholder="Name"
+                       required
+                       type="text">
+
+                <!-- DATATYPE (only for network information): not required -->
+                <input *ngIf="target === 'information'"
+                       [placeholder]="'SIDEBAR_EDIT_NETWORK_ATTRIBUTES_TYPE' | translate"
+                       class="form-control"
+                       formControlName="type"
+                       type="text">
+
+                <!-- VALUE (only for non-information): required -->
+                <input *ngIf="target !== 'information'"
+                       [placeholder]="'SIDEBAR_EDIT_NETWORK_ATTRIBUTES_VALUE' | translate"
+                       class="form-control"
+                       formControlName="value"
+                       required
+                       type="text">
+
+                <!-- REMOVE -->
+                <div class="input-group-append">
+                  <button (click)="removeItem(itemIndex)"
+                          class="btn btn-outline-danger"
+                          container="body"
+                          data-toggle="tooltip"
+                          ngbTooltip="{{'SIDEBAR_EDIT_NETWORK_ATTRIBUTES_DELETE_LINE' | translate}}"
+                          openDelay="1000"
+                          placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                          type="button">
+                    <fa-icon [icon]="faTrash"></fa-icon>
+                  </button>
+                </div>
+              </div>
+
+              <!-- ERROR: LABEL missing or VALUE (for non-information list) -->
+              <small
+                *ngIf="(item.get('label').invalid && (item.get('label').dirty || item.get('label').touched)
+                  || (target !== 'information'
+                      && item.get('value').invalid && (item.get('value').dirty || item.get('value').touched)))">
+                <fa-icon [icon]="faExclamationTriangle" class="text-danger"></fa-icon>
+                {{'SIDEBAR_EDIT_NETWORK_ATTRIBUTES_ERROR_REQUIRED' | translate}}
+              </small>
+
+            </div>
+
+            <!-- VALUE (only for network information) -->
+            <div *ngIf="target === 'information'" [formGroup]="item" class="mb-4">
+              <textarea [placeholder]="'SIDEBAR_EDIT_NETWORK_ATTRIBUTES_VALUE' | translate"
+                        class="form-control"
+                        formControlName="value"
+                        required
+                        type="text"></textarea>
+
+              <!-- ERROR -->
+              <small
+                *ngIf="item.get('value').invalid && (item.get('value').dirty || item.get('value').touched)">
+                <fa-icon [icon]="faExclamationTriangle" class="text-danger"></fa-icon>
+                {{'SIDEBAR_EDIT_NETWORK_ATTRIBUTES_ERROR_REQUIRED' | translate}}
+              </small>
+
+            </div>
+
+          </div>
+
+          <!-- add item -->
+          <div class="row">
+            <div class="col-12">
+              <button (click)="addItem()"
+                      class="btn btn-block btn-outline-secondary"
+                      container="body"
+                      data-toggle="tooltip"
+                      ngbTooltip="{{'SIDEBAR_EDIT_NETWORK_ATTRIBUTES_ADD_LINE' | translate}}"
+                      openDelay="1000"
+                      placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                      type="button">
+
+                <fa-icon [icon]="faPlus"></fa-icon>
+
+              </button>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <!-- leave edit mode -->
+            <div class="col-6">
+              <button (click)="toggleEditMode()"
+                      class="btn btn-block btn-outline-danger"
+                      container="body"
+                      data-toggle="tooltip"
+                      ngbTooltip="{{'SIDEBAR_EDIT_NETWORK_ATTRIBUTES_DISCARD' | translate}}"
+                      openDelay="1000"
+                      placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                      type="button">
+                <fa-icon [icon]="faTimes"></fa-icon>
+              </button>
+            </div>
+
+            <!-- submit -->
+            <div class="col-6">
+              <button [disabled]="(itemForm.dirty || itemForm.touched) && itemForm.invalid"
+                      class="btn btn-block btn-outline-success"
+                      container="body"
+                      data-toggle="tooltip"
+                      ngbTooltip="{{'SIDEBAR_EDIT_NETWORK_ATTRIBUTES_SUBMIT' | translate}}"
+                      openDelay="1000"
+                      placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                      type="submit">
+                <fa-icon [icon]="faCheck"></fa-icon>
+              </button>
+            </div>
+          </div>
+
+          <!-- remove all items -->
+          <div *ngIf="target === 'network'" class="row mt-2">
+            <div class="col-12">
+              <button (click)="removeAll()"
+                      class="btn btn-block btn-danger"
+                      container="body"
+                      data-toggle="tooltip"
+                      ngbTooltip="{{'SIDEBAR_EDIT_NETWORK_ATTRIBUTES_REMOVE_ALL' | translate}}"
+                      openDelay="1000"
+                      placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                      type="button">
+
+                <fa-icon [icon]="faTrash"></fa-icon>
+
+              </button>
+            </div>
+          </div>
+
+
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</div>

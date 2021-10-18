@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { NetworkGuard } from './network.guard';
+import {NetworkGuard} from './network.guard';
 import {RouterTestingModule} from '@angular/router/testing';
 
 describe('NetworkGuard', () => {
@@ -9,7 +9,7 @@ describe('NetworkGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-          RouterTestingModule
+        RouterTestingModule
       ]
     });
     guard = TestBed.inject(NetworkGuard);

@@ -33,6 +33,9 @@ import {NeContinuousItemMove} from '../../../models/ne-continuous-item-move';
 import {uniqueThresholdsValidator} from '../../../validators/thresholds.directive';
 import {useValuesContinuousValidator} from '../../../validators/use-values.directive';
 import {GraphService} from '../../../services/graph.service';
+import {PropertyService} from '../../../services/property.service';
+import {NeVisualAids} from '../../../models/ne-visual-aids';
+import {NeVisualAid} from '../../../models/ne-visual-aid';
 
 @Component({
   selector: 'app-sidebar-edit-mapping-continuous',
@@ -57,7 +60,7 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
   /**
    * Emitting if a collection is in flashmode to disable routing
    */
-  @Output() flashModeEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() flashOrEditModeEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
   /**
    * True, if user is in inspection mode
    */
@@ -219,18 +222,28 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
    */
   newlyAdded: boolean;
   /**
-   * Boolean used to indicate if we currently display a histogram,
-   * where we need to show the buttons to alter the number of bins
+   * List of visual aids for all mappings in {@link mappingCollection}
    */
-  showingHistogram: boolean;
+  visualAids: NeVisualAids;
   /**
-   * Boolean used to indicate if the visual aid is being loaded
+   * List of visual aids for all mappings in {@link mappingCollectionInEditing}
    */
-  loadingVisualAid = false;
+  visualAidsInEditing: NeVisualAids;
   /**
-   * Boolean used to indicate if the visual aid is broken
+   * Key pointing towards the currently being rendered visual aid
    */
-  visualAidBroken = false;
+  renderedVisualAidKey: string = null;
+
+  constructor(
+    public layoutService: LayoutService,
+    public dataService: DataService,
+    public utilityService: UtilityService,
+    private parseService: ParseService,
+    private graphService: GraphService,
+    private propertyService: PropertyService
+  ) {
+    layoutService.layoutEmitter.subscribe(value => this.triggerChartRedraw());
+  }
 
   /**
    * Returns the thresholds for the continuous form
@@ -239,20 +252,11 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
     return this.continuousMappingForm.get('thresholds') as FormArray;
   }
 
-  constructor(
-    public layoutService: LayoutService,
-    private dataService: DataService,
-    private parseService: ParseService,
-    private utilityService: UtilityService,
-    private graphService: GraphService
-  ) {
-    dataService.chartRedrawEmitter.subscribe(value => this.triggerChartRedraw());
-  }
-
   ngOnInit(): void {
     this.mappingCollection = this.dataService.findAllMappingsContinuousByCol(this.col, this.elementType);
     this.colProperty = this.dataService.getPropertyByColName(this.col, this.elementType);
     this.setThresholdCollection();
+    this.visualAids = this.buildVisualAidsByCollection(this.mappingCollection);
 
     // we manually select a mapping collection when we created one
     if (!!this.dataService.selectedContinuousMapping
@@ -270,7 +274,58 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
     this.mappingCollectionInEditing = null;
     this.dataService.resetAnyMappingSelection();
     this.markedForDeletionEmitter.emit(false);
-    this.flashModeEmitter.emit(false);
+    this.flashOrEditModeEmitter.emit(false);
+  }
+
+  /**
+   * Builds the {@link visualAids} and {@link visualAidsInEditing} based on the current status of
+   * the {@link mappingCollection} and {@link mappingCollectionInEditing}.
+   * @param mappingCollection Collection for which the visual aids are calculated
+   * @private
+   */
+  private buildVisualAidsByCollection(mappingCollection: NeMappingContinuous[]): NeVisualAids {
+
+    const visualAids: NeVisualAids = {histogram: undefined};
+
+    // add histogram to both the visual aids and visual aids in editing
+    const histogram = this.colProperty.chartContinuousDistribution || this.colProperty.chartDiscreteDistribution;
+    visualAids.histogram = {
+      isValid: true,
+      isHistogram: true,
+      chartObj: histogram,
+      gradientObj: null
+    };
+
+    for (const mapping of this.mappingCollection) {
+      const visualAid: NeVisualAid = {
+        isValid: true,
+        isHistogram: false,
+        chartObj: null,
+        gradientObj: null
+      };
+      if (mapping.isColor) {
+        visualAid.gradientObj = this.parseService.buildColorGradient(mapping);
+        if (visualAid.gradientObj === null) {
+          visualAid.isValid = false;
+        }
+      } else {
+        visualAid.chartObj = this.parseService.buildChartData(mapping);
+        if (visualAid.chartObj === null) {
+          visualAid.isValid = false;
+        }
+      }
+      visualAids[mapping.styleProperty] = visualAid;
+    }
+    return visualAids;
+  }
+
+  /**
+   * Which visual aid is being displayed is determined by the {@link renderedVisualAidKey},
+   * since the lists {@link visualAidsInEditing} and {@link visualAids} consist of these keys
+   * @param propertyName Key to be set
+   */
+  showVisualAid(propertyName: string): void {
+    this.renderedVisualAidKey = propertyName;
   }
 
   /**
@@ -302,9 +357,7 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
    * @param gradientObject A mapping's gradient object. Can only exist for color mappings
    */
   buildColorGradientCssBackground(gradientObject: NeColorGradient[]): string {
-    this.loadingVisualAid = true;
     if (gradientObject.length === 0) {
-      console.log('faulty call');
       return '';
     }
     let color = 'linear-gradient(90deg, ';
@@ -338,7 +391,6 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
 
     color = color.concat(tmp.join(', '));
     color = color.concat(')');
-    this.loadingVisualAid = false;
     return gradientObject[0].color + ' ' + color;
   }
 
@@ -364,19 +416,24 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
       for (const mapping of this.mappingCollection) {
         this.mappingCollectionInEditing.push(this.utilityService.utilDeepCopyMappingContinuous(mapping, this.thresholdCollection));
       }
+      this.visualAidsInEditing = this.buildVisualAidsByCollection(this.mappingCollectionInEditing);
+      this.renderedVisualAidKey = (this.mappingCollectionInEditing.length > 1 || this.newlyAdded)
+        ? 'histogram'
+        : this.mappingCollectionInEditing[0].styleProperty;
       this.resetCellMoving();
       this.initContinuousMappingForm();
       this.resetContinuousMappingForm();
       this.resetNewMappingForm();
+      this.flashOrEditModeEmitter.emit(true);
 
     } else {
       this.editMode = false;
       this.flashMode = false;
       this.inspectionMode = true;
-      this.resetVisualAid();
+      this.visualAidsInEditing = null;
       this.dataService.resetAnyMappingSelection();
       this.mappingCollectionInEditing = null;
-      this.flashModeEmitter.emit(false);
+      this.flashOrEditModeEmitter.emit(false);
     }
   }
 
@@ -385,24 +442,10 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
    */
   toggleInspectionMode(): void {
     if (!this.inspectionMode) {
+      this.renderedVisualAidKey = this.mappingCollection.length > 1 ? 'histogram' : this.mappingCollection[0].styleProperty;
+      this.col = this.colProperty.name;
       this.inspectionMode = true;
 
-      // if our collection contains a single mapping we display this mappings development instead of the col histogram
-      if (this.mappingCollection.length === 1) {
-        this.col = this.colProperty.name;
-
-        if (this.mappingCollection[0].isColor) {
-          this.renderedChart = null;
-          this.renderedGradient = this.parseService.buildColorGradient(this.mappingCollection[0]);
-        } else {
-          this.renderedGradient = null;
-          this.renderedChart = this.parseService.buildChartData(this.mappingCollection[0]);
-        }
-
-      } else {
-        this.renderedChart = this.colProperty.chartContinuousDistribution;
-        this.renderedGradient = null;
-      }
     } else {
       this.inspectionMode = false;
     }
@@ -422,7 +465,7 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
       this.resetNewMappingForm();
       this.updateMappingCollectionInEditing();
       this.applyChanges(this.mappingCollectionInEditing);
-      this.flashModeEmitter.emit(true);
+      this.flashOrEditModeEmitter.emit(true);
 
     } else {
       this.flashMode = false;
@@ -430,7 +473,7 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
       this.graphService.resetElementSelection();
 
       this.applyChanges(this.mappingCollection);
-      this.flashModeEmitter.emit(false);
+      this.flashOrEditModeEmitter.emit(false);
     }
   }
 
@@ -446,16 +489,13 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
     if (this.flashMode) {
       this.toggleFlashMode();
     }
+
     this.applyChanges(this.mappingCollectionInEditing);
     this.mappingCollection = this.mappingCollectionInEditing;
+    this.visualAidsInEditing = null;
+    this.visualAids = this.buildVisualAidsByCollection(this.mappingCollection);
+    this.renderedVisualAidKey = this.mappingCollection.length > 1 ? 'histogram' : this.mappingCollection[0].styleProperty;
     this.toggleEditMode();
-  }
-
-  /**
-   * True, if there is a mapping selected for editing in {@link dataService}
-   */
-  canNotBeEdited(): boolean {
-    return this.dataService.isAnyMappingSelected();
   }
 
   /**
@@ -469,98 +509,18 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
   }
 
   /**
-   * Applies changes to the network.
-   * Used for both flashing changes and finally applying the changes
-   * @param mappingCollection
-   */
-  private applyChanges(mappingCollection: NeMappingContinuous[]): void {
-    this.dataService.removeAllMappingsByCol(this.col, MappingType.continuous, this.elementType);
-    for (const mapping of mappingCollection) {
-      this.dataService.addMappingContinuous(mapping, this.elementType);
-    }
-  }
-
-  /**
    * Resets a mapping to its default values, before the user made any changes
    * @param styleProperty Name of a mapping's style property to reset to default
    * @param mappingIndex Its index within the {@link mappingCollectionInEditing}
    */
   resetStylePropertyToDefaults(styleProperty: string, mappingIndex: number): void {
     const originalMapping = this.mappingCollection.find(a => a.styleProperty === styleProperty);
-    this.deleteMappingFromCollection(styleProperty);
-    this.addMappingToForm(originalMapping, mappingIndex);
-    this.updateMappingCollectionInEditing();
-  }
-
-  /**
-   * By default the visual aid displays the mapping's col's distribution
-   */
-  resetVisualAid(): void {
-    this.loadingVisualAid = true;
-    this.renderedGradient = null;
-    this.renderedChart = this.colProperty.chartContinuousDistribution;
-    this.visualAidBroken = false;
-    this.loadingVisualAid = false;
-    this.showingHistogram = true;
-  }
-
-  /**
-   * Sets {@link renderedGradient} or {@link renderedChart} depending on whether the given property is a color property.
-   * Both gradient and chart are rebuilt on every trigger, due to changes made by the user during editing.
-   * @param prop Name of the property to be visualized
-   */
-  setVisualAid(prop: string): void {
-    this.loadingVisualAid = true;
-    if (this.inspectionMode) {
-      this.mapping = this.mappingCollection.find(a => a.col === this.col && a.styleProperty === prop);
-    } else if (this.editMode || this.flashMode) {
+    if (!!originalMapping) {
+      this.deleteMappingFromCollection(styleProperty);
+      this.addMappingToForm(originalMapping, mappingIndex);
+      this.propertyService.handleStyleAdded(styleProperty);
       this.updateMappingCollectionInEditing();
-      this.mapping = this.mappingCollectionInEditing.find(a => a.col === this.col && a.styleProperty === prop);
     }
-    if (this.mapping.isColor) {
-      this.renderedChart = null;
-      const gradient = this.parseService.buildColorGradient(this.mapping);
-      if (gradient === null) {
-        this.renderedGradient = null;
-        this.visualAidBroken = true;
-        this.loadingVisualAid = false;
-        return;
-      }
-      this.mapping.colorGradient = gradient;
-      this.renderedGradient = this.mapping.colorGradient;
-    } else {
-      this.renderedGradient = null;
-      const chart = this.parseService.buildChartData(this.mapping);
-      if (chart === null) {
-        this.renderedChart = null;
-        this.visualAidBroken = true;
-        this.loadingVisualAid = false;
-        return;
-      }
-      this.mapping.chart = chart;
-      this.renderedChart = this.mapping.chart;
-    }
-    this.visualAidBroken = false;
-    this.loadingVisualAid = false;
-  }
-
-  /**
-   * Collects unique thresholds throughout the mapping collection
-   * @private
-   */
-  private setThresholdCollection(): void {
-
-    for (const mapping of this.mappingCollection) {
-      for (const th of mapping.thresholds) {
-
-        if (!this.thresholdCollection.includes(th)) {
-          this.thresholdCollection.push(th);
-        }
-      }
-    }
-
-    this.thresholdCollection = this.thresholdCollection.sort((a, b) => a > b ? 1 : -1);
-
   }
 
   /**
@@ -612,19 +572,20 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
    */
   suggestStyleProperties: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) => {
 
-    const properties = this.elementType === ElementType.node
-      ? DataService.nodeProperties
-      : DataService.edgeProperties;
-
-    const existing = this.mappingCollectionInEditing.map(a => a.styleProperty);
-    const available = properties.filter(a => existing.indexOf(a) < 0)
-      .filter(a => DataService.continuousProperties.indexOf(a) > -1);
-
     return text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
-      map(term => term === '*' ? available : term.length < 1 ? []
-        : available.filter(a => a.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+      map(term => {
+
+        const available = PropertyService.availableStyleProperties
+          .filter(a => this.elementType === ElementType.node
+            ? PropertyService.nodeProperties.includes(a)
+            : PropertyService.edgeProperties.includes(a))
+          .filter(a => PropertyService.continuousProperties.includes(a));
+
+        return term === '*' ? available : term.length < 1 ? []
+          : available.filter(a => a.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10);
+      })
     );
   }
 
@@ -644,7 +605,7 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
       (threshold.get('isColor') as FormArray).removeAt(index);
     }
     this.updateMappingCollectionInEditing();
-    this.updateStylePropertyValidator();
+    this.propertyService.handleStyleRemoved(styleProperty);
     // collapses the new mapping form and assures that all available styleProperties are recognised as such
     this.resetNewMappingForm();
   }
@@ -658,75 +619,10 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
   }
 
   /**
-   * Updates the {@link mappingCollectionInEditing} by the current values from the {@link continuousMappingForm}.
-   * Used when applying flashMode or when finally applying the changes.
-   * Also used when visual aids have to be displayed during edit mode.
-   * @private
-   */
-  private updateMappingCollectionInEditing(): void {
-    this.sortAscendingByThreshold();
-
-    this.thresholdCollection = [];
-    for (const th of this.thresholds.controls) {
-      this.thresholdCollection.push(th.get('threshold').value);
-    }
-    this.mappingCollectionInEditing = this.getMappingsByThresholdsForm();
-  }
-
-  /**
-   * Returns a mapping collection based on the current state of the continuous mapping form
-   * @private
-   */
-  private getMappingsByThresholdsForm(): NeMappingContinuous[] {
-    const mappings: NeMappingContinuous[] = [];
-    if (this.thresholds.controls.length < 1) {
-      return [];
-    }
-    const numberOfMappings = (this.thresholds.controls[0].get('equals') as FormArray).controls.length;
-
-    for (let i = 0; i < numberOfMappings; i++) {
-
-      const newMapping: NeMappingContinuous = {
-        chart: null,
-        col: this.col,
-        colorGradient: null,
-        duplicates: [],
-        equals: [],
-        greaters: [],
-        isColor: false,
-        lowers: [],
-        mappingType: MappingType.continuous,
-        styleProperty: null,
-        thresholds: [],
-        useValue: [],
-        type: this.colProperty.datatype,
-        newlyAdded: false
-      };
-
-      for (const th of this.thresholds.controls) {
-        const isColor = th.get('isColor').value[i];
-
-        newMapping.equals.push((th.get('equals') as FormArray).controls[i].value);
-        newMapping.greaters.push(isColor ? '#000000' : null);
-        newMapping.lowers.push(isColor ? '#000000' : null);
-        newMapping.useValue.push((th.get('useValues') as FormArray).controls[i].value);
-        newMapping.duplicates.push((th.get('duplicates') as FormArray).controls[i].value);
-        newMapping.thresholds.push(th.get('threshold').value);
-
-        newMapping.isColor = isColor;
-        newMapping.styleProperty = th.get('styleProperty').value[i];
-      }
-      // const index = mappings.findIndex(a => a.styleProperty === newMapping.styleProperty);
-      mappings.push(newMapping);
-    }
-    return mappings;
-  }
-
-  /**
    * Inserts the style property as new mapping into the mappingCollection
    */
   onSubmitNewMappingStyleProperty(): void {
-    const isColor = this.dataService.colorProperties.includes(this.newMappingForm.value.styleProperty);
+    const isColor = PropertyService.colorProperties.includes(this.newMappingForm.value.styleProperty);
 
     for (const threshold of this.thresholds.controls) {
       (threshold.get('equals') as FormArray).push(new FormControl(isColor ? '#000000' : null));
@@ -736,18 +632,15 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
       (threshold.get('styleProperty') as FormArray).push(new FormControl(this.newMappingForm.value.styleProperty));
 
     }
+    this.propertyService.handleStyleAdded(this.newMappingForm.value.styleProperty);
+    this.visualAidsInEditing[this.newMappingForm.value.styleProperty] = {
+      chartObj: undefined,
+      gradientObj: [],
+      isHistogram: false,
+      isValid: false
+    };
     this.updateMappingCollectionInEditing();
     this.resetNewMappingForm();
-  }
-
-  /**
-   * Updates the style property validator with the currently unavailable style properties
-   */
-  updateStylePropertyValidator(): void {
-    this.newMappingForm.get('styleProperty').setValidators([
-      Validators.required,
-      stylePropertyValidator(this.elementType, MappingType.continuous, this.mappingCollectionInEditing.map(a => a.styleProperty))
-    ]);
   }
 
   /**
@@ -773,38 +666,9 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
     this.newMappingForm = new FormGroup({
       styleProperty: new FormControl(null, [
         Validators.required,
-        stylePropertyValidator(this.elementType, MappingType.continuous, this.mappingCollectionInEditing.map(a => a.styleProperty))
+        stylePropertyValidator(this.elementType, MappingType.continuous)
       ])
     });
-  }
-
-  /**
-   * Initializes the form to edit a continuous mapping collection
-   * @private
-   */
-  private resetContinuousMappingForm(): void {
-
-    this.thresholds.reset(new FormArray([]));
-    this.thresholds.setValidators([
-      uniqueThresholdsValidator(), // thresholds need to be unique
-      Validators.minLength(2), // at least 2 thresholds must be defined
-      useValuesContinuousValidator() // for each mapping at least two assigned values must be visible
-    ]);
-
-    for (const th of this.thresholdCollection) {
-      this.thresholds.push(new FormGroup({
-        threshold: new FormControl(th, [Validators.required]),
-        styleProperty: new FormArray([]),
-        isColor: new FormArray([]),
-        equals: new FormArray([], [Validators.required]),
-        useValues: new FormArray([]),
-        duplicates: new FormArray([])
-      }));
-    }
-
-    for (let i = 0; i < this.mappingCollectionInEditing.length; i++) {
-      this.addMappingToForm(this.mappingCollectionInEditing[i], i);
-    }
   }
 
   /**
@@ -819,8 +683,6 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
    * @param value Value for the newly assigned threshold, empty by default
    */
   addThresholdToMapping(value: number = null): void {
-    // const defaultGreaters = new FormArray([]);
-    // const defaultLowers = new FormArray([]);
     const duplicates = new FormArray([]);
     const equals = new FormArray([]);
     const isColor = new FormArray([]);
@@ -835,14 +697,6 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
       const newEquals: FormControl = new FormControl(mapping.isColor ? '#000000' : null);
       newEquals.markAsTouched();
 
-      // defaultGreaters.push(new FormGroup({
-      //   dgValue: new FormControl(mapping.isColor ? '#000000' : null),
-      //   isColor: new FormControl(mapping.isColor)
-      // }));
-      // defaultLowers.push(new FormGroup({
-      //   dlValue: new FormControl(mapping.isColor ? '#000000' : null),
-      //   isColor: new FormControl(mapping.isColor)
-      // }));
       duplicates.push(new FormControl([], [Validators.maxLength(0)]));
       equals.push(new FormControl());
       isColor.push(new FormControl(mapping.isColor));
@@ -850,8 +704,6 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
       styleProperty.push(new FormControl(mapping.styleProperty));
     }
     this.thresholds.push(new FormGroup({
-      // defaultGreaters,
-      // defaultLowers,
       duplicates,
       equals,
       isColor,
@@ -933,16 +785,6 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
   }
 
   /**
-   * Resets the duplicate management object to default values
-   * @private
-   */
-  private resetCellMoving(): void {
-    this.markedCellMove = {
-      duplicateIndex: -1, mappingIndex: -1, sourceThresholdIndex: -1
-    };
-  }
-
-  /**
    * Returns true if the specified threshold has a mapping somewhere in the collection
    * @param thresholdIndex index pointing to the threshold to be checked
    * @param mappingIndex index pointing to a specific mapping. If none is given, all mappings are checked for duplicates
@@ -957,6 +799,155 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
     } else {
       return hasThresholdsDuplicates;
     }
+  }
+
+  /**
+   * Sets the number of bins to a new value
+   * @param $event the new value
+   * @param property aspect whose number of bins is to be changed
+   */
+  setBinSize($event: number, property: NeAspect): void {
+    if (this.editMode) {
+      this.visualAidsInEditing.histogram.chartObj = this.utilityService.utilSetBinSize($event, property);
+    } else {
+      this.visualAids.histogram.chartObj = this.utilityService.utilSetBinSize($event, property);
+    }
+    this.triggerChartRedraw();
+  }
+
+  /**
+   * Applies changes to the network.
+   * Used for both flashing changes and finally applying the changes
+   * @param mappingCollection
+   */
+  private applyChanges(mappingCollection: NeMappingContinuous[]): void {
+    this.dataService.removeAllMappingsByCol(this.col, MappingType.continuous, this.elementType);
+    for (const mapping of mappingCollection) {
+      this.dataService.addMappingContinuous(mapping, this.elementType);
+    }
+  }
+
+  /**
+   * Collects unique thresholds throughout the mapping collection
+   * @private
+   */
+  private setThresholdCollection(): void {
+
+    for (const mapping of this.mappingCollection) {
+      for (const th of mapping.thresholds) {
+
+        if (!this.thresholdCollection.includes(th)) {
+          this.thresholdCollection.push(th);
+        }
+      }
+    }
+
+    this.thresholdCollection = this.thresholdCollection.sort((a, b) => a > b ? 1 : -1);
+
+  }
+
+  /**
+   * Updates the {@link mappingCollectionInEditing} by the current values from the {@link continuousMappingForm}.
+   * Used when applying flashMode or when finally applying the changes.
+   * Also used when visual aids have to be displayed during edit mode.
+   * @private
+   */
+  private updateMappingCollectionInEditing(): void {
+    this.sortAscendingByThreshold();
+
+    this.thresholdCollection = [];
+    for (const th of this.thresholds.controls) {
+      this.thresholdCollection.push(th.get('threshold').value);
+    }
+    this.mappingCollectionInEditing = this.getMappingsByThresholdsForm();
+  }
+
+  /**
+   * Returns a mapping collection based on the current state of the continuous mapping form
+   * @private
+   */
+  private getMappingsByThresholdsForm(): NeMappingContinuous[] {
+    const mappings: NeMappingContinuous[] = [];
+    if (this.thresholds.controls.length < 1) {
+      return [];
+    }
+    const numberOfMappings = (this.thresholds.controls[0].get('equals') as FormArray).controls.length;
+
+    for (let i = 0; i < numberOfMappings; i++) {
+
+      const newMapping: NeMappingContinuous = {
+        chart: null,
+        col: this.col,
+        colorGradient: null,
+        duplicates: [],
+        equals: [],
+        greaters: [],
+        isColor: false,
+        lowers: [],
+        mappingType: MappingType.continuous,
+        styleProperty: null,
+        thresholds: [],
+        useValue: [],
+        type: this.colProperty.datatype,
+        newlyAdded: false
+      };
+
+      for (const th of this.thresholds.controls) {
+        const isColor = th.get('isColor').value[i];
+
+        newMapping.equals.push((th.get('equals') as FormArray).controls[i].value);
+        newMapping.greaters.push(isColor ? '#000000' : null);
+        newMapping.lowers.push(isColor ? '#000000' : null);
+        newMapping.useValue.push((th.get('useValues') as FormArray).controls[i].value);
+        newMapping.duplicates.push((th.get('duplicates') as FormArray).controls[i].value);
+        newMapping.thresholds.push(th.get('threshold').value);
+
+        newMapping.isColor = isColor;
+        newMapping.styleProperty = th.get('styleProperty').value[i];
+      }
+      // const index = mappings.findIndex(a => a.styleProperty === newMapping.styleProperty);
+      mappings.push(newMapping);
+    }
+    return mappings;
+  }
+
+  /**
+   * Initializes the form to edit a continuous mapping collection
+   * @private
+   */
+  private resetContinuousMappingForm(): void {
+
+    this.thresholds.reset(new FormArray([]));
+    this.thresholds.setValidators([
+      uniqueThresholdsValidator(), // thresholds need to be unique
+      Validators.minLength(2), // at least 2 thresholds must be defined
+      useValuesContinuousValidator() // for each mapping at least two assigned values must be visible
+    ]);
+
+    for (const th of this.thresholdCollection) {
+      this.thresholds.push(new FormGroup({
+        threshold: new FormControl(th, [Validators.required]),
+        styleProperty: new FormArray([]),
+        isColor: new FormArray([]),
+        equals: new FormArray([], [Validators.required]),
+        useValues: new FormArray([]),
+        duplicates: new FormArray([])
+      }));
+    }
+
+    for (let i = 0; i < this.mappingCollectionInEditing.length; i++) {
+      this.addMappingToForm(this.mappingCollectionInEditing[i], i);
+    }
+  }
+
+  /**
+   * Resets the duplicate management object to default values
+   * @private
+   */
+  private resetCellMoving(): void {
+    this.markedCellMove = {
+      duplicateIndex: -1, mappingIndex: -1, sourceThresholdIndex: -1
+    };
   }
 
   /**
@@ -1018,23 +1009,32 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
   }
 
   /**
-   * Sets the number of bins to a new value
-   * @param $event the new value
-   * @param property aspect whose number of bins is to be changed
-   */
-  setBinSize($event: number, property: NeAspect): void {
-    property.chartContinuousDistribution = this.utilityService.utilCalculateHistogramDataForBinSize($event, property);
-    this.renderedChart = property.chartContinuousDistribution;
-    this.triggerChartRedraw();
-  }
-
-  /**
    * Redraws the chart
    * @private
    */
   private triggerChartRedraw(): void {
-    if (this.renderedChart) {
-      this.renderedChart.chartColors = this.utilityService.utilGetRandomColorForChart();
+    if (!!this.renderedVisualAidKey) {
+      if (this.editMode) {
+        if (this.visualAidsInEditing[this.renderedVisualAidKey].chartObj !== null) {
+          this.visualAidsInEditing[this.renderedVisualAidKey].chartObj.chartColors = this.utilityService.utilGetRandomColorForChart();
+        }
+      } else {
+        if (this.visualAids[this.renderedVisualAidKey].chartObj !== null) {
+          this.visualAids[this.renderedVisualAidKey].chartObj.chartColors = this.utilityService.utilGetRandomColorForChart();
+        }
+      }
     }
+  }
+
+  /**
+   * Abort adding a new collection
+   */
+  removeNewlyAdded(): void {
+    const mapping = this.mappingCollectionInEditing[0];
+
+    this.dataService.removeAllMappingsByCol(mapping.col, mapping.mappingType, this.elementType);
+    this.propertyService.handleMappingRemoved(this.elementType, MappingType.continuous, mapping.col);
+    this.propertyService.handleStyleRemoved(mapping.styleProperty);
+    this.toggleEditMode();
   }
 }

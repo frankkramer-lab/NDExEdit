@@ -7,42 +7,46 @@
 
     <button (click)="graphService.fitGraph()"
             class="btn btn-outline-success"
-            data-toggle="tooltip"
             container="body"
-            openDelay="1000"
+            data-toggle="tooltip"
             ngbTooltip="{{'MAIN_GRAPH_TT_FIT' | translate}}"
+            openDelay="1000"
             placement="{{layoutService.layout.main.tooltipDirection}}">
       {{'MAIN_GRAPH_BTN_FIT' | translate}}
     </button>
 
-
-      <div class="btn-group" role="group">
-        <button class="btn btn-outline-success dropdown-toggle"
-                [disabled]="layoutInProcessing"
-                type="button"
-                id="graph_layout" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-          {{'MAIN_GRAPH_BTN_LAYOUT' | translate}}
-        </button>
-        <div class="dropdown-menu">
-          <a class="dropdown-item"
-             *ngFor="let method of graphService.graphLayoutMethods"
-             (click)="layoutGraph(method)">
-            {{method}}
-          </a>
-        </div>
+    <div class="btn-group" role="group">
+      <button [disabled]="layoutInProcessing"
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown"
+              id="graph_layout" type="button">
+        {{'MAIN_GRAPH_BTN_LAYOUT' | translate}}
+      </button>
+      <div class="dropdown-menu">
+        <a (click)="layoutGraph(method)"
+           *ngFor="let method of graphService.graphLayoutMethods"
+           class="dropdown-item">
+          {{method}}
+        </a>
       </div>
+    </div>
+
+    <button (click)="graphService.toggleLabels(!dataService.getSelectedNetwork().showLabels)"
+            [ngClass]="dataService.getSelectedNetwork().showLabels ? 'btn-success' : 'btn-outline-success'"
+            class="btn">
+      {{('SIDEBAR_EDIT_CB_LABELS' + (dataService.getSelectedNetwork().showLabels ? '_FALSE' : '')) | translate}}
+    </button>
+
   </div>
-
-
 
   <span class="float-right">
     <a *ngIf="dataService.selectedNetwork.id === 0"
+       class="mr-4 mb-1"
        href="https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/misit/"
-       target="_blank"
-       class="mr-4 mb-1">
-      <img src="assets/unicorn.png"
-           [ngStyle]="{'width.px': 60}">
+       target="_blank">
+      <img [ngStyle]="{'width.px': 60}"
+           src="assets/unicorn.png">
     </a>
   </span>
 

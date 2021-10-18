@@ -1,6 +1,7 @@
 import {NeMappingDiscrete} from './ne-mapping-discrete';
 import {NeMappingContinuous} from './ne-mapping-continuous';
 import {NeMapping} from './ne-mapping';
+import {NeKeyValue} from './ne-key-value';
 
 /**
  * Collection of all types of mappings
@@ -36,4 +37,19 @@ export interface NeMappingsMap {
    * Collection of passthrough edge mappings
    */
   edgesPassthrough: NeMapping[];
+
+  /**
+   * Simple list of default styles applied to nodes
+   */
+  nodesDefault: NeKeyValue[];
+
+  /**
+   * Simple list of default styles applied to edges
+   */
+  edgesDefault: NeKeyValue[];
+
+  /**
+   * Simple list of default styles applied to the network
+   */
+  networkDefault: NeKeyValue[];
 }

@@ -5,13 +5,10 @@ import {DataService} from './services/data.service';
 import {HttpClient} from '@angular/common/http';
 import {
   faAngleDoubleLeft,
-  faAngleDoubleRight,
   faAngleLeft,
   faAngleRight,
   faArrowLeft,
   faArrowRight,
-  faComment,
-  faExchangeAlt,
   faRedo
 } from '@fortawesome/free-solid-svg-icons';
 import {UtilityService} from './services/utility.service';
@@ -32,16 +29,6 @@ export class AppComponent {
    * Title of the application is NDExEdit
    */
   title = 'NDExEdit';
-  /**
-   * Icon: faComment
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faComment = faComment;
-  /**
-   * Icon: faExchangeAlt
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faExchangeAlt = faExchangeAlt;
   /**
    * Icon: faRedo
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
@@ -73,16 +60,16 @@ export class AppComponent {
    */
   faAngleRight = faAngleRight;
   /**
-   * Icon: faAngleDoubleRight
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faAngleDoubleRight = faAngleDoubleRight;
-  /**
    * Selected language
    */
   browserLang;
-
+  /**
+   * Initial main view width
+   */
   widthMain = 6;
+  /**
+   * Initial sidebar width
+   */
   widthSidebar = 6;
 
   /**
@@ -127,6 +114,15 @@ export class AppComponent {
   }
 
   /**
+   * Sets the language to the specified string
+   * @param lang either 'de' for German or 'en' for English
+   */
+  setLanguage(lang: string): void {
+    this.browserLang = lang;
+    this.applyLanguage();
+  }
+
+  /**
    * Using set browser language to determine which language to use within the frontend
    */
   private initializeTranslation(): void {
@@ -137,15 +133,6 @@ export class AppComponent {
     if (!this.browserLang || !this.supportedLanguages.includes(this.browserLang)) {
       this.browserLang = this.defaultLanguage;
     }
-    this.applyLanguage();
-  }
-
-  /**
-   * Sets the language to the specified string
-   * @param lang either 'de' for German or 'en' for English
-   */
-  setLanguage(lang: string): void {
-    this.browserLang = lang;
     this.applyLanguage();
   }
 
@@ -186,7 +173,7 @@ export class AppComponent {
    * @private
    */
   private initDemoFromNDEx(uuid: string): void {
-    const url = 'https://public.ndexbio.org/v2/network/' + uuid;
+    const url = 'http://public.ndexbio.org/v2/network/' + uuid;
     this.http.get(url)
       .toPromise()
       .then((data: any[]) => {

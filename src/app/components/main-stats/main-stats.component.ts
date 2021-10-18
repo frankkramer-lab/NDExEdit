@@ -1,7 +1,6 @@
 import {Component, OnDestroy} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {DataService} from '../../services/data.service';
-import {faPaintBrush} from '@fortawesome/free-solid-svg-icons';
 import {ElementType, UtilityService} from '../../services/utility.service';
 import {NeAspect} from '../../models/ne-aspect';
 import {LayoutService} from '../../services/layout.service';
@@ -16,11 +15,6 @@ import {LayoutService} from '../../services/layout.service';
  * Component responsible for graph statistics and description
  */
 export class MainStatsComponent implements OnDestroy {
-  /**
-   * Icon: faPaintBrush
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faPaintBrush = faPaintBrush;
   /**
    * Points to aspect within the list of available attributes for nodes
    */
@@ -52,13 +46,6 @@ export class MainStatsComponent implements OnDestroy {
     public utilityService: UtilityService,
     public layoutService: LayoutService
   ) {
-    this.route.paramMap.subscribe(params => {
-      const networkId = params.get('id');
-      if (networkId) {
-        this.dataService.selectNetwork(Number(networkId));
-      }
-    });
-
   }
 
   ngOnDestroy(): void {
@@ -66,17 +53,6 @@ export class MainStatsComponent implements OnDestroy {
     this.nodeChartIndex = null;
     this.edgeAkv = null;
     this.edgeChartIndex = null;
-  }
-
-  /**
-   * Recalculates the histogram with a new number of bins
-   * @param $event new number of bins
-   * @param aspect attribute for which the chart is to be recalculated
-   */
-  setBinSize($event: number, aspect: NeAspect): void {
-    if (aspect.validForContinuous) {
-      aspect.chartContinuousDistribution = this.utilityService.utilCalculateHistogramDataForBinSize($event, aspect);
-    }
   }
 
   /**

@@ -16,7 +16,6 @@ import {
   faTrash
 } from '@fortawesome/free-solid-svg-icons';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
-import {stylePropertyValidator} from '../../../validators/style-property.directive';
 import {Observable, OperatorFunction} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import {NeAspect} from '../../../models/ne-aspect';
@@ -26,6 +25,8 @@ import {GraphService} from '../../../services/graph.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CommonOSFontConstants, JavaLogicalFontConstants} from 'cytoscape-cx2js';
 import {NeFontFace} from '../../../models/ne-font-face';
+import {PropertyService} from '../../../services/property.service';
+import {stylePropertyValidator} from '../../../validators/style-property.directive';
 
 
 @Component({
@@ -34,30 +35,6 @@ import {NeFontFace} from '../../../models/ne-font-face';
   styleUrls: ['./sidebar-edit-mapping-discrete.component.scss']
 })
 export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
-
-  /**
-   * Returns the style properties for the discrete mapping form
-   */
-  get styleProperties(): FormArray {
-    return this.discreteMappingForm.get('styleProperties') as FormArray;
-  }
-
-  /**
-   * Returns the values of this element's attribute, e.g. molecule_type has values "RNA" and "miRNA".
-   * Each of these values is associated with their assigned values.
-   */
-  get colValues(): FormArray {
-    return this.discreteMappingForm.get('colValues') as FormArray;
-  }
-
-  constructor(
-    public layoutService: LayoutService,
-    public dataService: DataService,
-    public utilityService: UtilityService,
-    private graphService: GraphService,
-    private modalService: NgbModal
-  ) {
-  }
 
   /**
    * Name of this collection's attribute column
@@ -74,7 +51,7 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
   /**
    * Emitting if a collection is in flashmode to disable routing
    */
-  @Output() flashModeEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() flashOrEditModeEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
   /**
    * Icon: faSearch
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
@@ -134,6 +111,10 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
    */
   chart: NeChart = null;
   /**
+   * Should be null for discrete mappings, but defined for histograms
+   */
+  chartNumberOfBins: number;
+  /**
    * Mappings to be displayed or edited
    */
   discreteMapping: NeMappingDiscrete[];
@@ -173,26 +154,48 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
    * Form to add a new mapping to this collection
    */
   newMappingForm: FormGroup;
-
   /**
    * Form to edit a font face property
    */
   fontForm: FormGroup;
-
   /**
    * Indicates that a collection was recently created and enforces that the user submits changes to it
    */
   newlyAdded = false;
-
   /**
    * List of available fonts
    */
   availableFonts = [];
-
   /**
    * Java Fonts have modifiers such as italic or bold which are listed here
    */
   javaFontStyles = [];
+
+  constructor(
+    public layoutService: LayoutService,
+    public dataService: DataService,
+    public utilityService: UtilityService,
+    private graphService: GraphService,
+    private modalService: NgbModal,
+    private propertyService: PropertyService
+  ) {
+    layoutService.layoutEmitter.subscribe(value => this.triggerChartRedraw());
+  }
+
+  /**
+   * Returns the style properties for the discrete mapping form
+   */
+  get styleProperties(): FormArray {
+    return this.discreteMappingForm.get('styleProperties') as FormArray;
+  }
+
+  /**
+   * Returns the values of this element's attribute, e.g. molecule_type has values "RNA" and "miRNA".
+   * Each of these values is associated with their assigned values.
+   */
+  get colValues(): FormArray {
+    return this.discreteMappingForm.get('colValues') as FormArray;
+  }
 
   /**
    *
@@ -217,7 +220,6 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
    */
   private static extractFontFaceFromString(definition: string): NeFontFace {
     if (!!definition) {
-      // const cleanDefinition = definition.replace(/,,/g, '%');
       const commaSplit = definition.split(',,');
       return {
         family: commaSplit[0],
@@ -262,17 +264,6 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Initializes font faces available for mapping
-   * @private
-   */
-  private initFonts(): void {
-    this.availableFonts = Object.keys(CommonOSFontConstants.FONT_STACK_MAP)
-      .concat(JavaLogicalFontConstants.FONT_FAMILY_LIST);
-
-    this.javaFontStyles = Object.keys(JavaLogicalFontConstants.FONT_PROPERTIES_MAP);
-  }
-
-  /**
    * Resets properties to defaults and unselects this mapping collection
    */
   ngOnDestroy(): void {
@@ -284,13 +275,13 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
 
     this.dataService.resetAnyMappingSelection();
     this.markedForDeletionEmitter.emit(false);
-    this.flashModeEmitter.emit(false);
+    this.flashOrEditModeEmitter.emit(false);
 
     if (this.discreteMappingForm) {
       this.discreteMappingForm.reset();
     }
     if (this.newMappingForm) {
-      this.newMappingForm.reset();
+      this.resetNewMappingForm();
     }
   }
 
@@ -301,12 +292,14 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
     if (!this.displayChart) {
       if (!this.chart) {
 
-        if (this.utilityService.utilFitForContinuous(this.colProperty)) {
-          this.chart = this.colProperty.chartDiscreteDistribution;
+        if (this.utilityService.utilFitForContinuous(this.colProperty)
+          && this.colProperty.chartContinuousDistribution !== null) {
+          this.chart = this.colProperty.chartContinuousDistribution;
+          this.chartNumberOfBins = this.colProperty.binSize;
         } else {
           this.chart = this.colProperty.chartDiscreteDistribution;
+          this.chartNumberOfBins = null;
         }
-
       }
       this.displayChart = true;
     } else {
@@ -336,28 +329,21 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
         }
       }
 
-      // this.dataService.selectedDiscreteMapping = this.discreteMapping;
       for (const mapping of this.discreteMapping) {
         this.mappingCollectionInEditing.push(this.utilityService.utilDeepCopyMappingDiscrete(mapping));
       }
 
       this.initDiscreteMappingForm();
-      this.initStylePropertyForm();
+      this.resetNewMappingForm();
       this.setValidators();
+      this.flashOrEditModeEmitter.emit(true);
     } else {
       this.editMode = false;
       this.dataService.resetAnyMappingSelection();
       this.mappingCollectionInEditing = null;
+      this.flashOrEditModeEmitter.emit(false);
+      this.toggleInspectionMode();
     }
-  }
-
-  /**
-   * Sets validators for {@link discreteMappingForm} and {@link newMappingForm}
-   * @private
-   */
-  private setValidators(): void {
-    this.discreteMappingForm.setValidators([useValuesDiscreteValidator()]);
-    this.styleProperties.setValidators([Validators.required]);
   }
 
   /**
@@ -376,13 +362,8 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
    * Marks a mapping collection for deletion
    */
   markForDeletion(): void {
-    if (!this.markedForDeletion) {
-      this.markedForDeletion = true;
-      this.markedForDeletionEmitter.emit(true);
-    } else {
-      this.markedForDeletion = false;
-      this.markedForDeletionEmitter.emit(false);
-    }
+    this.markedForDeletion = !this.markedForDeletion;
+    this.markedForDeletionEmitter.emit(this.markedForDeletion);
   }
 
   /**
@@ -407,7 +388,7 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
       this.resetNewMappingForm();
       this.updateMappingCollectionInEditing();
       this.applyChanges(this.mappingCollectionInEditing);
-      this.flashModeEmitter.emit(true);
+      this.flashOrEditModeEmitter.emit(true);
 
     } else {
       this.flashMode = false;
@@ -415,141 +396,8 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
       this.graphService.resetElementSelection();
 
       this.applyChanges(this.discreteMapping);
-      this.flashModeEmitter.emit(false);
+      this.flashOrEditModeEmitter.emit(false);
     }
-  }
-
-  /**
-   * Removes all mappings by {@link col} and adds the given collection anew to this network.
-   * @param mappingCollection The collection of mappings which is to be applied to this network, temporarily or permanently.
-   * @private
-   */
-  private applyChanges(mappingCollection: NeMappingDiscrete[]): void {
-
-    this.dataService.removeAllMappingsByCol(this.col, MappingType.discrete, this.elementType);
-    for (const mapping of mappingCollection) {
-      this.dataService.addMappingDiscrete(mapping, this.elementType);
-    }
-  }
-
-  /**
-   * Updates the mapping collection in editing according to the {@link discreteMappingForm}
-   * @private
-   */
-  private updateMappingCollectionInEditing(): void {
-    this.mappingCollectionInEditing = [];
-    const numberOfMappings = this.styleProperties.getRawValue().length;
-
-    for (let i = 0; i < numberOfMappings; i++) {
-      const newMapping: NeMappingDiscrete = {
-        col: this.col,
-        keys: [],
-        mapObject: [],
-        mappingType: this.utilityService.mappingType.discrete,
-        styleProperty: '',
-        type: '',
-        useValue: [],
-        values: [],
-        newlyAdded: false
-      };
-
-      for (const colValue of this.colValues.controls) {
-        const assignedValues = (colValue.get('assignedValues') as FormArray).controls;
-        const useValues = (colValue.get('useValues') as FormArray).controls;
-        const rowName = colValue.get('colValue').value;
-
-        newMapping.keys.push(rowName);
-        newMapping.values.push(assignedValues[i].value);
-        newMapping.useValue.push(useValues[i].value);
-        newMapping.type = this.colProperty.datatype;
-        newMapping.styleProperty = this.styleProperties.controls[i].value;
-
-        // const mapItem = {};
-        // mapItem[rowName] = assignedValues[i].value;
-        newMapping.mapObject[rowName] = assignedValues[i].value;
-
-      }
-      this.mappingCollectionInEditing.push(newMapping);
-    }
-  }
-
-  /**
-   * When adding a mapping to the collection or removing one from it, we need to update the validator for this form.
-   * @private
-   */
-  private updateValidators(): void {
-    this.newMappingForm.setValidators([
-      Validators.required,
-      stylePropertyValidator(
-        this.elementType,
-        MappingType.discrete,
-        this.mappingCollectionInEditing.map(a => a.styleProperty)
-      )
-    ]);
-  }
-
-  /**
-   * Initializes the form that maintains this mapping collection
-   * @private
-   */
-  private initDiscreteMappingForm(): void {
-    const colValues = new FormArray([]); // rows
-    const styleProperties = new FormArray([]); // column headers
-
-    for (const value of this.colProperty.values) {
-
-      const assignedValues = new FormArray([]);
-      const useValues = new FormArray([]);
-      const attributes = new FormArray([]);
-
-      for (const mapping of this.mappingCollectionInEditing) {
-        const styleProperty = mapping.styleProperty;
-        const currentlyAssigned = SidebarEditMappingDiscreteComponent.getValueByMappingAndColProperty(mapping, value);
-
-        assignedValues.push(new FormControl(currentlyAssigned));
-        attributes.push(new FormControl(this.dataService.getAttributeByStyleProperty(styleProperty)));
-
-        if (currentlyAssigned === null) {
-          useValues.push(new FormControl(false));
-        } else {
-          useValues.push(new FormControl(true));
-        }
-      }
-
-      const assignedPerValue = new FormGroup({
-        colValue: new FormControl(value),
-        assignedValues,
-        attributes,
-        useValues
-      });
-      colValues.push(assignedPerValue);
-    }
-
-    for (const mapping of this.mappingCollectionInEditing) {
-      styleProperties.push(new FormControl(mapping.styleProperty));
-    }
-
-    this.discreteMappingForm = new FormGroup({
-      colValues,
-      styleProperties
-    });
-  }
-
-  /**
-   * Initializes the form to add a new mapping to the collection of discrete mappings
-   * @private
-   */
-  private initStylePropertyForm(): void {
-    this.newMappingForm = new FormGroup({
-      styleProperty: new FormControl(null, [
-        Validators.required,
-        stylePropertyValidator(
-          this.elementType,
-          this.utilityService.mappingType.discrete,
-          this.mappingCollectionInEditing.map(a => a.styleProperty)
-        )
-      ])
-    });
   }
 
   /**
@@ -561,11 +409,7 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
     this.newMappingForm = new FormGroup({
       styleProperty: new FormControl(null, [
         Validators.required,
-        stylePropertyValidator(
-          this.elementType,
-          this.utilityService.mappingType.discrete,
-          this.mappingCollectionInEditing.map(a => a.styleProperty)
-        )
+        stylePropertyValidator(this.elementType, MappingType.discrete)
       ])
     });
   }
@@ -575,7 +419,7 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
    */
   onSubmitNewMappingStyleProperty(): void {
     const styleProperty = this.newMappingForm.get('styleProperty').value;
-    const isColor = this.dataService.colorProperties.includes(styleProperty);
+    const isColor = PropertyService.colorProperties.includes(styleProperty);
 
     this.styleProperties.push(new FormControl(styleProperty));
 
@@ -584,6 +428,7 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
       (row.get('attributes') as FormArray).push(new FormControl(this.dataService.getAttributeByStyleProperty(styleProperty)));
       (row.get('useValues') as FormArray).push(new FormControl(false));
     }
+    this.propertyService.handleStyleAdded(styleProperty);
     this.resetNewMappingForm();
   }
 
@@ -597,8 +442,8 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
       (ctrl.get('attributes') as FormArray).removeAt(stylePropertyIndex);
       (ctrl.get('useValues') as FormArray).removeAt(stylePropertyIndex);
     }
+    this.propertyService.handleStyleRemoved(this.styleProperties.at(stylePropertyIndex).value);
     this.styleProperties.removeAt(stylePropertyIndex);
-    this.updateValidators();
   }
 
   /**
@@ -608,18 +453,20 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
    */
   suggestStyleProperties: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) => {
 
-    const properties = this.elementType === ElementType.node
-      ? DataService.nodeProperties
-      : DataService.edgeProperties;
-
-    const existing = this.styleProperties.getRawValue();
-    const available = properties.filter(a => existing.indexOf(a) < 0);
-
     return text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
-      map(term => term === '*' ? available : term.length < 1 ? []
-        : available.filter(a => a.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+      map(term => {
+
+          const available = PropertyService.availableStyleProperties
+            .filter(a => this.elementType === ElementType.node
+              ? PropertyService.nodeProperties.includes(a)
+              : PropertyService.edgeProperties.includes(a));
+
+          return term === '*' ? available : term.length < 1 ? []
+            : available.filter(a => a.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10);
+        }
+      )
     );
   }
 
@@ -627,33 +474,9 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
    * Submits the edited mapping collection
    */
   onSubmitEdit(): void {
+    this.displayChart = false;
     this.updateMappingCollectionInEditing();
     this.applyAndReturn();
-  }
-
-  /**
-   * Applies the submitted changes and returns from edit mode
-   * @private
-   */
-  private applyAndReturn(): void {
-
-    if (this.flashMode) {
-      this.toggleFlashMode();
-    }
-
-    this.newlyAdded = false;
-    for (const mapping of this.mappingCollectionInEditing) {
-      mapping.newlyAdded = false;
-    }
-
-    this.applyChanges(this.mappingCollectionInEditing);
-    this.discreteMapping = this.mappingCollectionInEditing;
-
-    this.toggleEditMode();
-    // if changes to a newly added mapping were submitted, we need to unmark this collection as new
-    // if (this.newlyAdded) {
-    //   this.newlyAdded = false;
-    // }
   }
 
   /**
@@ -791,5 +614,176 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
 
     (this.colValues.controls[rowIndex].get('assignedValues') as FormArray).controls[colIndex]
       .setValue(SidebarEditMappingDiscreteComponent.buildFontFaceFromModel(model));
+  }
+
+  /**
+   * Setting chart's number of bins
+   * @param $event number of bins
+   * @param colProperty chart's property
+   */
+  setBinSize($event: number, colProperty: NeAspect): void {
+    this.chart = this.utilityService.utilSetBinSize($event, colProperty);
+    this.triggerChartRedraw();
+  }
+
+  /**
+   * Triggers a redraw by setting new colors
+   */
+  triggerChartRedraw(): void {
+    if (this.chart) {
+      this.chart.chartColors = this.utilityService.utilGetRandomColorForChart();
+    }
+  }
+
+  /**
+   * Initializes font faces available for mapping
+   * @private
+   */
+  private initFonts(): void {
+    this.availableFonts = Object.keys(CommonOSFontConstants.FONT_STACK_MAP)
+      .concat(JavaLogicalFontConstants.FONT_FAMILY_LIST);
+
+    this.javaFontStyles = Object.keys(JavaLogicalFontConstants.FONT_PROPERTIES_MAP);
+  }
+
+  /**
+   * Sets validators for {@link discreteMappingForm} and {@link newMappingForm}
+   * @private
+   */
+  private setValidators(): void {
+    this.discreteMappingForm.setValidators([useValuesDiscreteValidator()]);
+    this.styleProperties.setValidators([Validators.required]);
+  }
+
+  /**
+   * Removes all mappings by {@link col} and adds the given collection anew to this network.
+   * @param mappingCollection The collection of mappings which is to be applied to this network, temporarily or permanently.
+   * @private
+   */
+  private applyChanges(mappingCollection: NeMappingDiscrete[]): void {
+    this.dataService.removeAllMappingsByCol(this.col, MappingType.discrete, this.elementType);
+    for (const mapping of mappingCollection) {
+      this.dataService.addMappingDiscrete(mapping, this.elementType);
+    }
+  }
+
+  /**
+   * Updates the mapping collection in editing according to the {@link discreteMappingForm}
+   * @private
+   */
+  private updateMappingCollectionInEditing(): void {
+    this.mappingCollectionInEditing = [];
+    const numberOfMappings = this.styleProperties.getRawValue().length;
+
+    for (let i = 0; i < numberOfMappings; i++) {
+      const newMapping: NeMappingDiscrete = {
+        col: this.col,
+        keys: [],
+        mapObject: [],
+        mappingType: this.utilityService.mappingType.discrete,
+        styleProperty: '',
+        type: '',
+        useValue: [],
+        values: [],
+        newlyAdded: false
+      };
+
+      for (const colValue of this.colValues.controls) {
+        const assignedValues = (colValue.get('assignedValues') as FormArray).controls;
+        const useValues = (colValue.get('useValues') as FormArray).controls;
+        const rowName = colValue.get('colValue').value;
+
+        newMapping.keys.push(rowName);
+        newMapping.values.push(assignedValues[i].value);
+        newMapping.useValue.push(useValues[i].value);
+        newMapping.type = this.colProperty.datatype;
+        newMapping.styleProperty = this.styleProperties.controls[i].value;
+
+        // const mapItem = {};
+        // mapItem[rowName] = assignedValues[i].value;
+        newMapping.mapObject[rowName] = assignedValues[i].value;
+
+      }
+      this.mappingCollectionInEditing.push(newMapping);
+    }
+  }
+
+  /**
+   * Initializes the form that maintains this mapping collection
+   * @private
+   */
+  private initDiscreteMappingForm(): void {
+    const colValues = new FormArray([]); // rows
+    const styleProperties = new FormArray([]); // column headers
+
+    for (const value of this.colProperty.values) {
+
+      const assignedValues = new FormArray([]);
+      const useValues = new FormArray([]);
+      const attributes = new FormArray([]);
+
+      for (const mapping of this.mappingCollectionInEditing) {
+        const styleProperty = mapping.styleProperty;
+        const currentlyAssigned = SidebarEditMappingDiscreteComponent.getValueByMappingAndColProperty(mapping, value);
+
+        assignedValues.push(new FormControl(currentlyAssigned));
+        attributes.push(new FormControl(this.dataService.getAttributeByStyleProperty(styleProperty)));
+
+        if (currentlyAssigned === null) {
+          useValues.push(new FormControl(false));
+        } else {
+          useValues.push(new FormControl(true));
+        }
+      }
+
+      const assignedPerValue = new FormGroup({
+        colValue: new FormControl(value),
+        assignedValues,
+        attributes,
+        useValues
+      });
+      colValues.push(assignedPerValue);
+    }
+
+    for (const mapping of this.mappingCollectionInEditing) {
+      styleProperties.push(new FormControl(mapping.styleProperty));
+    }
+
+    this.discreteMappingForm = new FormGroup({
+      colValues,
+      styleProperties
+    });
+  }
+
+  /**
+   * Applies the submitted changes and returns from edit mode
+   * @private
+   */
+  private applyAndReturn(): void {
+
+    if (this.flashMode) {
+      this.toggleFlashMode();
+    }
+
+    this.newlyAdded = false;
+    for (const mapping of this.mappingCollectionInEditing) {
+      mapping.newlyAdded = false;
+    }
+
+    this.applyChanges(this.mappingCollectionInEditing);
+    this.discreteMapping = this.mappingCollectionInEditing;
+
+    this.toggleEditMode();
+  }
+
+  /**
+   * Abort adding a new mapping collection
+   */
+  removeNewlyAdded(): void {
+    const mapping = this.mappingCollectionInEditing[0];
+    this.dataService.removeAllMappingsByCol(mapping.col, mapping.mappingType, this.elementType);
+    this.propertyService.handleMappingRemoved(this.elementType, MappingType.discrete, mapping.styleProperty);
+    this.propertyService.handleStyleRemoved(mapping.styleProperty);
+    this.toggleEditMode();
   }
 }

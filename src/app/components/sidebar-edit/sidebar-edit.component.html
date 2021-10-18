@@ -1,585 +1,262 @@
 <div class="p-2 mb-5">
 
-  <div class="row">
-    <div class="col">
+  <h5 class="mb-4 mt-1">
 
-      <!-- HEADLINE: DESCRIPTION -->
-      <h3 *ngIf="dataService.selectedNetwork.networkInformation.description">
-        <a [routerLink]="['', { outlets: {sidebar: ['manage']} }]"
-           class="mb-1 float-left btn btn-link"
-           [ngClass]="childrenInEditing > 0 ? 'disabled' : ''"
-           [attr.tabindex]="childrenInEditing > 0 ? -1 : 0"
-           [attr.aria-disabled]="childrenInEditing > 0"
+    <a [attr.aria-disabled]="dataService.lockRouting"
+       [attr.tabindex]="dataService.lockRouting ? -1 : 0"
+       [ngClass]="dataService.lockRouting ? 'disabled' : ''"
+       [routerLink]="['']"
+       class="mr-2 btn btn-link"
+       container="body"
+       data-toggle="tooltip"
+       ngbTooltip="{{'LOST' | translate}}"
+       openDelay="1000"
+       placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+       role="button"
+       type="button">
+      <fa-icon [icon]="faHome" size="2x"></fa-icon>
+    </a>
+
+    <fa-icon [icon]="faChevronRight" class="mr-2"></fa-icon>
+    {{dataService.selectedNetwork.networkInformation.name}}
+  </h5>
+
+  <!-- SELECTION -->
+  <div *ngIf="graphService.selectedElements.nodes.length > 0 || graphService.selectedElements.edges.length > 0">
+    <app-sidebar-edit-selected
+      [elementType]="utilityService.elementType.node"
+      [relevantProperties]="graphService.selectedElements.nodeProperties"
+      [selectedElements]="graphService.selectedElements.nodes"></app-sidebar-edit-selected>
+
+    <app-sidebar-edit-selected
+      [elementType]="utilityService.elementType.edge"
+      [relevantProperties]="graphService.selectedElements.edgeProperties"
+      [selectedElements]="graphService.selectedElements.edges"></app-sidebar-edit-selected>
+  </div>
+
+  <div>
+
+    <!-- NAV: INFO | MAPPINGS | SETTINGS -->
+    <ul aria-orientation="horizontal" class="nav nav-pills nav-fill" id="editsNav" role="tablist">
+
+      <!-- INFO -->
+      <li class="nav-item">
+        <a aria-controls="editInfo"
+           aria-selected="false"
+           class="nav-link active text-center"
+           container="body"
+           data-toggle="pill"
+           href="#editInfoContent"
+           id="editInfo"
+           ngbTooltip="{{'SIDEBAR_EDIT_NAV_TT_INFO' | translate}}"
            openDelay="1000"
-           container="body"
-           data-toggle="tooltip"
-           ngbTooltip="{{'NAV_MANAGE' | translate}}"
            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-           role="button"
-           type="button">
-          <fa-icon [icon]="faArrowLeft" class="mr-1"></fa-icon>
+           role="tab">
+          <fa-icon [icon]="faInfoCircle"></fa-icon>
+          <br>
         </a>
-        {{'SIDEBAR_EDIT_DESCRIPTION_TITLE' | translate}}
-      </h3>
+      </li>
 
-      <!-- HEADLINE: DEFAULT (MANAGE) -->
-      <h3 *ngIf="!dataService.selectedNetwork.networkInformation.description">
-        <a [routerLink]="['', { outlets: {sidebar: ['manage']} }]"
-           class="mb-1 btn btn-link"
-           [ngClass]="childrenInEditing > 0 ? 'disabled' : ''"
-           [attr.tabindex]="childrenInEditing > 0 ? -1 : 0"
-           [attr.aria-disabled]="childrenInEditing > 0" openDelay="1000"
+      <!-- MAPPINGS -->
+      <li class="nav-item">
+        <a aria-controls="editMappings"
+           aria-selected="false"
+           class="nav-link text-center"
            container="body"
-           data-toggle="tooltip"
-           ngbTooltip="{{'NAV_MANAGE' | translate}}"
+           data-toggle="pill"
+           href="#editMappingsContent"
+           id="editMappings"
+           ngbTooltip="{{'SIDEBAR_EDIT_NAV_TT_MAPPINGS' | translate}}"
+           openDelay="1000"
            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-           role="button"
-           type="button">
-          <fa-icon [icon]="faArrowLeft" class="mr-1"></fa-icon>
+           role="tab">
+          <fa-icon [icon]="faPalette"></fa-icon>
+          <br>
         </a>
-        {{'SIDEBAR_EDIT_DEFAULT_TITLE' | translate}}
+      </li>
 
-      </h3>
-    </div>
+      <!-- EXPORT -->
+      <li class="nav-item">
+        <a aria-controls="editExport"
+           aria-selected="false"
+           class="nav-link text-center"
+           container="body"
+           data-toggle="pill"
+           href="#editExportContent"
+           id="editExport"
+           ngbTooltip="{{'SIDEBAR_EDIT_NAV_TT_EXPORT' | translate}}"
+           openDelay="1000"
+           placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+           role="tab">
+          <fa-icon [icon]="faCloudDownloadAlt"></fa-icon>
+          <br>
+        </a>
+      </li>
 
-    <!-- COLLAPSE: DESCRIPTION -->
-    <div class="col">
-      <span class="float-right cursor"
-            (click)="collapseDescription.toggle()"
-            [attr.aria-expanded]="!isCollapsedDescription"
-            aria-controls="collapseExample">
-        <fa-icon class="text-primary" [icon]="faChevronDown"></fa-icon>
-      </span>
-    </div>
-  </div>
-  <hr *ngIf="isCollapsedDescription">
+      <!-- SETTINGS -->
+      <li class="nav-item">
+        <a aria-controls="editSettings"
+           aria-selected="false"
+           class="nav-link text-center"
+           container="body"
+           data-toggle="pill"
+           href="#editSettingsContent"
+           id="editSettings"
+           ngbTooltip="{{'SIDEBAR_EDIT_NAV_TT_SETTINGS' | translate}}"
+           openDelay="1000"
+           placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+           role="tab">
+          <fa-icon [icon]="faCogs"></fa-icon>
+          <br>
+        </a>
+      </li>
 
-  <!-- DESCRIPTION -->
-  <div #collapseDescription="ngbCollapse" [(ngbCollapse)]="isCollapsedDescription">
-    <p [innerHTML]="dataService.selectedNetwork.networkInformation.description"></p>
-  </div>
+    </ul>
 
-  <!-- CB: SHOW LABELS -->
-  <div *ngIf="showLabelCheckbox" class="form-check mb-2">
-    <input (click)="toggleLabels(!dataService.selectedNetwork.showLabels)"
-           [checked]="dataService.selectedNetwork.showLabels" class="form-check-input" id="showLabels"
-           type="checkbox">
-    <label class="form-check-label" for="showLabels">
-      {{'SIDEBAR_EDIT_CB_LABELS' | translate}}
-    </label>
-  </div>
-
-  <!-- SELECTED ELEMENTS: NODE -->
-  <app-sidebar-edit-selected
-    [selectedElements]="graphService.selectedElements.nodes"
-    [relevantProperties]="graphService.selectedElements.nodeProperties"
-    [type]="'NODE'">
-  </app-sidebar-edit-selected>
-  <!-- SELECTED ELEMENTS: EDGE -->
-  <app-sidebar-edit-selected
-    [selectedElements]="graphService.selectedElements.edges"
-    [relevantProperties]="graphService.selectedElements.edgeProperties"
-    [type]="'EDGE'">
-  </app-sidebar-edit-selected>
-
-  <hr>
-
-  <!-- NAV -->
-  <div aria-orientation="horizontal" class="nav nav-pills flex-row" id="editsNav" role="tablist">
-    <!-- MAPPINGS (DEFAULT) -->
-    <a aria-controls="editsNavAspects"
-       aria-selected="false"
-       class="nav-link active"
-       data-toggle="pill"
-       href="#editsNavAspectsContent"
-       id="editsNavAspects"
-       role="tab"
-       openDelay="1000"
-       container="body"
-       ngbTooltip="{{'SIDEBAR_EDIT_NAV_TT_MAPPINGS' | translate}}"
-       placement="{{layoutService.layout.sidebar.tooltipDirection}}">
-      {{'SIDEBAR_EDIT_ATTRIBUTES_TITLE' | translate}}
-    </a>
-
-    <!-- INSPECTION WIZARD -->
-    <a aria-controls="editsNavInspect"
-       aria-selected="false"
-       class="nav-link"
-       data-toggle="pill"
-       href="#editsNavInspectContent"
-       id="editsNavInspect"
-       role="tab"
-       openDelay="1000"
-       container="body"
-       ngbTooltip="{{'SIDEBAR_EDIT_NAV_TT_INSPECT' | translate}}"
-       placement="{{layoutService.layout.sidebar.tooltipDirection}}">
-      {{'SIDEBAR_EDIT_INSPECT_TITLE' | translate}}
-    </a>
-
-    <!-- SETTING HIGHLIGHT COLORS -->
-    <a aria-controls="editsNavHighlights"
-       aria-selected="true"
-       class="nav-link"
-       data-toggle="pill"
-       href="#editsNavHighlightsContent"
-       id="editsNavHighlights"
-       role="tab"
-       openDelay="1000"
-       container="body"
-       ngbTooltip="{{'SIDEBAR_EDIT_NAV_TT_SETTINGS' | translate}}"
-       placement="{{layoutService.layout.sidebar.tooltipDirection}}">
-      <fa-icon [icon]="faCogs"></fa-icon>
-    </a>
   </div>
 
-  <div class="tab-content p-2" id="editsNavContent">
+  <!-- NAVCONTENT: INFO | MAPPINGS | SETTINGS -->
+  <div class="tab-content mt-2 mb-5 p-1" id="editsNavContent">
 
-    <!-- MAPPINGS -->
-    <div aria-labelledby="editsNavAspects" class="tab-pane fade show active" id="editsNavAspectsContent"
-         role="tabpanel">
+    <!-- 1: INFO -->
+    <div aria-labelledby="editInfo" class="tab-pane fade show active" id="editInfoContent" role="tabpanel">
 
-      <hr *ngIf="dataService.selectedNetwork.mappings.nodesDiscrete.length > 0
-      || dataService.selectedNetwork.mappings.nodesContinuous.length > 0
-      || dataService.selectedNetwork.mappings.nodesPassthrough.length > 0">
+      <!-- INFO: NETWORK ATTRIBUTES -->
+      <h4 (click)="cEditInfoDescription.toggle()"
+          [attr.aria-expanded]="!collapsedEditInfoDescription"
+          aria-controls="cEditInfoDescription"
+          class="alert alert-secondary cursor">
+        {{ 'SIDEBAR_EDIT_DESCRIPTION' | translate }}
+        <span *ngIf="dataService.objInEditing.elementType === null
+            && dataService.objInEditing.mappingType === null
+            && dataService.objInEditing.nwInfo"
+              class="text-warning">
+          <fa-icon [icon]="faExclamationTriangle"></fa-icon>
+        </span>
+      </h4>
+      <div #cEditInfoDescription="ngbCollapse"
+           [(ngbCollapse)]="collapsedEditInfoDescription">
 
-      <!-- MAPPINGS: NODES -->
-      <div class="row">
-        <div class="col">
-          <h3>
-            {{'SIDEBAR_EDIT_ASPECTS_NODES' | translate}}
-          </h3>
-        </div>
-        <div class="col">
-          <span class="float-right cursor"
-                (click)="collapseMappingsNodes.toggle()"
-                [attr.aria-expanded]="!isCollapsedMappingsNodes"
-                aria-controls="collapseExample">
-            <fa-icon class="text-primary" [icon]="faChevronDown"></fa-icon>
-          </span>
-        </div>
-      </div>
-
-      <div #collapseMappingsNodes="ngbCollapse" [ngbCollapse]="isCollapsedMappingsNodes" class="mt-1">
-
-        <!-- ADD NODE MAPPING COLLECTION -->
-        <div class="card border-success">
-          <div class="card-header text-success">
-            <fa-icon [icon]="faLock" *ngIf="childrenInEditing > 0"></fa-icon>
-            {{'SIDEBAR_EDIT_TT_NEW' | translate}}
-          </div>
+        <!-- LINK TO NDEX -->
+        <div *ngIf="dataService.selectedNetwork.networkInformation.uuid" class="card mb-2">
           <div class="card-body">
 
-            <form [formGroup]="newNodeCollectionForm" class="mb-3"
-                  (ngSubmit)="onSubmitNewMappingCollection(utilityService.elementType.node)">
-
-              <!-- select mapping TYPE -->
-              <div class="form-row mb-2">
-                <!-- continuous -->
-                <label for="nodeTypeContinuous" class="col">
-                  <input type="radio" formControlName="type" [value]="utilityService.mappingType.continuous"
-                         id="nodeTypeContinuous" class="mr-1"
-                         [ngClass]="(newNodeCollectionForm.get('type').touched || newNodeCollectionForm.get('type').dirty)
-                                && newNodeCollectionForm.get('type').errors !== null ? 'border-danger' : ''">
-                  <span>{{'CONTINUOUS' | translate}}</span>
-                </label>
-                <!-- discrete -->
-                <label for="nodeTypeDiscrete" class="col">
-                  <input type="radio" formControlName="type" [value]="utilityService.mappingType.discrete"
-                         id="nodeTypeDiscrete" class="mr-1"
-                         [ngClass]="(newNodeCollectionForm.get('type').touched || newNodeCollectionForm.get('type').dirty)
-                                && newNodeCollectionForm.get('type').errors !== null ? 'border-danger' : ''">
-                  <span>{{'DISCRETE' | translate}}</span>
-                </label>
-                <!-- passthrough -->
-                <label for="nodeTypePassthrough" class="col">
-                  <input type="radio" formControlName="type" [value]="utilityService.mappingType.passthrough"
-                         id="nodeTypePassthrough" class="mr-1"
-                         [ngClass]="(newNodeCollectionForm.get('type').touched || newNodeCollectionForm.get('type').dirty)
-                                && newNodeCollectionForm.get('type').errors !== null ? 'border-danger' : ''">
-                  <span>{{'PASSTHROUGH' | translate}}</span>
-                </label>
+            <div class="row">
+              <div class="col-9">
+                <b class="align-middle">UUID:</b>&nbsp;
+                <a
+                  class="align-middle"
+                  container="body"
+                  data-toggle="tooltip"
+                  href="https://www.ndexbio.org/viewer/networks/{{dataService.selectedNetwork.networkInformation.uuid}}"
+                  ngbTooltip="{{'SIDEBAR_EDIT_TT_NETWORK_ON_NDEX' | translate}}"
+                  openDelay="1000"
+                  placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                  target="_blank">
+                  <b>{{dataService.selectedNetwork.networkInformation.uuid}}</b>
+                </a>
               </div>
+              <div class="col-3 text-right">
 
-              <!-- INPUT FIELDS -->
-              <div class="form-row" *ngIf="newNodeCollectionForm.get('type').value !== null">
-                <!-- Node's property -->
-                <div class="col-5">
-                  <input *ngIf="newNodeCollectionForm.get('type').value === utilityService.mappingType.continuous"
-                         formControlName="property"
-                         class="form-control"
-                         placeholder="{{'SIDEBAR_EDIT_NEW_MAPPING_NODE_PLACEHOLDER' | translate}}"
-                         [ngbTypeahead]="suggestProperties(utilityService.elementType.node, utilityService.mappingType.continuous)"
-                         [ngClass]="(newNodeCollectionForm.get('property').touched || newNodeCollectionForm.get('property').dirty)
-                                && newNodeCollectionForm.get('property').errors !== null ? 'border-danger' : ''">
-                  <input *ngIf="newNodeCollectionForm.get('type').value === utilityService.mappingType.discrete"
-                         formControlName="property"
-                         class="form-control"
-                         placeholder="{{'SIDEBAR_EDIT_NEW_MAPPING_NODE_PLACEHOLDER' | translate}}"
-                         [ngbTypeahead]="suggestProperties(utilityService.elementType.node, utilityService.mappingType.discrete)"
-                         [ngClass]="(newNodeCollectionForm.get('property').touched || newNodeCollectionForm.get('property').dirty)
-                                && newNodeCollectionForm.get('property').errors !== null ? 'border-danger' : ''">
-                  <input *ngIf="newNodeCollectionForm.get('type').value === utilityService.mappingType.passthrough"
-                         formControlName="property"
-                         class="form-control"
-                         placeholder="{{'SIDEBAR_EDIT_NEW_MAPPING_NODE_PLACEHOLDER' | translate}}"
-                         [ngbTypeahead]="suggestProperties(utilityService.elementType.node, utilityService.mappingType.passthrough)"
-                         [ngClass]="(newNodeCollectionForm.get('property').touched || newNodeCollectionForm.get('property').dirty)
-                                && newNodeCollectionForm.get('property').errors !== null ? 'border-danger' : ''">
-                  <small class="mt-1 text-muted" [innerHTML]="'SIDEBAR_EDIT_TT_PROPERTY_HINT' | translate"></small>
-                </div>
-
-                <!-- Style property -->
-                <div class="col-5">
-                  <input *ngIf="newNodeCollectionForm.get('type').value === utilityService.mappingType.continuous"
-                         formControlName="styleProperty" class="form-control"
-                         placeholder="{{'SIDEBAR_EDIT_NEW_MAPPING_PLACEHOLDER' | translate}}"
-                         [ngbTypeahead]="suggestStyleProperties(utilityService.elementType.node, true)"
-                         [ngClass]="(newNodeCollectionForm.get('styleProperty').touched || newNodeCollectionForm.get('styleProperty').dirty)
-                                && newNodeCollectionForm.get('styleProperty').errors !== null ? 'border-danger' : ''">
-                  <input *ngIf="newNodeCollectionForm.get('type').value !== utilityService.mappingType.continuous"
-                         formControlName="styleProperty" class="form-control"
-                         placeholder="{{'SIDEBAR_EDIT_NEW_MAPPING_PLACEHOLDER' | translate}}"
-                         [ngbTypeahead]="suggestStyleProperties(utilityService.elementType.node, false)"
-                         [ngClass]="(newNodeCollectionForm.get('styleProperty').touched || newNodeCollectionForm.get('styleProperty').dirty)
-                                && newNodeCollectionForm.get('styleProperty').errors !== null ? 'border-danger' : ''">
-                  <small class="mt-1 text-muted" [innerHTML]="'SIDEBAR_EDIT_TT_PROPERTY_HINT' | translate"></small>
-
-                </div>
-
-                <!-- Submit: Currently disabled for passthrough mappings -->
-                <div class="col-2">
-                  <button type="submit" class="btn btn-block btn-outline-success col"
-                          [disabled]="newNodeCollectionForm.invalid
-                          || dataService.isAnyMappingSelected()
-                          || newNodeCollectionForm.get('type').value === utilityService.mappingType.passthrough">
-                    <fa-icon [icon]="faPlus"></fa-icon>
-                  </button>
-                </div>
+                <!-- Copy UUID -->
+                <button (click)="copyUuid()"
+                        *ngIf="dataService.selectedNetwork.networkInformation.uuid"
+                        class="btn btn-outline-success"
+                        container="body"
+                        data-toggle="tooltip"
+                        ngbTooltip="{{ 'SIDEBAR_MANAGE_TT_CLIPBOARD' | translate }}"
+                        openDelay="1000"
+                        placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+                  <fa-icon [icon]="faCopy"></fa-icon>
+                </button>
 
               </div>
-            </form>
+            </div>
+
 
           </div>
         </div>
 
-        <!-- NODE MAPPINGS MARKED FOR DELETION -->
-        <div class="alert alert-danger mt-4"
-             *ngIf="npForDeletion.length > 0 || ndForDeletion.length > 0 || ncForDeletion.length > 0">
-          <h5>{{'SIDEBAR_EDIT_ALERT_REMOVE_NODE_MAPPINGS_HEADLINE' | translate}}</h5>
-          <p>{{'SIDEBAR_EDIT_ALERT_REMOVE_NODE_MAPPINGS' | translate}}</p>
-          <b *ngIf="npForDeletion.length > 0">{{'SIDEBAR_EDIT_ALERT_REMOVE_EP' | translate}}</b>
-          <ul *ngIf="npForDeletion.length > 0">
-            <li *ngFor="let npCol of npForDeletion|uniqueCols">{{npCol}}</li>
-          </ul>
-          <b *ngIf="ndForDeletion.length > 0">{{'SIDEBAR_EDIT_ALERT_REMOVE_ED' | translate}}</b>
-          <ul *ngIf="ndForDeletion.length > 0">
-            <li *ngFor="let ndCol of ndForDeletion|uniqueCols">{{ndCol}}</li>
-          </ul>
-          <b *ngIf="ncForDeletion.length > 0">{{'SIDEBAR_EDIT_ALERT_REMOVE_EC' | translate}}</b>
-          <ul *ngIf="ncForDeletion.length > 0">
-            <li *ngFor="let ncCol of ncForDeletion|uniqueCols">{{ncCol}}</li>
-          </ul>
-
-          <div class="mt-3">
-            <button class="btn btn-lg btn-block btn-danger" [disabled]="childrenInEditing > 0"
-                    (click)="deleteMappingCollectionsByElementType(utilityService.elementType.node)">
-              {{'SIDEBAR_EDIT_TT_DELETE_ALL' | translate}}
-            </button>
-          </div>
-
-        </div>
-
-        <!-- NP -->
-        <h5 *ngIf="dataService.selectedNetwork.mappings.nodesPassthrough.length > 0" class="mt-4">
-          <span class="badge badge-secondary">
-              {{'NODES' | translate}}
-          </span>
-          &nbsp;{{'PASSTHROUGH' | translate}}
-        </h5>
-        <table class="table"
-               data-toggle="tooltip"
-               openDelay="1000"
-               container="body"
-               ngbTooltip="{{'SIDEBAR_EDIT_TT_PASSTHROUGH' | translate}}"
-               placement="{{layoutService.layout.sidebar.tooltipDirection}}">
-          <tr *ngFor="let np of dataService.selectedNetwork.mappings.nodesPassthrough; let npIndex = index">
-            <td>
-              <b>{{np.col}}</b>
-            </td>
-            <td>{{np.styleProperty}}</td>
-          </tr>
-        </table>
-
-        <!-- ND -->
-        <h5 *ngIf="dataService.selectedNetwork.mappings.nodesDiscrete.length > 0" class="mt-4">
-          <span class="badge badge-secondary">
-              {{'NODES' | translate}}
-          </span>
-          &nbsp;{{'DISCRETE' | translate}}
-        </h5>
-        <ng-container
-          *ngFor="let nodeCol of dataService.selectedNetwork.mappings.nodesDiscrete|uniqueCols; let colIndex = index">
-          <app-sidebar-edit-mapping-discrete
-            [col]="nodeCol"
-            [elementType]="utilityService.elementType.node"
-            (markedForDeletionEmitter)="markForDeletion(nodeCol, utilityService.elementType.node, utilityService.mappingType.discrete)"
-            (flashModeEmitter)="handleChildFlashMode($event)"></app-sidebar-edit-mapping-discrete>
-
-        </ng-container>
-
-        <!-- NC -->
-        <h5 *ngIf="dataService.selectedNetwork.mappings.nodesContinuous.length > 0" class="mt-4">
-          <span class="badge badge-secondary">
-              {{'NODES' | translate}}
-          </span>
-          &nbsp;{{'CONTINUOUS' | translate}}
-        </h5>
-        <div *ngIf="dataService.selectedNetwork.mappings.nodesContinuous.length > 0">
-
-          <div *ngFor="let col of dataService.selectedNetwork.mappings.nodesContinuous|uniqueCols">
-
-            <b>{{col}}</b>
-
-            <app-sidebar-edit-mapping-continuous
-              [col]="col"
-              [elementType]="utilityService.elementType.node"
-              (markedForDeletionEmitter)="markForDeletion(col, utilityService.elementType.node, utilityService.mappingType.continuous)"
-              (flashModeEmitter)="handleChildFlashMode($event)"></app-sidebar-edit-mapping-continuous>
-
-          </div>
-        </div>
-      </div>
-
-      <hr>
-
-      <!-- MAPPINGS: EDGES -->
-      <div class="row">
-        <div class="col">
-          <h3>
-            {{'SIDEBAR_EDIT_ASPECTS_EDGES' | translate}}
-          </h3>
-        </div>
-        <div class="col">
-          <span class="float-right cursor"
-                (click)="collapseMappingsEdges.toggle()"
-                [attr.aria-expanded]="!isCollapsedMappingsEdges"
-                aria-controls="collapseExample">
-            <fa-icon class="text-primary" [icon]="faChevronDown"></fa-icon>
-          </span>
-        </div>
-      </div>
-
-      <div #collapseMappingsEdges="ngbCollapse" [ngbCollapse]="isCollapsedMappingsEdges" class="mt-1">
-
-        <!-- ADD EDGE MAPPING COLLECTION -->
-        <div class="card border-success">
-          <div class="card-header text-success">
-            <fa-icon [icon]="faLock" *ngIf="childrenInEditing > 0"></fa-icon>
-            {{'SIDEBAR_EDIT_TT_NEW' | translate}}
-          </div>
-          <div class="card-body">
-
-            <form [formGroup]="newEdgeCollectionForm" class="mb-3"
-                  (ngSubmit)="onSubmitNewMappingCollection(utilityService.elementType.edge)">
-
-              <!-- select mapping TYPE -->
-              <div class="form-row mb-2">
-                <label for="typeContinuous" class="col">
-                  <input type="radio" formControlName="type" [value]="utilityService.mappingType.continuous"
-                         id="typeContinuous" class="mr-1"
-                         [ngClass]="(newEdgeCollectionForm.get('type').touched || newEdgeCollectionForm.get('type').dirty)
-                                && newEdgeCollectionForm.get('type').errors !== null ? 'border-danger' : ''">
-                  <span>{{'CONTINUOUS' | translate}}</span>
-                </label>
-
-                <label for="typeDiscrete" class="col">
-                  <input type="radio" formControlName="type" [value]="utilityService.mappingType.discrete"
-                         id="typeDiscrete" class="mr-1"
-                         [ngClass]="(newEdgeCollectionForm.get('type').touched || newEdgeCollectionForm.get('type').dirty)
-                                && newEdgeCollectionForm.get('type').errors !== null ? 'border-danger' : ''">
-                  <span>{{'DISCRETE' | translate}}</span>
-                </label>
-
-                <label for="typePassthrough" class="col">
-                  <input type="radio" formControlName="type" [value]="utilityService.mappingType.passthrough"
-                         id="typePassthrough" class="mr-1"
-                         [ngClass]="(newEdgeCollectionForm.get('type').touched || newEdgeCollectionForm.get('type').dirty)
-                                && newEdgeCollectionForm.get('type').errors !== null ? 'border-danger' : ''">
-                  <span>{{'PASSTHROUGH' | translate}}</span>
-                </label>
-              </div>
-
-              <div class="form-row" *ngIf="newEdgeCollectionForm.get('type').value !== null">
-                <!-- Edge's property -->
-                <div class="col-5">
-                  <input *ngIf="newEdgeCollectionForm.get('type').value === utilityService.mappingType.continuous"
-                         formControlName="property"
-                         class="form-control"
-                         placeholder="{{'SIDEBAR_EDIT_NEW_MAPPING_EDGE_PLACEHOLDER' | translate}}"
-                         [ngbTypeahead]="suggestProperties(utilityService.elementType.edge, utilityService.mappingType.continuous)"
-                         [ngClass]="(newEdgeCollectionForm.get('property').touched || newEdgeCollectionForm.get('property').dirty)
-                                && newEdgeCollectionForm.get('property').errors !== null ? 'border-danger' : ''">
-                  <input *ngIf="newEdgeCollectionForm.get('type').value === utilityService.mappingType.discrete"
-                         formControlName="property"
-                         class="form-control"
-                         placeholder="{{'SIDEBAR_EDIT_NEW_MAPPING_EDGE_PLACEHOLDER' | translate}}"
-                         [ngbTypeahead]="suggestProperties(utilityService.elementType.edge, utilityService.mappingType.discrete)"
-                         [ngClass]="(newEdgeCollectionForm.get('property').touched || newEdgeCollectionForm.get('property').dirty)
-                                && newEdgeCollectionForm.get('property').errors !== null ? 'border-danger' : ''">
-                  <input *ngIf="newEdgeCollectionForm.get('type').value === utilityService.mappingType.passthrough"
-                         formControlName="property"
-                         class="form-control"
-                         placeholder="{{'SIDEBAR_EDIT_NEW_MAPPING_EDGE_PLACEHOLDER' | translate}}"
-                         [ngbTypeahead]="suggestProperties(utilityService.elementType.edge, utilityService.mappingType.passthrough)"
-                         [ngClass]="(newEdgeCollectionForm.get('property').touched || newEdgeCollectionForm.get('property').dirty)
-                                && newEdgeCollectionForm.get('property').errors !== null ? 'border-danger' : ''">
-                  <small class="mt-1 text-muted" [innerHTML]="'SIDEBAR_EDIT_TT_PROPERTY_HINT' | translate"></small>
-                </div>
-
-                <div class="col-5">
-                  <input *ngIf="newEdgeCollectionForm.get('type').value === utilityService.mappingType.continuous"
-                         formControlName="styleProperty" class="form-control"
-                         placeholder="{{'SIDEBAR_EDIT_NEW_MAPPING_PLACEHOLDER' | translate}}"
-                         [ngbTypeahead]="suggestStyleProperties(utilityService.elementType.edge, true)"
-                         [ngClass]="(newEdgeCollectionForm.get('styleProperty').touched || newEdgeCollectionForm.get('styleProperty').dirty)
-                                && newEdgeCollectionForm.get('styleProperty').errors !== null ? 'border-danger' : ''">
-                  <input *ngIf="newEdgeCollectionForm.get('type').value !== utilityService.mappingType.continuous"
-                         formControlName="styleProperty" class="form-control"
-                         placeholder="{{'SIDEBAR_EDIT_NEW_MAPPING_PLACEHOLDER' | translate}}"
-                         [ngbTypeahead]="suggestStyleProperties(utilityService.elementType.edge, false)"
-                         [ngClass]="(newEdgeCollectionForm.get('styleProperty').touched || newEdgeCollectionForm.get('styleProperty').dirty)
-                                && newEdgeCollectionForm.get('styleProperty').errors !== null ? 'border-danger' : ''">
-                  <small class="mt-1 text-muted" [innerHTML]="'SIDEBAR_EDIT_TT_PROPERTY_HINT' | translate"></small>
-
-                </div>
-
-                <!-- Submit: Currently disabled for passthrough mappings -->
-                <div class="col-2">
-                  <button type="submit" class="btn btn-block btn-outline-success col"
-                          [disabled]="newEdgeCollectionForm.invalid
-                          || dataService.isAnyMappingSelected()
-                          || newEdgeCollectionForm.get('type').value === utilityService.mappingType.passthrough">
-                    <fa-icon [icon]="faPlus"></fa-icon>
-                  </button>
-                </div>
-
-              </div>
-            </form>
-
-          </div>
-        </div>
-
-        <!-- EDGE MAPPINGS MARKED FOR DELETION -->
-        <div class="alert alert-danger mt-4"
-             *ngIf="epForDeletion.length > 0 || edForDeletion.length > 0 || ecForDeletion.length > 0">
-          <h5>{{'SIDEBAR_EDIT_ALERT_REMOVE_EDGE_MAPPINGS_HEADLINE' | translate}}</h5>
-          <p>{{'SIDEBAR_EDIT_ALERT_REMOVE_EDGE_MAPPINGS' | translate}}</p>
-          <b *ngIf="epForDeletion.length > 0">{{'SIDEBAR_EDIT_ALERT_REMOVE_EP' | translate}}</b>
-          <ul *ngIf="epForDeletion.length > 0">
-            <li *ngFor="let epCol of epForDeletion|uniqueCols">{{epCol}}</li>
-          </ul>
-          <b *ngIf="edForDeletion.length > 0">{{'SIDEBAR_EDIT_ALERT_REMOVE_ED' | translate}}</b>
-          <ul *ngIf="edForDeletion.length > 0">
-            <li *ngFor="let edCol of edForDeletion|uniqueCols">{{edCol}}</li>
-          </ul>
-          <b *ngIf="ecForDeletion.length > 0">{{'SIDEBAR_EDIT_ALERT_REMOVE_EC' | translate}}</b>
-          <ul *ngIf="ecForDeletion.length > 0">
-            <li *ngFor="let ecCol of ecForDeletion|uniqueCols">{{ecCol}}</li>
-          </ul>
-
-          <div class="mt-3">
-            <button class="btn btn-lg btn-block btn-danger" [disabled]="childrenInEditing > 0"
-                    (click)="deleteMappingCollectionsByElementType(utilityService.elementType.edge)">
-              {{'SIDEBAR_EDIT_TT_DELETE_ALL' | translate}}
-            </button>
-          </div>
-
-        </div>
-
-        <!-- EP -->
-        <h5 *ngIf="dataService.selectedNetwork.mappings.edgesPassthrough.length > 0" class="mt-4">
-          <span class="badge badge-secondary">
-              {{'EDGES' | translate}}
-          </span>
-          &nbsp;{{'PASSTHROUGH' | translate}}
-        </h5>
-        <table class="table" data-toggle="tooltip"
-               openDelay="1000"
-               container="body"
-               ngbTooltip="{{'SIDEBAR_EDIT_TT_PASSTHROUGH' | translate}}"
-               placement="{{layoutService.layout.sidebar.tooltipDirection}}">
-          <tr *ngFor="let ep of dataService.selectedNetwork.mappings.edgesPassthrough; let epIndex = index">
-            <td>
-              <b>{{ep.col}}</b>
-            </td>
-            <td>{{ep.styleProperty}}</td>
-          </tr>
-        </table>
-
-        <!-- ED -->
-        <h5 *ngIf="dataService.selectedNetwork.mappings.edgesDiscrete.length > 0" class="mt-4">
-          <span class="badge badge-secondary">
-              {{'EDGES' | translate}}
-          </span>
-          &nbsp;{{'DISCRETE' | translate}}
-        </h5>
-        <ng-container
-          *ngFor="let edgeCol of dataService.selectedNetwork.mappings.edgesDiscrete|uniqueCols; let colIndex = index">
-
-          <app-sidebar-edit-mapping-discrete
-            [col]="edgeCol"
-            [elementType]="utilityService.elementType.edge"
-            (markedForDeletionEmitter)="markForDeletion(edgeCol, utilityService.elementType.edge, utilityService.mappingType.discrete)"
-            (flashModeEmitter)="handleChildFlashMode($event)"></app-sidebar-edit-mapping-discrete>
-
-        </ng-container>
-
-        <!-- EC -->
-        <h5 *ngIf="dataService.selectedNetwork.mappings.edgesContinuous.length > 0" class="mt-4">
-          <span class="badge badge-secondary">
-              {{'EDGES' | translate}}
-          </span>
-          &nbsp;{{'CONTINUOUS' | translate}}
-        </h5>
-        <div *ngIf="dataService.selectedNetwork.mappings.edgesContinuous.length > 0">
-
-          <div *ngFor="let col of dataService.selectedNetwork.mappings.edgesContinuous|uniqueCols">
-
-            <b>{{col}}</b>
-
-            <app-sidebar-edit-mapping-continuous
-              [col]="col"
-              [elementType]="utilityService.elementType.edge"
-              (markedForDeletionEmitter)="markForDeletion(col, utilityService.elementType.edge, utilityService.mappingType.continuous)"
-              (flashModeEmitter)="handleChildFlashMode($event)"></app-sidebar-edit-mapping-continuous>
-
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- Edit: Inspection tool -->
-    <app-sidebar-edit-inspect
-      aria-labelledby="editsNavInspect"
-      class="tab-pane fade"
-      id="editsNavInspectContent"
-      role="tabpanel">
-    </app-sidebar-edit-inspect>
-
-    <!-- Edit: Setting highlight colors and duration -->
-    <div aria-labelledby="editsNavHighlights" class="tab-pane fade" id="editsNavHighlightsContent"
-         role="tabpanel">
-
-      <div class="alert alert-success" id="test" role="alert">
-        <fa-icon [icon]="faPalette" class="mr-2"></fa-icon>
-        <b>{{'SIDEBAR_EDIT_TOAST_UPDATE' | translate}}</b>
         <hr>
-        <b>{{'SIDEBAR_EDIT_TOAST_NODES' | translate}}</b> {{highlightNodes}}<br>
-        <b>{{'SIDEBAR_EDIT_TOAST_EDGES' | translate}}</b> {{highlightEdges}}<br>
-        <b>{{'SIDEBAR_EDIT_TOAST_DURATION' | translate}}</b> {{highlightDuration}}<br>
+        <app-sidebar-edit-info [itemList]="dataService.selectedNetwork.networkInformation.information"
+                               headline="SIDEBAR_EDIT_HEADLINE_ATTRIBUTES"
+                               target="information"></app-sidebar-edit-info>
+
       </div>
+
+      <!-- INFO: ATTRIBUTES -->
+      <h4 (click)="cEditInfoAttributes.toggle()"
+          [attr.aria-expanded]="!collapsedEditInfoAttributes"
+          aria-controls="cEditInfoAttributes"
+          class="alert alert-secondary cursor">
+        {{ 'SIDEBAR_EDIT_ATTRIBUTES' | translate }}
+
+      </h4>
+      <p #cEditInfoAttributes="ngbCollapse"
+         [(ngbCollapse)]="collapsedEditInfoAttributes">
+        <app-main-stats></app-main-stats>
+      </p>
+
+      <!-- INFO: INSPECTION WIZARD -->
+      <h4 (click)="cEditInfoInspection.toggle()"
+          [attr.aria-expanded]="!collapsedEditInfoInspection"
+          aria-controls="cEditInfoInspection"
+          class="alert alert-secondary cursor">
+        {{ 'SIDEBAR_EDIT_INSPECT' | translate }}
+      </h4>
+      <div #cEditInfoInspection="ngbCollapse"
+           [(ngbCollapse)]="collapsedEditInfoInspection">
+
+        <app-sidebar-edit-inspect></app-sidebar-edit-inspect>
+
+      </div>
+
+    </div>
+
+    <!-- 2: MAPPINGS -->
+    <div aria-labelledby="editMappings" class="tab-pane fade" id="editMappingsContent" role="tabpanel">
+
+      <!-- NODES -->
+      <app-sidebar-edit-mapping
+        [elementType]="utilityService.elementType.node"></app-sidebar-edit-mapping>
+
+      <!-- EDGES -->
+      <app-sidebar-edit-mapping
+        [elementType]="utilityService.elementType.edge"></app-sidebar-edit-mapping>
+
+      <!-- NETWORK -->
+      <h4 (click)="networkParent.toggle()"
+          [attr.aria-expanded]="!collapsedNetwork"
+          aria-controls="networkParent"
+          class="alert alert-secondary cursor">
+        {{ 'SIDEBAR_EDIT_NETWORK' | translate}}
+        <span *ngIf="dataService.objInEditing.elementType === null
+            && dataService.objInEditing.mappingType === null
+            && dataService.objInEditing.nwVisuals"
+              class="text-warning">
+          <fa-icon [icon]="faExclamationTriangle"></fa-icon>
+        </span>
+      </h4>
+      <div #networkParent="ngbCollapse"
+           [(ngbCollapse)]="collapsedNetwork"
+           class="p-2">
+        <app-sidebar-edit-info [itemList]="dataService.selectedNetwork.mappings.networkDefault"
+                               target="network"></app-sidebar-edit-info>
+      </div>
+
+    </div>
+
+    <!-- EXPORT -->
+    <div aria-labelledby="editExport" class="tab-pane fade" id="editExportContent" role="tabpanel">
+      <app-sidebar-image></app-sidebar-image>
+    </div>
+
+    <!-- 3: SETTINGS -->
+    <div aria-labelledby="editSettings" class="tab-pane fade" id="editSettingsContent" role="tabpanel">
+
+      <h5>
+        {{'SIDEBAR_EDIT_HEADLINE_SETTINGS' | translate}}
+      </h5>
 
       <div class="form-row">
         <label for="highlightNodesHex">{{'SIDEBAR_EDIT_LABEL_HEX_NODE' | translate}}</label>
@@ -611,23 +288,10 @@
                step="100" type="number">
 
       </div>
+
     </div>
   </div>
 
-  <!-- Routing: Home -->
-  <a [routerLink]="['']"
-     class="btn btn-block btn-lg btn-primary mt-5 mb-3"
-     [ngClass]="childrenInEditing > 0 ? 'disabled' : ''"
-     [attr.tabindex]="childrenInEditing > 0 ? -1 : 0"
-     [attr.aria-disabled]="childrenInEditing > 0"
-     data-toggle="tooltip"
-     container="body"
-     openDelay="1000"
-     ngbTooltip="{{'LOST'|translate}}"
-     placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-     role="button">
-    <fa-icon [icon]="faHome"></fa-icon>
-  </a>
 </div>
 
 

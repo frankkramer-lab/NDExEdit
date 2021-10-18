@@ -7,28 +7,34 @@ import {
   Validator,
   ValidatorFn
 } from '@angular/forms';
-import {DataService} from '../services/data.service';
 import {Directive, Input} from '@angular/core';
+import {PropertyService} from '../services/property.service';
 
 /**
  * Validates if a styleProperty may be used within this mapping
  * @param elementType Type of the respective element, either 'node' or 'edge'
  * @param mappingType Type of the respective mapping, either 'continuous', 'discrete' or 'continuous'
- * @param existing List of properties, which are already in use within this mapping
  */
-export function stylePropertyValidator(elementType: ElementType, mappingType: MappingType, existing: string[]): ValidatorFn {
+export function stylePropertyValidator(elementType: ElementType, mappingType: MappingType): ValidatorFn {
 
   return (control: AbstractControl): ValidationErrors | null => {
 
-    const baseList = elementType === ElementType.node ? DataService.nodeProperties : DataService.edgeProperties;
-    let available = baseList.filter(a => existing.indexOf(a) < 0);
+    // contains all globally available properties
+    const baseList = PropertyService.availableStyleProperties;
+    const valids = baseList
+      .filter(a => elementType === ElementType.node
+        ? PropertyService.nodeProperties.includes(a)
+        : PropertyService.edgeProperties.includes(a))
+      .filter(a => mappingType === MappingType.continuous
+        ? PropertyService.continuousProperties.includes(a)
+        : a);
 
-    if (mappingType === MappingType.continuous) {
-      available = available.filter(a => DataService.continuousProperties.indexOf(a) > -1);
+    if (!!control.value) {
+      return !valids.includes(control.value)
+        ? {stylePropertyName: {value: control.value}}
+        : null;
     }
-
-    return !available.includes(control.value) ? {stylePropertyName: {value: control.value}} : null;
-
+    return null;
   };
 }
 
@@ -38,13 +44,11 @@ export function stylePropertyValidator(elementType: ElementType, mappingType: Ma
 })
 
 export class StylePropertyValidatorDirective implements Validator {
-  @Input() stylePropertyName = '';
   @Input() elementType = null;
   @Input() mappingType = null;
-  @Input() existingList = [];
 
   validate(control: AbstractControl): ValidationErrors | null {
-    return this.stylePropertyName && this.mappingType && this.elementType ? stylePropertyValidator(this.elementType, this.mappingType, this.existingList) : null;
+    return this.mappingType && this.elementType ? stylePropertyValidator(this.elementType, this.mappingType) : null;
   }
 }
 

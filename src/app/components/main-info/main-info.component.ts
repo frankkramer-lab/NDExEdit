@@ -1,13 +1,13 @@
 import {Component} from '@angular/core';
 import {
-  faAngleDoubleRight,
-  faAngleRight,
-  faAngleLeft,
   faAngleDoubleLeft,
+  faAngleDoubleRight,
+  faAngleLeft,
+  faAngleRight,
   faComments,
   faExchangeAlt,
-  faThumbsUp,
   faRedo,
+  faThumbsUp,
   faUserGraduate
 } from '@fortawesome/free-solid-svg-icons';
 import {DataService} from '../../services/data.service';
@@ -71,8 +71,7 @@ export class MainInfoComponent {
   constructor(
     public dataService: DataService,
     public layoutService: LayoutService
-
-    ) {
+  ) {
 
   }
 }

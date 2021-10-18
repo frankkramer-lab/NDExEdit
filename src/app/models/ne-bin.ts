@@ -7,10 +7,20 @@ export interface NeBin {
    * Lower border
    */
   from: number;
+
+  /**
+   * Lower border normalised
+   */
+  fromNormed: string;
   /**
    * Upper border
    */
   to: number;
+
+  /**
+   * Upper border normalised
+   */
+  toNormed: string;
   /**
    * List of values within those borders
    */

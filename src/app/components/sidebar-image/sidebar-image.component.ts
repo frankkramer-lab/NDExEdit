@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DataService} from '../../services/data.service';
-import {faArrowLeft, faRedo, faHome} from '@fortawesome/free-solid-svg-icons';
+import {faArrowLeft, faRedo} from '@fortawesome/free-solid-svg-icons';
 import {GraphService} from '../../services/graph.service';
 import {LayoutService} from '../../services/layout.service';
 
@@ -13,11 +13,6 @@ import {LayoutService} from '../../services/layout.service';
  * Component to export the specified network as PNG or JPEG
  */
 export class SidebarImageComponent implements OnInit {
-  /**
-   * Icon: faHome
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
-   */
-  faHome = faHome;
   /**
    * Icon: faRedo
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
@@ -33,12 +28,13 @@ export class SidebarImageComponent implements OnInit {
    */
   fileTypeOptions: string[] = [
     'PNG',
-    'JPEG'
+    'JPEG',
+    'CX'
   ];
   /**
    * Selected file type
    */
-  selectedFileType: string;
+  selectedFileType = 'CX';
   /**
    * False, if only the viewport is to be exported
    */
@@ -77,7 +73,7 @@ export class SidebarImageComponent implements OnInit {
    */
   constructor(
     public dataService: DataService,
-    private graphService: GraphService,
+    public graphService: GraphService,
     public layoutService: LayoutService
   ) {
   }
@@ -98,6 +94,9 @@ export class SidebarImageComponent implements OnInit {
         break;
       case 'JPEG':
         this.downloadImageJPEG();
+        break;
+      case 'CX':
+        this.downloadCx();
         break;
     }
   }
@@ -143,12 +142,29 @@ export class SidebarImageComponent implements OnInit {
   }
 
   /**
-   * Toggles labels by using a specific CSS class which overrides the values of the labels
-   * @param show Determines if labels are to be displayed
+   * Download the network as CX file
    */
-  toggleLabels(show: boolean): void {
-    this.graphService.toggleLabels(show);
-    this.dataService.getSelectedNetwork().showLabels = show;
+  downloadCx(): void {
+    this.dataService.removeNdexStatus();
+    const network = this.dataService.selectedNetwork;
+    let filename;
+    if (!!network.networkInformation.name) {
+      filename = network.networkInformation.name;
+    } else if (!!network.networkInformation.uuid) {
+      filename = network.networkInformation.uuid;
+    } else {
+      filename = 'ndex_edit_network_' + this.dataService.networksParsed.indexOf(this.dataService.selectedNetwork).toString();
+    }
+
+    const blob = new Blob([JSON.stringify(network.cx)], {type: 'application/octet-stream'});
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.setAttribute('download', filename + '.cx');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }
 
   /**
@@ -164,5 +180,4 @@ export class SidebarImageComponent implements OnInit {
     a.click();
     document.body.removeChild(a);
   }
-
 }

@@ -26,21 +26,6 @@ export interface NeAspect {
   datatype?: string;
 
   /**
-   * List of continuous mappings for this attribute
-   */
-  mapPointerC?: string[];
-
-  /**
-   * List of discrete mappings for this attribute
-   */
-  mapPointerD?: string[];
-
-  /**
-   * List of passthrough mappings for this attribute
-   */
-  mapPointerP?: string[];
-
-  /**
    * Distribution chart for discrete properties
    */
   chartDiscreteDistribution?: NeChart;

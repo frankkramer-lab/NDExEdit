@@ -3,9 +3,8 @@ import {DataService} from '../../services/data.service';
 import {GraphService} from '../../services/graph.service';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
-import {faExclamationTriangle, faSave} from '@fortawesome/free-solid-svg-icons';
 import {LayoutService} from '../../services/layout.service';
-import {NodePositionMap} from 'cytoscape';
+import {PropertyService} from '../../services/property.service';
 
 @Component({
   selector: 'app-main-graph',
@@ -58,19 +57,22 @@ export class MainGraphComponent implements AfterViewInit, OnDestroy {
    * @param renderer necessary to access the DOM element and render the graph
    * @param graphService Service to access graph manipulations
    * @param layoutService Service responsible for tooltip positions
+   * @param propertyService Service responsible for property management during adding and removing mappings
    */
   constructor(
     public dataService: DataService,
     public route: ActivatedRoute,
     private renderer: Renderer2,
     public graphService: GraphService,
-    public layoutService: LayoutService
+    public layoutService: LayoutService,
+    private propertyService: PropertyService
   ) {
 
     this.subscription = this.route.paramMap.subscribe(params => {
       const networkId = params.get('id');
       if (networkId) {
         dataService.selectNetwork(Number(networkId));
+        propertyService.initAvailables(dataService.selectedNetwork);
       }
 
       if (this.isInitialized) {
@@ -99,6 +101,17 @@ export class MainGraphComponent implements AfterViewInit, OnDestroy {
   }
 
   /**
+   * Apply different layout methods to the graph
+   */
+  layoutGraph(method: string): void {
+    this.layoutInProcessing = true;
+    this.currentGraphLayout = method;
+    this.graphService.layoutGraph(method);
+    this.previousGraphLayout = this.currentGraphLayout;
+    this.layoutInProcessing = false;
+  }
+
+  /**
    * Fetches and sets the defined DOM element which is to contain the rendered graph;
    * also hands this container to the {@link GraphService} to {@link GraphService#render} the graph.
    * See {@link https://js.cytoscape.org/#core|Cytoscape.js (Core)} for further infos
@@ -108,20 +121,9 @@ export class MainGraphComponent implements AfterViewInit, OnDestroy {
   private renderGraph(): void {
 
     this.graphService.render(this.dataService.getSelectedNetwork())
-      .then(network => {})
+      .then(network => {
+      })
       .catch(e => console.error(e));
-  }
-
-
-  /**
-   * Apply different layout methods to the graph
-   */
-  layoutGraph(method: string): void {
-    this.layoutInProcessing = true;
-    this.currentGraphLayout = method;
-    this.graphService.layoutGraph(method);
-    this.previousGraphLayout = this.currentGraphLayout;
-    this.layoutInProcessing = false;
   }
 
 }

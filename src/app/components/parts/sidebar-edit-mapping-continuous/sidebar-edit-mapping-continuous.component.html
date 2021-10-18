@@ -2,14 +2,14 @@
 <div class="row mb-2">
   <!-- TOGGLE INSPECT -->
   <div class="col-4">
-    <button class="btn btn-sm btn-block"
-            data-toggle="tooltip"
-            openDelay="1000"
-            ngbTooltip="{{'SIDEBAR_EDIT_TT_INSPECTION_MODE' | translate}}"
-            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-            (click)="toggleInspectionMode()"
+    <button (click)="toggleInspectionMode()"
             [disabled]="editMode"
             [ngClass]="editMode ? 'btn-outline-secondary' : 'btn-outline-info'"
+            class="btn btn-sm btn-block"
+            data-toggle="tooltip"
+            ngbTooltip="{{'SIDEBAR_EDIT_TT_INSPECTION_MODE' | translate}}"
+            openDelay="1000"
+            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
             type="button">
       <fa-icon [icon]="faSearch"></fa-icon>
     </button>
@@ -17,14 +17,14 @@
 
   <!-- TOGGLE EDIT -->
   <div class="col-4">
-    <button class="btn btn-sm btn-block"
+    <button (click)="toggleEditMode()"
+            [disabled]="markedMappingForDeletion || dataService.lockRouting"
+            [ngClass]="editMode ? 'btn-warning' : (markedMappingForDeletion || dataService.lockRouting) ? 'btn-outline-secondary' : 'btn-outline-warning'"
+            class="btn btn-sm btn-block"
             data-toggle="tooltip"
-            openDelay="1000"
             ngbTooltip="{{'SIDEBAR_EDIT_TT_EDIT_MODE' | translate}}"
+            openDelay="1000"
             placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-            (click)="toggleEditMode()"
-            [disabled]="markedMappingForDeletion || canNotBeEdited()"
-            [ngClass]="editMode ? 'btn-warning' : (markedMappingForDeletion || canNotBeEdited()) ? 'btn-outline-secondary' : 'btn-outline-warning'"
             type="button">
       <fa-icon [icon]="faEdit"></fa-icon>
     </button>
@@ -32,15 +32,15 @@
 
   <!-- TOGGLE MARK FOR DELETION -->
   <div class="col-4">
-    <button class="btn btn-sm btn-block"
-            data-toggle="tooltip"
-            openDelay="1000"
-            ngbTooltip="{{'SIDEBAR_EDIT_TT_DELETE_ALL' | translate}}"
-            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-            container="body"
-            (click)="this.toggleMarkedForDeletion()"
+    <button (click)="this.toggleMarkedForDeletion()"
             [disabled]="editMode"
             [ngClass]="markedMappingForDeletion ? 'btn-danger' : (editMode) ? 'btn-outline-secondary' :'btn-outline-danger'"
+            class="btn btn-sm btn-block"
+            container="body"
+            data-toggle="tooltip"
+            ngbTooltip="{{'SIDEBAR_EDIT_TT_DELETE_ALL' | translate}}"
+            openDelay="1000"
+            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
             type="button">
       <fa-icon [icon]="faTrash"></fa-icon>
     </button>
@@ -57,93 +57,90 @@
     <!-- VISUAL AID -->
     <div [ngClass]="editMode ? 'col-12' : 'col-8'">
 
-      <ng-container *ngIf="loadingVisualAid">
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-      </ng-container>
+      <!-- ERROR: Chart or gradient invalid -->
+      <div *ngIf="!(editMode ? visualAidsInEditing : visualAids)[renderedVisualAidKey].isValid"
+           class="alert alert-danger mt-2 mb-2">
+        <h5>{{'SIDEBAR_EDIT_VISUAL_AID_ERROR_HEADER' | translate}}</h5>
+        <p>{{'SIDEBAR_EDIT_VISUAL_AID_ERROR_TEXT' | translate}}</p>
+      </div>
 
-      <ng-container *ngIf="!loadingVisualAid">
+      <!-- CHARTS -->
+      <ng-container *ngIf="(editMode ? visualAidsInEditing : visualAids)[renderedVisualAidKey].isValid
+          && (editMode ? visualAidsInEditing : visualAids)[renderedVisualAidKey].chartObj !== null">
 
-        <div *ngIf="visualAidBroken" class="alert alert-danger mt-2 mb-2">
-          <h5>{{'SIDEBAR_EDIT_VISUAL_AID_ERROR_HEADER' | translate}}</h5>
-          <p>{{'SIDEBAR_EDIT_VISUAL_AID_ERROR_TEXT' | translate}}</p>
-        </div>
+        <!-- HISTOGRAM -->
+        <app-chart (binSizeEmitter)="setBinSize($event, colProperty)"
+                   *ngIf="(editMode ? visualAidsInEditing : visualAids)[renderedVisualAidKey].isHistogram && !!colProperty"
+                   [chartObject]="(editMode ? visualAidsInEditing : visualAids)[renderedVisualAidKey].chartObj"
+                   [numberOfBins]="colProperty.binSize">
+        </app-chart>
 
-        <ng-container *ngIf="!visualAidBroken">
-          <app-chart *ngIf="showingHistogram"
-                     (binSizeEmitter)="setBinSize($event, colProperty)"
-                     [numberOfBins]="colProperty.binSize"
-                     [chartObject]="renderedChart">
-          </app-chart>
-
-          <app-chart *ngIf="!showingHistogram"
-                     [chartObject]="renderedChart">
-          </app-chart>
-
-        </ng-container>
+        <!-- MAPPING CHART -->
+        <app-chart *ngIf="!(editMode ? visualAidsInEditing : visualAids)[renderedVisualAidKey].isHistogram"
+                   [chartObject]="(editMode ? visualAidsInEditing : visualAids)[renderedVisualAidKey].chartObj">
+        </app-chart>
 
       </ng-container>
 
-      <!-- histograms need the buttons to alter the number of bins -->
+      <!-- GRADIENT -->
+      <div *ngIf="(editMode ? visualAidsInEditing : visualAids)[renderedVisualAidKey].isValid
+        && (editMode ? visualAidsInEditing : visualAids)[renderedVisualAidKey].gradientObj !== null">
+        <div #gradientPreview
+             [style.background]="buildColorGradientCssBackground((editMode ? visualAidsInEditing : visualAids)[renderedVisualAidKey].gradientObj)"
+             [style.height.px]="200"
+             [style.width.%]="100"
+             class="m-2 gradient-preview"
+             id="gradientPreview">
 
-      <ng-container *ngIf="!loadingVisualAid">
-        <div *ngIf="renderedGradient">
-          <div id="gradientPreview"
-               #gradientPreview
-               class="m-2 gradient-preview"
-               [style.background]="buildColorGradientCssBackground(renderedGradient)"
-               [style.height.px]="200"
-               [style.width.%]="100">
-
-            <ng-container *ngFor="let gradient of renderedGradient; let gradientIndex = index">
+          <ng-container
+            *ngFor="let gradient of (editMode ? visualAidsInEditing : visualAids)[renderedVisualAidKey].gradientObj; let gradientIndex = index">
 
             <span *ngIf="gradient.offset !== '-1' && gradient.offset !== '101'"
+                  [ngClass]="gradient.selected ? 'threshold-selected' : 'threshold-unselected'"
                   [ngStyle]="{'transform': 'translate(' + ((gradientPreview.offsetWidth * gradient.numericOffset) / 100 - gradientIndex) + 'px)',
                   'border-right': '1px solid ' + gradient.contrastColor,
-                  'height.px': 200}"
-                  [ngClass]="gradient.selected ? 'threshold-selected' : 'threshold-unselected'">
+                  'height.px': 200}">
                             &nbsp;
             </span>
 
-            </ng-container>
+          </ng-container>
 
-          </div>
+        </div>
 
-          <div id="gradientThresholds" #gradientThresholds
-               [style.width.%]="100">
+        <div #gradientThresholds [style.width.%]="100"
+             id="gradientThresholds">
 
-            <ng-container *ngFor="let gradient of renderedGradient">
+          <ng-container
+            *ngFor="let gradient of (editMode ? visualAidsInEditing : visualAids)[renderedVisualAidKey].gradientObj">
 
-            <span class="badge badge-pill border"
-                  (click)="gradient.selected = !gradient.selected"
+            <span (click)="gradient.selected = !gradient.selected"
                   *ngIf="gradient.offset !== '-1' && gradient.offset !== '101'"
+                  [ngClass]="(gradient.selected) ? 'pt-2 pb-2' : ''"
                   [ngStyle]="{'background-color': gradient.color,
                   'cursor':'pointer',
                   'color': gradient.labelColorWhite ? '#ffffff' : '#000000',
                   'transform': 'translateX(' + (gradientThresholds.offsetWidth / 140) * gradient.numericOffset + 'px)'}"
-                  [ngClass]="(gradient.selected) ? 'pt-2 pb-2' : ''">
+                  class="badge badge-pill border">
               {{gradient.color}}
             </span>
 
-            </ng-container>
-          </div>
-
+          </ng-container>
         </div>
 
-      </ng-container>
+      </div>
 
     </div>
 
     <!-- VISUAL AID SELECTION -->
-    <div class="col-4" *ngIf="inspectionMode">
+    <div *ngIf="inspectionMode" class="col-4">
       <div class="list-group">
-        <button type="button" class="list-group-item list-group-item-action"
-                (click)="resetVisualAid()">
+        <button (click)="showVisualAid('histogram')" class="list-group-item list-group-item-action"
+                type="button">
           {{'SIDEBAR_EDIT_LABEL_HISTOGRAM' | translate}}{{col}}
         </button>
-        <button *ngFor="let map of mappingCollection" type="button" class="list-group-item list-group-item-action"
-                (click)="setVisualAid(map.styleProperty)">
+        <button (click)="showVisualAid(map.styleProperty)" *ngFor="let map of mappingCollection"
+                class="list-group-item list-group-item-action"
+                type="button">
           {{map.styleProperty}}
         </button>
       </div>
@@ -162,52 +159,52 @@
       <thead>
       <tr>
         <!-- SORT -->
-        <th scope="col" class="border-bottom">
+        <th class="border-bottom" scope="col">
           <button (click)="sortAscendingByThreshold()"
                   [disabled]="flashMode"
                   class="btn btn-outline-secondary"
                   data-toggle="tooltip"
-                  openDelay="1000"
                   ngbTooltip="{{'SIDEBAR_EDIT_TT_SORT_THRESHOLDS' | translate}}"
+                  openDelay="1000"
                   placement="{{layoutService.layout.sidebar.tooltipDirection}}"
                   type="button">
             <fa-icon [icon]="faSortNumericDown"></fa-icon>
           </button>
         </th>
 
-        <!-- HISTO -->
-        <th scope="col" class="border-bottom">
-          <button type="button" class="btn btn-block btn-outline-primary"
+        <!-- HISTOGRAM -->
+        <th class="border-bottom" scope="col">
+          <button (click)="showVisualAid('histogram')" class="btn btn-block btn-outline-primary"
                   data-toggle="tooltip"
-                  openDelay="1000"
                   ngbTooltip="{{'SIDEBAR_EDIT_LABEL_HISTOGRAM' | translate}} {{col}}"
+                  openDelay="1000"
                   placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-                  (click)="resetVisualAid()">
+                  type="button">
             {{col}}
           </button>
         </th>
 
         <ng-container *ngFor="let mapping of this.mappingCollectionInEditing; let mapIndex = index">
-          <th scope="col" class="text-nowrap border-bottom">
+          <th class="text-nowrap border-bottom" scope="col">
 
             <!-- SET VISUAL AID -->
-            <button type="button" class="btn btn-link"
-                    (click)="setVisualAid(mapping.styleProperty)"
+            <button (click)="showVisualAid(mapping.styleProperty)" class="btn btn-link"
                     data-toggle="tooltip"
-                    openDelay="1000"
                     ngbTooltip="{{'SIDEBAR_EDIT_TT_DISPLAY_' + (mapping.isColor ? 'GRADIENT_FOR' : 'CHART_FOR') | translate}} {{mapping.styleProperty}}"
-                    placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+                    openDelay="1000"
+                    placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                    type="button">
               {{mapping.styleProperty}}
             </button>
 
             <!-- DELETE MAPPING -->
-            <button type="button" (click)="deleteMappingFromCollection(mapping.styleProperty)"
-                    [disabled]="flashMode"
+            <button (click)="deleteMappingFromCollection(mapping.styleProperty)" [disabled]="flashMode"
                     class="btn btn-block btn-sm btn-outline-danger mt-1"
                     data-toggle="tooltip"
                     ngbTooltip="{{'SIDEBAR_EDIT_TT_DELETE_COL' | translate}}"
                     openDelay="1000"
-                    placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+                    placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                    type="button">
               <fa-icon [icon]="faTrash"></fa-icon>
             </button>
 
@@ -216,13 +213,13 @@
               <!-- TOGGLE COLOR [disabled] -->
               <div class="col-6">
                 <div class="custom-control custom-switch"
+                     container="body"
                      data-toggle="tooltip"
                      ngbTooltip="{{'SIDEBAR_EDIT_TT_TOGGLE_COLOR_PROPERTY_' + (mapping.isColor ? 'YES' : 'NO') | translate}}"
                      openDelay="1000"
-                     placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-                     container="body">
-                  <input type="checkbox" class="custom-control-input" id="colorToggle{{mapIndex}}"
-                         [checked]="mapping.isColor" [disabled]="true">
+                     placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+                  <input [checked]="mapping.isColor" [disabled]="true" class="custom-control-input"
+                         id="colorToggle{{mapIndex}}" type="checkbox">
                   <label class="custom-control-label" for="colorToggle{{mapIndex}}">
                     <fa-icon [icon]="faPalette"></fa-icon>
                   </label>
@@ -231,14 +228,14 @@
 
               <!-- RESET TO DEFAULT -->
               <div class="col-6">
-                <button class="btn btn-block btn-outline-warning"
+                <button (click)="resetStylePropertyToDefaults(mapping.styleProperty, mapIndex)"
                         [disabled]="flashMode"
+                        class="btn btn-block btn-outline-warning"
+                        container="body"
                         data-toggle="tooltip"
                         ngbTooltip="{{'SIDEBAR_EDIT_TT_RESET_MAPPING' | translate}}"
-                        placement="{{layoutService.layout.sidebar.tooltipDirection}}"
                         openDelay="1000"
-                        container="body"
-                        (click)="resetStylePropertyToDefaults(mapping.styleProperty, mapIndex)"
+                        placement="{{layoutService.layout.sidebar.tooltipDirection}}"
                         type="button">
                   <fa-icon [icon]="faRedo"></fa-icon>
                 </button>
@@ -250,56 +247,57 @@
 
         <!-- ADD MAPPING -->
         <th>
-          <button *ngIf="!showNewMappingForm"
-                  class="btn btn-outline-success"
+          <button (click)="showNewMappingForm = true"
+                  *ngIf="!showNewMappingForm"
                   [disabled]="flashMode"
-                  (click)="showNewMappingForm = true"
+                  class="btn btn-outline-success"
+                  container="body"
                   data-toggle="tooltip"
                   ngbTooltip="{{'SIDEBAR_EDIT_TT_ADD_MAPPING_INPUT_SHOW' | translate}}"
                   openDelay="1000"
-                  container="body"
                   placement="{{layoutService.layout.sidebar.tooltipDirection}}"
                   type="button">
             <fa-icon [icon]="faPlus"></fa-icon>
           </button>
 
           <!-- NEW STYLE FORM -->
-          <form *ngIf="showNewMappingForm"
-                [formGroup]="newMappingForm"
-                (ngSubmit)="onSubmitNewMappingStyleProperty()">
+          <form (ngSubmit)="onSubmitNewMappingStyleProperty()"
+                *ngIf="showNewMappingForm"
+                [formGroup]="newMappingForm">
 
             <div class="form-row form-add-mapping">
               <div class="col-8">
-                <input class="form-control" type="text" id="styleProperty" name="styleProperty"
-                       formControlName="styleProperty"
-                       container="body"
-                       [ngbTypeahead]="suggestStyleProperties"
-                       [ngClass]="newMappingForm.get('styleProperty').errors !== null
+                <input [ngClass]="newMappingForm.get('styleProperty').errors !== null
                                     && (newMappingForm.get('styleProperty').touched || newMappingForm.get('styleProperty').dirty)
                                     ? 'border border-danger'
-                                    : newMappingForm.get('styleProperty').errors === null ? 'border border-success' : ''">
+                                    : newMappingForm.get('styleProperty').errors === null ? 'border border-success' : ''"
+                       [ngbTypeahead]="suggestStyleProperties" class="form-control" container="body"
+                       formControlName="styleProperty"
+                       id="styleProperty"
+                       name="styleProperty"
+                       type="text">
 
               </div>
 
               <div class="col-2">
-                <button class="btn btn-outline-secondary"
-                        type="button"
-                        (click)="resetNewMappingForm()">
+                <button (click)="resetNewMappingForm()"
+                        class="btn btn-outline-secondary"
+                        type="button">
                   <fa-icon [icon]="faTimes"></fa-icon>
                 </button>
               </div>
 
               <div class="col-2">
-                <button class="btn btn-outline-success"
-                        type="submit"
-                        [disabled]="newMappingForm.invalid">
+                <button [disabled]="newMappingForm.invalid"
+                        class="btn btn-outline-success"
+                        type="submit">
                   <fa-icon [icon]="faCheck"></fa-icon>
                 </button>
               </div>
 
             </div>
 
-            <small class="form-row mt-1 text-muted" [innerHTML]="'SIDEBAR_EDIT_TT_PROPERTY_HINT' | translate"></small>
+            <small [innerHTML]="'SIDEBAR_EDIT_TT_PROPERTY_HINT' | translate" class="form-row mt-1 text-muted"></small>
 
             <div class="form-row mt-1">
               <small *ngIf="(newMappingForm.get('styleProperty').touched || newMappingForm.get('styleProperty').dirty)
@@ -346,26 +344,28 @@
 
             <!-- DELETE ROW -->
             <td>
-              <div class="btn-group btn-group-sm" role="group" aria-label="Deletion">
-                <button type="button" class="btn btn-danger"
-                        (click)="markedRowForDeletion !== thIndex ? markedRowForDeletion = thIndex : markedRowForDeletion = null"
-                        [disabled]="flashMode || this.thresholds.controls.length < 3"
-                        data-toggle="tooltip"
-                        ngbTooltip="{{'SIDEBAR_EDIT_TT_DELETE_ROW' | translate}}"
-                        openDelay="1000"
-                        container="body"
-                        placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+              <div aria-label="Deletion" class="btn-group btn-group-sm" role="group">
+                <button
+                  (click)="markedRowForDeletion !== thIndex ? markedRowForDeletion = thIndex : markedRowForDeletion = null"
+                  [disabled]="flashMode || this.thresholds.controls.length < 3"
+                  class="btn btn-danger"
+                  container="body"
+                  data-toggle="tooltip"
+                  ngbTooltip="{{'SIDEBAR_EDIT_TT_DELETE_ROW' | translate}}"
+                  openDelay="1000"
+                  placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                  type="button">
                   <fa-icon [icon]="faTrash"></fa-icon>
                 </button>
-                <button *ngIf="markedRowForDeletion === thIndex" type="button"
+                <button (click)="removeThresholdFromMapping()" *ngIf="markedRowForDeletion === thIndex"
+                        [disabled]="this.thresholds.controls.length < 3"
                         class="btn btn-outline-danger"
+                        container="body"
                         data-toggle="tooltip"
                         ngbTooltip="{{'MAIN_MAPPINGS_CONFIRM_DELETION_YES' | translate}}"
-                        placement="{{layoutService.layout.sidebar.tooltipDirection}}"
                         openDelay="1000"
-                        container="body"
-                        [disabled]="this.thresholds.controls.length < 3"
-                        (click)="removeThresholdFromMapping()">
+                        placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                        type="button">
                   <fa-icon [icon]="faCheck"></fa-icon>
                 </button>
               </div>
@@ -375,11 +375,11 @@
             <!-- THRESHOLD -->
             <td>
               <!-- mark red when to be deleted or an error occurred -->
-              <input formControlName="threshold" type="number" class="form-control"
-                     [ngClass]="markedRowForDeletion === thIndex
+              <input [ngClass]="markedRowForDeletion === thIndex
                      || (this.thresholds.errors !== null
                      && this.thresholds.errors['duplicateThreshold']?.value) === th.get('threshold').value
-                     ? 'border-danger' : ''">
+                     ? 'border-danger' : ''" class="form-control" formControlName="threshold"
+                     type="number">
             </td>
 
             <!-- ERRORS: AT LEAST ONE MAPPING REQUIRED -->
@@ -395,8 +395,8 @@
             <!-- ASSIGNED -->
             <ng-container *ngFor="let equal of th.get('equals')['controls']; let eqIndex = index"
                           formArrayName="equals">
-              <td class="deletable" [ngClass]="markedCellMove.mappingIndex === eqIndex
-              && markedCellMove.sourceThresholdIndex === thIndex ? 'table-info' : ''">
+              <td [ngClass]="markedCellMove.mappingIndex === eqIndex
+              && markedCellMove.sourceThresholdIndex === thIndex ? 'table-info' : ''" class="deletable">
 
                 <table class="table table-borderless">
                   <tr>
@@ -404,13 +404,13 @@
                     <!-- VALUES -->
                     <td *ngIf="th.get('useValues')['controls'][eqIndex].value" class="wide slim">
                       <input *ngIf="!th.get('isColor')['controls'][eqIndex].value" [formControlName]="eqIndex"
-                             type="number"
                              [ngClass]="markedRowForDeletion === thIndex ? 'border-danger' : ''"
-                             class="form-control">
+                             class="form-control"
+                             type="number">
                       <input *ngIf="th.get('isColor')['controls'][eqIndex].value" [formControlName]="eqIndex"
-                             type="color"
                              [ngClass]="markedRowForDeletion === thIndex ? 'border-danger' : ''"
-                             class="form-control">
+                             class="form-control"
+                             type="color">
                     </td>
 
                     <!-- MOVE VALUE HERE -->
@@ -418,58 +418,59 @@
                         && markedCellMove.mappingIndex === eqIndex
                         && markedCellMove.sourceThresholdIndex !== -1"
                         class="slim wide">
-                      <button [disabled]="flashMode"
+                      <button (click)="moveCell(thIndex, th.get('isColor')['controls'][eqIndex].value)"
+                              [disabled]="flashMode"
+                              class="btn btn-block btn-outline-info"
                               data-toggle="tooltip"
                               ngbTooltip="{{'SIDEBAR_EDIT_TT_MOVE_CELL_HERE' | translate}}"
-                              placement="{{layoutService.layout.sidebar.tooltipDirection}}"
                               openDelay="1000"
-                              class="btn btn-block btn-outline-info"
-                              type="button"
-                              (click)="moveCell(thIndex, th.get('isColor')['controls'][eqIndex].value)">
+                              placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                              type="button">
                         <fa-icon [icon]="faChevronLeft"></fa-icon>
                       </button>
                     </td>
 
                     <!-- ADD CELL -->
                     <td *ngIf="!th.get('useValues')['controls'][eqIndex].value" class="wide slim">
-                      <button *ngIf="markedCellMove.mappingIndex === -1
+                      <button (click)="addCellToMapping(eqIndex, thIndex)"
+                              *ngIf="markedCellMove.mappingIndex === -1
                                                   && markedCellMove.sourceThresholdIndex === -1"
                               [disabled]="flashMode"
+                              class="btn btn-block btn-outline-light"
                               data-toggle="tooltip"
                               ngbTooltip="{{'SIDEBAR_EDIT_TT_ADD_CELL' | translate}}"
-                              placement="{{layoutService.layout.sidebar.tooltipDirection}}"
                               openDelay="1000"
-                              class="btn btn-block btn-outline-light"
-                              type="button"
-                              (click)="addCellToMapping(eqIndex, thIndex)">
+                              placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                              type="button">
                         <fa-icon [icon]="faPlus"></fa-icon>
                       </button>
                     </td>
 
                     <!-- MOVE CELL -->
                     <td *ngIf="th.get('useValues')['controls'][eqIndex].value" class="slim wide">
-                      <button type="button" class="btn btn-outline-info deletable-btn"
-                              [disabled]="flashMode
+                      <button (click)="toggleMoveCell(eqIndex, thIndex)" [disabled]="flashMode
                               || (markedCellMove.sourceThresholdIndex !== -1
                               && markedCellMove.sourceThresholdIndex !== thIndex)"
-                              (click)="toggleMoveCell(eqIndex, thIndex)"
+                              class="btn btn-outline-info deletable-btn"
                               data-toggle="tooltip"
                               ngbTooltip="{{'SIDEBAR_EDIT_TT_MOVE_CELL' | translate}}"
                               openDelay="1000"
-                              placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+                              placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                              type="button">
                         <fa-icon [icon]="faArrowsAltV"></fa-icon>
                       </button>
                     </td>
 
                     <!-- REMOVE CELL -->
                     <td *ngIf="th.get('useValues')['controls'][eqIndex].value" class="slim wide">
-                      <button type="button" class="btn btn-outline-danger deletable-btn"
+                      <button (click)="removeCellFromMapping(eqIndex, thIndex)"
                               [disabled]="flashMode || markedCellMove.mappingIndex === eqIndex"
-                              (click)="removeCellFromMapping(eqIndex, thIndex)"
+                              class="btn btn-outline-danger deletable-btn"
                               data-toggle="tooltip"
                               ngbTooltip="{{'SIDEBAR_EDIT_TT_DELETE_CELL' | translate}}"
                               openDelay="1000"
-                              placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+                              placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                              type="button">
                         <fa-icon [icon]="faTimes"></fa-icon>
                       </button>
                     </td>
@@ -483,40 +484,41 @@
                       <!-- VALUES -->
                       <td class="slim wide">
                         <input *ngIf="!th.get('isColor')['controls'][eqIndex].value"
-                               type="number" value="{{th.get('duplicates')['controls'][eqIndex].value}}"
-                               [ngClass]="markedRowForDeletion === thIndex ? 'border-danger' : ''"
-                               class="form-control">
+                               [ngClass]="markedRowForDeletion === thIndex ? 'border-danger' : ''" class="form-control"
+                               type="number"
+                               value="{{th.get('duplicates')['controls'][eqIndex].value}}">
                         <input *ngIf="th.get('isColor')['controls'][eqIndex].value"
-                               type="color" value="{{th.get('duplicates')['controls'][eqIndex].value}}"
-                               [ngClass]="markedRowForDeletion === thIndex ? 'border-danger' : ''"
-                               class="form-control">
+                               [ngClass]="markedRowForDeletion === thIndex ? 'border-danger' : ''" class="form-control"
+                               type="color"
+                               value="{{th.get('duplicates')['controls'][eqIndex].value}}">
                       </td>
 
                       <!-- MOVE CELL -->
                       <td class="slim wide">
-                        <button type="button" class="btn btn-outline-info deletable-btn"
-                                [disabled]="flashMode
+                        <button (click)="toggleMoveCell(eqIndex, thIndex, duplicateIndex)" [disabled]="flashMode
                                 || (markedCellMove.sourceThresholdIndex !== -1
                                 && markedCellMove.duplicateIndex !== duplicateIndex
                                 && markedCellMove.sourceThresholdIndex !== thIndex)"
-                                (click)="toggleMoveCell(eqIndex, thIndex, duplicateIndex)"
+                                class="btn btn-outline-info deletable-btn"
                                 data-toggle="tooltip"
                                 ngbTooltip="{{'SIDEBAR_EDIT_TT_MOVE_CELL' | translate}}"
                                 openDelay="1000"
-                                placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+                                placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                                type="button">
                           <fa-icon [icon]="faArrowsAltV"></fa-icon>
                         </button>
                       </td>
 
                       <!-- REMOVE CELL -->
                       <td *ngIf="th.get('useValues')['controls'][eqIndex].value" class="slim wide">
-                        <button type="button" class="btn btn-outline-danger deletable-btn"
+                        <button (click)="removeCellFromMapping(eqIndex, thIndex, duplicateIndex)"
                                 [disabled]="flashMode || markedCellMove.mappingIndex === eqIndex"
-                                (click)="removeCellFromMapping(eqIndex, thIndex, duplicateIndex)"
+                                class="btn btn-outline-danger deletable-btn"
                                 data-toggle="tooltip"
                                 ngbTooltip="{{'SIDEBAR_EDIT_TT_DELETE_CELL' | translate}}"
                                 openDelay="1000"
-                                placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+                                placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                                type="button">
                           <fa-icon [icon]="faTimes"></fa-icon>
                         </button>
                       </td>
@@ -583,8 +585,8 @@
       <tr>
         <td [attr.colspan]="mappingCollectionInEditing.length + 2">
           <button (click)="addThresholdToMapping()"
-                  class="btn btn-block btn-outline-success"
                   [disabled]="flashMode"
+                  class="btn btn-block btn-outline-success"
                   data-toggle="tooltip"
                   ngbTooltip="{{'SIDEBAR_EDIT_TT_ADD_THRESHOLD' | translate}}"
                   placement="{{layoutService.layout.sidebar.tooltipDirection}}"
@@ -597,7 +599,7 @@
     </table>
 
     <!-- ERRORS: GLOBAL -->
-    <table class="table table-borderless" *ngIf="this.thresholds.errors !== null">
+    <table *ngIf="this.thresholds.errors !== null" class="table table-borderless">
       <!-- THRESHOLD: MINLENGTH -->
       <tr *ngIf="this.thresholds.errors['minlength']">
         <td [attr.colspan]="2">
@@ -630,37 +632,58 @@
 
     <!-- abort / flash / submit -->
     <div class="row mb-3 mt-3">
+      <!-- ABORT -->
       <div class="col-4">
-        <!-- discarding changes is not possible for a newly added mapping, this has to be submitted and deleted as a whole -->
-        <button class="btn btn-block btn-outline-danger"
+
+        <!-- aborting adding a new mapping -->
+        <button *ngIf="newlyAdded"
+                (click)="removeNewlyAdded()"
+                class="btn btn-block btn-outline-danger"
                 data-toggle="tooltip"
+                container="body"
+                openDelay="1000"
+                ngbTooltip="{{'SIDEBAR_EDIT_TT_BTN_ABORT_NEWLY_ADDED' | translate}}"
+                placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                type="button">
+          <fa-icon [icon]="faTimes"></fa-icon>
+        </button>
+
+        <!-- discarding changes to a previously existing mapping -->
+        <button *ngIf="!newlyAdded"
+                (click)="discardChanges()"
+                class="btn btn-block btn-outline-danger"
+                data-toggle="tooltip"
+                container="body"
+                openDelay="1000"
                 ngbTooltip="{{'SIDEBAR_EDIT_TT_BTN_ABORT' | translate}}"
                 placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-                type="button"
-                [disabled]="newlyAdded"
-                (click)="discardChanges()">
+                type="button">
           <fa-icon [icon]="faTimes"></fa-icon>
         </button>
       </div>
+
+      <!-- FLASH -->
       <div class="col-4">
-        <button class="btn btn-block"
+        <button (click)="toggleFlashMode()"
+                [disabled]="continuousMappingForm.invalid"
                 [ngClass]="flashMode ? 'btn-info' : 'btn-outline-info'"
+                class="btn btn-block"
                 data-toggle="tooltip"
                 ngbTooltip="{{'SIDEBAR_EDIT_TT_BTN_MAGIC_' + (flashMode ? 'OFF' : 'ON') | translate}}"
                 placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-                type="button"
-                [disabled]="continuousMappingForm.invalid"
-                (click)="toggleFlashMode()">
+                type="button">
           <fa-icon [icon]="faMagic"></fa-icon>
         </button>
       </div>
+
+      <!-- SUBMIT -->
       <div class="col-4">
-        <button class="btn btn-block btn-outline-success"
+        <button [disabled]="continuousMappingForm.invalid"
+                class="btn btn-block btn-outline-success"
+                container="body"
                 data-toggle="tooltip"
                 ngbTooltip="{{'SIDEBAR_EDIT_TT_BTN_APPLY' | translate}}"
-                container="body"
                 placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-                [disabled]="continuousMappingForm.invalid"
                 type="submit">
           <fa-icon [icon]="faCheck"></fa-icon>
         </button>

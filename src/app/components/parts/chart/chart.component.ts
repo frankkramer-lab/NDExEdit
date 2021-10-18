@@ -6,6 +6,7 @@ import {NeMappingDiscrete} from '../../../models/ne-mapping-discrete';
 import {NeMappingContinuous} from '../../../models/ne-mapping-continuous';
 import {UtilityService} from '../../../services/utility.service';
 import {NeMapping} from '../../../models/ne-mapping';
+import {LayoutService} from '../../../services/layout.service';
 
 @Component({
   selector: 'app-chart',
@@ -23,6 +24,7 @@ export class ChartComponent implements OnInit, OnDestroy {
    * Currently set number of bins
    */
   @Input() numberOfBins?: number;
+
   /**
    * Triggers redraw of the chart with the new binSize to better evaluate your data
    * for continuous mappings
@@ -55,9 +57,10 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   constructor(
     public dataService: DataService,
+    public layoutService: LayoutService,
     private utilityService: UtilityService
   ) {
-    dataService.chartRedrawEmitter.subscribe(value => this.triggerRedraw());
+    layoutService.layoutEmitter.subscribe(value => this.triggerRedraw());
   }
 
   ngOnDestroy(): void {
@@ -66,6 +69,7 @@ export class ChartComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
     if (!this.binSizeInitially) {
       this.binSizeInitially = this.numberOfBins;
     }
@@ -74,6 +78,7 @@ export class ChartComponent implements OnInit, OnDestroy {
       this.chartObject.chartColors = this.utilityService.utilGetRandomColorForChart();
     }
   }
+
 
   /**
    * Triggers a colorful redraw of a chart

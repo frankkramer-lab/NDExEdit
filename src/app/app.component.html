@@ -3,7 +3,7 @@
   <div class="row">
 
     <!-- Main outlet -->
-    <div class="col-{{widthMain}}" [ngClass]="layoutService.layout.main.position === 'left' ? 'order-1' : 'order-2'">
+    <div [ngClass]="layoutService.layout.main.position === 'left' ? 'order-1' : 'order-2'" class="col-{{widthMain}}">
 
       <div class="row">
 
@@ -11,20 +11,20 @@
           <router-outlet></router-outlet>
         </div>
 
-        <div class="col-auto" *ngIf="layoutService.layout.main.position === 'left'">
+        <div *ngIf="layoutService.layout.main.position === 'left'" class="col-auto">
           <app-dragbar (languageEmitter)="setLanguage($event)"></app-dragbar>
         </div>
       </div>
     </div>
 
     <!-- Sidebar outlet -->
-    <div class="col-{{widthSidebar}}" [ngClass]="layoutService.layout.main.position === 'left' ? 'order-2' : 'order-1'">
+    <div [ngClass]="layoutService.layout.main.position === 'left' ? 'order-2' : 'order-1'" class="col-{{widthSidebar}}">
 
       <div class="row">
         <div class="scroll col">
           <router-outlet name="sidebar"></router-outlet>
         </div>
-        <div class="col-auto" *ngIf="layoutService.layout.sidebar.position === 'left'">
+        <div *ngIf="layoutService.layout.sidebar.position === 'left'" class="col-auto">
           <app-dragbar (languageEmitter)="setLanguage($event)"></app-dragbar>
         </div>
       </div>

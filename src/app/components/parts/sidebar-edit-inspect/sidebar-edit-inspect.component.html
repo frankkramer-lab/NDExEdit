@@ -1,194 +1,306 @@
-  <p>{{'SIDEBAR_EDIT_INSPECT_TITLE_HINT' | translate}}</p>
+<p>{{'SIDEBAR_EDIT_INSPECT_TITLE_HINT' | translate}}</p>
 
-  <!-- INSPECTION LIST -->
-  <div class="table-responsive">
-    <table class="table">
+<!-- INSPECT: list -->
+<div *ngIf="highlightListDefinition.length > 0">
+  <h6 (click)="containerRuleList.toggle()"
+      [attr.aria-expanded]="!collapsedRuleList"
+      aria-controls="containerRuleList"
+      class="alert alert-dark cursor">
+    {{ 'SIDEBAR_EDIT_INSPECT_RULE_LIST' | translate}}
+  </h6>
 
-      <ng-container *ngFor="let def of highlightListDefinition; let defIndex = index">
+  <div #containerRuleList="ngbCollapse"
+       [(ngbCollapse)]="collapsedRuleList"
+       class="p-2">
 
-        <tr [ngClass]="def.markedForDeletion ? 'table-danger' : ''">
-          <td>{{def.type | translate}}</td>
-          <td>{{def.property.name}}</td>
-
-          <td *ngIf="utilityService.utilIsNumber(def.rangeLower) && utilityService.utilIsNumber(def.rangeUpper)">
-            {{'SIDEBAR_EDIT_INSPECT_RANGE_LOWER' | translate}} <b>{{def.rangeLower}}</b>
-            {{'SIDEBAR_EDIT_INSPECT_RANGE_UPPER' | translate}} <b>{{def.rangeUpper}}</b>
-          </td>
-
-          <td *ngIf="def.sameAs">{{'SIDEBAR_EDIT_INSPECT_SAME' | translate}} <b>{{def.sameAs}}</b></td>
-
-          <td>
-
-            <button (click)="graphService.highlightByElementSameAs(def.type, def.property, def.sameAs)"
-                    *ngIf="def.sameAs"
-                    class="btn btn-outline-primary">
-              <fa-icon [icon]="faMagic"></fa-icon>
-            </button>
-
-            <button
-              (click)="graphService.highlightByElementRange(def.type, def.property, def.rangeLower, def.rangeUpper)"
-              *ngIf="utilityService.utilIsNumber(def.rangeLower) && utilityService.utilIsNumber(def.rangeUpper)"
-              class="btn btn-outline-primary">
-              <fa-icon [icon]="faMagic"></fa-icon>
-            </button>
-          </td>
-
-          <td>
-
-            <button (click)="def.markedForDeletion = true" *ngIf="!def.markedForDeletion"
-                    class="btn btn-outline-danger">
-              <fa-icon [icon]="faTrash"></fa-icon>
-            </button>
-
-            <button (click)="def.markedForDeletion = false" *ngIf="def.markedForDeletion"
-                    class="btn btn-outline-danger">
-              <fa-icon [icon]="faTimes"></fa-icon>
-            </button>
-
-          </td>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>{{'SIDEBAR_EDIT_INSPECT_TH_TYPE' | translate}}</th>
+          <th>{{'SIDEBAR_EDIT_INSPECT_TH_PROPERTY' | translate}}</th>
+          <th>{{'SIDEBAR_EDIT_INSPECT_TH_VALUES' | translate}}</th>
+          <th>{{'SIDEBAR_EDIT_INSPECT_TH_FLASH' | translate}}</th>
+          <th>{{'SIDEBAR_EDIT_INSPECT_TH_REMOVE' | translate}}</th>
         </tr>
-        <tr *ngIf="def.markedForDeletion">
-          <td colspan="4">
-            {{'SIDEBAR_EDIT_INSPECT_REMOVE_ITEM' | translate}}
-          </td>
-          <td>
-            <button (click)="deleteFromHighlightList(defIndex)" class="btn btn-outline-danger">
-              <fa-icon [icon]="faTrash"></fa-icon>
-            </button>
-          </td>
-        </tr>
+        </thead>
 
-      </ng-container>
-    </table>
+        <ng-container *ngFor="let rule of highlightListDefinition; let ruleIndex = index">
+          <!-- rule specification -->
+          <tr
+            [ngClass]="ruleToDelete === ruleIndex ? 'table-danger' : ''">
+            <!-- type -->
+            <td>{{(rule.elementType === utilityService.elementType.node ? 'NODE' : 'EDGE') | translate}}</td>
 
+            <!-- property -->
+            <td>{{rule.property.name}}</td>
+
+            <!-- range or value -->
+            <td *ngIf="rule.ruleType === utilityService.inspectionRuleType.numeric">
+              [ {{rule.rangeLower}}, {{rule.rangeUpper}} ]
+            </td>
+
+            <td *ngIf="rule.ruleType !== utilityService.inspectionRuleType.numeric">
+              {{rule.sameAs}}
+            </td>
+
+            <!-- flash -->
+            <td>
+              <button (click)="flash(rule)" class="btn btn-outline-info">
+                <fa-icon [icon]="faMagic"></fa-icon>
+              </button>
+            </td>
+
+            <!-- delete -->
+            <td>
+              <button (click)="markToDelete(ruleIndex)" class="btn btn-outline-danger">
+                <fa-icon [icon]="faTrash"></fa-icon>
+              </button>
+            </td>
+          </tr>
+
+          <!-- delete this rule confirmation -->
+          <tr *ngIf="ruleIndex === ruleToDelete">
+            <td [attr.colspan]="4">
+              {{'SIDEBAR_EDIT_INSPECT_REMOVE_ITEM' | translate}}
+            </td>
+            <td>
+              <button (click)="deleteRule()" class="btn btn-outline-danger">
+                <fa-icon [icon]="faCheck"></fa-icon>
+              </button>
+            </td>
+
+          </tr>
+        </ng-container>
+
+      </table>
+    </div>
   </div>
+</div>
 
-  <hr *ngIf="highlightListDefinition.length > 0">
 
-  <!-- INSPECTION SPECIFICATION -->
-  <div class="table-responsive">
-    <table class="table table-borderless">
-      <tr>
-        <!-- TYPE -->
-        <td>
-          <div class="btn-group-vertical btn-group-toggle"
-               data-toggle="buttons">
+<!-- INSPECT: new rule -->
+<h6 (click)="containerNewRule.toggle()"
+    [attr.aria-expanded]="!collapsedNewRule"
+    aria-controls="containerNewRule"
+    class="alert alert-dark cursor">
+  {{ 'SIDEBAR_EDIT_INSPECT_NEW_RULE' | translate}}
+</h6>
 
-            <label class="btn btn-outline-secondary">
-              <input (click)="selectType('node')" [checked]="highlightDefinition.type === 'node'" autocomplete="off"
-                     id="typeNode"
-                     name="type"
-                     type="radio">
-              {{'SIDEBAR_EDIT_INSPECT_TYPE_NODE' | translate}}
-            </label>
+<div #containerNewRule="ngbCollapse"
+     [(ngbCollapse)]="collapsedNewRule"
+     class="p-2">
 
-            <label class="btn btn-outline-secondary">
-              <input (click)="selectType('edge')" [checked]="highlightDefinition.type === 'edge'" autocomplete="off"
-                     id="typeEdge"
-                     name="type"
-                     type="radio">
-              {{'SIDEBAR_EDIT_INSPECT_TYPE_EDGE' | translate}}
-            </label>
+  <form (ngSubmit)="onSubmitNewInspectionRule()" [formGroup]="ruleForm">
 
-          </div>
-        </td>
+    <!-- Card to inspect the current rule -->
+    <div [ngClass]="ruleForm.valid ? 'border-success' : 'border-danger'" class="card mb-3">
 
-        <!-- PROPERTY -->
-        <td>
+      <div class="card-body">
+
+        <!-- defined rule -->
+        <p *ngIf="ruleForm.dirty">
+          <code *ngIf="ruleForm.get('elementType').value === utilityService.elementType.node">
+            {{ 'NODES' | translate}}
+          </code>
+          <code *ngIf="ruleForm.get('elementType').value === utilityService.elementType.edge">
+            {{ 'EDGES' | translate}}
+          </code>
+
+          <span>{{'SIDEBAR_EDIT_INSPECT_WITH_PROPERTY' | translate}}</span>
+
+          <code
+            *ngIf="ruleForm.get('property').errors === null">&nbsp;{{ruleForm.get('property').value.name}}&nbsp;</code>
+
+          <span *ngIf="ruleType === utilityService.inspectionRuleType.numeric">
+          &isin; [
+          <code>{{ruleForm.get('rangeLower').value}}</code>,
+          <code>{{ruleForm.get('rangeUpper').value}}</code> ]
+        </span>
+
+          <span
+            *ngIf="ruleType !== utilityService.inspectionRuleType.numeric && ruleForm.get('property').errors === null">
+          {{'SIDEBAR_EDIT_INSPECT_SAME' | translate}}
+            <code>{{ruleForm.get('sameAs').value}}</code>
+        </span>
+
+        </p>
+
+        <!-- missing steps -->
+        <ul *ngIf="!ruleForm.valid">
+          <li *ngIf="ruleForm.get('elementType').errors !== null">
+            {{'SIDEBAR_EDIT_INSPECT_ERROR_TYPE' | translate}}
+          </li>
+          <li *ngIf="ruleForm.get('property').errors !== null">
+            {{'SIDEBAR_EDIT_INSPECT_ERROR_PROPERTY' | translate}}
+          </li>
+
+          <!-- depending on the type of property we indicate the type of value the user has to enter -->
+          <!-- has to have innerHTML tag, because we are highlighting true and false as the only possible values for bool type properties -->
+          <li *ngIf="hintTextSuffix" [innerHTML]="hintTextPrefix + hintTextSuffix | translate">
+          </li>
+        </ul>
+      </div>
+
+      <!-- submit -->
+      <div class="card-footer">
+        <div class="col">
+          <button [disabled]="!ruleForm.valid"
+                  class="btn btn-block btn-outline-success"
+                  id="btnSubmitRule" type="submit">
+            <fa-icon [icon]="faCheck"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <!-- element type -->
+      <div class="col-auto">
+        <div class="btn-group-vertical btn-group-toggle" id="btnType">
+
+          <!-- type: NODE -->
+          <label class="btn btn-outline-secondary" for="elementTypeNode">
+            <input (click)="ruleForm.get('property').reset()" [value]="utilityService.elementType.node"
+                   formControlName="elementType"
+                   id="elementTypeNode"
+                   type="radio">
+            <span>{{'NODES' | translate}}</span>
+          </label>
+
+          <!-- type: EDGE -->
+          <label class="btn btn-outline-secondary" for="elementTypeEdge">
+            <input (click)="ruleForm.get('property').reset()" [value]="utilityService.elementType.edge"
+                   formControlName="elementType"
+                   id="elementTypeEdge"
+                   type="radio">
+            <span>{{'EDGES' | translate}}</span>
+          </label>
+
+        </div>
+      </div>
+
+      <!-- properties -->
+      <div class="col-auto">
+        <ng-container [ngSwitch]="ruleForm.get('elementType').value">
+
           <!-- NODES -->
-          <div *ngIf="highlightDefinition.type === 'node'"
-               class="btn-group-vertical btn-group-toggle"
-               data-toggle="buttons">
-
-            <label *ngFor="let property of getAvailablePropertiesByType('node')" class="btn btn-outline-secondary">
-              <input (click)="selectProperty(property)" autocomplete="off" id="node_{{property.name}}"
-                     name="node_{{property.name}}"
-                     type="radio">
-              {{property.name}}
-            </label>
-
+          <div *ngSwitchCase="utilityService.elementType.node">
+            <div class="btn-group-vertical btn-group-toggle" id="btnPropertiesNode">
+              <label *ngFor="let property of dataService.selectedNetwork.aspectKeyValuesNodes; let nodeIndex = index"
+                     class="btn btn-outline-secondary" for="{{nodeIndex}}NodeProperty">
+                <input [value]="property" formControlName="property" id="{{nodeIndex}}NodeProperty"
+                       type="radio">
+                <span>{{property.name}}</span>
+              </label>
+            </div>
           </div>
 
           <!-- EDGES -->
-          <div *ngIf="highlightDefinition.type === 'edge'"
-               class="btn-group-vertical btn-group-toggle"
-               data-toggle="buttons">
+          <div *ngSwitchCase="utilityService.elementType.edge">
 
-            <label *ngFor="let property of getAvailablePropertiesByType('edge')" class="btn btn-outline-secondary">
-              <input (click)="selectProperty(property)" autocomplete="off" id="edge_{{property.name}}"
-                     name="edge_{{property.name}}"
-                     type="radio">
-              {{property.name}}
-            </label>
+            <div class="btn-group-vertical btn-group-toggle" id="btnPropertiesEdge">
+              <label *ngFor="let property of dataService.selectedNetwork.aspectKeyValuesEdges; let edgeIndex = index"
+                     class="btn btn-outline-secondary" for="{{edgeIndex}}EdgeProperty">
+                <input [value]="property" formControlName="property" id="{{edgeIndex}}EdgeProperty"
+                       type="radio">
+                <span>{{property.name}}</span>
+              </label>
+
+            </div>
+          </div>
+
+        </ng-container>
+      </div>
+
+      <!-- comparison -->
+      <div class="col">
+
+        <ng-container [ngSwitch]="ruleType">
+
+          <!-- compare: numeric -->
+          <div *ngSwitchCase="utilityService.inspectionRuleType.numeric">
+
+            <!-- lower -->
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">{{'SIDEBAR_EDIT_INSPECT_RANGE_LOWER' | translate}}</span>
+              </div>
+
+              <input [ngClass]="ruleForm.get('rangeLower').errors !== null ? 'border-danger' : ''"
+                     class="form-control"
+                     formControlName="rangeLower"
+                     id="numericLower"
+                     name="numericLower"
+                     type="number">
+            </div>
+
+            <!-- upper -->
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">{{'SIDEBAR_EDIT_INSPECT_RANGE_UPPER' | translate}}</span>
+              </div>
+
+              <input [ngClass]="ruleForm.get('rangeUpper').errors !== null ? 'border-danger' : ''"
+                     class="form-control"
+                     formControlName="rangeUpper"
+                     id="numericUpper"
+                     name="numericUpper"
+                     type="number">
+            </div>
+
+            <!-- reset to min and max -->
+            <button (click)="resetToMinMax()" class="btn btn-outline-secondary btn-block" type="button">
+              <fa-icon [icon]="faRedo"></fa-icon>
+            </button>
 
           </div>
-        </td>
 
-        <!-- COMPARATOR -->
-        <td class="fixed-width">
-          <!-- numeric: lower -->
-          <form *ngIf="highlightDefinitionDatatype === 'numeric'">
-            <div class="form-group">
-              <label for="numericLower">{{'SIDEBAR_EDIT_INSPECT_RANGE_LOWER' | translate}}</label>
-              <input [(ngModel)]="highlightDefinition.rangeLower" class="form-control" id="numericLower"
-                     name="numericLower" placeholder="0"
-                     type="number">
+          <!-- compare: boolean -->
+          <div *ngSwitchCase="utilityService.inspectionRuleType.boolean">
+            <div class="btn-group-vertical btn-group-toggle">
+
+              <!-- true -->
+              <label class="btn btn-outline-secondary" for="compareTrue">
+                <input class="mr-1" formControlName="sameAs" id="compareTrue"
+                       type="radio" value="true">
+                <span>true</span>
+              </label>
+
+              <!-- false -->
+              <label class="btn btn-outline-secondary" for="compareFalse">
+                <input class="mr-1" formControlName="sameAs" id="compareFalse"
+                       type="radio" value="false">
+                <span>false</span>
+              </label>
             </div>
-          </form>
 
-          <!-- numeric: upper -->
-          <form *ngIf="highlightDefinitionDatatype === 'numeric'">
-            <div class="form-group">
-              <label for="numericUpper">{{'SIDEBAR_EDIT_INSPECT_RANGE_UPPER' | translate}}</label>
-              <input [(ngModel)]="highlightDefinition.rangeUpper" class="form-control" id="numericUpper"
-                     name="numericUpper" placeholder="0"
-                     type="number">
-            </div>
-          </form>
+          </div>
 
-          <!-- text -->
-          <form *ngIf="highlightDefinitionDatatype === 'text'">
-            <div class="form-group">
-              <label for="nonNumeric">{{'SIDEBAR_EDIT_INSPECT_SAME_LABEL' | translate}}</label>
-              <input [(ngModel)]="highlightDefinition.sameAs" class="form-control" id="nonNumeric" name="nonNumeric"
+          <!-- compare: text -->
+          <div *ngSwitchCase="utilityService.inspectionRuleType.text">
+
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">{{'SIDEBAR_EDIT_INSPECT_SAME' | translate}}</span>
+              </div>
+
+              <input [ngClass]="ruleForm.get('sameAs').errors !== null ? 'border-danger' : ''"
+                     class="form-control" formControlName="sameAs"
+                     id="compareText" name="compareText"
                      placeholder="{{'SIDEBAR_EDIT_INSPECT_SAME_PLACEHOLDER' | translate}}"
                      type="text">
             </div>
-          </form>
 
-          <!-- boolean -->
-          <form *ngIf="highlightDefinitionDatatype === 'boolean'">
-            <div class="form-group">
+          </div>
+        </ng-container>
 
-              <div class="btn-group-vertical btn-group-toggle"
-                   data-toggle="buttons">
+      </div>
 
-                <label class="btn btn-outline-secondary">
-                  <input (click)="this.highlightDefinition.sameAs = 'true'" autocomplete="off" id="boolTruthy" type="radio">
-                  true
-                </label>
+    </div>
 
-                <label class="btn btn-outline-secondary">
-                  <input (click)="this.highlightDefinition.sameAs = 'false'" autocomplete="off" id="boolFalsy" type="radio">
-                  false
-                </label>
+  </form>
+</div>
 
-              </div>
 
-            </div>
-          </form>
-        </td>
-
-        <!-- SUBMIT -->
-        <td>
-          <button (click)="addHighlightDefinitionToList()"
-                  [disabled]="!highlightDefinition.sameAs && (highlightDefinition.rangeUpper === null || highlightDefinition.rangeLower === null)"
-                  class="btn btn-outline-success">
-            <fa-icon [icon]="faCheck"></fa-icon>
-          </button>
-        </td>
-
-      </tr>
-    </table>
-  </div>
 

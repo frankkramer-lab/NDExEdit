@@ -17,6 +17,8 @@ import {DataService} from './data.service';
 import {NeStyle} from '../models/ne-style';
 import {NeMapping} from '../models/ne-mapping';
 import {NeNode} from '../models/ne-node';
+import {NeKeyValue} from '../models/ne-key-value';
+import {PropertyService} from './property.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +28,8 @@ import {NeNode} from '../models/ne-node';
  * Service for parsing of .cx and cytoscape files
  */
 export class ParseService {
+
+  attributeNameMap: any = {};
 
   constructor(
     private utilityService: UtilityService,
@@ -78,8 +82,6 @@ export class ParseService {
     });
   }
 
-  attributeNameMap = {};
-
   /**
    * Builds aspects which need specific handling, according to CX documentation those are
    * <ul>
@@ -111,9 +113,6 @@ export class ParseService {
       chartDiscreteDistribution: undefined,
       coverage: '',
       datatype: 'string',
-      mapPointerC: [],
-      mapPointerD: [],
-      mapPointerP: [],
       name,
       validForContinuous: false,
       values: []
@@ -122,33 +121,6 @@ export class ParseService {
     for (const a of aspects) {
       if (a[key] && !newAspect.values.includes(a[key])) {
         newAspect.values.push(a[key]);
-      }
-    }
-
-    // no need to eval continuous mappings
-    if (isNode) {
-      for (let i = 0; i < mappings.nodesPassthrough.length; i++) {
-        if ((mappings.nodesPassthrough[i].col === 'name' && key === 'n')
-          || (mappings.nodesPassthrough[i].col === 'represents' && key === 'r')) {
-          newAspect.mapPointerP.push('np' + i);
-        }
-      }
-      for (let i = 0; i < mappings.nodesDiscrete.length; i++) {
-        if ((mappings.nodesDiscrete[i].col === 'name' && key === 'n')
-          || (mappings.nodesDiscrete[i].col === 'represents' && key === 'r')) {
-          newAspect.mapPointerD.push('nd' + i);
-        }
-      }
-    } else {
-      for (let i = 0; i < mappings.edgesPassthrough.length; i++) {
-        if (mappings.edgesPassthrough[i].col === 'interaction' && key === 'i') {
-          newAspect.mapPointerP.push('ep' + i);
-        }
-      }
-      for (let i = 0; i < mappings.edgesDiscrete.length; i++) {
-        if (mappings.edgesDiscrete[i].col === 'interaction' && key === 'i') {
-          newAspect.mapPointerD.push('ed' + i);
-        }
       }
     }
 
@@ -166,7 +138,7 @@ export class ParseService {
   private static parseDefinitionDiscrete(obj: any, styleProperty: string): NeMappingDiscrete {
 
     if (!obj || !obj.definition || !styleProperty) {
-      console.log('No definition given');
+      console.log('Parsing discrete mapping definition failed: No definition given!');
       return null;
     }
 
@@ -334,6 +306,10 @@ export class ParseService {
     const elements = conversion.cyElementsFromNiceCX(niceCX, this.attributeNameMap);
     const style = conversion.cyStyleFromNiceCX(niceCX, this.attributeNameMap);
 
+    if (!('interaction' in this.attributeNameMap)) {
+      this.attributeNameMap = {...this.attributeNameMap, interaction: 'interaction'};
+    }
+
     const cyBackgroundColor = conversion.cyBackgroundColorFromNiceCX(niceCX);
     const layout = conversion.getDefaultLayout();
     const zoom = conversion.cyZoomFromNiceCX(niceCX);
@@ -401,47 +377,47 @@ export class ParseService {
     uuid: string = null,
     networkId: number
   ): Promise<NeNetwork> {
+
     let networkAttributeData;
+    let ndexStatusData = [{}];
 
     for (const obj of filedata) {
       if (obj.networkAttributes) {
         networkAttributeData = obj.networkAttributes;
-        break;
+      } else if (obj.ndexStatus) {
+        ndexStatusData = obj.ndexStatus;
       }
     }
 
     const networkInformation: NeNetworkInformation = {
       name: '',
-      rightsholder: '',
-      networkType: '',
-      organism: '',
-      description: '',
-      originalFilename: '',
-      uuid: uuid ?? null
+      uuid: uuid ?? null,
+      information: [],
+      status: []
     };
 
+
+    for (const key of Object.keys(ndexStatusData[0])) {
+      const statusItem: NeKeyValue = {
+        name: key,
+        value: ndexStatusData[0][key]
+      };
+      networkInformation.status.push(statusItem);
+    }
+
     for (const na of networkAttributeData || []) {
-      switch (na.n) {
-        case 'name':
-          if (filename === 'DEMO') {
-            networkInformation.name = 'Demo: ' + na.v;
-          } else {
-            networkInformation.name = na.v;
-          }
-          break;
-        case 'rightsHolder':
-          networkInformation.rightsholder = na.v;
-          break;
-        case 'networkType':
-          networkInformation.networkType = na.v;
-          break;
-        case 'organism':
-          networkInformation.organism = na.v;
-          break;
-        case 'description':
-          networkInformation.description = na.v;
-          break;
+
+      if (na.n === 'name') {
+        networkInformation.name = (filename === 'DEMO' ? 'Demo: ' : '') + na.v;
       }
+
+      const informationItem: NeKeyValue = {
+        name: na.n,
+        value: na.v,
+        datatype: na.d ?? null
+      };
+
+      networkInformation.information.push(informationItem);
     }
 
     let core = null;
@@ -496,6 +472,8 @@ export class ParseService {
     akvNodes = this.buildDistributionChart(akvNodes, filedata, ElementType.node);
     akvEdges = this.buildDistributionChart(akvEdges, filedata, ElementType.edge);
 
+    const hasCyViualProperties = (filedata.findIndex(a => a.cyVisualProperties) > -1);
+
     if (container) {
       return this.convertCxToJs(filedata, container)
         .then(receivedCore => {
@@ -510,7 +488,8 @@ export class ParseService {
             showLabels: this.utilityService.utilShowLabels(core),
             mappings,
             aspectKeyValueNodes: akvNodes,
-            aspectKeyValueEdges: akvEdges
+            aspectKeyValueEdges: akvEdges,
+            hasCyViualProperties
           };
         })
         .catch(e => {
@@ -525,7 +504,8 @@ export class ParseService {
             showLabels: this.utilityService.utilShowLabels(core),
             mappings,
             aspectKeyValueNodes: akvNodes,
-            aspectKeyValueEdges: akvEdges
+            aspectKeyValueEdges: akvEdges,
+            hasCyViualProperties
           };
         });
     } else {
@@ -539,10 +519,72 @@ export class ParseService {
           networkInformation,
           mappings,
           aspectKeyValuesNodes: akvNodes,
-          aspectKeyValuesEdges: akvEdges
+          aspectKeyValuesEdges: akvEdges,
+          hasCyViualProperties
         });
       });
     }
+  }
+
+  /**
+   * Builds chart data based on the given continuous mapping,
+   * may only be applied to non-color mappings
+   * @param mapping continuous mapping to be displayed as chart
+   * @private
+   */
+  buildChartData(mapping: NeMappingContinuous): NeChart {
+    if (this.utilityService.utilContainsDuplicates(mapping)) {
+      console.log('Found duplicate values while building chart data!');
+      return null;
+    }
+
+    const thresholds = mapping.thresholds.filter(a => mapping.useValue[mapping.thresholds.indexOf(a)]);
+    const equals = mapping.equals.filter(a => mapping.useValue[mapping.equals.indexOf(a)]);
+
+    const chartMappingObject: NeChart = {
+      chartData: [],
+      chartType: {
+        bar: false,
+        line: true
+      },
+      chartLabels: [],
+      chartOptions: {
+        scales: {
+          yAxes: [
+            {
+              type: 'linear',
+              display: true,
+              position: 'left',
+              id: 'y-axis-1',
+            }
+          ]
+        },
+        elements: {
+          line: {
+            tension: 0
+          }
+        },
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    };
+
+    for (const th of thresholds) {
+      chartMappingObject.chartLabels.push(th as unknown as string);
+    }
+
+    const numericEquals = [].concat(equals as unknown as number[]);
+
+    const tmp: ChartDataSets = {
+      label: mapping.styleProperty,
+      data: numericEquals
+    };
+
+    if (!chartMappingObject.chartData.includes(tmp)) {
+      chartMappingObject.chartData.push(tmp);
+    }
+
+    return chartMappingObject;
   }
 
   /**
@@ -582,9 +624,6 @@ export class ParseService {
           values: [attr.v] as string[],
           numericValues: isNumeric ? [Number(attr.v)] : null,
           datatype: attr.d ?? 'string',
-          mapPointerD: [],
-          mapPointerC: [],
-          mapPointerP: [],
           validForContinuous: false
         };
         akvs.push(tmp);
@@ -609,44 +648,6 @@ export class ParseService {
         akv.max = Number(max);
         akv.min = Number(min);
       }
-
-      if (isNode) {
-        for (let i = 0; i < mappings.nodesDiscrete.length; i++) {
-          if (mappings.nodesDiscrete[i].col === akv.name) {
-            akv.mapPointerD.push('nd' + i);
-          }
-        }
-        if (akv.validForContinuous) {
-          for (let i = 0; i < mappings.nodesContinuous.length; i++) {
-            if (mappings.nodesContinuous[i].col === akv.name) {
-              akv.mapPointerC.push('nc' + i);
-            }
-          }
-        }
-        for (let i = 0; i < mappings.nodesPassthrough.length; i++) {
-          if (mappings.nodesPassthrough[i].col === akv.name) {
-            akv.mapPointerP.push('np' + i);
-          }
-        }
-      } else {
-        for (let i = 0; i < mappings.edgesDiscrete.length; i++) {
-          if (mappings.edgesDiscrete[i].col === akv.name) {
-            akv.mapPointerD.push('ed' + i);
-          }
-        }
-        if (akv.validForContinuous) {
-          for (let i = 0; i < mappings.edgesContinuous.length; i++) {
-            if (mappings.edgesContinuous[i].col === akv.name) {
-              akv.mapPointerC.push('ec' + i);
-            }
-          }
-        }
-        for (let i = 0; i < mappings.edgesPassthrough.length; i++) {
-          if (mappings.edgesPassthrough[i].col === akv.name) {
-            akv.mapPointerP.push('ep' + i);
-          }
-        }
-      }
     }
 
     return akvs;
@@ -662,7 +663,7 @@ export class ParseService {
   private parseDefinitionContinuous(obj: any, styleProperty: string): NeMappingContinuous {
 
     if (!obj || !obj.definition || !styleProperty) {
-      console.log('No definition given while parsing continuous mapping');
+      console.log('Parsing continuous mapping definition failed: No definition given!');
       return null;
     }
 
@@ -698,7 +699,7 @@ export class ParseService {
     if (mappingContinuous.newlyAdded) {
       console.log('Found new continuous mapping! Setting defaults ...');
 
-      mappingContinuous.isColor = this.dataService.colorProperties.includes(styleProperty);
+      mappingContinuous.isColor = PropertyService.colorProperties.includes(styleProperty);
       const defaultValue = mappingContinuous.isColor ? '#000000' : null;
 
       // assigning two thresholds by default with example values
@@ -805,7 +806,7 @@ export class ParseService {
   private parseDefinitionPassthrough(obj: any, styleProperty: string): NeMapping {
 
     if (!obj || !obj.definition || !styleProperty) {
-      console.log('No definition given for parsing passthrough mapping');
+      console.log('Parsing passthrough mapping definition failed: No definition given!');
       return null;
     }
 
@@ -823,81 +824,6 @@ export class ParseService {
       newlyAdded
     };
 
-  }
-
-  /**
-   * Builds chart data based on the given continuous mapping,
-   * may only be applied to non-color mappings
-   * @param mapping continuous mapping to be displayed as chart
-   * @private
-   */
-  buildChartData(mapping: NeMappingContinuous): NeChart {
-    if (this.utilityService.utilContainsDuplicates(mapping)) {
-      console.log('Found duplicate values while building chart data!');
-      return null;
-    }
-
-    const thresholds = mapping.thresholds.filter(a => mapping.useValue[mapping.thresholds.indexOf(a)]);
-    const equals = mapping.equals.filter(a => mapping.useValue[mapping.equals.indexOf(a)]);
-    const greaters = mapping.greaters.filter(a => mapping.useValue[mapping.greaters.indexOf(a)]);
-    const lowers = mapping.lowers.filter(a => mapping.useValue[mapping.lowers.indexOf(a)]);
-
-    const chartMappingObject: NeChart = {
-      chartData: [],
-      chartType: {
-        bar: false,
-        line: true
-      },
-      chartLabels: [],
-      chartOptions: {
-        scales: {
-          yAxes: [
-            {
-              type: 'linear',
-              display: true,
-              position: 'left',
-              id: 'y-axis-1',
-            }
-          ]
-        },
-        elements: {
-          line: {
-            tension: 0
-          }
-        },
-        responsive: true,
-        maintainAspectRatio: false
-      }
-    };
-
-    chartMappingObject.chartLabels.push('');
-
-    for (const th of thresholds) {
-      chartMappingObject.chartLabels.push(th as unknown as string);
-    }
-
-    chartMappingObject.chartLabels.push('');
-
-    const numericEquals = [].concat(equals as unknown as number[]);
-    const numericLowers = [].concat(lowers as unknown as number[]);
-    const numericGreaters = [].concat(greaters as unknown as number[]);
-
-    const tmp: ChartDataSets = {
-      label: mapping.styleProperty,
-      data: numericEquals
-    };
-
-    if (!chartMappingObject.chartData.includes(tmp)) {
-      chartMappingObject.chartData.push(tmp);
-    }
-
-    chartMappingObject.chartData[0].data.splice(0, 0, (numericLowers[0] === null ? numericEquals[0] : numericLowers[0]));
-    chartMappingObject.chartData[0].data.push(
-      numericGreaters[numericGreaters.length - 1] === null
-        ? numericEquals[numericEquals.length - 1]
-        : numericGreaters[numericGreaters.length - 1]
-    );
-    return chartMappingObject;
   }
 
   /**
@@ -958,7 +884,10 @@ export class ParseService {
       edgesDiscrete: [],
       edgesContinuous: [],
       nodesPassthrough: [],
-      edgesPassthrough: []
+      edgesPassthrough: [],
+      nodesDefault: [],
+      edgesDefault: [],
+      networkDefault: []
     };
 
     for (const fd of filedata) {
@@ -967,6 +896,37 @@ export class ParseService {
         for (const prop of fd.cyVisualProperties) {
           const isNode = (prop.properties_of === 'nodes' || prop.properties_of === 'nodes:default');
 
+          // DEFAULTS
+          if (prop.properties) {
+
+            // NETWORK
+            if (prop.properties_of === 'network') {
+
+              for (const key of Object.keys(prop.properties)) {
+                mappings.networkDefault.push({
+                  name: key,
+                  value: prop.properties[key]
+                });
+              }
+
+              // OTHER
+            } else {
+
+              for (const key of Object.keys(prop.properties)) {
+                const item: NeKeyValue = {
+                  name: key,
+                  value: prop.properties[key]
+                };
+                if (isNode && !PropertyService.irrelevantProperties.includes(key)) {
+                  mappings.nodesDefault.push(item);
+                } else {
+                  mappings.edgesDefault.push(item);
+                }
+              }
+            }
+          }
+
+          // MAPPINGS
           if (prop.mappings) {
 
             for (const mapKey of Object.keys(prop.mappings)) {
@@ -1074,7 +1034,9 @@ export class ParseService {
                 labelString: (this.utilityService.yAxisLabel + akv.name) || ''
               }
             }]
-          }
+          },
+          maintainAspectRatio: false,
+          responsive: true
         }
       };
 

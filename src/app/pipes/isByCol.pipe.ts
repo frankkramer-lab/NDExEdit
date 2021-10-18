@@ -20,6 +20,7 @@ export class IsByColPipe implements PipeTransform {
         }
       }
     }
+    console.log(col);
     return is;
   }
 }

@@ -1,10 +1,9 @@
-import {Component, DoCheck, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {GraphService} from '../../../services/graph.service';
 import {LayoutService} from '../../../services/layout.service';
-import {faChevronDown} from '@fortawesome/free-solid-svg-icons';
 import {NeEdge} from '../../../models/ne-edge';
 import {NeNode} from '../../../models/ne-node';
-import {NeElement} from '../../../models/ne-element';
+import {ElementType, UtilityService} from '../../../services/utility.service';
 
 @Component({
   selector: 'app-sidebar-edit-selected',
@@ -16,16 +15,9 @@ import {NeElement} from '../../../models/ne-element';
  */
 export class SidebarEditSelectedComponent implements OnInit {
   /**
-   * Icon: faChevronDown
-   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   * Type of selected elements
    */
-  faChevronDown = faChevronDown;
-  /**
-   * 'NODE' for selected nodes,
-   * 'EDGE' for selected edges.
-   * Used as suffix for tooltips.
-   */
-  @Input() type: string;
+  @Input() elementType: ElementType;
   /**
    * List of selected elements
    */
@@ -36,22 +28,32 @@ export class SidebarEditSelectedComponent implements OnInit {
   @Input() relevantProperties: string[];
 
   /**
+   * 'NODE' for selected nodes,
+   * 'EDGE' for selected edges.
+   * Used as suffix for tooltips.
+   */
+  type: string;
+
+  /**
    * True, if component is collapsed
    */
-  isCollapsedSelection = false;
+  collapsedContainer = false;
 
   /**
    *
    * @param graphService Service responsible for rendered network
    * @param layoutService Service responsible for tooltip directions
+   * @param utilityService Service responsible for util functionality
    */
   constructor(
     public graphService: GraphService,
-    public layoutService: LayoutService
+    public layoutService: LayoutService,
+    private utilityService: UtilityService
   ) {
   }
 
   ngOnInit(): void {
+    this.type = this.elementType === this.utilityService.elementType.node ? 'NODE' : 'EDGE';
   }
 
 }

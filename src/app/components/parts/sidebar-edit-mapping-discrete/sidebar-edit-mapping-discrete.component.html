@@ -5,14 +5,14 @@
 
   <!-- INSPECT -->
   <div class="col-4">
-    <button class="btn btn-sm btn-block"
-            data-toggle="tooltip"
-            openDelay="1000"
-            ngbTooltip="{{'SIDEBAR_EDIT_TT_INSPECTION_MODE' | translate}}"
-            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-            (click)="toggleInspectionMode()"
+    <button (click)="toggleInspectionMode()"
             [disabled]="editMode"
             [ngClass]="editMode ? 'btn-outline-secondary' : 'btn-outline-info'"
+            class="btn btn-sm btn-block"
+            data-toggle="tooltip"
+            ngbTooltip="{{'SIDEBAR_EDIT_TT_INSPECTION_MODE' | translate}}"
+            openDelay="1000"
+            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
             type="button">
       <fa-icon [icon]="faSearch"></fa-icon>
     </button>
@@ -20,19 +20,18 @@
 
   <!-- EDIT -->
   <div class="col-4">
-    <button class="btn btn-sm btn-block"
-            data-toggle="tooltip"
-            openDelay="1000"
-            ngbTooltip="{{'SIDEBAR_EDIT_TT_EDIT_MODE' | translate}}"
-            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-            (click)="toggleEditMode()"
-            [disabled]="markedForDeletion || dataService.isAnyMappingSelected()"
+    <button (click)="toggleEditMode()"
+            [disabled]="markedForDeletion || dataService.lockRouting"
             [ngClass]="editMode
                       ? 'btn-warning'
-                      : (markedForDeletion)
-                        || dataService.isAnyMappingSelected()
+                      : markedForDeletion || dataService.lockRouting
                         ? 'btn-outline-secondary'
                         : 'btn-outline-warning'"
+            class="btn btn-sm btn-block"
+            data-toggle="tooltip"
+            ngbTooltip="{{'SIDEBAR_EDIT_TT_EDIT_MODE' | translate}}"
+            openDelay="1000"
+            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
             type="button">
       <fa-icon [icon]="faEdit"></fa-icon>
     </button>
@@ -40,39 +39,40 @@
 
   <!-- DELETE -->
   <div class="col-4">
-    <button class="btn btn-sm btn-block"
-            data-toggle="tooltip"
-            openDelay="1000"
-            ngbTooltip="{{'SIDEBAR_EDIT_TT_DELETE_ALL' | translate}}"
-            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-            container="body"
-            (click)="markForDeletion()"
+    <button (click)="markForDeletion()"
             [disabled]="editMode"
             [ngClass]="markedForDeletion
                       ? 'btn-danger'
                       : (editMode)
                         ? 'btn-outline-secondary'
                         : 'btn-outline-danger'"
+            class="btn btn-sm btn-block"
+            container="body"
+            data-toggle="tooltip"
+            ngbTooltip="{{'SIDEBAR_EDIT_TT_DELETE_ALL' | translate}}"
+            openDelay="1000"
+            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
             type="button">
       <fa-icon [icon]="faTrash"></fa-icon>
     </button>
   </div>
 </div>
 
-
-<app-chart *ngIf="displayChart"
-           [chartObject]="chart"></app-chart>
+<app-chart (binSizeEmitter)="setBinSize($event, colProperty)"
+           *ngIf="displayChart"
+           [chartObject]="chart"
+           [numberOfBins]="chartNumberOfBins"></app-chart>
 
 <!-- INSPECT -->
-<div class="table-responsive mt-2" *ngIf="inspectionMode">
+<div *ngIf="inspectionMode" class="table-responsive mt-2">
   <table class="table table-borderless table-striped">
 
     <!-- STYLE PROPERTIES -->
     <tr class="border-bottom">
       <td class="border-right">
-        <button type="button"
+        <button (click)="toggleChart()"
                 class="btn btn-outline-primary btn-block"
-                (click)="toggleChart()">
+                type="button">
           {{col}}
         </button>
       </td>
@@ -86,30 +86,31 @@
     </tr>
     <!-- Values when INSPECTING -->
     <ng-container *ngIf="inspectionMode">
-      <tr class="border-bottom"
-          *ngFor="let is of discreteMapping|isByCol: col; let isIndex = index">
-        <td class="border-right">{{is}}</td>
 
-        <td
-          *ngFor="let styleProperty of discreteMapping|stylePropertiesByCol: col">
-          {{discreteMapping|styleValueByColAndKey: col : styleProperty : is}}
-          <span
-            [ngClass]="((discreteMapping|styleValueByColAndKey: col : styleProperty : is) !== null
-                                && (discreteMapping|styleValueByColAndKey: col : styleProperty : is).startsWith('#')
-                                ? 'badge badge-pill border' : 'd-none')"
-            [ngStyle]="{'background-color': discreteMapping|styleValueByColAndKey: col : styleProperty : is}">
-                                  &nbsp;
-                                </span>
+      <tr *ngFor="let key of (discreteMapping|collectionDiscrete).keys; let index" class="border-bottom">
+
+        <td class="border-right">{{key}}</td>
+
+        <td *ngFor="let item of (discreteMapping|collectionDiscrete)[key]">
+
+          {{item}}
+          <span *ngIf="!!item"
+                [ngClass]="item.toString().startsWith('#') ? 'badge badge-pill border' : 'd-none'"
+                [ngStyle]="{'background-color': item}">
+              &nbsp;
+          </span>
         </td>
+
       </tr>
+
     </ng-container>
 
   </table>
 </div>
 
 <!-- EDIT -->
-<form [formGroup]="discreteMappingForm" (ngSubmit)="onSubmitEdit()"
-      class="table-responsive mt-2" *ngIf="editMode">
+<form (ngSubmit)="onSubmitEdit()" *ngIf="editMode"
+      [formGroup]="discreteMappingForm" class="table-responsive mt-2">
   <table class="table table-borderless">
 
     <!-- STYLE PROPERTIES -->
@@ -117,33 +118,33 @@
 
       <!-- toggle chart -->
       <td class="border-right">
-        <button type="button"
+        <button (click)="toggleChart()"
                 class="btn btn-outline-primary btn-block"
-                (click)="toggleChart()">
+                type="button">
           {{col}}
         </button>
       </td>
 
       <!-- EDIT: loop mappings which are already applied -->
-      <td formArrayName="styleProperties"
-          *ngFor="let styleProperty of styleProperties.controls; let stylePropertyIndex = index">
+      <td *ngFor="let styleProperty of styleProperties.controls; let stylePropertyIndex = index"
+          formArrayName="styleProperties">
         <b>{{styleProperty.value}}</b>
 
         <div class="row mt-3">
           <!-- Remove this mapping -->
           <div class="col-6">
-            <button type="button" class="btn btn-block btn-outline-danger"
-                    [disabled]="flashMode"
-                    (click)="removeMapping(stylePropertyIndex)">
+            <button (click)="removeMapping(stylePropertyIndex)" [disabled]="flashMode"
+                    class="btn btn-block btn-outline-danger"
+                    type="button">
               <fa-icon [icon]="faTrash"></fa-icon>
             </button>
           </div>
 
           <!-- Reset this mapping -->
           <div class="col-6">
-            <button type="button" class="btn btn-block btn-outline-warning"
-                    [disabled]="flashMode"
-                    (click)="resetMapping(styleProperty.value, stylePropertyIndex)">
+            <button (click)="resetMapping(styleProperty.value, stylePropertyIndex)" [disabled]="flashMode"
+                    class="btn btn-block btn-outline-warning"
+                    type="button">
               <fa-icon [icon]="faRedo"></fa-icon>
             </button>
           </div>
@@ -152,52 +153,52 @@
 
       <!-- ADD NEW STYLEPROPERTY TO THIS MAPPING -->
       <td>
-        <button *ngIf="!showNewMappingForm"
-                class="btn btn-outline-success"
+        <button (click)="showNewMappingForm = !showNewMappingForm"
+                *ngIf="!showNewMappingForm"
                 [disabled]="flashMode"
-                (click)="showNewMappingForm = !showNewMappingForm">
+                class="btn btn-outline-success">
           <fa-icon [icon]="faPlus"></fa-icon>
         </button>
 
         <!-- NEW STYLE FORM -->
-        <form *ngIf="showNewMappingForm"
-              [formGroup]="newMappingForm"
-              (ngSubmit)="onSubmitNewMappingStyleProperty()">
+        <form (ngSubmit)="onSubmitNewMappingStyleProperty()"
+              *ngIf="showNewMappingForm"
+              [formGroup]="newMappingForm">
 
           <div class="form-row form-add-mapping">
             <div class="col-8">
-              <input class="form-control" type="text" id="styleProperty" name="styleProperty"
-                     formControlName="styleProperty"
-                     container="body"
-                     [ngbTypeahead]="suggestStyleProperties"
-                     [ngClass]="newMappingForm.get('styleProperty').errors !== null
+              <input [ngClass]="newMappingForm.get('styleProperty').errors !== null
                           && (newMappingForm.get('styleProperty').touched
                               || newMappingForm.get('styleProperty').dirty)
                           ? 'border border-danger'
-                          : newMappingForm.get('styleProperty').errors === null ? 'border border-success' : ''">
+                          : newMappingForm.get('styleProperty').errors === null ? 'border border-success' : ''" [ngbTypeahead]="suggestStyleProperties" class="form-control" container="body"
+                     formControlName="styleProperty"
+                     id="styleProperty"
+                     name="styleProperty"
+                     type="text">
 
             </div>
 
             <div class="col-2">
-              <button class="btn btn-outline-secondary"
-                      type="button"
-                      (click)="resetNewMappingForm()">
+              <button (click)="resetNewMappingForm()"
+                      class="btn btn-outline-secondary"
+                      type="button">
                 <fa-icon [icon]="faTimes"></fa-icon>
               </button>
             </div>
 
             <div class="col-2">
-              <button class="btn btn-outline-success"
-                      type="submit"
-                      [disabled]="newMappingForm.invalid">
+              <button [disabled]="newMappingForm.invalid"
+                      class="btn btn-outline-success"
+                      type="submit">
                 <fa-icon [icon]="faCheck"></fa-icon>
               </button>
             </div>
 
           </div>
 
-          <small class="form-row mt-1 text-muted"
-                 [innerHTML]="'SIDEBAR_EDIT_TT_PROPERTY_HINT' | translate"></small>
+          <small [innerHTML]="'SIDEBAR_EDIT_TT_PROPERTY_HINT' | translate"
+                 class="form-row mt-1 text-muted"></small>
 
           <div class="form-row mt-1">
             <small *ngIf="(newMappingForm.get('styleProperty').touched || newMappingForm.get('styleProperty').dirty)
@@ -236,13 +237,13 @@
 
     <!-- VALUES -->
     <tr *ngFor="let cv of this.colValues.controls; let cvIndex = index"
-        formArrayName="colValues" class="border-bottom">
+        class="border-bottom" formArrayName="colValues">
 
       <ng-container [formGroupName]="cvIndex">
 
         <ng-container
           *ngFor="let assignedCollection of cv.get('assignedValues')['controls']; let assignedCollectionIndex = index"
-          formArrayName="assignedValues" class="form-control">
+          class="form-control" formArrayName="assignedValues">
 
           <td *ngIf="assignedCollectionIndex === 0" class="border-right">
             {{cv.get('colValue').value}}
@@ -251,9 +252,9 @@
           <td class="deletable">
 
             <!-- Add cell -->
-            <button type="button" class="btn btn-block btn-light" [disabled]="flashMode"
-                    (click)="addValue(cvIndex, assignedCollectionIndex)"
-                    *ngIf="!cv.get('useValues')['controls'][assignedCollectionIndex].value">
+            <button (click)="addValue(cvIndex, assignedCollectionIndex)" *ngIf="!cv.get('useValues')['controls'][assignedCollectionIndex].value" [disabled]="flashMode"
+                    class="btn btn-block btn-light"
+                    type="button">
               <fa-icon [icon]="faPlus"></fa-icon>
             </button>
 
@@ -266,22 +267,24 @@
                 <td class="slim wide">
 
                   <!-- COLOR -->
-                  <input [formControlName]="assignedCollectionIndex"
-                         class="form-control"
-                         type="color"
+                  <input *ngIf="cv.get('attributes')['controls'][assignedCollectionIndex].value === utilityService.attributeType.color"
                          [defaultValue]="'#000000'"
-                         *ngIf="cv.get('attributes')['controls'][assignedCollectionIndex].value === utilityService.attributeType.color">
+                         [formControlName]="assignedCollectionIndex"
+                         class="form-control"
+                         type="color">
 
                   <!-- NUMERIC -->
-                  <input [formControlName]="assignedCollectionIndex"
+                  <input *ngIf="cv.get('attributes')['controls'][assignedCollectionIndex].value === utilityService.attributeType.numeric"
+                         [formControlName]="assignedCollectionIndex"
                          class="form-control"
-                         type="number"
-                         *ngIf="cv.get('attributes')['controls'][assignedCollectionIndex].value === utilityService.attributeType.numeric">
+                         type="number">
 
                   <!-- FONT FACE -->
-                  <button *ngIf="cv.get('attributes')['controls'][assignedCollectionIndex].value === utilityService.attributeType.fontFace"
-                          type="button"
-                          class="btn btn-block btn-primary" (click)="toggleFontFaceDialogue(fontFaceForm, assignedCollectionIndex, cvIndex)">
+                  <button
+                    (click)="toggleFontFaceDialogue(fontFaceForm, assignedCollectionIndex, cvIndex)"
+                    *ngIf="cv.get('attributes')['controls'][assignedCollectionIndex].value === utilityService.attributeType.fontFace"
+                    class="btn btn-block btn-primary"
+                    type="button">
 
                     <span *ngIf="!cv.get('assignedValues')['controls'][assignedCollectionIndex].value">
                       &nbsp;
@@ -293,17 +296,17 @@
                   </button>
 
                   <!-- ELSE -->
-                  <input [formControlName]="assignedCollectionIndex"
+                  <input *ngIf="cv.get('attributes')['controls'][assignedCollectionIndex].value === utilityService.attributeType.default"
+                         [formControlName]="assignedCollectionIndex"
                          class="form-control"
-                         type="text"
-                         *ngIf="cv.get('attributes')['controls'][assignedCollectionIndex].value === utilityService.attributeType.default">
+                         type="text">
                 </td>
 
                 <!-- REMOVE VALUE -->
                 <td class="slim wide">
-                  <button type="button" class="btn btn-outline-danger deletable-btn"
-                          [disabled]="flashMode"
-                          (click)="removeValue(cvIndex, assignedCollectionIndex)">
+                  <button (click)="removeValue(cvIndex, assignedCollectionIndex)" [disabled]="flashMode"
+                          class="btn btn-outline-danger deletable-btn"
+                          type="button">
                     <fa-icon [icon]="faTimes"></fa-icon>
                   </button>
                 </td>
@@ -322,7 +325,7 @@
 
   <!-- ERROR: COLLECTION MINLENGTH -->
   <span *ngIf="!!styleProperties">
-    <table class="table table-borderless" *ngIf="styleProperties.errors !== null">
+    <table *ngIf="styleProperties.errors !== null" class="table table-borderless">
       <tr *ngIf="styleProperties.errors['required']">
         <td [attr.colspan]="2">
           <small>
@@ -337,7 +340,7 @@
   </span>
 
   <!-- ERROR: INSUFFICIENT VALUES VISIBLE -->
-  <table class="table table-borderless" *ngIf="discreteMappingForm.errors !== null">
+  <table *ngIf="discreteMappingForm.errors !== null" class="table table-borderless">
     <tr *ngIf="discreteMappingForm.errors['insufficientValuesVisible']">
       <td [attr.colspan]="2">
         <small>
@@ -358,36 +361,52 @@
   <!-- abort / flash / submit -->
   <div class="row mb-3 mt-3">
     <div class="col-4">
-      <!-- discarding changes is not possible for a newly added mapping, this has to be submitted and deleted as a whole -->
-      <button class="btn btn-block btn-outline-danger"
+
+      <!-- abort creating a new mapping for newly creatd mapping -->
+      <button *ngIf="newlyAdded"
+              (click)="removeNewlyAdded()"
+              class="btn btn-block btn-outline-danger"
               data-toggle="tooltip"
+              container="body"
+              openDelay="1000"
+              ngbTooltip="{{'SIDEBAR_EDIT_TT_BTN_ABORT_NEWLY_ADDED' | translate}}"
+              placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+              type="button">
+        <fa-icon [icon]="faTimes"></fa-icon>
+      </button>
+
+      <!-- discarding changes for a previously created mapping -->
+      <button *ngIf="!newlyAdded"
+              (click)="discardChanges()"
+              class="btn btn-block btn-outline-danger"
+              data-toggle="tooltip"
+              container="body"
+              openDelay="1000"
               ngbTooltip="{{'SIDEBAR_EDIT_TT_BTN_ABORT' | translate}}"
               placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-              type="button"
-              [disabled]="newlyAdded"
-              (click)="discardChanges()">
+              type="button">
         <fa-icon [icon]="faTimes"></fa-icon>
       </button>
     </div>
     <div class="col-4">
-      <button class="btn btn-block"
+      <button (click)="toggleFlashMode()"
+              [disabled]="discreteMappingForm.invalid"
+              [ngClass]="flashMode ? 'btn-info' : 'btn-outline-info'"
+              class="btn btn-block"
               data-toggle="tooltip"
               ngbTooltip="{{'SIDEBAR_EDIT_TT_BTN_MAGIC_' + (flashMode ? 'OFF' : 'ON') | translate}}"
               placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-              type="button"
-              [ngClass]="flashMode ? 'btn-info' : 'btn-outline-info'"
-              [disabled]="discreteMappingForm.invalid"
-              (click)="toggleFlashMode()">
+              type="button">
         <fa-icon [icon]="faMagic"></fa-icon>
       </button>
     </div>
     <div class="col-4">
-      <button class="btn btn-block btn-outline-success"
+      <button [disabled]="discreteMappingForm.invalid"
+              class="btn btn-block btn-outline-success"
+              container="body"
               data-toggle="tooltip"
               ngbTooltip="{{'SIDEBAR_EDIT_TT_BTN_APPLY' | translate}}"
-              container="body"
               placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-              [disabled]="discreteMappingForm.invalid"
               type="submit">
         <fa-icon [icon]="faCheck"></fa-icon>
       </button>
@@ -401,14 +420,14 @@
     <h4 class="modal-title">
       {{'MODAL_FONT_FACE_FORM' | translate}}
     </h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <button (click)="modal.dismiss('Cross click')" aria-label="Close" class="close" type="button">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
 
     <!-- FORM -->
-    <form [formGroup]="fontForm" (ngSubmit)="onSubmitFontForm()">
+    <form (ngSubmit)="onSubmitFontForm()" [formGroup]="fontForm">
 
       <p>
         {{'MODAL_FONT_FACE_FORM_DESCRIPTION' | translate}}
@@ -424,21 +443,21 @@
 
         <!-- FAMILY -->
         <div [ngClass]="fontForm.get('isJavaFont').value ? 'col-3' : 'col-4'">
-          <select class="custom-select" size="5" name="family">
-            <option *ngFor="let font of availableFonts"
-                    (click)="setFont(font)"
-                    [selected]="font === fontForm.get('family').value"
-                    [ngValue]="font">{{font}}</option>
+          <select class="custom-select" name="family" size="5">
+            <option (click)="setFont(font)"
+                    *ngFor="let font of availableFonts"
+                    [ngValue]="font"
+                    [selected]="font === fontForm.get('family').value">{{font}}</option>
           </select>
         </div>
 
         <!-- STYLE -->
         <div *ngIf="fontForm.get('isJavaFont').value" class="col-3">
           <select class="custom-select" size="5">
-            <option *ngFor="let style of javaFontStyles"
-                    (click)="setStyle(style)"
-                    [selected]="style === fontForm.get('style').value"
-                    [ngValue]="style">{{style}}</option>
+            <option (click)="setStyle(style)"
+                    *ngFor="let style of javaFontStyles"
+                    [ngValue]="style"
+                    [selected]="style === fontForm.get('style').value">{{style}}</option>
           </select>
         </div>
 
@@ -446,17 +465,17 @@
         <div class="col-3">
           <label>
             <button (click)="resetSize()"
-                    type="button"
                     class="btn btn-sm btn-outline-secondary mr-1"
                     data-toggle="tooltip"
-                    openDelay="1000"
                     ngbTooltip="{{'MAIN_MAPPINGS_NEW_TT_FONT_SIZE' | translate}}"
-                    placement="top">
+                    openDelay="1000"
+                    placement="top"
+                    type="button">
               <fa-icon [icon]="faRedo"></fa-icon>
             </button>
             {{'MAIN_MAPPINGS_NEW_FONT_SIZE' | translate}}
           </label>
-          <input formControlName="size" class="form-control"
+          <input class="form-control" formControlName="size"
                  type="number">
         </div>
       </div>
@@ -464,7 +483,7 @@
       <!-- SUBMIT -->
       <div class="row mt-4">
         <div class="col">
-          <button type="submit" class="btn btn-block btn-success" [disabled]="fontForm.invalid">
+          <button [disabled]="fontForm.invalid" class="btn btn-block btn-success" type="submit">
             <fa-icon [icon]="faCheck"></fa-icon>
           </button>
         </div>

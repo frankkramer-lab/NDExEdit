@@ -8,22 +8,16 @@ import {MainInfoComponent} from './components/main-info/main-info.component';
 import {MainStatsComponent} from './components/main-stats/main-stats.component';
 import {SidebarManageComponent} from './components/sidebar-manage/sidebar-manage.component';
 import {SidebarEditComponent} from './components/sidebar-edit/sidebar-edit.component';
-import {SidebarCompareComponent} from './components/sidebar-compare/sidebar-compare.component';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ChartsModule} from 'ng2-charts';
-import {MainMappingsComponent} from './components/main-mappings/main-mappings.component';
-import {MainMappingsNewComponent} from './components/main-mappings-new/main-mappings-new.component';
 import {DataService} from './services/data.service';
 import {GraphService} from './services/graph.service';
 import {ParseService} from './services/parse.service';
 import {UtilityService} from './services/utility.service';
-import {MainMappingsAvailableAttributesComponent} from './components/parts/main-mappings-available-attributes/main-mappings-available-attributes.component';
-import {AlertMappingAlreadyExistsComponent} from './components/parts/alert-mapping-already-exists/alert-mapping-already-exists.component';
-import {MainMappingsNewFormComponent} from './components/parts/main-mappings-new-form/main-mappings-new-form.component';
 import {ChartComponent} from './components/parts/chart/chart.component';
 import {UniqueColsPipe} from './pipes/uniqueCols.pipe';
 import {IsByColPipe} from './pipes/isByCol.pipe';
@@ -39,8 +33,13 @@ import {StylePropertyValidatorDirective} from './validators/style-property.direc
 import {ThresholdsValidatorDirective} from './validators/thresholds.directive';
 import {UseValuesValidatorDirective} from './validators/use-values.directive';
 import {ElementPropertyValidatorDirective} from './validators/element-property.directive';
-import { DragbarComponent } from './components/dragbar/dragbar.component';
-import { SidebarEditMappingDiscreteComponent } from './components/parts/sidebar-edit-mapping-discrete/sidebar-edit-mapping-discrete.component';
+import {DragbarComponent} from './components/dragbar/dragbar.component';
+import {SidebarEditMappingDiscreteComponent} from './components/parts/sidebar-edit-mapping-discrete/sidebar-edit-mapping-discrete.component';
+import {SidebarEditAddCollectionComponent} from './components/parts/sidebar-edit-add-collection/sidebar-edit-add-collection.component';
+import {SidebarEditMappingComponent} from './components/parts/sidebar-edit-mapping/sidebar-edit-mapping.component';
+import {SidebarEditInfoComponent} from './components/parts/sidebar-edit-info/sidebar-edit-info.component';
+import {CollectionDiscretePipe} from './pipes/collectionDiscrete.pipe';
+import {PropertyService} from './services/property.service';
 
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -54,15 +53,10 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     MainStatsComponent,
     SidebarManageComponent,
     SidebarEditComponent,
-    SidebarCompareComponent,
-    MainMappingsComponent,
-    MainMappingsNewComponent,
-    MainMappingsAvailableAttributesComponent,
-    AlertMappingAlreadyExistsComponent,
-    MainMappingsNewFormComponent,
     ChartComponent,
     UniqueColsPipe,
     IsByColPipe,
+    CollectionDiscretePipe,
     StylePropertiesByCol,
     StyleValueByColAndKeyPipe,
     AttributesByElementPipe,
@@ -76,7 +70,10 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     ElementPropertyValidatorDirective,
     UseValuesValidatorDirective,
     DragbarComponent,
-    SidebarEditMappingDiscreteComponent
+    SidebarEditMappingDiscreteComponent,
+    SidebarEditAddCollectionComponent,
+    SidebarEditMappingComponent,
+    SidebarEditInfoComponent
   ],
   imports: [
     BrowserModule,
@@ -100,7 +97,8 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     GraphService,
     ParseService,
     UtilityService,
-    LayoutService
+    LayoutService,
+    PropertyService
   ],
   bootstrap: [AppComponent]
 })

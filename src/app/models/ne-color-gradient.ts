@@ -22,15 +22,13 @@ export interface NeColorGradient {
   offset: string;
 
   /**
-   * Discrepancy between two offsets
+   * String indicating the offset's width between two thresholds
    */
   offsetInterval: string;
-
   /**
-   * Numeric representation of an offset
+   * Offset numerically needed for calculation of positions
    */
   numericOffset: number;
-
   /**
    * Numeric threshold needed for calculation of the offset in percent
    */

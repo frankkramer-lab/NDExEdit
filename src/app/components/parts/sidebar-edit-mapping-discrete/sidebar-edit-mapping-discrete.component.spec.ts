@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SidebarEditMappingDiscreteComponent } from './sidebar-edit-mapping-discrete.component';
+import {SidebarEditMappingDiscreteComponent} from './sidebar-edit-mapping-discrete.component';
 
 describe('SidebarEditMappingDiscreteComponent', () => {
   let component: SidebarEditMappingDiscreteComponent;
@@ -8,9 +8,9 @@ describe('SidebarEditMappingDiscreteComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SidebarEditMappingDiscreteComponent ]
+      declarations: [SidebarEditMappingDiscreteComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,52 +1,4 @@
 <ng-container *ngIf="dataService.selectedNetwork">
-  <h1>
-    {{'MAIN_STATS_TITLE' | translate}}
-  </h1>
-
-  <hr>
-
-  <h3>{{'MAIN_STATS_GRAPH_INFO_TITLE' | translate}} "{{dataService.selectedNetwork.networkInformation.name}}"</h3>
-
-  <p
-    [innerHTML]="dataService.selectedNetwork.networkInformation.description || 'MAIN_STATS_NO_DESCRIPTION'|translate"></p>
-  <div class="row">
-
-    <div class="col">
-      <a
-        [routerLink]="['', { outlets: {primary: ['graph', dataService.selectedNetwork.id], sidebar: ['edit', dataService.selectedNetwork.id]} }]"
-        class="btn btn-block btn-outline-success mt-2 mb-2"
-        data-toggle="tooltip" ngbTooltip="{{'MAIN_STATS_TT_EDIT' | translate}}"
-        placement="{{layoutService.layout.main.tooltipDirection}}"
-        role="button"
-        openDelay="1000"
-        container="body">
-        <fa-icon [icon]="faPaintBrush"></fa-icon>&nbsp;{{'MAIN_STATS_BTN_RENDER' | translate}}
-      </a>
-    </div>
-
-  </div>
-
-  <div class="card">
-    <div class="card-body">
-      <p *ngIf="dataService.selectedNetwork.networkInformation.rightsholder">
-        <b [innerHTML]="">{{'MAIN_STATS_GRAPH_INFO_NW_RIGHTSHOLDER' | translate}}:</b>&nbsp;
-        <span [innerHTML]="dataService.selectedNetwork.networkInformation.rightsholder"></span>
-      </p>
-      <p *ngIf="dataService.selectedNetwork.networkInformation.networkType">
-        <b>{{'MAIN_STATS_GRAPH_INFO_NW_TYPE' | translate}}:</b>&nbsp;<span
-        [innerHTML]="dataService.selectedNetwork.networkInformation.networkType"></span>
-      </p>
-      <p *ngIf="dataService.selectedNetwork.networkInformation.organism">
-        <b>{{'MAIN_STATS_GRAPH_INFO_NW_ORGANISM' | translate}}:</b>&nbsp;<span
-        [innerHTML]="dataService.selectedNetwork.networkInformation.organism"></span>
-      </p>
-    </div>
-  </div>
-
-  <h3 class="mt-2" *ngIf="dataService.selectedNetwork.aspectKeyValuesEdges.length > 0
-  || dataService.selectedNetwork.aspectKeyValuesNodes.length > 0">
-    {{'MAIN_STATS_GRAPH_ATTRIBUTES_TITLE' | translate}}
-  </h3>
 
   <!-- ATTRIBUTES: NODES -->
   <ng-container *ngIf="dataService.selectedNetwork.aspectKeyValuesNodes.length > 0">
@@ -57,10 +9,10 @@
       <div class="col-4">
         <div class="list-group">
 
-          <button *ngFor="let akv of dataService.selectedNetwork.aspectKeyValuesNodes; let index = index"
-                  (click)="displayDistributionChart(index, utilityService.elementType.node)"
-                  type="button"
-                  class="list-group-item list-group-item-action">
+          <button (click)="displayDistributionChart(index, utilityService.elementType.node)"
+                  *ngFor="let akv of dataService.selectedNetwork.aspectKeyValuesNodes; let index = index"
+                  class="list-group-item list-group-item-action"
+                  type="button">
             {{akv.name}}
           </button>
         </div>
@@ -88,7 +40,7 @@
           <!-- distribution -->
           <h5>{{'MAIN_STATS_DISTRIBUTION_TITLE' | translate}}</h5>
           <ng-container *ngIf="nodeAkv.chartContinuousDistribution !== null && nodeAkv.validForContinuous">
-            <app-chart (binSizeEmitter)="setBinSize($event, nodeAkv)"
+            <app-chart (binSizeEmitter)="utilityService.utilSetBinSize($event, nodeAkv)"
                        [chartObject]="nodeAkv.chartContinuousDistribution"
                        [numberOfBins]="nodeAkv.binSize"></app-chart>
           </ng-container>
@@ -114,10 +66,10 @@
       <div class="col-4">
         <div class="list-group">
 
-          <button *ngFor="let akv of dataService.selectedNetwork.aspectKeyValuesEdges; let index = index"
-                  (click)="displayDistributionChart(index, utilityService.elementType.edge)"
-                  type="button"
-                  class="list-group-item list-group-item-action">
+          <button (click)="displayDistributionChart(index, utilityService.elementType.edge)"
+                  *ngFor="let akv of dataService.selectedNetwork.aspectKeyValuesEdges; let index = index"
+                  class="list-group-item list-group-item-action"
+                  type="button">
             {{akv.name}}
           </button>
         </div>
@@ -144,7 +96,7 @@
 
           <!-- distribution -->
           <h5>{{'MAIN_STATS_DISTRIBUTION_TITLE' | translate}}</h5>
-          <app-chart (binSizeEmitter)="setBinSize($event, edgeAkv)"
+          <app-chart (binSizeEmitter)="utilityService.utilSetBinSize($event, edgeAkv)"
                      *ngIf="edgeAkv.chartContinuousDistribution !== null && edgeAkv.validForContinuous"
                      [chartObject]="edgeAkv.chartContinuousDistribution"
                      [numberOfBins]="edgeAkv.binSize"></app-chart>
@@ -158,8 +110,6 @@
 
 
   </ng-container>
-
-  <hr>
 
 </ng-container>
 
