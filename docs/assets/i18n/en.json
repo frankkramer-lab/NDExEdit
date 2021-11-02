@@ -13,7 +13,7 @@
   "NAV_EDIT_TT_INFO": "Please select a network",
   "MAIN_INFO_TITLE": "General info & First Steps",
   "MAIN_INFO_DEMO_TITLE": "Demo network",
-  "MAIN_INFO_DEMO_DESCRIPTION": "In the list of available networks you will initially find one network we use for demonstration purposes. You can check it out on NDEx by searching for its UUID <code><a href='https://www.ndexbio.org/viewer/networks/868bd0b0-68d2-11e7-961c-0ac135e8bacf' target='_blank'>868bd0b0-68d2-11e7-961c-0ac135e8bacf</a></code>.",
+  "MAIN_INFO_DEMO_DESCRIPTION": "In the list of available networks you will initially find one network we use for demonstration purposes. You can check it out on NDEx by searching for its UUID <code><a href='https://www.ndexbio.org/viewer/networks/e89ad762-ab4b-11ea-aaef-0ac135e8bacf' target='_blank'>e89ad762-ab4b-11ea-aaef-0ac135e8bacf</a></code>.",
   "MAIN_INFO_DOCUMENTATION_TITLE": "Documentation",
   "MAIN_INFO_DOCUMENTATION_DESCRIPTION": "The documentation to this application is available as a separate .zip file delivered with the release. You can run the <code>index.html</code> to read up on the code.",
   "MAIN_INFO_STEPS_TITLE": "First steps",
@@ -328,5 +328,10 @@
   "SIDEBAR_IMAGE_GENERAL": "You can select either PNG, JPEG or CX as type of your download file. You can tweak several settings for your image download. If you plan to upload your network to NDEx you'll need the CX format.",
   "CHART_HISTO_INCREASE": "Add bin",
   "CHART_HISTO_DECREASE": "Remove bin",
-  "CHART_HISTO_RESET": "Reset bins to "
+  "CHART_HISTO_RESET": "Reset bins to ",
+  "IMPRESSUM_1": "Chair",
+  "IMPRESSUM_2": "Project",
+  "IMPRESSUM_3": "Contact",
+  "IMPRESSUM_4": "Privacy",
+  "IMPRESSUM_5": "Legal notice / disclosure"
 }
