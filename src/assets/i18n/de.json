@@ -13,7 +13,7 @@
   "NAV_EDIT_TT_INFO": "Dazu muss ein Netzwerk ausgewählt werden",
   "MAIN_INFO_TITLE": "Allgemeine Infos & Erste Schritte",
   "MAIN_INFO_DEMO_TITLE": "Demo-Netzwerk",
-  "MAIN_INFO_DEMO_DESCRIPTION": "Initial befindet sich in der Liste der verfügbaren Netzwerke nur ein Netzwerk, das wir als Demo verwenden. Auf NDEx kannst du es unter seiner UUID <code><a href='https://www.ndexbio.org/viewer/networks/868bd0b0-68d2-11e7-961c-0ac135e8bacf' target='_blank'>868bd0b0-68d2-11e7-961c-0ac135e8bacf</a></code> finden.",
+  "MAIN_INFO_DEMO_DESCRIPTION": "Initial befindet sich in der Liste der verfügbaren Netzwerke nur ein Netzwerk, das wir als Demo verwenden. Auf NDEx kannst du es unter seiner UUID <code><a href='https://www.ndexbio.org/viewer/networks/e89ad762-ab4b-11ea-aaef-0ac135e8bacf' target='_blank'>e89ad762-ab4b-11ea-aaef-0ac135e8bacf</a></code> finden.",
   "MAIN_INFO_DOCUMENTATION_TITLE": "Dokumentation",
   "MAIN_INFO_DOCUMENTATION_DESCRIPTION": "Die Dokumentation zu dieser Anwendung ist als separate .zip-Datei im Release-Commit angehängt. Die dort enthaltene <code>index.html</code> kann direkt ausgeführt werden.",
   "MAIN_INFO_STEPS_TITLE": "Erste Schritte",
@@ -328,5 +328,10 @@
   "SIDEBAR_IMAGE_GENERAL": "Als Datentyp kannst du PNG, JPEG oder CX wählen. Für die Bildformate kannst du weitere Einstellungen vornehmen. Möchtest du das Netzwerk anschließend auf NDEx laden, brauchst du das CX-Format.",
   "CHART_HISTO_INCREASE": "Bin hinzufügen",
   "CHART_HISTO_DECREASE": "Bin entfernen",
-  "CHART_HISTO_RESET": "Bins zurücksetzen auf "
+  "CHART_HISTO_RESET": "Bins zurücksetzen auf ",
+  "IMPRESSUM_1": "Lehrstuhl",
+  "IMPRESSUM_2": "Projekt",
+  "IMPRESSUM_3": "Kontakt",
+  "IMPRESSUM_4": "Datenschutz",
+  "IMPRESSUM_5": "Impressum"
 }

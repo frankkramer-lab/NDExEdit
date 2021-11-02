@@ -32,7 +32,6 @@ import {SidebarEditMappingContinuousComponent} from './components/parts/sidebar-
 import {StylePropertyValidatorDirective} from './validators/style-property.directive';
 import {ThresholdsValidatorDirective} from './validators/thresholds.directive';
 import {UseValuesValidatorDirective} from './validators/use-values.directive';
-import {ElementPropertyValidatorDirective} from './validators/element-property.directive';
 import {DragbarComponent} from './components/dragbar/dragbar.component';
 import {SidebarEditMappingDiscreteComponent} from './components/parts/sidebar-edit-mapping-discrete/sidebar-edit-mapping-discrete.component';
 import {SidebarEditAddCollectionComponent} from './components/parts/sidebar-edit-add-collection/sidebar-edit-add-collection.component';
@@ -67,7 +66,6 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     StylePropertyValidatorDirective,
     ThresholdsValidatorDirective,
     UseValuesValidatorDirective,
-    ElementPropertyValidatorDirective,
     UseValuesValidatorDirective,
     DragbarComponent,
     SidebarEditMappingDiscreteComponent,

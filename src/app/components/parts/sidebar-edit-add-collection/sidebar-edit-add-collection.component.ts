@@ -155,6 +155,10 @@ export class SidebarEditAddCollectionComponent implements OnInit, OnChanges {
         distinctUntilChanged(),
         map(term => {
 
+          // todo in case of passthrough mapping check if property is numeric => exclude color styleProperties from suggestions
+          // todo adapt form validator to invalidate color styleProperties with numeric properties
+          // todo print out a specific error msg for that case, because otherwise it would not be transparent why that combination is not valid
+
           const available = PropertyService.availableStyleProperties
             .filter(a => this.elementType === ElementType.node
               ? PropertyService.nodeProperties.includes(a)

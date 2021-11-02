@@ -110,7 +110,7 @@ export class AppComponent {
     });
 
     this.initializeTranslation();
-    this.initDemoFromNDEx('868bd0b0-68d2-11e7-961c-0ac135e8bacf');
+    this.initDemoFromNDEx('e89ad762-ab4b-11ea-aaef-0ac135e8bacf');
   }
 
   /**
