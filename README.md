@@ -11,3 +11,8 @@ If you never worked with NDExEdit before, here are a few first steps you might w
 - Inspect the information displayed to this specific network by clicking on the i-Icon right next to the networks name
 - Click on "Edit" to manipulate how the graph is displayed
 - You can download the adapted graph as .cx file
+
+## License
+
+This project is licensed under the GNU GENERAL PUBLIC LICENSE Version 3.
+See the LICENSE.md file for license rights and limitations.
