@@ -141,11 +141,7 @@ export class SidebarImageComponent implements OnInit {
     this.selectedFileType = option;
   }
 
-  /**
-   * Download the network as CX file
-   */
-  downloadCx(): void {
-    this.dataService.removeNdexStatus();
+  private getFilename(): string {
     const network = this.dataService.selectedNetwork;
     let filename;
     if (!!network.networkInformation.name) {
@@ -155,13 +151,22 @@ export class SidebarImageComponent implements OnInit {
     } else {
       filename = 'ndex_edit_network_' + this.dataService.networksParsed.indexOf(this.dataService.selectedNetwork).toString();
     }
+    return filename;
+  }
+
+  /**
+   * Download the network as CX file
+   */
+  downloadCx(): void {
+    this.dataService.removeNdexStatus();
+    const network = this.dataService.selectedNetwork;
 
     const blob = new Blob([JSON.stringify(network.cx)], {type: 'application/octet-stream'});
     const url = window.URL.createObjectURL(blob);
 
     const a = document.createElement('a');
     a.href = url;
-    a.setAttribute('download', filename + '.cx');
+    a.setAttribute('download', this.getFilename() + '.cx');
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

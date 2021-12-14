@@ -294,26 +294,45 @@ export class DataService {
   }
 
   /**
+   * Returns the index of the cartesianLayout aspect within this network, or -1 if it cannot be found.
+   * @private
+   */
+  private getCartesianLayoutIndex(): number {
+    for (let i = 0; i < this.selectedNetwork.cx.length; i++) {
+      if (this.selectedNetwork.cx[i].cartesianLayout) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  /**
    * Applies a layout to a network and rebuilds the core
    */
   applyLayout(withCoreRebuild: boolean = true): void {
 
     const newNodes = this.selectedNetwork.core.nodes();
-    const cx = this.selectedNetwork.cx;
-    for (const item of cx) {
-      if (!!item.cartesianLayout) {
+    let cartesianLayoutIndex = this.getCartesianLayoutIndex();
 
-        for (const node of item.cartesianLayout) {
-
-          const id = node.node;
-          const newNode = newNodes.getElementById(id);
-
-          node.x = newNode.position().x;
-          node.y = newNode.position().y;
-
-        }
-      }
+    if (cartesianLayoutIndex === -1) {
+      this.selectedNetwork.cx = [...this.selectedNetwork.cx, {cartesianLayout: []}];
+      cartesianLayoutIndex = this.selectedNetwork.cx.length - 1;
     }
+
+    newNodes.forEach(cyNode => {
+      const localNodeIndex = this.selectedNetwork.cx[cartesianLayoutIndex].cartesianLayout.findIndex(a => a.node === cyNode.id());
+      if (localNodeIndex === -1) {
+        this.selectedNetwork.cx[cartesianLayoutIndex].cartesianLayout.push({
+          node: cyNode.id(),
+          x: cyNode.position().x,
+          y: cyNode.position().y
+        });
+      } else {
+        this.selectedNetwork.cx[cartesianLayoutIndex].cartesianLayout[localNodeIndex].x = cyNode.position().x;
+        this.selectedNetwork.cx[cartesianLayoutIndex].cartesianLayout[localNodeIndex].y = cyNode.position().y;
+      }
+    });
+
     if (withCoreRebuild) {
       this.triggerNetworkCoreBuild(this.selectedNetwork);
     }
@@ -599,6 +618,8 @@ export class DataService {
         }
       }
     }
+    this.objInEditing.elementType = null;
+    this.objInEditing.mappingType = null;
     this.triggerNetworkCoreBuild();
   }
 
@@ -619,6 +640,8 @@ export class DataService {
         }
       }
     }
+    this.objInEditing.elementType = null;
+    this.objInEditing.mappingType = null;
     this.triggerNetworkCoreBuild();
   }
 
@@ -634,7 +657,9 @@ export class DataService {
         break;
       }
     }
-    this.selectedNetwork.cx.splice(removeAt, 1);
+    if (removeAt !== -1) {
+      this.selectedNetwork.cx.splice(removeAt, 1);
+    }
   }
 
   /**
@@ -649,6 +674,9 @@ export class DataService {
       if (item.properties_of === (isNode ? 'nodes:default' : 'edges:default')) {
         item.properties = {};
         item.dependencies = {};
+        if (!isNode) {
+          item.dependencies.arrowColorMatchesEdge = 'true';
+        }
         let labelMapping = null;
 
         if (isNode) {
@@ -670,6 +698,8 @@ export class DataService {
         }
       }
     }
+    this.objInEditing.mappingType = null;
+    this.objInEditing.elementType = null;
     this.triggerNetworkCoreBuild();
   }
 

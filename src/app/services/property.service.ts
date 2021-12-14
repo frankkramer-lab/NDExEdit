@@ -189,7 +189,7 @@ export class PropertyService {
     'EDGE_UNSELECTED_PAINT'
   ];
   /**
-   * List of for mapping available style properties.
+   * List for mapping available style properties.
    * Note: A visual property should only be mapped once throughout the network
    */
   static availableStyleProperties: string[] = PropertyService.nodeProperties.concat(PropertyService.edgeProperties);

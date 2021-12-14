@@ -461,6 +461,7 @@ export class ParseService {
         }
       }
       if (fd.cartesianLayout) {
+
         const layout = [];
         for (const item of fd.cartesianLayout) {
           layout.push(Object.assign({}, item));
@@ -919,7 +920,7 @@ export class ParseService {
                 };
                 if (isNode && !PropertyService.irrelevantProperties.includes(key)) {
                   mappings.nodesDefault.push(item);
-                } else {
+                } else if (!isNode && !PropertyService.irrelevantProperties.includes(key)) {
                   mappings.edgesDefault.push(item);
                 }
               }
@@ -960,6 +961,11 @@ export class ParseService {
                 }
               }
             }
+          }
+
+          // DEPENDENCIES
+          if (!prop.dependencies) {
+            prop.dependencies = {};
           }
         }
       }
