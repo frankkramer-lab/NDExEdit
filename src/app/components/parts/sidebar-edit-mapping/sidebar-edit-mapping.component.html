@@ -3,10 +3,12 @@
     aria-controls="parent"
     class="alert alert-secondary cursor">
   {{ elementTypeLiteral | translate}}
-  <span *ngIf="dataService.objInEditing.elementType === elementType"
-        class="text-warning">
-    <fa-icon [icon]="faExclamationTriangle"></fa-icon>
-  </span>
+
+  <!-- CLASS: discrete (1) or continuous (2) -->
+  <span *ngIf="dataService.classInEditing === utilityService.utilGetPropertyTargetByElementType(elementType)"
+          class="text-warning">
+      <fa-icon [icon]="faExclamationTriangle"></fa-icon>
+    </span>
 </h4>
 
 <div #parent="ngbCollapse"
@@ -84,7 +86,10 @@
       {{elementTypeLiteral | translate}}
     </span>
     &nbsp;{{'DEFAULT' | translate}}
-    <span *ngIf="dataService.objInEditing.elementType === elementType && dataService.objInEditing.mappingType === null"
+    <!-- CLASS: discrete (1) or continuous (2) -->
+    <!-- OBJ: property (0) -->
+    <span *ngIf="dataService.classInEditing === utilityService.utilGetPropertyTargetByElementType(elementType)
+    && dataService.objInEditing === utilityService.editingObject.property"
           class="text-warning">
     <fa-icon [icon]="faExclamationTriangle"></fa-icon>
   </span>
@@ -98,7 +103,7 @@
         ? dataService.selectedNetwork.mappings.nodesDefault
         : dataService.selectedNetwork.mappings.edgesDefault"
       headline="DEFAULT"
-      target="{{elementTypeLiteral}}_DEFAULT"></app-sidebar-edit-info>
+      [target]="elementType === utilityService.elementType.node ? utilityService.propertyTarget.nodes : utilityService.propertyTarget.edges"></app-sidebar-edit-info>
 
   </div>
 
@@ -186,9 +191,11 @@
               {{elementTypeLiteral | translate}}
           </span>
     &nbsp;{{'DISCRETE' | translate}}
-    <span *ngIf="dataService.objInEditing.elementType === elementType
-            && dataService.objInEditing.mappingType === utilityService.mappingType.discrete"
-          class="text-warning">
+    <!-- CLASS: discrete (1) or continuous (2) -->
+    <!-- OBJ: discrete (1) -->
+    <span *ngIf="dataService.classInEditing === utilityService.utilGetPropertyTargetByElementType(elementType)
+    && dataService.objInEditing === utilityService.editingObject.discrete"
+      class="text-warning">
       <fa-icon [icon]="faExclamationTriangle"></fa-icon>
     </span>
   </h6>
@@ -225,8 +232,10 @@
               {{elementTypeLiteral | translate}}
           </span>
     &nbsp;{{'CONTINUOUS' | translate}}
-    <span *ngIf="dataService.objInEditing.elementType === elementType
-            && dataService.objInEditing.mappingType === utilityService.mappingType.continuous"
+    <!-- CLASS: discrete (1) or continuous (2) -->
+    <!-- OBJ: continuous (2) -->
+    <span *ngIf="dataService.classInEditing === utilityService.utilGetPropertyTargetByElementType(elementType)
+    && dataService.objInEditing === utilityService.editingObject.continuous"
           class="text-warning">
       <fa-icon [icon]="faExclamationTriangle"></fa-icon>
     </span>

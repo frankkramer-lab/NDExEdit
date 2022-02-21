@@ -1,6 +1,11 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {LayoutService} from '../../../services/layout.service';
-import {ElementType, MappingType, UtilityService} from '../../../services/utility.service';
+import {
+  ElementType,
+  MappingType,
+  SidebarMode,
+  UtilityService
+} from '../../../services/utility.service';
 import {NeMappingDiscrete} from '../../../models/ne-mapping-discrete';
 import {DataService} from '../../../services/data.service';
 import {
@@ -312,6 +317,7 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
    */
   toggleEditMode(): void {
     if (!this.editMode) {
+      this.dataService.sidebarMode = SidebarMode.edit;
       this.editMode = true;
       this.inspectionMode = false;
       this.mappingCollectionInEditing = [];
@@ -338,6 +344,7 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
       this.setValidators();
       this.flashOrEditModeEmitter.emit(true);
     } else {
+      this.dataService.sidebarMode = SidebarMode.default;
       this.editMode = false;
       this.dataService.resetAnyMappingSelection();
       this.mappingCollectionInEditing = null;
@@ -381,6 +388,7 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
    */
   toggleFlashMode(): void {
     if (!this.flashMode) {
+      this.dataService.sidebarMode = SidebarMode.flash;
       this.flashMode = true;
       this.discreteMappingForm.disable();
 
@@ -392,6 +400,7 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
 
     } else {
       this.flashMode = false;
+      this.dataService.sidebarMode = this.editMode ? SidebarMode.edit : SidebarMode.default;
       this.discreteMappingForm.enable();
       this.graphService.resetElementSelection();
 

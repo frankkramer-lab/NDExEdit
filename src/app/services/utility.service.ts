@@ -32,6 +32,30 @@ export enum InspectionRuleType {
   text
 }
 
+export enum SidebarMode {
+  edit,
+  flash,
+  default
+}
+
+export enum EditingObject {
+  property,
+  discrete,
+  continuous
+}
+
+export enum PropertyTarget {
+  none,
+  networkInformation,
+  networkAttributes,
+  nodes,
+  edges
+}
+
+export enum Visibility {
+  public,
+  private
+}
 
 /**
  * Service for methods used within multiple components or services
@@ -73,6 +97,27 @@ export class UtilityService {
    * Type of comparator for inspection rules
    */
   inspectionRuleType = InspectionRuleType;
+  /**
+   * Type of mode the sidebar can be in
+   */
+  sidebarMode = SidebarMode;
+
+  /**
+   * Object in editing, either properties, discrete or continuous mapping (passthrough mappings cannot be edited)
+   */
+  editingObject = EditingObject;
+  /**
+   * Target for the editable sidebar information panel.
+   * Can either be nodes or edges properties or the network attributes.
+   */
+  propertyTarget = PropertyTarget;
+  /**
+   * Visibility of a network the user is searching for.
+   * Can either be private or public.
+   * Should be public by default for searching.
+   * Should be private by default for pushing.
+   */
+  visibility = Visibility;
   /**
    * List of valid numeric properties, as defined here {@link https://home.ndexbio.org/data-model/#data_types}
    */
@@ -505,5 +550,46 @@ export class UtilityService {
       aspect.chartContinuousDistribution = this.utilCalculateHistogramDataForBinSize($event, aspect);
     }
     return aspect.chartContinuousDistribution;
+  }
+
+  /**
+   * Returns a string representation of the given {@link PropertyTarget}.
+   * For cases nodes and edges the respective translatable keys are returned.
+   * @param target
+   */
+  utilPropertyTargetToString(target: PropertyTarget): string {
+    switch (target) {
+      case PropertyTarget.networkInformation:
+        return 'information';
+      case PropertyTarget.nodes:
+        return 'NODES_DEFAULT';
+      case PropertyTarget.edges:
+        return 'EDGES_DEFAULT';
+      case PropertyTarget.none:
+      default:
+        return '';
+    }
+  }
+
+  utilGetPropertyTargetByElementType(elementType: ElementType): PropertyTarget {
+    switch (elementType) {
+      case ElementType.node:
+        return PropertyTarget.nodes;
+      case ElementType.edge:
+        return PropertyTarget.edges;
+      default:
+        return PropertyTarget.none;
+    }
+  }
+
+  utilGetEditingObjectByMappingType(mappingType: MappingType): EditingObject {
+    switch (mappingType) {
+      case MappingType.discrete:
+        return EditingObject.discrete;
+      case MappingType.continuous:
+        return EditingObject.continuous;
+      default:
+        return EditingObject.property;
+    }
   }
 }

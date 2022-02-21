@@ -1,6 +1,7 @@
-<h5 class="row mt-2">
+<h5 class="row mt-4">
   <span class="col-10">
-    <span *ngIf="!target.endsWith('_DEFAULT')">
+    <span
+      *ngIf="target === utilityService.propertyTarget.networkInformation || target === utilityService.propertyTarget.networkAttributes">
       {{headline | translate}}
     </span>
 
@@ -14,7 +15,7 @@
             class="btn btn-block"
             container="body"
             data-toggle="tooltip"
-            ngbTooltip="{{ 'SIDEBAR_EDIT_TT_EDIT_' + (target | uppercase) + '_TOGGLE' | translate}}"
+            ngbTooltip="{{ 'SIDEBAR_EDIT_TT_EDIT_' + (utilityService.utilPropertyTargetToString(target) | uppercase) + '_TOGGLE' | translate}}"
             openDelay="1000"
             placement="{{layoutService.layout.sidebar.tooltipDirection}}">
       <fa-icon [icon]="faEdit"></fa-icon>
@@ -23,7 +24,7 @@
 </h5>
 
 <!-- Displays everything from within networkAttributes or ndexStatus -->
-<div [ngClass]="editMode ? 'border-warning' : ''" class="card mb-2">
+<div class="card mb-2">
   <div class="card-body">
 
     <!-- Display information -->
@@ -53,14 +54,14 @@
                        type="text">
 
                 <!-- DATATYPE (only for network information): not required -->
-                <input *ngIf="target === 'information'"
+                <input *ngIf="target === utilityService.propertyTarget.networkInformation"
                        [placeholder]="'SIDEBAR_EDIT_NETWORK_ATTRIBUTES_TYPE' | translate"
                        class="form-control"
                        formControlName="type"
                        type="text">
 
                 <!-- VALUE (only for non-information): required -->
-                <input *ngIf="target !== 'information'"
+                <input *ngIf="target !== utilityService.propertyTarget.networkInformation"
                        [placeholder]="'SIDEBAR_EDIT_NETWORK_ATTRIBUTES_VALUE' | translate"
                        class="form-control"
                        formControlName="value"
@@ -85,7 +86,7 @@
               <!-- ERROR: LABEL missing or VALUE (for non-information list) -->
               <small
                 *ngIf="(item.get('label').invalid && (item.get('label').dirty || item.get('label').touched)
-                  || (target !== 'information'
+                  || (target !== utilityService.propertyTarget.networkInformation
                       && item.get('value').invalid && (item.get('value').dirty || item.get('value').touched)))">
                 <fa-icon [icon]="faExclamationTriangle" class="text-danger"></fa-icon>
                 {{'SIDEBAR_EDIT_NETWORK_ATTRIBUTES_ERROR_REQUIRED' | translate}}
@@ -94,7 +95,8 @@
             </div>
 
             <!-- VALUE (only for network information) -->
-            <div *ngIf="target === 'information'" [formGroup]="item" class="mb-4">
+            <div *ngIf="target === utilityService.propertyTarget.networkInformation"
+                 [formGroup]="item" class="mb-4">
               <textarea [placeholder]="'SIDEBAR_EDIT_NETWORK_ATTRIBUTES_VALUE' | translate"
                         class="form-control"
                         formControlName="value"
@@ -161,7 +163,7 @@
           </div>
 
           <!-- remove all items -->
-          <div *ngIf="target === 'network'" class="row mt-2">
+          <div *ngIf="target === utilityService.propertyTarget.networkAttributes" class="row mt-2">
             <div class="col-12">
               <button (click)="removeAll()"
                       class="btn btn-block btn-danger"

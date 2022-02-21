@@ -26,19 +26,35 @@ import {StyleValueByColAndKeyPipe} from './pipes/styleValueByColAndKey.pipe';
 import {AttributesByElementPipe} from './pipes/attributesByElement.pipe';
 import {LayoutService} from './services/layout.service';
 import {SidebarImageComponent} from './components/sidebar-image/sidebar-image.component';
-import {SidebarEditSelectedComponent} from './components/parts/sidebar-edit-selected/sidebar-edit-selected.component';
-import {SidebarEditInspectComponent} from './components/parts/sidebar-edit-inspect/sidebar-edit-inspect.component';
-import {SidebarEditMappingContinuousComponent} from './components/parts/sidebar-edit-mapping-continuous/sidebar-edit-mapping-continuous.component';
+import {
+  SidebarEditSelectedComponent
+} from './components/parts/sidebar-edit-selected/sidebar-edit-selected.component';
+import {
+  SidebarEditInspectComponent
+} from './components/parts/sidebar-edit-inspect/sidebar-edit-inspect.component';
+import {
+  SidebarEditMappingContinuousComponent
+} from './components/parts/sidebar-edit-mapping-continuous/sidebar-edit-mapping-continuous.component';
 import {StylePropertyValidatorDirective} from './validators/style-property.directive';
 import {ThresholdsValidatorDirective} from './validators/thresholds.directive';
 import {UseValuesValidatorDirective} from './validators/use-values.directive';
 import {DragbarComponent} from './components/dragbar/dragbar.component';
-import {SidebarEditMappingDiscreteComponent} from './components/parts/sidebar-edit-mapping-discrete/sidebar-edit-mapping-discrete.component';
-import {SidebarEditAddCollectionComponent} from './components/parts/sidebar-edit-add-collection/sidebar-edit-add-collection.component';
-import {SidebarEditMappingComponent} from './components/parts/sidebar-edit-mapping/sidebar-edit-mapping.component';
-import {SidebarEditInfoComponent} from './components/parts/sidebar-edit-info/sidebar-edit-info.component';
+import {
+  SidebarEditMappingDiscreteComponent
+} from './components/parts/sidebar-edit-mapping-discrete/sidebar-edit-mapping-discrete.component';
+import {
+  SidebarEditAddCollectionComponent
+} from './components/parts/sidebar-edit-add-collection/sidebar-edit-add-collection.component';
+import {
+  SidebarEditMappingComponent
+} from './components/parts/sidebar-edit-mapping/sidebar-edit-mapping.component';
+import {
+  SidebarEditInfoComponent
+} from './components/parts/sidebar-edit-info/sidebar-edit-info.component';
 import {CollectionDiscretePipe} from './pipes/collectionDiscrete.pipe';
 import {PropertyService} from './services/property.service';
+import {AuthService} from './services/auth.service';
+import { SidebarNavbarComponent } from './components/sidebar-navbar/sidebar-navbar.component';
 
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -71,7 +87,8 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     SidebarEditMappingDiscreteComponent,
     SidebarEditAddCollectionComponent,
     SidebarEditMappingComponent,
-    SidebarEditInfoComponent
+    SidebarEditInfoComponent,
+    SidebarNavbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -96,7 +113,8 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     ParseService,
     UtilityService,
     LayoutService,
-    PropertyService
+    PropertyService,
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

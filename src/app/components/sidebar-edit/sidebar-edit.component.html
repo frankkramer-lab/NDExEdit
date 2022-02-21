@@ -1,28 +1,36 @@
-<div class="p-2 mb-5">
+<!-- BORDER in case flash or edit mode -->
+<div class="p-2 mb-5" [ngClass]="dataService.sidebarMode === utilityService.sidebarMode.flash
+? 'sidebar-border-flash'
+: ( dataService.sidebarMode === utilityService.sidebarMode.edit
+  ? 'sidebar-border-edit' : '' )">
 
-  <h5 class="mb-4 mt-1">
+  <!-- HEADLINE -->
+  <div class="row">
+    <div class="col"></div>
+    <!-- Tooltip direction special case -->
+    <div class="col-auto sidebar-icon-flash rounded sticky-top inline"
+         *ngIf="dataService.sidebarMode === utilityService.sidebarMode.flash"
+         ngbTooltip="{{'SIDEBAR_EDIT_MODE_FLASH' | translate}}"
+         openDelay="1000"
+         container="body"
+         placement="bottom-{{layoutService.layout.main.tooltipDirection}}">
+      <fa-icon class="align-middle" [icon]="faMagic"></fa-icon>
+    </div>
 
-    <a [attr.aria-disabled]="dataService.lockRouting"
-       [attr.tabindex]="dataService.lockRouting ? -1 : 0"
-       [ngClass]="dataService.lockRouting ? 'disabled' : ''"
-       [routerLink]="['']"
-       class="mr-2 btn btn-link"
-       container="body"
-       data-toggle="tooltip"
-       ngbTooltip="{{'LOST' | translate}}"
-       openDelay="1000"
-       placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-       role="button"
-       type="button">
-      <fa-icon [icon]="faHome" size="2x"></fa-icon>
-    </a>
-
-    <fa-icon [icon]="faChevronRight" class="mr-2"></fa-icon>
-    {{dataService.selectedNetwork.networkInformation.name}}
-  </h5>
+    <!-- Tooltip direction special case -->
+    <div class="col-auto sidebar-icon-edit rounded sticky-top inline"
+         *ngIf="dataService.sidebarMode === utilityService.sidebarMode.edit"
+         ngbTooltip="{{'SIDEBAR_EDIT_MODE_EDIT' | translate}}"
+         openDelay="1000"
+         container="body"
+         placement="bottom-{{layoutService.layout.main.tooltipDirection}}">
+      <fa-icon class="align-middle" [icon]="faEdit"></fa-icon>
+    </div>
+  </div>
 
   <!-- SELECTION -->
-  <div *ngIf="graphService.selectedElements.nodes.length > 0 || graphService.selectedElements.edges.length > 0">
+  <div
+    *ngIf="graphService.selectedElements.nodes.length > 0 || graphService.selectedElements.edges.length > 0">
     <app-sidebar-edit-selected
       [elementType]="utilityService.elementType.node"
       [relevantProperties]="graphService.selectedElements.nodeProperties"
@@ -37,7 +45,10 @@
   <div>
 
     <!-- NAV: INFO | MAPPINGS | SETTINGS -->
-    <ul aria-orientation="horizontal" class="nav nav-pills nav-fill" id="editsNav" role="tablist">
+    <ul aria-orientation="horizontal" class="nav nav-tabs" id="editsNav" role="tablist">
+
+      <!-- SPACER -->
+      <li class="nav-item mr-3">&nbsp;</li>
 
       <!-- INFO -->
       <li class="nav-item">
@@ -52,7 +63,9 @@
            openDelay="1000"
            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
            role="tab">
+          &nbsp;&nbsp;
           <fa-icon [icon]="faInfoCircle"></fa-icon>
+          &nbsp;&nbsp;
           <br>
         </a>
       </li>
@@ -70,7 +83,9 @@
            openDelay="1000"
            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
            role="tab">
+          &nbsp;&nbsp;
           <fa-icon [icon]="faPalette"></fa-icon>
+          &nbsp;&nbsp;
           <br>
         </a>
       </li>
@@ -88,7 +103,9 @@
            openDelay="1000"
            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
            role="tab">
+          &nbsp;&nbsp;
           <fa-icon [icon]="faCloudDownloadAlt"></fa-icon>
+          &nbsp;&nbsp;
           <br>
         </a>
       </li>
@@ -106,7 +123,9 @@
            openDelay="1000"
            placement="{{layoutService.layout.sidebar.tooltipDirection}}"
            role="tab">
+          &nbsp;&nbsp;
           <fa-icon [icon]="faCogs"></fa-icon>
+          &nbsp;&nbsp;
           <br>
         </a>
       </li>
@@ -119,7 +138,8 @@
   <div class="tab-content mt-2 mb-5 p-1" id="editsNavContent">
 
     <!-- 1: INFO -->
-    <div aria-labelledby="editInfo" class="tab-pane fade show active" id="editInfoContent" role="tabpanel">
+    <div aria-labelledby="editInfo" class="tab-pane fade show active" id="editInfoContent"
+         role="tabpanel">
 
       <!-- INFO: NETWORK ATTRIBUTES -->
       <h4 (click)="cEditInfoDescription.toggle()"
@@ -127,9 +147,8 @@
           aria-controls="cEditInfoDescription"
           class="alert alert-secondary cursor">
         {{ 'SIDEBAR_EDIT_DESCRIPTION' | translate }}
-        <span *ngIf="dataService.objInEditing.elementType === null
-            && dataService.objInEditing.mappingType === null
-            && dataService.objInEditing.nwInfo"
+        <!-- CLASS: networkInformation (1) -->
+        <span *ngIf="dataService.classInEditing === utilityService.propertyTarget.networkInformation"
               class="text-warning">
           <fa-icon [icon]="faExclamationTriangle"></fa-icon>
         </span>
@@ -177,10 +196,10 @@
           </div>
         </div>
 
-        <hr>
-        <app-sidebar-edit-info [itemList]="dataService.selectedNetwork.networkInformation.information"
-                               headline="SIDEBAR_EDIT_HEADLINE_ATTRIBUTES"
-                               target="information"></app-sidebar-edit-info>
+        <app-sidebar-edit-info
+          [itemList]="dataService.selectedNetwork.networkInformation.information"
+          headline="SIDEBAR_EDIT_HEADLINE_ATTRIBUTES"
+          [target]="utilityService.propertyTarget.networkInformation"></app-sidebar-edit-info>
 
       </div>
 
@@ -214,7 +233,8 @@
     </div>
 
     <!-- 2: MAPPINGS -->
-    <div aria-labelledby="editMappings" class="tab-pane fade" id="editMappingsContent" role="tabpanel">
+    <div aria-labelledby="editMappings" class="tab-pane fade" id="editMappingsContent"
+         role="tabpanel">
 
       <!-- NODES -->
       <app-sidebar-edit-mapping
@@ -230,9 +250,8 @@
           aria-controls="networkParent"
           class="alert alert-secondary cursor">
         {{ 'SIDEBAR_EDIT_NETWORK' | translate}}
-        <span *ngIf="dataService.objInEditing.elementType === null
-            && dataService.objInEditing.mappingType === null
-            && dataService.objInEditing.nwVisuals"
+        <!-- CLASS: networkAttributes (2) -->
+        <span *ngIf="dataService.classInEditing === utilityService.propertyTarget.networkAttributes"
               class="text-warning">
           <fa-icon [icon]="faExclamationTriangle"></fa-icon>
         </span>
@@ -241,7 +260,7 @@
            [(ngbCollapse)]="collapsedNetwork"
            class="p-2">
         <app-sidebar-edit-info [itemList]="dataService.selectedNetwork.mappings.networkDefault"
-                               target="network"></app-sidebar-edit-info>
+                               [target]="utilityService.propertyTarget.networkAttributes"></app-sidebar-edit-info>
       </div>
 
     </div>
@@ -252,7 +271,8 @@
     </div>
 
     <!-- 3: SETTINGS -->
-    <div aria-labelledby="editSettings" class="tab-pane fade" id="editSettingsContent" role="tabpanel">
+    <div aria-labelledby="editSettings" class="tab-pane fade" id="editSettingsContent"
+         role="tabpanel">
 
       <h5>
         {{'SIDEBAR_EDIT_HEADLINE_SETTINGS' | translate}}
@@ -280,7 +300,8 @@
       </div>
       <div class="form-row">
         <label for="highlightDuration">{{'SIDEBAR_EDIT_LABEL_DURATION' | translate}}</label>
-        <input (change)="setHighlightColorAndDuration()" [(ngModel)]="highlightDuration" class="form-control mb-2"
+        <input (change)="setHighlightColorAndDuration()" [(ngModel)]="highlightDuration"
+               class="form-control mb-2"
                id="highlightDuration"
                min="0"
                name="highlightDuration"

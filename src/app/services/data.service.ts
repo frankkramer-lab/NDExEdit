@@ -2,12 +2,22 @@ import {EventEmitter, Injectable} from '@angular/core';
 import {NeNetwork} from '../models/ne-network';
 import {NeMappingContinuous} from '../models/ne-mapping-continuous';
 import {NeMappingDiscrete} from '../models/ne-mapping-discrete';
-import {AttributeType, ElementType, MappingType, UtilityService} from './utility.service';
+import {
+  AttributeType,
+  EditingObject,
+  ElementType,
+  MappingType,
+  PropertyTarget,
+  SidebarMode,
+  UtilityService,
+  Visibility
+} from './utility.service';
 import {NeAspect} from '../models/ne-aspect';
 import {NeMapping} from '../models/ne-mapping';
 import {NeKeyValue} from '../models/ne-key-value';
-import {NeEditItem} from '../models/ne-edit-item';
 import {PropertyService} from './property.service';
+import {NeSearchResultNetwork} from '../models/ne-search-result-network';
+import {NeSearchResultItem} from '../models/ne-search-result-item';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +41,16 @@ export class DataService {
    */
   selectedNetwork: NeNetwork;
   /**
+   * List of networks that are linked to a user's NDEx account.
+   * This list is cleared on logout, see {@link AuthService#logout}
+   */
+  ndexPrivateNetworks: NeSearchResultItem[] = null;
+  /**
+   * List of networks the user queried before.
+   * This list is cleared on logout, see {@link AuthService#logout}
+   */
+  ndexPublicNetworks: NeSearchResultItem[] = null;
+  /**
    * Selected discrete mapping of type {@link NeMappingDiscrete}
    */
   selectedDiscreteMapping: NeMappingDiscrete[];
@@ -48,15 +68,22 @@ export class DataService {
    */
   lockRouting = false;
   /**
-   * Contains information about an object which is currently being edited.
-   * Can either be a mapping or a list of properties.
+   * Mode the sidebar is currently in.
    */
-  objInEditing: NeEditItem = {
-    elementType: null,
-    mappingType: null,
-    nwInfo: false,
-    nwVisuals: false
-  };
+  sidebarMode: SidebarMode = SidebarMode.default;
+  /**
+   * Object in editing can belong to three types of classes: networkInformation, nodes or edges.
+   * Nodes and edges are more specifically defined through {@link objInEditing}.
+   * If neither applies, the default class {@link PropertyTarget.none} applies.
+   */
+  classInEditing: PropertyTarget = PropertyTarget.none;
+
+  /**
+   * Specification for the {@link classInEditing}, that is applied to nodes and edges.
+   * Defaults to {@link EditingObject.property}, since they cannot be edited.
+   */
+  objInEditing: EditingObject = EditingObject.property;
+
   /**
    * Canvas used to display a network
    */
@@ -591,7 +618,14 @@ export class DataService {
         }
       }
     }
+    this.resetObjectInEditing();
     this.selectedNetwork.networkInformation.information = information;
+    for (const item of this.selectedNetwork.networkInformation.information) {
+      if (item.name === 'name') {
+        this.selectedNetwork.networkInformation.name = item.value;
+        break;
+      }
+    }
   }
 
   /**
@@ -618,8 +652,7 @@ export class DataService {
         }
       }
     }
-    this.objInEditing.elementType = null;
-    this.objInEditing.mappingType = null;
+    this.resetObjectInEditing();
     this.triggerNetworkCoreBuild();
   }
 
@@ -640,9 +673,42 @@ export class DataService {
         }
       }
     }
-    this.objInEditing.elementType = null;
-    this.objInEditing.mappingType = null;
+    this.resetObjectInEditing();
     this.triggerNetworkCoreBuild();
+  }
+
+  /**
+   * Resets the pointer towards the object in editing to default values
+   * @private
+   */
+  resetObjectInEditing(): void {
+    this.classInEditing = PropertyTarget.none;
+    this.objInEditing = EditingObject.property;
+  }
+
+  /**
+   * Sets the class and object that are currently edited based on a mapping in editing.
+   * Will only be used when a discrete or continuous mapping is being edited,
+   * since passthrough mappings are not editable.
+   * Will not be used for element independent properties. See {@link setPropertyObjectInEditing} for that purpose.
+   * @param elementType Impacts the class that is being edited, e.g. nodes or edges
+   * @param mappingType
+   */
+  setMappingObjectInEditing(elementType: ElementType, mappingType: MappingType): void {
+    this.classInEditing = this.utilityService.utilGetPropertyTargetByElementType(elementType);
+    this.objInEditing = this.utilityService.utilGetEditingObjectByMappingType(mappingType);
+  }
+
+  /**
+   * Sets the class and object that are currently edited based on the
+   * element independent property that is in editing,
+   * e.g. network information or network attributes.
+   * Will not be used for mappings. See {@link setMappingObjectInEditing} for that purpose.
+   * @param target
+   */
+  setPropertyObjectInEditing(target: PropertyTarget): void {
+    this.classInEditing = target;
+    this.objInEditing = EditingObject.property;
   }
 
   /**
@@ -698,8 +764,7 @@ export class DataService {
         }
       }
     }
-    this.objInEditing.mappingType = null;
-    this.objInEditing.elementType = null;
+    this.resetObjectInEditing();
     this.triggerNetworkCoreBuild();
   }
 
@@ -830,4 +895,58 @@ export class DataService {
     }
     this.networkChangedEmitter.emit(network);
   }
+
+  /**
+   * Handles the data received as a result from search requests.
+   * @param data Payload
+   * @param visibility Private for a private search, public for a public search
+   * @param elementLimit Maximum number of elements for nodes or edges. If this is exceeded, we assume that network is too big for NDExEdit to handle.
+   */
+  handleSearchData(data: NeSearchResultNetwork, visibility: Visibility, elementLimit: number): boolean {
+
+    console.log(data);
+
+    if (data.numFound === 0) {
+      return false;
+    }
+
+    data.networks.forEach((network) => {
+      network.downloadable = network.nodeCount < elementLimit && network.edgeCount < elementLimit;
+      network.writable = false;
+      network.checkedPermission = false;
+    });
+
+    if (visibility === Visibility.private) {
+      this.ndexPrivateNetworks = data.networks;
+    } else {
+      this.ndexPublicNetworks = data.networks;
+    }
+
+    return true;
+  }
+
+  /**
+   * Handles the data received as a result from browse requests.
+   * @param data Payload
+   * @param elementLimit Maximum number of elements for nodes or edges. If this is exceeded, we assume that network is too big for NDExEdit to handle.
+   */
+  handleBrowseData(data: NeSearchResultItem[], elementLimit: number): boolean {
+    console.log(data);
+    if (data.length === 0) {
+      return false;
+    }
+
+    const debugList = data.map((a) => a.isReadOnly);
+    console.log(debugList);
+
+    data.forEach((network) => {
+      network.downloadable = network.nodeCount < elementLimit && network.edgeCount < elementLimit;
+      network.writable = false;
+      network.checkedPermission = false;
+    });
+
+    this.ndexPrivateNetworks = data;
+    return true;
+  }
+
 }

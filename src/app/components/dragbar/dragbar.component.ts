@@ -46,12 +46,9 @@ export class DragbarComponent implements OnInit {
    */
   faExchangeAlt = faExchangeAlt;
 
-  /**
-   * Emits the current language if the user decides to change it manually
-   */
-  @Output() languageEmitter = new EventEmitter<string>();
-
-  constructor(public layoutService: LayoutService) {
+  constructor(
+    public layoutService: LayoutService
+  ) {
   }
 
   ngOnInit(): void {
@@ -61,7 +58,8 @@ export class DragbarComponent implements OnInit {
    * Triggers the language emitter, updating the language throughout the application
    * @param lang name of language
    */
-  setLanguage(lang: string): void {
-    this.languageEmitter.emit(lang);
-  }
+  // setLanguage(lang: string): void {
+  //   this.languageEmitter.emit(lang);
+  // }
+
 }

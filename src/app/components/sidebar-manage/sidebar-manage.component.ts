@@ -1,17 +1,27 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
-  faClone,
+  faCheck,
   faCloudDownloadAlt,
   faFileDownload,
+  faFileUpload,
   faHome,
-  faImage,
-  faPaintBrush
+  faInfo,
+  faPaintBrush,
+  faPaste,
+  faSearch,
+  faTimes,
+  faUser,
+  faUsers
 } from '@fortawesome/free-solid-svg-icons';
 import {DataService} from '../../services/data.service';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {UtilityService} from '../../services/utility.service';
+import {HttpClient} from '@angular/common/http';
+import {UtilityService, Visibility} from '../../services/utility.service';
 import {ParseService} from '../../services/parse.service';
 import {LayoutService} from '../../services/layout.service';
+import {Observable} from 'rxjs';
+import {AuthService} from '../../services/auth.service';
+import {NeSearchResultNetwork} from '../../models/ne-search-result-network';
+import {NeSearchResultItem} from '../../models/ne-search-result-item';
 
 @Component({
   selector: 'app-sidebar-manage',
@@ -22,23 +32,37 @@ import {LayoutService} from '../../services/layout.service';
 /**
  * Component responsible for graph selection and file management
  */
-export class SidebarManageComponent {
-
+export class SidebarManageComponent implements OnInit {
   /**
-   * Icon: faImage
+   * Icon: faInfo
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
-  faImage = faImage;
+  faInfo = faInfo;
+  /**
+   * Icon: faUser
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faUser = faUser;
+  /**
+   * Icon: faUsers
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faUsers = faUsers;
   /**
    * Icon: faCloudDownloadAlt
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faCloudDownloadAlt = faCloudDownloadAlt;
   /**
-   * Icon: faClone
+   * Icon: faCheck
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
-  faClone = faClone;
+  faCheck = faCheck;
+  /**
+   * Icon: faTimes
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faTimes = faTimes;
   /**
    * Icon: faPaintBrush
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
@@ -50,10 +74,25 @@ export class SidebarManageComponent {
    */
   faFileDownload = faFileDownload;
   /**
+   * Icon: faFileUpload
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faFileUpload = faFileUpload;
+  /**
+   * Icon: faSearch
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faSearch = faSearch;
+  /**
    * Icon: faHome
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faHome = faHome;
+  /**
+   * Icon: faPaste
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faPaste = faPaste;
   /**
    * File from local computer to import
    */
@@ -78,16 +117,30 @@ export class SidebarManageComponent {
    * Boolean to display the element-count-too-big-alert
    */
   showFileElementCountTooBig = false;
-
   /**
    * Boolean to display the invalid-file-alert
    */
   showInvalidFile = false;
-
+  /**
+   * Boolean to display the empty-search-term-alert
+   */
+  showEmptySearchTerm = false;
+  /**
+   * Boolean to display if the request returned an empty set
+   */
+  showEmptyBrowseResult = false;
+  /**
+   * Boolean to display if the user wants to browse private networks, but is still offline.
+   */
+  showUserOfflineWantsPrivate = false;
   /**
    * Boolean indicating if data is currently being loaded via HTTP
    */
-  loadingHttp = false;
+  loadingFetch = false;
+  /**
+   * Boolean indicating that a search request is in progress via HTTP
+   */
+  loadingSearch = false;
   /**
    * Boolean indicating if data is currently being loaded from a file
    */
@@ -116,6 +169,29 @@ export class SidebarManageComponent {
    * Current file extension
    */
   invalidExtension: string;
+  /**
+   * When browsing the NDEx database, we need a searchstring
+   */
+  searchTerm = '';
+  /**
+   * Result when browsing NDEx
+   */
+  // searchResult: NeSearchResultItem[] = null;
+  /**
+   * Index of the network for which the description is displayed
+   */
+  displaySearchNetworkPreview = -1;
+
+  /**
+   * Id for a browsed network that is currently being downloaded.
+   * Used to replace this item's button with a spinner.
+   */
+  downloadByBrowseResultId = -1;
+
+  /**
+   * Visibility mode for searching on NDEx
+   */
+  searchVisibility: Visibility = Visibility.public;
 
   /**
    * Factor to display bytes as megabytes
@@ -123,21 +199,6 @@ export class SidebarManageComponent {
    * @private
    */
   private readonly megaFactor = 1000000;
-  /**
-   * Options required for HTTP requests to public NDEx API
-   *
-   * @private
-   */
-  private readonly options = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  };
-  /**
-   * NDEx's public API endpoint
-   * @private
-   */
-  private readonly ndexPublicApiHost = 'https://public.ndexbio.org/v2/';
 
   /**
    *
@@ -146,14 +207,23 @@ export class SidebarManageComponent {
    * @param utilityService Service responsible for shared code
    * @param parseService Service responsible for parsing a network
    * @param layoutService Service responsible for tooltip directions
+   * @param authService Service responsible for authentication and HTTP
    */
   constructor(
     public dataService: DataService,
     private http: HttpClient,
-    private utilityService: UtilityService,
+    public utilityService: UtilityService,
     private parseService: ParseService,
-    public layoutService: LayoutService
+    public layoutService: LayoutService,
+    public authService: AuthService
   ) {
+  }
+
+  /**
+   * Resets the selected network to null
+   */
+  ngOnInit(): void {
+    this.dataService.selectedNetwork = null;
   }
 
   /**
@@ -189,35 +259,36 @@ export class SidebarManageComponent {
   /**
    * Imports data from NDEx. Works with link to publicly accessible network or just its ID
    */
-  importFromNdex(): void {
+  importWithUuidSanitation(): void {
     if (!this.ndexLinkToUpload) {
-      this.loadingHttp = false;
+      this.loadingFetch = false;
       return;
     }
-    this.loadingHttp = true;
     const slashSplit = this.ndexLinkToUpload.trim().split('/');
     const uuid = slashSplit[slashSplit.length - 1];
+    this.import(uuid);
+  }
 
-    this.http.get(this.ndexPublicApiHost + 'network/' + slashSplit[slashSplit.length - 1] + '/summary', this.options)
+  /**
+   * Imports data from NDEx after browsing.
+   * @param uuid
+   * @param browseResultIndex
+   */
+  import(uuid: string, browseResultIndex: number = -1): void {
+    this.loadingFetch = true;
+    this.downloadByBrowseResultId = browseResultIndex;
+
+    // download preview
+    this.downloadPreview(uuid)
       .toPromise()
       .then((preview: any) => {
-        if ((preview.nodeCount && preview.nodeCount > this.elementLimit) || (preview.edgeCount && preview.edgeCount > this.elementLimit)) {
-          this.nodeCount = preview.nodeCount;
-          this.edgeCount = preview.edgeCount;
-          this.showInvalidFile = false;
-          this.showFileElementCountTooBig = true;
-          this.showFileSizeTooLargeAlert = false;
-          this.showFileNotValidAlert = false;
-          this.showFileSizeOkAlert = false;
-          this.loadingHttp = false;
 
-          setTimeout(() => {
-            this.showFileElementCountTooBig = false;
-          }, 8000);
-
+        if (!preview.nodeCount || !preview.edgeCount || !this.checkFileElementCount(preview.nodeCount, preview.edgeCount)) {
           return;
         }
-        this.http.get(this.ndexPublicApiHost + 'network/' + uuid, this.options)
+
+        // download network
+        this.downloadNetwork(uuid)
           .toPromise()
           .then((data: any[]) => {
 
@@ -228,74 +299,217 @@ export class SidebarManageComponent {
             const dataSize = new TextEncoder().encode(JSON.stringify(data)).length;
             this.currentFileSize = Number((dataSize / this.megaFactor).toFixed(2));
 
-            if (this.currentFileSize > this.sizeLimit) {
-              this.showFileSizeTooLargeAlert = true;
-              this.showInvalidFile = false;
-              this.showFileElementCountTooBig = false;
-              this.showFileNotValidAlert = false;
-              this.showFileSizeOkAlert = false;
-              this.loadingHttp = false;
-
-              setTimeout(() => {
-                this.showFileSizeTooLargeAlert = false;
-              }, 8000);
-
+            if (!this.checkFileSize()) {
               return;
             } else {
-              this.showFileSizeOkAlert = true;
-              this.showInvalidFile = false;
-              this.showFileElementCountTooBig = false;
-              this.showFileSizeTooLargeAlert = false;
-              this.showFileNotValidAlert = false;
-              this.loadingHttp = false;
-
-              setTimeout(() => {
-                this.showFileSizeOkAlert = false;
-              }, 8000);
+              this.handleFileSizeOk();
             }
 
-            let networkName = String(this.dataService.networksDownloaded.length);
-            for (const d of data) {
-              if (d.networkAttributes) {
-                for (const prop of d.networkAttributes) {
-                  if (d.n === 'name') {
-                    networkName = d.networkAttributes.name;
-                  }
-                }
-              }
-            }
-            this.dataService.networksDownloaded.push(data);
-            this.parseService.convert(
-              null,
-              data,
-              UtilityService.utilCleanString(networkName),
-              uuid ?? null,
-              this.dataService.nextId())
-              .then(convertedNetwork => {
-                this.dataService.networksParsed.push(convertedNetwork);
-              })
-              .catch(e => console.error(e))
-              .finally(() => this.loadingHttp = false);
-
+            this.storeNetworkLocally(data, uuid);
+            this.downloadByBrowseResultId = -1;
           })
-          .catch(error => console.error(error));
+          .catch(error => {
+            console.error(error);
+            this.downloadByBrowseResultId = -1;
+          });
 
       })
       .catch(error => {
         console.error(error);
-        this.showInvalidFile = true;
-        this.showFileElementCountTooBig = false;
-        this.showFileSizeTooLargeAlert = false;
-        this.showFileNotValidAlert = false;
-        this.showFileSizeOkAlert = false;
-        this.loadingHttp = false;
-
-        setTimeout(() => {
-          this.showInvalidFile = false;
-        }, 8000);
-
-        return;
+        this.handleInvalidFile();
+        this.downloadByBrowseResultId = -1;
       });
+  }
+
+  /**
+   * Browse NDEx using a search string.
+   * Handles both the private and public search request.
+   * Fetches only the first 10 results to avoid unnecessary overhead.
+   */
+  searchNdex(): void {
+    const sanitizedSearchTerm = this.searchTerm.trim();
+    if (sanitizedSearchTerm.length === 0) {
+      this.showEmptySearchTerm = true;
+      setTimeout(() => {
+        this.showEmptySearchTerm = false;
+      }, 8000);
+      return;
+    }
+    this.loadingSearch = true;
+    const body: any = {
+      searchString: sanitizedSearchTerm
+    };
+
+    if (this.searchVisibility === Visibility.private) {
+      body.accountName = this.authService.accountName;
+    }
+
+    const url = this.authService.ndexPublicApiHost + 'search/network?size=10';
+
+    this.http.post(url, body, {headers: this.authService.getRequestOptions()})
+      .toPromise()
+      .then((data: NeSearchResultNetwork) => {
+        const valid = this.dataService.handleSearchData(data, this.searchVisibility, this.elementLimit);
+        if (!valid) {
+          this.handleEmptyResult();
+        }
+      })
+      .catch((error) => console.log(error))
+      .finally(() => this.loadingSearch = false);
+  }
+
+  /**
+   * Get all networks associated with a user's account.
+   */
+  browseNdex(): void {
+    this.loadingSearch = true;
+    const options = {headers: this.authService.getRequestOptions()};
+    const url = `${this.authService.ndexPublicApiHost}user/${this.authService.accountUuid}/networksummary?offset=0&limit=100`;
+    this.http.get(url, options)
+      .toPromise()
+      .then((data: NeSearchResultItem[]) => {
+        console.log(data);
+        const valid = this.dataService.handleBrowseData(data, this.elementLimit);
+        if (!valid) {
+          this.handleEmptyResult();
+        }
+      })
+      .catch((error) => console.log(error))
+      .finally(() => this.loadingSearch = false);
+  }
+
+  // /**
+  //  * Handles the data received as a result from search or browse requests
+  //  * @param data Payload
+  //  * @param raw True, if the list of received networks is not wrapped within a networks object
+  //  * @private
+  //  */
+  // private handleReceivedData(data: NeSearchResultNetwork | NeSearchResultItem[], raw: boolean): void {
+  //   if (!raw) {
+  //     data = data as NeSearchResultNetwork;
+  //     if (data.numFound === 0) {
+  //       this.handleEmptyResult();
+  //     }
+  //     data.networks.forEach((network) => {
+  //       network.downloadable = network.nodeCount < this.elementLimit && network.edgeCount < this.elementLimit;
+  //     });
+  //     this.searchResult = data.networks;
+  //   } else {
+  //     data = data as NeSearchResultItem[];
+  //     if (data.length === 0) {
+  //       this.handleEmptyResult();
+  //     }
+  //     data.forEach((network) => {
+  //       network.downloadable = network.nodeCount < this.elementLimit && network.edgeCount < this.elementLimit;
+  //     });
+  //     this.searchResult = data;
+  //   }
+  // }
+
+  /**
+   * If the query did not return any networks,
+   * we display an alert for 8 seconds.
+   * @private
+   */
+  private handleEmptyResult(): void {
+    this.showEmptySearchTerm = false;
+    this.showEmptyBrowseResult = true;
+    setTimeout(() => {
+      this.showEmptyBrowseResult = false;
+    }, 8000);
+    return;
+  }
+
+  /**
+   * Returns true, if the number of nodes and edges is lower than the {@link elementLimit}.
+   * @param nodeCount Number of nodes in the network summary
+   * @param edgeCount Number of edges in the network summary
+   * @private
+   */
+  private checkFileElementCount(nodeCount: number, edgeCount: number): boolean {
+    if (nodeCount > this.elementLimit || edgeCount > this.elementLimit) {
+      this.nodeCount = nodeCount;
+      this.edgeCount = edgeCount;
+      this.showInvalidFile = false;
+      this.showEmptySearchTerm = false;
+      this.showEmptyBrowseResult = false;
+      this.showFileElementCountTooBig = true;
+      this.showFileSizeTooLargeAlert = false;
+      this.showFileNotValidAlert = false;
+      this.showFileSizeOkAlert = false;
+      this.loadingFetch = false;
+
+      setTimeout(() => {
+        this.showFileElementCountTooBig = false;
+      }, 8000);
+
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Returns true if the file size is lower than the {@link sizeLimit}.
+   * @private
+   */
+  private checkFileSize(): boolean {
+    if (this.currentFileSize > this.sizeLimit) {
+      this.showFileSizeTooLargeAlert = true;
+      this.showInvalidFile = false;
+      this.showEmptySearchTerm = false;
+      this.showEmptyBrowseResult = false;
+      this.showFileElementCountTooBig = false;
+      this.showFileNotValidAlert = false;
+      this.showFileSizeOkAlert = false;
+      this.loadingFetch = false;
+
+      setTimeout(() => {
+        this.showFileSizeTooLargeAlert = false;
+      }, 8000);
+
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Displays the success alert.
+   * @private
+   */
+  private handleFileSizeOk(): void {
+    this.showFileSizeOkAlert = true;
+    this.showEmptySearchTerm = false;
+    this.showEmptyBrowseResult = false;
+    this.showInvalidFile = false;
+    this.showFileElementCountTooBig = false;
+    this.showFileSizeTooLargeAlert = false;
+    this.showFileNotValidAlert = false;
+    this.loadingFetch = false;
+
+    setTimeout(() => {
+      this.showFileSizeOkAlert = false;
+    }, 8000);
+  }
+
+  /**
+   * Displays the alert that a file has the wrong extension.
+   * @private
+   */
+  private handleInvalidFile(): void {
+    this.showInvalidFile = true;
+    this.showEmptySearchTerm = false;
+    this.showEmptyBrowseResult = false;
+    this.showFileElementCountTooBig = false;
+    this.showFileSizeTooLargeAlert = false;
+    this.showFileNotValidAlert = false;
+    this.showFileSizeOkAlert = false;
+    this.loadingFetch = false;
+
+    setTimeout(() => {
+      this.showInvalidFile = false;
+    }, 8000);
+
+    return;
   }
 
   /**
@@ -321,6 +535,8 @@ export class SidebarManageComponent {
     // current file limit is set to 20MB, which has proven to overload the application
     if (this.fileToUpload.size > (this.sizeLimit * this.megaFactor)) {
       this.showFileSizeTooLargeAlert = true;
+      this.showEmptyBrowseResult = false;
+      this.showEmptySearchTerm = false;
       this.showFileElementCountTooBig = false;
       this.showFileSizeOkAlert = false;
       this.showFileNotValidAlert = false;
@@ -333,6 +549,8 @@ export class SidebarManageComponent {
     } else if (fileExtension !== 'cx') {
 
       this.invalidExtension = fileExtension;
+      this.showEmptySearchTerm = false;
+      this.showEmptyBrowseResult = false;
       this.showFileNotValidAlert = true;
       this.showFileElementCountTooBig = false;
       this.showFileSizeOkAlert = false;
@@ -349,10 +567,92 @@ export class SidebarManageComponent {
       this.showFileElementCountTooBig = false;
       this.showFileSizeTooLargeAlert = false;
       this.showFileNotValidAlert = false;
+      this.showEmptySearchTerm = false;
+      this.showEmptyBrowseResult = false;
 
       setTimeout(() => {
         this.showFileSizeOkAlert = false;
       }, 8000);
+    }
+  }
+
+  /**
+   * Downloads the network summary from NDEx via UUID.
+   * @param uuid the network's ID
+   * @private
+   */
+  private downloadPreview(uuid: string): Observable<any> {
+    let options = {};
+    if (this.authService.isOnline) {
+      options = {headers: this.authService.getRequestOptions()};
+    }
+    return this.http.get(this.authService.ndexPublicApiHost + 'network/' + uuid + '/summary', options);
+  }
+
+  /**
+   * Downloads the network data from NDEx via UUID.
+   * @param uuid the network's ID
+   * @private
+   */
+  private downloadNetwork(uuid: string): Observable<any> {
+    let options = {};
+    if (this.authService.isOnline) {
+      options = {headers: this.authService.getRequestOptions()};
+    }
+    return this.http.get(this.authService.ndexPublicApiHost + 'network/' + uuid, options);
+  }
+
+  /**
+   * Stores the network's data within the {@link dataService#networksDownloaded}.
+   * @param data network data
+   * @param uuid network's ID
+   * @private
+   */
+  private storeNetworkLocally(data: any, uuid: string): void {
+    let networkName = String(this.dataService.networksDownloaded.length);
+    for (const d of data) {
+      if (d.networkAttributes) {
+        for (const prop of d.networkAttributes) {
+          if (d.n === 'name') {
+            networkName = d.networkAttributes.name;
+          }
+        }
+      }
+    }
+
+    this.dataService.networksDownloaded.push(data);
+    this.parseService.convert(
+      null,
+      data,
+      UtilityService.utilCleanString(networkName),
+      uuid ?? null,
+      this.dataService.nextId())
+      .then(convertedNetwork => {
+        this.dataService.networksParsed.push(convertedNetwork);
+      })
+      .catch(e => console.error(e))
+      .finally(() => {
+        this.loadingFetch = false;
+      });
+  }
+
+  /**
+   * Defines whether to browse private and public networks.
+   * If the user wants to access private networks, but is not yet logged in,
+   * we display an alert.
+   */
+  setSearchVisibility(visibility: Visibility): void {
+    this.searchVisibility = visibility;
+
+    if (this.searchVisibility === Visibility.private) {
+      if (!this.authService.isOnline) {
+        this.showUserOfflineWantsPrivate = true;
+        setTimeout(() => {
+          this.showUserOfflineWantsPrivate = false;
+        }, 8000);
+      }
+    } else {
+      this.showUserOfflineWantsPrivate = false;
     }
   }
 }

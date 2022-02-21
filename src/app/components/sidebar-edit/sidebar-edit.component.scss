@@ -1,3 +1,7 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
 .fixed-width {
   min-width: 120px;
 }
@@ -7,3 +11,26 @@
   cursor: default;
 }
 
+.sidebar-border-flash {
+  border: 5px solid $info;
+  border-radius: 20px;
+}
+
+.sidebar-border-edit {
+  border: 5px solid $warning;
+  border-radius: 20px;
+}
+
+.sidebar-icon-flash {
+  background: $info;
+  color: white;
+  height: 30px;
+
+}
+
+.sidebar-icon-edit {
+  background: $warning;
+  color: white;
+  height: 30px;
+
+}

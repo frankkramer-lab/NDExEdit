@@ -1,0 +1,21 @@
+.status-container {
+  position: relative;
+}
+
+.status-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid white;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+}
+
+.offline {
+  background-color: #d9534f;
+}
+
+.online {
+  background-color: #5cb85c;
+}

@@ -3,8 +3,20 @@ import {LayoutService} from '../../../services/layout.service';
 import {DataService} from '../../../services/data.service';
 import {NeKeyValue} from '../../../models/ne-key-value';
 import {FormArray, FormControl, FormGroup} from '@angular/forms';
-import {faCheck, faEdit, faExclamationTriangle, faPlus, faTimes, faTrash} from '@fortawesome/free-solid-svg-icons';
-import {ElementType, UtilityService} from '../../../services/utility.service';
+import {
+  faCheck,
+  faEdit,
+  faExclamationTriangle,
+  faPlus,
+  faTimes,
+  faTrash
+} from '@fortawesome/free-solid-svg-icons';
+import {
+  ElementType,
+  PropertyTarget,
+  SidebarMode,
+  UtilityService
+} from '../../../services/utility.service';
 
 @Component({
   selector: 'app-sidebar-edit-info',
@@ -19,9 +31,10 @@ export class SidebarEditInfoComponent implements OnInit {
   @Input() headline: string;
 
   /**
-   * Either 'information', 'NODES_DEFAULT' or 'EDGES_DEFAULT'
+   * Either 'networkInformation', 'networkAttributes', 'NODES_DEFAULT' or 'EDGES_DEFAULT'.
+   * See {@link PropertyTarget}
    */
-  @Input() target: string;
+  @Input() target: PropertyTarget;
 
   /**
    * List of items to be displayed and edited
@@ -76,7 +89,7 @@ export class SidebarEditInfoComponent implements OnInit {
   constructor(
     public layoutService: LayoutService,
     public dataService: DataService,
-    private utilityService: UtilityService
+    public utilityService: UtilityService
   ) {
   }
 
@@ -154,16 +167,23 @@ export class SidebarEditInfoComponent implements OnInit {
       };
       information.push(obj);
     }
-    if (this.target === 'information') {
-      this.dataService.writeNetworkInformation(information);
-    } else if (this.target.endsWith('DEFAULT')) {
-      this.dataService.writeDefaultStyles(this.elementType, information);
-    } else if (this.target === 'network') {
-      this.dataService.writeNetworkStyles(information);
-    } else {
-      console.log('Undefined action! Target unknown: ' + this.target);
+    switch (this.target) {
+      case PropertyTarget.networkInformation:
+        this.dataService.writeNetworkInformation(information);
+        break;
+      case PropertyTarget.networkAttributes:
+        this.dataService.writeNetworkStyles(information);
+        break;
+      case PropertyTarget.nodes:
+      case PropertyTarget.edges:
+        this.dataService.writeDefaultStyles(this.elementType, information);
+        break;
+      default:
+        console.log('Undefined action! Target unknown: ' + this.target);
+        break;
     }
     this.editMode = false;
+    this.dataService.sidebarMode = SidebarMode.default;
     this.dataService.lockRouting = false;
 
     this.initForm();
@@ -176,26 +196,14 @@ export class SidebarEditInfoComponent implements OnInit {
     if (!this.editMode) {
       this.initForm();
       this.dataService.lockRouting = true;
-
-      this.dataService.objInEditing = {
-        elementType: this.elementType,
-        mappingType: null,
-        nwInfo: this.target === 'information',
-        nwVisuals: this.target !== 'information'
-      };
-
+      this.dataService.setPropertyObjectInEditing(this.target);
+      this.dataService.sidebarMode = SidebarMode.edit;
       this.editMode = true;
     } else {
+      this.dataService.resetObjectInEditing();
       this.itemForm.reset();
       this.dataService.lockRouting = false;
-
-      this.dataService.objInEditing = {
-        elementType: null,
-        mappingType: null,
-        nwInfo: false,
-        nwVisuals: false
-      };
-
+      this.dataService.sidebarMode = SidebarMode.default;
       this.editMode = false;
     }
   }

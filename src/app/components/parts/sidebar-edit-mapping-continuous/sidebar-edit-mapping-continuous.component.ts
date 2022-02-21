@@ -1,5 +1,10 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {ElementType, MappingType, UtilityService} from '../../../services/utility.service';
+import {
+  ElementType,
+  MappingType,
+  SidebarMode,
+  UtilityService
+} from '../../../services/utility.service';
 import {NeMappingContinuous} from '../../../models/ne-mapping-continuous';
 import {DataService} from '../../../services/data.service';
 import {
@@ -402,6 +407,7 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
   toggleEditMode(): void {
 
     if (!this.editMode) {
+      this.dataService.sidebarMode = SidebarMode.edit;
       this.editMode = true;
       this.flashMode = false;
       this.inspectionMode = false;
@@ -427,6 +433,7 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
       this.flashOrEditModeEmitter.emit(true);
 
     } else {
+      this.dataService.sidebarMode = SidebarMode.default;
       this.editMode = false;
       this.flashMode = false;
       this.inspectionMode = true;
@@ -458,6 +465,7 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
    */
   toggleFlashMode(): void {
     if (!this.flashMode) {
+      this.dataService.sidebarMode = SidebarMode.flash;
       this.flashMode = true;
       this.continuousMappingForm.disable();
 
@@ -469,6 +477,7 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
 
     } else {
       this.flashMode = false;
+      this.dataService.sidebarMode = this.editMode ? SidebarMode.edit : SidebarMode.default;
       this.continuousMappingForm.enable();
       this.graphService.resetElementSelection();
 

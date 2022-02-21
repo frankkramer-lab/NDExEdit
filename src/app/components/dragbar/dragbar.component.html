@@ -1,6 +1,5 @@
 <!-- Grey bar -->
-<div class="drag-bar">
-
+<div class="drag-bar d-inline-flex flex-column">
   <div class="btn-group-vertical">
 
     <button (click)="layoutService.maxOut('right')"
@@ -29,14 +28,6 @@
       <fa-icon [icon]="faExchangeAlt"></fa-icon>
     </button>
 
-    <button (click)="setLanguage('de')"
-            class="btn btn-sm btn-secondary btnLayout">
-      DE
-    </button>
-    <button (click)="setLanguage('en')"
-            class="btn btn-sm btn-secondary btnLayout">
-      EN
-    </button>
   </div>
 
 </div>

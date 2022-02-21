@@ -12,30 +12,45 @@
     <div class="col-6">
       <div class="btn-group btn-block">
         <button aria-expanded="false" aria-haspopup="true"
-                class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" type="button">
-          {{'SIDEBAR_IMAGE_SELECT_TYPE' | translate}}&nbsp;{{selectedFileType}}
+                class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
+                type="button">
+          {{('SIDEBAR_IMAGE_BTN_LABEL_' + (selectedFileType === 'NDEx' ? 'UPLOAD' : 'DOWNLOAD')) | translate}}&nbsp;{{selectedFileType}}
         </button>
         <div class="dropdown-menu btn-block">
           <a (click)="selectImageType(option)"
-             *ngFor="let option of fileTypeOptions"
-             class="dropdown-item">{{option}}</a>
+             *ngFor="let option of downloadOptions"
+             class="dropdown-item"
+             [ngClass]="!authService.isOnline && option === 'NDEx' ? 'disabled' : ''">
+            {{option}}
+            <span
+              *ngIf="!authService.isOnline && option === 'NDEx'">({{'SIDEBAR_IMAGE_SELECT_TYPE_OFFLINE' | translate}}
+              )</span>
+          </a>
         </div>
       </div>
     </div>
 
     <!-- DOWNLOAD -->
     <div class="col-6">
-      <button (click)="downloadImage()" *ngIf="selectedFileType"
+      <button (click)="downloadImage()"
+              *ngIf="!requestInProgress"
+              [disabled]="!selectedFileType
+              || requestInProgress
+              || (selectedFileType === 'NDEx' && !authService.isOnline)
+              || (visibility === utilityService.visibility.private && overrideExistingNetwork && markedForOverride === null)"
               class="btn btn-block btn-success">
         {{'SIDEBAR_IMAGE_BTN_DOWNLOAD' | translate}}
       </button>
-
+      <div *ngIf="requestInProgress"
+           class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
     </div>
 
   </div>
 
-  <!-- DOWNLOAD OPTIONS -->
-  <div *ngIf="selectedFileType !== 'CX'">
+  <!-- DOWNLOAD: JPEG / PNG -->
+  <div *ngIf="selectedFileType === 'JPEG' || selectedFileType === 'PNG'">
 
     <div class="row">
       <div class="col-6">
@@ -117,14 +132,16 @@
       <!-- WIDTH -->
       <div class="col-6">
         <label for="widthInput">{{'SIDEBAR_IMAGE_WIDTH' | translate}}</label>
-        <input [(ngModel)]="optWidth" [disabled]="selectedFileType === 'CX'" class="form-control" id="widthInput" name="widthInput"
+        <input [(ngModel)]="optWidth" [disabled]="selectedFileType === 'CX'" class="form-control"
+               id="widthInput" name="widthInput"
                type="number">
       </div>
 
       <!-- HEIGHT -->
       <div class="col-6">
         <label for="heightInput">{{'SIDEBAR_IMAGE_HEIGHT' | translate}}</label>
-        <input [(ngModel)]="optHeight" [disabled]="selectedFileType === 'CX'" class="form-control" id="heightInput" name="heightInput"
+        <input [(ngModel)]="optHeight" [disabled]="selectedFileType === 'CX'" class="form-control"
+               id="heightInput" name="heightInput"
                type="number">
       </div>
     </div>
@@ -132,13 +149,287 @@
     <!-- Scale -->
     <div class="form-group mb-2">
       <label for="scaleInput">{{'SIDEBAR_IMAGE_SCALE' | translate}}</label>
-      <input [(ngModel)]="optScale" [disabled]="selectedFileType === 'CX'" class="form-control-range" id="scaleInput"
+      <input [(ngModel)]="optScale" [disabled]="selectedFileType === 'CX'"
+             class="form-control-range" id="scaleInput"
              max="10" min="1" name="scaleInput"
              type="range">
       <small>{{'SIDEBAR_IMAGE_SCALE_HINT' | translate}}</small>
     </div>
   </div>
 
+  <!-- DOWNLOAD: NDEx -->
+  <div *ngIf="selectedFileType === 'NDEx'">
+    <p>
+      {{'SIDEBAR_IMAGE_NDEX_HINT' | translate}}
+    </p>
+
+    <ng-container *ngIf="authService.isOnline">
+
+      <div class="row mb-3">
+        <!-- override vs create mode -->
+        <div class="col-auto">
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <!-- NEW -->
+            <label class="btn btn-outline-primary"
+                   [ngClass]="overrideExistingNetwork ? '' : 'active'"
+                   container="body"
+                   data-toggle="tooltip"
+                   ngbTooltip="{{'SIDEBAR_IMAGE_NDEX_NEW' | translate}}"
+                   openDelay="1000"
+                   placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+              <input type="radio" name="options" id="ndexNew"
+                     [disabled]="requestInProgress"
+                     (click)="setOverride(false)"
+                     [checked]="!overrideExistingNetwork">
+              <fa-icon [icon]="faPlus"></fa-icon>
+            </label>
+
+            <!-- OVERRIDE -->
+            <label class="btn btn-outline-primary"
+                   [ngClass]="overrideExistingNetwork ? 'active' : ''"
+                   container="body"
+                   data-toggle="tooltip"
+                   ngbTooltip="{{'SIDEBAR_IMAGE_NDEX_OVERRIDE' | translate}}"
+                   openDelay="1000"
+                   placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+              <input type="radio" name="options" id="ndexOverride"
+                     [disabled]="requestInProgress"
+                     (click)="setOverride(true)"
+                     [checked]="overrideExistingNetwork">
+              <fa-icon [icon]="faFileSignature"></fa-icon>
+            </label>
+          </div>
+        </div>
+        <!-- headline -->
+        <div class="col">
+          <h5>{{('SIDEBAR_IMAGE_NDEX_HEADLINE_' + (overrideExistingNetwork ? 'OVERRIDE' : 'NEW')) | translate}}</h5>
+        </div>
+      </div>
+
+      <hr>
+
+      <!-- ALERTS -->
+      <div *ngIf="alertNewSuccess" class="alert alert-success alert-dismissible"
+           role="alert">
+        <h5>{{'SIDEBAR_IMAGE_NEW_SUCCESS' | translate}}</h5>
+        <p>{{'SIDEBAR_IMAGE_NEW_SUCCESS_TEXT' | translate}}</p>
+        <a *ngIf="ndexUploadResponse" [href]="ndexUploadResponse"
+           target="_blank">{{ndexUploadResponse}}</a>
+        <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div *ngIf="alertNewFailure" class="alert alert-danger alert-dismissible"
+           role="alert">
+        <h5>{{'SIDEBAR_IMAGE_NEW_FAILURE' | translate}}</h5>
+        <p>{{'SIDEBAR_IMAGE_NEW_FAILURE_TEXT' | translate}}</p>
+        <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div *ngIf="alertOverrideSuccess" class="alert alert-success alert-dismissible"
+           role="alert">
+        <h5>{{'SIDEBAR_IMAGE_OVERRIDE_SUCCESS' | translate}}</h5>
+        <p>{{'SIDEBAR_IMAGE_OVERRIDE_SUCCESS_TEXT' | translate}}</p>
+        <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div *ngIf="alertOverrideFailure" class="alert alert-danger alert-dismissible"
+           role="alert">
+        <h5>{{'SIDEBAR_IMAGE_OVERRIDE_FAILURE' | translate}}</h5>
+        <p>{{'SIDEBAR_IMAGE_OVERRIDE_FAILURE_TEXT' | translate}}</p>
+        <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <!-- override -->
+      <div *ngIf="overrideExistingNetwork">
+
+        <p>{{'SIDEBAR_IMAGE_NDEX_OVERRIDE_HINT' | translate}}</p>
+
+        <!-- network selected -->
+        <div class="card border-success"
+             *ngIf="markedForOverride !== null">
+          <div class="card-body">
+            <p><b>{{markedForOverride.name}}</b></p>
+            <p>(<code>{{markedForOverride.externalId}}</code>)</p>
+            <p>{{'SIDEBAR_IMAGE_NDEX_OVERRIDE_NOT_EMPTY' | translate}}</p>
+          </div>
+        </div>
+
+        <!-- nothing selected -->
+        <div class="card border-danger"
+             *ngIf="markedForOverride === null">
+          <div class="card-body">
+            <p>{{'SIDEBAR_IMAGE_NDEX_OVERRIDE_EMPTY' | translate}}</p>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table" *ngIf="dataService.ndexPrivateNetworks?.length > 0">
+            <!-- HEAD -->
+            <thead>
+            <tr>
+              <th>{{'SIDEBAR_MANAGE_BROWSE_TABLE_NAME' | translate}}</th>
+              <th>{{'SIDEBAR_MANAGE_BROWSE_TABLE_OWNER' | translate}}</th>
+              <th>{{'SIDEBAR_MANAGE_BROWSE_TABLE_COUNT_NODES' | translate}}</th>
+              <th>{{'SIDEBAR_MANAGE_BROWSE_TABLE_COUNT_EDGES' | translate}}</th>
+              <th>&nbsp;</th>
+              <th>{{'SIDEBAR_IMAGE_BROWSE_PERMISSION' | translate}}</th>
+            </tr>
+            </thead>
+
+            <!-- BODY -->
+            <tbody>
+            <tr>
+              <!-- refresh button -->
+              <td colspan="6">
+                <button class="btn btn-block btn-outline-primary"
+                        [disabled]="requestInProgress"
+                        (click)="refreshList()">
+                  {{'SIDEBAR_IMAGE_NDEX_REFRESH' | translate}}
+                </button>
+              </td>
+            </tr>
+            <ng-container
+              *ngFor="let network of dataService.ndexPrivateNetworks; let index = index">
+
+              <tr [ngClass]="index === displayNetworkPreview ? 'table-active' : ''">
+                <td>{{network.name}}<br>
+                  <small>
+                    <b
+                      [ngClass]="this.dataService.selectedNetwork.networkInformation.uuid === network.externalId ? 'text-success' : ''">
+                      {{network.externalId}}
+                    </b>
+                  </small>
+                </td>
+                <td>{{network.owner}}</td>
+                <td>{{network.nodeCount}}</td>
+                <td>{{network.edgeCount}}</td>
+
+                <!-- network preview -->
+                <td>
+                  <button class="btn btn-outline-secondary btn-block"
+                          container="body"
+                          data-toggle="tooltip"
+                          ngbTooltip="{{'SIDEBAR_MANAGE_TT_PREVIEW' | translate}}"
+                          openDelay="1000"
+                          placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                          (click)="index === displayNetworkPreview ? displayNetworkPreview = -1 : displayNetworkPreview = index">
+                    <fa-icon [icon]="faInfo"></fa-icon>
+                  </button>
+                </td>
+
+                <!-- permission -->
+                <td>
+
+                  <!-- permission yet unchecked -->
+                  <button class="btn btn-outline-secondary btn-block"
+                          container="body"
+                          data-toggle="tooltip"
+                          ngbTooltip="{{'SIDEBAR_IMAGE_PERMISSION_UNCLEAR' | translate}}"
+                          openDelay="1000"
+                          placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                          [disabled]="requestInProgress"
+                          (click)="checkPermission(network.externalId)"
+                          *ngIf="!network.checkedPermission && (checkingPermissionFor !== network.externalId)">
+                    <fa-icon [icon]="faQuestionCircle"></fa-icon>
+                  </button>
+
+                  <!-- permission WRITE -->
+                  <button class="btn btn-block"
+                          [ngClass]="markedForOverride === network ? 'btn-success' : 'btn-outline-success'"
+                          container="body"
+                          data-toggle="tooltip"
+                          ngbTooltip="{{'SIDEBAR_IMAGE_PERMISSION_VALID' | translate}}"
+                          openDelay="1000"
+                          placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                          [disabled]="requestInProgress"
+                          (click)="markToOverride(network)"
+                          *ngIf="network.checkedPermission && network.writable">
+                    <fa-icon [icon]="faThumbsUp"></fa-icon>
+                  </button>
+
+                  <!-- permission READ -->
+                  <!-- todo find display option for tooltip -->
+                  <button class="btn btn-outline-danger btn-block"
+                          container="body"
+                          data-toggle="tooltip"
+                          ngbTooltip="{{'SIDEBAR_IMAGE_PERMISSION_INVALID' | translate}}"
+                          openDelay="1000"
+                          placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                          [disabled]="true"
+                          *ngIf="network.checkedPermission && !network.writable">
+                    <fa-icon [icon]="faThumbsDown"></fa-icon>
+                  </button>
+
+                  <!-- spinner -->
+                  <div *ngIf="checkingPermissionFor === network.externalId"
+                       class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+
+                </td>
+              </tr>
+              <tr *ngIf="index === displayNetworkPreview">
+                <td [colSpan]="6">
+                  <p [innerHTML]="network.description"></p>
+                </td>
+              </tr>
+
+            </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- create new -->
+      <div class="row" *ngIf="!overrideExistingNetwork">
+        <!-- VISIBILITY -->
+        <div class="col-auto">
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-outline-primary"
+                   [ngClass]="visibility === utilityService.visibility.private ? 'active' : ''"
+                   container="body"
+                   data-toggle="tooltip"
+                   ngbTooltip="{{'SIDEBAR_IMAGE_NDEX_NEW_PRIVATE' | translate}}"
+                   openDelay="1000"
+                   placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+              <input type="radio" name="options" id="private"
+                     (click)="setVisibility(utilityService.visibility.private)"
+                     [checked]="visibility === utilityService.visibility.private">
+              <fa-icon [icon]="faUser"></fa-icon>
+            </label>
+            <label class="btn btn-outline-primary"
+                   [ngClass]="visibility === utilityService.visibility.public ? 'active' : ''"
+                   container="body"
+                   data-toggle="tooltip"
+                   ngbTooltip="{{'SIDEBAR_IMAGE_NDEX_NEW_PUBLIC' | translate}}"
+                   openDelay="1000"
+                   placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+              <input type="radio" name="options" id="public"
+                     (click)="setVisibility(utilityService.visibility.public)"
+                     [checked]="visibility === utilityService.visibility.public">
+              <fa-icon [icon]="faUsers"></fa-icon>
+            </label>
+          </div>
+        </div>
+        <!-- NETWORK NAME -->
+        <div class="col">
+          <div class="form-group">
+            <input type="email" class="form-control" id="networkName"
+                   [value]="dataService.selectedNetwork.networkInformation.name"
+                   [readOnly]="true">
+          </div>
+        </div>
+      </div>
+
+    </ng-container>
+
+
+  </div>
 
 </form>
 

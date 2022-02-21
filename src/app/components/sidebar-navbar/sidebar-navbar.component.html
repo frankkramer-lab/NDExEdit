@@ -1,0 +1,146 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pl-0">
+<!--  <div class="row mt-2">-->
+  <!-- HOME -->
+  <div class="col-auto">
+    <a [attr.aria-disabled]="dataService.lockRouting"
+       [attr.tabindex]="dataService.lockRouting ? -1 : 0"
+       [ngClass]="dataService.lockRouting ? 'disabled' : ''"
+       [routerLink]="['']"
+       class="mr-2 btn btn-link"
+       container="body"
+       data-toggle="tooltip"
+       ngbTooltip="{{'LOST' | translate}}"
+       openDelay="1000"
+       placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+       role="button"
+       type="button">
+      <fa-icon [icon]="faHome" class="fa-lg"></fa-icon>
+    </a>
+  </div>
+
+  <!-- NETWORK NAME -->
+  <div class="col">
+    <h5 *ngIf="dataService.selectedNetwork" class="mb-0">
+      {{dataService.selectedNetwork.networkInformation.name}}
+    </h5>
+  </div>
+
+  <!-- LANG -->
+  <div class="col-auto text-right">
+
+    <div class="dropdown">
+      <a class="btn btn-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+         data-toggle="dropdown" aria-expanded="false">
+        <fa-icon [icon]="faGlobe" class="fa-lg"></fa-icon>
+      </a>
+
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <button class="dropdown-item" (click)="languageEmitter.emit('de')">DE</button>
+        <button class="dropdown-item" (click)="languageEmitter.emit('en')">EN</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- LOGIN -->
+  <div class="col-auto text-right">
+    <button class="btn btn-link" (click)="openAuthModal(content)"
+            container="body"
+            data-toggle="tooltip"
+            ngbTooltip="{{('AUTH_TT_' + (authService.isOnline ? 'ONLINE' : 'OFFLINE')) | translate}}"
+            openDelay="1000"
+            placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+
+      <div class="status-container">
+        <fa-icon [icon]="faUserCircle" class="fa-lg"></fa-icon>
+        <div *ngIf="!authService.isOnline" class="status-circle offline"></div>
+        <div *ngIf="authService.isOnline" class="status-circle online"></div>
+      </div>
+
+    </button>
+  </div>
+</nav>
+
+<ng-template #content let-modal>
+
+  <div class="modal-header">
+    <h4 class="modal-title">{{'AUTH_TITLE' | translate}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <p>{{'AUTH_HINT' | translate}}</p>
+
+    <!-- ALERTS -->
+    <!-- empty -->
+    <div *ngIf="alertEmptyNameOrPw"
+         class="alert alert-warning alert-dismissible fade show"
+         role="alert">
+      <p>{{'AUTH_ALERT_EMPTY' | translate}}</p>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <!-- logged out -->
+    <div *ngIf="alertLoggedOut"
+         class="alert alert-success alert-dismissible fade show"
+         role="alert">
+      <p>{{'AUTH_ALERT_LOGGED_OUT' | translate}}</p>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <!-- login failed -->
+    <div *ngIf="alertVerificationFailed"
+         class="alert alert-warning alert-dismissible fade show"
+         role="alert">
+      <p>{{'AUTH_ALERT_LOGIN_FAILURE' | translate}}</p>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <!-- ONLINE -->
+    <ng-container *ngIf="authService.isOnline">
+      <p>{{'AUTH_ONLINE_AS' | translate}}&nbsp;{{authService.accountName}}</p>
+      <button class="btn btn-block btn-outline-danger" (click)="logout()">
+        {{'AUTH_ONLINE_BTN' | translate}}
+      </button>
+    </ng-container>
+
+    <!-- OFFLINE -->
+    <ng-container *ngIf="!authService.isOnline">
+
+      <form>
+        <div class="row">
+          <div class="col">
+            <input type="text" class="form-control"
+                   placeholder="{{'AUTH_OFFLINE_PLACEHOLDER_NAME' | translate}}"
+                   id="ndexUsername"
+                   name="ndexUsername"
+                   [(ngModel)]="ndexAccountName">
+          </div>
+          <div class="col">
+            <input type="password" class="form-control"
+                   placeholder="{{'AUTH_OFFLINE_PLACEHOLDER_PW' | translate}}" id="ndexPassword"
+                   name="ndexPassword" [(ngModel)]="ndexPassword">
+          </div>
+          <div class="col">
+            <div *ngIf="verificationInProgress"
+                 class="spinner-border" role="status">
+              <span class="sr-only">Verifying...</span>
+            </div>
+            <button
+              *ngIf="!verificationInProgress"
+              (click)="login()"
+              class="btn btn-block btn-outline-success">{{'AUTH_OFFLINE_BTN' | translate}}</button>
+          </div>
+        </div>
+      </form>
+
+    </ng-container>
+
+  </div>
+</ng-template>

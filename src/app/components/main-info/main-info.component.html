@@ -1,104 +1,111 @@
-<h1>
-  <span id="mainInfoTitle">{{'MAIN_INFO_TITLE' | translate}}</span>
-  <img [ngStyle]="{'width.px': 75}" class="float-right mt-2" src="assets/img/ndexedit_logo.png">
-</h1>
+<div class="container">
+  <h1 class="mb-4 mt-3">
+    <img [ngStyle]="{'width.px': 110}" class="float-right mt-2" src="assets/img/NDExEdit-logo.png">
+    <span id="mainInfoTitle" class="mt-0">{{'MAIN_INFO_TITLE' | translate}}</span>
+  </h1>
 
-<h3>{{'MAIN_INFO_STEPS_TITLE' | translate}}</h3>
-<p>{{'MAIN_INFO_STEPS_DESCRIPTION' | translate}}</p>
-<ul>
-  <li>{{'MAIN_INFO_STEPS_STEP_1' | translate}}</li>
-  <li>{{'MAIN_INFO_STEPS_STEP_2' | translate}}</li>
-  <li>{{'MAIN_INFO_STEPS_STEP_3' | translate}}</li>
-  <li>{{'MAIN_INFO_STEPS_STEP_4' | translate}}</li>
-  <li>{{'MAIN_INFO_STEPS_STEP_5' | translate}}</li>
-</ul>
+  <h3>{{'MAIN_INFO_STEPS_TITLE' | translate}}</h3>
+  <p>{{'MAIN_INFO_STEPS_DESCRIPTION' | translate}}</p>
+  <ul>
+    <li>{{'MAIN_INFO_STEPS_STEP_1' | translate}}</li>
+    <li>{{'MAIN_INFO_STEPS_STEP_2' | translate}}</li>
+    <li>{{'MAIN_INFO_STEPS_STEP_3' | translate}}</li>
+    <li>{{'MAIN_INFO_STEPS_STEP_4' | translate}}</li>
+    <li>{{'MAIN_INFO_STEPS_STEP_5' | translate}}</li>
+    <li>{{'MAIN_INFO_STEPS_STEP_6' | translate}}</li>
+  </ul>
 
-<hr>
+  <hr>
 
-<h3>{{'MAIN_INFO_DEMO_TITLE' | translate}}</h3>
-<p [innerHTML]="'MAIN_INFO_DEMO_DESCRIPTION' | translate"></p>
+  <h3>{{'MAIN_INFO_DEMO_TITLE' | translate}}</h3>
+  <p [innerHTML]="'MAIN_INFO_DEMO_DESCRIPTION' | translate"></p>
 
-<hr>
+  <hr>
 
-<h3>{{'MAIN_INFO_LAYOUT_LANG_TITLE' | translate}}</h3>
-<p>{{'MAIN_INFO_LAYOUT_DESCRIPTION' | translate}}</p>
-<ul>
-  <li>
-    <fa-icon [icon]="faAngleDoubleLeft"></fa-icon>
-    <fa-icon [icon]="faAngleLeft"></fa-icon>
-    <fa-icon [icon]="faAngleRight"></fa-icon>
-    <fa-icon [icon]="faAngleDoubleRight"></fa-icon>
-    {{'MAIN_INFO_LAYOUT_STEP_1' | translate}}
-  </li>
-  <li>
-    <fa-icon [icon]="faRedo"></fa-icon>
-    {{'MAIN_INFO_LAYOUT_STEP_2' | translate}}
-  </li>
-  <li>
-    <fa-icon [icon]="faExchangeAlt"></fa-icon>
-    {{'MAIN_INFO_LAYOUT_STEP_3' | translate}}
-  </li>
-</ul>
+  <h3>{{'MAIN_INFO_NDEX_TITLE' | translate}}</h3>
+  <p>{{'MAIN_INFO_NDEX_DESCRIPTION' | translate}}</p>
 
-<p>{{'MAIN_INFO_LANG_DESCRIPTION' | translate}}</p>
+  <hr>
 
-<hr>
+  <h3>{{'MAIN_INFO_LAYOUT_LANG_TITLE' | translate}}</h3>
+  <p>{{'MAIN_INFO_LAYOUT_DESCRIPTION' | translate}}</p>
+  <ul>
+    <li>
+      <fa-icon [icon]="faAngleDoubleLeft"></fa-icon>
+      <fa-icon [icon]="faAngleLeft"></fa-icon>
+      <fa-icon [icon]="faAngleRight"></fa-icon>
+      <fa-icon [icon]="faAngleDoubleRight"></fa-icon>
+      {{'MAIN_INFO_LAYOUT_STEP_1' | translate}}
+    </li>
+    <li>
+      <fa-icon [icon]="faRedo"></fa-icon>
+      {{'MAIN_INFO_LAYOUT_STEP_2' | translate}}
+    </li>
+    <li>
+      <fa-icon [icon]="faExchangeAlt"></fa-icon>
+      {{'MAIN_INFO_LAYOUT_STEP_3' | translate}}
+    </li>
+  </ul>
 
-<h3>{{'SIDEBAR_COMPARE_ABOUT' | translate}}</h3>
+  <p>{{'MAIN_INFO_LANG_DESCRIPTION' | translate}}</p>
 
-<p>
-  <fa-icon [icon]="faThumbsUp" [size]="'lg'" class="mr-3"></fa-icon>
-  {{'SIDEBAR_COMPARE_ABOUT_1' | translate}}
-</p>
-<p>
-  <fa-icon [icon]="faUserGraduate" [size]="'lg'" class="mr-3"></fa-icon>
-  {{'SIDEBAR_COMPARE_ABOUT_2_1' | translate}}
-  <a container="body"
-     data-toggle="tooltip"
-     href="mailto:simone1.mayer@student.uni-augsburg.de"
-     ngbTooltip="{{'MAIN_INFO_TT_MAIL_MAYER' | translate}}"
-     openDelay="1000"
-     placement="{{layoutService.layout.main.tooltipDirection}}"
-     target="_blank">
-    <b>Simone Mayer</b>
-  </a>
-  {{'SIDEBAR_COMPARE_ABOUT_2_2' | translate}}
-</p>
-<p>
-  <fa-icon [icon]="faComments" [size]="'lg'" class="mr-3"></fa-icon>
-  {{'SIDEBAR_COMPARE_ABOUT_3_1' | translate}}
-  <a container="body"
-     data-toggle="tooltip"
-     href="mailto:florian.auer@informatik.uni-augsburg.de"
-     id="mailto"
-     ngbTooltip="{{'MAIN_INFO_TT_MAIL_AUER' | translate}}"
-     openDelay="1000"
-     placement="{{layoutService.layout.main.tooltipDirection}}"
-     target="_blank">
-    <b>Florian Auer</b>
-  </a>
-  {{'SIDEBAR_COMPARE_ABOUT_3_2' | translate}}
-</p>
+  <hr>
 
-<hr>
+  <h3>{{'SIDEBAR_COMPARE_ABOUT' | translate}}</h3>
 
-<div class="row small mb-4">
-  <div class="col">
-    <a href="https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/misit/" target="_blank">{{'IMPRESSUM_1' | translate}}</a>
+  <p>
+    <fa-icon [icon]="faThumbsUp" [size]="'lg'" class="mr-3"></fa-icon>
+    {{'SIDEBAR_COMPARE_ABOUT_1' | translate}}
+  </p>
+  <p>
+    <fa-icon [icon]="faUserGraduate" [size]="'lg'" class="mr-3"></fa-icon>
+    {{'SIDEBAR_COMPARE_ABOUT_2_1' | translate}}
+    <a container="body"
+       data-toggle="tooltip"
+       href="mailto:simone1.mayer@student.uni-augsburg.de"
+       ngbTooltip="{{'MAIN_INFO_TT_MAIL_MAYER' | translate}}"
+       openDelay="1000"
+       placement="{{layoutService.layout.main.tooltipDirection}}"
+       target="_blank">
+      <b>Simone Mayer</b>
+    </a>
+    {{'SIDEBAR_COMPARE_ABOUT_2_2' | translate}}
+  </p>
+  <p>
+    <fa-icon [icon]="faComments" [size]="'lg'" class="mr-3"></fa-icon>
+    {{'SIDEBAR_COMPARE_ABOUT_3_1' | translate}}
+    <a container="body"
+       data-toggle="tooltip"
+       href="mailto:florian.auer@informatik.uni-augsburg.de"
+       id="mailto"
+       ngbTooltip="{{'MAIN_INFO_TT_MAIL_AUER' | translate}}"
+       openDelay="1000"
+       placement="{{layoutService.layout.main.tooltipDirection}}"
+       target="_blank">
+      <b>Florian Auer</b>
+    </a>
+    {{'SIDEBAR_COMPARE_ABOUT_3_2' | translate}}
+  </p>
+
+  <hr>
+
+  <div class="row small mb-4">
+    <div class="col">
+      <a href="https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/misit/" target="_blank">{{'IMPRESSUM_1' | translate}}</a>
+    </div>
+    <div class="col">
+      <a href="https://www.sys-med.de/en/junior-research-groups/multipath/" target="_blank">{{'IMPRESSUM_2' | translate}}</a>
+    </div>
+    <div class="col">
+      <a href="https://www.uni-augsburg.de/en/kontakt/" target="_blank">{{'IMPRESSUM_3' | translate}}</a>
+    </div>
+    <div class="col">
+      <a href="https://www.uni-augsburg.de/de/impressum/datenschutz/" target="_blank">{{'IMPRESSUM_4' | translate}}</a>
+    </div>
+    <div class="col">
+      <a href="https://www.uni-augsburg.de/de/impressum/" target="_blank">{{'IMPRESSUM_5' | translate}}</a>
+    </div>
   </div>
-  <div class="col">
-    <a href="https://www.sys-med.de/en/junior-research-groups/multipath/" target="_blank">{{'IMPRESSUM_2' | translate}}</a>
-  </div>
-  <div class="col">
-    <a href="https://www.uni-augsburg.de/en/kontakt/" target="_blank">{{'IMPRESSUM_3' | translate}}</a>
-  </div>
-  <div class="col">
-    <a href="https://www.uni-augsburg.de/de/impressum/datenschutz/" target="_blank">{{'IMPRESSUM_4' | translate}}</a>
-  </div>
-  <div class="col">
-    <a href="https://www.uni-augsburg.de/de/impressum/" target="_blank">{{'IMPRESSUM_5' | translate}}</a>
-  </div>
+
 </div>
-
-
 

@@ -1,4 +1,4 @@
-<div class="p-2">
+<div class="p-3">
 
   <h5 class="mt-1">
     {{'SIDEBAR_MANAGE_TITLE' | translate}}
@@ -7,22 +7,26 @@
 
   <table class="mb-3 table table-borderless">
     <tr *ngFor="let network of dataService.networksParsed" class="border-bottom">
-      <td class="text-left">{{network.networkInformation.name}}</td>
+      <td class="text-left">{{network.networkInformation.name}}<br/>
+        <small><b>{{network.networkInformation.uuid}}</b></small>
+      </td>
       <td class="text-nowrap text-right">
-        <a [routerLink]="['', { outlets: {primary: ['graph', network.id], sidebar: ['edit', network.id]} }]"
-           class="btn btn-sm btn-success"
-           container="body"
-           data-toggle="tooltip"
-           ngbTooltip="{{'SIDEBAR_MANAGE_TT_EDIT'|translate}}"
-           openDelay="1000"
-           placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-           role="button">
+        <a
+          [routerLink]="['', { outlets: {primary: ['graph', network.id], sidebar: ['edit', network.id]} }]"
+          class="btn btn-sm btn-success"
+          container="body"
+          data-toggle="tooltip"
+          ngbTooltip="{{'SIDEBAR_MANAGE_TT_EDIT'|translate}}"
+          openDelay="1000"
+          placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+          role="button">
           <fa-icon [icon]="faPaintBrush"></fa-icon>
         </a>
       </td>
     </tr>
   </table>
 
+  <!-- ALERTS -->
   <div *ngIf="showFileSizeTooLargeAlert" class="alert alert-warning alert-dismissible" role="alert">
     <h5>{{'SIDEBAR_MANAGE_FILE_SIZE_TOO_LARGE' | translate}}</h5>
     <p><b>{{'SIDEBAR_MANAGE_FILE_SIZE_LABEL_CURRENT' | translate}}</b>: ~ {{currentFileSize}} MB</p>
@@ -52,7 +56,8 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div *ngIf="showFileElementCountTooBig" class="alert alert-warning alert-dismissible" role="alert">
+  <div *ngIf="showFileElementCountTooBig" class="alert alert-warning alert-dismissible"
+       role="alert">
     <h5>{{'SIDEBAR_MANAGE_FILE_ELEMENT_COUNT' | translate}}</h5>
     <p>{{'SIDEBAR_MANAGE_FILE_ELEMENT_COUNT_LABEL_NODES' | translate}}: <b
       [ngStyle]="{color: nodeCount > elementLimit ? '#ff9900' : '#856404'}">{{nodeCount}}</b></p>
@@ -62,59 +67,318 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
+  <div *ngIf="showEmptySearchTerm" class="alert alert-danger alert-dismissible" role="alert">
+    <h5>{{'SIDEBAR_MANAGE_FILE_EMPTY_SEARCH_ERROR' | translate}}</h5>
+    <p>{{'SIDEBAR_MANAGE_FILE_EMPTY_SEARCH_LABEL' | translate}}</p>
+    <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div *ngIf="showEmptyBrowseResult" class="alert alert-danger alert-dismissible" role="alert">
+    <h5>{{'SIDEBAR_MANAGE_FILE_EMPTY_RESULT_ERROR' | translate}}</h5>
+    <p>{{'SIDEBAR_MANAGE_FILE_EMPTY_RESULT_LABEL' | translate}}</p>
+    <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
 
-  <h5>
-    {{'SIDEBAR_MANAGE_REMOTE_FILE_LABEL'|translate}}
-    <div *ngIf="loadingHttp" class="spinner-border spinner-border-sm mr-2 align-middle" role="status">
+
+  <h5 class="mt-5 mb-3">
+    {{'SIDEBAR_MANAGE_GET_TITLE'|translate}}
+    <div *ngIf="loadingFetch" class="spinner-border spinner-border-sm mr-2 align-middle"
+         role="status">
       <span class="sr-only">Loading...</span>
     </div>
   </h5>
 
-  <div class="row mb-3">
-    <div class="col-9 form-group mb-2">
-      <input [(ngModel)]="ndexLinkToUpload" aria-describedby="remoteNetworkHelp" class="form-control"
-             id="remoteNetworkFile"
-             placeholder="{{'SIDEBAR_MANAGE_REMOTE_FILE_EXAMPLE'|translate}}"
-             type="text">
-      <small class="form-text text-muted" id="remoteNetworkHelp">{{'SIDEBAR_MANAGE_REMOTE_FILE_TIP'|translate}}</small>
-    </div>
-    <div class="col-3">
-      <button (click)="importFromNdex()" [disabled]="loadingHttp" class="btn btn-block btn-outline-success"
-              container="body"
-              data-toggle="tooltip"
-              ngbTooltip="{{'SIDEBAR_MANAGE_TT_REMOTE_FILES' | translate}}"
-              openDelay="1000"
-              placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-              type="button">
 
-        <fa-icon [icon]="faCloudDownloadAlt"></fa-icon>
-      </button>
+
+  <ul aria-orientation="horizontal" class="nav nav-tabs" id="importNav" role="tablist">
+
+    <!-- SPACER -->
+    <li class="nav-item mr-3">&nbsp;</li>
+
+    <!-- import: UUID -->
+    <li class="nav-item">
+      <a id="importUuid"
+         aria-controls="importUuid"
+         aria-selected="false"
+         class="nav-link active text-center"
+         container="body"
+         data-toggle="pill"
+         href="#importUuidContent"
+         ngbTooltip="{{'SIDEBAR_MANAGE_TT_IMPORT_UUID' | translate}}"
+         openDelay="1000"
+         placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+         role="tab">
+        <fa-icon [icon]="faPaste"></fa-icon>&nbsp;{{'SIDEBAR_MANAGE_IMPORT_UUID' | translate}}
+        <br>
+      </a>
+    </li>
+
+    <!-- import: BROWSE -->
+    <li class="nav-item">
+      <a id="importBrowse"
+         aria-controls="importBrowse"
+         aria-selected="false"
+         class="nav-link text-center"
+         container="body"
+         data-toggle="pill"
+         href="#importBrowseContent"
+         ngbTooltip="{{'SIDEBAR_MANAGE_TT_IMPORT_BROWSE' | translate}}"
+         openDelay="1000"
+         placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+         role="tab">
+        <fa-icon [icon]="faSearch"></fa-icon>&nbsp;{{'SIDEBAR_MANAGE_IMPORT_BROWSE' | translate}}
+        <br>
+      </a>
+    </li>
+
+    <!-- import: LOCAL -->
+    <li class="nav-item">
+      <a id="importLocal"
+         aria-controls="importLocal"
+         aria-selected="false"
+         class="nav-link text-center"
+         container="body"
+         data-toggle="pill"
+         href="#importLocalContent"
+         ngbTooltip="{{'SIDEBAR_MANAGE_TT_IMPORT_LOCAL' | translate}}"
+         openDelay="1000"
+         placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+         role="tab">
+        <fa-icon [icon]="faFileUpload"></fa-icon>&nbsp;{{'SIDEBAR_MANAGE_IMPORT_LOCAL' | translate}}
+        <br>
+      </a>
+    </li>
+  </ul>
+
+
+  <div class="tab-content mt-3 mb-5 p-1" id="importNavContent">
+    <!-- UUID paste -->
+    <div aria-labelledby="importUuid" class="tab-pane fade show active" id="importUuidContent"
+         role="tabpanel">
+
+      <h6>
+        {{'SIDEBAR_MANAGE_REMOTE_FILE_LABEL'|translate}}
+        <div *ngIf="loadingFetch" class="spinner-border spinner-border-sm mr-2 align-middle"
+             role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </h6>
+      <div class="row mb-3">
+        <div class="col-9 form-group mb-2">
+          <input [(ngModel)]="ndexLinkToUpload" aria-describedby="remoteNetworkHelp"
+                 class="form-control"
+                 id="remoteNetworkFile"
+                 placeholder="{{'SIDEBAR_MANAGE_REMOTE_FILE_EXAMPLE'|translate}}"
+                 type="text">
+          <small class="form-text text-muted"
+                 id="remoteNetworkHelp">{{'SIDEBAR_MANAGE_REMOTE_FILE_TIP'|translate}}</small>
+        </div>
+        <div class="col-3">
+          <button (click)="importWithUuidSanitation()" [disabled]="loadingFetch"
+                  class="btn btn-block btn-outline-success"
+                  container="body"
+                  data-toggle="tooltip"
+                  ngbTooltip="{{'SIDEBAR_MANAGE_TT_REMOTE_FILES' | translate}}"
+                  openDelay="1000"
+                  placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                  type="button">
+
+            <fa-icon [icon]="faCloudDownloadAlt"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BROWSE -->
+    <div aria-labelledby="importBrowse" class="tab-pane fade" id="importBrowseContent"
+         role="tabpanel">
+      <h6>
+        {{'SIDEBAR_MANAGE_BROWSE_FILE_LABEL'|translate}}
+        <div *ngIf="loadingSearch" class="spinner-border spinner-border-sm mr-2 align-middle"
+             role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </h6>
+      <p>{{'SIDEBAR_MANAGE_BROWSE_HINT' | translate}}</p>
+
+      <div class="mb-3 row">
+
+        <!-- VISIBILITY -->
+        <div class="col-auto" *ngIf="authService.isOnline">
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-outline-primary"
+                   [ngClass]="searchVisibility === utilityService.visibility.private ? 'active' : ''"
+                   container="body"
+                   data-toggle="tooltip"
+                   ngbTooltip="{{('SIDEBAR_MANAGE_VISIBILITY_PRIVATE' + (authService.isOnline ? '' : '_OFFLINE')) | translate}}"
+                   openDelay="1000"
+                   placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+              <input type="radio" name="options" id="private"
+                     (click)="setSearchVisibility(utilityService.visibility.private)"
+                     [disabled]="!authService.isOnline"
+                     [checked]="searchVisibility === utilityService.visibility.private">
+              <fa-icon [icon]="faUser"></fa-icon>
+            </label>
+            <label class="btn btn-outline-primary"
+                   [ngClass]="searchVisibility === utilityService.visibility.public ? 'active' : ''"
+                   container="body"
+                   data-toggle="tooltip"
+                   ngbTooltip="{{'SIDEBAR_MANAGE_VISIBILITY_PUBLIC' | translate}}"
+                   openDelay="1000"
+                   placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+              <input type="radio" name="options" id="public"
+                     (click)="setSearchVisibility(utilityService.visibility.public)"
+                     [checked]="searchVisibility === utilityService.visibility.public">
+              <fa-icon [icon]="faUsers"></fa-icon>
+            </label>
+          </div>
+        </div>
+
+        <!-- SEARCH -->
+        <div class="col input-group">
+
+          <input [(ngModel)]="searchTerm" type="text" class="form-control"
+                 placeholder="{{'SIDEBAR_MANAGE_BROWSE_PLACEHOLDER' | translate}}"
+                 aria-describedby="httpSearch"
+                 (keyup.enter)="searchNdex()">
+          <div class="input-group-append">
+            <button class="btn btn-outline-primary"
+                    type="button" id="httpSearchPrivate"
+                    container="body"
+                    data-toggle="tooltip"
+                    ngbTooltip="{{'SIDEBAR_MANAGE_BROWSE_BTN_TT' | translate}}"
+                    openDelay="1000"
+                    placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                    [disabled]="searchVisibility === utilityService.visibility.private && !authService.isOnline"
+                    (click)="searchNdex()">
+              {{'SIDEBAR_MANAGE_BROWSE_BTN_LABEL' | translate}}
+            </button>
+          </div>
+
+        </div>
+
+        <!-- BROWSE -->
+        <div class="col-2"
+             *ngIf="searchVisibility === utilityService.visibility.private && authService.isOnline">
+          <button class="btn btn-block btn-outline-primary"
+                  (click)="browseNdex()"
+                  container="body"
+                  data-toggle="tooltip"
+                  ngbTooltip="{{'SIDEBAR_MANAGE_BROWSE_ALL_TT' | translate}}"
+                  openDelay="1000"
+                  placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+            {{'SIDEBAR_MANAGE_BROWSE_ALL_BTN_LABEL' | translate}}
+          </button>
+        </div>
+      </div>
+
+      <!-- browse result-->
+      <div class="table-responsive">
+        <table class="table" *ngIf="dataService.ndexPrivateNetworks?.length > 0 || dataService.ndexPublicNetworks?.length > 0">
+          <!-- HEAD -->
+          <thead>
+          <tr>
+            <th>{{'SIDEBAR_MANAGE_BROWSE_TABLE_NAME' | translate}}</th>
+            <th>{{'SIDEBAR_MANAGE_BROWSE_TABLE_OWNER' | translate}}</th>
+            <th>{{'SIDEBAR_MANAGE_BROWSE_TABLE_COUNT_NODES' | translate}}</th>
+            <th>{{'SIDEBAR_MANAGE_BROWSE_TABLE_COUNT_EDGES' | translate}}</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+          </tr>
+          </thead>
+
+          <!-- BODY -->
+          <tbody>
+          <ng-container *ngFor="let network of (searchVisibility === utilityService.visibility.private ? dataService.ndexPrivateNetworks : dataService.ndexPublicNetworks); let index = index">
+
+            <tr [ngClass]="index === displaySearchNetworkPreview ? 'table-active' : ''">
+              <td>{{network.name}}</td>
+              <td>{{network.owner}}</td>
+              <td
+                [ngClass]="network.nodeCount > elementLimit ? 'text-danger' : ''">{{network.nodeCount}}</td>
+              <td
+                [ngClass]="network.edgeCount > elementLimit ? 'text-danger' : ''">{{network.edgeCount}}</td>
+
+              <td>
+                <button class="btn btn-outline-secondary btn-block"
+                        container="body"
+                        data-toggle="tooltip"
+                        ngbTooltip="{{'SIDEBAR_MANAGE_TT_PREVIEW' | translate}}"
+                        openDelay="1000"
+                        placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                        (click)="index === displaySearchNetworkPreview ? displaySearchNetworkPreview = -1 : displaySearchNetworkPreview = index">
+                  <fa-icon [icon]="faInfo"></fa-icon>
+                </button>
+              </td>
+              <td
+                container="body"
+                data-toggle="tooltip"
+                ngbTooltip="{{('SIDEBAR_MANAGE_TT_DOWNLOAD_' + (network.downloadable ? 'POSSIBLE' : 'IMPOSSIBLE')) | translate}}"
+                openDelay="1000"
+                placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+                <button class="btn btn-outline-success btn-block"
+                        *ngIf="downloadByBrowseResultId !== index"
+                        [disabled]="!network.downloadable || downloadByBrowseResultId !== -1"
+                        (click)="import(network.externalId, index)">
+                  <fa-icon [icon]="faCloudDownloadAlt"></fa-icon>
+                </button>
+                <div class="spinner-border" role="status"
+                     *ngIf="downloadByBrowseResultId === index">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="index === displaySearchNetworkPreview">
+              <td [colSpan]="6">
+                <p [innerHTML]="network.description"></p>
+              </td>
+            </tr>
+
+          </ng-container>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- LOCAL file -->
+    <div aria-labelledby="importLocal" class="tab-pane fade" id="importLocalContent"
+         role="tabpanel">
+
+      <h6>
+        {{'SIDEBAR_MANAGE_LOCAL_FILE_LABEL'|translate}}
+        <div *ngIf="loadingFile" class="spinner-border spinner-border-sm mr-2 align-middle"
+             role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </h6>
+      <div class="input-group mb-3">
+        <div class="custom-file">
+          <input (change)="setAndValidateFile($event)" class="custom-file-input"
+                 id="localNetworkFile"
+                 type="file">
+          <label class="custom-file-label"
+                 for="localNetworkFile" *ngIf="!fileToUpload">{{'SIDEBAR_MANAGE_LOCAL_FILE_LABEL'|translate}}</label>
+          <label class="custom-file-label"
+                 for="localNetworkFile" *ngIf="fileToUpload">{{fileToUpload.name}}</label>
+        </div>
+        <div class="input-group-append">
+          <button (click)="importLocalFile()" [disabled]="loadingFile"
+                  class="btn btn-outline-secondary"
+                  container="body"
+                  data-toggle="tooltip"
+                  ngbTooltip="{{'SIDEBAR_MANAGE_TT_LOCAL_FILE' | translate}}"
+                  openDelay="1000"
+                  placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                  type="button">
+            {{'SIDEBAR_MANAGE_LOCAL_FILE_BTN'|translate}}
+          </button>
+        </div>
+      </div>
+
     </div>
   </div>
-
-  <h5>
-    {{'SIDEBAR_MANAGE_LOCAL_FILE_LABEL'|translate}}
-    <div *ngIf="loadingFile" class="spinner-border spinner-border-sm mr-2 align-middle" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
-  </h5>
-
-  <div class="input-group mb-3">
-    <div class="custom-file">
-      <input (change)="setAndValidateFile($event)" class="custom-file-input" id="localNetworkFile" type="file">
-      <label class="custom-file-label" for="localNetworkFile">{{'SIDEBAR_MANAGE_LOCAL_FILE_LABEL'|translate}}</label>
-    </div>
-    <div class="input-group-append">
-      <button (click)="importLocalFile()" [disabled]="loadingFile" class="btn btn-outline-secondary"
-              container="body"
-              data-toggle="tooltip"
-              ngbTooltip="{{'SIDEBAR_MANAGE_TT_LOCAL_FILE' | translate}}"
-              openDelay="1000"
-              placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-              type="button">
-        {{'SIDEBAR_MANAGE_LOCAL_FILE_BTN'|translate}}
-      </button>
-    </div>
-  </div>
-
 </div>

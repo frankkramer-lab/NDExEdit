@@ -202,12 +202,11 @@ export class SidebarEditMappingComponent implements OnInit {
    * @param mappingType Type of mapping in flash or edit mode or exiting flash or edit mode
    */
   handleChildFlashOrEditMode(inFlashOrEditMode: boolean, elementType: ElementType, mappingType: MappingType): void {
-    this.dataService.objInEditing = {
-      elementType: inFlashOrEditMode ? elementType : null,
-      mappingType: inFlashOrEditMode ? mappingType : null,
-      nwInfo: false,
-      nwVisuals: false
-    };
+    if (!inFlashOrEditMode) {
+      this.dataService.resetObjectInEditing();
+    } else {
+      this.dataService.setMappingObjectInEditing(elementType, mappingType);
+    }
     this.dataService.lockRouting = inFlashOrEditMode;
     this.fetchMappings();
   }

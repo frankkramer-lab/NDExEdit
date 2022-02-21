@@ -20,7 +20,8 @@ import {
   faPlus,
   faRedo,
   faTimes,
-  faTrash
+  faTrash,
+  faEdit
 } from '@fortawesome/free-solid-svg-icons';
 import {UtilityService} from '../../services/utility.service';
 import {LayoutService} from '../../services/layout.service';
@@ -41,6 +42,11 @@ export class SidebarEditComponent implements OnInit, OnDestroy {
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
    */
   faHome = faHome;
+  /**
+   * Icon: faEdit
+   * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
+   */
+  faEdit = faEdit;
   /**
    * Icon: faChevronRight
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos

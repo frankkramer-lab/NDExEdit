@@ -3,29 +3,35 @@
   <div class="row">
 
     <!-- Main outlet -->
-    <div [ngClass]="layoutService.layout.main.position === 'left' ? 'order-1' : 'order-2'" class="col-{{widthMain}}">
+    <div [ngClass]="layoutService.layout.main.position === 'left' ? 'order-1' : 'order-2'"
+         class="col-{{widthMain}}"
+         >
 
-      <div class="row">
+      <div class="row" >
 
-        <div class="scroll col">
+        <div class="scroll col px-0"
+             [ngClass]="layoutService.layout.sidebar.position === 'right' ? 'left-scroll-bar' : ''">
           <router-outlet></router-outlet>
         </div>
 
-        <div *ngIf="layoutService.layout.main.position === 'left'" class="col-auto">
-          <app-dragbar (languageEmitter)="setLanguage($event)"></app-dragbar>
+        <div *ngIf="layoutService.layout.main.position === 'left'" class="col-auto px-0">
+          <app-dragbar></app-dragbar>
         </div>
       </div>
     </div>
 
     <!-- Sidebar outlet -->
-    <div [ngClass]="layoutService.layout.main.position === 'left' ? 'order-2' : 'order-1'" class="col-{{widthSidebar}}">
+    <div [ngClass]="layoutService.layout.main.position === 'left' ? 'order-2' : 'order-1'"
+         class="col-{{widthSidebar}}">
 
-      <div class="row">
-        <div class="scroll col">
+      <div class="row" >
+        <div class="scroll col px-0"
+             [ngClass]="layoutService.layout.main.position === 'right' ? 'left-scroll-bar' : ''">
+          <app-sidebar-navbar (languageEmitter)="setLanguage($event)"></app-sidebar-navbar>
           <router-outlet name="sidebar"></router-outlet>
         </div>
-        <div *ngIf="layoutService.layout.sidebar.position === 'left'" class="col-auto">
-          <app-dragbar (languageEmitter)="setLanguage($event)"></app-dragbar>
+        <div *ngIf="layoutService.layout.sidebar.position === 'left'" class="col-auto px-0">
+          <app-dragbar></app-dragbar>
         </div>
       </div>
 
