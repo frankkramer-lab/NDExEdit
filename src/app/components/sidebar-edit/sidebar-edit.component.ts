@@ -1,7 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {DataService} from '../../services/data.service';
 import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {GraphService} from '../../services/graph.service';
 import {
   faArrowLeft,
@@ -10,6 +10,7 @@ import {
   faCloudDownloadAlt,
   faCogs,
   faCopy,
+  faEdit,
   faExclamationTriangle,
   faHome,
   faInfoCircle,
@@ -20,12 +21,13 @@ import {
   faPlus,
   faRedo,
   faTimes,
-  faTrash,
-  faEdit
+  faTrash
 } from '@fortawesome/free-solid-svg-icons';
 import {UtilityService} from '../../services/utility.service';
 import {LayoutService} from '../../services/layout.service';
 import {FormArray, FormGroup} from '@angular/forms';
+import {IDeactivateComponent} from '../../guards/exit-editing.guard';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-sidebar-edit',
@@ -36,7 +38,7 @@ import {FormArray, FormGroup} from '@angular/forms';
 /**
  * Component responsible for graph editing functionality
  */
-export class SidebarEditComponent implements OnInit, OnDestroy {
+export class SidebarEditComponent implements OnInit, OnDestroy, IDeactivateComponent {
   /**
    * Icon: faHome
    * See {@link https://fontawesome.com/icons?d=gallery|Fontawesome} for further infos
@@ -165,6 +167,10 @@ export class SidebarEditComponent implements OnInit, OnDestroy {
    * Collection of input fields for a network's attributes
    */
   descriptionForm: FormGroup;
+  /**
+   * Modal to make the user confirm his choice to discard the changes by using browser back
+   */
+  @ViewChild('modalBrowserBack') modalBrowserBack: ElementRef;
 
   /**
    * Ensures that only a graph is rendered if the id is specified within the URL
@@ -180,13 +186,15 @@ export class SidebarEditComponent implements OnInit, OnDestroy {
    * @param graphService Service for graph manipulations
    * @param utilityService Service responsible for shared code
    * @param layoutService Service responsible for tooltip directions
+   * @param modalService Service responsible for modal dialog management
    */
   constructor(
     public dataService: DataService,
     private route: ActivatedRoute,
     public graphService: GraphService,
     public utilityService: UtilityService,
-    public layoutService: LayoutService
+    public layoutService: LayoutService,
+    private modalService: NgbModal
   ) {
 
     this.routerSubscription = this.route.paramMap.subscribe(params => {
@@ -206,6 +214,7 @@ export class SidebarEditComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
   }
+
 
   /**
    * Unsets initialized status and restores default values
@@ -238,7 +247,40 @@ export class SidebarEditComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Returns an observable with a truthy value, that indicates, if the user decides to leave
+   * the component and thus discards his changes.
+   */
+  canExit(): Observable<boolean> {
+    return new Observable<boolean>(o => {
 
+      // if there are modals open: deny routing
+      if (this.modalService.hasOpenModals()) {
+        o.next(false);
+      } else {
+
+        // if we have unsaved changes: show modal
+        if (this.dataService.lockRouting) {
+          this.modalService.open(this.modalBrowserBack, {size: 'xl'})
+            .result
+            .then(
+              (resolve) => {
+                this.dataService.overrideCx();
+                o.next(true);
+              },
+              (reject) => {
+                o.next(false);
+              })
+            .catch((e) => {
+              console.error(e);
+              o.next(false);
+            });
+        } else {
+          o.next(true);
+        }
+      }
+    });
+  }
 }
 
 

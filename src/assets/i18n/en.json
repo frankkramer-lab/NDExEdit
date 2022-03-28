@@ -410,5 +410,172 @@
   "IMPRESSUM_2": "Project",
   "IMPRESSUM_3": "Contact",
   "IMPRESSUM_4": "Privacy",
-  "IMPRESSUM_5": "Legal notice / disclosure"
+  "IMPRESSUM_5": "Legal notice / disclosure",
+  "MAIN_INFO": {
+    "BASICS": {
+      "HEADLINE": "What's going on here?",
+      "NETWORKS": "Relations in biological research are often visualized as networks. For instance, if two proteins interact with each other during a certain process, the corresponding network would show two nodes connected by one edge.",
+      "CYTOSCAPE": "But the fact that the interaction between the two exists, may not be enough. With established software solutions like <a href='https://cytoscape.org/' target='_blank'>Cytoscape</a> we can add all the information we have about our nodes and their interaction to our data foundation.",
+      "VISUALIZATION": "Furthermore, we can change the visual appearance of our nodes and their interaction based on this information."
+    },
+    "CAROUSEL": {
+      "0": {
+        "HEADLINE": "Unformatted network",
+        "TEXT": "Without any visual markup the displayed nodes and their inter-relations all look the same"
+      },
+      "1": {
+        "HEADLINE": "Nodes formatted",
+        "TEXT": "Types of nodes being displayed differently can help identify relevant aspects within a network"
+      },
+      "2": {
+        "HEADLINE": "Edges formatted",
+        "TEXT": "Distinguishing relations based on their type improves the visualization significantly"
+      },
+      "3": {
+        "HEADLINE": "Both formatted",
+        "TEXT": "When both come together they form a rich visualization"
+      }
+    },
+    "APP": {
+      "HEADLINE": "What does this app do?",
+      "GENERAL": "NDExEdit allows you to modify a biological network visually in your browser. You don't need to create an account or install further software. All you need is a browser and a network, that conforms to the <a href='https://home.ndexbio.org/data-model/' target='_blank'>CX data model</a>.",
+      "NDEX": "NDExEdit is tightly connected to <a href='https://home.ndexbio.org/index/' target='_blank'>NDEx</a>, a distribution platform specifically designed for biological networks.",
+      "MAPPINGS": "One of the most powerful visualization tools in our toolbox are so-called <b>mappings</b>. They were introduced by <a href='https://cytoscape.org/' target='_blank'>Cytoscape</a> as a manner of applying a network's properties onto its visualization."
+    },
+    "NDEX": {
+      "HEADLINE": "What is NDEx?",
+      "INTRO": "The <b>N</b>etwork <b>D</b>ata <b>Ex</b>change is an online platform specifically designed for the distribution of biological network data among scientists. Users can upload, share and distribute networks in diverse formats and sizes. For further information, please read their publication <a href='https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4649937/' target='_blank'>NDEx, the Network Data Exchange</a> or visit the <a href='https://www.ndexbio.org/' target='_blank'>website</a>.",
+      "API": "To make NDExEdit as simple to use as possible, we use NDEx' API. This way, we can load networks into our application without tedious file management.",
+      "ACCOUNT": "We provide the option, to login in to NDEx through NDExEdit. That allows users to browse their own private networks and even save an edited network back to their account."
+    },
+    "START": {
+      "HEADLINE": "How do I start?",
+      "TEXT": "A simple workflow with NDExEdit consists of <b>importing</b> your network file, <b>inspect</b> the data foundation and existing visualization, <b>modifying</b> some visual properties and <b>export</b> the network. Each of these steps is described in detail below."
+    },
+    "IMPORT": {
+      "HEADLINE": "Loading a network",
+      "INTRO": "To load a network into NDExEdit you have three options, that are described below.",
+      "HINT": "Please note: A network can only be imported, if it conforms to the <a href='https://home.ndexbio.org/data-model/' target='_blank'>CX data model</a> and if its size is acceptable.",
+      "UUID": "<b>UUID</b>: NDEx assigns unique IDs to all of its networks. If you know that, you can just paste it into the import field and get started.",
+      "BROWSE": "<b>Browse NDEx</b>: The built-in browser allows you to look for a network on NDEx from within NDExEdit. To browse your account specific networks, you need to login.",
+      "LOCAL": "<b>Local file</b>: If the network you wish to edit is not yet on NDEx, you can upload a local .cx file to work with."
+    },
+    "INSPECT": {
+      "HEADLINE": "Getting to know your network",
+      "INTRO": "If you are unfamiliar with the network you want to modify visually, you might want to inspect your network at first. For that purpose NDExEdit provides some useful features.",
+      "CHARTS": "In the network information section, you can find the lists for node and edge properties. By selecting one of these properties you'll see a chart that outlines this property's distribution within the network.",
+      "SELECT": "To inspect your network more interactively, try selecting one or more (by holding <code>shift</code>) elements in the network. You will see, that a table in the sidebar displays information about your selected elements.",
+      "WIZARD": "A more technical approach to inspect the network is the 'inspection wizard'. With that you can define a set of rules and <b>temporarily</b> mark elements that match a specific rule in your network. You can customize the color and duration of highlighting in the settings tab."
+    },
+    "EDIT": {
+      "HEADLINE": "Make it pretty",
+      "INTRO": "In the edit tab you can make some visual changes to your network. At first, it can be useful to take your time and check out the visualization that has already been applied. You can reset your node or edge styles back to the default. That will remove all mappings, <b>except the node label mapping</b>, if it exists.",
+      "PROPERTY": "Under <b>property</b> you will find visual properties that are applied to all elements. Mappings will override these visualization rules.",
+      "MAPPINGS": "Mappings are a tool to visualize attributes of network data. There are three types of mappings.",
+      "MAPPING_PASSTHROUGH": {
+        "HEADLINE": "Passthrough mappings",
+        "INTRO": "The most basic mapping is the <b>passthrough</b> mapping. It simply applies a node's or edge's value unchanged onto a visual property.",
+        "BASICS": "Most networks contain at least one passthrough mapping for nodes: The node label mapping. We highly recommend keeping this mapping, because it's responsible for labelling the nodes.",
+        "EDIT": "To define a new passthrough mapping, you merely need an element's property and a visual property that match. Keep in mind: If your element's property is numeric, you need to choose a visual property, that can handle numeric values, for instance width of edges. When creating a new passthrough mapping, we don't provide the above-mentioned flash mode, because it's a rather simple construct."
+      },
+      "MAPPING_DISCRETE": {
+        "HEADLINE": "Discrete mappings",
+        "INTRO": "The second type of mapping is the <b>discrete</b> mapping. It allows you to assign visualization values based on your element's classes.",
+        "BASICS": "We group discrete mappings in collections based on the same element's property. For example, if you have two visual properties that are both dependent on node property_a, the table will contain the range of values for property_a in rows and two columns - one for each visual property.",
+        "EDIT": "By clicking the <b>edit</b> button, you can make changes within this mapping's table. When creating a new discrete mapping, you'll start off by defining visual property and element's property. You'll see a simple, empty table you can further adjust, by adding more visual properties or by setting values."
+      },
+      "MAPPING_CONTINUOUS": {
+        "HEADLINE": "Continuous mappings",
+        "INTRO": "The most sophisticated type of mapping is the <b>continuous</b> mapping. Based on numeric property values in your elements, you can define thresholds for visual properties like edge widths or node colors, that will be interpolated based on each element's property value.",
+        "BASICS": "Continuous mappings cannot be grouped like discrete mappings, due to their potentially varying thresholds. Instead we show you a list of visual properties that are mapped by an element's property. By selecting an item in that list, you'll see the plot for the mapping or a color gradient illustrating the transitions based on the defined thresholds.",
+        "EDIT": "Crucial to a valid continuous mapping is the concept of thresholds. For that you'll have to know the range of you property's values and its distribution. We provide a histogram for your property to make that easier."
+      },
+      "MAPPINGS_DEEP": {
+        "HEADLINE": "Creating and editing mappings",
+        "BASICS": "Before getting started with mappings there's a few things you should know:",
+        "BASICS_1": "A <b>visual property</b> can only be part of <b>one</b> mapping. For example, if you have a mapping that modifies a node's size based on a property, you can not map a node's size by another property.",
+        "BASICS_2": "An <b>element's property</b> can be used more than once for a mapping. For example, if you modify the node's size based on the node property_a, you can also modify the node's color based on the node property_a.",
+        "BASICS_3": "You can <b>delete</b> or <b>modify</b> existing mappings or <b>create</b> new mappings.",
+        "BASICS_4": "Since you might not be familiar with all the visual and element's properties that are available for mappings, we provide suggestions. To see them, just enter <code>*</code> into the respective field during mapping definition.",
+        "BASICS_5": "You might be confused, that you don't see all visual or element's properties in these suggestions. That may be, because the visual property might already be used in another mapping or because a property cannot be used for the type of mapping you are currently defining.",
+        "BASICS_6": "When defining a new or editing an existing mapping, you might want to check out the changes, before actually applying them. To do that, we introduced the <b>flash mode</b>. Click the wand below the mapping form to see your modified network. Click it again, to return to editing your network. <b>Please note</b>: We disable links and changes to the network while you're in flash mode, to avoid corrupting the network."
+      },
+      "LAYOUT": {
+        "HEADLINE": "Layout",
+        "TEXT": "An important aspect in network visualization is a node's relative position within the network. To adjust that you can choose from a set of predefined layout options in the dropdown above the rendered network. The figure illustrates how each option will be applied to your network. Keep in mind that these options might take some time to apply to your network."
+      }
+    },
+    "EXPORT": {
+      "HEADLINE": "Saving a network",
+      "IMG": "You can save your network as images. We currently support <b>PNG</b> and <b>JPEG</b>.",
+      "CX": "As a text-based format we support exporting your network as a <b>CX</b> file.",
+      "NDEX": "You can also upload your edited network to NDEx. To do so, you will have to <b>login to NDEx</b> through NDExEdit."
+    },
+    "ICONS": {
+      "HEADLINE": "What is which icon?",
+      "TH_ICON": "Icon",
+      "TH_DESCRIPTION": "Description",
+      "SIDEBAR": {
+        "HEADLINE": "Always visible icons",
+        "HOME": "Return to the home screen (disabled during editing or flashing visual changes)",
+        "LANG": "Select a language in the dropdown",
+        "NDEX_USER": "Show the dialog to login to NDEx - <b>red</b> point indicates, that you are <b>not connected</b>, <b>green</b> point indicates that you are <b>connected</b>"
+      },
+      "LAYOUT": {
+        "HEADLINE": "Icons in vertical bar",
+        "RESET": "Reset the layout proportion back to 50:50",
+        "LEFT": "Increase the right panel's width maximally",
+        "LEFT_STEP": "Increase the right panel's width gradually",
+        "RIGHT": "Increase the left panel's width maximally",
+        "RIGHT_STEP": "Increase the left panel's width gradually",
+        "FLIP": "Flip left and right side, does not change widths"
+      },
+      "EDITING": {
+        "HEADLINE": "Icons during editing",
+        "EDIT": "You are currently in <b>edit mode</b> with a mapping or collection of properties. The yellow triangle icon indicates, where you can find the item in editing. During editing, <b>leaving</b> the page is disabled!",
+        "FLASH": "You are currently in <b>flash mode</b> with a mapping. The yellow triangle icon indicates, where you can find the item being flashed. During flashing, <b>leaving</b> the page is disabled!",
+        "TRIANGLE": "Helps you locate the item that is currently being edited or flashed."
+      }
+    },
+    "CONTACT": {
+      "HEADLINE": "About NDExEdit",
+      "SIMONE_MAYER": "NDExEdit was developed as part of her bachelor thesis by <a href='mailto:simone1.mayer@student.uni-augsburg.de'><b>Simone Mayer</b></a> at the University of Augsburg",
+      "FLORIAN_AUER": "Please contact <a href='mailto:florian.auer@informatik.uni-augsburg.de'><b>Florian Auer</b></a> for feature requests and inquiries"
+    },
+    "FAQ": {
+      "HEADLINE": "FAQ",
+      "0": {
+        "Q": "Can I edit a network that was shared with me via NDEx?",
+        "A": "Yes, editing a network is always possible. But updating it on NDEx depends on your granted permissions - overriding it might not be possible for you."
+      },
+      "1": {
+        "Q": "I cannot find a private network from NDEx account. Why is that?",
+        "A": "Make sure the file you're looking for, is <b>searchable</b>. You can edit your network's settings directly in NDEx."
+      },
+      "2": {
+        "Q": "I want to replace a network on NDEx with the network I edited, but it fails. Why?",
+        "A": "The network you worked with is probably <b>readonly</b>. Check the network's settings on NDEx. If that is the case, you will have to create a new network in your account."
+      },
+      "3": {
+        "Q": "I think I broke the app. What should I do?",
+        "A": "If the website is unresponsive, you might have to reload the website within the browser and restart your work. If this happens more than once, please let us know by opening an <a href='https://github.com/frankkramer-lab/NDExEdit/issues' target='_blank'>issue on GitHub</a>."
+      },
+      "4": {
+        "Q": "My institute has an own NDEx instance. Can I load a network from there?",
+        "A": "We currently don't support accessing networks from private NDEx instances, but plan to do so in the future."
+      },
+      "5": {
+        "Q": "Can I make changes to my network's data?",
+        "A": "As of right now manipulating data or creating entirely new networks in NDExEdit is not possible."
+      }
+    }
+  },
+  "SIDEBAR_EDIT": {
+    "BROWSER_BACK": {
+      "HEADLINE": "You're about to leave!",
+      "TEXT": "If you leave now, your unsubmitted changes will be lost. Are you sure you want to continue?",
+      "BTN_STAY": "I'll stay",
+      "BTN_LEAVE": "Yes, discard my changes"
+    }
+  }
 }

@@ -368,7 +368,6 @@ export class SidebarManageComponent implements OnInit {
     this.http.get(url, options)
       .toPromise()
       .then((data: NeSearchResultItem[]) => {
-        console.log(data);
         const valid = this.dataService.handleBrowseData(data, this.elementLimit);
         if (!valid) {
           this.handleEmptyResult();
@@ -377,34 +376,6 @@ export class SidebarManageComponent implements OnInit {
       .catch((error) => console.log(error))
       .finally(() => this.loadingSearch = false);
   }
-
-  // /**
-  //  * Handles the data received as a result from search or browse requests
-  //  * @param data Payload
-  //  * @param raw True, if the list of received networks is not wrapped within a networks object
-  //  * @private
-  //  */
-  // private handleReceivedData(data: NeSearchResultNetwork | NeSearchResultItem[], raw: boolean): void {
-  //   if (!raw) {
-  //     data = data as NeSearchResultNetwork;
-  //     if (data.numFound === 0) {
-  //       this.handleEmptyResult();
-  //     }
-  //     data.networks.forEach((network) => {
-  //       network.downloadable = network.nodeCount < this.elementLimit && network.edgeCount < this.elementLimit;
-  //     });
-  //     this.searchResult = data.networks;
-  //   } else {
-  //     data = data as NeSearchResultItem[];
-  //     if (data.length === 0) {
-  //       this.handleEmptyResult();
-  //     }
-  //     data.forEach((network) => {
-  //       network.downloadable = network.nodeCount < this.elementLimit && network.edgeCount < this.elementLimit;
-  //     });
-  //     this.searchResult = data;
-  //   }
-  // }
 
   /**
    * If the query did not return any networks,

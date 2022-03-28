@@ -410,5 +410,168 @@
   "IMPRESSUM_2": "Projekt",
   "IMPRESSUM_3": "Kontakt",
   "IMPRESSUM_4": "Datenschutz",
-  "IMPRESSUM_5": "Impressum"
+  "IMPRESSUM_5": "Impressum",
+  "MAIN_INFO": {
+    "BASICS": {
+      "HEADLINE": "Was ist hier los?",
+      "NETWORKS": "Beziehungen in der biologischen Forschung werden häufig in Form von Netzwerken visualisiert. Wenn zum Beispiel zwei Proteine während eines bestimmten Prozesses miteinander interagieren, enthält das entsprechende Netzwerk zwei Knoten, die durch eine Kante verbunden sind.",
+      "CYTOSCAPE": "Die Tatsache, dass die beschriebene Interaktion besteht, ist oft nicht genug. Mit etablierten Softwarelösungen, wie <a href='https://cytoscape.org/' target='_blank'>Cytoscape</a> können wir unsere Knoten und Kanten im Netzwerk mit relevanten Informationen anreichern.",
+      "VISUALIZATION": "Auf dieser Grundlage können wir dann die Visualisierung eines Netzwerks verbessern."
+    },
+    "CAROUSEL": {
+      "0": {
+        "HEADLINE": "Unformatiertes Netzwerk",
+        "TEXT": "Ohne visuelle Unterscheidung lassen sich Relationen im Netzwerk nur schwer interpretieren"
+      },
+      "1": {
+        "HEADLINE": "Kanten formatieren",
+        "TEXT": "Anhand der Art von Interaktion zwischen zwei Proteinen können wir Kanten unterschiedlich hervorheben"
+      },
+      "2": {
+        "HEADLINE": "Knoten formatieren",
+        "TEXT": "Knotentypen unterschiedlich darzustellen, verbessert die visuelle Repräsentation des Netzwerks nochmal erheblich"
+      }
+    },
+    "APP": {
+      "HEADLINE": "Was kan diese Anwendung?",
+      "GENERAL": "Mit NDExEdit kannst du ein biologisches Netzwerk direkt im Browser anpassen. Du musst dazu keinen Account anlegen oder weitere Software installieren. Alles, was du brauchst ist ein Netzwerk, das im <a href='https://home.ndexbio.org/data-model/' target='_blank'>CX Datenformat</a> vorliegt.",
+      "NDEX": "NDExEdit ist eng mit <a href='https://home.ndexbio.org/index/' target='_blank'>NDEx</a> verbunden, einer web-basierten Plattform, die explizit für den Austausch biologischer Netzwerkdaten konzipiert ist.",
+      "MAPPINGS": "Eines der mächtigsten Visualisierungs-Tools sind sogenannte <b>Mappings</b>. Sie wurden von <a href='https://cytoscape.org/' target='_blank'>Cytoscape</a> eingeführt, um Eigenschaften eins Netzwerks in die Visualisierung dieses Netzwerks zu übertragen."
+    },
+    "NDEX": {
+      "HEADLINE": "Was ist NDEx?",
+      "INTRO": "NDEx steht für <b>N</b>etwork <b>D</b>ata <b>Ex</b>change und ist eine Online-Plattform, die explizit für den Austausch von biologischen Netzwerkdaten unter Wissenschaftlern entwickelt wurde. Nutzer können Netzwerke in unterschiedlichen Formaten und Größen hochladen und teilen. Weitere Informationen findest du in folgender Publikation <a href='https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4649937/' target='_blank'>NDEx, the Network Data Exchange</a> oder auf der <a href='https://www.ndexbio.org/' target='_blank'>Website</a>.",
+      "API": "NDExEdit spricht NDEx direkt über eine Schnittstelle an. Dadurch können wir Netzwerke in unsere Anwendung laden, ohne dass der Nutzer manuell Dateien verwalten muss.",
+      "ACCOUNT": "Wir bieten Nutzern die Möglichkeit, sich von NDExEdit aus bei NDEx einzuloggen. Dadurch haben sie unmittelbaren Zugriff auf Netzwerke in ihrem NDEx-Account, auch wenn sie nur privat sichtbar sind. Zudem können Nutzer dadurch bearbeitete Netzwerke wieder direkt in ihren Account hochladen."
+    },
+    "START": {
+      "HEADLINE": "Wie fange ich am besten an?",
+      "TEXT": "Ein simpler Arbeitsablauf mit NDExEdit beginnt beim <b>Importieren</b> einer Netzwerk-Datei. Anschließend kannst du das Datenfundament und die bereits bestehende Visualisierung <b>durchsehen</b>, <b>anpassen</b> und das resultierende Netzwerk schließlich <b>exportieren</b>. Jeder dieser Schritte wird nachfolgend ausführlich beschrieben."
+    },
+    "IMPORT": {
+      "HEADLINE": "Netzwerk laden",
+      "INTRO": "Es gibt drei Möglichkeiten, ein Netzwerk in NDExEdit zu laden.",
+      "HINT": "Achtung: Ein Netzwerk kann nur importiert werden, wenn es dem <a href='https://home.ndexbio.org/data-model/' target='_blank'>CX Datenformat</a> entspricht und eine akzeptable Größe hat.",
+      "UUID": "<b>UUID</b>: NDEx gibt jedem Netzwerk eine eindeutige ID. Wenn du diese ID kennst, kannst du sie ins Import-Feld eingeben und das Netzwerk direkt herunterladen.",
+      "BROWSE": "<b>NDEx durchsuchen</b>: Der eingebaute Browser gibt dir die Möglichkeit, NDEx nach einem passenden Netzwerk zu durchforsten. Um auch deine privaten, auf NDEx gespeicherten Netzwerk zu durchsuchen, musst du dich einloggen.",
+      "LOCAL": "<b>Lokale Date</b>: Wenn das Netzwerk, was du bearbeiten möchtest, noch nicht auf NDEx liegt, kannst du eine lokale .cx Datei hochladen und mit ihr arbeiten."
+    },
+    "INSPECT": {
+      "HEADLINE": "Dein Netzwerk kennenlernen",
+      "INTRO": "Bevor du dein Netzwerk visuell aufbereiten kannst, solltest du mit den zugrundeliegenden Daten vertraut sein. Um das zu vereinfachen, bietet NDExEdit ein paar nützliche Features.",
+      "CHARTS": "Im Abschnitt 'Netzwerkinformation' findest du die Liste aller Eigenschaften für Knoten und Kanten. Wenn du eins davon auswählst, siehst du ein Balkendiagramm, das die Verteilung dieser Eigenschaft innerhalb des Netzwerks darstellt.",
+      "SELECT": "Um dein Netzwerk 'interaktiv' kennenzulernen, kannst du einzelne oder mehrere (halte <code>shift</code> gedrückt) Elemente im Netzwerk auswählen. Informationen über diese Elemente werden in einer Tabelle in der Seitenleiste angezeigt.",
+      "WIZARD": "Ein technischer Ansatz, dein Netzwerk zu untersuchen, ist der sogenannte 'Inspection Wizard'. Mit ihm kannst du Regeln definieren und Elemente, die diesen Regeln entsprechen, <b>kurzfristig</b> markieren. Die Farbe und Dauer der Markierung kannst du in den Einstellungen anpassen."
+    },
+    "EDIT": {
+      "HEADLINE": "Netzwerk verschönern",
+      "INTRO": "Im 'Bearbeiten' Tab kannst du dein Netzwerk visuell anpassen. Am besten nimmst du dir zu Beginn Zeit, alle Mappings, die schon existieren, anzusehen. Du kannst die Visualisierung auf Standardwerte zurücksetzen. Das wird alle bestehenden Mappings entfernen, <b>außer dem Knoten-Label-Mapping</b>, sofern es existiert.",
+      "PROPERTY": "Unter <b>Eigenschaften</b> findest du visuelle Eigenschaften, die auf alle Elemente angewendet werden. Mappings werden diese Visualisierungen überschreiben.",
+      "MAPPINGS": "Mit Mappings können wir Attribute unserer Netzwerkdaten visualisieren. Es gibt drei Arten von Mappings.",
+      "MAPPING_PASSTHROUGH": {
+        "HEADLINE": "Durchreichendes Mapping",
+        "INTRO": "Das einfachste Mapping ist das <b>durchreichende</b> Mapping. Es reicht Werte von Knoten oder Kanten unverändert an ein visuelles Attribut, beispielsweise die Größe eines Knotens, durch.",
+        "BASICS": "Die meisten Netzwerke enthalten wenigstens ein durchreichendes Mapping für Knoten: das Knoten-Label-Mapping. Wir empfehlen, dieses Mapping nicht zu löschen, weil es für die Beschriftung der Knoten zuständig ist.",
+        "EDIT": "Um ein neues durchreichendes Mapping zu erstellen, brauchst du lediglich eine Elementen-Eigenschaft und ein visuelles Attribut, das dazu passt. Wichtig ist dabei: Wenn deine Elementen-Eigenschaft numerische Werte enthält, müssen diese vom visuellen Attribut verarbeitet werden können (beispielsweise Breite von Kanten). Für durchreichende Mappings bieten wir keinen Flash Modus an, weil es sich um ein sehr simples Mapping handelt."
+      },
+      "MAPPING_DISCRETE": {
+        "HEADLINE": "Diskretes Mapping",
+        "INTRO": "Der zweite Mapping-Typ ist das <b>diskrete</b> Mapping. Mit ihm kannst du Elemente anhand ihrer diskreten Eigenschaften klassifizieren.",
+        "BASICS": "Wir gruppieren diskrete Mappings anhand ihrer Elementen-Eigenschaften. Werden beispielsweise zwei visuelle Eigenschaften auf Grundlage des Knoten-Attributs property_a verändert, dann enthält die Tabelle des Mappings als Zeilen alle möglichen Ausprägungen für property_a. Die zwei Spalten der Tabelle enthalten pro visueller Eigenschaft die zugewiesenen Werte.",
+        "EDIT": "Mit Klick auf den <b>Bearbeiten-Button</b> kannst du Änderungen an der Tabelle vornehmen. Hast du ein visuelles Attribut und eine Elementen-Eigenschaft ausgewählt, kannst du ein neues Mapping erstellen. Dann siehst du eine leere Tabelle, die du um weitere visuelle Attribute ergänzen und in die du Werte eintragen kannst. "
+      },
+      "MAPPING_CONTINUOUS": {
+        "HEADLINE": "Kontinuierliches Mapping",
+        "INTRO": "Das dritte Mapping ist das <b>kontinuierliche</b> Mapping. Auf der Grundlage von numerischen Eigenschaften der Netzwerk-Elemente kannst du Schwellwerte definieren, zwischen denen visuelle Eigenschaften, etwa die Breiten von Kanten oder Größen von Knoten, interpoliert werden.",
+        "BASICS": "Kontinuierliche Mappings lassen sich nicht wie diskrete Mappings gruppieren, weil sie potenziell unterschiedliche Schwellwerte enthalten. Stattdessen zeigen wir dir eine Liste der visuellen Eigenschaften, die auf eine Elementen-Eigenschaft gemappt wurden. Mit Klick auf einen dieser Einträge siehst du entweder einen Graph, der den Verlauf des Mappings skizziert, oder einen Gradienten, der die Farbübergänge darstellt.",
+        "EDIT": "Damit du ein kontinuierliches Mapping valide definieren kannst, solltest du den Wertebereich deines ausgewählten Attributs und seine Verteilung kennen. Dafür geben wir dir die Option, das Histogramm für das Attribut einzublenden."
+      },
+      "MAPPINGS_DEEP": {
+        "HEADLINE": "Mappings erstellen oder bearbeiten",
+        "BASICS": "Klären wir ein paar Grundlagen über Mappings:",
+        "BASICS_1": "Eine <b>visuelle Eigenschaft</b> kann nur Teil <b>eines</b> Mappings sein. Wenn du beispielsweise ein Mapping hast, das die Größe von Knoten auf Grundlage von Knoten-Eigenschaft property_a skaliert, kannst du die Knotengröße nicht zusätzlich nach einer zweiten Eigenschaft skalieren.",
+        "BASICS_2": "Eine <b>Elementen-Eigenschaft</b> kann in mehr als einem Mapping verwendet werden. Möchtest du zum Beispiel die Knotengröße auf Basis von Knoten-Eigenschaft property_a skalieren, kannst du zusätzlich die Knotenfarbe mit dieser Eigenschaft verändern.",
+        "BASICS_3": "Du kannst bestehende Mappings <b>löschen</b> oder <b>bearbeiten</b> und neue Mappings <b>erstellen</b>.",
+        "BASICS_4": "Um Mappings zu definieren, musst du ein visuelles Attribut und ein Elementen-Attribut auswählen. Um dir dabei zu helfen, zeigen wir Vorschläge an. Gib im jeweiligen Feld <code>*</code> ein, um alle Vorschläge zu sehen, die in Frage kommen.",
+        "BASICS_5": "Wenn ein visuelles Attribut nicht unter diesen Vorschlägen auftaucht, kann das daran liegen, dass es bereits für ein anderes Mapping verwendet wird, oder dass es inkompatibel ist mit der Art von Mapping, die du versuchst zu definieren.",
+        "BASICS_6": "Beim Bearbeiten oder Erstellen eines Mappings kann es sinnvoll sein, Änderungen zuerst zu testen, bevor sie tatsächlich angewendet werden. Dafür haben wir den <b>Flash Modus</b> eingeführt, den du über den Zauberstab-Button unterhalb des Formulars erreichst. <b>Beachte bitte</b>: Wir blockieren Links und Änderungen am Netzwerk, solange der Flash Modus aktiv ist, um die Netzwerkdaten nicht zu korrumpieren."
+      },
+      "LAYOUT": {
+        "HEADLINE": "Layout",
+        "TEXT": "Ein wichtiger Aspekt in der Netzwerk-Visualisierung ist die relative Position eines Knotens innerhalb des Netzwerks. Im Dropdown oberhalb des gerenderten Netzwerks findest du vordefinierte Layout-Optionen, die du auf dein Netzwerk anwenden kannst. Die Grafik stellt dar, wie sich welche Option auf dein Netzwerk auswirkt. Beachte bitte, dass die Anwendung dieser Algorithmen kurze Zeit in Anspruch nehmen kann."
+      }
+    },
+    "EXPORT": {
+      "HEADLINE": "Ein Netzwerk speichern",
+      "IMG": "Du kannst deine Netzwerke als Bilder exportieren. Aktuell unterstützen wir den Export nach <b>PNG</b> und <b>JPEG</b>.",
+      "CX": "Als text-basiertes Format bieten wir den Export nach <b>CX</b> an.",
+      "NDEX": "Du kannst außerdem deine Netzwerke direkt nach NDEx hochladen. Dazu musst du dich allerdings über NDExEdit <b>bei NDEx einloggen</b>."
+    },
+    "ICONS": {
+      "HEADLINE": "Wofür steht welches Icon?",
+      "TH_ICON": "Icon",
+      "TH_DESCRIPTION": "Beschreibung",
+      "SIDEBAR": {
+        "HEADLINE": "Immer sichtbare Icons",
+        "HOME": "Zurück zur Startseite (gesperrt während du Änderungen bearbeitest oder in der Vorschau anschaust)",
+        "LANG": "Eine Sprache auswählen",
+        "NDEX_USER": "Öffnet den Dialog zum Einloggen bei NDEx - <b>roter</b> Punkt zeigt an, dass du <b>nicht verbunden</b> bist, <b>grüner</b> Punkt zeigt an, dass du <b>verbunden</b> bist"
+      },
+      "LAYOUT": {
+        "HEADLINE": "Icons in mittlerer Leiste",
+        "RESET": "Setze das Seitenverhältnis zurück auf 50:50",
+        "LEFT": "Vergrößere die Breite der rechten Seite maximal",
+        "LEFT_STEP": "Vergrößere die Breite der rechten Seite schrittweise",
+        "RIGHT": "Vergrößere die Breite der linken Seite maximal",
+        "RIGHT_STEP": "Vergrößere die Breite der linken Seite schrittweise",
+        "FLIP": "Tausche linke und rechte Seite - verändert nicht die Breiten der Seiten"
+      },
+      "EDITING": {
+        "HEADLINE": "Icons während der Visualisierung",
+        "EDIT": "Du bist aktuell im <b>Bearbeiten-Modus</b> eines Mappings oder von Element-Eigenschaften. Das <b>gelbe Dreieck</b> zeigt an, wo du dieses Item findest. Während der Bearbeitung ist das <b>Verlassen</b> der Seite gesperrt!",
+        "FLASH": "Du bist aktuell im <b>Flash-Modus</b> eines Mappings. Das <b>gelbe Dreieck</b> zeigt an, wo du dieses Item findest. Während der Vorschau ist das <b>Verlassen</b> der Seite gesperrt!",
+        "TRIANGLE": "Hilft dir, ein Item zu finden, das aktuell bearbeitet wird oder in der Vorschau angezeigt wird."
+      }
+    },
+    "CONTACT": {
+      "HEADLINE": "Über NDExEdit",
+      "SIMONE_MAYER": "NDExEdit wurde von <a href='mailto:simone1.mayer@student.uni-augsburg.de'><b>Simone Mayer</b></a> im Rahmen ihrer Abschlussarbeit an der Universität Augsburg entwickelt",
+      "FLORIAN_AUER": "Verbesserungsvorschläge und Nachfragen sind bei <a href='mailto:florian.auer@informatik.uni-augsburg.de'><b>Florian Auer</b></a> gut aufgehoben"
+    },
+    "FAQ": {
+      "HEADLINE": "FAQ",
+      "0": {
+        "Q": "Kann ich ein Netzwerk bearbeiten, das mit mir über NDEx geteilt wurde?",
+        "A": "Ja, ein Netzwerk bearbeiten ist immer möglich. Aber ob du es auf NDEx aktualisieren kannst, hängt von deinen Rechten ab - es kann sein, dass du das Netzwerk nicht überschreiben darfst."
+      },
+      "1": {
+        "Q": "Ich kann ein privates Netzwerk aus meinem NDEx-Account nicht finden. Warum?",
+        "A": "Prüfe, dass die Datei in NDEx als <b>searchable</b> markiert ist. Du kannst diese Einstellungen direkt in NDEx anpassen."
+      },
+      "2": {
+        "Q": "Ich möchte ein Netzwerk auf NDEx mit einem, das ich bearbeitet habe, ersetzen. Warum klappt das nicht?",
+        "A": "Wahrscheinlich ist das Netzwerk als <b>readonly</b> markiert. Das kannst du auf NDEx prüfen. In diesem Fall musst du dein angepasstes Netzwerk als neues Netzwerk speichern."
+      },
+      "3": {
+        "Q": "Ich vermute, ich hab die Anwendung kaputt gemacht. Was kann ich da machen?",
+        "A": "Wenn die Webseite länger nicht reagiert, musst du voraussichtlich die Seite neu laden und deine Arbeit von vorne beginnen. Wenn das öfter passiert, öffne bitte ein <a href='https://github.com/frankkramer-lab/NDExEdit/issues' target='_blank'>Issue auf GitHub</a>."
+      },
+      "4": {
+        "Q": "Mein Institut hostet einen eigenen NDEx Server. Kann ich ein Netzwerk von dort laden?",
+        "A": "Aktuell unterstützen wir keinen Zugriff auf Netzwerke privat gehosteter NDEx Instanzen - planen aber, das mit anzubieten."
+      },
+      "5": {
+        "Q": "Kann ich die Daten meines Netzwerks ändern?",
+        "A": "Derzeit können Daten eines Netzwerks nicht über NDExEdit manipuliert werden. Das heißt auch, dass keine neuen Netzwerke in NDExEdit erstellt werden können."
+      }
+    }
+  },
+  "SIDEBAR_EDIT": {
+    "BROWSER_BACK": {
+      "HEADLINE": "Seite verlassen",
+      "TEXT": "Du hast nicht gespeicherte Änderungen. Bist du sicher, dass du die Seite verlassen willst? ",
+      "BTN_STAY": "Ich bleibe hier",
+      "BTN_LEAVE": "Ja, verwerfe meine Änderungen"
+    }
+  }
 }

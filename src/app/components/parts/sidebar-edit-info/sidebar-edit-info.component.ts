@@ -174,10 +174,6 @@ export class SidebarEditInfoComponent implements OnInit {
       case PropertyTarget.networkAttributes:
         this.dataService.writeNetworkStyles(information);
         break;
-      case PropertyTarget.nodes:
-      case PropertyTarget.edges:
-        this.dataService.writeDefaultStyles(this.elementType, information);
-        break;
       default:
         console.log('Undefined action! Target unknown: ' + this.target);
         break;
@@ -185,6 +181,7 @@ export class SidebarEditInfoComponent implements OnInit {
     this.editMode = false;
     this.dataService.sidebarMode = SidebarMode.default;
     this.dataService.lockRouting = false;
+    this.dataService.cxBackup = null;
 
     this.initForm();
   }
@@ -198,12 +195,14 @@ export class SidebarEditInfoComponent implements OnInit {
       this.dataService.lockRouting = true;
       this.dataService.setPropertyObjectInEditing(this.target);
       this.dataService.sidebarMode = SidebarMode.edit;
+      this.dataService.storeCxBackup();
       this.editMode = true;
     } else {
       this.dataService.resetObjectInEditing();
       this.itemForm.reset();
       this.dataService.lockRouting = false;
       this.dataService.sidebarMode = SidebarMode.default;
+      this.dataService.cxBackup = null;
       this.editMode = false;
     }
   }

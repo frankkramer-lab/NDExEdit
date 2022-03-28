@@ -1,0 +1,147 @@
+<h5 class="row mt-4">
+  <span class="col-10">&nbsp;</span>
+
+  <!-- Toggle edit mode ON -->
+  <span class="col-2">
+    <button (click)="toggleEditMode()"
+            [disabled]="editMode || dataService.lockRouting"
+            [ngClass]="editMode ? 'btn-warning' : (dataService.lockRouting ? 'btn-secondary' : 'btn-outline-warning')"
+            class="btn btn-block"
+            container="body"
+            data-toggle="tooltip"
+            ngbTooltip=""
+            openDelay="1000"
+            placement="{{layoutService.layout.sidebar.tooltipDirection}}">
+      <fa-icon [icon]="faEdit"></fa-icon>
+    </button>
+  </span>
+</h5>
+
+<div class="card mb-2">
+  <div class="card-body">
+
+    <!-- Display information -->
+    <div *ngIf="!editMode">
+      <p *ngFor="let infoItem of itemListSpecific.concat(itemListDefault); let index">
+        <b class="cursor"
+           (click)="flashElement(infoItem.reference)"
+           *ngIf="infoItem.reference !== null && infoItem.reference !== undefined">
+          [ID: {{infoItem.reference}}]&nbsp;
+        </b>
+        <b [innerHTML]="infoItem.name">:</b>&nbsp;
+        <span [innerHTML]="infoItem.value"></span>
+      </p>
+    </div>
+
+    <!-- Edit information -->
+    <div *ngIf="editMode">
+      <form (ngSubmit)="onSubmitPropertyChanges()" [formGroup]="itemForm">
+
+        <div formArrayName="items">
+
+          <div *ngFor="let item of items.controls; let itemIndex = index">
+
+            <div [formGroup]="item" class="mb-2">
+
+              <div class="input-group">
+                <!-- [REQ] LABEL -->
+                <input class="form-control"
+                       formControlName="label"
+                       placeholder="Name"
+                       required
+                       type="text">
+
+                <!-- [REQ] VALUE -->
+                <input [placeholder]="'SIDEBAR_EDIT_NETWORK_ATTRIBUTES_VALUE' | translate"
+                       class="form-control"
+                       formControlName="value"
+                       required
+                       type="text">
+
+                <!-- [OPT] REFERENCE -->
+                <input class="form-control"
+                       formControlName="appliesTo"
+                       type="number">
+
+                <!-- REMOVE -->
+                <div class="input-group-append">
+                  <button (click)="removeItem(itemIndex)"
+                          class="btn btn-outline-danger"
+                          container="body"
+                          data-toggle="tooltip"
+                          ngbTooltip="{{'SIDEBAR_EDIT_NETWORK_ATTRIBUTES_DELETE_LINE' | translate}}"
+                          openDelay="1000"
+                          placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                          type="button">
+                    <fa-icon [icon]="faTrash"></fa-icon>
+                  </button>
+                </div>
+              </div>
+
+              <!-- ERROR: LABEL missing or VALUE (for non-information list) -->
+              <small
+                *ngIf="(item.get('label').invalid && (item.get('label').dirty || item.get('label').touched))">
+                <fa-icon [icon]="faExclamationTriangle" class="text-danger"></fa-icon>
+                {{'SIDEBAR_EDIT_NETWORK_ATTRIBUTES_ERROR_REQUIRED' | translate}}
+              </small>
+
+            </div>
+
+          </div>
+
+          <!-- add item -->
+          <div class="row">
+            <div class="col-12">
+              <button (click)="addItem()"
+                      class="btn btn-block btn-outline-secondary"
+                      container="body"
+                      data-toggle="tooltip"
+                      ngbTooltip="{{'SIDEBAR_EDIT_NETWORK_ATTRIBUTES_ADD_LINE' | translate}}"
+                      openDelay="1000"
+                      placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                      type="button">
+
+                <fa-icon [icon]="faPlus"></fa-icon>
+
+              </button>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+
+            <!-- leave edit mode -->
+            <div class="col-6">
+              <button (click)="toggleEditMode()"
+                      class="btn btn-block btn-outline-danger"
+                      container="body"
+                      data-toggle="tooltip"
+                      ngbTooltip="{{'SIDEBAR_EDIT_NETWORK_ATTRIBUTES_DISCARD' | translate}}"
+                      openDelay="1000"
+                      placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                      type="button">
+                <fa-icon [icon]="faTimes"></fa-icon>
+              </button>
+            </div>
+
+            <!-- submit -->
+            <div class="col-6">
+              <button [disabled]="(itemForm.dirty || itemForm.touched) && itemForm.invalid"
+                      class="btn btn-block btn-outline-success"
+                      container="body"
+                      data-toggle="tooltip"
+                      ngbTooltip="{{'SIDEBAR_EDIT_NETWORK_ATTRIBUTES_SUBMIT' | translate}}"
+                      openDelay="1000"
+                      placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                      type="submit">
+                <fa-icon [icon]="faCheck"></fa-icon>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</div>

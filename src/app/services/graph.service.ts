@@ -5,7 +5,7 @@ import {NeNode} from '../models/ne-node';
 import {NeEdge} from '../models/ne-edge';
 import {NeSelection} from '../models/ne-selection';
 
-import {ElementType, UtilityService} from './utility.service';
+import {ElementType, MappingType, UtilityService} from './utility.service';
 import {DataService} from './data.service';
 import {ParseService} from './parse.service';
 import {NeAspect} from '../models/ne-aspect';
@@ -363,4 +363,5 @@ export class GraphService implements OnDestroy {
   private showLabels(show: boolean): void {
     this.dataService.selectedNetwork.core.elements().toggleClass('hide_label', !show);
   }
+
 }

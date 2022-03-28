@@ -1,109 +1,550 @@
-<div class="container">
+<div class="container d-flex flex-column vh-100">
   <h1 class="mb-4 mt-3">
     <img [ngStyle]="{'width.px': 110}" class="float-right mt-2" src="assets/img/NDExEdit-logo.png">
-    <span id="mainInfoTitle" class="mt-0">{{'MAIN_INFO_TITLE' | translate}}</span>
+    <span id="mainInfoTitle" class="mt-0">
+      {{'MAIN_INFO_TITLE' | translate}}
+    </span>
   </h1>
 
-  <h3>{{'MAIN_INFO_STEPS_TITLE' | translate}}</h3>
-  <p>{{'MAIN_INFO_STEPS_DESCRIPTION' | translate}}</p>
-  <ul>
-    <li>{{'MAIN_INFO_STEPS_STEP_1' | translate}}</li>
-    <li>{{'MAIN_INFO_STEPS_STEP_2' | translate}}</li>
-    <li>{{'MAIN_INFO_STEPS_STEP_3' | translate}}</li>
-    <li>{{'MAIN_INFO_STEPS_STEP_4' | translate}}</li>
-    <li>{{'MAIN_INFO_STEPS_STEP_5' | translate}}</li>
-    <li>{{'MAIN_INFO_STEPS_STEP_6' | translate}}</li>
-  </ul>
+  <!-- INTRO -->
+  <h3>
+    <button (click)="expandPart('intro')"
+            class="btn btn-link">
+      <fa-icon [size]="'lg'" [icon]="partsExpanded['intro'] ? faChevronDown : faChevronRight"></fa-icon>
+    </button>
+    &nbsp;{{'MAIN_INFO.BASICS.HEADLINE' | translate}}
+  </h3>
+  <ng-container *ngIf="partsExpanded['intro']">
+    <p [innerHTML]="'MAIN_INFO.BASICS.NETWORKS' | translate"></p>
+    <p [innerHTML]="'MAIN_INFO.BASICS.CYTOSCAPE' | translate"></p>
+    <p [innerHTML]="'MAIN_INFO.BASICS.VISUALIZATION' | translate"></p>
+  </ng-container>
 
   <hr>
 
-  <h3>{{'MAIN_INFO_DEMO_TITLE' | translate}}</h3>
-  <p [innerHTML]="'MAIN_INFO_DEMO_DESCRIPTION' | translate"></p>
-
-  <hr>
-
-  <h3>{{'MAIN_INFO_NDEX_TITLE' | translate}}</h3>
-  <p>{{'MAIN_INFO_NDEX_DESCRIPTION' | translate}}</p>
-
-  <hr>
-
-  <h3>{{'MAIN_INFO_LAYOUT_LANG_TITLE' | translate}}</h3>
-  <p>{{'MAIN_INFO_LAYOUT_DESCRIPTION' | translate}}</p>
-  <ul>
-    <li>
-      <fa-icon [icon]="faAngleDoubleLeft"></fa-icon>
-      <fa-icon [icon]="faAngleLeft"></fa-icon>
-      <fa-icon [icon]="faAngleRight"></fa-icon>
-      <fa-icon [icon]="faAngleDoubleRight"></fa-icon>
-      {{'MAIN_INFO_LAYOUT_STEP_1' | translate}}
-    </li>
-    <li>
-      <fa-icon [icon]="faRedo"></fa-icon>
-      {{'MAIN_INFO_LAYOUT_STEP_2' | translate}}
-    </li>
-    <li>
-      <fa-icon [icon]="faExchangeAlt"></fa-icon>
-      {{'MAIN_INFO_LAYOUT_STEP_3' | translate}}
-    </li>
-  </ul>
-
-  <p>{{'MAIN_INFO_LANG_DESCRIPTION' | translate}}</p>
-
-  <hr>
-
-  <h3>{{'SIDEBAR_COMPARE_ABOUT' | translate}}</h3>
-
-  <p>
-    <fa-icon [icon]="faThumbsUp" [size]="'lg'" class="mr-3"></fa-icon>
-    {{'SIDEBAR_COMPARE_ABOUT_1' | translate}}
-  </p>
-  <p>
-    <fa-icon [icon]="faUserGraduate" [size]="'lg'" class="mr-3"></fa-icon>
-    {{'SIDEBAR_COMPARE_ABOUT_2_1' | translate}}
-    <a container="body"
-       data-toggle="tooltip"
-       href="mailto:simone1.mayer@student.uni-augsburg.de"
-       ngbTooltip="{{'MAIN_INFO_TT_MAIL_MAYER' | translate}}"
-       openDelay="1000"
-       placement="{{layoutService.layout.main.tooltipDirection}}"
-       target="_blank">
-      <b>Simone Mayer</b>
-    </a>
-    {{'SIDEBAR_COMPARE_ABOUT_2_2' | translate}}
-  </p>
-  <p>
-    <fa-icon [icon]="faComments" [size]="'lg'" class="mr-3"></fa-icon>
-    {{'SIDEBAR_COMPARE_ABOUT_3_1' | translate}}
-    <a container="body"
-       data-toggle="tooltip"
-       href="mailto:florian.auer@informatik.uni-augsburg.de"
-       id="mailto"
-       ngbTooltip="{{'MAIN_INFO_TT_MAIL_AUER' | translate}}"
-       openDelay="1000"
-       placement="{{layoutService.layout.main.tooltipDirection}}"
-       target="_blank">
-      <b>Florian Auer</b>
-    </a>
-    {{'SIDEBAR_COMPARE_ABOUT_3_2' | translate}}
-  </p>
-
-  <hr>
-
-  <div class="row small mb-4">
-    <div class="col">
-      <a href="https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/misit/" target="_blank">{{'IMPRESSUM_1' | translate}}</a>
+  <!-- CAROUSEL -->
+  <div id="carouselNetworkVisualization" class="carousel slide carousel-fade" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselNetworkVisualization" data-slide-to="0" class="active bg-dark"></li>
+      <li data-target="#carouselNetworkVisualization" data-slide-to="1" class="bg-dark"></li>
+      <li data-target="#carouselNetworkVisualization" data-slide-to="2" class="bg-dark"></li>
+      <li data-target="#carouselNetworkVisualization" data-slide-to="3" class="bg-dark"></li>
+    </ol>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="assets/img/intro/1.png" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block text-dark">
+          <h5>{{'MAIN_INFO.CAROUSEL.0.HEADLINE' | translate}}</h5>
+          <p>{{'MAIN_INFO.CAROUSEL.0.TEXT' | translate}}</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="assets/img/intro/2.png" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block text-dark">
+          <h5>{{'MAIN_INFO.CAROUSEL.1.HEADLINE' | translate}}</h5>
+          <p>{{'MAIN_INFO.CAROUSEL.1.TEXT' | translate}}</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="assets/img/intro/3.png" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block text-dark">
+          <h5>{{'MAIN_INFO.CAROUSEL.2.HEADLINE' | translate}}</h5>
+          <p>{{'MAIN_INFO.CAROUSEL.2.TEXT' | translate}}</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="assets/img/intro/4.png" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block text-dark">
+          <h5>{{'MAIN_INFO.CAROUSEL.3.HEADLINE' | translate}}</h5>
+          <p>{{'MAIN_INFO.CAROUSEL.3.TEXT' | translate}}</p>
+        </div>
+      </div>
     </div>
-    <div class="col">
-      <a href="https://www.sys-med.de/en/junior-research-groups/multipath/" target="_blank">{{'IMPRESSUM_2' | translate}}</a>
+  </div>
+
+  <hr>
+
+  <!-- APP -->
+  <h3>
+    <button (click)="expandPart('app')"
+            class="btn btn-link">
+      <fa-icon [size]="'lg'" [icon]="partsExpanded['app'] ? faChevronDown : faChevronRight"></fa-icon>
+    </button>
+    &nbsp;{{'MAIN_INFO.APP.HEADLINE' | translate}}
+  </h3>
+  <ng-container *ngIf="partsExpanded['app']">
+    <p [innerHTML]="'MAIN_INFO.APP.GENERAL' | translate"></p>
+    <p [innerHTML]="'MAIN_INFO.APP.NDEX' | translate"></p>
+    <p [innerHTML]="'MAIN_INFO.APP.MAPPINGS' | translate"></p>
+  </ng-container>
+
+  <hr>
+
+  <!-- NDEX -->
+  <h3>
+    <button (click)="expandPart('ndex')"
+            class="btn btn-link">
+      <fa-icon [size]="'lg'" [icon]="partsExpanded['ndex'] ? faChevronDown : faChevronRight"></fa-icon>
+    </button>
+    &nbsp;{{'MAIN_INFO.NDEX.HEADLINE' | translate}}
+  </h3>
+  <ng-container *ngIf="partsExpanded['ndex']">
+    <p [innerHTML]="'MAIN_INFO.NDEX.INTRO' | translate"></p>
+    <p [innerHTML]="'MAIN_INFO.NDEX.API' | translate"></p>
+    <p [innerHTML]="'MAIN_INFO.NDEX.ACCOUNT' | translate"></p>
+  </ng-container>
+
+  <hr>
+
+  <!-- START -->
+  <h3>
+    <button (click)="expandPart('start')"
+            class="btn btn-link">
+      <fa-icon [size]="'lg'" [icon]="partsExpanded['start'] ? faChevronDown : faChevronRight"></fa-icon>
+    </button>
+    &nbsp;{{'MAIN_INFO.START.HEADLINE' | translate}}
+  </h3>
+  <ng-container *ngIf="partsExpanded['start']">
+    <p [innerHTML]="'MAIN_INFO.START.TEXT' | translate"></p>
+  </ng-container>
+
+  <hr>
+
+  <!-- IMPORT -->
+  <h3>
+    <button (click)="expandPart('import')"
+            class="btn btn-link">
+      <fa-icon [size]="'lg'" [icon]="partsExpanded['import'] ? faChevronDown : faChevronRight"></fa-icon>
+    </button>
+    &nbsp;{{'MAIN_INFO.IMPORT.HEADLINE' | translate}}
+  </h3>
+  <ng-container *ngIf="partsExpanded['import']">
+    <p [innerHTML]="'MAIN_INFO.IMPORT.INTRO' | translate"></p>
+    <p [innerHTML]="'MAIN_INFO.IMPORT.HINT' | translate"></p>
+
+    <ul>
+      <li [innerHTML]="'MAIN_INFO.IMPORT.UUID' | translate"></li>
+      <li [innerHTML]="'MAIN_INFO.IMPORT.BROWSE' | translate"></li>
+      <li [innerHTML]="'MAIN_INFO.IMPORT.LOCAL' | translate"></li>
+    </ul>
+  </ng-container>
+
+  <hr>
+
+  <!-- INSPECT -->
+  <h3>
+    <button (click)="expandPart('inspect')"
+            class="btn btn-link">
+      <fa-icon [size]="'lg'" [icon]="partsExpanded['inspect'] ? faChevronDown : faChevronRight"></fa-icon>
+    </button>
+    &nbsp;{{'MAIN_INFO.INSPECT.HEADLINE' | translate}}
+  </h3>
+  <ng-container *ngIf="partsExpanded['inspect']">
+    <p [innerHTML]="'MAIN_INFO.INSPECT.INTRO' | translate"></p>
+    <p [innerHTML]="'MAIN_INFO.INSPECT.CHARTS' | translate"></p>
+    <p [innerHTML]="'MAIN_INFO.INSPECT.SELECT' | translate"></p>
+    <p [innerHTML]="'MAIN_INFO.INSPECT.WIZARD' | translate"></p>
+  </ng-container>
+
+  <hr>
+
+  <!-- EDIT -->
+  <h3>
+    <button (click)="expandPart('edit')"
+            class="btn btn-link">
+      <fa-icon [size]="'lg'" [icon]="partsExpanded['edit'] ? faChevronDown : faChevronRight"></fa-icon>
+    </button>
+    &nbsp;{{'MAIN_INFO.EDIT.HEADLINE' | translate}}
+  </h3>
+  <ng-container *ngIf="partsExpanded['edit']">
+
+    <p [innerHTML]="'MAIN_INFO.EDIT.INTRO' | translate"></p>
+    <p [innerHTML]="'MAIN_INFO.EDIT.PROPERTY' | translate"></p>
+    <p [innerHTML]="'MAIN_INFO.EDIT.MAPPINGS' | translate"></p>
+
+    <hr>
+
+    <!-- PASSTHROUGH -->
+    <h4>{{'MAIN_INFO.EDIT.MAPPING_PASSTHROUGH.HEADLINE' | translate}}</h4>
+    <div class="row d-flex align-items-center">
+      <div class="col-7"><img src="assets/img/intro/passthrough.png" class="img-fluid mw-100 mh-100" alt="..."></div>
+      <div class="col-5"><p [innerHTML]="'MAIN_INFO.EDIT.MAPPING_PASSTHROUGH.INTRO' | translate"></p></div>
     </div>
-    <div class="col">
-      <a href="https://www.uni-augsburg.de/en/kontakt/" target="_blank">{{'IMPRESSUM_3' | translate}}</a>
+    <p class="mt-2" [innerHTML]="'MAIN_INFO.EDIT.MAPPING_PASSTHROUGH.BASICS' | translate"></p>
+    <p [innerHTML]="'MAIN_INFO.EDIT.MAPPING_PASSTHROUGH.EDIT' | translate"></p>
+
+    <hr>
+
+    <!-- DISCRETE -->
+    <h4>{{'MAIN_INFO.EDIT.MAPPING_DISCRETE.HEADLINE' | translate}}</h4>
+    <div class="row d-flex align-items-center">
+      <div class="col-7"><img src="assets/img/intro/discrete.png" class="img-fluid mw-100 mh-100" alt="..."></div>
+      <div class="col-5">
+        <p [innerHTML]="'MAIN_INFO.EDIT.MAPPING_DISCRETE.INTRO' | translate"></p>
+        <!-- discrete data table -->
+        <table class="table">
+          <thead>
+          <tr>
+            <th>Type</th>
+            <th>Shape</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>RNA</td>
+            <td>Diamond</td>
+          </tr>
+          <tr>
+            <td>DNA</td>
+            <td>Hexagon</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div class="col">
-      <a href="https://www.uni-augsburg.de/de/impressum/datenschutz/" target="_blank">{{'IMPRESSUM_4' | translate}}</a>
+    <p class="mt-2" [innerHTML]="'MAIN_INFO.EDIT.MAPPING_DISCRETE.BASICS' | translate"></p>
+    <p [innerHTML]="'MAIN_INFO.EDIT.MAPPING_DISCRETE.EDIT' | translate"></p>
+
+    <hr>
+
+    <!-- CONTINUOUS -->
+    <h4>{{'MAIN_INFO.EDIT.MAPPING_CONTINUOUS.HEADLINE' | translate}}</h4>
+    <div class="row d-flex align-items-center">
+      <div class="col-7"><img src="assets/img/intro/continuous.png" class="img-fluid mw-100 mh-100" alt="..."></div>
+      <div class="col-5">
+        <p [innerHTML]="'MAIN_INFO.EDIT.MAPPING_CONTINUOUS.INTRO' | translate"></p>
+        <!-- continuous data table -->
+        <table class="table">
+          <thead>
+          <tr>
+            <th>Strength</th>
+            <th>Edge width</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>100</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div class="col">
-      <a href="https://www.uni-augsburg.de/de/impressum/" target="_blank">{{'IMPRESSUM_5' | translate}}</a>
+    <p class="mt-2" [innerHTML]="'MAIN_INFO.EDIT.MAPPING_CONTINUOUS.BASICS' | translate"></p>
+    <p [innerHTML]="'MAIN_INFO.EDIT.MAPPING_CONTINUOUS.EDIT' | translate"></p>
+
+    <hr>
+
+    <!-- GENERAL HINTS -->
+    <h4>{{'MAIN_INFO.EDIT.MAPPINGS_DEEP.HEADLINE' | translate}}</h4>
+    <p [innerHTML]="'MAIN_INFO.EDIT.MAPPINGS_DEEP.BASICS' | translate"></p>
+    <ul>
+      <li [innerHTML]="'MAIN_INFO.EDIT.MAPPINGS_DEEP.BASICS_1' | translate"></li>
+      <li [innerHTML]="'MAIN_INFO.EDIT.MAPPINGS_DEEP.BASICS_2' | translate"></li>
+      <li [innerHTML]="'MAIN_INFO.EDIT.MAPPINGS_DEEP.BASICS_3' | translate"></li>
+      <li [innerHTML]="'MAIN_INFO.EDIT.MAPPINGS_DEEP.BASICS_4' | translate"></li>
+      <li [innerHTML]="'MAIN_INFO.EDIT.MAPPINGS_DEEP.BASICS_5' | translate"></li>
+      <li [innerHTML]="'MAIN_INFO.EDIT.MAPPINGS_DEEP.BASICS_6' | translate"></li>
+    </ul>
+
+    <!-- LAYOUT -->
+    <h4>{{'MAIN_INFO.EDIT.LAYOUT.HEADLINE' | translate}}</h4>
+    <div class="row d-flex align-items-center">
+
+      <div class="card col-3 p-2 m-2" *ngFor="let layout of layoutPreviews">
+        <img [src]="'assets/img/intro/layout-' + layout + '.png'"
+             alt="...">
+        <div class="card-body">
+          <p class="card-text"><b>{{layout | titlecase}}</b></p>
+        </div>
+      </div>
+
+    </div>
+
+  </ng-container>
+
+  <hr>
+
+  <!-- EXPORT -->
+  <h3>
+    <button (click)="expandPart('export')"
+            class="btn btn-link">
+      <fa-icon [size]="'lg'" [icon]="partsExpanded['export'] ? faChevronDown : faChevronRight"></fa-icon>
+    </button>
+    &nbsp;{{'MAIN_INFO.EXPORT.HEADLINE' | translate}}
+  </h3>
+  <ng-container *ngIf="partsExpanded['export']">
+    <p [innerHTML]="'MAIN_INFO.EXPORT.IMG' | translate"></p>
+    <p [innerHTML]="'MAIN_INFO.EXPORT.CX' | translate"></p>
+    <p [innerHTML]="'MAIN_INFO.EXPORT.NDEX' | translate"></p>
+  </ng-container>
+
+  <hr>
+
+  <!-- ICONS -->
+  <h3>
+    <button (click)="expandPart('icons')"
+            class="btn btn-link">
+      <fa-icon [size]="'lg'" [icon]="partsExpanded['icons'] ? faChevronDown : faChevronRight"></fa-icon>
+    </button>
+    &nbsp;{{'MAIN_INFO.ICONS.HEADLINE' | translate}}
+  </h3>
+  <ng-container *ngIf="partsExpanded['icons']">
+
+    <h4>{{'MAIN_INFO.ICONS.SIDEBAR.HEADLINE' | translate}}</h4>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>{{'MAIN_INFO.ICONS.TH_ICON' | translate}}</th>
+          <th>{{'MAIN_INFO.ICONS.TH_DESCRIPTION' | translate}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <fa-icon [size]="'lg'" [icon]="faHome"></fa-icon>
+          </td>
+          <td>
+            <div [innerHTML]="'MAIN_INFO.ICONS.SIDEBAR.HOME' | translate"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <fa-icon [size]="'lg'" [icon]="faGlobe"></fa-icon>
+          </td>
+          <td>
+            <div [innerHTML]="'MAIN_INFO.ICONS.SIDEBAR.LANG' | translate"></div>
+          </td>
+        </tr>
+        <tr>
+        <td>
+          <fa-icon [size]="'lg'" [icon]="faUser"></fa-icon>
+        </td>
+        <td>
+          <div [innerHTML]="'MAIN_INFO.ICONS.SIDEBAR.NDEX_USER' | translate"></div>
+        </td>
+      </tr>
+      </tbody>
+
+    </table>
+
+    <h4>{{'MAIN_INFO.ICONS.LAYOUT.HEADLINE' | translate}}</h4>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>{{'MAIN_INFO.ICONS.TH_ICON' | translate}}</th>
+          <th>{{'MAIN_INFO.ICONS.TH_DESCRIPTION' | translate}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <fa-icon [size]="'lg'" [icon]="faAngleLeft"></fa-icon>
+          </td>
+          <td>
+            <div [innerHTML]="'MAIN_INFO.ICONS.LAYOUT.LEFT_STEP' | translate"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <fa-icon [size]="'lg'" [icon]="faAngleDoubleLeft"></fa-icon>
+          </td>
+          <td>
+            <div [innerHTML]="'MAIN_INFO.ICONS.LAYOUT.LEFT' | translate"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <fa-icon [size]="'lg'" [icon]="faAngleRight"></fa-icon>
+          </td>
+          <td>
+            <div [innerHTML]="'MAIN_INFO.ICONS.LAYOUT.RIGHT_STEP' | translate"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <fa-icon [size]="'lg'" [icon]="faAngleDoubleRight"></fa-icon>
+          </td>
+          <td>
+            <div [innerHTML]="'MAIN_INFO.ICONS.LAYOUT.RIGHT' | translate"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <fa-icon [size]="'lg'" [icon]="faRedo"></fa-icon>
+          </td>
+          <td>
+            <div [innerHTML]="'MAIN_INFO.ICONS.LAYOUT.RESET' | translate"></div>
+          </td>
+        </tr>
+        <tr>
+        <td>
+          <fa-icon [size]="'lg'" [icon]="faExchangeAlt"></fa-icon>
+        </td>
+        <td>
+          <div [innerHTML]="'MAIN_INFO.ICONS.LAYOUT.FLIP' | translate"></div>
+        </td>
+      </tr>
+      </tbody>
+
+    </table>
+
+    <h4>{{'MAIN_INFO.ICONS.EDITING.HEADLINE' | translate}}</h4>
+
+    <table class="table">
+      <thead>
+      <tr>
+        <th>{{'MAIN_INFO.ICONS.TH_ICON' | translate}}</th>
+        <th>{{'MAIN_INFO.ICONS.TH_DESCRIPTION' | translate}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>
+          <fa-icon [size]="'lg'" [icon]="faEdit"></fa-icon>
+        </td>
+        <td>
+          <div [innerHTML]="'MAIN_INFO.ICONS.EDITING.EDIT' | translate"></div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <fa-icon [size]="'lg'" [icon]="faMagic"></fa-icon>
+        </td>
+        <td>
+          <div [innerHTML]="'MAIN_INFO.ICONS.EDITING.FLASH' | translate"></div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <fa-icon [size]="'lg'" [icon]="faExclamationTriangle"></fa-icon>
+        </td>
+        <td>
+          <div [innerHTML]="'MAIN_INFO.ICONS.EDITING.TRIANGLE' | translate"></div>
+        </td>
+      </tr>
+      </tbody>
+
+    </table>
+
+  </ng-container>
+
+  <hr>
+
+  <!-- CONTACT -->
+  <h3>
+    <button (click)="expandPart('contact')"
+            class="btn btn-link">
+      <fa-icon [size]="'lg'" [icon]="partsExpanded['contact'] ? faChevronDown : faChevronRight"></fa-icon>
+    </button>
+    &nbsp;{{'MAIN_INFO.CONTACT.HEADLINE' | translate}}
+  </h3>
+  <ng-container *ngIf="partsExpanded['contact']">
+
+    <table class="table table-borderless">
+      <tr>
+        <td class="align-middle">
+          <fa-icon [icon]="faUserGraduate" [size]="'lg'"></fa-icon>
+        </td>
+        <td class="align-middle">
+          <div [innerHTML]="'MAIN_INFO.CONTACT.SIMONE_MAYER' | translate"></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="align-middle">
+          <fa-icon [icon]="faComments" [size]="'lg'"></fa-icon>
+        </td>
+        <td class="align-middle">
+          <div [innerHTML]="'MAIN_INFO.CONTACT.FLORIAN_AUER' | translate"></div>
+        </td>
+      </tr>
+    </table>
+
+  </ng-container>
+
+  <hr>
+
+  <!-- FAQ -->
+  <h3>
+    <button (click)="expandPart('faq')"
+            class="btn btn-link">
+      <fa-icon [size]="'lg'" [icon]="partsExpanded['faq'] ? faChevronDown : faChevronRight"></fa-icon>
+    </button>
+    &nbsp;{{'MAIN_INFO.FAQ.HEADLINE' | translate}}
+  </h3>
+  <ng-container *ngIf="partsExpanded['faq']">
+    <table class="table table-borderless">
+      <tr>
+        <td><fa-icon [size]="'lg'" [icon]="faComments"></fa-icon></td>
+        <td>
+          <p><b>{{'MAIN_INFO.FAQ.0.Q' | translate}}</b></p>
+          <p [innerHTML]="'MAIN_INFO.FAQ.0.A' | translate"></p>
+        </td>
+      </tr>
+      <tr>
+        <td><fa-icon [size]="'lg'" [icon]="faComments"></fa-icon></td>
+        <td>
+          <p><b>{{'MAIN_INFO.FAQ.1.Q' | translate}}</b></p>
+          <p [innerHTML]="'MAIN_INFO.FAQ.1.A' | translate"></p>
+        </td>
+      </tr>
+      <tr>
+        <td><fa-icon [size]="'lg'" [icon]="faComments"></fa-icon></td>
+        <td>
+          <p><b>{{'MAIN_INFO.FAQ.2.Q' | translate}}</b></p>
+          <p [innerHTML]="'MAIN_INFO.FAQ.2.A' | translate"></p>
+        </td>
+      </tr>
+      <tr>
+        <td><fa-icon [size]="'lg'" [icon]="faComments"></fa-icon></td>
+        <td>
+          <p><b>{{'MAIN_INFO.FAQ.3.Q' | translate}}</b></p>
+          <p [innerHTML]="'MAIN_INFO.FAQ.3.A' | translate"></p>
+        </td>
+      </tr>
+      <tr>
+        <td><fa-icon [size]="'lg'" [icon]="faComments"></fa-icon></td>
+        <td>
+          <p><b>{{'MAIN_INFO.FAQ.4.Q' | translate}}</b></p>
+          <p [innerHTML]="'MAIN_INFO.FAQ.4.A' | translate"></p>
+        </td>
+      </tr>
+      <tr>
+        <td><fa-icon [size]="'lg'" [icon]="faComments"></fa-icon></td>
+        <td>
+          <p><b>{{'MAIN_INFO.FAQ.5.Q' | translate}}</b></p>
+          <p [innerHTML]="'MAIN_INFO.FAQ.5.A' | translate"></p>
+        </td>
+      </tr>
+    </table>
+  </ng-container>
+
+  <!-- footer -->
+  <div class="mt-auto">
+    <hr>
+
+    <div class="row small mb-4">
+      <div class="col">
+        <a href="https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/misit/" target="_blank">{{'IMPRESSUM_1' | translate}}</a>
+      </div>
+      <div class="col">
+        <a href="https://www.sys-med.de/en/junior-research-groups/multipath/" target="_blank">{{'IMPRESSUM_2' | translate}}</a>
+      </div>
+      <div class="col">
+        <a href="https://www.uni-augsburg.de/en/kontakt/" target="_blank">{{'IMPRESSUM_3' | translate}}</a>
+      </div>
+      <div class="col">
+        <a href="https://www.uni-augsburg.de/de/impressum/datenschutz/" target="_blank">{{'IMPRESSUM_4' | translate}}</a>
+      </div>
+      <div class="col">
+        <a href="https://www.uni-augsburg.de/de/impressum/" target="_blank">{{'IMPRESSUM_5' | translate}}</a>
+      </div>
     </div>
   </div>
 

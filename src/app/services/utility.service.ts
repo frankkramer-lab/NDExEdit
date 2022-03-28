@@ -57,6 +57,10 @@ export enum Visibility {
   private
 }
 
+export enum ToastType {
+  browserBack
+}
+
 /**
  * Service for methods used within multiple components or services
  */
@@ -571,6 +575,10 @@ export class UtilityService {
     }
   }
 
+  /**
+   * Returns the property's target based on the given element type.
+   * @param elementType Given element type
+   */
   utilGetPropertyTargetByElementType(elementType: ElementType): PropertyTarget {
     switch (elementType) {
       case ElementType.node:
@@ -582,6 +590,10 @@ export class UtilityService {
     }
   }
 
+  /**
+   * Returns object in editing based on the mapping type.
+   * @param mappingType Given mapping type
+   */
   utilGetEditingObjectByMappingType(mappingType: MappingType): EditingObject {
     switch (mappingType) {
       case MappingType.discrete:

@@ -268,6 +268,7 @@ export class SidebarEditMappingComponent implements OnInit {
    */
   deleteAll(confirmation: boolean): void {
     if (confirmation) {
+      this.propertyService.handleStyleReset(this.dataService.selectedNetwork.mappings, this.elementType);
       this.dataService.resetElementAspect(this.elementType);
       this.fetchMappings();
     }

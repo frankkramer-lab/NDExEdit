@@ -278,6 +278,7 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
     this.markedMappingForDeletion = false;
     this.mappingCollectionInEditing = null;
     this.dataService.resetAnyMappingSelection();
+    this.dataService.cxBackup = null;
     this.markedForDeletionEmitter.emit(false);
     this.flashOrEditModeEmitter.emit(false);
   }
@@ -415,6 +416,9 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
       // when a mapping collection was newly added we make this selection previously
       if (!this.newlyAdded) {
         this.dataService.selectMappingContinuous(this.mappingCollection);
+        this.dataService.storeCxBackup();
+      } else {
+        this.dataService.storeCxBackupWithoutNew(this.mappingCollection[0].styleProperty, this.elementType);
       }
 
       this.mappingCollectionInEditing = [];
@@ -434,6 +438,7 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
 
     } else {
       this.dataService.sidebarMode = SidebarMode.default;
+      this.dataService.cxBackup = null;
       this.editMode = false;
       this.flashMode = false;
       this.inspectionMode = true;

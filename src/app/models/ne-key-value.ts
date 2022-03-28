@@ -19,4 +19,9 @@ export interface NeKeyValue {
    * e.g. "double"
    */
   datatype?: string;
+  /**
+   * ID, this KeyValuePair is applied to.
+   * Needed for specific properties, that contain the 'applies_to' field
+   */
+  reference?: number;
 }

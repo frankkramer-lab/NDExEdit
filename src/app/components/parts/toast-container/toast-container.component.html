@@ -1,0 +1,7 @@
+<ngb-toast
+  *ngFor="let toast of toastService.toasts"
+  [autohide]="false"
+  (hidden)="toastService.remove(toast)"
+>
+  <ng-template [ngTemplateOutlet]="toast.textOrTpl"></ng-template>
+</ngb-toast>

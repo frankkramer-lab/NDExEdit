@@ -97,13 +97,8 @@
   <div #childDefault="ngbCollapse"
        [(ngbCollapse)]="collapsedChildDefault">
 
-    <app-sidebar-edit-info
-      [elementType]="elementType"
-      [itemList]="elementType === utilityService.elementType.node
-        ? dataService.selectedNetwork.mappings.nodesDefault
-        : dataService.selectedNetwork.mappings.edgesDefault"
-      headline="DEFAULT"
-      [target]="elementType === utilityService.elementType.node ? utilityService.propertyTarget.nodes : utilityService.propertyTarget.edges"></app-sidebar-edit-info>
+    <app-sidebar-edit-property
+      [elementType]="elementType"></app-sidebar-edit-property>
 
   </div>
 

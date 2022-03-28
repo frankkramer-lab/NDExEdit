@@ -41,12 +41,20 @@ export interface NeMappingsMap {
   /**
    * Simple list of default styles applied to nodes
    */
-  nodesDefault: NeKeyValue[];
+  nodesPropertiesDefault: NeKeyValue[];
 
   /**
    * Simple list of default styles applied to edges
    */
-  edgesDefault: NeKeyValue[];
+  edgesPropertiesDefault: NeKeyValue[];
+  /**
+   * Simple list of default styles applied to specific nodes
+   */
+  nodesPropertiesSpecific: NeKeyValue[];
+  /**
+   * Simple list of default styles applied to specific edges
+   */
+  edgesPropertiesSpecific: NeKeyValue[];
 
   /**
    * Simple list of default styles applied to the network

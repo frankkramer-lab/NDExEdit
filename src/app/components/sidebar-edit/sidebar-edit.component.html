@@ -315,4 +315,31 @@
 
 </div>
 
+<!-- MODAL TO CONFIRM DISCARDING CHANGES -->
+<ng-template #modalBrowserBack let-modal>
+
+  <div class="modal-header">
+    <h4 class="modal-title">{{'SIDEBAR_EDIT.BROWSER_BACK.HEADLINE' | translate}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <p>{{'SIDEBAR_EDIT.BROWSER_BACK.TEXT' | translate}}</p>
+    <div class="row">
+      <div class="col-6">
+        <button class="btn btn-block btn-danger" (click)="modal.close('Button confirm')">
+          {{'SIDEBAR_EDIT.BROWSER_BACK.BTN_LEAVE' | translate}}
+        </button>
+      </div>
+      <div class="col-6">
+        <button class="btn btn-block btn-outline-success" (click)="modal.dismiss('Button abort')">
+          {{'SIDEBAR_EDIT.BROWSER_BACK.BTN_STAY' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
 

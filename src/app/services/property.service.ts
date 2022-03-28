@@ -3,6 +3,7 @@ import {ElementType, MappingType, UtilityService} from './utility.service';
 import {NeAvailableProperty} from '../models/ne-available-property';
 import {NeNetwork} from '../models/ne-network';
 import {NeMapping} from '../models/ne-mapping';
+import {NeMappingsMap} from '../models/ne-mappings-map';
 
 @Injectable({
   providedIn: 'root'
@@ -225,7 +226,7 @@ export class PropertyService {
   }
 
   /**
-   * Initializes the lists within {@link availableElementProperties} and {@link availableStyleProperties}
+   * Initializes the lists within {@link availableElementProperties}
    * based on the currently selected network
    * @param network Currently selected network
    */
@@ -305,7 +306,7 @@ export class PropertyService {
    * @param property Name of the column
    */
   handleMappingRemoved(elementType: ElementType, mappingType: MappingType, property: string): void {
-
+    console.log(property);
     const elementTypeKey = elementType === this.utilityService.elementType.node ? 'node' : 'edge';
     const mappingTypeKey = mappingType === this.utilityService.mappingType.passthrough ? 'p'
       : (mappingType === this.utilityService.mappingType.discrete ? 'd' : 'c');
@@ -336,4 +337,22 @@ export class PropertyService {
     }
   }
 
+  /**
+   * When resetting an element to its basics, we need to make all used style properties
+   * available for other mappings.
+   * @param base List of all mapping collections that are present in the currently selected network
+   * @param elementType Type of element
+   */
+  handleStyleReset(base: NeMappingsMap, elementType: ElementType): void {
+    const mappings = (elementType === ElementType.node
+      ? base.nodesPassthrough.concat(base.nodesDiscrete, base.nodesContinuous)
+      : base.edgesPassthrough.concat(base.edgesDiscrete, base.edgesContinuous));
+
+    for (const mapping of mappings) {
+      if (elementType === ElementType.node && mapping.styleProperty === 'NODE_LABEL') {
+        continue;
+      }
+      this.handleStyleRemoved(mapping.styleProperty);
+    }
+  }
 }

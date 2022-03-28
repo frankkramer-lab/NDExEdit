@@ -203,7 +203,7 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
   }
 
   /**
-   *
+   * Returns the value of a discrete mapping for a specific property.
    * @param mapping
    * @param propertyValue
    * @private
@@ -278,6 +278,7 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
     this.newlyAdded = false;
     this.mappingCollectionInEditing = null;
 
+    this.dataService.cxBackup = null;
     this.dataService.resetAnyMappingSelection();
     this.markedForDeletionEmitter.emit(false);
     this.flashOrEditModeEmitter.emit(false);
@@ -324,8 +325,8 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
 
       // when a mapping collection was newly added we make this selection previously
       if (!this.newlyAdded) {
-
         this.dataService.selectMappingDiscrete(this.discreteMapping);
+        this.dataService.storeCxBackup();
       } else {
         for (const mapping of this.discreteMapping) {
           const valueLength = this.colProperty.values.length;
@@ -333,6 +334,7 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
           mapping.useValue = new Array(valueLength).fill(false);
           mapping.values = new Array(valueLength).fill(null);
         }
+        this.dataService.storeCxBackupWithoutNew(this.discreteMapping[0].styleProperty, this.elementType);
       }
 
       for (const mapping of this.discreteMapping) {
@@ -345,6 +347,7 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
       this.flashOrEditModeEmitter.emit(true);
     } else {
       this.dataService.sidebarMode = SidebarMode.default;
+      this.dataService.cxBackup = null;
       this.editMode = false;
       this.dataService.resetAnyMappingSelection();
       this.mappingCollectionInEditing = null;
@@ -397,7 +400,6 @@ export class SidebarEditMappingDiscreteComponent implements OnInit, OnDestroy {
       this.updateMappingCollectionInEditing();
       this.applyChanges(this.mappingCollectionInEditing);
       this.flashOrEditModeEmitter.emit(true);
-
     } else {
       this.flashMode = false;
       this.dataService.sidebarMode = this.editMode ? SidebarMode.edit : SidebarMode.default;

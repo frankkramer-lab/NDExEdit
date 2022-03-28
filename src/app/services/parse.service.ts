@@ -44,10 +44,10 @@ export class ParseService {
       // rework mapPointers
       for (const fd of network.cx) {
         if (fd.nodeAttributes) {
-          akvNodes = akvNodes.concat(this.convertAkvByFile(fd.nodeAttributes, dataService.selectedNetwork.mappings));
+          akvNodes = akvNodes.concat(this.convertAkvByFile(fd.nodeAttributes));
         }
         if (fd.edgeAttributes) {
-          akvEdges = akvEdges.concat(this.convertAkvByFile(fd.edgeAttributes, dataService.selectedNetwork.mappings, false));
+          akvEdges = akvEdges.concat(this.convertAkvByFile(fd.edgeAttributes, false));
         }
         if (fd.nodes) {
 
@@ -426,15 +426,19 @@ export class ParseService {
 
     let akvNodes: NeAspect[] = [];
     let akvEdges: NeAspect[] = [];
+    let akvNodesNames: string[] = [];
+    let akvEdgesNames: string[] = [];
     let initialLayout: NeNode[] = [];
 
     for (const fd of filedata) {
 
       if (fd.nodeAttributes) {
-        akvNodes = akvNodes.concat(this.convertAkvByFile(fd.nodeAttributes, mappings));
+        akvNodes = akvNodes.concat(this.convertAkvByFile(fd.nodeAttributes));
+        akvNodesNames = akvNodes.map(a => a.name);
       }
       if (fd.edgeAttributes) {
-        akvEdges = akvEdges.concat(this.convertAkvByFile(fd.edgeAttributes, mappings, false));
+        akvEdges = akvEdges.concat(this.convertAkvByFile(fd.edgeAttributes, false));
+        akvEdgesNames = akvEdges.map(a => a.name);
       }
 
       if (fd.nodes) {
@@ -467,6 +471,90 @@ export class ParseService {
           layout.push(Object.assign({}, item));
         }
         initialLayout = layout;
+      }
+    }
+
+    const cyVisualIndex = filedata.findIndex((a) => a.cyVisualProperties !== undefined && a.cyVisualProperties !== null);
+
+    // validate node mappings
+    for (let i = 0; i < mappings.nodesPassthrough.length; i++) {
+      const mapping = mappings.nodesPassthrough[i];
+      if (!akvNodesNames.includes(mapping.col) && mapping.col !== 'name' && mapping.col !== 'represents') {
+        mappings.nodesPassthrough.splice(i, 1);
+        for (const aspect of filedata[cyVisualIndex].cyVisualProperties) {
+          if (aspect.properties_of === 'nodes:default') {
+            if (aspect.mappings) {
+              delete aspect.mappings[mapping.styleProperty];
+            }
+          }
+        }
+      }
+    }
+    for (let i = 0; i < mappings.nodesDiscrete.length; i++) {
+      const mapping = mappings.nodesDiscrete[i];
+      if (!akvNodesNames.includes(mapping.col) && mapping.col !== 'name' && mapping.col !== 'represents') {
+        mappings.nodesDiscrete.splice(i, 1);
+        for (const aspect of filedata[cyVisualIndex].cyVisualProperties) {
+          if (aspect.properties_of === 'nodes:default') {
+            if (aspect.mappings) {
+              delete aspect.mappings[mapping.styleProperty];
+            }
+          }
+        }
+      }
+    }
+    for (let i = 0; i < mappings.nodesContinuous.length; i++) {
+      const mapping = mappings.nodesContinuous[i];
+      if (!akvNodesNames.includes(mapping.col) && mapping.col !== 'name' && mapping.col !== 'represents') {
+        mappings.nodesContinuous.splice(i, 1);
+        for (const aspect of filedata[cyVisualIndex].cyVisualProperties) {
+          if (aspect.properties_of === 'nodes:default') {
+            if (aspect.mappings) {
+              delete aspect.mappings[mapping.styleProperty];
+            }
+          }
+        }
+      }
+    }
+
+    // validate edge mappings
+    for (let i = 0; i < mappings.edgesPassthrough.length; i++) {
+      const mapping = mappings.edgesPassthrough[i];
+      if (!akvEdgesNames.includes(mapping.col) && mapping.col !== 'interaction') {
+        mappings.edgesPassthrough.splice(i, 1);
+        for (const aspect of filedata[cyVisualIndex].cyVisualProperties) {
+          if (aspect.properties_of === 'edges:default') {
+            if (aspect.mappings) {
+              delete aspect.mappings[mapping.styleProperty];
+            }
+          }
+        }
+      }
+    }
+    for (let i = 0; i < mappings.edgesDiscrete.length; i++) {
+      const mapping = mappings.edgesDiscrete[i];
+      if (!akvEdgesNames.includes(mapping.col) && mapping.col !== 'interaction') {
+        mappings.edgesContinuous.splice(i, 1);
+        for (const aspect of filedata[cyVisualIndex].cyVisualProperties) {
+          if (aspect.properties_of === 'edges:default') {
+            if (aspect.mappings) {
+              delete aspect.mappings[mapping.styleProperty];
+            }
+          }
+        }
+      }
+    }
+    for (let i = 0; i < mappings.edgesContinuous.length; i++) {
+      const mapping = mappings.edgesContinuous[i];
+      if (!akvEdgesNames.includes(mapping.col) && mapping.col !== 'interaction') {
+        mappings.edgesContinuous.splice(i, 1);
+        for (const aspect of filedata[cyVisualIndex].cyVisualProperties) {
+          if (aspect.properties_of === 'edges:default') {
+            if (aspect.mappings) {
+              delete aspect.mappings[mapping.styleProperty];
+            }
+          }
+        }
       }
     }
 
@@ -591,11 +679,10 @@ export class ParseService {
   /**
    * Gathers attributes for which a mapping can be created
    * @param attributes
-   * @param mappings
    * @param isNode
    * @private
    */
-  private convertAkvByFile(attributes: any[], mappings: NeMappingsMap, isNode: boolean = true): NeAspect[] {
+  private convertAkvByFile(attributes: any[], isNode: boolean = true): NeAspect[] {
     const akvs: NeAspect[] = [];
 
     for (const attr of attributes) {
@@ -886,8 +973,10 @@ export class ParseService {
       edgesContinuous: [],
       nodesPassthrough: [],
       edgesPassthrough: [],
-      nodesDefault: [],
-      edgesDefault: [],
+      nodesPropertiesDefault: [],
+      nodesPropertiesSpecific: [],
+      edgesPropertiesDefault: [],
+      edgesPropertiesSpecific: [],
       networkDefault: []
     };
 
@@ -900,9 +989,9 @@ export class ParseService {
           // DEFAULTS
           if (prop.properties) {
 
-            // NETWORK
             if (prop.properties_of === 'network') {
 
+              // network
               for (const key of Object.keys(prop.properties)) {
                 mappings.networkDefault.push({
                   name: key,
@@ -910,18 +999,36 @@ export class ParseService {
                 });
               }
 
-              // OTHER
-            } else {
+            } else if (prop.properties_of === 'nodes' || prop.properties_of === 'edges') {
 
+              // specifics
+              for (const key of Object.keys(prop.properties)) {
+                const item: NeKeyValue = {
+                  name: key,
+                  value: prop.properties[key],
+                  reference: prop.applies_to
+                };
+
+                if (isNode && !PropertyService.irrelevantProperties.includes(key)) {
+                  mappings.nodesPropertiesSpecific.push(item);
+                } else if (!isNode && !PropertyService.irrelevantProperties.includes(key)) {
+                  mappings.edgesPropertiesSpecific.push(item);
+                }
+              }
+
+            } else if (prop.properties_of === 'nodes:default' || prop.properties_of === 'edges:default') {
+
+              // defaults
               for (const key of Object.keys(prop.properties)) {
                 const item: NeKeyValue = {
                   name: key,
                   value: prop.properties[key]
                 };
+
                 if (isNode && !PropertyService.irrelevantProperties.includes(key)) {
-                  mappings.nodesDefault.push(item);
+                  mappings.nodesPropertiesDefault.push(item);
                 } else if (!isNode && !PropertyService.irrelevantProperties.includes(key)) {
-                  mappings.edgesDefault.push(item);
+                  mappings.edgesPropertiesDefault.push(item);
                 }
               }
             }

@@ -5,6 +5,7 @@ import {SidebarManageComponent} from './components/sidebar-manage/sidebar-manage
 import {MainGraphComponent} from './components/main-graph/main-graph.component';
 import {SidebarEditComponent} from './components/sidebar-edit/sidebar-edit.component';
 import {NetworkGuard} from './guards/network.guard';
+import {ExitEditingGuard} from './guards/exit-editing.guard';
 
 export const routes: Routes = [
   {
@@ -14,7 +15,7 @@ export const routes: Routes = [
   },
   {
     path: 'info',
-    component: MainInfoComponent,
+    component: MainInfoComponent
   },
   {
     path: 'graph/:id',
@@ -30,7 +31,8 @@ export const routes: Routes = [
     path: 'edit/:id',
     component: SidebarEditComponent,
     outlet: 'sidebar',
-    canActivate: [NetworkGuard]
+    canActivate: [NetworkGuard],
+    canDeactivate: [ExitEditingGuard]
   },
   {
     path: '**',

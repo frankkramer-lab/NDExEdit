@@ -2,6 +2,9 @@
 
   <div class="row">
 
+    <!-- Toasts -->
+    <app-toast-container></app-toast-container>
+
     <!-- Main outlet -->
     <div [ngClass]="layoutService.layout.main.position === 'left' ? 'order-1' : 'order-2'"
          class="col-{{widthMain}}"

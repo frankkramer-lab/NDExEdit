@@ -85,6 +85,11 @@ export class DataService {
   objInEditing: EditingObject = EditingObject.property;
 
   /**
+   * Contains the CX file content before the respective mapping went into editing.
+   */
+  cxBackup: any = null;
+
+  /**
    * Canvas used to display a network
    */
   canvas: HTMLElement;
@@ -104,9 +109,7 @@ export class DataService {
   constructor(
     private utilityService: UtilityService,
     private propertyService: PropertyService
-  ) {
-
-  }
+  ) {}
 
   /**
    * Builds the definition string for a passthrough mapping
@@ -657,6 +660,51 @@ export class DataService {
   }
 
   /**
+   * Overrides specific styles for nodes or edges
+   * @param elementType Indicate if nodes or edges are to be modified
+   * @param styles List of properties to be applied
+   */
+  writeSpecificStyles(elementType: ElementType, styles: NeKeyValue[]): void {
+
+    const properties = {};
+    for (const style of styles) {
+      if (!properties[style.reference]) {
+        properties[style.reference] = {};
+      }
+      const item = {};
+      properties[style.reference][style.name] = style.value;
+    }
+
+    for (const aspect of this.selectedNetwork.cx) {
+      if (aspect.cyVisualProperties) {
+
+        // remove all specific properties for this element type
+        aspect.cyVisualProperties = aspect.cyVisualProperties.filter(a => {
+          if ((a.properties_of === 'nodes' && elementType === this.utilityService.elementType.node)
+            || (a.properties_of === 'edges' && elementType === this.utilityService.elementType.edge)) {
+            return false;
+          }
+          return true;
+        });
+
+        // add collection of properties for this element type
+        for (const key of Object.keys(properties)) {
+          const item = {
+            applies_to: key,
+            dependencies: {},
+            properties: properties[key],
+            properties_of: elementType === this.utilityService.elementType.node ? 'nodes' : 'edges'
+          };
+          aspect.cyVisualProperties.push(item);
+        }
+      }
+    }
+
+    this.resetObjectInEditing();
+    this.triggerNetworkCoreBuild();
+  }
+
+  /**
    * Overrides network default styles
    * @param styles
    */
@@ -737,7 +785,7 @@ export class DataService {
 
     const cyVisualPropertiesIndex = this.getOrAddCyVisualPropertiesIndex();
     for (const item of this.selectedNetwork.cx[cyVisualPropertiesIndex].cyVisualProperties) {
-      if (item.properties_of === (isNode ? 'nodes:default' : 'edges:default')) {
+      if ((isNode && (item.properties_of.startsWith('nodes'))) || (!isNode && (item.properties_of.startsWith('edges')))) {
         item.properties = {};
         item.dependencies = {};
         if (!isNode) {
@@ -745,7 +793,7 @@ export class DataService {
         }
         let labelMapping = null;
 
-        if (isNode) {
+        if (isNode && item.mappings) {
           for (const key of Object.keys(item.mappings)) {
             if (key === 'NODE_LABEL') {
               labelMapping = item.mappings[key];
@@ -904,8 +952,6 @@ export class DataService {
    */
   handleSearchData(data: NeSearchResultNetwork, visibility: Visibility, elementLimit: number): boolean {
 
-    console.log(data);
-
     if (data.numFound === 0) {
       return false;
     }
@@ -931,13 +977,9 @@ export class DataService {
    * @param elementLimit Maximum number of elements for nodes or edges. If this is exceeded, we assume that network is too big for NDExEdit to handle.
    */
   handleBrowseData(data: NeSearchResultItem[], elementLimit: number): boolean {
-    console.log(data);
     if (data.length === 0) {
       return false;
     }
-
-    const debugList = data.map((a) => a.isReadOnly);
-    console.log(debugList);
 
     data.forEach((network) => {
       network.downloadable = network.nodeCount < elementLimit && network.edgeCount < elementLimit;
@@ -949,4 +991,50 @@ export class DataService {
     return true;
   }
 
+  /**
+   * Overrides the core by using the backed-up CX.
+   */
+  overrideCx(): void {
+    if (this.cxBackup) {
+      this.sidebarMode = SidebarMode.default;
+      this.selectedNetwork.cx = this.cxBackup;
+      this.cxBackup = null;
+      this.triggerNetworkCoreBuild();
+    } else {
+      console.log('Failed to override core!');
+    }
+  }
+
+  /**
+   * Store the CX as a deep copy to use during discarding changes.
+   */
+  storeCxBackup(): void {
+    this.cxBackup = JSON.parse(JSON.stringify(this.selectedNetwork.cx));
+  }
+
+  /**
+   * To abort during adding a mapping collection, we have to make sure, that the shallow mapping object
+   * is removed from the CX file.
+   * @param newVisualProperty Name of the mapping's style property, that serves as a key within the mappings object
+   * @param elementType Type of element
+   */
+  storeCxBackupWithoutNew(newVisualProperty: string, elementType: ElementType): void {
+    for (const item of this.selectedNetwork.cx) {
+      if (item.cyVisualProperties) {
+        for (const cvp of item.cyVisualProperties) {
+          if (cvp.properties_of === (elementType === ElementType.node ? 'nodes:default' : 'edges:default')) {
+            if (cvp.mappings) {
+              for (const key of Object.keys(cvp.mappings)) {
+                if (key === newVisualProperty) {
+                  delete cvp.mappings[key];
+                  this.storeCxBackup();
+                  return;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }

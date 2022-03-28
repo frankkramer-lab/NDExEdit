@@ -55,6 +55,9 @@ import {CollectionDiscretePipe} from './pipes/collectionDiscrete.pipe';
 import {PropertyService} from './services/property.service';
 import {AuthService} from './services/auth.service';
 import { SidebarNavbarComponent } from './components/sidebar-navbar/sidebar-navbar.component';
+import { SidebarEditPropertyComponent } from './components/parts/sidebar-edit-property/sidebar-edit-property.component';
+import {ToastService} from './services/toast.service';
+import { ToastContainerComponent } from './components/parts/toast-container/toast-container.component';
 
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -89,6 +92,8 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     SidebarEditMappingComponent,
     SidebarEditInfoComponent,
     SidebarNavbarComponent,
+    SidebarEditPropertyComponent,
+    ToastContainerComponent,
   ],
   imports: [
     BrowserModule,
@@ -114,7 +119,8 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     UtilityService,
     LayoutService,
     PropertyService,
-    AuthService
+    AuthService,
+    ToastService
   ],
   bootstrap: [AppComponent]
 })
