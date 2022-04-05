@@ -74,9 +74,4 @@ export interface NeNetwork {
    */
   initialLayout: any[];
 
-  /**
-   * True, if this network comes with a CyVisualProperties aspect.
-   * That is essential for a network to work with NDExEdit
-   */
-  hasCyViualProperties: boolean;
 }

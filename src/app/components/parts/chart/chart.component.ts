@@ -69,7 +69,6 @@ export class ChartComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
     if (!this.binSizeInitially) {
       this.binSizeInitially = this.numberOfBins;
     }

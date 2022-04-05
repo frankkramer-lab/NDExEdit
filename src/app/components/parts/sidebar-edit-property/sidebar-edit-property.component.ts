@@ -86,6 +86,9 @@ export class SidebarEditPropertyComponent implements OnInit {
     public layoutService: LayoutService,
     private graphService: GraphService
   ) {
+    dataService.networkChangedEmitter.subscribe((network) => {
+      this.initItemList();
+    });
   }
 
   ngOnInit(): void {

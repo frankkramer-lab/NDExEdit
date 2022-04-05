@@ -17,15 +17,8 @@
 
   <div class="mb-2">
     <button (click)="hardReset = true"
-            *ngIf="dataService.selectedNetwork.hasCyViualProperties"
             class="btn btn-block btn-outline-danger">
       {{('SIDEBAR_EDIT_MAPPING_HARD_RESET_' + (elementType === utilityService.elementType.node ? 'NODE' : 'EDGE')) | translate}}
-    </button>
-
-    <button (click)="initDefaultStyles()"
-            *ngIf="!dataService.selectedNetwork.hasCyViualProperties"
-            class="btn btn-block btn-outline-info">
-      {{('SIDEBAR_EDIT_MAPPING_INIT_DEFAULT_' + (elementType === utilityService.elementType.node ? 'NODE' : 'EDGE')) | translate}}
     </button>
   </div>
 
@@ -36,15 +29,15 @@
     <p>{{'SIDEBAR_EDIT_MAPPING_HARD_RESET_TEXT_NODE' | translate}}</p>
     <div class="mt-3 row">
       <div class="col-6">
-        <button (click)="deleteAll(true)" [disabled]="dataService.lockRouting"
-                class="btn btn-lg btn-block btn-danger">
-          {{'SIDEBAR_EDIT_TT_RESET_CONFIRM' | translate}}
-        </button>
-      </div>
-      <div class="col-6">
         <button (click)="deleteAll(false)" [disabled]="dataService.lockRouting"
                 class="btn btn-lg btn-block btn-success">
           {{'SIDEBAR_EDIT_TT_RESET_ABORT' | translate}}
+        </button>
+      </div>
+      <div class="col-6">
+        <button (click)="deleteAll(true)" [disabled]="dataService.lockRouting"
+                class="btn btn-lg btn-block btn-danger">
+          {{'SIDEBAR_EDIT_TT_RESET_CONFIRM' | translate}}
         </button>
       </div>
     </div>

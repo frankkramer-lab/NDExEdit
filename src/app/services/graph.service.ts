@@ -68,7 +68,9 @@ export class GraphService implements OnDestroy {
   ) {
     dataService.networkChangedEmitter.subscribe(network => {
       this.render(network)
-        .then()
+        .then(() => {
+          console.log('render complete');
+        })
         .catch(e => console.error(e));
     });
   }

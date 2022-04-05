@@ -266,6 +266,11 @@ export class UtilityService {
    * @private
    */
   utilCalculateHistogramDataForBinSize(numberOfBins: number, propertyToMap: NeAspect): NeChart {
+
+    if (propertyToMap.datatype === 'integer') {
+      return propertyToMap.chartDiscreteDistribution;
+    }
+
     const chartData = [];
     const chartLabels = [];
     const bins: NeBin[] = [];

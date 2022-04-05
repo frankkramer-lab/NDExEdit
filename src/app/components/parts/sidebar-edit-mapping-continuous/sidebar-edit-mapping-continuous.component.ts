@@ -299,7 +299,7 @@ export class SidebarEditMappingContinuousComponent implements OnInit, OnDestroy 
       isValid: true,
       isHistogram: true,
       chartObj: histogram,
-      gradientObj: null
+      gradientObj: null,
     };
 
     for (const mapping of this.mappingCollection) {

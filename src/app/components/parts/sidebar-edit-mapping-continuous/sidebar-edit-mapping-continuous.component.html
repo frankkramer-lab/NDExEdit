@@ -76,8 +76,9 @@
         </app-chart>
 
         <!-- MAPPING CHART -->
-        <app-chart *ngIf="!(editMode ? visualAidsInEditing : visualAids)[renderedVisualAidKey].isHistogram"
-                   [chartObject]="(editMode ? visualAidsInEditing : visualAids)[renderedVisualAidKey].chartObj">
+        <app-chart
+          *ngIf="!(editMode ? visualAidsInEditing : visualAids)[renderedVisualAidKey].isHistogram"
+          [chartObject]="(editMode ? visualAidsInEditing : visualAids)[renderedVisualAidKey].chartObj">
         </app-chart>
 
       </ng-container>
@@ -154,7 +155,8 @@
 <!-- SPECS -->
 <div *ngIf="editMode">
 
-  <form (ngSubmit)="onSubmitMappingChanged()" [formGroup]="continuousMappingForm" class="table-responsive">
+  <form (ngSubmit)="onSubmitMappingChanged()" [formGroup]="continuousMappingForm"
+        class="table-responsive">
     <table class="table table-borderless" formArrayName="thresholds">
       <thead>
       <tr>
@@ -198,7 +200,8 @@
             </button>
 
             <!-- DELETE MAPPING -->
-            <button (click)="deleteMappingFromCollection(mapping.styleProperty)" [disabled]="flashMode"
+            <button (click)="deleteMappingFromCollection(mapping.styleProperty)"
+                    [disabled]="flashMode"
                     class="btn btn-block btn-sm btn-outline-danger mt-1"
                     data-toggle="tooltip"
                     ngbTooltip="{{'SIDEBAR_EDIT_TT_DELETE_COL' | translate}}"
@@ -297,7 +300,8 @@
 
             </div>
 
-            <small [innerHTML]="'SIDEBAR_EDIT_TT_PROPERTY_HINT' | translate" class="form-row mt-1 text-muted"></small>
+            <small [innerHTML]="'SIDEBAR_EDIT_TT_PROPERTY_HINT' | translate"
+                   class="form-row mt-1 text-muted"></small>
 
             <div class="form-row mt-1">
               <small *ngIf="(newMappingForm.get('styleProperty').touched || newMappingForm.get('styleProperty').dirty)
@@ -357,7 +361,8 @@
                   type="button">
                   <fa-icon [icon]="faTrash"></fa-icon>
                 </button>
-                <button (click)="removeThresholdFromMapping()" *ngIf="markedRowForDeletion === thIndex"
+                <button (click)="removeThresholdFromMapping()"
+                        *ngIf="markedRowForDeletion === thIndex"
                         [disabled]="this.thresholds.controls.length < 3"
                         class="btn btn-outline-danger"
                         container="body"
@@ -396,18 +401,21 @@
             <ng-container *ngFor="let equal of th.get('equals')['controls']; let eqIndex = index"
                           formArrayName="equals">
               <td [ngClass]="markedCellMove.mappingIndex === eqIndex
-              && markedCellMove.sourceThresholdIndex === thIndex ? 'table-info' : ''" class="deletable">
+              && markedCellMove.sourceThresholdIndex === thIndex ? 'table-info' : ''"
+                  class="deletable">
 
                 <table class="table table-borderless">
                   <tr>
 
                     <!-- VALUES -->
                     <td *ngIf="th.get('useValues')['controls'][eqIndex].value" class="wide slim">
-                      <input *ngIf="!th.get('isColor')['controls'][eqIndex].value" [formControlName]="eqIndex"
+                      <input *ngIf="!th.get('isColor')['controls'][eqIndex].value"
+                             [formControlName]="eqIndex"
                              [ngClass]="markedRowForDeletion === thIndex ? 'border-danger' : ''"
                              class="form-control"
                              type="number">
-                      <input *ngIf="th.get('isColor')['controls'][eqIndex].value" [formControlName]="eqIndex"
+                      <input *ngIf="th.get('isColor')['controls'][eqIndex].value"
+                             [formControlName]="eqIndex"
                              [ngClass]="markedRowForDeletion === thIndex ? 'border-danger' : ''"
                              class="form-control"
                              type="color">
@@ -418,14 +426,15 @@
                         && markedCellMove.mappingIndex === eqIndex
                         && markedCellMove.sourceThresholdIndex !== -1"
                         class="slim wide">
-                      <button (click)="moveCell(thIndex, th.get('isColor')['controls'][eqIndex].value)"
-                              [disabled]="flashMode"
-                              class="btn btn-block btn-outline-info"
-                              data-toggle="tooltip"
-                              ngbTooltip="{{'SIDEBAR_EDIT_TT_MOVE_CELL_HERE' | translate}}"
-                              openDelay="1000"
-                              placement="{{layoutService.layout.sidebar.tooltipDirection}}"
-                              type="button">
+                      <button
+                        (click)="moveCell(thIndex, th.get('isColor')['controls'][eqIndex].value)"
+                        [disabled]="flashMode"
+                        class="btn btn-block btn-outline-info"
+                        data-toggle="tooltip"
+                        ngbTooltip="{{'SIDEBAR_EDIT_TT_MOVE_CELL_HERE' | translate}}"
+                        openDelay="1000"
+                        placement="{{layoutService.layout.sidebar.tooltipDirection}}"
+                        type="button">
                         <fa-icon [icon]="faChevronLeft"></fa-icon>
                       </button>
                     </td>
@@ -484,18 +493,21 @@
                       <!-- VALUES -->
                       <td class="slim wide">
                         <input *ngIf="!th.get('isColor')['controls'][eqIndex].value"
-                               [ngClass]="markedRowForDeletion === thIndex ? 'border-danger' : ''" class="form-control"
+                               [ngClass]="markedRowForDeletion === thIndex ? 'border-danger' : ''"
+                               class="form-control"
                                type="number"
                                value="{{th.get('duplicates')['controls'][eqIndex].value}}">
                         <input *ngIf="th.get('isColor')['controls'][eqIndex].value"
-                               [ngClass]="markedRowForDeletion === thIndex ? 'border-danger' : ''" class="form-control"
+                               [ngClass]="markedRowForDeletion === thIndex ? 'border-danger' : ''"
+                               class="form-control"
                                type="color"
                                value="{{th.get('duplicates')['controls'][eqIndex].value}}">
                       </td>
 
                       <!-- MOVE CELL -->
                       <td class="slim wide">
-                        <button (click)="toggleMoveCell(eqIndex, thIndex, duplicateIndex)" [disabled]="flashMode
+                        <button (click)="toggleMoveCell(eqIndex, thIndex, duplicateIndex)"
+                                [disabled]="flashMode
                                 || (markedCellMove.sourceThresholdIndex !== -1
                                 && markedCellMove.duplicateIndex !== duplicateIndex
                                 && markedCellMove.sourceThresholdIndex !== thIndex)"
@@ -547,7 +559,8 @@
           <ng-container *ngIf="(th.get('threshold').touched || th.get('threshold').dirty)">
 
             <!-- ERRORS: REQUIRED -->
-            <tr *ngIf="th.get('threshold').errors !== null && th.get('threshold').errors['required']">
+            <tr
+              *ngIf="th.get('threshold').errors !== null && th.get('threshold').errors['required']">
               <td [attr.colspan]="2">
                 <small>
                   <fa-icon [icon]="faExclamationTriangle"

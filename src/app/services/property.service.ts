@@ -193,7 +193,7 @@ export class PropertyService {
    * List for mapping available style properties.
    * Note: A visual property should only be mapped once throughout the network
    */
-  static availableStyleProperties: string[] = PropertyService.nodeProperties.concat(PropertyService.edgeProperties);
+  static availableStyleProperties: string[];
   /**
    * List of all available element properties that are currently available for mapping.
    * Note: A property can be used for two different types of mappings, but only once within a specific mapping type.
@@ -223,6 +223,13 @@ export class PropertyService {
         PropertyService.availableStyleProperties.splice(index, 1);
       }
     }
+  }
+
+  /**
+   * Initializes styles with the concatenation of all node and all edge properties that can exist.
+   */
+  initStyles(): void {
+    PropertyService.availableStyleProperties = PropertyService.nodeProperties.concat(PropertyService.edgeProperties);
   }
 
   /**
@@ -306,7 +313,6 @@ export class PropertyService {
    * @param property Name of the column
    */
   handleMappingRemoved(elementType: ElementType, mappingType: MappingType, property: string): void {
-    console.log(property);
     const elementTypeKey = elementType === this.utilityService.elementType.node ? 'node' : 'edge';
     const mappingTypeKey = mappingType === this.utilityService.mappingType.passthrough ? 'p'
       : (mappingType === this.utilityService.mappingType.discrete ? 'd' : 'c');
@@ -354,5 +360,23 @@ export class PropertyService {
       }
       this.handleStyleRemoved(mapping.styleProperty);
     }
+  }
+
+  /**
+   * Resets the {@link availableElementProperties}.
+   */
+  clearElementProperties(): void {
+    this.availableElementProperties = {
+      node: {
+        p: [],
+        d: [],
+        c: []
+      },
+      edge: {
+        p: [],
+        d: [],
+        c: []
+      }
+    };
   }
 }

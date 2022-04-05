@@ -72,6 +72,8 @@ export class MainGraphComponent implements AfterViewInit, OnDestroy {
       const networkId = params.get('id');
       if (networkId) {
         dataService.selectNetwork(Number(networkId));
+        propertyService.initStyles();
+        propertyService.clearElementProperties(); // clear list of properties for a network to avoid overlap with other networks
         propertyService.initAvailables(dataService.selectedNetwork);
       }
 

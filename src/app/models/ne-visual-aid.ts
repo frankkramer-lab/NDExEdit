@@ -6,4 +6,5 @@ export interface NeVisualAid {
   isHistogram: boolean;
   chartObj: NeChart;
   gradientObj: NeColorGradient[];
+
 }

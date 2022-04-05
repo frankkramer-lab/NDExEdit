@@ -18,6 +18,10 @@ import {NeKeyValue} from '../models/ne-key-value';
 import {PropertyService} from './property.service';
 import {NeSearchResultNetwork} from '../models/ne-search-result-network';
 import {NeSearchResultItem} from '../models/ne-search-result-item';
+import {HttpClient} from '@angular/common/http';
+import {forkJoin, Observable, of} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
+import {NeDefault} from '../models/ne-default';
 
 @Injectable({
   providedIn: 'root'
@@ -97,6 +101,12 @@ export class DataService {
    * The network ID increment
    */
   currentNetworkId = -1;
+
+  /**
+   * Collection of default styles, defined by JSON files in the assets directory
+   */
+  defaultStyles: NeDefault | null = null;
+
   /**
    * Toggle flipping the layout
    */
@@ -108,8 +118,10 @@ export class DataService {
 
   constructor(
     private utilityService: UtilityService,
-    private propertyService: PropertyService
-  ) {}
+    private propertyService: PropertyService,
+    private http: HttpClient,
+  ) {
+  }
 
   /**
    * Builds the definition string for a passthrough mapping
@@ -632,11 +644,13 @@ export class DataService {
   }
 
   /**
-   * Overrides default styles for nodes or edges
+   * Overrides default styles for nodes or edges.
+   * This method does NOT rebuild the core, unless explicitly specified.
    * @param elementType Indicates if nodes or edges are to be modified
    * @param styles List of properties to be applied
+   * @param rebuildCore True, if the core is to be rebuilt after applying default styles.
    */
-  writeDefaultStyles(elementType: ElementType, styles: NeKeyValue[]): void {
+  writeDefaultStyles(elementType: ElementType, styles: NeKeyValue[], rebuildCore: boolean = false): void {
 
     const obj = DataService.generateObjectFromKeyValue(styles);
 
@@ -656,7 +670,9 @@ export class DataService {
       }
     }
     this.resetObjectInEditing();
-    this.triggerNetworkCoreBuild();
+    if (rebuildCore) {
+      this.triggerNetworkCoreBuild();
+    }
   }
 
   /**
@@ -781,63 +797,90 @@ export class DataService {
    * @param elementType Points towards nodes or edges
    */
   resetElementAspect(elementType: ElementType): void {
+
+    console.log('RESET ELEMENT: ' + elementType);
+
     const isNode = elementType === this.utilityService.elementType.node;
-
     const cyVisualPropertiesIndex = this.getOrAddCyVisualPropertiesIndex();
-    for (const item of this.selectedNetwork.cx[cyVisualPropertiesIndex].cyVisualProperties) {
-      if ((isNode && (item.properties_of.startsWith('nodes'))) || (!isNode && (item.properties_of.startsWith('edges')))) {
-        item.properties = {};
-        item.dependencies = {};
-        if (!isNode) {
-          item.dependencies.arrowColorMatchesEdge = 'true';
-        }
-        let labelMapping = null;
+    const elementIndex = this.getOrAddPropertiesIndexByKey(cyVisualPropertiesIndex, elementType);
 
-        if (isNode && item.mappings) {
-          for (const key of Object.keys(item.mappings)) {
-            if (key === 'NODE_LABEL') {
-              labelMapping = item.mappings[key];
-              break;
-            }
-          }
-          if (labelMapping !== null) {
-            item.mappings = {
-              NODE_LABEL: labelMapping
-            };
-          } else {
-            item.mappings = {};
-          }
-        } else {
-          item.mappings = {};
+    console.log(this.selectedNetwork);
+
+    if (this.defaultStyles === null) {
+      this.loadDefaultStyles().subscribe((styles) => {
+        this.defaultStyles = styles as NeDefault;
+        if (styles !== null) {
+          this.selectedNetwork.cx[cyVisualPropertiesIndex].cyVisualProperties[elementIndex]
+            = (isNode ? styles.nodesDefault : styles.edgesDefault);
         }
-      }
+        // reset element-specific properties
+        // reset object in editing
+        // trigger core rebuild
+        this.writeSpecificStyles(elementType, []);
+      });
+    } else {
+      this.selectedNetwork.cx[cyVisualPropertiesIndex].cyVisualProperties[elementIndex]
+        = (isNode ? this.defaultStyles.nodesDefault : this.defaultStyles.edgesDefault);
+      this.writeSpecificStyles(elementType, []);
     }
-    this.resetObjectInEditing();
-    this.triggerNetworkCoreBuild();
+
+  }
+
+  /**
+   * Loads the default styles defined by JSON files in the assets directory
+   * @private
+   */
+  private loadDefaultStyles(): Observable<NeDefault | null> {
+    return forkJoin({
+      network: this.http.get('../assets/cy-style/network.json'),
+      nodesDefault: this.http.get('../assets/cy-style/nodes-default.json'),
+      edgesDefault: this.http.get('../assets/cy-style/edges-default.json'),
+    }).pipe(
+      map((payload) => {
+        return payload;
+      }),
+      catchError(() => {
+        return of(null);
+      })
+    );
+  }
+
+  /**
+   * Returns the default styles
+   */
+  getDefaultStyles(): Observable<NeDefault | null> {
+    if (this.defaultStyles !== null) {
+      return of(this.defaultStyles);
+    }
+    return this.loadDefaultStyles();
   }
 
   /**
    * Initializes default styles including a node label mapping, if there is a column with 'name'
    */
   initDefaultStyles(): void {
-
     const addLabelMapping = this.selectedNetwork.aspectKeyValuesNodes.findIndex(a => a.name === 'name');
 
     const cyVisualPropertiesIndex = this.getOrAddCyVisualPropertiesIndex();
     if (addLabelMapping > -1) {
-      for (const item of this.selectedNetwork.cx[cyVisualPropertiesIndex].cyVisualProperties) {
-        if (item.properties_of === 'nodes:default') {
-          item.mappings = {
-            NODE_LABEL: {
-              definition: 'COL=name,T=string',
-              type: 'PASSTHROUGH'
-            }
-          };
-        }
+
+      if (this.defaultStyles === null) {
+        this.loadDefaultStyles().subscribe((styles) => {
+          this.defaultStyles = styles as NeDefault;
+
+          if (styles !== null) {
+            this.selectedNetwork.cx[cyVisualPropertiesIndex].cyVisualProperties = Object.values(styles);
+          }
+
+          this.triggerNetworkCoreBuild();
+        });
+      } else {
+        this.selectedNetwork.cx[cyVisualPropertiesIndex].cyVisualProperties = Object.values(this.defaultStyles);
+        this.triggerNetworkCoreBuild();
       }
+
+
     }
-    this.selectedNetwork.hasCyViualProperties = true;
-    this.triggerNetworkCoreBuild();
   }
 
   /**
@@ -937,6 +980,7 @@ export class DataService {
    * @private
    */
   private triggerNetworkCoreBuild(network: NeNetwork = null): void {
+    console.log('emitting new network ...');
     if (network === null) {
       this.networkChangedEmitter.emit(this.selectedNetwork);
       return;

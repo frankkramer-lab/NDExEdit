@@ -1,0 +1,20 @@
+{
+  "properties_of": "network",
+  "properties": {
+    "NETWORK_ANNOTATION_SELECTION": "false",
+    "NETWORK_BACKGROUND_PAINT": "#FFFFFF",
+    "NETWORK_CENTER_X_LOCATION": "-350.91469055369237",
+    "NETWORK_CENTER_Y_LOCATION": "-117.60641596575577",
+    "NETWORK_CENTER_Z_LOCATION": "0.0",
+    "NETWORK_DEPTH": "0.0",
+    "NETWORK_EDGE_SELECTION": "true",
+    "NETWORK_FORCE_HIGH_DETAIL": "false",
+    "NETWORK_HEIGHT": "696.0",
+    "NETWORK_NODE_LABEL_SELECTION": "false",
+    "NETWORK_NODE_SELECTION": "true",
+    "NETWORK_SCALE_FACTOR": "2.026610184072752",
+    "NETWORK_SIZE": "550.0",
+    "NETWORK_TITLE": "TEST!!!Combined patient-specific breast cancer subnetworks",
+    "NETWORK_WIDTH": "1436.0"
+  }
+}

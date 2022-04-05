@@ -33,7 +33,7 @@ export class ParseService {
 
   constructor(
     private utilityService: UtilityService,
-    private dataService: DataService
+    private dataService: DataService,
   ) {
     dataService.networkChangedEmitter.subscribe(network => {
       dataService.selectedNetwork.mappings = this.convertMappingsByFile(network.cx);
@@ -370,7 +370,7 @@ export class ParseService {
    * @param uuid optionally give the uuid for copy-to-clipboard-feature
    * @param networkId id for this network
    */
-  convert(
+  async convert(
     container: HTMLElement,
     filedata: any[],
     filename: string,
@@ -422,6 +422,16 @@ export class ParseService {
 
     let core = null;
     const id = networkId;
+    const cyVisualIndex = filedata.findIndex((a) => a.cyVisualProperties !== undefined && a.cyVisualProperties !== null);
+
+    if (cyVisualIndex === -1) {
+      console.log('No cytoscape style aspect found! Setting default styles ...');
+      const defaultStyles = await this.dataService.getDefaultStyles().toPromise();
+      filedata.push({
+        cyVisualProperties: Object.values(defaultStyles)
+      });
+    }
+
     const mappings = this.convertMappingsByFile(filedata);
 
     let akvNodes: NeAspect[] = [];
@@ -473,8 +483,6 @@ export class ParseService {
         initialLayout = layout;
       }
     }
-
-    const cyVisualIndex = filedata.findIndex((a) => a.cyVisualProperties !== undefined && a.cyVisualProperties !== null);
 
     // validate node mappings
     for (let i = 0; i < mappings.nodesPassthrough.length; i++) {
@@ -561,8 +569,6 @@ export class ParseService {
     akvNodes = this.buildDistributionChart(akvNodes, filedata, ElementType.node);
     akvEdges = this.buildDistributionChart(akvEdges, filedata, ElementType.edge);
 
-    const hasCyViualProperties = (filedata.findIndex(a => a.cyVisualProperties) > -1);
-
     if (container) {
       return this.convertCxToJs(filedata, container)
         .then(receivedCore => {
@@ -578,7 +584,6 @@ export class ParseService {
             mappings,
             aspectKeyValueNodes: akvNodes,
             aspectKeyValueEdges: akvEdges,
-            hasCyViualProperties
           };
         })
         .catch(e => {
@@ -594,7 +599,6 @@ export class ParseService {
             mappings,
             aspectKeyValueNodes: akvNodes,
             aspectKeyValueEdges: akvEdges,
-            hasCyViualProperties
           };
         });
     } else {
@@ -609,7 +613,6 @@ export class ParseService {
           mappings,
           aspectKeyValuesNodes: akvNodes,
           aspectKeyValuesEdges: akvEdges,
-          hasCyViualProperties
         });
       });
     }
