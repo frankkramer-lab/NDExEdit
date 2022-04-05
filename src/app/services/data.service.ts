@@ -22,6 +22,7 @@ import {HttpClient} from '@angular/common/http';
 import {forkJoin, Observable, of} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {NeDefault} from '../models/ne-default';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -831,10 +832,11 @@ export class DataService {
    * @private
    */
   private loadDefaultStyles(): Observable<NeDefault | null> {
+    const pathStyle = environment.pathStyle;
     return forkJoin({
-      network: this.http.get('../assets/cy-style/network.json'),
-      nodesDefault: this.http.get('../assets/cy-style/nodes-default.json'),
-      edgesDefault: this.http.get('../assets/cy-style/edges-default.json'),
+      network: this.http.get(`${pathStyle}network.json`),
+      nodesDefault: this.http.get(`${pathStyle}nodes-default.json`),
+      edgesDefault: this.http.get(`${pathStyle}edges-default.json`),
     }).pipe(
       map((payload) => {
         return payload;
